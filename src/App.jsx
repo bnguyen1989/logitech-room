@@ -5,15 +5,14 @@ import {
   FlatForm,
 } from '@threekit-tools/treble';
 
-
 const App = () => {
   return (
     <ThreekitProvider>
       <div className="tk-treble-player">
-        <Player/>
+        <Player />
       </div>
       <PortalToElement to="tk-treble-form" strict={true}>
-        <FlatForm/>
+        <FlatForm />
       </PortalToElement>
     </ThreekitProvider>
   );
