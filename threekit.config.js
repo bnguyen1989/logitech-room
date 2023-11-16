@@ -9,7 +9,7 @@ export default {
       publicToken: process.env.THREEKIT_ADMIN_FTS_PUBLIC_TOKEN,
     },
   },
-  
+
   products: {
     preview: {
       assetId: undefined,
