@@ -8,21 +8,21 @@ import {
 import type React from 'react';
 import { Helmet as Head } from 'react-helmet';
 
-import Geoff2Stage from '../../../components/stages/Geoff2Stage.js';
+import Geoff2Stage from '../../components/stages/Geoff2Stage.js';
 
 export const bhoustonAuth = {
   host: 'preview.threekit.com',
-  orgId: 'f40d1e39-d267-49af-af14-fa7bf4b9c904',
-  publicToken: 'ea6a7e81-1093-4751-89ef-e0b34164dd97'
+  orgId: '9eba6177-9cb1-4224-8e06-4f0d0f7cabbd',
+  publicToken: 'bd3d25a8-51c9-4275-b69b-dae281c42442'
 };
 
-const assetId = 'e4c8d2b0-6ac3-4299-89d6-63c094a28aa8'; // product
+const assetId = '32ba8c20-d54a-46d2-a0bb-0339c71e7dc6'; // product
 
-export const EamesChairDemo: React.FC = () => {
+export const Configurator: React.FC = () => {
   return (
     <>
       <Head>
-        <title>{`Eames Chair Viewer`}</title>
+        <title>{`Logitech`}</title>
       </Head>
       <Viewer
         auth={bhoustonAuth}
