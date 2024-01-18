@@ -1,0 +1,15 @@
+node_modules/
+dist
+build
+.env
+.env.test
+.nx
+.DS_Store
+stats.html
+*.log
+apps/demo-server/tmp
+
+# Ignore generated credentials from google-github-actions/auth
+gha-creds-*.json
+
+.vscode

@@ -1,0 +1,15 @@
+{
+  "name": "assets-configurator-service",
+  "root": "services/assets-configurator-service",
+  "targets": {
+    "watch": {
+      "options": {
+        "commands": ["tsc --watch", "nodemon dist/main.js"]
+      }
+    },
+    "build": {},
+    "lint": {},
+    "format": {},
+    "test": {}
+  }
+}

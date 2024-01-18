@@ -1,0 +1,11 @@
+{
+  "baseDir": "./apps/demo-app/dist/",
+  "files": [
+    {
+      "path": "index.html"
+    },
+    {
+      "path": "assets/index-<hash>.js"
+    }
+  ]
+}

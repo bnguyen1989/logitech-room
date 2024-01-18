@@ -1,0 +1,10 @@
+{
+  "name": "@threekit/react-three-fiber",
+  "root": "packages/react-three-fiber",
+  "targets": {
+    "watch": {},
+    "build": {},
+    "lint": {},
+    "format": {}
+  }
+}

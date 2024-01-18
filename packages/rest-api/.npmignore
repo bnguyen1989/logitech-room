@@ -1,0 +1,5 @@
+jest.*.ts
+jest.*.js
+*test*.*
+/assets
+src

@@ -1,0 +1,55 @@
+{
+  "name": "threekit-packages",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "nx run-many --target=build --all",
+    "watch": "lerna run watch --stream",
+    "start": "npm run start -w=apps/demo-server",
+    "sync:dist": "node scripts/sync-dist.js",
+    "clean:dist": "node scripts/clean.js --dist --.nx",
+    "clean:node_modules": "node scripts/clean.js --node_modules",
+    "clean": "node scripts/clean.js --node_modules --dist --.nx",
+    "lint": "nx run-many --target=lint --all",
+    "format": "nx run-many --target=format --all",
+    "test": "nx run-many --target=test --all",
+    "publish": "nx run-many --target=build,test --all && lerna publish --no-private",
+    "gcloud-setup": "gcloud auth application-default login && gcloud config set project bhouston-innovation && gcloud config set run/region us-central1"
+  },
+  "devDependencies": {
+    "@nx/eslint": "^17.2.6",
+    "@types/jest": "^29.5.4",
+    "@types/node": "^20.10.4",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@types/three": "0.152.1",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "bundlemon": "^2.0.0-rc.1",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-security": "^1.7.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "jest": "^29.6.4",
+    "lerna": "^8.0.1",
+    "nx": "^17.2.6",
+    "prettier": "^2.8.8",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,15 @@
+{
+  "name": "glb-service",
+  "root": "services/glb-service",
+  "targets": {
+    "watch": {
+      "options": {
+        "commands": ["tsc --watch", "nodemon dist/main.js"]
+      }
+    },
+    "build": {},
+    "lint": {},
+    "format": {},
+    "test": {}
+  }
+}

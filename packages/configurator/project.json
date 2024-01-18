@@ -1,0 +1,10 @@
+{
+  "name": "@threekit/configurator",
+  "root": "packages/configurator",
+  "targets": {
+    "watch": {},
+    "build": {},
+    "lint": {},
+    "format": {}
+  }
+}

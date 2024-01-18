@@ -1,0 +1,11 @@
+{
+  "name": "@threekit/rest-api",
+  "root": "packages/rest-api",
+  "targets": {
+    "watch": {},
+    "build": {},
+    "lint": {},
+    "format": {},
+    "test": {}
+  }
+}

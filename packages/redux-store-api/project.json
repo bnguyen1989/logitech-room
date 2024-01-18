@@ -1,0 +1,11 @@
+{
+  "name": "@threekit/redux-store-api",
+  "root": "packages/redux-store-api",
+  "targets": {
+    "watch": {},
+    "build": {},
+    "lint": {},
+    "format": {},
+    "test": {}
+  }
+}
