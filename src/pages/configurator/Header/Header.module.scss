@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .title_text {
+      color: #000;
+      text-align: center;
+      font-family: BrownPro;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 40px; /* 111.111% */
+      letter-spacing: -0.36px;
+    }
+
+    .sub_title_text {
+      color: var(--Logitech-Colors-Kohle, #2f3132);
+      text-align: center;
+
+      /* Body 2/Light */
+      font-family: "Brown Logitech Pan";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 22px; /* 137.5% */
+    }
+  }
+}
