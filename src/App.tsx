@@ -1,10 +1,9 @@
 import './App.css'
+import { Configurator } from './pages/configurator/Configurator'
 
 function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <Configurator />
   )
 }
 
