@@ -1,4 +1,4 @@
-import { Configurator } from './pages/configurator/Configurator.js'
+import { Configurator } from './pages/configurator/Configurator.tsx';
 import { PageNotFoundPage } from './pages/errors/PageNotFoundPage.js';
 
 export type ExampleUrl = {
@@ -18,7 +18,7 @@ export const pages: Page[] = [
   {
     title: 'Logitech',
     path: '/',
-    class: Configurator,
+    class: Configurator
   },
   {
     title: '404',

@@ -1,8 +1,17 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src"],
+  "include": ["src", "src/types"],
   "compilerOptions": {
     "outDir": "dist",
-    "jsx": "react-jsx"
-  }
+    "jsx": "react-jsx",
+    
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+  },
+
+  "references": [{ "path": "./tsconfig.node.json" }]
+  
 }
