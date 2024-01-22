@@ -1,7 +1,9 @@
 .container {
 	.logo {
+    display: flex;
+    justify-content: center;
 		& img {
-			max-width: 235px;
+      height: 30px;
 		}
   }
 

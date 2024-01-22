@@ -16,4 +16,14 @@ export const getNavigationStepData = (state: RootState) => {
 	}
 }
 
+export const getIsConfiguratorStep = (state: RootState) => {
+	const { activeStep } = state.ui;
+
+	if (!activeStep) {
+		return false;
+	}
+
+	return !['Choose Platform', 'Room Size', 'Lorem Services'].includes(activeStep.name);
+}
+
 export const getIsBuilding = (state: RootState) => state.ui.isBuilding;

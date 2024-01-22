@@ -3,7 +3,7 @@ import { CardPlatform } from '../../../../components/Cards/CardPlatform/CardPlat
 import { CardRoom } from '../../../../components/Cards/CardRoom/CardRoom'
 import { CardService } from '../../../../components/Cards/CardService/CardService'
 import { useAppSelector } from '../../../../hooks/redux'
-import { getActiveStep } from '../../../../store/slices/ui/selectors/selectors'
+import { getActiveStep, getIsConfiguratorStep } from '../../../../store/slices/ui/selectors/selectors'
 import { StepCardType, StepI, StepName } from '../../../../store/slices/ui/type'
 import s from './PrepareSection.module.scss';
 import { changeActiveCard } from '../../../../store/slices/ui/Ui.slice'
@@ -11,10 +11,9 @@ import { changeActiveCard } from '../../../../store/slices/ui/Ui.slice'
 export const PrepareSection: React.FC = () => {
 	const dispatch = useDispatch();
 	const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
+	const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
-	if (!activeStep) return null;
-
-	console.log('activeStep', activeStep);
+	if (!activeStep || isConfiguratorStep) return null;
 	
 
 	const handleClick = (card: StepCardType) => {

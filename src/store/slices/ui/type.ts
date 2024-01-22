@@ -75,5 +75,5 @@ export interface ItemCardI {
 	title: string;
 	subtitle?: string;
 	color?: ColorI;
-	counters?: CounterI;
+	counter?: CounterI;
 }

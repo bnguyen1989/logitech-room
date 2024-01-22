@@ -29,11 +29,21 @@ const uiSlice = createSlice({
 				activeStep.currentCard = action.payload;
 			}
 		},
+		changeValueCard: (state, action: PayloadAction<StepCardType>) => {
+			const { activeStep } = state;
+			if (activeStep) {
+				const { cards } = activeStep;
+				const index = cards.findIndex((card) => card.key === action.payload.key);
+				if (index !== -1) {
+					cards[index] = action.payload;
+				}
+			}
+		},
 		changeStatusBuilding: (state, action: PayloadAction<boolean>) => {
 			state.isBuilding = action.payload
 		}
   },
 });
 
-export const { changeActiveStep, moveToStartStep, changeActiveCard, changeStatusBuilding } = uiSlice.actions;
+export const { changeActiveStep, moveToStartStep, changeActiveCard, changeStatusBuilding, changeValueCard } = uiSlice.actions;
 export default uiSlice.reducer;

@@ -1,31 +1,15 @@
-import { useState } from "react";
 import s from "./ColorItem.module.scss";
-
-const listColors: Array<ColorI> = [
-	{
-		name: "Graphite",
-		value: "#434446",
-	},
-	{
-		name: "White",
-		value: "#FBFBFB",
-	},
-];
-
-interface ColorI {
-	name: string;
-	value: string;
-}
+import { ColorItemI } from '../../store/slices/ui/type'
 
 interface PropsI {
-  onChange: (value: ColorI) => void;
+  value: ColorItemI;
+  onChange: (value: ColorItemI) => void;
+  listColors: ColorItemI[];
 }
 export const ColorItem: React.FC<PropsI> = (props) => {
-  const { onChange } = props;
-  const [value, setValue] = useState<ColorI>(listColors[0]);
+  const { onChange, value, listColors } = props;
 
-  const handleChange = (value: ColorI) => {
-    setValue(value);
+  const handleChange = (value: ColorItemI) => {
     onChange(value);
   };
   return (

@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { changeActiveStep, changeStatusBuilding } from "../../../store/slices/ui/Ui.slice";
 import { Loader } from '../../../components/Loader/Loader'
 import { PrepareSection } from './PrepareSections/PrepareSection'
+import { ConfiguratorSection } from './ConfiguratorSections/ConfiguratorSection'
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
@@ -53,6 +54,7 @@ export const Content: React.FC<PropsI> = () => {
     <div className={s.container}>
       <div className={s.content}>
         <PrepareSection />
+        <ConfiguratorSection />
       </div>
 
       <div className={s.actions}>

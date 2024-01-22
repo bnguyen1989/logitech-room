@@ -1,4 +1,5 @@
 import {
+  ItemCardI,
   PlatformCardI,
   RoomCardI,
   ServiceCardI,
@@ -17,6 +18,8 @@ import ImageLarge from "../../../assets/images/rooms/large.jpg";
 import ImageAuditorium from "../../../assets/images/rooms/auditorium.jpg";
 import ImageAppliance from "../../../assets/images/services/appliance.jpg";
 import ImagePCBased from "../../../assets/images/services/pc_baced.jpg";
+import MicImg from "../../../assets/images/items/mic.jpg";
+
 
 export const getInitStepData = (): StepDataI => {
   return {
@@ -44,35 +47,35 @@ export const getInitStepData = (): StepDataI => {
       name: "Conference Camera",
       title: "Choose your conference camera.",
       subtitle: "These recommendations are based on your previous answers.",
-      cards: [],
+      cards: getItemsCardData(),
     },
     [StepName.AudioExtensions]: {
       name: "Audio Extensions & Accessories",
       title: "Add room-filling audio.",
       subtitle:
         "Choose from the following audio extensions to make sure everyone can hear and be heard clearly. ",
-      cards: [],
+      cards: getItemsCardData(),
     },
     [StepName.MeetingController]: {
       name: "Meeting Controller & Add On",
       title: "Choose your meeting controller.",
       subtitle:
         "Select a controller that directly connects to the meeting room PC or video bar, or one that is untethered from the room system.",
-      cards: [],
+      cards: getItemsCardData(),
     },
     [StepName.VideoAccessories]: {
       name: "Video Accessories",
       title: "Pick your video conferencing accessories.",
       subtitle:
         "Add features and flexibility with these video conferencing accessories.",
-      cards: [],
+      cards: getItemsCardData(),
     },
     [StepName.SoftwareServices]: {
       name: "Software & Services",
       title: "Let’s finish up by selecting your software and services.",
       subtitle:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      cards: [],
+      cards: getItemsCardData(),
     },
   };
 };
@@ -158,4 +161,49 @@ function getServicesCardData(): Array<ServiceCardI> {
         "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris eleifend vitae odio non elementum.",
     },
   ];
+}
+
+function getItemsCardData(): Array<ItemCardI> {
+  return [
+    {
+      key: StepName.ConferenceCamera,
+      image: MicImg,
+      header_title: 'Rally Mic Pod',
+      title: "Modular Mics with RightSound",
+      color: {
+        currentColor: {
+          name: "Graphite",
+          value: "#434446",
+        },
+        colors: [
+          {
+            name: "Graphite",
+            value: "#434446",
+          },
+          {
+            name: "White",
+            value: "#FBFBFB",
+          },
+        ],
+      },
+      counter: {
+        min: 1,
+        max: 3,
+        currentValue: 1,
+      },
+    },
+    {
+      key: StepName.ConferenceCamera,
+      image: MicImg,
+      header_title: 'Mic Pod Mount',
+      title: "Table mount for Rally Mic Pod",
+    },
+    {
+      key: StepName.ConferenceCamera,
+      image: MicImg,
+      header_title: 'Rally Mic Pod Hub',
+      title: "Customize microphone placement",
+      subtitle: '3 ports'
+    },
+  ]
 }

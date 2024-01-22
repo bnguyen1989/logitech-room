@@ -1,25 +1,22 @@
-import { useState } from "react";
 import s from "./Counter.module.scss";
 
 interface PropsI {
+  value: number;
   min: number;
   max: number;
   onChange: (value: number) => void;
 }
 export const Counter: React.FC<PropsI> = (props) => {
-  const { min, max, onChange } = props;
-  const [value, setValue] = useState(min);
+  const { min, max, onChange, value } = props;
 
   const handleDecrement = () => {
     if (value > min) {
-      setValue(value - 1);
       onChange(value - 1);
     }
   };
 
   const handleIncrement = () => {
     if (value < max) {
-      setValue(value + 1);
       onChange(value + 1);
     }
   };
