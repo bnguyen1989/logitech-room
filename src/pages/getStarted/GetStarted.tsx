@@ -1,10 +1,10 @@
 import React from "react";
 import s from "./GetStarted.module.scss";
-import BannerImage from "../../../assets/images/getStarted/banner.png";
-import { Button } from "../../../components/Buttons/Button/Button";
+import BannerImage from "../../assets/images/getStarted/banner.png";
+import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from 'react-redux'
-import { changeActiveStep } from '../../../store/slices/ui/Ui.slice'
-import { getInitStepData } from '../../../store/slices/ui/utils'
+import { changeActiveStep } from '../../store/slices/ui/Ui.slice'
+import { getInitStepData } from '../../store/slices/ui/utils'
 
 export const GetStarted: React.FC = () => {
 	const dispatch = useDispatch();
