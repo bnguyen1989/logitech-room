@@ -1,6 +1,6 @@
 .container {
 	display: grid;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 65% 35%;
 	height: 100%;
 	width: 100%;
 
@@ -10,11 +10,22 @@
 	}
 
 	.form {
-		width: 100%;
-		height: 100%;
-
-		background-color: #971717;
+		padding: 20px 20px;
+		overflow-y: scroll;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
 	}
+
+	.form::-webkit-scrollbar {
+    width: 12px;
+    height: 100px;
+  }
+
+  .form::-webkit-scrollbar-thumb {
+    background-color: #E1E2E3;
+    border-radius: 50px;
+  }
 	
 
 }

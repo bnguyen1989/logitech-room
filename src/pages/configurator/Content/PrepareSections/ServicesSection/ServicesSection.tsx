@@ -1,4 +1,4 @@
-import { CardContainer } from "../../../../../components/CardContainer/CardContainer";
+import { CardContainer } from "../../../../../components/Cards/CardContainer/CardContainer";
 import s from "./ServicesSection.module.scss";
 import ImageAppliance from "../../../../../assets/images/services/appliance.jpg";
 import ImagePCBased from "../../../../../assets/images/services/pc_baced.jpg";

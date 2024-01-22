@@ -5,7 +5,7 @@ import ImageSmall from "../../../../../assets/images/rooms/small.jpg";
 import ImageMedium from "../../../../../assets/images/rooms/medium.jpg";
 import ImageLarge from "../../../../../assets/images/rooms/large.jpg";
 import ImageAuditorium from "../../../../../assets/images/rooms/auditorium.jpg";
-import { CardContainer } from "../../../../../components/CardContainer/CardContainer";
+import { CardContainer } from "../../../../../components/Cards/CardContainer/CardContainer";
 import s from "./RoomSection.module.scss";
 
 const dataRooms: Array<DataRoomI> = [

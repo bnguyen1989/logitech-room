@@ -1,0 +1,1 @@
+export { InformationSVG } from './Information.tsx';

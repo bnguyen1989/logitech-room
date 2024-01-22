@@ -1,4 +1,4 @@
-import { CardContainer } from "../../../../../components/CardContainer/CardContainer";
+import { CardContainer } from "../../../../../components/Cards/CardContainer/CardContainer";
 import s from "./PlatformSection.module.scss";
 import LogoMS from "../../../../../assets/images/platform/microsoft.jpg";
 import LogoGoogle from "../../../../../assets/images/platform/google.jpg";
