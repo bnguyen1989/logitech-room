@@ -1,0 +1,121 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .image {
+    & img {
+      max-width: 1100px;
+    }
+  }
+
+  .content {
+    max-width: 790px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .header_title {
+      color: var(--Logitech-Colors-Lila, var(--Color-Brand-Lila, #814efa));
+      text-align: center;
+
+      /* Eyebrow text */
+      font-family: BrownPro;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 20px; /* 125% */
+      text-transform: uppercase;
+    }
+
+    .title {
+      color: #000;
+      text-align: center;
+
+      /* H1 Heading */
+      font-family: BrownPro;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 40px; /* 111.111% */
+      letter-spacing: -0.36px;
+    }
+    .description {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+
+      .block_1 {
+        text-align: start;
+        max-width: 345px;
+        color: var(--Logitech-Colors-Kohle, #2f3132);
+
+        /* Caption/Light */
+        font-family: "Brown Logitech Pan";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 18px; /* 128.571% */
+      }
+
+      .block_2 {
+        text-align: start;
+        max-width: 345px;
+        .block_2_title {
+          color: var(--Logitech-Colors-Kohle, #2f3132);
+          font-family: "Brown Logitech Pan";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 18px; /* 128.571% */
+        }
+
+        .block_2_list {
+          color: var(--Logitech-Colors-Kohle, #2f3132);
+
+          /* Caption/Light */
+          font-family: "Brown Logitech Pan";
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 300;
+          line-height: 18px;
+        }
+      }
+
+      .divider {
+        width: 1px;
+        height: 81px;
+        background-color: #c3c6c8;
+      }
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-height: 1000px) {
+  .container {
+    .image {
+      & img {
+        max-width: 950px;
+      }
+    }
+
+    .content {
+      gap: 20px;
+
+      .header_title {
+        font-size: 14px;
+      }
+
+      .title {
+        font-size: 28px;
+      }
+    }
+  }
+
+}
