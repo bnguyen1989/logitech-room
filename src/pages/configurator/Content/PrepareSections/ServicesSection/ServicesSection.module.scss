@@ -16,24 +16,20 @@
     .title {
       color: #000;
       text-align: center;
-      font-family: BrownPro;
       font-size: 18px;
       font-style: normal;
       font-weight: 700;
-      line-height: 24px; /* 133.333% */
+      line-height: 24px;
     }
 
 		.subtitle {
 			max-width: 350px;
-      color: var(--Logitech-Colors-Cemento, #697172);
+      color: #697172;
       text-align: center;
-
-      /* Body 2/Light */
-      font-family: "Brown Logitech Pan";
       font-size: 16px;
       font-style: normal;
       font-weight: 300;
-      line-height: 22px; /* 137.5% */
+      line-height: 22px;
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ConfiguratorPlayer } from '../../../../../components/configuratorPlayer/ConfiguratorPlayer'
+import { Player } from '../../../../../components/Player/Player'
 import s from './ContainerSection.module.scss';
 
 interface PropsI {
@@ -10,7 +10,7 @@ export const ContainerSection: React.FC<PropsI> = (props) => {
 		<div className={s.container}>
 
 			<div className={s.player}>
-				<ConfiguratorPlayer />
+				<Player />
 			</div>
 			<div className={s.form}>
 				{children}

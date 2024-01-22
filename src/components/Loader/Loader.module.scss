@@ -21,13 +21,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
 
-    color: #2f3132;
+    color: var(--main-color-text);
     text-align: center;
-    font-family: BrownPro;
     font-size: 18px;
     font-style: normal;
     font-weight: 700;
-    line-height: 30px; /* 166.667% */
+    line-height: 30px;
   }
 }
 

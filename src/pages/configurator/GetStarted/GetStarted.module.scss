@@ -15,28 +15,22 @@
     gap: 30px;
 
     .header_title {
-      color: var(--Logitech-Colors-Lila, var(--Color-Brand-Lila, #814efa));
+      color: var(--main-color-block);
       text-align: center;
-
-      /* Eyebrow text */
-      font-family: BrownPro;
       font-size: 16px;
       font-style: normal;
       font-weight: 700;
-      line-height: 20px; /* 125% */
+      line-height: 20px;
       text-transform: uppercase;
     }
 
     .title {
       color: #000;
       text-align: center;
-
-      /* H1 Heading */
-      font-family: BrownPro;
       font-size: 36px;
       font-style: normal;
       font-weight: 700;
-      line-height: 40px; /* 111.111% */
+      line-height: 40px;
       letter-spacing: -0.36px;
     }
     .description {
@@ -48,37 +42,26 @@
       .block_1 {
         text-align: start;
         max-width: 345px;
-        color: var(--Logitech-Colors-Kohle, #2f3132);
-
-        /* Caption/Light */
-        font-family: "Brown Logitech Pan";
+        color: var(--main-color-text);
         font-size: 14px;
         font-style: normal;
         font-weight: 300;
-        line-height: 18px; /* 128.571% */
+        line-height: 18px;
       }
 
       .block_2 {
         text-align: start;
         max-width: 345px;
+        color: var(--main-color-text);
+        font-size: 14px;
+        font-style: normal;
+        line-height: 18px;
         .block_2_title {
-          color: var(--Logitech-Colors-Kohle, #2f3132);
-          font-family: "Brown Logitech Pan";
-          font-size: 14px;
-          font-style: normal;
           font-weight: 700;
-          line-height: 18px; /* 128.571% */
         }
 
         .block_2_list {
-          color: var(--Logitech-Colors-Kohle, #2f3132);
-
-          /* Caption/Light */
-          font-family: "Brown Logitech Pan";
-          font-size: 14px;
-          font-style: normal;
           font-weight: 300;
-          line-height: 18px;
         }
       }
 

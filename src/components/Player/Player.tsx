@@ -1,4 +1,4 @@
-import s from './ConfiguratorPlayer.module.scss';
+import s from './Player.module.scss';
 import { OrbitControls } from '@react-three/drei';
 import {
   AssetWithSuspense,
@@ -19,7 +19,7 @@ export const bhoustonAuth = {
 
 const assetId = '32ba8c20-d54a-46d2-a0bb-0339c71e7dc6'; // product
 
-export const ConfiguratorPlayer: React.FC = () => {
+export const Player: React.FC = () => {
   return (
     <div className={s.container}>
       <Head>
