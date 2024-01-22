@@ -1,12 +1,7 @@
-import './App.css'
-import { Configurator } from './pages/configurator/Configurator'
-import { ConfiguratorPlayer } from './pages/configuratorPlayer/ConfiguratorPlayer'
+import { Configurator } from "./pages/configurator/Configurator";
 
 function App() {
-  return (
-    // <Configurator />
-    <ConfiguratorPlayer />
-  )
+  return <Configurator />;
 }
 
-export default App
+export default App;

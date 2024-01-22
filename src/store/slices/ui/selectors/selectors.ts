@@ -13,3 +13,5 @@ export const getNavigationStepData = (state: RootState) => {
 		nextStep: stepData[currentStepIndex + 1]
 	}
 }
+
+export const getIsBuilding = (state: RootState) => state.ui.isBuilding;

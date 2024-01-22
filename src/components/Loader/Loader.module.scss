@@ -1,0 +1,38 @@
+.container {
+  width: 400px;
+  height: 400px;
+  position: relative;
+
+  .loader {
+    width: 400px;
+    height: 400px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 4px solid #c3c6c8;
+    border-right-color: var(--main-color-block);
+    border-top-color: var(--main-color-block);
+    border-bottom-color: var(--main-color-block);
+    animation: l2 2s infinite linear;
+  }
+
+  .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: #2f3132;
+    text-align: center;
+    font-family: BrownPro;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 166.667% */
+  }
+}
+
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
+}

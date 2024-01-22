@@ -1,6 +1,7 @@
-import { PlatformSection } from '../../../pages/configurator/Content/Sections/PlatformSection/PlatformSection'
-import { RoomSection } from '../../../pages/configurator/Content/Sections/RoomSection/RoomSection'
-import { ServicesSection } from '../../../pages/configurator/Content/Sections/ServicesSection/ServicesSection'
+import { ConfirenceSection } from '../../../pages/configurator/Content/ConfiguratorSections/ConfirenceSection/ConfirenceSection'
+import { PlatformSection } from '../../../pages/configurator/Content/PrepareSections/PlatformSection/PlatformSection'
+import { RoomSection } from '../../../pages/configurator/Content/PrepareSections/RoomSection/RoomSection'
+import { ServicesSection } from '../../../pages/configurator/Content/PrepareSections/ServicesSection/ServicesSection'
 import { StepI } from './type'
 
 
@@ -28,6 +29,7 @@ export const getInitStepData = (): Array<StepI> => {
 			name: 'Conference Camera',
 			title: 'Choose your conference camera.',
 			subtitle: 'These recommendations are based on your previous answers.',
+			component: ConfirenceSection
 		},
 		{ 
 			name: 'Audio Extensions & Accessories',

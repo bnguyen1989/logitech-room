@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./GetStarted.module.scss";
-import BannerImage from "../../../assets/images/getStarted/banner.jpg";
+import BannerImage from "../../../assets/images/getStarted/banner.png";
 import { Button } from "../../../components/Buttons/Button/Button";
 import { useDispatch } from 'react-redux'
 import { changeActiveStep } from '../../../store/slices/ui/Ui.slice'
@@ -18,6 +18,7 @@ export const GetStarted: React.FC = () => {
       </div>
 
       <div className={s.content}>
+        <div className={s.header_title}>TAKE THE GUESSWORK OUT OF YOUR VIDEO CONFERENCING SETUP</div>
         <div className={s.title}>
           Configure the perfect video collaboration setup for any meeting room
         </div>

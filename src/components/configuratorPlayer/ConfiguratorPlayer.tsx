@@ -1,3 +1,4 @@
+import s from './ConfiguratorPlayer.module.scss';
 import { OrbitControls } from '@react-three/drei';
 import {
   AssetWithSuspense,
@@ -8,7 +9,7 @@ import {
 import type React from 'react';
 import { Helmet as Head } from 'react-helmet';
 
-import Geoff2Stage from '../../components/stages/Geoff2Stage.tsx';
+import Geoff2Stage from '../stages/Geoff2Stage.tsx';
 
 export const bhoustonAuth = {
   host: 'preview.threekit.com',
@@ -20,7 +21,7 @@ const assetId = '32ba8c20-d54a-46d2-a0bb-0339c71e7dc6'; // product
 
 export const ConfiguratorPlayer: React.FC = () => {
   return (
-    <>
+    <div className={s.container}>
       <Head>
         <title>{`Logitech`}</title>
       </Head>
@@ -51,6 +52,6 @@ export const ConfiguratorPlayer: React.FC = () => {
           />
         </>
       </Viewer>
-    </>
+    </div>
   );
 };
