@@ -1,10 +1,36 @@
+
+
+@font-face {
+  font-family: "BrownPro";
+  src: url("./fonts/BrownProBold.otf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "BrownPro";
+  src: url("./fonts/BrownProItalic.otf");
+  font-weight: italic;
+}
+@font-face {
+  font-family: "BrownPro";
+  src: url("./fonts/BrownProMedium.otf");
+  font-weight: medium;
+}
+@font-face {
+  font-family: "BrownPro";
+  src: url("./fonts/BrownProRegular.otf");
+  font-weight: normal;
+}
+
+
 :root {
   --main-color-block: #814EFA;
+  --main-color-text: #2f3132;
 }
 
 
 body {
   margin: 0;
- padding: 0;
- background-color: #F4F4F4;
+  padding: 0;
+  background-color: #F4F4F4;
+  font-family: BrownPro;
 }

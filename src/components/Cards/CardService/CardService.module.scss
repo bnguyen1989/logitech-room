@@ -1,0 +1,34 @@
+.container {
+	.image {
+    & img {
+      height: 225px;
+    }
+  }
+
+  .text {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 7px;
+    
+   
+    .title {
+      color: #000;
+      text-align: center;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+    }
+
+		.subtitle {
+			max-width: 350px;
+      color: #697172;
+      text-align: center;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 22px;
+    }
+  }
+}
