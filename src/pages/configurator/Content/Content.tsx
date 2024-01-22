@@ -2,7 +2,6 @@ import s from "./Content.module.scss";
 import { Button } from "../../../components/Buttons/Button/Button";
 import { useAppSelector } from "../../../hooks/redux";
 import {
-  getActiveStep,
   getIsBuilding,
   getNavigationStepData,
 } from "../../../store/slices/ui/selectors/selectors";
@@ -10,11 +9,11 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { changeActiveStep, changeStatusBuilding } from "../../../store/slices/ui/Ui.slice";
 import { Loader } from '../../../components/Loader/Loader'
+import { PrepareSection } from './PrepareSections/PrepareSection'
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
   const dispatch = useDispatch();
-  const activeStep = useAppSelector(getActiveStep);
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
 	const isBuilding = useAppSelector(getIsBuilding);
 
@@ -53,9 +52,7 @@ export const Content: React.FC<PropsI> = () => {
   return (
     <div className={s.container}>
       <div className={s.content}>
-        {activeStep?.component
-          ? React.createElement(activeStep.component)
-          : null}
+        <PrepareSection />
       </div>
 
       <div className={s.actions}>

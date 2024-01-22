@@ -3,13 +3,12 @@ import s from "./GetStarted.module.scss";
 import BannerImage from "../../assets/images/getStarted/banner.png";
 import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from 'react-redux'
-import { changeActiveStep } from '../../store/slices/ui/Ui.slice'
-import { getInitStepData } from '../../store/slices/ui/utils'
+import { moveToStartStep } from '../../store/slices/ui/Ui.slice'
 
 export const GetStarted: React.FC = () => {
 	const dispatch = useDispatch();
 	const handleClick = () => {
-		dispatch(changeActiveStep(getInitStepData()[0]))
+		dispatch(moveToStartStep());
 	};
   return (
     <div className={s.container}>

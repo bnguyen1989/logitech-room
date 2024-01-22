@@ -1,9 +1,5 @@
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .image {
+	.image {
     & img {
       width: 160px;
 			height: 120px;

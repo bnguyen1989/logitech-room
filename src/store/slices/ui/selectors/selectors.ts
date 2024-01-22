@@ -6,11 +6,13 @@ export const getActiveStep = (state: RootState) => state.ui.activeStep;
 export const getNavigationStepData = (state: RootState) => {
 	const { stepData, activeStep } = state.ui;
 
-	const currentStepIndex = stepData.findIndex(step => step.title === activeStep?.title);
+	const listStepData = Object.values(stepData);
+
+	const currentStepIndex = listStepData.findIndex(step => step.title === activeStep?.title);
 
 	return {
-		prevStep: stepData[currentStepIndex - 1],
-		nextStep: stepData[currentStepIndex + 1]
+		prevStep: listStepData[currentStepIndex - 1],
+		nextStep: listStepData[currentStepIndex + 1]
 	}
 }
 
