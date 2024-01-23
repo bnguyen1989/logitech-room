@@ -18,7 +18,11 @@ import ImageLarge from "../../../assets/images/rooms/large.jpg";
 import ImageAuditorium from "../../../assets/images/rooms/auditorium.jpg";
 import ImageAppliance from "../../../assets/images/services/appliance.jpg";
 import ImagePCBased from "../../../assets/images/services/pc_baced.jpg";
+import CameraImg from "../../../assets/images/items/camera.jpg";
 import MicImg from "../../../assets/images/items/mic.jpg";
+import ControllerImg from "../../../assets/images/items/controller.jpg";
+import AccessImg from "../../../assets/images/items/access.jpg";
+import ServiceImg from "../../../assets/images/items/service.jpg";
 
 
 export const getInitStepData = (): StepDataI => {
@@ -51,7 +55,7 @@ export const getInitStepData = (): StepDataI => {
       name: "Conference Camera",
       title: "Choose your conference camera.",
       subtitle: "These recommendations are based on your previous answers.",
-      cards: getItemsCardData(),
+      cards: getConferenceCameraCardData(),
     },
     [StepName.AudioExtensions]: {
       key: StepName.AudioExtensions,
@@ -59,7 +63,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Add room-filling audio.",
       subtitle:
         "Choose from the following audio extensions to make sure everyone can hear and be heard clearly. ",
-      cards: getItemsCardData(),
+      cards: getAudioExtensionsCardData(),
     },
     [StepName.MeetingController]: {
       key: StepName.MeetingController,
@@ -67,7 +71,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Choose your meeting controller.",
       subtitle:
         "Select a controller that directly connects to the meeting room PC or video bar, or one that is untethered from the room system.",
-      cards: getItemsCardData(),
+      cards: getMeetingControllerCardData(),
     },
     [StepName.VideoAccessories]: {
       key: StepName.VideoAccessories,
@@ -75,7 +79,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Pick your video conferencing accessories.",
       subtitle:
         "Add features and flexibility with these video conferencing accessories.",
-      cards: getItemsCardData(),
+      cards: getVideoAccessoriesCardData(),
     },
     [StepName.SoftwareServices]: {
       key: StepName.SoftwareServices,
@@ -83,7 +87,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Let’s finish up by selecting your software and services.",
       subtitle:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      cards: getItemsCardData(),
+      cards: getSoftwareServicesCardData(),
     },
   };
 };
@@ -171,10 +175,81 @@ function getServicesCardData(): Array<ServiceCardI> {
   ];
 }
 
-function getItemsCardData(): Array<ItemCardI> {
+function getConferenceCameraCardData(): Array<ItemCardI> {
   return [
     {
       key: StepName.ConferenceCamera,
+      image: CameraImg,
+      header_title: 'Rally Bar',
+      title: "Video Bar for Medium-Large Rooms",
+      color: {
+        currentColor: {
+          name: "Graphite",
+          value: "#434446",
+        },
+        colors: [
+          {
+            name: "Graphite",
+            value: "#434446",
+          },
+          {
+            name: "White",
+            value: "#FBFBFB",
+          },
+        ],
+      },
+    },
+    {
+      key: StepName.ConferenceCamera,
+      image: CameraImg,
+      header_title: 'Rally Bar Mini',
+      title: "Video Bar for Small-Medium Rooms",
+      color: {
+        currentColor: {
+          name: "Graphite",
+          value: "#434446",
+        },
+        colors: [
+          {
+            name: "Graphite",
+            value: "#434446",
+          },
+          {
+            name: "White",
+            value: "#FBFBFB",
+          },
+        ],
+      },
+    },
+    {
+      key: StepName.ConferenceCamera,
+      image: CameraImg,
+      header_title: 'Rally Bar Huddle',
+      title: "Video Bar for Huddle-Small Rooms",
+      color: {
+        currentColor: {
+          name: "Graphite",
+          value: "#434446",
+        },
+        colors: [
+          {
+            name: "Graphite",
+            value: "#434446",
+          },
+          {
+            name: "White",
+            value: "#FBFBFB",
+          },
+        ],
+      },
+    },
+  ]
+}
+
+function getAudioExtensionsCardData(): Array<ItemCardI> {
+  return [
+    {
+      key: StepName.AudioExtensions,
       image: MicImg,
       header_title: 'Rally Mic Pod',
       title: "Modular Mics with RightSound",
@@ -201,17 +276,98 @@ function getItemsCardData(): Array<ItemCardI> {
       },
     },
     {
-      key: StepName.ConferenceCamera,
+      key: StepName.AudioExtensions,
       image: MicImg,
       header_title: 'Mic Pod Mount',
       title: "Table mount for Rally Mic Pod",
     },
     {
-      key: StepName.ConferenceCamera,
+      key: StepName.AudioExtensions,
       image: MicImg,
       header_title: 'Rally Mic Pod Hub',
       title: "Customize microphone placement",
       subtitle: '3 ports'
     },
+  ]
+}
+
+function getMeetingControllerCardData(): Array<ItemCardI> {
+  return [
+    {
+      key: StepName.MeetingController,
+      image: ControllerImg,
+      header_title: 'LOGITECH TAP',
+      title: "USB over Cat5e",
+      subtitle: 'Minimum (1)',
+    },
+    {
+      key: StepName.MeetingController,
+      image: ControllerImg,
+      header_title: 'TAP IP',
+      title: "Ethernet or WiFi",
+      subtitle: 'Minimum (1)',
+    },
+    {
+      key: StepName.MeetingController,
+      image: ControllerImg,
+      header_title: 'LOGITECH TAP SCHEDULER',
+      title: "Room scheduling panel",
+      color: {
+        currentColor: {
+          name: "Graphite",
+          value: "#434446",
+        },
+        colors: [
+          {
+            name: "Graphite",
+            value: "#434446",
+          },
+          {
+            name: "White",
+            value: "#FBFBFB",
+          },
+        ],
+      },
+    },
+  ]
+}
+
+function getVideoAccessoriesCardData(): Array<ItemCardI> {
+  return [
+    {
+      key: StepName.VideoAccessories,
+      image: AccessImg,
+      header_title: 'WALL MOUNT',
+      title: "VESA-compatible mounting kit for Video Bars",
+    },
+    {
+      key: StepName.VideoAccessories,
+      image: AccessImg,
+      header_title: 'TV Mount',
+      title: "TV Mount for Video Bars",
+    },
+    {
+      key: StepName.VideoAccessories,
+      image: AccessImg,
+      header_title: 'RALLY MIC POD EXTENSION CABLE',
+      title: "10 meter (32.8 ft) extension cable",
+    },
+  ]
+}
+
+function getSoftwareServicesCardData(): Array<ItemCardI> {
+  return [
+    {
+      key: StepName.SoftwareServices,
+      image: ServiceImg,
+      header_title: 'LOGITECH SYNC',
+      title: "Device Management Software",
+    },
+    {
+      key: StepName.SoftwareServices,
+      image: ServiceImg,
+      header_title: 'LOGITECH SELECT',
+      title: "24/7 Enterprise-Grade Support",
+    }
   ]
 }

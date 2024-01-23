@@ -61,29 +61,15 @@ export type Geoff2StageProps = {
 };
 
 const Geoff2Stage: React.FC<Geoff2StageProps> = ({
-  altitude,
-  azimuth,
-  zoom,
   children
 }) => {
-  const [radius, setRadius] = useState<number>(2.0);
+  const [radius] = useState<number>(2.0);
   const adjustCamera = 1.4;
 
-  const { gl, scene } = useThree();
+  const { gl } = useThree();
 
   gl.toneMappingExposure = controls.toneMapping.exposure;
 
-  const mapNames = [
-    'map',
-    'bumpMap',
-    'sheenColorMap',
-    'sheenRoughnessMap',
-    'roughnessMap',
-    'specularColorMap',
-    'specularIntensityMap',
-    'normalMap',
-    'emissiveMap'
-  ];
 
   const shadowBias = -0.002;
   return (
@@ -123,7 +109,6 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
           fit={!!adjustCamera}
           clip={!!adjustCamera}
           margin={Number(adjustCamera)}
-          damping={100}
           observe
         >
           <Refit radius={radius} adjustCamera={adjustCamera} />
