@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-top: 30px;
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    .title_text {
+      color: #000;
+      text-align: center;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 40px;
+      letter-spacing: -0.36px;
+    }
+
+    .sub_title_text {
+      color: var(--main-color-text);
+      text-align: center;
+
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 22px;
+    }
+  }
+}
