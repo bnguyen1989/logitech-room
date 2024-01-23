@@ -25,5 +25,3 @@ export const getIsConfiguratorStep = (state: RootState) => {
 
 	return !['Choose Platform', 'Room Size', 'Lorem Services'].includes(activeStep.name);
 }
-
-export const getIsBuilding = (state: RootState) => state.ui.isBuilding;

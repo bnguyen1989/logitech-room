@@ -4,13 +4,11 @@ import { getInitStepData } from './utils'
 interface UIStateI {
 	stepData: StepDataI;
 	activeStep: StepI<StepCardType> | null;
-	isBuilding: boolean;
 }
 
 const initialState: UIStateI = {
 	stepData: getInitStepData(),
 	activeStep: null,
-	isBuilding: false 
 };
 
 const uiSlice = createSlice({
@@ -39,11 +37,8 @@ const uiSlice = createSlice({
 				}
 			}
 		},
-		changeStatusBuilding: (state, action: PayloadAction<boolean>) => {
-			state.isBuilding = action.payload
-		}
   },
 });
 
-export const { changeActiveStep, moveToStartStep, changeActiveCard, changeStatusBuilding, changeValueCard } = uiSlice.actions;
+export const { changeActiveStep, moveToStartStep, changeActiveCard, changeValueCard } = uiSlice.actions;
 export default uiSlice.reducer;
