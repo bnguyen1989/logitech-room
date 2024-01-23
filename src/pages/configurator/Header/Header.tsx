@@ -1,8 +1,8 @@
 import { NavigationMenu } from "../../../components/NavigationMenu/NavigationMenu";
 import { useAppSelector } from "../../../hooks/redux";
+import { getIsBuilding } from '../../../store/slices/configurator/selectors/selectors'
 import {
   getActiveStep,
-  getIsBuilding,
 } from "../../../store/slices/ui/selectors/selectors";
 import s from "./Header.module.scss";
 

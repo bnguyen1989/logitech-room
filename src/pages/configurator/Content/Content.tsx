@@ -2,15 +2,16 @@ import s from "./Content.module.scss";
 import { Button } from "../../../components/Buttons/Button/Button";
 import { useAppSelector } from "../../../hooks/redux";
 import {
-  getIsBuilding,
   getNavigationStepData,
 } from "../../../store/slices/ui/selectors/selectors";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { changeActiveStep, changeStatusBuilding } from "../../../store/slices/ui/Ui.slice";
+import { changeActiveStep } from "../../../store/slices/ui/Ui.slice";
 import { Loader } from '../../../components/Loader/Loader'
 import { PrepareSection } from './PrepareSections/PrepareSection'
 import { ConfiguratorSection } from './ConfiguratorSections/ConfiguratorSection'
+import { getIsBuilding } from '../../../store/slices/configurator/selectors/selectors'
+import { changeStatusBuilding } from '../../../store/slices/configurator/Configurator.slice'
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
