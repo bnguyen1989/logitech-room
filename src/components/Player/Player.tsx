@@ -10,6 +10,7 @@ import type React from 'react';
 import { Helmet as Head } from 'react-helmet';
 
 import Geoff2Stage from '../stages/Geoff2Stage.tsx';
+import { Room } from '../Assets/Room.tsx';
 
 export const bhoustonAuth = {
   host: 'preview.threekit.com',
@@ -33,7 +34,7 @@ export const Player: React.FC = () => {
       >
         <>
           <Geoff2Stage>
-            <AssetWithSuspense assetId={assetId} configuration={{}} />
+            <Room roomAssetId={assetId} attachNodeNameToAssetId={{}} />
           </Geoff2Stage>
           <OrbitControls
             autoRotate={false}
