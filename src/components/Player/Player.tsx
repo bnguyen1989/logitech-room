@@ -1,7 +1,6 @@
 import s from './Player.module.scss';
 import { OrbitControls } from '@react-three/drei';
 import {
-  AssetWithSuspense,
   ExporterResolver,
   OptimizeResolverWrapper,
   Viewer
