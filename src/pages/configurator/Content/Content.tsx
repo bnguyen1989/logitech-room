@@ -16,6 +16,7 @@ import { getIsBuilding } from "../../../store/slices/configurator/selectors/sele
 import { changeStatusBuilding } from "../../../store/slices/configurator/Configurator.slice";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { RevertSVG } from "../../../assets";
+import { setMySetupModal } from '../../../store/slices/modals/Modals.slice'
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
@@ -26,7 +27,10 @@ export const Content: React.FC<PropsI> = () => {
   const isStepConfigurator = useAppSelector(getIsConfiguratorStep);
 
   const handleNext = () => {
-    if (!nextStep) return;
+    if (!nextStep) {
+      dispatch(setMySetupModal({ isOpen: true }));
+      return;
+    }
     const isConferenceCamera = nextStep.name
       .toLocaleLowerCase()
       .includes("conference camera");
@@ -79,7 +83,7 @@ export const Content: React.FC<PropsI> = () => {
         <Button onClick={handleBack} text="Back" />
         <Button
           onClick={handleNext}
-          text="Next"
+          text={nextStep ? "Next" : 'Finish'}
           variant="contained"
           disabled={!activeStep?.currentCard && !isStepConfigurator}
         />
