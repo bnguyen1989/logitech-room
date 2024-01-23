@@ -15,7 +15,7 @@ const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-		changeActiveStep: (state, action: PayloadAction<StepI<never> | null>) => {
+		changeActiveStep: (state, action: PayloadAction<StepI<StepCardType> | null>) => {
 			state.activeStep = action.payload
 		},
 		moveToStartStep: (state) => {

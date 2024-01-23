@@ -24,6 +24,7 @@ export interface StepDataI {
 }
 
 export interface StepI<CI> {
+	key: StepName;
 	name: string;
 	title: string;
 	subtitle: string;
