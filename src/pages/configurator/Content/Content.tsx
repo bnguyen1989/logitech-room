@@ -14,6 +14,8 @@ import { PrepareSection } from "./PrepareSections/PrepareSection";
 import { ConfiguratorSection } from "./ConfiguratorSections/ConfiguratorSection";
 import { getIsBuilding } from "../../../store/slices/configurator/selectors/selectors";
 import { changeStatusBuilding } from "../../../store/slices/configurator/Configurator.slice";
+import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
+import { RevertSVG } from "../../../assets";
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
@@ -47,6 +49,10 @@ export const Content: React.FC<PropsI> = () => {
     dispatch(changeActiveStep(prevStep));
   };
 
+  const handleRevert = () => {
+    dispatch(changeActiveStep(null));
+  }
+
   if (isBuilding) {
     return (
       <div className={s.container}>
@@ -65,6 +71,11 @@ export const Content: React.FC<PropsI> = () => {
       </div>
 
       <div className={s.actions}>
+        {!nextStep && (
+          <IconButton text={"Start over"} onClick={handleRevert}>
+            <RevertSVG />
+          </IconButton>
+        )}
         <Button onClick={handleBack} text="Back" />
         <Button
           onClick={handleNext}

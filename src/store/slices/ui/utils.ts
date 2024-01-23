@@ -24,6 +24,7 @@ import MicImg from "../../../assets/images/items/mic.jpg";
 export const getInitStepData = (): StepDataI => {
   return {
     [StepName.Platform]: {
+      key: StepName.Platform,
       name: "Choose Platform",
       title: "What is your primary video conferencing platform?",
       subtitle:
@@ -31,6 +32,7 @@ export const getInitStepData = (): StepDataI => {
       cards: getPlatformCardData(),
     },
     [StepName.RoomSize]: {
+      key: StepName.RoomSize,
       name: "Room Size",
       title: "How many seats are in the space?",
       subtitle:
@@ -38,18 +40,21 @@ export const getInitStepData = (): StepDataI => {
       cards: getRoomCardData(),
     },
     [StepName.Services]: {
+      key: StepName.Services,
       name: "Lorem Services",
       title: "Lorem ipsum dolor sit amet adipiscing elit?",
       subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
       cards: getServicesCardData(),
     },
     [StepName.ConferenceCamera]: {
+      key: StepName.ConferenceCamera,
       name: "Conference Camera",
       title: "Choose your conference camera.",
       subtitle: "These recommendations are based on your previous answers.",
       cards: getItemsCardData(),
     },
     [StepName.AudioExtensions]: {
+      key: StepName.AudioExtensions,
       name: "Audio Extensions & Accessories",
       title: "Add room-filling audio.",
       subtitle:
@@ -57,6 +62,7 @@ export const getInitStepData = (): StepDataI => {
       cards: getItemsCardData(),
     },
     [StepName.MeetingController]: {
+      key: StepName.MeetingController,
       name: "Meeting Controller & Add On",
       title: "Choose your meeting controller.",
       subtitle:
@@ -64,6 +70,7 @@ export const getInitStepData = (): StepDataI => {
       cards: getItemsCardData(),
     },
     [StepName.VideoAccessories]: {
+      key: StepName.VideoAccessories,
       name: "Video Accessories",
       title: "Pick your video conferencing accessories.",
       subtitle:
@@ -71,6 +78,7 @@ export const getInitStepData = (): StepDataI => {
       cards: getItemsCardData(),
     },
     [StepName.SoftwareServices]: {
+      key: StepName.SoftwareServices,
       name: "Software & Services",
       title: "Let’s finish up by selecting your software and services.",
       subtitle:

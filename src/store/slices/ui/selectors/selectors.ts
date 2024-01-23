@@ -1,4 +1,5 @@
 import { RootState } from '../../../'
+import { StepName } from '../type'
 
 export const getStepData = (state: RootState) => state.ui.stepData;
 export const getActiveStep = (state: RootState) => state.ui.activeStep;
@@ -23,5 +24,5 @@ export const getIsConfiguratorStep = (state: RootState) => {
 		return false;
 	}
 
-	return !['Choose Platform', 'Room Size', 'Lorem Services'].includes(activeStep.name);
+	return ![StepName.Platform, StepName.RoomSize, StepName.Services].includes(activeStep.key);
 }
