@@ -12,4 +12,4 @@ RUN npm install
 
 RUN npm run build && cd server && npm install && npm run build
 
-CMD [ "yarn", "start-server" ]
+CMD [ "npm", "run", "start-server" ]
