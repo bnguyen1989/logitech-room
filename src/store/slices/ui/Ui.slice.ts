@@ -8,7 +8,7 @@ interface UIStateI {
 
 const initialState: UIStateI = {
 	stepData: getInitStepData(),
-	activeStep: getInitStepData()[StepName.ConferenceCamera],
+	activeStep: null,
 };
 
 const uiSlice = createSlice({
