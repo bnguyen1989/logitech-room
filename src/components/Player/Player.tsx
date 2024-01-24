@@ -13,8 +13,8 @@ import { Room } from '../Assets/Room.tsx';
 
 export const bhoustonAuth = {
   host: 'preview.threekit.com',
-  orgId: '9eba6177-9cb1-4224-8e06-4f0d0f7cabbd',
-  publicToken: 'bd3d25a8-51c9-4275-b69b-dae281c42442'
+  orgId: '04015bb6-401d-47f8-97c0-dd6fa759c441',
+  publicToken: 'b107f4dd-51d7-48f7-8fa3-c76dcf663f8a'
 };
 
 const assetId = '32ba8c20-d54a-46d2-a0bb-0339c71e7dc6'; // product
