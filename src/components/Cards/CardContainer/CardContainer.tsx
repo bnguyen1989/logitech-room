@@ -7,9 +7,19 @@ interface PropsI {
   disabled?: boolean;
   recommended?: boolean;
   style?: React.CSSProperties;
+  isFullClick?: boolean;
 }
 export const CardContainer: React.FC<PropsI> = (props) => {
-  const { children, active, disabled, onClick, style, recommended } = props;
+  const { children, active, disabled, onClick, style, recommended, isFullClick } = props;
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isFullClick) {
+      e.stopPropagation();
+      return;
+    }
+    onClick();
+  }
+
   return (
     <div
       className={`
@@ -23,7 +33,7 @@ export const CardContainer: React.FC<PropsI> = (props) => {
         className={`${s.button} ${active ? s.button_active : ""}`}
         onClick={onClick}
       ></button>
-      <div className={s.wrapper}>{children}</div>
+      <div onClick={handleClick} className={s.wrapper}>{children}</div>
       {recommended && (
         <div className={s.recommended}>
           <div className={s.text}>recommended</div>

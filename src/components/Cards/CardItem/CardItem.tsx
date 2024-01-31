@@ -40,13 +40,13 @@ export const CardItem: React.FC<PropsI> = (props) => {
       active={active}
     >
       <div className={s.container}>
-        <div className={s.left_content}>
+        <div className={s.left_content} onClick={onClick}>
           <div className={s.image}>
             <img src={data.image} alt="item" />
           </div>
         </div>
         <div className={s.right_content}>
-          <div className={s.header}>
+          <div className={s.header} onClick={onClick}>
             <div className={s.header_title}>{data.header_title}</div>
             <div className={s.title}>{data.title}</div>
             {!!data.subtitle && (
