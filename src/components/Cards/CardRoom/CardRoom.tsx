@@ -5,13 +5,18 @@ import s from "./CardRoom.module.scss";
 interface PropsI {
   data: RoomCardI;
   onClick: () => void;
-	active?: boolean;
+  active?: boolean;
   disabled?: boolean;
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { data, onClick, active, disabled } = props;
   return (
-    <CardContainer onClick={onClick} active={active} disabled={disabled}>
+    <CardContainer
+      onClick={onClick}
+      active={active}
+      disabled={disabled}
+      isFullClick
+    >
       <div className={s.container}>
         <div className={s.image}>
           <img src={data.image} alt={data.title} />

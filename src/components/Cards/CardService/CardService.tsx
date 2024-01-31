@@ -5,13 +5,18 @@ import s from "./CardService.module.scss";
 interface PropsI {
   data: ServiceCardI;
   onClick: () => void;
-	active?: boolean;
+  active?: boolean;
   disabled?: boolean;
 }
 export const CardService: React.FC<PropsI> = (props) => {
   const { data, onClick, active, disabled } = props;
   return (
-    <CardContainer onClick={onClick} active={active} disabled={disabled}>
+    <CardContainer
+      onClick={onClick}
+      active={active}
+      disabled={disabled}
+      isFullClick
+    >
       <div className={s.container}>
         <div className={s.image}>
           <img src={data.image} alt="" />
