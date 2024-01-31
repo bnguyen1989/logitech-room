@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./GetStarted.module.scss";
 import BannerImage from "../../assets/images/getStarted/banner.png";
 import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from 'react-redux'
 import { moveToStartStep } from '../../store/slices/ui/Ui.slice'
+import { ConfigData } from '../../utils/threekitUtils'
+import { ThreekitService } from '../../services/Threekit/ThreekitService'
 
 export const GetStarted: React.FC = () => {
 	const dispatch = useDispatch();
 	const handleClick = () => {
 		dispatch(moveToStartStep());
 	};
+
+  useEffect(() => {
+    new ThreekitService().getDataAssetById(ConfigData.assetId).then((res) => {
+      console.log(res);
+    } );
+
+  }, []);
   return (
     <div className={s.container}>
       <div className={s.image}>
