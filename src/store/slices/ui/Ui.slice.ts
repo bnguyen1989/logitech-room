@@ -8,7 +8,7 @@ interface UIStateI {
 
 const initialState: UIStateI = {
 	stepData: getInitStepData(),
-	activeStep: null,
+	activeStep: getInitStepData()[StepName.AudioExtensions],
 };
 
 const uiSlice = createSlice({
