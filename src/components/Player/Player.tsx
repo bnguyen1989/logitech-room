@@ -11,6 +11,8 @@ import { Helmet as Head } from 'react-helmet';
 import Geoff2Stage from '../stages/Geoff2Stage.tsx';
 import { Room } from '../Assets/Room.tsx';
 import { ConfigData } from '../../utils/threekitUtils.ts'
+import { useAppSelector } from '../../hooks/redux.ts'
+import { getConfiguration } from '../../store/slices/configurator/selectors/selectors.ts'
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -21,6 +23,7 @@ export const bhoustonAuth = {
 const assetId = ConfigData.assetId;
 
 export const Player: React.FC = () => {
+  const configuration = useAppSelector(getConfiguration);
   return (
     <div className={s.container}>
       <Head>
@@ -34,7 +37,7 @@ export const Player: React.FC = () => {
       >
         <>
           <Geoff2Stage>
-            <Room roomAssetId={assetId} attachNodeNameToAssetId={{}} />
+            <Room roomAssetId={assetId} attachNodeNameToAssetId={{}} configuration={configuration} />
           </Geoff2Stage>
           <OrbitControls
             autoRotate={false}

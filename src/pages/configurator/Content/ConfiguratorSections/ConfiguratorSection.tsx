@@ -11,12 +11,16 @@ import {
   getIsConfiguratorStep,
 } from "../../../../store/slices/ui/selectors/selectors";
 import {
+  ItemCardI,
   StepCardType,
   StepI,
   StepName,
 } from "../../../../store/slices/ui/type";
 import s from "./ConfiguratorSection.module.scss";
 import { PlayerWidgets } from "../../../../components/PlayerWidgets/PlayerWidgets";
+import { Application } from '../../../../models/Application'
+
+declare const app: Application;
 
 export const ConfiguratorSection: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,6 +34,15 @@ export const ConfiguratorSection: React.FC = () => {
       dispatch(changeActiveCard(undefined));
       return;
     }
+
+    if(card.key === StepName.AudioExtensions) {
+      const assetId = (card as ItemCardI).assetId;
+      if(assetId) {
+        app.addItemConfiguration('Room Mic', assetId);
+      }
+    }
+
+    
     dispatch(changeActiveCard(card));
   };
 

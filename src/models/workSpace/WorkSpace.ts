@@ -1,5 +1,6 @@
 import { Configurator } from "../configurator/Configurator";
 import {
+  AssetI,
   NamePropertiesConfiguratorType,
   ThreekitDataT,
 } from "../configurator/type";
@@ -38,5 +39,26 @@ export class WorkSpace {
   public async setPropertiesConfigurator(configuratorData: ThreekitDataT) {
     console.log("setPropertiesConfigurator", configuratorData);
     //set properties in scene
+  }
+
+  public getAssetById(assetId: string) {
+    let asset: AssetI | null = null;
+    Object.values(this.configurator.threekitData).forEach((item) => {
+      const values = item.values;
+      if (!values) {
+        return;
+      }
+      if(typeof values[0] === 'string') {
+        return;
+      }
+      (values as Array<AssetI>).forEach((value) => {
+        if (value.id === assetId) {
+          asset = value;
+        }
+      });
+      
+    });
+
+    return asset;
   }
 }

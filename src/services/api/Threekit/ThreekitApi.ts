@@ -3,13 +3,13 @@ import { BaseApi } from "../BaseApi";
 
 export class ThreekitApi extends BaseApi {
   private PUBLIC_TOKEN: string;
-  private ORG_ID: string;
+  // private ORG_ID: string;
 
   constructor() {
     const baseUrl = `https://${ConfigData.host}/api/v2`;
     super(baseUrl);
     this.PUBLIC_TOKEN = ConfigData.publicToken;
-    this.ORG_ID = ConfigData.orgId;
+    // this.ORG_ID = ConfigData.orgId;
   }
 
   public async getAssetById(assetId: string) {

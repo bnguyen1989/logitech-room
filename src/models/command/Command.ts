@@ -22,8 +22,6 @@ export abstract class Command {
     this._configurator = configurator;
   }
 
-  public abstract serialize(): object;
-
   public compare(command: Command): boolean {
     return this.id === command.id;
   }

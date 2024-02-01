@@ -9,6 +9,8 @@ export class Configurator {
   public id: string = IdGenerator.generateId();
   private _threekitData: ThreekitDataT = {};
 
+  public static AudioExtensionName = [['Room Mic', 'Qty - Micpod/Expansion']];
+
   public get threekitData(): ThreekitDataT {
     return this._threekitData;
   }
@@ -21,7 +23,10 @@ export class Configurator {
     propertyName: NamePropertiesConfiguratorType,
     value: ConfiguratorDataValueType
   ) {
-    this.threekitData[propertyName] = value;
+    this.threekitData[propertyName] = {
+      ...this.threekitData[propertyName],
+      currentValue: value,
+    };
   }
 
   public getValueByPropertyName(propertyName: NamePropertiesConfiguratorType) {

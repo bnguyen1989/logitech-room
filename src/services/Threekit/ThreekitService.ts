@@ -1,3 +1,4 @@
+import { ConfiguratorDataValueType, ThreekitDataT, ThreekitDataValueType } from '../../models/configurator/type'
 import { ThreekitApi } from '../api/Threekit/ThreekitApi';
 import { AssetI, AssetProxyI, AttributeI } from './type'
 
@@ -7,30 +8,6 @@ export class ThreekitService {
   public async getDataAssetById(assetId: string) {
 		const response = await this.threekitApi.getAssetById(assetId);
 		const asset: AssetI = response.data;
-		
-
-		const processAttribute = (attr: AttributeI) => {
-			const data: {[key: string]: string | [] | object} = {
-				name: attr['proxy']['name'],
-				defaultValue: attr['proxy']['defaultValue'],
-				type: attr['proxy']['type'],
-			}
-			const isAsset = attr['proxy']['type'] === 'Asset';
-			if(isAsset) {
-				const value = attr['proxy']['values'][0] as AssetProxyI;
-				const id = value['assetId'] || value['tagId'] as string;
-
-				return {
-					...data,
-					values: listAssetForAttr[id],
-				}
-			}
-
-			return {
-				...data,
-				values: attr['proxy']['values'],
-			}
-		}
 
 		type ObjAttrDataT = { [key: string]: {
 			[key: string]: string
@@ -71,20 +48,39 @@ export class ThreekitService {
       listAssetForAttr[id] = results[index]?.data.assets;
     });
 
-    const infoAttrData = asset.attributes
-      .map(processAttribute);
+		const processAttribute = (attr: AttributeI) => {
+			const data: ThreekitDataValueType = {
+				name: attr['proxy']['name'] as string,
+				defaultValue: attr['proxy']['defaultValue'] as ConfiguratorDataValueType,
+				type: attr['proxy']['type'] as string,
+				values: [],
+			}
+			const isAsset = attr['proxy']['type'] === 'Asset';
+			if(isAsset) {
+				const value = attr['proxy']['values'][0] as AssetProxyI;
+				const id = value['assetId'] || value['tagId'] as string;
 
-    const selectAttr: { [key: string]: string | [] | object } = {};
+				return {
+					...data,
+					values: listAssetForAttr[id],
+				}
+			}
 
-    infoAttrData.forEach((attr: {[key: string]: string | [] | object}) => {
-      const name = attr['name'] as string;
-      const defaultValue = attr['defaultValue'];
-      selectAttr[name] = defaultValue;
-    });
+			return {
+				...data,
+				values: attr['proxy']['values'],
+			}
+		}
 
-		console.log('infoAttrData', infoAttrData);
-		console.log('selectAttr', selectAttr);
+    const infoAttrData = asset.attributes.map(processAttribute);
+
+		const resultObject: ThreekitDataT = {};
+		infoAttrData.forEach((obj) => {
+			const name = obj['name'] as string;
+			resultObject[name] = obj as ThreekitDataValueType;
+		});
+
 		
-		return { infoAttrData, selectAttr };
+		return resultObject;
 	}
 }

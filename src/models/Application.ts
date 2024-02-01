@@ -3,6 +3,7 @@ import EventEmitter from "events";
 import { WorkSpace } from "./workSpace/WorkSpace";
 import { Command } from "./command/Command";
 import { Logger } from "./Logger";
+import { AddItemCommand } from "./command/AddItemCommand";
 
 declare const logger: Logger;
 
@@ -22,6 +23,16 @@ export class Application {
   public set currentConfigurator(configurator: Configurator) {
     this._currentConfigurator = configurator;
     this.workSpace.configurator = configurator;
+  }
+
+  public addItemConfiguration(nameProperty: string, assetId: string): Promise<boolean> {
+    const asset = this.workSpace.getAssetById(assetId);
+    if (!asset) {
+      return Promise.resolve(false);
+    }
+    return this.executeCommand(
+      new AddItemCommand(this.currentConfigurator, nameProperty, asset)
+    );
   }
 
   public executeCommand(command: Command): Promise<boolean> {
