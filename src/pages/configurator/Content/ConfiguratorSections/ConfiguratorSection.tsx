@@ -4,7 +4,6 @@ import { Player } from "../../../../components/Player/Player";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
   changeActiveCard,
-  changeValueCard,
 } from "../../../../store/slices/ui/Ui.slice";
 import {
   getActiveStep,
@@ -18,7 +17,7 @@ import {
 } from "../../../../store/slices/ui/type";
 import s from "./ConfiguratorSection.module.scss";
 import { PlayerWidgets } from "../../../../components/PlayerWidgets/PlayerWidgets";
-import { Application } from '../../../../models/Application'
+import { Application } from "../../../../models/Application";
 
 declare const app: Application;
 
@@ -35,19 +34,38 @@ export const ConfiguratorSection: React.FC = () => {
       return;
     }
 
-    if(card.key === StepName.AudioExtensions) {
-      const assetId = (card as ItemCardI).assetId;
-      if(assetId) {
-        app.addItemConfiguration('Room Mic', assetId);
-      }
+    const threekit = (card as ItemCardI).threekit;
+    if (threekit) {
+      app.addItemConfiguration(threekit.key, threekit.assetId);
+      return;
     }
 
-    
     dispatch(changeActiveCard(card));
   };
 
-  const onChange = (value: StepCardType) => {
-    dispatch(changeValueCard(value));
+  const onChange = (value: StepCardType, type: "counter" | "color") => {
+    if (type === "counter") {
+      const counter = (value as ItemCardI).counter;
+      
+      const threekit = (value as ItemCardI).threekit;
+      if (counter && threekit) {
+        app.changeCountItemConfiguration(
+          threekit.key,
+          String(counter.currentValue),
+          threekit.assetId
+        );
+      }
+      return;
+    }
+
+    const color = (value as ItemCardI).color;
+      const threekit = (value as ItemCardI).threekit;
+      if (color && threekit) {
+        app.changeColorItemConfiguration(
+          color.currentColor.value,
+          threekit.assetId
+        );
+      }
   };
 
   const getCardComponent = (card: StepCardType, index: number) => {

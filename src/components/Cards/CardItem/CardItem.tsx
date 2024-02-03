@@ -10,7 +10,7 @@ interface PropsI {
   recommended?: boolean;
   onClick: () => void;
   data: ItemCardI;
-  onChange?: (value: ItemCardI) => void;
+  onChange?: (value: ItemCardI, type: 'counter' | 'color') => void;
 }
 export const CardItem: React.FC<PropsI> = (props) => {
   const { recommended, onClick, data, onChange, active } = props;
@@ -19,7 +19,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
     if (!onChange || !data.color) {
       return;
     }
-    onChange({ ...data, color: { ...data.color, currentColor: value } });
+    onChange({ ...data, color: { ...data.color, currentColor: value } }, 'color');
   };
 
   const handleChangeCounter = (value: number) => {
@@ -27,7 +27,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
       return;
     }
     
-    onChange({ ...data, counter: { ...data.counter, currentValue: value } });
+    onChange({ ...data, counter: { ...data.counter, currentValue: value } }, 'counter');
   };
 
   const isAction = !!data.color || !!data.counter;

@@ -5,12 +5,14 @@ interface ConfiguratorStateI {
 	isBuilding: boolean;
 	showDimensions: boolean;
 	configuration: Configuration;
+	nodes: Record<string, string>;
 }
 
 const initialState: ConfiguratorStateI = {
 	isBuilding: false,
 	showDimensions: false, 
 	configuration: {},
+	nodes: {}
 };
 
 const configuratorSlice = createSlice({
@@ -28,9 +30,12 @@ const configuratorSlice = createSlice({
 			value: Configuration
 		}>) => {
 			state.configuration[action.payload.key] = action.payload.value
+		},
+		changeValueNodes: (state, action: PayloadAction<Record<string, string>>) => {
+			state.nodes = {...state.nodes, ...action.payload}
 		}
   },
 });
 
-export const { changeStatusBuilding, changeShowDimensions, changeValueConfiguration } = configuratorSlice.actions;
+export const { changeStatusBuilding, changeShowDimensions, changeValueConfiguration, changeValueNodes } = configuratorSlice.actions;
 export default configuratorSlice.reducer;

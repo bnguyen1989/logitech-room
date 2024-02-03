@@ -4,6 +4,8 @@ import { WorkSpace } from "./workSpace/WorkSpace";
 import { Command } from "./command/Command";
 import { Logger } from "./Logger";
 import { AddItemCommand } from "./command/AddItemCommand";
+import { ChangeCountItemCommand } from "./command/ChangeCountItemCommand";
+import { ChangeColorItemCommand } from "./command/ChangeColorItemCommand";
 
 declare const logger: Logger;
 
@@ -25,13 +27,40 @@ export class Application {
     this.workSpace.configurator = configurator;
   }
 
-  public addItemConfiguration(nameProperty: string, assetId: string): Promise<boolean> {
+  public addItemConfiguration(
+    nameProperty: string,
+    assetId: string
+  ): Promise<boolean> {
     const asset = this.workSpace.getAssetById(assetId);
     if (!asset) {
       return Promise.resolve(false);
     }
     return this.executeCommand(
       new AddItemCommand(this.currentConfigurator, nameProperty, asset)
+    );
+  }
+
+  public changeCountItemConfiguration(
+    nameProperty: string,
+    value: string,
+    assetId: string
+  ): Promise<boolean> {
+    return this.executeCommand(
+      new ChangeCountItemCommand(
+        this.currentConfigurator,
+        nameProperty,
+        value,
+        assetId
+      )
+    );
+  }
+
+  public changeColorItemConfiguration(
+    value: string,
+    assetId: string
+  ): Promise<boolean> {
+    return this.executeCommand(
+      new ChangeColorItemCommand(this.currentConfigurator, value, assetId)
     );
   }
 

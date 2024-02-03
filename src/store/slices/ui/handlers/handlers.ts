@@ -3,10 +3,16 @@ import { Application } from "../../../../models/Application";
 import { Configurator } from "../../../../models/configurator/Configurator";
 import { AssetI } from "../../../../services/Threekit/type";
 import { ConfiguratorDataValueType } from "../../../../models/configurator/type";
-import { ItemCardI, StepName } from "../type";
+import { ColorItemI, ItemCardI, StepName } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
-import { changeActiveCard, setDataItemStep } from "../Ui.slice";
+import {
+  changeActiveCard,
+  changeValueCard,
+  setDataItemStep,
+} from "../Ui.slice";
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
+import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
+import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 
 declare const app: Application;
 
@@ -15,13 +21,62 @@ export const getUiHandlers = (store: Store) => {
     if (data instanceof AddItemCommand) {
       const asset = data.asset as AssetI;
       const activeStep = store.getState().ui.activeStep;
-      if(activeStep) {
-        const index = activeStep.cards.findIndex((item: ItemCardI) => item.assetId === asset.id);
-        if(index !== -1) {
+      if (activeStep) {
+        const index = activeStep.cards.findIndex(
+          (item: ItemCardI) => item.threekit?.assetId === asset.id
+        );
+        if (index !== -1) {
           store.dispatch(changeActiveCard(activeStep.cards[index]));
         }
       }
       console.log(data.asset);
+    }
+
+    if (data instanceof ChangeCountItemCommand) {
+      const activeStep = store.getState().ui.activeStep;
+      if (activeStep) {
+        const index = activeStep.cards.findIndex(
+          (item: ItemCardI) => item.threekit?.assetId === data.assetId
+        );
+        if (index !== -1) {
+          const card = activeStep.cards[index];
+          const value = parseInt(data.value);
+
+          store.dispatch(
+            changeValueCard({
+              ...card,
+              counter: {
+                ...card.counter,
+                currentValue: value,
+              },
+            })
+          );
+        }
+      }
+    }
+
+    if (data instanceof ChangeColorItemCommand) {
+      const activeStep = store.getState().ui.activeStep;
+      if (activeStep) {
+        const index = activeStep.cards.findIndex(
+          (item: ItemCardI) => item.threekit?.assetId === data.assetId
+        );
+        if (index !== -1) {
+          const card = activeStep.cards[index];
+          const value = card.color?.colors.find(
+            (item: ColorItemI) => item.value === data.value
+          );
+          store.dispatch(
+            changeValueCard({
+              ...card,
+              color: {
+                ...card.color,
+                currentColor: value,
+              },
+            })
+          );
+        }
+      }
     }
   });
 
@@ -49,7 +104,10 @@ function setAudioExtensionsData(configurator: Configurator) {
           image: MicImg,
           header_title: asset.name,
           title: asset.name,
-          assetId: asset.id,
+          threekit: {
+            assetId: asset.id,
+            key: name,
+          },
           color: {
             currentColor: {
               name: "Graphite",

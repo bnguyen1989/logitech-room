@@ -1,29 +1,34 @@
-import s from './Player.module.scss';
-import { OrbitControls } from '@react-three/drei';
+import s from "./Player.module.scss";
+import { OrbitControls } from "@react-three/drei";
 import {
   ExporterResolver,
   OptimizeResolverWrapper,
-  Viewer
-} from '@threekit/react-three-fiber';
-import type React from 'react';
-import { Helmet as Head } from 'react-helmet';
+  Viewer,
+} from "@threekit/react-three-fiber";
+import type React from "react";
+import { Helmet as Head } from "react-helmet";
 
-import Geoff2Stage from '../stages/Geoff2Stage.tsx';
-import { Room } from '../Assets/Room.tsx';
-import { ConfigData } from '../../utils/threekitUtils.ts'
-import { useAppSelector } from '../../hooks/redux.ts'
-import { getConfiguration } from '../../store/slices/configurator/selectors/selectors.ts'
+import Geoff2Stage from "../stages/Geoff2Stage.tsx";
+import { Room } from "../Assets/Room.tsx";
+import { ConfigData } from "../../utils/threekitUtils.ts";
+import { useAppSelector } from "../../hooks/redux.ts";
+import {
+  getConfiguration,
+  getNodes,
+} from "../../store/slices/configurator/selectors/selectors.ts";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
   orgId: ConfigData.orgId,
-  publicToken: ConfigData.publicToken
+  publicToken: ConfigData.publicToken,
 };
 
 const assetId = ConfigData.assetId;
 
 export const Player: React.FC = () => {
   const configuration = useAppSelector(getConfiguration);
+  const nodes = useAppSelector(getNodes);
+
   return (
     <div className={s.container}>
       <Head>
@@ -31,13 +36,17 @@ export const Player: React.FC = () => {
       </Head>
       <Viewer
         auth={bhoustonAuth}
-        resolver={OptimizeResolverWrapper(ExporterResolver({ cache: true }), {
-          cacheScope: 'v1'
+        resolver={OptimizeResolverWrapper(ExporterResolver({ cache: false }), {
+          cacheScope: "v1",
         })}
       >
         <>
           <Geoff2Stage>
-            <Room roomAssetId={assetId} attachNodeNameToAssetId={{}} configuration={configuration} />
+            <Room
+              roomAssetId={assetId}
+              attachNodeNameToAssetId={nodes}
+              configuration={configuration}
+            />
           </Geoff2Stage>
           <OrbitControls
             autoRotate={false}
