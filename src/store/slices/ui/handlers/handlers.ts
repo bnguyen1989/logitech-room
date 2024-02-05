@@ -6,6 +6,8 @@ import { ConfiguratorDataValueType } from "../../../../models/configurator/type"
 import { ColorItemI, ItemCardI, StepName } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
+import ControllerImg from "../../../../assets/images/items/controller.jpg";
+import AccessImg from "../../../../assets/images/items/access.jpg";
 import {
   changeActiveCard,
   changeValueCard,
@@ -86,6 +88,8 @@ export const getUiHandlers = (store: Store) => {
     (configurator: Configurator) => {
       setAudioExtensionsData(configurator)(store);
       setCameraData(configurator)(store);
+      setMeetingControllerData(configurator)(store);
+      setVideoAccessoriesData(configurator)(store);
     }
   );
 };
@@ -99,9 +103,11 @@ function setAudioExtensionsData(configurator: Configurator) {
       if (!value) {
         return;
       }
+
+      const temp: Array<ItemCardI> = [];
       value.values.forEach((item: ConfiguratorDataValueType) => {
         const asset = item as AssetI;
-        audioExtensionsCardData.push({
+        temp.push({
           key: StepName.AudioExtensions,
           image: MicImg,
           header_title: asset.name,
@@ -125,28 +131,26 @@ function setAudioExtensionsData(configurator: Configurator) {
                 value: "#FBFBFB",
               },
             ],
-          },
-          counter: {
-            min: 1,
-            max: 3,
-            currentValue: 1,
-          },
+          }
         });
       });
 
       if (qtyName) {
         const qty = configurator.getValueByPropertyName(qtyName);
-        audioExtensionsCardData.forEach((item) => {
+        temp.forEach((item) => {
           const values = qty.values as Array<string>;
-          const min = parseInt(values[1]);
+          const min = parseInt(values[0]);
           const max = parseInt(values[values.length - 1]);
-          if (item.counter) {
-            item.counter.min = min;
-            item.counter.max = max;
-            item.counter.currentValue = min;
-          }
+
+          item.counter = {
+            min: min,
+            max: max,
+            currentValue: min,
+          };
         });
       }
+
+      audioExtensionsCardData.push(...temp);
     });
 
     store.dispatch(
@@ -167,9 +171,11 @@ function setCameraData(configurator: Configurator) {
       if (!value) {
         return;
       }
+
+      const temp: Array<ItemCardI> = [];
       value.values.forEach((item: ConfiguratorDataValueType) => {
         const asset = item as AssetI;
-        cameraCardData.push({
+        temp.push({
           key: StepName.ConferenceCamera,
           image: CameraImg,
           header_title: asset.name,
@@ -194,14 +200,120 @@ function setCameraData(configurator: Configurator) {
               },
             ],
           },
-        },);
+        });
       });
+
+      cameraCardData.push(...temp);
     });
 
     store.dispatch(
       setDataItemStep({
         key: StepName.ConferenceCamera,
         values: cameraCardData,
+      })
+    );
+  };
+}
+
+function setMeetingControllerData(configurator: Configurator) {
+  return (store: Store) => {
+    const meetingControllerCardData: Array<ItemCardI> = [];
+    Configurator.MeetingControllerName.forEach((item) => {
+      const [name, qtyName] = item;
+      const value = configurator.getValueByPropertyName(name);
+      if (!value) {
+        return;
+      }
+
+      const temp: Array<ItemCardI> = [];
+      value.values.forEach((item: ConfiguratorDataValueType) => {
+        const asset = item as AssetI;
+        temp.push({
+          key: StepName.MeetingController,
+          image: ControllerImg,
+          header_title: asset.name,
+          title: asset.name,
+          subtitle: "Minimum (1)",
+          threekit: {
+            assetId: asset.id,
+            key: name,
+          },
+        });
+      });
+
+      if (qtyName) {
+        const qty = configurator.getValueByPropertyName(qtyName);
+        temp.forEach((item) => {
+          const values = qty.values as Array<string>;
+          const min = parseInt(values[0]);
+          const max = parseInt(values[values.length - 1]);
+
+          item.counter = {
+            min: min,
+            max: max,
+            currentValue: min,
+          };
+        });
+      }
+
+      meetingControllerCardData.push(...temp);
+    });
+
+    store.dispatch(
+      setDataItemStep({
+        key: StepName.MeetingController,
+        values: meetingControllerCardData,
+      })
+    );
+  };
+}
+
+function setVideoAccessoriesData(configurator: Configurator) {
+  return (store: Store) => {
+    const videoAccessoriesCardData: Array<ItemCardI> = [];
+    Configurator.VideoAccessoriesName.forEach((item) => {
+      const [name, qtyName] = item;
+      const value = configurator.getValueByPropertyName(name);
+      if (!value) {
+        return;
+      }
+
+      const temp: Array<ItemCardI> = [];
+      value.values.forEach((item: ConfiguratorDataValueType) => {
+        const asset = item as AssetI;
+        temp.push({
+          key: StepName.VideoAccessories,
+          image: AccessImg,
+          header_title: asset.name,
+          title: asset.name,
+          threekit: {
+            assetId: asset.id,
+            key: name,
+          },
+        });
+      });
+
+      if (qtyName) {
+        const qty = configurator.getValueByPropertyName(qtyName);
+        temp.forEach((item) => {
+          const values = qty.values as Array<string>;
+          const min = parseInt(values[0]);
+          const max = parseInt(values[values.length - 1]);
+          item.counter = {
+            min: min,
+            max: max,
+            currentValue: min,
+          };
+        });
+      }
+
+      videoAccessoriesCardData.push(...temp);
+    });
+
+    store.dispatch(
+      setDataItemStep({
+        key: StepName.VideoAccessories,
+        values: videoAccessoriesCardData,
       })
     );
   };

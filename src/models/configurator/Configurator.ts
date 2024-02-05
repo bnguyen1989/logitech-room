@@ -13,6 +13,10 @@ export class Configurator {
 
   public static CameraName = [['Room Camera'], ['Room Compute']];
 
+  public static MeetingControllerName = [['Room Meeting Controller', 'Qty - Meeting Controller'], ['Room Sight'], ['Room Tap Scheduler'], ['Room Scribe'], ['Room Swytch']];
+
+  public static VideoAccessoriesName = [['Room Compute Mount'], ['Room Tap Mount', 'Qty - Tap Mount'], ['Room Camera Mount'], ['Room Mic Mount', 'Qty - Mic Mount'], ['Room Mic Pod Hub', 'Qty - Mic Pod Hub'], ['Room Mic Pod Extension Cable', 'Qty - Mic Pod Extension Cable']];
+
   public get threekitData(): ThreekitDataT {
     return this._threekitData;
   }
