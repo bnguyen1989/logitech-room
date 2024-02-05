@@ -3,7 +3,7 @@ import { CardItem } from "../../../../components/Cards/CardItem/CardItem";
 import { Player } from "../../../../components/Player/Player";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
-  changeActiveCard,
+  changeActiveCard, changeValueCard,
 } from "../../../../store/slices/ui/Ui.slice";
 import {
   getActiveStep,
@@ -43,7 +43,7 @@ export const ConfiguratorSection: React.FC = () => {
     dispatch(changeActiveCard(card));
   };
 
-  const onChange = (value: StepCardType, type: "counter" | "color") => {
+  const onChange = (value: StepCardType, type: "counter" | "color" | 'select') => {
     if (type === "counter") {
       const counter = (value as ItemCardI).counter;
       
@@ -58,7 +58,8 @@ export const ConfiguratorSection: React.FC = () => {
       return;
     }
 
-    const color = (value as ItemCardI).color;
+    if (type === "color") {
+      const color = (value as ItemCardI).color;
       const threekit = (value as ItemCardI).threekit;
       if (color && threekit) {
         app.changeColorItemConfiguration(
@@ -66,6 +67,11 @@ export const ConfiguratorSection: React.FC = () => {
           threekit.assetId
         );
       }
+    }
+
+    if (type === "select") {
+      dispatch(changeValueCard(value));
+    }
   };
 
   const getCardComponent = (card: StepCardType, index: number) => {

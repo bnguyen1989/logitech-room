@@ -1,16 +1,17 @@
 import { InformationSVG } from "../../../assets";
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardItem.module.scss";
-import { ColorItemI, ItemCardI } from "../../../store/slices/ui/type";
+import { ColorItemI, ItemCardI, SelectDataI } from "../../../store/slices/ui/type";
 import { ColorItem } from "../../ColorItem/ColorItem";
 import { CounterItem } from "../../Counters/CounterItem/CounterItem";
+import { SelectItem } from '../../Fields/SelectItem/SelectItem'
 
 interface PropsI {
   active?: boolean;
   recommended?: boolean;
   onClick: () => void;
   data: ItemCardI;
-  onChange?: (value: ItemCardI, type: 'counter' | 'color') => void;
+  onChange?: (value: ItemCardI, type: 'counter' | 'color' | 'select') => void;
 }
 export const CardItem: React.FC<PropsI> = (props) => {
   const { recommended, onClick, data, onChange, active } = props;
@@ -30,7 +31,15 @@ export const CardItem: React.FC<PropsI> = (props) => {
     onChange({ ...data, counter: { ...data.counter, currentValue: value } }, 'counter');
   };
 
-  const isAction = !!data.color || !!data.counter;
+  const handleChangeSelect = (value: SelectDataI) => {
+    if (!onChange || !data.select) {
+      return;
+    }
+    
+    onChange({ ...data, select: { ...data.select, value } }, 'select');
+  };
+
+  const isAction = !!data.color || !!data.counter || !!data.select;
 
   return (
     <CardContainer
@@ -74,6 +83,13 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   onChange={handleChangeCounter}
                   min={data.counter.min}
                   max={data.counter.max}
+                />
+              )}
+              {!!data.select && (
+                <SelectItem 
+                  value={data.select.value}
+                  onSelect={handleChangeSelect}
+                  options={data.select.data}
                 />
               )}
             </div>

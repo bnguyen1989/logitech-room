@@ -8,6 +8,7 @@ import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
 import ControllerImg from "../../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../../assets/images/items/access.jpg";
+import ServiceImg from "../../../../assets/images/items/service.jpg";
 import {
   changeActiveCard,
   changeValueCard,
@@ -90,6 +91,7 @@ export const getUiHandlers = (store: Store) => {
       setCameraData(configurator)(store);
       setMeetingControllerData(configurator)(store);
       setVideoAccessoriesData(configurator)(store);
+      setSoftwareServicesData(configurator)(store);
     }
   );
 };
@@ -131,7 +133,7 @@ function setAudioExtensionsData(configurator: Configurator) {
                 value: "#FBFBFB",
               },
             ],
-          }
+          },
         });
       });
 
@@ -314,6 +316,76 @@ function setVideoAccessoriesData(configurator: Configurator) {
       setDataItemStep({
         key: StepName.VideoAccessories,
         values: videoAccessoriesCardData,
+      })
+    );
+  };
+}
+
+function setSoftwareServicesData(configurator: Configurator) {
+  return (store: Store) => {
+    const softwareServicesCardData: Array<ItemCardI> = [];
+    Configurator.SoftwareServicesName.forEach((item) => {
+      const [name] = item;
+      const value = configurator.getValueByPropertyName(name);
+      if (!value) {
+        return;
+      }
+
+      const temp: Array<ItemCardI> = [];
+
+      if (name.includes("Support")) {
+        const title = "Logitech Select";
+
+        const values: Array<string> = [];
+        value.values.forEach((item: ConfiguratorDataValueType) => {
+          const asset = item as AssetI;
+          const plan = asset.metadata["Service Plan"];
+          if (plan) {
+            values.push(plan);
+          }
+        });
+
+        temp.push({
+          key: StepName.SoftwareServices,
+          image: ServiceImg,
+          header_title: title,
+          title: title,
+          select: {
+            value: {
+              label: values[0],
+              value: values[0],
+            },
+            data: values.map((item: string) => {
+              return {
+                label: item,
+                value: item,
+              };
+            }),
+          },
+        });
+      } else {
+        value.values.forEach((item: ConfiguratorDataValueType) => {
+          const asset = item as AssetI;
+          temp.push({
+            key: StepName.SoftwareServices,
+            image: ServiceImg,
+            header_title: asset.name,
+            title: asset.name,
+            threekit: {
+              assetId: asset.id,
+              key: name,
+            },
+          });
+        });
+      }
+
+      softwareServicesCardData.push(...temp);
+    });
+
+    store.dispatch(
+      setDataItemStep({
+        key: StepName.SoftwareServices,
+        values: softwareServicesCardData,
       })
     );
   };

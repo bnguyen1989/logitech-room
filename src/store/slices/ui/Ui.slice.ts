@@ -31,7 +31,7 @@ const uiSlice = createSlice({
 			const { activeStep } = state;
 			if (activeStep) {
 				const { cards } = activeStep;
-				const index = cards.findIndex((card) => card.key === action.payload.key);
+				const index = cards.findIndex((card) => card.title === action.payload.title);
 				if (index !== -1) {
 					cards[index] = action.payload;
 				}

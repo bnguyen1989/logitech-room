@@ -17,6 +17,8 @@ export class Configurator {
 
   public static VideoAccessoriesName = [['Room Compute Mount'], ['Room Tap Mount', 'Qty - Tap Mount'], ['Room Camera Mount'], ['Room Mic Mount', 'Qty - Mic Mount'], ['Room Mic Pod Hub', 'Qty - Mic Pod Hub'], ['Room Mic Pod Extension Cable', 'Qty - Mic Pod Extension Cable']];
 
+  public static SoftwareServicesName = [['Room Device Management Software'], ['Room Support Service']];
+
   public get threekitData(): ThreekitDataT {
     return this._threekitData;
   }
