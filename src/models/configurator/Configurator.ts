@@ -11,6 +11,8 @@ export class Configurator {
 
   public static AudioExtensionName = [['Room Mic', 'Qty - Micpod/Expansion']];
 
+  public static CameraName = [['Room Camera'], ['Room Compute']];
+
   public get threekitData(): ThreekitDataT {
     return this._threekitData;
   }

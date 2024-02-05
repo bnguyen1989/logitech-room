@@ -5,6 +5,7 @@ import { AssetI } from "../../../../services/Threekit/type";
 import { ConfiguratorDataValueType } from "../../../../models/configurator/type";
 import { ColorItemI, ItemCardI, StepName } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
+import CameraImg from "../../../../assets/images/items/camera.jpg";
 import {
   changeActiveCard,
   changeValueCard,
@@ -84,6 +85,7 @@ export const getUiHandlers = (store: Store) => {
     "threekitDataInitialized",
     (configurator: Configurator) => {
       setAudioExtensionsData(configurator)(store);
+      setCameraData(configurator)(store);
     }
   );
 };
@@ -151,6 +153,55 @@ function setAudioExtensionsData(configurator: Configurator) {
       setDataItemStep({
         key: StepName.AudioExtensions,
         values: audioExtensionsCardData,
+      })
+    );
+  };
+}
+
+function setCameraData(configurator: Configurator) {
+  return (store: Store) => {
+    const cameraCardData: Array<ItemCardI> = [];
+    Configurator.CameraName.forEach((item) => {
+      const [name] = item;
+      const value = configurator.getValueByPropertyName(name);
+      if (!value) {
+        return;
+      }
+      value.values.forEach((item: ConfiguratorDataValueType) => {
+        const asset = item as AssetI;
+        cameraCardData.push({
+          key: StepName.ConferenceCamera,
+          image: CameraImg,
+          header_title: asset.name,
+          title: asset.name,
+          threekit: {
+            assetId: asset.id,
+            key: name,
+          },
+          color: {
+            currentColor: {
+              name: "Graphite",
+              value: "#434446",
+            },
+            colors: [
+              {
+                name: "Graphite",
+                value: "#434446",
+              },
+              {
+                name: "White",
+                value: "#FBFBFB",
+              },
+            ],
+          },
+        },);
+      });
+    });
+
+    store.dispatch(
+      setDataItemStep({
+        key: StepName.ConferenceCamera,
+        values: cameraCardData,
       })
     );
   };

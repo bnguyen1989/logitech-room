@@ -42,10 +42,10 @@ const uiSlice = createSlice({
 			values: Array<ItemCardI>
 		}>) => {
 			state.stepData[action.payload.key] = {
-				...state.stepData[StepName.AudioExtensions],
+				...state.stepData[action.payload.key],
 				cards: action.payload.values,
 			};
-			if(state.activeStep) {
+			if(state.activeStep && state.activeStep.key === action.payload.key) {
 				state.activeStep = state.stepData[state.activeStep.key];
 			}
 		}
