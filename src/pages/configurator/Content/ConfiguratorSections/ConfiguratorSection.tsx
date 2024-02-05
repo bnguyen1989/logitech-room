@@ -7,7 +7,6 @@ import {
 } from "../../../../store/slices/ui/Ui.slice";
 import {
   getActiveStep,
-  getIsConfiguratorStep,
 } from "../../../../store/slices/ui/selectors/selectors";
 import {
   ItemCardI,
@@ -24,9 +23,8 @@ declare const app: Application;
 export const ConfiguratorSection: React.FC = () => {
   const dispatch = useDispatch();
   const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
-  const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
-  if (!activeStep || !isConfiguratorStep) return null;
+  if (!activeStep) return null;
 
   const handleClick = (card: StepCardType) => {
     if (card.title === activeStep.currentCard?.title) {

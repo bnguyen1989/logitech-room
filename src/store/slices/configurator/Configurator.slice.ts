@@ -9,7 +9,7 @@ interface ConfiguratorStateI {
 }
 
 const initialState: ConfiguratorStateI = {
-	isBuilding: false,
+	isBuilding: true,
 	showDimensions: false, 
 	configuration: {},
 	nodes: {}
