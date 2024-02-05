@@ -12,7 +12,11 @@ export const Header: React.FC = () => {
 
   if (!activeStep) return null;
 
-  if (isBuilding) {
+  const isConferenceCamera = activeStep?.name
+  .toLocaleLowerCase()
+  .includes("conference camera");
+
+  if (isBuilding && isConferenceCamera) {
     return (
       <div className={s.container}>
         <div className={s.navigationMenu}>

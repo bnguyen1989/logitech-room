@@ -13,10 +13,9 @@ import { Loader } from "../../../components/Loader/Loader";
 import { PrepareSection } from "./PrepareSections/PrepareSection";
 import { ConfiguratorSection } from "./ConfiguratorSections/ConfiguratorSection";
 import { getIsBuilding } from "../../../store/slices/configurator/selectors/selectors";
-import { changeStatusBuilding } from "../../../store/slices/configurator/Configurator.slice";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { RevertSVG } from "../../../assets";
-import { setMySetupModal } from '../../../store/slices/modals/Modals.slice'
+import { setMySetupModal } from "../../../store/slices/modals/Modals.slice";
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
@@ -26,22 +25,16 @@ export const Content: React.FC<PropsI> = () => {
   const isBuilding = useAppSelector(getIsBuilding);
   const isStepConfigurator = useAppSelector(getIsConfiguratorStep);
 
+  const isConferenceCamera = activeStep?.name
+    .toLocaleLowerCase()
+    .includes("conference camera");
+
   const handleNext = () => {
     if (!nextStep) {
       dispatch(setMySetupModal({ isOpen: true }));
       return;
     }
-    const isConferenceCamera = nextStep.name
-      .toLocaleLowerCase()
-      .includes("conference camera");
-    if (isConferenceCamera) {
-      dispatch(changeStatusBuilding(true));
-      setTimeout(() => {
-        dispatch(changeStatusBuilding(false));
-        dispatch(changeActiveStep(nextStep));
-      }, 2000);
-      return;
-    }
+
     dispatch(changeActiveStep(nextStep));
   };
 
@@ -55,17 +48,7 @@ export const Content: React.FC<PropsI> = () => {
 
   const handleRevert = () => {
     dispatch(changeActiveStep(null));
-  }
-
-  if (isBuilding) {
-    return (
-      <div className={s.container}>
-        <div className={s.loader}>
-          <Loader text="Building Your Room" />
-        </div>
-      </div>
-    );
-  }
+  };
 
   return (
     <div className={s.container}>
@@ -83,11 +66,16 @@ export const Content: React.FC<PropsI> = () => {
         <Button onClick={handleBack} text="Back" />
         <Button
           onClick={handleNext}
-          text={nextStep ? "Next" : 'Finish'}
+          text={nextStep ? "Next" : "Finish"}
           variant="contained"
           disabled={!activeStep?.currentCard && !isStepConfigurator}
         />
       </div>
+      {isBuilding && isConferenceCamera && (
+        <div className={s.loader}>
+          <Loader text="Building Your Room" />
+        </div>
+      )}
     </div>
   );
 };

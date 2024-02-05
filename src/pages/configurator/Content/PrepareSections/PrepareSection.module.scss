@@ -3,4 +3,12 @@
   justify-content: center;
   align-items: center;
 	gap: 10px;
+
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 60;
+	background-color: #F4F4F4;
 }
