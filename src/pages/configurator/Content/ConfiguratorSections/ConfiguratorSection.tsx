@@ -3,20 +3,23 @@ import { CardItem } from "../../../../components/Cards/CardItem/CardItem";
 import { Player } from "../../../../components/Player/Player";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
-  changeActiveCard,
-  changeValueCard,
+  changeActiveCard, changeValueCard,
 } from "../../../../store/slices/ui/Ui.slice";
 import {
   getActiveStep,
   getIsConfiguratorStep,
 } from "../../../../store/slices/ui/selectors/selectors";
 import {
+  ItemCardI,
   StepCardType,
   StepI,
   StepName,
 } from "../../../../store/slices/ui/type";
 import s from "./ConfiguratorSection.module.scss";
 import { PlayerWidgets } from "../../../../components/PlayerWidgets/PlayerWidgets";
+import { Application } from "../../../../models/Application";
+
+declare const app: Application;
 
 export const ConfiguratorSection: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,11 +33,45 @@ export const ConfiguratorSection: React.FC = () => {
       dispatch(changeActiveCard(undefined));
       return;
     }
+
+    const threekit = (card as ItemCardI).threekit;
+    if (threekit) {
+      app.addItemConfiguration(threekit.key, threekit.assetId);
+      return;
+    }
+
     dispatch(changeActiveCard(card));
   };
 
-  const onChange = (value: StepCardType) => {
-    dispatch(changeValueCard(value));
+  const onChange = (value: StepCardType, type: "counter" | "color" | 'select') => {
+    if (type === "counter") {
+      const counter = (value as ItemCardI).counter;
+      
+      const threekit = (value as ItemCardI).threekit;
+      if (counter && threekit) {
+        app.changeCountItemConfiguration(
+          threekit.key,
+          String(counter.currentValue),
+          threekit.assetId
+        );
+      }
+      return;
+    }
+
+    if (type === "color") {
+      const color = (value as ItemCardI).color;
+      const threekit = (value as ItemCardI).threekit;
+      if (color && threekit) {
+        app.changeColorItemConfiguration(
+          color.currentColor.value,
+          threekit.assetId
+        );
+      }
+    }
+
+    if (type === "select") {
+      dispatch(changeValueCard(value));
+    }
   };
 
   const getCardComponent = (card: StepCardType, index: number) => {

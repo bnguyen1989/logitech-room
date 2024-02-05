@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { StepCardType, StepDataI, StepI, StepName } from './type'
+import { ItemCardI, StepCardType, StepDataI, StepI, StepName } from './type'
 import { getInitStepData } from './utils'
 interface UIStateI {
 	stepData: StepDataI;
@@ -31,14 +31,26 @@ const uiSlice = createSlice({
 			const { activeStep } = state;
 			if (activeStep) {
 				const { cards } = activeStep;
-				const index = cards.findIndex((card) => card.key === action.payload.key);
+				const index = cards.findIndex((card) => card.title === action.payload.title);
 				if (index !== -1) {
 					cards[index] = action.payload;
 				}
 			}
 		},
+		setDataItemStep: (state, action: PayloadAction<{
+			key: StepName.AudioExtensions | StepName.ConferenceCamera | StepName.MeetingController | StepName.VideoAccessories | StepName.SoftwareServices,
+			values: Array<ItemCardI>
+		}>) => {
+			state.stepData[action.payload.key] = {
+				...state.stepData[action.payload.key],
+				cards: action.payload.values,
+			};
+			if(state.activeStep && state.activeStep.key === action.payload.key) {
+				state.activeStep = state.stepData[state.activeStep.key];
+			}
+		}
   },
 });
 
-export const { changeActiveStep, moveToStartStep, changeActiveCard, changeValueCard } = uiSlice.actions;
+export const { changeActiveStep, moveToStartStep, changeActiveCard, changeValueCard, setDataItemStep } = uiSlice.actions;
 export default uiSlice.reducer;

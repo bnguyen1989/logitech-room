@@ -69,6 +69,21 @@ export interface CounterI {
 	currentValue: number;
 }
 
+export interface ThreekitI {
+	assetId: string;
+	key: string;
+}
+
+
+export interface SelectDataI {
+	label: string;
+	value: string;
+}
+export interface SelectI {
+	value: SelectDataI;
+	data: Array<SelectDataI>;
+}
+
 export interface ItemCardI {
 	key: StepName.ConferenceCamera | StepName.AudioExtensions | StepName.MeetingController | StepName.VideoAccessories | StepName.SoftwareServices;
 	image: string;
@@ -77,4 +92,6 @@ export interface ItemCardI {
 	subtitle?: string;
 	color?: ColorI;
 	counter?: CounterI;
+	select?: SelectI;
+	threekit?: ThreekitI;
 }
