@@ -1,6 +1,6 @@
 import { ConfiguratorDataValueType, ThreekitDataT, ThreekitDataValueType } from '../../models/configurator/type'
 import { ThreekitApi } from '../api/Threekit/ThreekitApi';
-import { AssetI, AssetProxyI, AttributeI } from './type'
+import { AssetI, AssetProxyI, AttributeI, DataTableRowI } from './type'
 
 export class ThreekitService {
   private threekitApi: ThreekitApi = new ThreekitApi();
@@ -8,6 +8,8 @@ export class ThreekitService {
   public async getDataAssetById(assetId: string) {
 		const response = await this.threekitApi.getAssetById(assetId);
 		const asset: AssetI = response.data;
+		console.log('ASSET', asset);
+		
 
 		type ObjAttrDataT = { [key: string]: {
 			[key: string]: string
@@ -80,7 +82,69 @@ export class ThreekitService {
 			resultObject[name] = obj as ThreekitDataValueType;
 		});
 
+		const tableId_optionLookup = asset.metadata['_datatable_configOptions'];
+		const dataTables = await this.getDataTablesById(tableId_optionLookup);
+		console.log('DATA TABLES', dataTables);
+
+		const attributeName_arr = [];
+    if(dataTables && dataTables[0]) {
+        for(const attrName in dataTables[0].value) {
+            attributeName_arr.push(attrName);
+        }
+    }
+
+		attributeName_arr.forEach((attrName) => {
+			const attr = this.getAttribute(attrName, Object.values(resultObject));
+			if(attr) {
+				const res = this.validateOption(dataTables, attrName, attr);
+				resultObject[attrName] = res;
+			}
+		});
+
 		
 		return resultObject;
 	}
+
+	public async getDataTablesById(dataTableId: string) {
+		const response = await this.threekitApi.getDataTablesById(dataTableId);
+		const dataTable = response.data;
+		const rows = dataTable.rows;
+		return rows;
+	}
+
+	private validateOption(rows: Array<DataTableRowI>, tableColName: string, theAttrValuesArr: ThreekitDataValueType) {
+    const optionNames: Array<string> = [];
+    for(const row of rows){
+        if(row.value[tableColName]) optionNames.push(row.value[tableColName]);
+    }
+
+		console.log('OPTION NAMES', optionNames);
+		
+
+		const res: ThreekitDataValueType = {...theAttrValuesArr};
+
+		if(res.type === 'String') {
+			res.values = res.values.filter((option: ConfiguratorDataValueType) => {
+				return optionNames.includes(option as string);
+			});
+		}
+
+		if(theAttrValuesArr.type === 'Asset') {
+			res.values = res.values.filter((option: ConfiguratorDataValueType) => {
+				return optionNames.includes((option as AssetI).name);
+			});
+		}
+
+		return res;
+		
+	}
+
+	private getAttribute(name: string, attrArr: Array<ThreekitDataValueType>){
+    const attr_asset = attrArr.find((attr) => attr.name === name && attr.type === 'Asset');
+    if(attr_asset) return attr_asset;
+    const attr_str = attrArr.find((attr) => attr.name === name && attr.type === 'String');
+    if(attr_str) return attr_str;
+    
+    return "";
+}
 }
