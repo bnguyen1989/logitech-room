@@ -3,11 +3,10 @@ import { CardItem } from "../../../../components/Cards/CardItem/CardItem";
 import { Player } from "../../../../components/Player/Player";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
-  changeActiveCard, changeValueCard,
+  changeActiveCard,
+  changeValueCard,
 } from "../../../../store/slices/ui/Ui.slice";
-import {
-  getActiveStep,
-} from "../../../../store/slices/ui/selectors/selectors";
+import { getActiveStep, getIsConfiguratorStep } from "../../../../store/slices/ui/selectors/selectors";
 import {
   ItemCardI,
   StepCardType,
@@ -23,6 +22,7 @@ declare const app: Application;
 export const ConfiguratorSection: React.FC = () => {
   const dispatch = useDispatch();
   const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
+  const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
   if (!activeStep) return null;
 
@@ -41,10 +41,13 @@ export const ConfiguratorSection: React.FC = () => {
     dispatch(changeActiveCard(card));
   };
 
-  const onChange = (value: StepCardType, type: "counter" | "color" | 'select') => {
+  const onChange = (
+    value: StepCardType,
+    type: "counter" | "color" | "select"
+  ) => {
     if (type === "counter") {
       const counter = (value as ItemCardI).counter;
-      
+
       const threekit = (value as ItemCardI).threekit;
       if (counter && threekit) {
         app.changeCountItemConfiguration(
@@ -73,8 +76,8 @@ export const ConfiguratorSection: React.FC = () => {
   };
 
   const getCardComponent = (card: StepCardType, index: number) => {
+    if (!isConfiguratorStep) return null;
     const onClick = () => handleClick(card);
-    const isActive = activeStep.currentCard?.title === card.title;
     const isConfiguratorCard =
       card.key === StepName.ConferenceCamera ||
       card.key === StepName.AudioExtensions ||
@@ -82,6 +85,13 @@ export const ConfiguratorSection: React.FC = () => {
       card.key === StepName.SoftwareServices ||
       card.key === StepName.VideoAccessories;
     if (isConfiguratorCard) {
+      let isActive = false;
+      if (activeStep.currentCard) {
+        const currentCard = activeStep.currentCard as ItemCardI;
+        const cardItem = card as ItemCardI;
+        isActive =
+          currentCard.threekit?.assetId === cardItem.threekit?.assetId;
+      }
       return (
         <CardItem
           key={index}
