@@ -45,3 +45,10 @@ export interface AssetProxyI {
   assetId?: string
 	tagId?: string
 }
+
+export interface DataTableRowI {
+  id: string,
+  value: {
+    [key: string]: string
+  }
+}
