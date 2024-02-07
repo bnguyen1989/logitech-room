@@ -1,5 +1,4 @@
 import { Application } from '../models/Application'
-import { Configurator } from '../models/configurator/Configurator'
 import { ThreekitDataT } from '../models/configurator/type'
 import { ThreekitService } from '../services/Threekit/ThreekitService'
 
@@ -14,10 +13,17 @@ export const ConfigData = {
 
 
 export const initThreekitData = async () => {
-	new ThreekitService().getDataAssetById(ConfigData.assetId).then((data) => {
-		const configurator = new Configurator();
+	const assetId = app.currentConfigurator.assetId;
+	new ThreekitService().getDataAssetById(assetId).then((data) => {
+		const configurator = app.currentConfigurator.getSnapshot();
 		configurator.threekitData = data as ThreekitDataT;
 		app.currentConfigurator = configurator;
 		app.eventEmitter.emit('threekitDataInitialized', configurator);
 	});
 };
+
+export const getRoomAssetId = (platform: string, roomSize: string) => {
+	console.log('getRoomAssetId', platform, roomSize);
+
+	return '32ba8c20-d54a-46d2-a0bb-0339c71e7dc6';
+}

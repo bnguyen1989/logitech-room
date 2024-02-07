@@ -7,6 +7,7 @@ import {
 
 export class Configurator {
   public id: string = IdGenerator.generateId();
+  private _assetId: string = '';
   private _threekitData: ThreekitDataT = {};
 
   public static AudioExtensionName = [['Room Mic', 'Qty - Micpod/Expansion']];
@@ -18,6 +19,14 @@ export class Configurator {
   public static VideoAccessoriesName = [['Room Compute Mount'], ['Room Tap Mount', 'Qty - Tap Mount'], ['Room Camera Mount'], ['Room Mic Mount', 'Qty - Mic Mount'], ['Room Mic Pod Hub', 'Qty - Mic Pod Hub'], ['Room Mic Pod Extension Cable', 'Qty - Mic Pod Extension Cable']];
 
   public static SoftwareServicesName = [['Room Device Management Software'], ['Room Support Service']];
+
+  public get assetId(): string {
+    return this._assetId;
+  }
+
+  public set assetId(assetId: string) {
+    this._assetId = assetId;
+  }
 
   public get threekitData(): ThreekitDataT {
     return this._threekitData;
@@ -50,6 +59,7 @@ export class Configurator {
       ) as ThreekitDataT;
       configurator.threekitData = threekitData;
     }
+    configurator.assetId = this.assetId;
     return configurator;
   }
 }

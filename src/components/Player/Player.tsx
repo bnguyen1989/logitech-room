@@ -13,6 +13,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import {
+  getAssetId,
   getConfiguration,
   getNodes,
 } from "../../store/slices/configurator/selectors/selectors.ts";
@@ -23,11 +24,12 @@ export const bhoustonAuth = {
   publicToken: ConfigData.publicToken,
 };
 
-const assetId = ConfigData.assetId;
-
 export const Player: React.FC = () => {
   const configuration = useAppSelector(getConfiguration);
   const nodes = useAppSelector(getNodes);
+  const assetId = useAppSelector(getAssetId);
+
+  if (!assetId) return null;
 
   return (
     <div className={s.container}>

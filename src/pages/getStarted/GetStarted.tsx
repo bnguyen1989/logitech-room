@@ -1,24 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import s from "./GetStarted.module.scss";
 import BannerImage from "../../assets/images/getStarted/banner.png";
 import { Button } from "../../components/Buttons/Button/Button";
-import { useDispatch } from 'react-redux'
-import { moveToStartStep } from '../../store/slices/ui/Ui.slice'
-import { ConfigData } from '../../utils/threekitUtils'
-import { ThreekitService } from '../../services/Threekit/ThreekitService'
+import { useDispatch } from "react-redux";
+import { moveToStartStep } from "../../store/slices/ui/Ui.slice";
 
 export const GetStarted: React.FC = () => {
-	const dispatch = useDispatch();
-	const handleClick = () => {
-		dispatch(moveToStartStep());
-	};
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(moveToStartStep());
+  };
 
-  useEffect(() => {
-    new ThreekitService().getDataAssetById(ConfigData.assetId).then((res) => {
-      console.log(res);
-    } );
-
-  }, []);
   return (
     <div className={s.container}>
       <div className={s.image}>
@@ -26,7 +18,9 @@ export const GetStarted: React.FC = () => {
       </div>
 
       <div className={s.content}>
-        <div className={s.header_title}>TAKE THE GUESSWORK OUT OF YOUR VIDEO CONFERENCING SETUP</div>
+        <div className={s.header_title}>
+          TAKE THE GUESSWORK OUT OF YOUR VIDEO CONFERENCING SETUP
+        </div>
         <div className={s.title}>
           Configure the perfect video collaboration setup for any meeting room
         </div>
@@ -52,7 +46,11 @@ export const GetStarted: React.FC = () => {
         </div>
 
         <div className={s.actions}>
-          <Button text="Get Started" variant="contained" onClick={handleClick} />
+          <Button
+            text="Get Started"
+            variant="contained"
+            onClick={handleClick}
+          />
         </div>
       </div>
     </div>

@@ -6,7 +6,10 @@ import {
   changeActiveCard,
   changeValueCard,
 } from "../../../../store/slices/ui/Ui.slice";
-import { getActiveStep, getIsConfiguratorStep } from "../../../../store/slices/ui/selectors/selectors";
+import {
+  getActiveStep,
+  getIsConfiguratorStep,
+} from "../../../../store/slices/ui/selectors/selectors";
 import {
   ItemCardI,
   StepCardType,
@@ -16,6 +19,12 @@ import {
 import s from "./ConfiguratorSection.module.scss";
 import { PlayerWidgets } from "../../../../components/PlayerWidgets/PlayerWidgets";
 import { Application } from "../../../../models/Application";
+import { useEffect, useState } from "react";
+import {
+  getRoomAssetId,
+  initThreekitData,
+} from "../../../../utils/threekitUtils";
+import { changeAssetId } from "../../../../store/slices/configurator/Configurator.slice";
 
 declare const app: Application;
 
@@ -23,6 +32,27 @@ export const ConfiguratorSection: React.FC = () => {
   const dispatch = useDispatch();
   const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
+  const [isStartLoadPlayer, setIsStartLoadPlayer] = useState(false);
+  
+
+  useEffect(() => {
+    if (activeStep) {
+      setIsStartLoadPlayer(activeStep.key === StepName.Services);
+    }
+  }, [activeStep]);
+
+  useEffect(() => {
+    if (!isStartLoadPlayer) return;
+    const assetId = app.currentConfigurator.assetId;
+    if (assetId.length) return;
+
+    console.log('---- INIT THREEKIT DATA ----');
+    
+    const roomAssetId = getRoomAssetId("", "");
+    app.currentConfigurator.assetId = roomAssetId;
+    initThreekitData();
+    dispatch(changeAssetId(roomAssetId));
+  }, [isStartLoadPlayer]);
 
   if (!activeStep) return null;
 
@@ -89,8 +119,7 @@ export const ConfiguratorSection: React.FC = () => {
       if (activeStep.currentCard) {
         const currentCard = activeStep.currentCard as ItemCardI;
         const cardItem = card as ItemCardI;
-        isActive =
-          currentCard.threekit?.assetId === cardItem.threekit?.assetId;
+        isActive = currentCard.threekit?.assetId === cardItem.threekit?.assetId;
       }
       return (
         <CardItem
