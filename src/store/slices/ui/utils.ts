@@ -23,7 +23,11 @@ import MicImg from "../../../assets/images/items/mic.jpg";
 import ControllerImg from "../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../assets/images/items/access.jpg";
 import ServiceImg from "../../../assets/images/items/service.jpg";
-
+import {
+  PlatformName,
+  RoomSizeName,
+  ServiceName,
+} from "../../../models/permission/data";
 
 export const getInitStepData = (): StepDataI => {
   return {
@@ -95,22 +99,25 @@ export const getInitStepData = (): StepDataI => {
 function getPlatformCardData(): Array<PlatformCardI> {
   return [
     {
-			key: StepName.Platform,
+      key: StepName.Platform,
       logo: LogoGoogle,
       image: DeviceMS,
       title: "Google Meet Room",
+      keyPermission: PlatformName.GoogleMeet,
     },
     {
-			key: StepName.Platform,
+      key: StepName.Platform,
       logo: LogoMS,
       image: DeviceMS,
       title: "Microsoft Teams Room",
+      keyPermission: PlatformName.MicrosoftTeams,
     },
     {
-			key: StepName.Platform,
+      key: StepName.Platform,
       logo: LogoZoom,
       image: DeviceMS,
       title: "Zoom Room",
+      keyPermission: PlatformName.Zoom,
     },
   ];
 }
@@ -118,40 +125,46 @@ function getPlatformCardData(): Array<PlatformCardI> {
 function getRoomCardData(): Array<RoomCardI> {
   return [
     {
-			key: StepName.RoomSize,
+      key: StepName.RoomSize,
       image: ImagePhonebooth,
       title: "Phonebooth",
       subtitle: "up to 3",
+      keyPermission: RoomSizeName.Phonebooth,
     },
     {
-			key: StepName.RoomSize,
+      key: StepName.RoomSize,
       image: ImageHundle,
       title: "Huddle Room",
       subtitle: "up to 6",
+      keyPermission: RoomSizeName.Huddle,
     },
     {
-			key: StepName.RoomSize,
+      key: StepName.RoomSize,
       image: ImageSmall,
       title: "Small Room",
       subtitle: "up to 8",
+      keyPermission: RoomSizeName.Small,
     },
     {
-			key: StepName.RoomSize,
+      key: StepName.RoomSize,
       image: ImageMedium,
       title: "Medium Room",
       subtitle: "up to 12",
+      keyPermission: RoomSizeName.Medium,
     },
     {
-			key: StepName.RoomSize,
+      key: StepName.RoomSize,
       image: ImageLarge,
       title: "Large/Boardroom",
       subtitle: "up to 20",
+      keyPermission: RoomSizeName.Large,
     },
     {
-			key: StepName.RoomSize,
+      key: StepName.RoomSize,
       image: ImageAuditorium,
       title: "Auditorium",
       subtitle: "over 20",
+      keyPermission: RoomSizeName.Auditorium,
     },
   ];
 }
@@ -159,18 +172,20 @@ function getRoomCardData(): Array<RoomCardI> {
 function getServicesCardData(): Array<ServiceCardI> {
   return [
     {
-			key: StepName.Services,
+      key: StepName.Services,
       image: ImageAppliance,
       title: "Appliance",
       subtitle:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis sapien fringilla, molestie nisl ut, venenatis elit.",
+      keyPermission: ServiceName.Android,
     },
     {
-			key: StepName.Services,
+      key: StepName.Services,
       image: ImagePCBased,
       title: "PC based",
       subtitle:
         "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris eleifend vitae odio non elementum.",
+      keyPermission: ServiceName.PC,
     },
   ];
 }
@@ -180,7 +195,7 @@ function getConferenceCameraCardData(): Array<ItemCardI> {
     {
       key: StepName.ConferenceCamera,
       image: CameraImg,
-      header_title: 'Rally Bar',
+      header_title: "Rally Bar",
       title: "Video Bar for Medium-Large Rooms",
       color: {
         currentColor: {
@@ -202,7 +217,7 @@ function getConferenceCameraCardData(): Array<ItemCardI> {
     {
       key: StepName.ConferenceCamera,
       image: CameraImg,
-      header_title: 'Rally Bar Mini',
+      header_title: "Rally Bar Mini",
       title: "Video Bar for Small-Medium Rooms",
       color: {
         currentColor: {
@@ -224,7 +239,7 @@ function getConferenceCameraCardData(): Array<ItemCardI> {
     {
       key: StepName.ConferenceCamera,
       image: CameraImg,
-      header_title: 'Rally Bar Huddle',
+      header_title: "Rally Bar Huddle",
       title: "Video Bar for Huddle-Small Rooms",
       color: {
         currentColor: {
@@ -243,7 +258,7 @@ function getConferenceCameraCardData(): Array<ItemCardI> {
         ],
       },
     },
-  ]
+  ];
 }
 
 function getAudioExtensionsCardData(): Array<ItemCardI> {
@@ -251,7 +266,7 @@ function getAudioExtensionsCardData(): Array<ItemCardI> {
     {
       key: StepName.AudioExtensions,
       image: MicImg,
-      header_title: 'Rally Mic Pod',
+      header_title: "Rally Mic Pod",
       title: "Modular Mics with RightSound",
       color: {
         currentColor: {
@@ -278,17 +293,17 @@ function getAudioExtensionsCardData(): Array<ItemCardI> {
     {
       key: StepName.AudioExtensions,
       image: MicImg,
-      header_title: 'Mic Pod Mount',
+      header_title: "Mic Pod Mount",
       title: "Table mount for Rally Mic Pod",
     },
     {
       key: StepName.AudioExtensions,
       image: MicImg,
-      header_title: 'Rally Mic Pod Hub',
+      header_title: "Rally Mic Pod Hub",
       title: "Customize microphone placement",
-      subtitle: '3 ports'
+      subtitle: "3 ports",
     },
-  ]
+  ];
 }
 
 function getMeetingControllerCardData(): Array<ItemCardI> {
@@ -296,21 +311,21 @@ function getMeetingControllerCardData(): Array<ItemCardI> {
     {
       key: StepName.MeetingController,
       image: ControllerImg,
-      header_title: 'LOGITECH TAP',
+      header_title: "LOGITECH TAP",
       title: "USB over Cat5e",
-      subtitle: 'Minimum (1)',
+      subtitle: "Minimum (1)",
     },
     {
       key: StepName.MeetingController,
       image: ControllerImg,
-      header_title: 'TAP IP',
+      header_title: "TAP IP",
       title: "Ethernet or WiFi",
-      subtitle: 'Minimum (1)',
+      subtitle: "Minimum (1)",
     },
     {
       key: StepName.MeetingController,
       image: ControllerImg,
-      header_title: 'LOGITECH TAP SCHEDULER',
+      header_title: "LOGITECH TAP SCHEDULER",
       title: "Room scheduling panel",
       color: {
         currentColor: {
@@ -329,7 +344,7 @@ function getMeetingControllerCardData(): Array<ItemCardI> {
         ],
       },
     },
-  ]
+  ];
 }
 
 function getVideoAccessoriesCardData(): Array<ItemCardI> {
@@ -337,22 +352,22 @@ function getVideoAccessoriesCardData(): Array<ItemCardI> {
     {
       key: StepName.VideoAccessories,
       image: AccessImg,
-      header_title: 'WALL MOUNT',
+      header_title: "WALL MOUNT",
       title: "VESA-compatible mounting kit for Video Bars",
     },
     {
       key: StepName.VideoAccessories,
       image: AccessImg,
-      header_title: 'TV Mount',
+      header_title: "TV Mount",
       title: "TV Mount for Video Bars",
     },
     {
       key: StepName.VideoAccessories,
       image: AccessImg,
-      header_title: 'RALLY MIC POD EXTENSION CABLE',
+      header_title: "RALLY MIC POD EXTENSION CABLE",
       title: "10 meter (32.8 ft) extension cable",
     },
-  ]
+  ];
 }
 
 function getSoftwareServicesCardData(): Array<ItemCardI> {
@@ -360,14 +375,14 @@ function getSoftwareServicesCardData(): Array<ItemCardI> {
     {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      header_title: 'LOGITECH SYNC',
+      header_title: "LOGITECH SYNC",
       title: "Device Management Software",
     },
     {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      header_title: 'LOGITECH SELECT',
+      header_title: "LOGITECH SELECT",
       title: "24/7 Enterprise-Grade Support",
-    }
-  ]
+    },
+  ];
 }

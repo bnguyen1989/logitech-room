@@ -1,6 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ItemCardI, StepCardType, StepDataI, StepI, StepName } from './type'
 import { getInitStepData } from './utils'
+import { Permission } from '../../../models/permission/Permission'
+
+declare const permission: Permission;
 interface UIStateI {
 	stepData: StepDataI;
 	activeStep: StepI<StepCardType> | null;
@@ -17,14 +20,22 @@ const uiSlice = createSlice({
   reducers: {
 		changeActiveStep: (state, action: PayloadAction<StepI<StepCardType> | null>) => {
 			state.activeStep = action.payload
+			if (action.payload) {
+				permission.changeStepName(action.payload.key);
+			}
+			
 		},
 		moveToStartStep: (state) => {
+			permission.changeStepName(StepName.Platform);
 			state.activeStep = state.stepData[StepName.Platform];
 		},
 		changeActiveCard: (state, action: PayloadAction<StepCardType | undefined>) => {
 			const { activeStep } = state;
 			if (activeStep) {
 				activeStep.currentCard = action.payload;
+				if(action.payload?.keyPermission) {
+					permission.addActiveItemByName(action.payload.keyPermission);
+				}
 			}
 		},
 		changeValueCard: (state, action: PayloadAction<StepCardType>) => {

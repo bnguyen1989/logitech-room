@@ -38,6 +38,7 @@ export interface PlatformCardI {
 	logo: string;
 	image: string;
 	title: string;
+	keyPermission?: string;
 }
 
 export interface RoomCardI {
@@ -45,6 +46,7 @@ export interface RoomCardI {
 	image: string;
 	title: string;
 	subtitle: string;
+	keyPermission?: string;
 }
 
 export interface ServiceCardI {
@@ -52,6 +54,7 @@ export interface ServiceCardI {
 	image: string;
 	title: string;
 	subtitle: string;
+	keyPermission?: string;
 }
 
 export interface ColorItemI {
@@ -94,4 +97,5 @@ export interface ItemCardI {
 	counter?: CounterI;
 	select?: SelectI;
 	threekit?: ThreekitI;
+	keyPermission?: string;
 }
