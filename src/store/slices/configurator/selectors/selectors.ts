@@ -7,3 +7,5 @@ export const getShowDimensions = (state: RootState) => state.configurator.showDi
 export const getConfiguration = (state: RootState) => state.configurator.configuration;
 
 export const getNodes = (state: RootState) => state.configurator.nodes;
+
+export const getAssetId = (state: RootState) => state.configurator.assetId;
