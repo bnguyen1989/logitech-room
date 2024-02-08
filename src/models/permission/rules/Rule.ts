@@ -35,6 +35,9 @@ export abstract class Rule {
 
   public removeActiveItem(item: ItemObject): void {
     if(item.isRequired) return;
+    if(item.defaultActive) {
+      item.defaultActive = false;
+    }
     this.activeItems = this.activeItems.filter(
       (activeItem: ItemObject) => activeItem.name !== item.name
     );
@@ -50,9 +53,9 @@ export abstract class Rule {
       (item: ItemObject) => !this.activeItems.some((activeItem: ItemObject) => activeItem.name === item.name)
     );
 
-    defaultActiveItems.forEach((item: ItemObject) => {
-      item.defaultActive = false;
-    });
+    // defaultActiveItems.forEach((item: ItemObject) => {
+    //   item.defaultActive = false;
+    // });
 
     this.activeItems.push(...defaultActiveItems);
 

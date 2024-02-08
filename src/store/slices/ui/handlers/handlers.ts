@@ -243,6 +243,7 @@ function setMeetingControllerData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
         });
       });
 

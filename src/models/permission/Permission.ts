@@ -38,35 +38,83 @@ export class Permission {
     }
     const currentRule = ruleFactoryMethod(stepName);
     if (this.rules.length === 0) {
-			const data = jsonData[stepName as never];
-			const items = Object.keys(data).map((item: string) => new ItemObject(item));
-			currentRule.items = items;
+      const data = jsonData[stepName as never];
+      const items = Object.keys(data).map(
+        (item: string) => new ItemObject(item)
+      );
+      currentRule.items = items;
       this.addRule(currentRule);
-			return;
+      return;
     }
 
-    let data = {...jsonData};
-		for (let index = 0; index < this.rules.length; index+=1) {
+    let data = { ...jsonData };
+    for (let index = 0; index < this.rules.length; index += 1) {
       const rule = this.rules[index];
       const stepName = rule.stepName;
       const activeItems = rule.getActiveItems();
       const value = activeItems[0].name;
       data = data[stepName as never][value];
+      if (stepName === StepName.Services) {
+        break;
+      }
     }
     data = data[stepName as never];
-    const items = Object.keys(data).map((item: string) => {
-      const itemObject = new ItemObject(item);
-      const value = data[item as never] as ItemObject;
-      
-      if(value.isVisible !== undefined) itemObject.isVisible = value.isVisible;
-      if(value.defaultActive !== undefined) itemObject.defaultActive = value.defaultActive;
-      if(value.isRequired !== undefined) itemObject.isRequired = value.isRequired;
-      if(value.dependence) {
-        const dependence = value.dependence as never as string[];
-        itemObject.dependence = dependence.map((item: string) => new ItemObject(item));
+    const keys = Object.keys(data);
+    let items = keys
+      .filter((key: string) => key !== "dependence")
+      .map((item: string) => {
+        const itemObject = new ItemObject(item);
+        const value = data[item as never] as ItemObject;
+
+        if (value.isVisible !== undefined)
+          itemObject.isVisible = value.isVisible;
+        if (value.defaultActive !== undefined)
+          itemObject.defaultActive = value.defaultActive;
+        if (value.isRequired !== undefined)
+          itemObject.isRequired = value.isRequired;
+        if (value.dependence) {
+          const dependence = value.dependence as never as string[];
+          itemObject.dependence = dependence.map(
+            (item: string) => new ItemObject(item)
+          );
+        }
+        return itemObject;
+      });
+
+    if (keys.includes("dependence")) {
+      const stepDependece = data["dependence" as never];
+      const nameRule = Object.keys(stepDependece)[0];
+      const rule = this.rules.find((rule) => rule.stepName === nameRule);
+      const activeItemRule = rule?.getActiveItems()[0];
+      if (activeItemRule) {
+        const tempData =
+          stepDependece[nameRule as never][activeItemRule.name as never];
+        const keyItems = Object.keys(tempData);
+        console.log('keyItems', keyItems);
+        
+        const items2 = keyItems
+          .map((item: string) => {
+            const itemObject = new ItemObject(item);
+            const value = tempData[item as never] as ItemObject;
+
+            if (value?.isVisible !== undefined)
+              itemObject.isVisible = value.isVisible;
+            if (value?.defaultActive !== undefined)
+              itemObject.defaultActive = value.defaultActive;
+            if (value?.isRequired !== undefined)
+              itemObject.isRequired = value.isRequired;
+            if (value?.dependence) {
+              const dependence = value.dependence as never as string[];
+              itemObject.dependence = dependence.map(
+                (item: string) => new ItemObject(item)
+              );
+            }
+            return itemObject;
+          });
+
+          items = items.concat(items2);
       }
-      return itemObject;
-    });
+    }
     currentRule.items = items;
     this.addRule(currentRule);
   }
@@ -75,9 +123,9 @@ export class Permission {
     const currentRule = this.rules.find(
       (rule) => rule.stepName === this.currentStepName
     );
-    if(currentRule) {
-      const item = currentRule.items.find(item => item.name === itemName);
-      if(item) {
+    if (currentRule) {
+      const item = currentRule.items.find((item) => item.name === itemName);
+      if (item) {
         currentRule.addActiveItem(item);
       }
     }
@@ -87,9 +135,9 @@ export class Permission {
     const currentRule = this.rules.find(
       (rule) => rule.stepName === this.currentStepName
     );
-    if(currentRule) {
-      const item = currentRule.items.find(item => item.name === itemName);
-      if(item) {
+    if (currentRule) {
+      const item = currentRule.items.find((item) => item.name === itemName);
+      if (item) {
         currentRule.removeActiveItem(item);
       }
     }

@@ -34,6 +34,15 @@ export enum AudioExtensionName {
   RallyMicPod = "Rally Mic Pod",
 }
 
+export enum MeetingControllerName {
+  LogitechTap = "Logitech Tap",
+  LogitechTapIP = "Logitech Tap IP",
+  LogitechSight = "Logitech Sight",
+  LogitechTapScheduler = "Logitech Tap Scheduler",
+  LogitechScribe = "Logitech Scribe",
+  LogitechSwytch = "Logitech Swytch",
+}
+
 export const jsonData = {
   [StepName.Platform]: {
     [PlatformName.GoogleMeet]: {
@@ -193,40 +202,62 @@ export const jsonData = {
           [StepName.Services]: {
             [ServiceName.Android]: {
               [StepName.ConferenceCamera]: {
-                [CameraName.RallyBar]: {
-                  [StepName.AudioExtensions]: {
-                    [AudioExtensionName.RallyMicPod]: {},
-                  },
-                },
-                [CameraName.RallyBarMini]: {
-                  [StepName.AudioExtensions]: {
-                    [AudioExtensionName.RallyMicPod]: {
-                      defaultActive: true,
-                      isRecommended: true,
+                [CameraName.RallyBar]: {},
+                [CameraName.RallyBarMini]: {},
+              },
+              [StepName.AudioExtensions]: {
+                dependence: {
+                  [StepName.ConferenceCamera]: {
+                    [CameraName.RallyBar]: {
+                      [AudioExtensionName.RallyMicPod]: {},
+                    },
+                    [CameraName.RallyBarMini]: {
+                      [AudioExtensionName.RallyMicPod]: {
+                        defaultActive: true,
+                        isRecommended: true,
+                      },
                     },
                   },
                 },
               },
+              [StepName.MeetingController]: {
+                [MeetingControllerName.LogitechTap]: {},
+                [MeetingControllerName.LogitechTapIP]: {},
+                [MeetingControllerName.LogitechSight]: {},
+                [MeetingControllerName.LogitechTapScheduler]: {},
+                [MeetingControllerName.LogitechSwytch]: {},
+              },
             },
             [ServiceName.PC]: {
               [StepName.ConferenceCamera]: {
-                [CameraName.RallyBar]: {
-                  [StepName.AudioExtensions]: {
-                    [AudioExtensionName.RallyMicPod]: {},
-                  },
-                },
-                [CameraName.RallyBarMini]: {
-                  [StepName.AudioExtensions]: {
-                    [AudioExtensionName.RallyMicPod]: {
-                      defaultActive: true,
-                      isRecommended: true,
-                    },
-                  },
-                },
+                [CameraName.RallyBar]: {},
+                [CameraName.RallyBarMini]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
                   isRequired: true,
                 },
+              },
+              [StepName.AudioExtensions]: {
+                dependence: {
+                  [StepName.ConferenceCamera]: {
+                    [CameraName.RallyBar]: {
+                      [AudioExtensionName.RallyMicPod]: {},
+                    },
+                    [CameraName.RallyBarMini]: {
+                      [AudioExtensionName.RallyMicPod]: {
+                        defaultActive: true,
+                        isRecommended: true,
+                      },
+                    },
+                  },
+                },
+              },
+              [StepName.MeetingController]: {
+                [MeetingControllerName.LogitechTap]: {},
+                [MeetingControllerName.LogitechSight]: {},
+                [MeetingControllerName.LogitechTapScheduler]: {},
+                [MeetingControllerName.LogitechScribe]: {},
+                [MeetingControllerName.LogitechSwytch]: {},
               },
             },
           },
