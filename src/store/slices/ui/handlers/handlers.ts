@@ -296,6 +296,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
         });
       });
 
@@ -366,6 +367,7 @@ function setSoftwareServicesData(configurator: Configurator) {
               };
             }),
           },
+          keyPermission: getPermissionNameByItemName("Support Service"),
         });
       } else {
         value.values.forEach((item: ConfiguratorDataValueType) => {
@@ -379,6 +381,7 @@ function setSoftwareServicesData(configurator: Configurator) {
               assetId: asset.id,
               key: name,
             },
+            keyPermission: getPermissionNameByItemName(asset.name),
           });
         });
       }

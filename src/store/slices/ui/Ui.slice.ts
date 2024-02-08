@@ -22,6 +22,8 @@ const uiSlice = createSlice({
 			state.activeStep = action.payload
 			if (action.payload) {
 				permission.changeStepName(action.payload.key);
+			} else {
+				permission.changeStepName(null);
 			}
 			
 		},

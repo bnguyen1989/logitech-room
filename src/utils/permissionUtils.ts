@@ -6,6 +6,8 @@ import {
   PlatformName,
   RoomSizeName,
   ServiceName,
+  SoftwareServicesName,
+  VideoAccessoryName,
 } from "../models/permission/data";
 
 export const initPermission = () => {
@@ -15,6 +17,7 @@ export const initPermission = () => {
 };
 
 export const getPermissionNameByItemName = (itemName: string) => {
+
   const permissionNames = [
     ...Object.values(PlatformName),
     ...Object.values(RoomSizeName),
@@ -22,9 +25,11 @@ export const getPermissionNameByItemName = (itemName: string) => {
     ...Object.values(CameraName),
     ...Object.values(AudioExtensionName),
     ...Object.values(MeetingControllerName),
+    ...Object.values(VideoAccessoryName),
+    ...Object.values(SoftwareServicesName),
   ];
 
-  return permissionNames.find((name) =>
-    itemName.toLocaleLowerCase().includes(name.toLowerCase())
+  return permissionNames.find(
+    (name) => itemName.toLowerCase() === name.toLowerCase()
   );
 };

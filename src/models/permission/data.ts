@@ -25,8 +25,8 @@ export enum CameraName {
   PreConfiguredMiniPC = "Pre-Configured Mini PC",
   MeetUp = "MeetUp",
   RoomMate = "RoomMate",
-  RallyBarMini = "Rally Bar Mini",
-  RallyBar = "Rally Bar",
+  RallyBarMini = "Logitech Rally Bar Mini",
+  RallyBar = "Logitech Rally Bar",
   RallyPlus = "Rally Plus",
 }
 
@@ -35,12 +35,29 @@ export enum AudioExtensionName {
 }
 
 export enum MeetingControllerName {
-  LogitechTap = "Logitech Tap",
   LogitechTapIP = "Logitech Tap IP",
+  LogitechTap = "Logitech Tap",
   LogitechSight = "Logitech Sight",
   LogitechTapScheduler = "Logitech Tap Scheduler",
   LogitechScribe = "Logitech Scribe",
   LogitechSwytch = "Logitech Swytch",
+}
+
+export enum VideoAccessoryName {
+  ComputeMount = "Compute Mount",
+  WallMount = "Tap Mount - Wall Mount",
+  RiserMount = "Tap Mount - Riser Mount",
+  TableMount = "Tap Mount - Table Mount",
+  WallMountForVideoBars = "Wall Mount for Video Bars",
+  TVMountForVideoBars = "TV Mount for Video Bars",
+  RallyMicPodMount = "Logitech Rally Mic Pod Mount",
+  RallyMicPodHub = "Rally Mic Pod Hub",
+  MicPodExtensionCable = "Mic Pod Extension Cable",
+}
+
+export enum SoftwareServicesName {
+  LogitechSync = "Logitech Sync",
+  SupportService = "Support Service",
 }
 
 export const jsonData = {
@@ -227,6 +244,17 @@ export const jsonData = {
                 [MeetingControllerName.LogitechTapScheduler]: {},
                 [MeetingControllerName.LogitechSwytch]: {},
               },
+              [StepName.VideoAccessories]: {
+                [VideoAccessoryName.WallMount]: {},
+                [VideoAccessoryName.RiserMount]: {},
+                [VideoAccessoryName.TableMount]: {},
+                [VideoAccessoryName.RallyMicPodHub]: {},
+                [VideoAccessoryName.MicPodExtensionCable]: {},
+              },
+              [StepName.SoftwareServices]: {
+                [SoftwareServicesName.LogitechSync]: {},
+                [SoftwareServicesName.SupportService]: {},
+              },
             },
             [ServiceName.PC]: {
               [StepName.ConferenceCamera]: {
@@ -258,6 +286,21 @@ export const jsonData = {
                 [MeetingControllerName.LogitechTapScheduler]: {},
                 [MeetingControllerName.LogitechScribe]: {},
                 [MeetingControllerName.LogitechSwytch]: {},
+              },
+              [StepName.VideoAccessories]: {
+                [VideoAccessoryName.ComputeMount]: {},
+                [VideoAccessoryName.WallMount]: {},
+                [VideoAccessoryName.RiserMount]: {},
+                [VideoAccessoryName.TableMount]: {},
+                [VideoAccessoryName.TVMountForVideoBars]: {},
+                [VideoAccessoryName.WallMountForVideoBars]: {},
+                [VideoAccessoryName.RallyMicPodMount]: {},
+                [VideoAccessoryName.RallyMicPodHub]: {},
+                [VideoAccessoryName.MicPodExtensionCable]: {},
+              },
+              [StepName.SoftwareServices]: {
+                [SoftwareServicesName.LogitechSync]: {},
+                [SoftwareServicesName.SupportService]: {},
               },
             },
           },
