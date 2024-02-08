@@ -60,59 +60,19 @@ export class Permission {
     }
     data = data[stepName as never];
     const keys = Object.keys(data);
-    let items = keys
-      .filter((key: string) => key !== "dependence")
-      .map((item: string) => {
-        const itemObject = new ItemObject(item);
-        const value = data[item as never] as ItemObject;
-
-        if (value.isVisible !== undefined)
-          itemObject.isVisible = value.isVisible;
-        if (value.defaultActive !== undefined)
-          itemObject.defaultActive = value.defaultActive;
-        if (value.isRequired !== undefined)
-          itemObject.isRequired = value.isRequired;
-        if (value.dependence) {
-          const dependence = value.dependence as never as string[];
-          itemObject.dependence = dependence.map(
-            (item: string) => new ItemObject(item)
-          );
-        }
-        return itemObject;
-      });
+    let items = this.createItems(keys, data);
 
     if (keys.includes("dependence")) {
-      const stepDependece = data["dependence" as never];
-      const nameRule = Object.keys(stepDependece)[0];
+      const stepDependence = data["dependence" as never];
+      const nameRule = Object.keys(stepDependence)[0];
       const rule = this.rules.find((rule) => rule.stepName === nameRule);
       const activeItemRule = rule?.getActiveItems()[0];
       if (activeItemRule) {
         const tempData =
-          stepDependece[nameRule as never][activeItemRule.name as never];
+          stepDependence[nameRule as never][activeItemRule.name as never];
         const keyItems = Object.keys(tempData);
-        console.log('keyItems', keyItems);
-        
-        const items2 = keyItems
-          .map((item: string) => {
-            const itemObject = new ItemObject(item);
-            const value = tempData[item as never] as ItemObject;
 
-            if (value?.isVisible !== undefined)
-              itemObject.isVisible = value.isVisible;
-            if (value?.defaultActive !== undefined)
-              itemObject.defaultActive = value.defaultActive;
-            if (value?.isRequired !== undefined)
-              itemObject.isRequired = value.isRequired;
-            if (value?.dependence) {
-              const dependence = value.dependence as never as string[];
-              itemObject.dependence = dependence.map(
-                (item: string) => new ItemObject(item)
-              );
-            }
-            return itemObject;
-          });
-
-          items = items.concat(items2);
+        items = items.concat(this.createItems(keyItems, tempData));
       }
     }
     currentRule.items = items;
@@ -171,5 +131,25 @@ export class Permission {
       return currentRule.isRequiredActiveItems;
     }
     return false;
+  }
+
+  private createItems(keys: string[], data: object): Array<ItemObject> {
+    return keys.map((item: string) => {
+      const itemObject = new ItemObject(item);
+      const value = data[item as never] as ItemObject;
+
+      if (value.isVisible !== undefined) itemObject.isVisible = value.isVisible;
+      if (value.defaultActive !== undefined)
+        itemObject.defaultActive = value.defaultActive;
+      if (value.isRequired !== undefined)
+        itemObject.isRequired = value.isRequired;
+      if (value.dependence) {
+        const dependence = value.dependence as never as string[];
+        itemObject.dependence = dependence.map(
+          (item: string) => new ItemObject(item)
+        );
+      }
+      return itemObject;
+    });
   }
 }
