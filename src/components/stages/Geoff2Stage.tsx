@@ -1,29 +1,15 @@
 import {
-  Bounds,
   ContactShadows,
   Environment,
+  Resize,
   SoftShadows,
-  useBounds
-} from '@react-three/drei';
-import { useThree } from '@react-three/fiber';
-import type React from 'react';
-import { type ReactNode, useEffect, useState } from 'react';
-
-export const CLUSTER1_HOST = 'https://cluster1.threekit.xyz';
-
-function Refit({
-  radius,
-  adjustCamera
-}: {
-  radius: number;
-  adjustCamera: number | boolean;
-}) {
-  const api = useBounds();
-  useEffect(() => {
-    if (adjustCamera) api.refresh().clip().fit();
-  }, [radius, adjustCamera]);
-  return null;
-}
+} from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import { Align } from "@threekit/react-three-fiber";
+import { Frame } from "@threekit/react-three-fiber/dist/alpha.js";
+import CameraControls from "camera-controls";
+import type React from "react";
+import { type ReactNode, useState, MutableRefObject } from "react";
 
 const controls = {
   productRotation: 0,
@@ -32,7 +18,7 @@ const controls = {
     keyOffset: 0,
     keyIntensity: 0.7,
     fIblIntensity: 0.8,
-    bIblIntensity: 2.1
+    bIblIntensity: 2.1,
   },
   shadows: {
     keySamples: 30,
@@ -40,20 +26,21 @@ const controls = {
     keySize: 140,
     keyOpacity: 0.15,
     cOpacity: 0.7,
-    cBlur: 0.55
+    cBlur: 0.55,
   },
   fabric: {
-    fRotation: 0.0
+    fRotation: 0.0,
   },
   bedding: {
-    bEmissive: '#1c1c1c'
+    bEmissive: "#1c1c1c",
   },
   toneMapping: {
-    exposure: 1.0
-  }
+    exposure: 1.0,
+  },
 };
 
 export type Geoff2StageProps = {
+  cameraControlsRef?: MutableRefObject<CameraControls | null>;
   altitude?: number;
   azimuth?: number;
   zoom?: number;
@@ -61,23 +48,19 @@ export type Geoff2StageProps = {
 };
 
 const Geoff2Stage: React.FC<Geoff2StageProps> = ({
-  children
+  cameraControlsRef,
+  children,
 }) => {
   const [radius] = useState<number>(2.0);
-  const adjustCamera = 1.4;
 
   const { gl } = useThree();
 
   gl.toneMappingExposure = controls.toneMapping.exposure;
 
-
   const shadowBias = -0.002;
   return (
     <>
-      <Environment
-        files={`${CLUSTER1_HOST}/assets/envmaps/Andrei_Beds_Env.hdr`}
-        blur={0}
-      />
+      <Environment files={`/assets/ibl/Andrei_Beds_Env.hdr`} blur={0} />
       <SoftShadows
         size={controls.shadows.keySize}
         focus={controls.shadows.keyFocus}
@@ -91,7 +74,7 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
           position={[
             radius * 3,
             radius * 3 + controls.lighting.keyOffset,
-            radius
+            radius,
           ]}
           intensity={controls.lighting.keyIntensity}
           shadow-mapSize={1024}
@@ -104,18 +87,16 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
           />
         </directionalLight>
       </group>
-      <group>
-        <Bounds
-          fit={!!adjustCamera}
-          clip={!!adjustCamera}
-          margin={Number(adjustCamera)}
-          observe
+      <group rotation={[0, (Math.PI / 180) * controls.productRotation, 0]}>
+        <Frame
+          fitMode="sphere"
+          cameraControlsRef={cameraControlsRef}
+          fitPaddingRatio={1}
         >
-          <Refit radius={radius} adjustCamera={adjustCamera} />
-          <group rotation={[0, (Math.PI / 180) * controls.productRotation, 0]}>
-            {children}
-          </group>
-        </Bounds>
+          <Align mode="min" axis={1} limit={0}>
+            <Resize size={1.5}>{children}</Resize>
+          </Align>
+        </Frame>
       </group>
       <ContactShadows
         resolution={1024}

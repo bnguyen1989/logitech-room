@@ -9,7 +9,11 @@
 	.content {
 		width: 100%;
 		height: calc(100% - 180px);
+ 
+		z-index: 1;
+ 
 		position: relative;
+ 
 	}
 
 	.loader {
@@ -32,6 +36,7 @@
 		justify-content: center;
 		gap: 24px;
 		height: 180px;
+		z-index: 1;
 	}
 
 }
