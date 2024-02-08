@@ -1,13 +1,13 @@
 import s from "./Player.module.scss";
-import { OrbitControls } from "@react-three/drei";
+import { CameraControls, OrbitControls } from "@react-three/drei";
 import {
   ExporterResolver,
-  OptimizeResolverWrapper,
+  // OptimizeResolverWrapper,
   Viewer,
 } from "@threekit/react-three-fiber";
+import CameraControlsImpl from 'camera-controls';
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
-
 import Geoff2Stage from "../stages/Geoff2Stage.tsx";
 import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
@@ -17,6 +17,7 @@ import {
   getConfiguration,
   getNodes,
 } from "../../store/slices/configurator/selectors/selectors.ts";
+import { useRef } from "react";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -25,6 +26,8 @@ export const bhoustonAuth = {
 };
 
 export const Player: React.FC = () => {
+  const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
+
   const configuration = useAppSelector(getConfiguration);
   const nodes = useAppSelector(getNodes);
   const assetId = useAppSelector(getAssetId);
@@ -38,12 +41,24 @@ export const Player: React.FC = () => {
       </Head>
       <Viewer
         auth={bhoustonAuth}
-        resolver={OptimizeResolverWrapper(ExporterResolver({ cache: false }), {
-          cacheScope: "v1",
+        // resolver={OptimizeResolverWrapper(ExporterResolver({ cache: false }), {
+        //   cacheScope: "v1",
+        // })}
+        resolver={ExporterResolver({
+          cache: true,
+          cacheScope: 'v5',
+          mode: 'experimental',
+          settings: {
+            prune: {
+              childless: false,
+              invisible: false
+            }
+          }
         })}
       >
         <>
-          <Geoff2Stage>
+        <CameraControls ref={cameraControlsRef} />
+          <Geoff2Stage cameraControlsRef={cameraControlsRef} >
             <Room
               roomAssetId={assetId}
               attachNodeNameToAssetId={nodes}
