@@ -1,8 +1,8 @@
 export class ItemObject {
 	public name: string;
-	public dependenceItems: ItemObject[] = [];
+	public dependence: ItemObject[] = [];
 	private _isVisible: boolean = true;
-	private _active?: boolean = false;
+	private _defaultActive: boolean = false;
 
 
 	constructor(name: string) {
@@ -17,11 +17,11 @@ export class ItemObject {
 		this._isVisible = value;
 	}
 
-	public get active(): boolean {
-		return this._active ?? false;
+	public get defaultActive(): boolean {
+		return this._defaultActive;
 	}
 
-	public set active(value: boolean) {
-		this._active = value;
+	public set defaultActive(value: boolean) {
+		this._defaultActive = value;
 	}
 }

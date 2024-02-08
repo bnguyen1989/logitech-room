@@ -46,7 +46,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -64,7 +64,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -91,7 +91,7 @@ export const jsonData = {
                 [CameraName.RallyBarMini]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -109,7 +109,7 @@ export const jsonData = {
                 [CameraName.RallyPlus]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -126,8 +126,8 @@ export const jsonData = {
                 [CameraName.RallyBarHuddle]: {},
                 [CameraName.MeetUp]: {},
                 [CameraName.RoomMate]: {
-                  dependence: CameraName.MeetUp,
-                  active: true,
+                  dependence: [CameraName.MeetUp],
+                  defaultActive: true,
                 },
               },
             },
@@ -137,7 +137,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -150,8 +150,8 @@ export const jsonData = {
                 [CameraName.RallyBarHuddle]: {},
                 [CameraName.MeetUp]: {},
                 [CameraName.RoomMate]: {
-                  dependence: CameraName.MeetUp,
-                  active: true,
+                  dependence: [CameraName.MeetUp],
+                  defaultActive: true,
                 },
               },
             },
@@ -161,7 +161,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -179,7 +179,7 @@ export const jsonData = {
                 [CameraName.RallyBarMini]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -199,7 +199,7 @@ export const jsonData = {
                 [CameraName.RallyBarMini]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -219,7 +219,7 @@ export const jsonData = {
                 [CameraName.RallyPlus]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  active: true,
+                  defaultActive: true,
                 },
               },
             },
@@ -235,7 +235,7 @@ export const jsonData = {
               [CameraName.RallyPlus]: {},
               [CameraName.PreConfiguredMiniPC]: {
                 isVisible: false,
-                active: true,
+                defaultActive: true,
               },
             },
           },

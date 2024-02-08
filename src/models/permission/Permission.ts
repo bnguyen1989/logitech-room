@@ -49,7 +49,8 @@ export class Permission {
 		for (let index = 0; index < this.rules.length; index+=1) {
       const rule = this.rules[index];
       const stepName = rule.stepName;
-      const value = rule.activeItems[0].name;
+      const activeItems = rule.getActiveItems();
+      const value = activeItems[0].name;
       data = data[stepName as never][value];
     }
     data = data[stepName as never];
@@ -58,8 +59,11 @@ export class Permission {
       const value = data[item as never] as ItemObject;
       
       if(value.isVisible !== undefined) itemObject.isVisible = value.isVisible;
-      if(value.active !== undefined) itemObject.active = value.active;
-
+      if(value.defaultActive !== undefined) itemObject.defaultActive = value.defaultActive;
+      if(value.dependence) {
+        const dependence = value.dependence as never as string[];
+        itemObject.dependence = dependence.map((item: string) => new ItemObject(item));
+      }
       return itemObject;
     });
     currentRule.items = items;
