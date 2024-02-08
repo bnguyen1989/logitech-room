@@ -25,8 +25,10 @@ import {
   initThreekitData,
 } from "../../../../utils/threekitUtils";
 import { changeAssetId } from "../../../../store/slices/configurator/Configurator.slice";
+import { Permission } from '../../../../models/permission/Permission'
 
 declare const app: Application;
+declare const permission: Permission;
 
 export const ConfiguratorSection: React.FC = () => {
   const dispatch = useDispatch();
@@ -117,9 +119,8 @@ export const ConfiguratorSection: React.FC = () => {
     if (isConfiguratorCard) {
       let isActive = false;
       if (activeStep.currentCard) {
-        const currentCard = activeStep.currentCard as ItemCardI;
-        const cardItem = card as ItemCardI;
-        isActive = currentCard.threekit?.assetId === cardItem.threekit?.assetId;
+        const activeItems = permission.getActiveItems();
+        isActive = activeItems.some((item) => item.name === card.keyPermission);
       }
       return (
         <CardItem

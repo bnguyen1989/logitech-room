@@ -17,6 +17,7 @@ import {
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
+import { getPermissionNameByItemName } from '../../../../utils/permissionUtils'
 
 declare const app: Application;
 
@@ -186,6 +187,7 @@ function setCameraData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
           color: {
             currentColor: {
               name: "Graphite",

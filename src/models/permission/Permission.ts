@@ -82,12 +82,22 @@ export class Permission {
     }
   }
 
-  public getKeysItems(): Array<ItemObject> {
+  public getItems(): Array<ItemObject> {
     const currentRule = this.rules.find(
       (rule) => rule.stepName === this.currentStepName
     );
     if (currentRule) {
       return currentRule.getValidItems();
+    }
+    return [];
+  }
+
+  public getActiveItems(): Array<ItemObject> {
+    const currentRule = this.rules.find(
+      (rule) => rule.stepName === this.currentStepName
+    );
+    if (currentRule) {
+      return currentRule.getActiveItems();
     }
     return [];
   }
