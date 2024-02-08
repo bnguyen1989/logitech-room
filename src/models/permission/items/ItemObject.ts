@@ -3,6 +3,7 @@ export class ItemObject {
 	public dependence: ItemObject[] = [];
 	private _isVisible: boolean = true;
 	private _defaultActive: boolean = false;
+	private _isRequired: boolean = false;
 
 
 	constructor(name: string) {
@@ -23,5 +24,13 @@ export class ItemObject {
 
 	public set defaultActive(value: boolean) {
 		this._defaultActive = value;
+	}
+
+	public get isRequired(): boolean {
+		return this._isRequired;
+	}
+
+	public set isRequired(value: boolean) {
+		this._isRequired = value;
 	}
 }

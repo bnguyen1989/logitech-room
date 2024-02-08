@@ -33,17 +33,32 @@ export abstract class Rule {
     this.activeItems.push(item);
   }
 
+  public removeActiveItem(item: ItemObject): void {
+    if(item.isRequired) return;
+    this.activeItems = this.activeItems.filter(
+      (activeItem: ItemObject) => activeItem.name !== item.name
+    );
+  }
+
   public getActiveItems(): Array<ItemObject> {
-    const activeItems = this.activeItems;
-    const defaultActiveNotVisibleItems = this.items.filter(
-      (item: ItemObject) => item.defaultActive && !item.isVisible
+    const requiredNotVisibleItems = this.items.filter(
+      (item: ItemObject) => item.isRequired && !item.isVisible
     );
     const activeItemsWithDependence = this.getActiveItemsWithDependence();
     const requiredItems = this.getRequiredItems();
+    const defaultActiveItems = this.getDefaultActiveItems().filter(
+      (item: ItemObject) => !this.activeItems.some((activeItem: ItemObject) => activeItem.name === item.name)
+    );
+
+    defaultActiveItems.forEach((item: ItemObject) => {
+      item.defaultActive = false;
+    });
+
+    this.activeItems.push(...defaultActiveItems);
 
     return [
-      ...activeItems,
-      ...defaultActiveNotVisibleItems,
+      ...this.activeItems,
+      ...requiredNotVisibleItems,
       ...activeItemsWithDependence,
       ...requiredItems,
     ];
@@ -74,13 +89,6 @@ export abstract class Rule {
     return [...visibleItems, ...activeItemsDependence];
   }
 
-  public getRequiredItems(): Array<ItemObject> {
-    const requiredItems = this.items.filter(
-      (item: ItemObject) => item.isVisible && item.defaultActive && !item.dependence.length
-    );
-    return requiredItems;
-  }
-
   protected getChainKeys(): Array<Array<ItemObject>> {
     const keys: Array<Array<ItemObject>> = [];
     if (this.activeItems.length > 0) {
@@ -94,5 +102,19 @@ export abstract class Rule {
       rule = rule.prevRule;
     }
     return keys.reverse();
+  }
+
+  private getRequiredItems(): Array<ItemObject> {
+    const requiredItems = this.items.filter(
+      (item: ItemObject) => item.isVisible && item.isRequired && !item.dependence.length
+    );
+    return requiredItems;
+  }
+
+  private getDefaultActiveItems(): Array<ItemObject> {
+    const defaultActiveItems = this.items.filter(
+      (item: ItemObject) => item.isVisible && item.defaultActive && !item.dependence.length
+    );
+    return defaultActiveItems;
   }
 }

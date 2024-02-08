@@ -59,8 +59,11 @@ export const ConfiguratorSection: React.FC = () => {
   if (!activeStep) return null;
 
   const handleClick = (card: StepCardType) => {
-    if (card.title === activeStep.currentCard?.title) {
+    const activeItems = permission.getActiveItems();
+    const isContain = activeItems.some((item) => item.name === card.keyPermission);
+    if (isContain && card.keyPermission) {
       dispatch(changeActiveCard(undefined));
+      permission.removeActiveItemByName(card.keyPermission);
       return;
     }
 
@@ -118,10 +121,10 @@ export const ConfiguratorSection: React.FC = () => {
       card.key === StepName.VideoAccessories;
     if (isConfiguratorCard) {
       let isActive = false;
-      if (activeStep.currentCard) {
+      // if (activeStep.currentCard) {
         const activeItems = permission.getActiveItems();
         isActive = activeItems.some((item) => item.name === card.keyPermission);
-      }
+      // }
       return (
         <CardItem
           key={index}

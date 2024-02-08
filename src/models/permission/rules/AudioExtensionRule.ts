@@ -4,6 +4,7 @@ import { Rule } from "./Rule";
 
 export class AudioExtensionRule extends Rule {
   public stepName: StepName = StepName.AudioExtensions;
+  public readonly isUniqueActiveItem: boolean = true;
 
   public getValidItems(): ItemObject[] {
     if (

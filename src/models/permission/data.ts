@@ -50,7 +50,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -68,7 +68,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -95,7 +95,7 @@ export const jsonData = {
                 [CameraName.RallyBarMini]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -113,7 +113,7 @@ export const jsonData = {
                 [CameraName.RallyPlus]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -131,7 +131,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.RoomMate]: {
                   dependence: [CameraName.MeetUp],
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -141,7 +141,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -155,7 +155,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.RoomMate]: {
                   dependence: [CameraName.MeetUp],
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -165,7 +165,7 @@ export const jsonData = {
                 [CameraName.MeetUp]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -183,7 +183,7 @@ export const jsonData = {
                 [CameraName.RallyBarMini]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -193,17 +193,39 @@ export const jsonData = {
           [StepName.Services]: {
             [ServiceName.Android]: {
               [StepName.ConferenceCamera]: {
-                [CameraName.RallyBar]: {},
-                [CameraName.RallyBarMini]: {},
+                [CameraName.RallyBar]: {
+                  [StepName.AudioExtensions]: {
+                    [AudioExtensionName.RallyMicPod]: {},
+                  },
+                },
+                [CameraName.RallyBarMini]: {
+                  [StepName.AudioExtensions]: {
+                    [AudioExtensionName.RallyMicPod]: {
+                      defaultActive: true,
+                      isRecommended: true,
+                    },
+                  },
+                },
               },
             },
             [ServiceName.PC]: {
               [StepName.ConferenceCamera]: {
-                [CameraName.RallyBar]: {},
-                [CameraName.RallyBarMini]: {},
+                [CameraName.RallyBar]: {
+                  [StepName.AudioExtensions]: {
+                    [AudioExtensionName.RallyMicPod]: {},
+                  },
+                },
+                [CameraName.RallyBarMini]: {
+                  [StepName.AudioExtensions]: {
+                    [AudioExtensionName.RallyMicPod]: {
+                      defaultActive: true,
+                      isRecommended: true,
+                    },
+                  },
+                },
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -223,7 +245,7 @@ export const jsonData = {
                 [CameraName.RallyPlus]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
-                  defaultActive: true,
+                  isRequired: true,
                 },
               },
             },
@@ -239,7 +261,7 @@ export const jsonData = {
               [CameraName.RallyPlus]: {},
               [CameraName.PreConfiguredMiniPC]: {
                 isVisible: false,
-                defaultActive: true,
+                isRequired: true,
               },
             },
           },

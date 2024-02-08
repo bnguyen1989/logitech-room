@@ -60,6 +60,7 @@ export class Permission {
       
       if(value.isVisible !== undefined) itemObject.isVisible = value.isVisible;
       if(value.defaultActive !== undefined) itemObject.defaultActive = value.defaultActive;
+      if(value.isRequired !== undefined) itemObject.isRequired = value.isRequired;
       if(value.dependence) {
         const dependence = value.dependence as never as string[];
         itemObject.dependence = dependence.map((item: string) => new ItemObject(item));
@@ -78,6 +79,18 @@ export class Permission {
       const item = currentRule.items.find(item => item.name === itemName);
       if(item) {
         currentRule.addActiveItem(item);
+      }
+    }
+  }
+
+  public removeActiveItemByName(itemName: string): void {
+    const currentRule = this.rules.find(
+      (rule) => rule.stepName === this.currentStepName
+    );
+    if(currentRule) {
+      const item = currentRule.items.find(item => item.name === itemName);
+      if(item) {
+        currentRule.removeActiveItem(item);
       }
     }
   }
