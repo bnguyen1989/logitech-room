@@ -5,6 +5,7 @@ import { Rule } from "./Rule";
 export class ServiceRule extends Rule {
   public stepName: StepName = StepName.Services;
   public readonly isUniqueActiveItem: boolean = true;
+  public readonly isRequiredActiveItems: boolean = true;
 
   public getValidItems(): ItemObject[] {
     if (!this.prevRule || this.prevRule.stepName !== StepName.RoomSize) {

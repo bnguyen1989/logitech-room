@@ -7,6 +7,7 @@ export abstract class Rule {
   private _items: Array<ItemObject> = [];
   private _prevRule: Rule | null = null;
   public readonly isUniqueActiveItem: boolean = false;
+  public readonly isRequiredActiveItems: boolean = false;
 
   public set items(keys: Array<ItemObject>) {
     this._items = keys;
@@ -38,11 +39,13 @@ export abstract class Rule {
       (item: ItemObject) => item.defaultActive && !item.isVisible
     );
     const activeItemsWithDependence = this.getActiveItemsWithDependence();
+    const requiredItems = this.getRequiredItems();
 
     return [
       ...activeItems,
       ...defaultActiveNotVisibleItems,
       ...activeItemsWithDependence,
+      ...requiredItems,
     ];
   }
 
@@ -69,6 +72,13 @@ export abstract class Rule {
     const activeItemsDependence = this.getActiveItemsWithDependence();
 
     return [...visibleItems, ...activeItemsDependence];
+  }
+
+  public getRequiredItems(): Array<ItemObject> {
+    const requiredItems = this.items.filter(
+      (item: ItemObject) => item.isVisible && item.defaultActive && !item.dependence.length
+    );
+    return requiredItems;
   }
 
   protected getChainKeys(): Array<Array<ItemObject>> {

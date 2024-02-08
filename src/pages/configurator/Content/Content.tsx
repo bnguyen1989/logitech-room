@@ -3,7 +3,6 @@ import { Button } from "../../../components/Buttons/Button/Button";
 import { useAppSelector } from "../../../hooks/redux";
 import {
   getActiveStep,
-  getIsConfiguratorStep,
   getNavigationStepData,
 } from "../../../store/slices/ui/selectors/selectors";
 import React from "react";
@@ -16,6 +15,9 @@ import { getIsBuilding } from "../../../store/slices/configurator/selectors/sele
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { RevertSVG } from "../../../assets";
 import { setMySetupModal } from "../../../store/slices/modals/Modals.slice";
+import { Permission } from '../../../models/permission/Permission'
+
+declare const permission: Permission;
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
@@ -23,7 +25,6 @@ export const Content: React.FC<PropsI> = () => {
   const activeStep = useAppSelector(getActiveStep);
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
   const isBuilding = useAppSelector(getIsBuilding);
-  const isStepConfigurator = useAppSelector(getIsConfiguratorStep);
 
   const isConferenceCamera = activeStep?.name
     .toLocaleLowerCase()
@@ -68,7 +69,7 @@ export const Content: React.FC<PropsI> = () => {
           onClick={handleNext}
           text={nextStep ? "Next" : "Finish"}
           variant="contained"
-          disabled={!activeStep?.currentCard && !isStepConfigurator}
+          disabled={!activeStep?.currentCard && permission.isRequiredActiveItems()}
         />
       </div>
       {isBuilding && isConferenceCamera && (

@@ -1,5 +1,6 @@
 import { Permission } from "../models/permission/Permission";
 import {
+  AudioExtensionName,
   CameraName,
   PlatformName,
   RoomSizeName,
@@ -18,6 +19,7 @@ export const getPermissionNameByItemName = (itemName: string) => {
     ...Object.values(RoomSizeName),
     ...Object.values(ServiceName),
     ...Object.values(CameraName),
+    ...Object.values(AudioExtensionName),
   ];
 
   return permissionNames.find((name) =>

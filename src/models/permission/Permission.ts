@@ -101,4 +101,14 @@ export class Permission {
     }
     return [];
   }
+
+  public isRequiredActiveItems(): boolean {
+    const currentRule = this.rules.find(
+      (rule) => rule.stepName === this.currentStepName
+    );
+    if (currentRule) {
+      return currentRule.isRequiredActiveItems;
+    }
+    return false;
+  }
 }

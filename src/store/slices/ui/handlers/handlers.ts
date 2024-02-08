@@ -119,6 +119,7 @@ function setAudioExtensionsData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
           color: {
             currentColor: {
               name: "Graphite",

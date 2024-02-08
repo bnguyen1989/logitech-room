@@ -30,6 +30,10 @@ export enum CameraName {
   RallyPlus = "Rally Plus",
 }
 
+export enum AudioExtensionName {
+  RallyMicPod = "Rally Mic Pod",
+}
+
 export const jsonData = {
   [StepName.Platform]: {
     [PlatformName.GoogleMeet]: {
