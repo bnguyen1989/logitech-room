@@ -105,7 +105,7 @@ export const jsonData = {
               },
             },
             [ServiceName.PC]: {
-              ConferenceCamera: {
+              [StepName.ConferenceCamera]: {
                 [CameraName.RallyPlus]: {},
                 [CameraName.PreConfiguredMiniPC]: {
                   isVisible: false,
@@ -188,7 +188,7 @@ export const jsonData = {
         [RoomSizeName.Medium]: {
           [StepName.Services]: {
             [ServiceName.Android]: {
-              ConferenceCamera: {
+              [StepName.ConferenceCamera]: {
                 [CameraName.RallyBar]: {},
                 [CameraName.RallyBarMini]: {},
               },
