@@ -1,8 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { Mesh, Object3D } from 'three';
 
-/* eslint-disable */
-
 export type ThreeNodeProps = {
   nodeMatchers?: NodeMatcher[];
   threeNode: Object3D;
@@ -35,9 +33,14 @@ export const GLTFNode = ({
     }
   }
 
-  const children = threeNode.children.map((child: any) =>
-    <GLTFNode threeNode={child} nodeMatchers={nodeMatchers} {...props} />
-  );
+  const children = threeNode.children.map((child) => (
+    <GLTFNode
+      key={child.uuid}
+      threeNode={child}
+      nodeMatchers={nodeMatchers}
+      {...props}
+    />
+  ));
 
   if ('isMesh' in threeNode) {
     const mesh = threeNode as Mesh;
