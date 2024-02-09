@@ -14,11 +14,13 @@ export const ConfigData = {
 
 export const initThreekitData = async () => {
 	const assetId = app.currentConfigurator.assetId;
+	app.eventEmitter.emit('processInitThreekitData', true);
 	new ThreekitService().getDataAssetById(assetId).then((data) => {
 		const configurator = app.currentConfigurator.getSnapshot();
 		configurator.threekitData = data as ThreekitDataT;
 		app.currentConfigurator = configurator;
 		app.eventEmitter.emit('threekitDataInitialized', configurator);
+		app.eventEmitter.emit('processInitThreekitData', false);
 	});
 };
 

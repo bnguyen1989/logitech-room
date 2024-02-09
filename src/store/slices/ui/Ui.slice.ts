@@ -5,11 +5,13 @@ import { Permission } from '../../../models/permission/Permission'
 
 declare const permission: Permission;
 interface UIStateI {
+	processInitData: boolean;
 	stepData: StepDataI;
 	activeStep: StepI<StepCardType> | null;
 }
 
 const initialState: UIStateI = {
+	processInitData: false,
 	stepData: getInitStepData(),
 	activeStep: null,
 };
@@ -61,9 +63,12 @@ const uiSlice = createSlice({
 			if(state.activeStep && state.activeStep.key === action.payload.key) {
 				state.activeStep = state.stepData[state.activeStep.key];
 			}
+		},
+		changeProcessInitData: (state, action: PayloadAction<boolean>) => {
+			state.processInitData = action.payload;
 		}
   },
 });
 
-export const { changeActiveStep, moveToStartStep, changeActiveCard, changeValueCard, setDataItemStep } = uiSlice.actions;
+export const { changeActiveStep, moveToStartStep, changeActiveCard, changeValueCard, setDataItemStep, changeProcessInitData } = uiSlice.actions;
 export default uiSlice.reducer;
