@@ -223,7 +223,7 @@ export const jsonData = {
                 [CameraName.RallyBarMini]: {},
               },
               [StepName.AudioExtensions]: {
-                dependence: {
+                dependenceFromSteps: {
                   [StepName.ConferenceCamera]: {
                     [CameraName.RallyBar]: {
                       [AudioExtensionName.RallyMicPod]: {},
@@ -266,7 +266,7 @@ export const jsonData = {
                 },
               },
               [StepName.AudioExtensions]: {
-                dependence: {
+                dependenceFromSteps: {
                   [StepName.ConferenceCamera]: {
                     [CameraName.RallyBar]: {
                       [AudioExtensionName.RallyMicPod]: {},

@@ -4,6 +4,7 @@ export class ItemObject {
 	private _isVisible: boolean = true;
 	private _defaultActive: boolean = false;
 	private _isRequired: boolean = false;
+	private _isRecommended: boolean = false;
 
 
 	constructor(name: string) {
@@ -32,5 +33,13 @@ export class ItemObject {
 
 	public set isRequired(value: boolean) {
 		this._isRequired = value;
+	}
+
+	public get isRecommended(): boolean {
+		return this._isRecommended;
+	}
+
+	public set isRecommended(value: boolean) {
+		this._isRecommended = value;
 	}
 }

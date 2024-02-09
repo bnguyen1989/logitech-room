@@ -120,18 +120,16 @@ export const ConfiguratorSection: React.FC = () => {
       card.key === StepName.SoftwareServices ||
       card.key === StepName.VideoAccessories;
     if (isConfiguratorCard) {
-      let isActive = false;
-      // if (activeStep.currentCard) {
-        const activeItems = permission.getActiveItems();
-        isActive = activeItems.some((item) => item.name === card.keyPermission);
-      // }
+      const activeItems = permission.getActiveItems();
+      const currentActiveItem = activeItems.find((item) => item.name === card.keyPermission);
       return (
         <CardItem
           key={index}
           data={card}
           onClick={onClick}
-          active={isActive}
+          active={!!currentActiveItem}
           onChange={onChange}
+          recommended={currentActiveItem?.isRecommended}
         />
       );
     }

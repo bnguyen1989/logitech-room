@@ -72,8 +72,10 @@ export class Permission {
     const keys = Object.keys(data);
     let items = this.createItems(keys, data);
 
-    if (keys.includes("dependence")) {
-      const stepDependence = data["dependence" as never];
+    const keyDependenceSteps = "dependenceFromSteps";
+
+    if (keys.includes(keyDependenceSteps)) {
+      const stepDependence = data[keyDependenceSteps as never];
       const nameRule = Object.keys(stepDependence)[0];
       const rule = this.rules.find((rule) => rule.stepName === nameRule);
       const activeItemRule = rule?.getActiveItems()[0];
@@ -143,6 +145,8 @@ export class Permission {
         itemObject.defaultActive = value.defaultActive;
       if (value.isRequired !== undefined)
         itemObject.isRequired = value.isRequired;
+      if (value.isRecommended !== undefined)
+        itemObject.isRecommended = value.isRecommended;
       if (value.dependence) {
         const dependence = value.dependence as never as string[];
         itemObject.dependence = dependence.map(
