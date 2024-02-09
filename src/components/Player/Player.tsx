@@ -1,11 +1,10 @@
 import s from "./Player.module.scss";
 import { CameraControls, OrbitControls } from "@react-three/drei";
 import {
-  ExporterResolver,
-  // OptimizeResolverWrapper,
+  ExporterResolver, 
   Viewer,
 } from "@threekit/react-three-fiber";
-import CameraControlsImpl from 'camera-controls';
+import CameraControlsImpl from "camera-controls";
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
 import Geoff2Stage from "../stages/Geoff2Stage.tsx";
@@ -14,7 +13,6 @@ import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import {
   getAssetId,
-  getConfiguration,
   getNodes,
 } from "../../store/slices/configurator/selectors/selectors.ts";
 import { useRef } from "react";
@@ -28,10 +26,15 @@ export const bhoustonAuth = {
 export const Player: React.FC = () => {
   const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
 
-  const configuration = useAppSelector(getConfiguration);
-  const nodes = useAppSelector(getNodes);
+  // const configuration = useAppSelector(getConfiguration);
+  let nodes = useAppSelector(getNodes);
   const assetId = useAppSelector(getAssetId);
 
+  nodes = {
+    Mic_Placement_1: "fcb68690-af02-4b03-9ead-fad283f064bb",
+    Mic_Placement_3: "fcb68690-af02-4b03-9ead-fad283f064bb",
+    Mic_Placement_2: "fcb68690-af02-4b03-9ead-fad283f064bb",
+  };
   if (!assetId) return null;
 
   return (
@@ -41,29 +44,22 @@ export const Player: React.FC = () => {
       </Head>
       <Viewer
         auth={bhoustonAuth}
-        // resolver={OptimizeResolverWrapper(ExporterResolver({ cache: false }), {
-        //   cacheScope: "v1",
-        // })}
         resolver={ExporterResolver({
           cache: true,
-          cacheScope: 'v5',
-          mode: 'experimental',
+          cacheScope: "v5",
+          mode: "experimental",
           settings: {
             prune: {
               childless: false,
-              invisible: false
-            }
-          }
+              invisible: false,
+            },
+          },
         })}
       >
         <>
-        <CameraControls ref={cameraControlsRef} />
-          <Geoff2Stage cameraControlsRef={cameraControlsRef} >
-            <Room
-              roomAssetId={assetId}
-              attachNodeNameToAssetId={nodes}
-              configuration={configuration}
-            />
+          <CameraControls ref={cameraControlsRef} />
+          <Geoff2Stage cameraControlsRef={cameraControlsRef}>
+            <Room roomAssetId={assetId} attachNodeNameToAssetId={nodes} />
           </Geoff2Stage>
           <OrbitControls
             autoRotate={false}

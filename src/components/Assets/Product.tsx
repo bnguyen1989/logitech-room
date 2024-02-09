@@ -1,12 +1,24 @@
-import { useAsset } from "@threekit/react-three-fiber";
+import { useAsset } from "@threekit/react-three-fiber"; 
 
 export type ProductProps = {
-    productAssetId: string;
+  parentNode: THREE.Object3D;
+  productAssetId: string;
 };
 
-export const Product: React.FC<ProductProps> = ({ productAssetId }) => {
-    const gltf = useAsset({ assetId: productAssetId });
-    return (
-        <primitive object={gltf.scene} />
-    )
-}
+export const Product: React.FC<ProductProps> = ({
+  parentNode,
+  productAssetId,
+}) => {
+  const gltf = useAsset({ assetId: productAssetId });
+
+  return (
+    <group
+      key={parentNode.uuid + `-group`}
+      position={parentNode.position}
+      scale={parentNode.scale}
+      rotation={parentNode.rotation}
+    >
+      <primitive object={gltf.scene} />
+    </group>
+  );
+};
