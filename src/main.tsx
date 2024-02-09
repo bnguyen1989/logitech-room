@@ -6,9 +6,11 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { initApplication } from "./utils/initApplication.ts";
 import { initHandlers } from "./store/handlers.ts";
+import { initPermission } from './utils/permissionUtils.ts'
 
 initApplication();
 initHandlers();
+initPermission();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>

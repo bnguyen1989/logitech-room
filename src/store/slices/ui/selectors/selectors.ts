@@ -1,8 +1,20 @@
 import { RootState } from '../../../'
+import { Permission } from '../../../../models/permission/Permission'
 import { StepName } from '../type'
 
+declare const permission: Permission;
+
 export const getStepData = (state: RootState) => state.ui.stepData;
-export const getActiveStep = (state: RootState) => state.ui.activeStep;
+export const getActiveStep = (state: RootState) => {
+	let activeStep = state.ui.activeStep;
+	if(activeStep) {
+		activeStep = {...activeStep};
+		const items = permission.getItems();
+		activeStep.cards = [...activeStep.cards].filter(card => items.some(item => item.name === card.keyPermission));
+	}
+
+	return activeStep;
+};
 
 export const getNavigationStepData = (state: RootState) => {
 	const { stepData, activeStep } = state.ui;

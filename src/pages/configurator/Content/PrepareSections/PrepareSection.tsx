@@ -7,6 +7,9 @@ import { getActiveStep, getIsConfiguratorStep } from '../../../../store/slices/u
 import { StepCardType, StepI, StepName } from '../../../../store/slices/ui/type'
 import s from './PrepareSection.module.scss';
 import { changeActiveCard } from '../../../../store/slices/ui/Ui.slice'
+import { Permission } from '../../../../models/permission/Permission'
+
+declare const permission: Permission;
 
 export const PrepareSection: React.FC = () => {
 	const dispatch = useDispatch();
@@ -26,7 +29,11 @@ export const PrepareSection: React.FC = () => {
 
 	const getCardComponent = (card: StepCardType, index: number) => {
 		const onClick = () => handleClick(card);
-		const isActive = activeStep.currentCard?.title === card.title;
+		let isActive = false;
+		if(activeStep.currentCard) {
+			const activeItems = permission.getActiveItems();
+			isActive = activeItems.some((item) => item.name === card.keyPermission);
+		}
 		const isDisabled = activeStep.currentCard && !isActive;
 		if(card.key === StepName.Platform) {
 			return <CardPlatform key={index} data={card} onClick={onClick} active={isActive} disabled={isDisabled} />

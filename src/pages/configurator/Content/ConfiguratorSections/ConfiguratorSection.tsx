@@ -25,8 +25,10 @@ import {
   initThreekitData,
 } from "../../../../utils/threekitUtils";
 import { changeAssetId } from "../../../../store/slices/configurator/Configurator.slice";
+import { Permission } from '../../../../models/permission/Permission'
 
 declare const app: Application;
+declare const permission: Permission;
 
 export const ConfiguratorSection: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,8 +59,11 @@ export const ConfiguratorSection: React.FC = () => {
   if (!activeStep) return null;
 
   const handleClick = (card: StepCardType) => {
-    if (card.title === activeStep.currentCard?.title) {
+    const activeItems = permission.getActiveItems();
+    const isContain = activeItems.some((item) => item.name === card.keyPermission);
+    if (isContain && card.keyPermission) {
       dispatch(changeActiveCard(undefined));
+      permission.removeActiveItemByName(card.keyPermission);
       return;
     }
 
@@ -115,19 +120,16 @@ export const ConfiguratorSection: React.FC = () => {
       card.key === StepName.SoftwareServices ||
       card.key === StepName.VideoAccessories;
     if (isConfiguratorCard) {
-      let isActive = false;
-      if (activeStep.currentCard) {
-        const currentCard = activeStep.currentCard as ItemCardI;
-        const cardItem = card as ItemCardI;
-        isActive = currentCard.threekit?.assetId === cardItem.threekit?.assetId;
-      }
+      const activeItems = permission.getActiveItems();
+      const currentActiveItem = activeItems.find((item) => item.name === card.keyPermission);
       return (
         <CardItem
           key={index}
           data={card}
           onClick={onClick}
-          active={isActive}
+          active={!!currentActiveItem}
           onChange={onChange}
+          recommended={currentActiveItem?.isRecommended}
         />
       );
     }

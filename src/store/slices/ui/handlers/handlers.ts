@@ -17,6 +17,7 @@ import {
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
+import { getPermissionNameByItemName } from '../../../../utils/permissionUtils'
 
 declare const app: Application;
 
@@ -118,6 +119,7 @@ function setAudioExtensionsData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
           color: {
             currentColor: {
               name: "Graphite",
@@ -186,6 +188,7 @@ function setCameraData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
           color: {
             currentColor: {
               name: "Graphite",
@@ -240,6 +243,7 @@ function setMeetingControllerData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
         });
       });
 
@@ -292,6 +296,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
             assetId: asset.id,
             key: name,
           },
+          keyPermission: getPermissionNameByItemName(asset.name),
         });
       });
 
@@ -362,6 +367,7 @@ function setSoftwareServicesData(configurator: Configurator) {
               };
             }),
           },
+          keyPermission: getPermissionNameByItemName("Support Service"),
         });
       } else {
         value.values.forEach((item: ConfiguratorDataValueType) => {
@@ -375,6 +381,7 @@ function setSoftwareServicesData(configurator: Configurator) {
               assetId: asset.id,
               key: name,
             },
+            keyPermission: getPermissionNameByItemName(asset.name),
           });
         });
       }
