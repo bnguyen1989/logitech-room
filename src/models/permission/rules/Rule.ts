@@ -25,6 +25,10 @@ export abstract class Rule {
     return this._prevRule;
   }
 
+  public isEmptyActiveItems(): boolean {
+    return this.activeItems.length === 0;
+  }
+
   public addActiveItem(item: ItemObject): void {
     if (this.isUniqueActiveItem) {
       this.activeItems = [item];
@@ -52,10 +56,6 @@ export abstract class Rule {
     const defaultActiveItems = this.getDefaultActiveItems().filter(
       (item: ItemObject) => !this.activeItems.some((activeItem: ItemObject) => activeItem.name === item.name)
     );
-
-    // defaultActiveItems.forEach((item: ItemObject) => {
-    //   item.defaultActive = false;
-    // });
 
     this.activeItems.push(...defaultActiveItems);
 

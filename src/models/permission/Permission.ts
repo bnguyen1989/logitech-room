@@ -23,6 +23,16 @@ export class Permission {
     return this.rules;
   }
 
+  public canNextStep(): boolean {
+    const currentRule = this.rules.find(
+      (rule) => rule.stepName === this.currentStepName
+    );
+    if (currentRule) {
+      return !(currentRule.isRequiredActiveItems && currentRule.isEmptyActiveItems());
+    }
+    return true;
+  }
+
   public changeStepName(stepName: StepName | null): void {
     this.currentStepName = stepName;
     if (stepName === null) {
@@ -121,16 +131,6 @@ export class Permission {
       return currentRule.getActiveItems();
     }
     return [];
-  }
-
-  public isRequiredActiveItems(): boolean {
-    const currentRule = this.rules.find(
-      (rule) => rule.stepName === this.currentStepName
-    );
-    if (currentRule) {
-      return currentRule.isRequiredActiveItems;
-    }
-    return false;
   }
 
   private createItems(keys: string[], data: object): Array<ItemObject> {

@@ -69,7 +69,7 @@ export const Content: React.FC<PropsI> = () => {
           onClick={handleNext}
           text={nextStep ? "Next" : "Finish"}
           variant="contained"
-          disabled={!activeStep?.currentCard && permission.isRequiredActiveItems()}
+          disabled={!permission.canNextStep()}
         />
       </div>
       {isBuilding && isConferenceCamera && (
