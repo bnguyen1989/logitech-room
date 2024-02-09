@@ -3,6 +3,7 @@ import { Button } from "../../../components/Buttons/Button/Button";
 import { useAppSelector } from "../../../hooks/redux";
 import {
   getActiveStep,
+  getIsProcessInitData,
   getNavigationStepData,
 } from "../../../store/slices/ui/selectors/selectors";
 import React from "react";
@@ -25,6 +26,7 @@ export const Content: React.FC<PropsI> = () => {
   const activeStep = useAppSelector(getActiveStep);
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
   const isBuilding = useAppSelector(getIsBuilding);
+  const isProcessInitData = useAppSelector(getIsProcessInitData);
 
   const isConferenceCamera = activeStep?.name
     .toLocaleLowerCase()
@@ -72,7 +74,7 @@ export const Content: React.FC<PropsI> = () => {
           disabled={!permission.canNextStep()}
         />
       </div>
-      {isBuilding && isConferenceCamera && (
+      {(isBuilding || isProcessInitData) && isConferenceCamera && (
         <div className={s.loader}>
           <Loader text="Building Your Room" />
         </div>

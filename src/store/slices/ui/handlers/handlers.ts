@@ -11,6 +11,7 @@ import AccessImg from "../../../../assets/images/items/access.jpg";
 import ServiceImg from "../../../../assets/images/items/service.jpg";
 import {
   changeActiveCard,
+  changeProcessInitData,
   changeValueCard,
   setDataItemStep,
 } from "../Ui.slice";
@@ -22,6 +23,10 @@ import { getPermissionNameByItemName } from '../../../../utils/permissionUtils'
 declare const app: Application;
 
 export const getUiHandlers = (store: Store) => {
+  app.eventEmitter.on("processInitThreekitData", (data: boolean) => {
+    store.dispatch(changeProcessInitData(data));
+  });
+
   app.eventEmitter.on("executeCommand", (data) => {
     if (data instanceof AddItemCommand) {
       const asset = data.asset as AssetI;

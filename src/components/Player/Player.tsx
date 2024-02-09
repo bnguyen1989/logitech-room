@@ -27,14 +27,14 @@ export const Player: React.FC = () => {
   const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
 
   // const configuration = useAppSelector(getConfiguration);
-  let nodes = useAppSelector(getNodes);
+  const nodes = useAppSelector(getNodes);
   const assetId = useAppSelector(getAssetId);
 
-  nodes = {
-    Mic_Placement_1: "fcb68690-af02-4b03-9ead-fad283f064bb",
-    Mic_Placement_3: "fcb68690-af02-4b03-9ead-fad283f064bb",
-    Mic_Placement_2: "fcb68690-af02-4b03-9ead-fad283f064bb",
-  };
+  // nodes = {
+  //   Mic_Placement_1: "fcb68690-af02-4b03-9ead-fad283f064bb",
+  //   Mic_Placement_3: "fcb68690-af02-4b03-9ead-fad283f064bb",
+  //   Mic_Placement_2: "fcb68690-af02-4b03-9ead-fad283f064bb",
+  // };
   if (!assetId) return null;
 
   return (

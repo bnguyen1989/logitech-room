@@ -20,6 +20,19 @@ export class Configurator {
 
   public static SoftwareServicesName = [['Room Device Management Software'], ['Room Support Service']];
 
+  public static getNameNodeForMic(id: number): string {
+    return `Mic_Placement_${id}`;
+  }
+
+  public static getNameNodeForTap(id: number): string {
+    return `Tap_Placement_${id}`;
+  }
+
+  public static getNameNodeForCamera(type: 'Cabinet' | 'Wall', id?: number): string {
+    if(type === 'Cabinet') return 'Camera_Cabinet_Placement'
+    return `Camera_Wall_Placement_${id}`;
+  }
+
   public get assetId(): string {
     return this._assetId;
   }

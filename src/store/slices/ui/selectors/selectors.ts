@@ -38,3 +38,5 @@ export const getIsConfiguratorStep = (state: RootState) => {
 
 	return ![StepName.Platform, StepName.RoomSize, StepName.Services].includes(activeStep.key);
 }
+
+export const getIsProcessInitData = (state: RootState) => state.ui.processInitData;
