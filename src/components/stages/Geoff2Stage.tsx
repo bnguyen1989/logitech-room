@@ -94,7 +94,7 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
           fitPaddingRatio={1}
         >
           <Align mode="min" axis={1} limit={0}>
-            <Resize size={1.5}>{children}</Resize>
+            <Resize>{children}</Resize>
           </Align>
         </Frame>
       </group>
