@@ -17,7 +17,6 @@ export const initPermission = () => {
 };
 
 export const getPermissionNameByItemName = (itemName: string) => {
-
   const permissionNames = [
     ...Object.values(PlatformName),
     ...Object.values(RoomSizeName),
@@ -33,3 +32,27 @@ export const getPermissionNameByItemName = (itemName: string) => {
     (name) => itemName.toLowerCase() === name.toLowerCase()
   );
 };
+
+export const isCamera = (name: string) => {
+  return isCompareName(name)([
+    // CameraName.RallyBar, 
+    CameraName.RallyBarMini
+  ]);
+};
+
+export const isMic = (name: string) => {
+  return isCompareName(name)([AudioExtensionName.RallyMicPod]);
+};
+
+export const isTap = (name: string) => {
+  return isCompareName(name)([
+    MeetingControllerName.LogitechTapIP,
+    MeetingControllerName.LogitechTap,
+  ]);
+};
+
+function isCompareName(name: string) {
+  return (arrayNames: Array<string>) => {
+    return arrayNames.some((item) => item.toLowerCase() === name.toLowerCase());
+  };
+}

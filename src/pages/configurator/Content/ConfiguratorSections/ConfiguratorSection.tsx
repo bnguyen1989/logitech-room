@@ -38,10 +38,20 @@ export const ConfiguratorSection: React.FC = () => {
   
 
   useEffect(() => {
-    if (activeStep) {
-      setIsStartLoadPlayer(activeStep.key === StepName.Services);
+    if (!activeStep) {
+      return;
     }
-  }, [activeStep]);
+    setIsStartLoadPlayer(activeStep.key === StepName.Services);
+
+    const activeItems = permission.getActiveItems();
+    const cardsCurrentStep = activeStep.cards;
+    const activeDefaultItems = activeItems.filter((item) => item.defaultActive);
+    const cardDefault = cardsCurrentStep.find((card) => activeDefaultItems.some((item) => item.name === card.keyPermission)) as ItemCardI;
+    if(cardDefault && cardDefault.threekit) {
+      const threekit = cardDefault.threekit;
+      app.addItemConfiguration(threekit.key, threekit.assetId);
+    }
+  }, [activeStep?.key]);
 
   useEffect(() => {
     if (!isStartLoadPlayer) return;
@@ -61,19 +71,18 @@ export const ConfiguratorSection: React.FC = () => {
   const handleClick = (card: StepCardType) => {
     const activeItems = permission.getActiveItems();
     const isContain = activeItems.some((item) => item.name === card.keyPermission);
-    if (isContain && card.keyPermission) {
-      dispatch(changeActiveCard(undefined));
-      permission.removeActiveItemByName(card.keyPermission);
-      return;
-    }
-
     const threekit = (card as ItemCardI).threekit;
-    if (threekit) {
-      app.addItemConfiguration(threekit.key, threekit.assetId);
+    if(!threekit) {
+      dispatch(changeActiveCard(card));
       return;
     }
 
-    dispatch(changeActiveCard(card));
+    if (isContain && card.keyPermission) {
+      app.removeItem(threekit.key, threekit.assetId)
+      return;
+    }
+
+    app.addItemConfiguration(threekit.key, threekit.assetId);
   };
 
   const onChange = (

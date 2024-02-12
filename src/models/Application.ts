@@ -6,6 +6,7 @@ import { Logger } from "./Logger";
 import { AddItemCommand } from "./command/AddItemCommand";
 import { ChangeCountItemCommand } from "./command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "./command/ChangeColorItemCommand";
+import { RemoveItemCommand } from './command/RemoveItemCommand'
 
 declare const logger: Logger;
 
@@ -37,6 +38,15 @@ export class Application {
     }
     return this.executeCommand(
       new AddItemCommand(this.currentConfigurator, nameProperty, asset)
+    );
+  }
+
+  public removeItem(
+    nameProperty: string,
+    assetId: string
+  ): Promise<boolean> {
+    return this.executeCommand(
+      new RemoveItemCommand(this.currentConfigurator, nameProperty, assetId)
     );
   }
 
