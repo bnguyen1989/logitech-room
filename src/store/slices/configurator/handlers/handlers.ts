@@ -113,9 +113,8 @@ function changeCountElement(assetId: string, value: number) {
       store.dispatch(removeNodeByKeys(deleteKeys));
     }
     
-    // const isCameraCard = isCamera(card?.keyPermission);
     const isMicCard = isMic(card?.keyPermission);
-    // const isTapCard = isTap(card?.keyPermission);
+    const isTapCard = isTap(card?.keyPermission);
     let objectNodes = {};
     for (let index = 1; index <= value; index++) {
       if (isMicCard) {
@@ -123,6 +122,12 @@ function changeCountElement(assetId: string, value: number) {
           ...objectNodes,
           [Configurator.getNameNodeForMic(index)]: assetId,
         };
+      }
+      if(isTapCard) {
+        objectNodes = {
+          ...objectNodes,
+          [Configurator.getNameNodeForTap(index)]: assetId
+        }
       }
     }
     store.dispatch(changeValueNodes(objectNodes));
