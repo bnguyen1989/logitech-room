@@ -45,7 +45,7 @@ const configuratorSlice = createSlice({
     changeAssetId: (state, action: PayloadAction<string>) => {
       state.assetId = action.payload;
     },
-    removeNode: (state, action: PayloadAction<string>) => {
+    removeNodes: (state, action: PayloadAction<string>) => {
 			Object.keys(state.nodes).forEach((key) => {
 				const value = state.nodes[key];
 				if(value === action.payload) {
@@ -53,6 +53,11 @@ const configuratorSlice = createSlice({
 				}
 			})
     },
+		removeNodeByKeys: (state, action: PayloadAction<string[]>) => {
+			action.payload.forEach((key) => {
+				delete state.nodes[key];
+			})
+		}
   },
 });
 
@@ -62,6 +67,7 @@ export const {
   changeValueConfiguration,
   changeValueNodes,
   changeAssetId,
-  removeNode,
+  removeNodes,
+	removeNodeByKeys
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;
