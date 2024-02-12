@@ -38,10 +38,20 @@ export const ConfiguratorSection: React.FC = () => {
   
 
   useEffect(() => {
-    if (activeStep) {
-      setIsStartLoadPlayer(activeStep.key === StepName.Services);
+    if (!activeStep) {
+      return;
     }
-  }, [activeStep]);
+    setIsStartLoadPlayer(activeStep.key === StepName.Services);
+
+    const activeItems = permission.getActiveItems();
+    const cardsCurrentStep = activeStep.cards;
+    const activeDefaultItems = activeItems.filter((item) => item.defaultActive);
+    const cardDefault = cardsCurrentStep.find((card) => activeDefaultItems.some((item) => item.name === card.keyPermission)) as ItemCardI;
+    if(cardDefault && cardDefault.threekit) {
+      const threekit = cardDefault.threekit;
+      app.addItemConfiguration(threekit.key, threekit.assetId);
+    }
+  }, [activeStep?.key]);
 
   useEffect(() => {
     if (!isStartLoadPlayer) return;
