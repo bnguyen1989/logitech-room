@@ -2,37 +2,42 @@ import { Store } from "@reduxjs/toolkit";
 import { Application } from "../../../../models/Application";
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ItemCardI } from "../../ui/type";
-import { changeValueNodes } from "../Configurator.slice";
+import { changeValueNodes, removeNode } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { isCamera, isMic, isTap } from '../../../../utils/permissionUtils'
+import { isCamera, isMic, isTap } from "../../../../utils/permissionUtils";
+import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
+import { Permission } from "../../../../models/permission/Permission";
 
 declare const app: Application;
+declare const permission: Permission;
 
 export const geConfiguratorHandlers = (store: Store) => {
   app.eventEmitter.on("executeCommand", (data) => {
     if (data instanceof AddItemCommand) {
       const activeStep = store.getState().ui.activeStep;
-      if(!activeStep) return;
+      if (!activeStep) return;
       const card = activeStep.cards.find(
         (card: ItemCardI) => card.threekit?.assetId === data.asset.id
       );
 
-      
-      
       const isCameraCard = isCamera(card?.keyPermission);
-      if(isCameraCard) {
+      if (isCameraCard) {
         setCameraElement(data.asset.id)(store);
       }
 
       const isMicCard = isMic(card?.keyPermission);
-      if(isMicCard) {
+      if (isMicCard) {
         setMicElement(data.asset.id)(store);
       }
 
       const isTapCard = isTap(card?.keyPermission);
-      if(isTapCard) {
+      if (isTapCard) {
         setTapElement(data.asset.id)(store);
       }
+    }
+
+    if (data instanceof RemoveItemCommand) {
+      removeElement(data.assetId)(store);
     }
   });
 };
@@ -41,11 +46,10 @@ function setCameraElement(assetId: string) {
   return (store: Store) => {
     store.dispatch(
       changeValueNodes({
-        [Configurator.getNameNodeForCamera("Cabinet")]:
-          assetId
+        [Configurator.getNameNodeForCamera("Cabinet")]: assetId,
       })
     );
-  }
+  };
 }
 
 function setMicElement(assetId: string) {
@@ -55,7 +59,7 @@ function setMicElement(assetId: string) {
         [Configurator.getNameNodeForMic(1)]: assetId,
       })
     );
-  }
+  };
 }
 
 function setTapElement(assetId: string) {
@@ -65,5 +69,20 @@ function setTapElement(assetId: string) {
         [Configurator.getNameNodeForTap(1)]: assetId,
       })
     );
-  }
+  };
+}
+
+function removeElement(assetId: string) {
+  return (store: Store) => {
+    const activeStep = store.getState().ui.activeStep;
+    if (!activeStep) return;
+    const index = activeStep.cards.findIndex(
+      (item: ItemCardI) => item.threekit?.assetId === assetId
+    );
+    if (index !== -1) {
+      const card = activeStep.cards[index];
+      permission.removeActiveItemByName(card.keyPermission);
+      store.dispatch(removeNode(assetId));
+    }
+  };
 }

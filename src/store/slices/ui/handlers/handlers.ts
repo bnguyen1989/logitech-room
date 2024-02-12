@@ -19,6 +19,7 @@ import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import { getPermissionNameByItemName } from '../../../../utils/permissionUtils'
+import { RemoveItemCommand } from '../../../../models/command/RemoveItemCommand'
 
 declare const app: Application;
 
@@ -40,6 +41,10 @@ export const getUiHandlers = (store: Store) => {
         }
       }
       console.log(data.asset);
+    }
+
+    if(data instanceof RemoveItemCommand) {
+      store.dispatch(changeActiveCard(undefined));
     }
 
     if (data instanceof ChangeCountItemCommand) {

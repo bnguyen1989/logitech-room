@@ -51,7 +51,7 @@ export class Configurator {
 
   public setPropertyThreekitData(
     propertyName: NamePropertiesConfiguratorType,
-    value: ConfiguratorDataValueType
+    value: ConfiguratorDataValueType | undefined
   ) {
     this.threekitData[propertyName] = {
       ...this.threekitData[propertyName],

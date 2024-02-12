@@ -71,19 +71,18 @@ export const ConfiguratorSection: React.FC = () => {
   const handleClick = (card: StepCardType) => {
     const activeItems = permission.getActiveItems();
     const isContain = activeItems.some((item) => item.name === card.keyPermission);
-    if (isContain && card.keyPermission) {
-      dispatch(changeActiveCard(undefined));
-      permission.removeActiveItemByName(card.keyPermission);
-      return;
-    }
-
     const threekit = (card as ItemCardI).threekit;
-    if (threekit) {
-      app.addItemConfiguration(threekit.key, threekit.assetId);
+    if(!threekit) {
+      dispatch(changeActiveCard(card));
       return;
     }
 
-    dispatch(changeActiveCard(card));
+    if (isContain && card.keyPermission) {
+      app.removeItem(threekit.key, threekit.assetId)
+      return;
+    }
+
+    app.addItemConfiguration(threekit.key, threekit.assetId);
   };
 
   const onChange = (
