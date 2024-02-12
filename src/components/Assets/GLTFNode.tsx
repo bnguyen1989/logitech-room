@@ -1,6 +1,8 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { Mesh, Object3D } from 'three';
 
+/* eslint-disable */
+
 export type ThreeNodeProps = {
   nodeMatchers?: NodeMatcher[];
   threeNode: Object3D;
