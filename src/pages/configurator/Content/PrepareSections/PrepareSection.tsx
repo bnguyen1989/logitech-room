@@ -21,6 +21,10 @@ export const PrepareSection: React.FC = () => {
 
 	const handleClick = (card: StepCardType) => {
 		if (card.title === activeStep.currentCard?.title) {
+			if(card.keyPermission) {
+				permission.removeActiveItemByName(card.keyPermission);
+			}
+			
 			dispatch(changeActiveCard(undefined));
 			return;
 		}

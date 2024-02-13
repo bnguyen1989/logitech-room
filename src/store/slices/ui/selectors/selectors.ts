@@ -9,7 +9,7 @@ export const getActiveStep = (state: RootState) => {
 	let activeStep = state.ui.activeStep;
 	if(activeStep) {
 		activeStep = {...activeStep};
-		const items = permission.getItems();
+		const items = permission.getElements();
 		activeStep.cards = [...activeStep.cards].filter(card => items.some(item => item.name === card.keyPermission));
 	}
 

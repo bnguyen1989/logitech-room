@@ -45,7 +45,7 @@ export const ConfiguratorSection: React.FC = () => {
 
     const activeItems = permission.getActiveItems();
     const cardsCurrentStep = activeStep.cards;
-    const activeDefaultItems = activeItems.filter((item) => item.defaultActive);
+    const activeDefaultItems = activeItems.filter((item) => item.getDefaultActive());
     const cardDefault = cardsCurrentStep.find((card) => activeDefaultItems.some((item) => item.name === card.keyPermission)) as ItemCardI;
     if(cardDefault && cardDefault.threekit) {
       const threekit = cardDefault.threekit;
@@ -138,7 +138,7 @@ export const ConfiguratorSection: React.FC = () => {
           onClick={onClick}
           active={!!currentActiveItem}
           onChange={onChange}
-          recommended={currentActiveItem?.isRecommended}
+          recommended={currentActiveItem?.getRecommended()}
         />
       );
     }
