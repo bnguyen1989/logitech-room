@@ -87,6 +87,8 @@ function removeElement(assetId: string) {
     );
     if (index !== -1) {
       const card = activeStep.cards[index];
+      console.log('element', card);
+      
       permission.removeActiveItemByName(card.keyPermission);
       store.dispatch(removeNodes(assetId));
     }

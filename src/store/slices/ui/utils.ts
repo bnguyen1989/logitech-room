@@ -23,11 +23,7 @@ import MicImg from "../../../assets/images/items/mic.jpg";
 import ControllerImg from "../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../assets/images/items/access.jpg";
 import ServiceImg from "../../../assets/images/items/service.jpg";
-import {
-  PlatformName,
-  RoomSizeName,
-  ServiceName,
-} from "../../../models/permission/data";
+import { PlatformName, RoomSizeName, ServiceName } from '../../../utils/permissionUtils'
 
 export const getInitStepData = (): StepDataI => {
   return {

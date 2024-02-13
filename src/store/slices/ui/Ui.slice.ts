@@ -38,7 +38,7 @@ const uiSlice = createSlice({
 			if (activeStep) {
 				activeStep.currentCard = action.payload;
 				if(action.payload?.keyPermission) {
-					permission.addActiveItemByName(action.payload.keyPermission);
+					permission.addActiveElementByName(action.payload.keyPermission);
 				}
 			}
 		},

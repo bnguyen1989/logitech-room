@@ -1,159 +1,115 @@
 import { IdGenerator } from "../IdGenerator";
-import { ruleFactoryMethod } from "./factories/rule";
-import { ItemObject } from "./items/ItemObject";
-import { Rule } from "./rules/Rule";
+import { ItemElement } from "./elements/ItemElement";
 import { StepName } from "./type";
-import { jsonData } from "./data";
+import { Step } from "./step/Step";
+import { ChangeStepRule } from "./rules/ChangeStepRule";
+import { RemoveActiveElementRule } from "./rules/RemoveActiveElementRule";
+import { ChangeStepHandler } from "./handlers/ChangeStepHandler";
+import { AddActiveElementHandler } from "./handlers/AddActiveElementHandler";
+import { RemoveActiveElementHandler } from "./handlers/RemoveActiveElementHandler";
+import { AddActiveElementRule } from "./rules/AddActiveElementRule";
 
 export class Permission {
   public id: string = IdGenerator.generateId();
   public currentStepName: StepName | null = null;
-  private rules: Array<Rule> = [];
+  private steps: Array<Step> = [];
 
-  public addRule(rule: Rule): Permission {
-    if (this.rules.length) {
-      const lastRule = this.rules[this.rules.length - 1];
-      rule.prevRule = lastRule;
+  public addStep(step: Step): Permission {
+    if (this.steps.length) {
+      const lastStep = this.steps[this.steps.length - 1];
+      step.prevStep = lastStep;
     }
-    this.rules.push(rule);
+    this.steps.push(step);
     return this;
   }
 
-  public getRules(): Array<Rule> {
-    return this.rules;
+  public getSteps(): Array<Step> {
+    return this.steps;
   }
 
   public canNextStep(): boolean {
-    const currentRule = this.rules.find(
-      (rule) => rule.stepName === this.currentStepName
+    const currentStep = this.steps.find(
+      (step) => step.name === this.currentStepName
     );
-    if (currentRule) {
-      return !(currentRule.isRequiredActiveItems && currentRule.isEmptyActiveItems());
+    if (currentStep) {
+      return new ChangeStepRule("next").validate(currentStep);
     }
     return true;
   }
 
   public changeStepName(stepName: StepName | null): void {
     this.currentStepName = stepName;
-    if (stepName === null) {
-      this.rules = [];
-      return;
+    let indexCurrentStep = 0;
+    if (stepName !== null) {
+      indexCurrentStep = this.steps.findIndex((step) => step.name === stepName);
     }
-    const indexCurrentRule = this.rules.findIndex(
-      (rule) => rule.stepName === stepName
-    );
-    if (indexCurrentRule !== -1) {
-      this.rules = this.rules.slice(0, indexCurrentRule + 1);
-      return;
+    for (
+      let index = indexCurrentStep;
+      index < this.steps.length;
+      index += 1
+    ) {
+      const step = this.steps[index];
+      step.clearTempData();
     }
-    const currentRule = ruleFactoryMethod(stepName);
-    if (this.rules.length === 0) {
-      const data = jsonData[stepName as never];
-      const items = Object.keys(data).map(
-        (item: string) => new ItemObject(item)
-      );
-      currentRule.items = items;
-      this.addRule(currentRule);
-      return;
-    }
-
-    let data = { ...jsonData };
-    for (let index = 0; index < this.rules.length; index += 1) {
-      const rule = this.rules[index];
-      const stepName = rule.stepName;
-      const activeItems = rule.getActiveItems();
-      const value = activeItems[0].name;
-      data = data[stepName as never][value];
-      if (stepName === StepName.Services) {
-        break;
-      }
-    }
-    data = data[stepName as never];
-    const keys = Object.keys(data);
-    let items = this.createItems(keys, data);
-
-    const keyDependenceSteps = "dependenceFromSteps";
-
-    if (keys.includes(keyDependenceSteps)) {
-      const stepDependence = data[keyDependenceSteps as never];
-      const nameRule = Object.keys(stepDependence)[0];
-      const rule = this.rules.find((rule) => rule.stepName === nameRule);
-      const activeItemRule = rule?.getActiveItems()[0];
-      if (activeItemRule) {
-        const tempData =
-          stepDependence[nameRule as never][activeItemRule.name as never];
-        const keyItems = Object.keys(tempData);
-
-        items = items.concat(this.createItems(keyItems, tempData));
-      }
-    }
-    currentRule.items = items;
-    this.addRule(currentRule);
+    const currentStep = this.steps[indexCurrentStep];
+    new ChangeStepHandler().handle(currentStep);
   }
 
-  public addActiveItemByName(itemName: string): void {
-    const currentRule = this.rules.find(
-      (rule) => rule.stepName === this.currentStepName
+  public getCurrentStep(): Step | null {
+    return (
+      this.steps.find((step) => step.name === this.currentStepName) || null
     );
-    if (currentRule) {
-      const item = currentRule.items.find((item) => item.name === itemName);
-      if (item) {
-        currentRule.addActiveItem(item);
-      }
+  }
+
+  public addActiveElementByName(itemName: string): void {
+    const currentStep = this.getCurrentStep();
+    if (!currentStep) {
+      return;
+    }
+    const element = currentStep.getElementByName(itemName);
+    if (!element) {
+      return;
+    }
+    const isAddElement = new AddActiveElementRule(element).validate(
+      currentStep
+    );
+    if (isAddElement) {
+      currentStep.addActiveElement(element);
+      new AddActiveElementHandler(element).handle(currentStep);
     }
   }
 
   public removeActiveItemByName(itemName: string): void {
-    const currentRule = this.rules.find(
-      (rule) => rule.stepName === this.currentStepName
-    );
-    if (currentRule) {
-      const item = currentRule.items.find((item) => item.name === itemName);
-      if (item) {
-        currentRule.removeActiveItem(item);
-      }
+    const currentStep = this.getCurrentStep();
+    if (!currentStep) {
+      return;
+    }
+    const element = currentStep.getElementByName(itemName);
+    console.log('element --', element);
+    
+    if (!element) {
+      return;
+    }
+    const isRemove = new RemoveActiveElementRule(element).validate(currentStep);
+    if (isRemove) {
+      currentStep.removeActiveElement(element);
+      new RemoveActiveElementHandler(element).handle(currentStep);
     }
   }
 
-  public getItems(): Array<ItemObject> {
-    const currentRule = this.rules.find(
-      (rule) => rule.stepName === this.currentStepName
-    );
-    if (currentRule) {
-      return currentRule.getValidItems();
-    }
-    return [];
-  }
-
-  public getActiveItems(): Array<ItemObject> {
-    const currentRule = this.rules.find(
-      (rule) => rule.stepName === this.currentStepName
-    );
-    if (currentRule) {
-      return currentRule.getActiveItems();
+  public getElements(): Array<ItemElement> {
+    const currentStep = this.getCurrentStep();
+    if (currentStep) {
+      return currentStep.getValidElements();
     }
     return [];
   }
 
-  private createItems(keys: string[], data: object): Array<ItemObject> {
-    return keys.map((item: string) => {
-      const itemObject = new ItemObject(item);
-      const value = data[item as never] as ItemObject;
-
-      if (value.isVisible !== undefined) itemObject.isVisible = value.isVisible;
-      if (value.defaultActive !== undefined)
-        itemObject.defaultActive = value.defaultActive;
-      if (value.isRequired !== undefined)
-        itemObject.isRequired = value.isRequired;
-      if (value.isRecommended !== undefined)
-        itemObject.isRecommended = value.isRecommended;
-      if (value.dependence) {
-        const dependence = value.dependence as never as string[];
-        itemObject.dependence = dependence.map(
-          (item: string) => new ItemObject(item)
-        );
-      }
-      return itemObject;
-    });
+  public getActiveItems(): Array<ItemElement> {
+    const currentStep = this.getCurrentStep();
+    if (currentStep) {
+      return currentStep.getActiveElements();
+    }
+    return [];
   }
 }
