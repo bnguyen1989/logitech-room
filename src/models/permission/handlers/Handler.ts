@@ -11,6 +11,11 @@ export abstract class Handler {
 		return dependence.every((element) => {
 			return chainActiveElements.some((activeElements) => {
 				return activeElements.some((activeElement) => {
+					if(Array.isArray(element)) {
+						return element.some((itemElement) => {
+							return itemElement.name === activeElement.name;
+						});
+					}
 					return activeElement.name === element.name;
 				});
 			});

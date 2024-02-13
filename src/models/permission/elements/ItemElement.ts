@@ -2,7 +2,7 @@ import { Element } from './Element';
 
 export class ItemElement extends Element<ItemElement>{
 	public name: string;
-	private _dependence: ItemElement[] = [];
+	private _dependence: Array<ItemElement | Array<ItemElement>> = [];
 	private _isVisible: boolean = true;
 	private _defaultActive: boolean = false;
 	private _isRequired: boolean = false;
@@ -14,12 +14,12 @@ export class ItemElement extends Element<ItemElement>{
 		this.name = name;
 	}
 
-	public addDependence(item: ItemElement): ItemElement {
+	public addDependence(item: ItemElement | ItemElement[]): ItemElement {
 		this._dependence.push(item);
 		return this;
 	}
 
-	public getDependence(): ItemElement[] {
+	public getDependence(): Array<ItemElement | Array<ItemElement>> {
 		return this._dependence;
 	}
 

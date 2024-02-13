@@ -170,9 +170,10 @@ function createStepMeetingController() {
       )
     )
     .addElement(
-      new ItemElement(MeetingControllerName.LogitechTap)
-        .addDependence(new ItemElement(ServiceName.Android))
-        .addDependence(new ItemElement(ServiceName.PC))
+      new ItemElement(MeetingControllerName.LogitechTap).addDependence([
+        new ItemElement(ServiceName.Android),
+        new ItemElement(ServiceName.PC),
+      ])
     )
     .setRequiredOne(true);
 
