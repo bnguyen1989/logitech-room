@@ -18,7 +18,7 @@ export const Product: React.FC<ProductProps> = ({
       scale={parentNode.scale}
       rotation={parentNode.rotation}
     >
-      <primitive object={gltf.scene} />
+      <primitive object={gltf.scene.clone()} />
     </group>
   );
 };
