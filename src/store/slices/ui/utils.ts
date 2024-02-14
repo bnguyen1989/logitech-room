@@ -10,6 +10,8 @@ import LogoMS from "../../../assets/images/platform/microsoft.jpg";
 import LogoGoogle from "../../../assets/images/platform/google.jpg";
 import LogoZoom from "../../../assets/images/platform/zoom.jpg";
 import DeviceMS from "../../../assets/images/platform/microsoft_device.jpg";
+import DeviceGoogle from "../../../assets/images/platform/google_device.jpg";
+import DeviceZoom from "../../../assets/images/platform/zoom_device.jpg";
 import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.jpg";
 import ImageHundle from "../../../assets/images/rooms/huddle.jpg";
 import ImageSmall from "../../../assets/images/rooms/small.jpg";
@@ -97,22 +99,22 @@ function getPlatformCardData(): Array<PlatformCardI> {
     {
       key: StepName.Platform,
       logo: LogoGoogle,
-      image: DeviceMS,
-      title: "Google Meet Room",
+      image: DeviceGoogle,
+      title: "Google Meet",
       keyPermission: PlatformName.GoogleMeet,
     },
     {
       key: StepName.Platform,
       logo: LogoMS,
       image: DeviceMS,
-      title: "Microsoft Teams Room",
+      title: "Microsoft Teams",
       keyPermission: PlatformName.MicrosoftTeams,
     },
     {
       key: StepName.Platform,
       logo: LogoZoom,
-      image: DeviceMS,
-      title: "Zoom Room",
+      image: DeviceZoom,
+      title: "Zoom",
       keyPermission: PlatformName.Zoom,
     },
   ];
