@@ -10,14 +10,16 @@ import LogoMS from "../../../assets/images/platform/microsoft.jpg";
 import LogoGoogle from "../../../assets/images/platform/google.jpg";
 import LogoZoom from "../../../assets/images/platform/zoom.jpg";
 import DeviceMS from "../../../assets/images/platform/microsoft_device.jpg";
-import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.jpg";
-import ImageHundle from "../../../assets/images/rooms/huddle.jpg";
-import ImageSmall from "../../../assets/images/rooms/small.jpg";
-import ImageMedium from "../../../assets/images/rooms/medium.jpg";
-import ImageLarge from "../../../assets/images/rooms/large.jpg";
-import ImageAuditorium from "../../../assets/images/rooms/auditorium.jpg";
-import ImageAppliance from "../../../assets/images/services/appliance.jpg";
-import ImagePCBased from "../../../assets/images/services/pc_baced.jpg";
+import DeviceGoogle from "../../../assets/images/platform/google_device.jpg";
+import DeviceZoom from "../../../assets/images/platform/zoom_device.jpg";
+import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.png";
+import ImageHundle from "../../../assets/images/rooms/huddle.png";
+import ImageSmall from "../../../assets/images/rooms/small.png";
+import ImageMedium from "../../../assets/images/rooms/medium.png";
+import ImageLarge from "../../../assets/images/rooms/large.png";
+import ImageAuditorium from "../../../assets/images/rooms/auditorium.png";
+import ImageAppliance from "../../../assets/images/services/appliance.png";
+import ImagePCBased from "../../../assets/images/services/pc_baced.png";
 import CameraImg from "../../../assets/images/items/camera.jpg";
 import MicImg from "../../../assets/images/items/mic.jpg";
 import ControllerImg from "../../../assets/images/items/controller.jpg";
@@ -27,6 +29,14 @@ import { PlatformName, RoomSizeName, ServiceName } from '../../../utils/permissi
 
 export const getInitStepData = (): StepDataI => {
   return {
+    [StepName.RoomSize]: {
+      key: StepName.RoomSize,
+      name: "Choose Room Size",
+      title: "What size room are you setting up?",
+      subtitle:
+        "Choose the option that best matches the seating capacity of your room.",
+      cards: getRoomCardData(),
+    },
     [StepName.Platform]: {
       key: StepName.Platform,
       name: "Choose Platform",
@@ -35,18 +45,10 @@ export const getInitStepData = (): StepDataI => {
         "Choose the video conferencing platform your organization uses most often.",
       cards: getPlatformCardData(),
     },
-    [StepName.RoomSize]: {
-      key: StepName.RoomSize,
-      name: "Room Size",
-      title: "How many seats are in the space?",
-      subtitle:
-        "Choose the option that best matches the seating capacity of your room.",
-      cards: getRoomCardData(),
-    },
     [StepName.Services]: {
       key: StepName.Services,
       name: "Lorem Services",
-      title: "Lorem ipsum dolor sit amet adipiscing elit?",
+      title: "Would you prefer to deploy via a dedicated video conferencing appliance, or a meeting room computer?",
       subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
       cards: getServicesCardData(),
     },
@@ -97,22 +99,22 @@ function getPlatformCardData(): Array<PlatformCardI> {
     {
       key: StepName.Platform,
       logo: LogoGoogle,
-      image: DeviceMS,
-      title: "Google Meet Room",
+      image: DeviceGoogle,
+      title: "Google Meet",
       keyPermission: PlatformName.GoogleMeet,
     },
     {
       key: StepName.Platform,
       logo: LogoMS,
       image: DeviceMS,
-      title: "Microsoft Teams Room",
+      title: "Microsoft Teams",
       keyPermission: PlatformName.MicrosoftTeams,
     },
     {
       key: StepName.Platform,
       logo: LogoZoom,
-      image: DeviceMS,
-      title: "Zoom Room",
+      image: DeviceZoom,
+      title: "Zoom",
       keyPermission: PlatformName.Zoom,
     },
   ];
@@ -151,15 +153,15 @@ function getRoomCardData(): Array<RoomCardI> {
     {
       key: StepName.RoomSize,
       image: ImageLarge,
-      title: "Large/Boardroom",
+      title: "Large Room",
       subtitle: "up to 20",
       keyPermission: RoomSizeName.Large,
     },
     {
       key: StepName.RoomSize,
       image: ImageAuditorium,
-      title: "Auditorium",
-      subtitle: "over 20",
+      title: "Alternative",
+      subtitle: "more than 20",
       keyPermission: RoomSizeName.Auditorium,
     },
   ];
@@ -170,7 +172,7 @@ function getServicesCardData(): Array<ServiceCardI> {
     {
       key: StepName.Services,
       image: ImageAppliance,
-      title: "Appliance",
+      title: "Appliance-Based",
       subtitle:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis sapien fringilla, molestie nisl ut, venenatis elit.",
       keyPermission: ServiceName.Android,
@@ -178,7 +180,7 @@ function getServicesCardData(): Array<ServiceCardI> {
     {
       key: StepName.Services,
       image: ImagePCBased,
-      title: "PC based",
+      title: "PC-Based",
       subtitle:
         "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris eleifend vitae odio non elementum.",
       keyPermission: ServiceName.PC,

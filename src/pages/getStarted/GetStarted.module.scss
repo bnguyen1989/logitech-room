@@ -77,10 +77,46 @@
       }
     }
 
-    .actions {
+    .type_user {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      gap: 30px;
+
+      .type_user_title {
+        color: #000;
+        text-align: center;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 30px;
+        letter-spacing: -0.3px;
+      }
+
+      .type_user_buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+      }
+    }
+  }
+}
+
+@media (max-height: 900px) {
+  .container {
+    .content {
+      gap: 20px;
+
+      .title {
+        font-size: 30px;
+      }
+
+      .type_user {
+        gap: 20px;
+        .type_user_title {
+          font-size: 24px;
+        }
+      }
     }
   }
 }

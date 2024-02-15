@@ -1,4 +1,8 @@
 .container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  
 	.logo {
     display: flex;
     justify-content: center;
@@ -8,6 +12,11 @@
   }
 
   .image {
+    display: flex;
+    justify-content: center;
+    & img {
+      height: 100px;
+    }
   }
 
   .title {

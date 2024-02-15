@@ -2,7 +2,7 @@
 	display: flex;
   justify-content: center;
   align-items: center;
-	gap: 10px;
+	gap: 28px;
 
 	position: absolute;
 	left: 0;
@@ -11,4 +11,10 @@
 	bottom: 0;
 	z-index: 60;
 	background-color: #F4F4F4;
+}
+
+@media (max-width: 1500px) {
+	.container {
+		gap: 15px;
+	}
 }

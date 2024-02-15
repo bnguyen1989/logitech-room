@@ -30,8 +30,8 @@ const uiSlice = createSlice({
 			
 		},
 		moveToStartStep: (state) => {
-			permission.changeStepName(StepName.Platform);
-			state.activeStep = state.stepData[StepName.Platform];
+			permission.changeStepName(StepName.RoomSize);
+			state.activeStep = state.stepData[StepName.RoomSize];
 		},
 		changeActiveCard: (state, action: PayloadAction<StepCardType | undefined>) => {
 			const { activeStep } = state;

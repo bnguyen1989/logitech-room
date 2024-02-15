@@ -45,12 +45,22 @@ export const GetStarted: React.FC = () => {
           </div>
         </div>
 
-        <div className={s.actions}>
-          <Button
-            text="Get Started"
-            variant="contained"
-            onClick={handleClick}
-          />
+        <div className={s.type_user}>
+          <div className={s.type_user_title}>
+            Ready to get started? Choose the best experience for you.
+          </div>
+          <div className={s.type_user_buttons}>
+            <Button
+              text="I’m a customer"
+              variant="contained"
+              onClick={handleClick}
+            />
+            <Button
+              text="I’m a partner"
+              variant="outlined"
+              onClick={handleClick}
+            />
+          </div>
         </div>
       </div>
     </div>
