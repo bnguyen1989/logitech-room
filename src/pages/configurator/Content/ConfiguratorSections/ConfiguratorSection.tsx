@@ -25,7 +25,8 @@ import {
   initThreekitData,
 } from "../../../../utils/threekitUtils";
 import { changeAssetId } from "../../../../store/slices/configurator/Configurator.slice";
-import { Permission } from '../../../../models/permission/Permission'
+import { Permission } from "../../../../models/permission/Permission";
+import { SoftwareServiceSection } from "./SoftwareServiceSection/SoftwareServiceSection";
 
 declare const app: Application;
 declare const permission: Permission;
@@ -35,7 +36,6 @@ export const ConfiguratorSection: React.FC = () => {
   const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
   const [isStartLoadPlayer, setIsStartLoadPlayer] = useState(false);
-  
 
   useEffect(() => {
     if (!activeStep) {
@@ -45,9 +45,13 @@ export const ConfiguratorSection: React.FC = () => {
 
     const activeItems = permission.getActiveItems();
     const cardsCurrentStep = activeStep.cards;
-    const activeDefaultItems = activeItems.filter((item) => item.getDefaultActive());
-    const cardDefault = cardsCurrentStep.find((card) => activeDefaultItems.some((item) => item.name === card.keyPermission)) as ItemCardI;
-    if(cardDefault && cardDefault.threekit) {
+    const activeDefaultItems = activeItems.filter((item) =>
+      item.getDefaultActive()
+    );
+    const cardDefault = cardsCurrentStep.find((card) =>
+      activeDefaultItems.some((item) => item.name === card.keyPermission)
+    ) as ItemCardI;
+    if (cardDefault && cardDefault.threekit) {
       const threekit = cardDefault.threekit;
       app.addItemConfiguration(threekit.key, threekit.assetId);
     }
@@ -58,8 +62,8 @@ export const ConfiguratorSection: React.FC = () => {
     const assetId = app.currentConfigurator.assetId;
     if (assetId.length) return;
 
-    console.log('---- INIT THREEKIT DATA ----');
-    
+    console.log("---- INIT THREEKIT DATA ----");
+
     const roomAssetId = getRoomAssetId("", "");
     app.currentConfigurator.assetId = roomAssetId;
     initThreekitData();
@@ -70,15 +74,17 @@ export const ConfiguratorSection: React.FC = () => {
 
   const handleClick = (card: StepCardType) => {
     const activeItems = permission.getActiveItems();
-    const isContain = activeItems.some((item) => item.name === card.keyPermission);
+    const isContain = activeItems.some(
+      (item) => item.name === card.keyPermission
+    );
     const threekit = (card as ItemCardI).threekit;
-    if(!threekit) {
+    if (!threekit) {
       dispatch(changeActiveCard(card));
       return;
     }
 
     if (isContain && card.keyPermission) {
-      app.removeItem(threekit.key, threekit.assetId)
+      app.removeItem(threekit.key, threekit.assetId);
       return;
     }
 
@@ -126,11 +132,12 @@ export const ConfiguratorSection: React.FC = () => {
       card.key === StepName.ConferenceCamera ||
       card.key === StepName.AudioExtensions ||
       card.key === StepName.MeetingController ||
-      card.key === StepName.SoftwareServices ||
       card.key === StepName.VideoAccessories;
     if (isConfiguratorCard) {
       const activeItems = permission.getActiveItems();
-      const currentActiveItem = activeItems.find((item) => item.name === card.keyPermission);
+      const currentActiveItem = activeItems.find(
+        (item) => item.name === card.keyPermission
+      );
       return (
         <CardItem
           key={index}
@@ -144,6 +151,16 @@ export const ConfiguratorSection: React.FC = () => {
     }
     return null;
   };
+
+  if (activeStep.key === StepName.SoftwareServices) {
+    return (
+      <SoftwareServiceSection
+          handleClickCard={handleClick}
+          onChangeValueCard={onChange}
+          cards={activeStep.cards}
+        />
+    );
+  }
 
   return (
     <div className={s.container}>

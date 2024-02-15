@@ -18,8 +18,9 @@ import {
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
-import { getPermissionNameByItemName } from '../../../../utils/permissionUtils'
-import { RemoveItemCommand } from '../../../../models/command/RemoveItemCommand'
+import { getPermissionNameByItemName } from "../../../../utils/permissionUtils";
+import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
+import { getSoftwareServicesCardData } from "../utils";
 
 declare const app: Application;
 
@@ -43,7 +44,7 @@ export const getUiHandlers = (store: Store) => {
       console.log(data.asset);
     }
 
-    if(data instanceof RemoveItemCommand) {
+    if (data instanceof RemoveItemCommand) {
       store.dispatch(changeActiveCard(undefined));
     }
 
@@ -339,6 +340,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
 function setSoftwareServicesData(configurator: Configurator) {
   return (store: Store) => {
     const softwareServicesCardData: Array<ItemCardI> = [];
+    const softwareServicesBaseData = getSoftwareServicesCardData();
     Configurator.SoftwareServicesName.forEach((item) => {
       const [name] = item;
       const value = configurator.getValueByPropertyName(name);
@@ -349,7 +351,9 @@ function setSoftwareServicesData(configurator: Configurator) {
       const temp: Array<ItemCardI> = [];
 
       if (name.includes("Support")) {
-        const title = "Logitech Select";
+        const baseCard = softwareServicesBaseData.find((item) =>
+          item.title.includes("Support")
+        );
 
         const values: Array<string> = [];
         value.values.forEach((item: ConfiguratorDataValueType) => {
@@ -360,25 +364,30 @@ function setSoftwareServicesData(configurator: Configurator) {
           }
         });
 
-        temp.push({
-          key: StepName.SoftwareServices,
-          image: ServiceImg,
-          header_title: title,
-          title: title,
-          select: {
-            value: {
-              label: values[0],
-              value: values[0],
+        if (baseCard) {
+          temp.push({
+            ...baseCard,
+            select: {
+              value: {
+                label: values[0],
+                value: values[0],
+              },
+              data: values.map((item: string) => {
+                return {
+                  label: item,
+                  value: item,
+                };
+              }),
             },
-            data: values.map((item: string) => {
-              return {
-                label: item,
-                value: item,
-              };
-            }),
-          },
-          keyPermission: getPermissionNameByItemName("Support Service"),
-        });
+          });
+        }
+      } else if (name.includes("Management")) {
+        const baseCard = softwareServicesBaseData.find((item) =>
+          item.title.includes("Management")
+        );
+        if (baseCard) {
+          temp.push(baseCard);
+        }
       } else {
         value.values.forEach((item: ConfiguratorDataValueType) => {
           const asset = item as AssetI;
