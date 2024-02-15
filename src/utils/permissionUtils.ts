@@ -98,9 +98,10 @@ function createStepRoomSize() {
     .addElement(new ItemElement(RoomSizeName.Medium))
     .addElement(new ItemElement(RoomSizeName.Large))
     .addElement(
-      new ItemElement(RoomSizeName.Auditorium)
-        .addDependence(new ItemElement(PlatformName.MicrosoftTeams))
-        .addDependence(new ItemElement(PlatformName.Zoom))
+      new ItemElement(RoomSizeName.Auditorium).addDependence([
+        new ItemElement(PlatformName.MicrosoftTeams),
+        new ItemElement(PlatformName.Zoom),
+      ])
     )
     .setRequiredOne(true);
   stepRoomSize.allElements = [group];
