@@ -224,6 +224,7 @@ function createStepSoftwareServices() {
   const group = new GroupElement()
     .addElement(new ItemElement(SoftwareServicesName.LogitechSync))
     .addElement(new ItemElement(SoftwareServicesName.SupportService));
+  group.setRequiredOne(true);
   stepSoftwareServices.allElements = [group];
   return stepSoftwareServices;
 }

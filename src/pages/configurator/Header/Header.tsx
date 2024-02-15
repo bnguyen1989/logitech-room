@@ -1,9 +1,10 @@
+// import { ArrowSelectDownSVG } from "../../../assets";
+// import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { NavigationMenu } from "../../../components/NavigationMenu/NavigationMenu";
 import { useAppSelector } from "../../../hooks/redux";
-import { getIsBuilding } from '../../../store/slices/configurator/selectors/selectors'
-import {
-  getActiveStep,
-} from "../../../store/slices/ui/selectors/selectors";
+// import { StepName } from "../../../models/permission/type";
+import { getIsBuilding } from "../../../store/slices/configurator/selectors/selectors";
+import { getActiveStep } from "../../../store/slices/ui/selectors/selectors";
 import s from "./Header.module.scss";
 
 export const Header: React.FC = () => {
@@ -12,9 +13,11 @@ export const Header: React.FC = () => {
 
   if (!activeStep) return null;
 
+  // const isStepSoftwareServices = activeStep.key === StepName.SoftwareServices;
+
   const isConferenceCamera = activeStep?.name
-  .toLocaleLowerCase()
-  .includes("conference camera");
+    .toLocaleLowerCase()
+    .includes("conference camera");
 
   if (isBuilding && isConferenceCamera) {
     return (
@@ -35,6 +38,17 @@ export const Header: React.FC = () => {
         <div className={s.title_text}>{activeStep.title}</div>
         <div className={s.sub_title_text}>{activeStep.subtitle}</div>
       </div>
+      {/* <div className={s.actions}>
+        {isStepSoftwareServices && (
+          <IconButton
+            text={"Need help? Anchor link"}
+            onClick={() => {}}
+            variant={"outlined"}
+          >
+            <ArrowSelectDownSVG />
+          </IconButton>
+        )}
+      </div> */}
     </div>
   );
 };

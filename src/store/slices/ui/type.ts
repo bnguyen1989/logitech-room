@@ -93,6 +93,7 @@ export interface ItemCardI {
 	header_title: string;
 	title: string;
 	subtitle?: string;
+	description?: string;
 	color?: ColorI;
 	counter?: CounterI;
 	select?: SelectI;

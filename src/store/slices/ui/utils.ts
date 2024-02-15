@@ -25,7 +25,7 @@ import MicImg from "../../../assets/images/items/mic.jpg";
 import ControllerImg from "../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../assets/images/items/access.jpg";
 import ServiceImg from "../../../assets/images/items/service.jpg";
-import { PlatformName, RoomSizeName, ServiceName } from '../../../utils/permissionUtils'
+import { PlatformName, RoomSizeName, ServiceName, SoftwareServicesName } from '../../../utils/permissionUtils'
 
 export const getInitStepData = (): StepDataI => {
   return {
@@ -368,19 +368,31 @@ function getVideoAccessoriesCardData(): Array<ItemCardI> {
   ];
 }
 
-function getSoftwareServicesCardData(): Array<ItemCardI> {
+export function getSoftwareServicesCardData(): Array<ItemCardI> {
   return [
     {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      header_title: "LOGITECH SYNC",
+      header_title: "LOGITECH Basic",
       title: "Device Management Software",
+      subtitle: "(Including Sync)",
+      description: "Lorem ipsum dolor sit amet, consectetur adipis cing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      keyPermission: SoftwareServicesName.LogitechSync
     },
     {
       key: StepName.SoftwareServices,
       image: ServiceImg,
       header_title: "LOGITECH SELECT",
       title: "24/7 Enterprise-Grade Support",
+      description: "Lorem ipsum dolor sit amet, consectetur adipis cing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      keyPermission: SoftwareServicesName.SupportService,
+      select: {
+        value: {label: '3 years', value: '3 years'},
+        data: [
+          {label: '3 years', value: '3 years'},
+          {label: 'Yes', value: 'yes'},
+        ]
+      }
     },
   ];
 }
