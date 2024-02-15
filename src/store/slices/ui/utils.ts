@@ -29,14 +29,6 @@ import { PlatformName, RoomSizeName, ServiceName } from '../../../utils/permissi
 
 export const getInitStepData = (): StepDataI => {
   return {
-    [StepName.Platform]: {
-      key: StepName.Platform,
-      name: "Choose Platform",
-      title: "What is your primary video conferencing platform?",
-      subtitle:
-        "Choose the video conferencing platform your organization uses most often.",
-      cards: getPlatformCardData(),
-    },
     [StepName.RoomSize]: {
       key: StepName.RoomSize,
       name: "Choose Room Size",
@@ -44,6 +36,14 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Choose the option that best matches the seating capacity of your room.",
       cards: getRoomCardData(),
+    },
+    [StepName.Platform]: {
+      key: StepName.Platform,
+      name: "Choose Platform",
+      title: "What is your primary video conferencing platform?",
+      subtitle:
+        "Choose the video conferencing platform your organization uses most often.",
+      cards: getPlatformCardData(),
     },
     [StepName.Services]: {
       key: StepName.Services,

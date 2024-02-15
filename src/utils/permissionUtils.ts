@@ -6,8 +6,8 @@ import { StepName } from "../models/permission/type";
 
 export const initPermission = () => {
   const permission = new Permission();
-  permission.addStep(createStepPlatform());
   permission.addStep(createStepRoomSize());
+  permission.addStep(createStepPlatform());
   permission.addStep(createStepServices());
   permission.addStep(createStepConferenceCamera());
   permission.addStep(createStepAudioExtensions());
@@ -18,12 +18,6 @@ export const initPermission = () => {
   global["permission"] = permission;
 };
 
-export enum PlatformName {
-  GoogleMeet = "Google Meet",
-  MicrosoftTeams = "Microsoft Teams",
-  Zoom = "Zoom",
-}
-
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
   Huddle = "Huddle",
@@ -31,6 +25,12 @@ export enum RoomSizeName {
   Medium = "Medium",
   Large = "Large",
   Auditorium = "Auditorium",
+}
+
+export enum PlatformName {
+  GoogleMeet = "Google Meet",
+  MicrosoftTeams = "Microsoft Teams",
+  Zoom = "Zoom",
 }
 
 export enum ServiceName {
@@ -78,17 +78,6 @@ export enum SoftwareServicesName {
   SupportService = "Support Service",
 }
 
-function createStepPlatform() {
-  const stepPlatform = new Step(StepName.Platform);
-  const group = new GroupElement()
-    .addElement(new ItemElement(PlatformName.GoogleMeet))
-    .addElement(new ItemElement(PlatformName.MicrosoftTeams))
-    .addElement(new ItemElement(PlatformName.Zoom))
-    .setRequiredOne(true);
-  stepPlatform.allElements = [group];
-  return stepPlatform;
-}
-
 function createStepRoomSize() {
   const stepRoomSize = new Step(StepName.RoomSize);
   const group = new GroupElement()
@@ -97,15 +86,29 @@ function createStepRoomSize() {
     .addElement(new ItemElement(RoomSizeName.Small))
     .addElement(new ItemElement(RoomSizeName.Medium))
     .addElement(new ItemElement(RoomSizeName.Large))
-    .addElement(
-      new ItemElement(RoomSizeName.Auditorium).addDependence([
-        new ItemElement(PlatformName.MicrosoftTeams),
-        new ItemElement(PlatformName.Zoom),
-      ])
-    )
+    .addElement(new ItemElement(RoomSizeName.Auditorium))
     .setRequiredOne(true);
   stepRoomSize.allElements = [group];
   return stepRoomSize;
+}
+
+function createStepPlatform() {
+  const stepPlatform = new Step(StepName.Platform);
+  const group = new GroupElement()
+    .addElement(
+      new ItemElement(PlatformName.GoogleMeet).addDependence([
+        new ItemElement(RoomSizeName.Phonebooth),
+        new ItemElement(RoomSizeName.Huddle),
+        new ItemElement(RoomSizeName.Small),
+        new ItemElement(RoomSizeName.Medium),
+        new ItemElement(RoomSizeName.Large),
+      ])
+    )
+    .addElement(new ItemElement(PlatformName.MicrosoftTeams))
+    .addElement(new ItemElement(PlatformName.Zoom))
+    .setRequiredOne(true);
+  stepPlatform.allElements = [group];
+  return stepPlatform;
 }
 
 function createStepServices() {
