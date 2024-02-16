@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  gap: 50px;
+
+  .left_content {
+    .image {
+      width: 450px;
+      height: 250px;
+
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .right_content {
+		max-width: 700px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+
+    .header {
+			display: flex;
+			gap: 15px;
+      .title {
+        color: #000;
+        font-family: BrownPro;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 40px; /* 133.333% */
+        letter-spacing: -0.3px;
+      }
+      .button_edit {
+      }
+    }
+
+    .desc {
+      color: #697172;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 24px;
+    }
+
+    .buttons {
+			display: flex;
+			gap: 20px;
+    }
+  }
+}

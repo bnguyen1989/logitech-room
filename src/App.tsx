@@ -1,16 +1,16 @@
-import { useAppSelector } from './hooks/redux'
 import { Configurator } from "./pages/configurator/Configurator";
 import { GetStarted } from './pages/getStarted/GetStarted'
-import { getActiveStep } from './store/slices/ui/selectors/selectors'
+import { Room } from './pages/room/Room'
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
-  const activeStep = useAppSelector(getActiveStep);
-
-  if (!activeStep) {
-    return <GetStarted />;
-  }
-  
-  return <Configurator />;
+  return (
+    <Routes>
+      <Route path="/" element={<GetStarted />} />
+      <Route path="/configurator" element={<Configurator />} />
+      <Route path="/room" element={<Room />} />
+    </Routes>
+  )
 }
 
 export default App;
