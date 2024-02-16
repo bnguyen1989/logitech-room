@@ -1,45 +1,63 @@
 import { InformationSVG } from "../../../assets";
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardItem.module.scss";
-import { ColorItemI, ItemCardI, SelectDataI } from "../../../store/slices/ui/type";
+import {
+  ColorItemI,
+  ItemCardI,
+  SelectDataI,
+} from "../../../store/slices/ui/type";
 import { ColorItem } from "../../ColorItem/ColorItem";
 import { CounterItem } from "../../Counters/CounterItem/CounterItem";
-import { SelectItem } from '../../Fields/SelectItem/SelectItem'
+import { SelectItem } from "../../Fields/SelectItem/SelectItem";
+import { IconButton } from "../../Buttons/IconButton/IconButton";
+import { useDispatch } from 'react-redux'
+import { setInfoItemModal } from '../../../store/slices/modals/Modals.slice'
 
 interface PropsI {
   active?: boolean;
   recommended?: boolean;
   onClick: () => void;
   data: ItemCardI;
-  onChange?: (value: ItemCardI, type: 'counter' | 'color' | 'select') => void;
+  onChange?: (value: ItemCardI, type: "counter" | "color" | "select") => void;
 }
 export const CardItem: React.FC<PropsI> = (props) => {
   const { recommended, onClick, data, onChange, active } = props;
+  const dispatch = useDispatch();
 
   const handleChangeColor = (value: ColorItemI) => {
     if (!onChange || !data.color) {
       return;
     }
-    onChange({ ...data, color: { ...data.color, currentColor: value } }, 'color');
+    onChange(
+      { ...data, color: { ...data.color, currentColor: value } },
+      "color"
+    );
   };
 
   const handleChangeCounter = (value: number) => {
     if (!onChange || !data.counter) {
       return;
     }
-    
-    onChange({ ...data, counter: { ...data.counter, currentValue: value } }, 'counter');
+
+    onChange(
+      { ...data, counter: { ...data.counter, currentValue: value } },
+      "counter"
+    );
   };
 
   const handleChangeSelect = (value: SelectDataI) => {
     if (!onChange || !data.select) {
       return;
     }
-    
-    onChange({ ...data, select: { ...data.select, value } }, 'select');
+
+    onChange({ ...data, select: { ...data.select, value } }, "select");
   };
 
   const isAction = !!data.color || !!data.counter || !!data.select;
+
+  const handleInfo = () => {
+    dispatch(setInfoItemModal({ isOpen: true }));
+  };
 
   return (
     <CardContainer
@@ -86,7 +104,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
                 />
               )}
               {!!data.select && (
-                <SelectItem 
+                <SelectItem
                   value={data.select.value}
                   onSelect={handleChangeSelect}
                   options={data.select.data}
@@ -94,7 +112,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
               )}
             </div>
             <div className={s.info}>
-              <InformationSVG />
+              <IconButton onClick={handleInfo}>
+                <InformationSVG />
+              </IconButton>
             </div>
           </div>
         </div>
