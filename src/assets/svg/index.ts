@@ -3,3 +3,5 @@ export { RevertSVG } from "./Revert.tsx";
 export { CloseSVG } from "./Close.tsx";
 export { ArrowDownSVG } from "./ArrowDown.tsx";
 export { ArrowSelectDownSVG } from "./ArrowSelectDown.tsx";
+export { DownloadSVG } from "./Download.tsx";
+export { EditSVG } from "./Edit.tsx";

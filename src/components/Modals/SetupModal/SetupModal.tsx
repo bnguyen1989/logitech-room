@@ -10,14 +10,21 @@ import { Field } from "../../Fields/Field/Field";
 import { Select } from "../../Fields/Select/Select";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
+import { useNavigate } from 'react-router-dom'
 
 export const SetupModal: React.FC = () => {
+  const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { isOpen } = useAppSelector(getSetupModalData);
 
 	const handleClose = () => {
 		dispatch(setMySetupModal({ isOpen: false }));
 	}
+
+  const handleSeeResults = () => {
+    dispatch(setMySetupModal({ isOpen: false }));
+    navigate('/room', { replace: true });
+  }
 
 	if (!isOpen) return null;
 
@@ -119,7 +126,7 @@ export const SetupModal: React.FC = () => {
         <div className={s.actions}>
           <Button
             text={"See my results"}
-            onClick={() => {}}
+            onClick={handleSeeResults}
             variant={"contained"}
           />
         </div>

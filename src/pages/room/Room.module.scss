@@ -1,0 +1,23 @@
+.container {
+	background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+	padding: 60px 0;
+
+  .rooms {
+    display: flex;
+    flex-direction: column;
+		align-items: center;
+    gap: 50px;
+    .wrapper_room {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      .divider {
+        border-top: 1px dashed #e1e2e3;
+				height: 5px;
+      }
+    }
+  }
+}
