@@ -1,0 +1,22 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	
+  .title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 30px;
+
+    .text {
+      color: #000;
+      text-align: center;
+      font-size: 40px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 50px; /* 125% */
+      letter-spacing: -0.4px;
+    }
+  }
+}
