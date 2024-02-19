@@ -155,16 +155,21 @@ export const ConfiguratorSection: React.FC = () => {
   if (activeStep.key === StepName.SoftwareServices) {
     return (
       <SoftwareServiceSection
-          handleClickCard={handleClick}
-          onChangeValueCard={onChange}
-          cards={activeStep.cards}
-        />
+        handleClickCard={handleClick}
+        onChangeValueCard={onChange}
+        cards={activeStep.cards}
+      />
     );
   }
 
   return (
     <div className={s.container}>
-      <div className={s.player}>
+      <div
+        className={s.player}
+        style={{
+          opacity: isConfiguratorStep ? 1 : 0,
+        }}
+      >
         <Player />
         <div className={s.widgets}>
           <PlayerWidgets />
