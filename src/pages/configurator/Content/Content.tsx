@@ -9,7 +9,6 @@ import {
 import React from "react";
 import { useDispatch } from "react-redux";
 import { changeActiveStep } from "../../../store/slices/ui/Ui.slice";
-import { Loader } from "../../../components/Loader/Loader";
 import { PrepareSection } from "./PrepareSections/PrepareSection";
 import { ConfiguratorSection } from "./ConfiguratorSections/ConfiguratorSection";
 import { getIsBuilding } from "../../../store/slices/configurator/selectors/selectors";
@@ -18,6 +17,7 @@ import { RevertSVG } from "../../../assets";
 import { setMySetupModal } from "../../../store/slices/modals/Modals.slice";
 import { Permission } from "../../../models/permission/Permission";
 import { useNavigate } from "react-router-dom";
+import { LoaderSection } from "./LoaderSection/LoaderSection";
 
 declare const permission: Permission;
 
@@ -78,7 +78,7 @@ export const Content: React.FC<PropsI> = () => {
       </div>
       {(isBuilding || isProcessInitData) && isConferenceCamera && (
         <div className={s.loader}>
-          <Loader text="Building Your Room" />
+          <LoaderSection />
         </div>
       )}
     </div>

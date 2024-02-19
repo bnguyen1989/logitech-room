@@ -1,42 +1,67 @@
-import { RootState } from '../../../'
-import { Permission } from '../../../../models/permission/Permission'
-import { StepName } from '../type'
+import { RootState } from "../../../";
+import { Permission } from "../../../../models/permission/Permission";
+import { StepName } from "../type";
 
 declare const permission: Permission;
 
 export const getStepData = (state: RootState) => state.ui.stepData;
 export const getActiveStep = (state: RootState) => {
-	let activeStep = state.ui.activeStep;
-	if(activeStep) {
-		activeStep = {...activeStep};
-		const items = permission.getElements();
-		activeStep.cards = [...activeStep.cards].filter(card => items.some(item => item.name === card.keyPermission));
-	}
+  let activeStep = state.ui.activeStep;
+  if (activeStep) {
+    activeStep = { ...activeStep };
+    const items = permission.getElements();
+    activeStep.cards = [...activeStep.cards].filter((card) =>
+      items.some((item) => item.name === card.keyPermission)
+    );
+  }
 
-	return activeStep;
+  return activeStep;
 };
 
 export const getNavigationStepData = (state: RootState) => {
-	const { stepData, activeStep } = state.ui;
+  const { stepData, activeStep } = state.ui;
 
-	const listStepData = Object.values(stepData);
+  const listStepData = Object.values(stepData);
 
-	const currentStepIndex = listStepData.findIndex(step => step.title === activeStep?.title);
+  const currentStepIndex = listStepData.findIndex(
+    (step) => step.title === activeStep?.title
+  );
 
-	return {
-		prevStep: listStepData[currentStepIndex - 1],
-		nextStep: listStepData[currentStepIndex + 1]
-	}
-}
+  return {
+    prevStep: listStepData[currentStepIndex - 1],
+    nextStep: listStepData[currentStepIndex + 1],
+  };
+};
 
 export const getIsConfiguratorStep = (state: RootState) => {
-	const { activeStep } = state.ui;
+  const { activeStep } = state.ui;
 
-	if (!activeStep) {
-		return false;
-	}
+  if (!activeStep) {
+    return false;
+  }
 
-	return ![StepName.Platform, StepName.RoomSize, StepName.Services].includes(activeStep.key);
-}
+  return ![StepName.Platform, StepName.RoomSize, StepName.Services].includes(
+    activeStep.key
+  );
+};
 
-export const getIsProcessInitData = (state: RootState) => state.ui.processInitData;
+export const getIsProcessInitData = (state: RootState) =>
+  state.ui.processInitData;
+
+export const getSelectedPrepareCards = (state: RootState) => {
+  const { stepData } = state.ui;
+  const roomCards = stepData[StepName.RoomSize].cards;
+  const platformCards = stepData[StepName.Platform].cards;
+  const serviceCards = stepData[StepName.Services].cards;
+  const prepareCards = [...roomCards, ...platformCards, ...serviceCards];
+
+  return prepareCards.filter((card) => {
+    const key = card.keyPermission;
+    const currentStep = permission.getCurrentStep();
+    if (!currentStep) return false;
+    const chainActiveElements = currentStep.getChainActiveElements();
+    return chainActiveElements.some((chainActiveElement) =>
+      chainActiveElement.some((activeElement) => activeElement.name === key)
+    );
+  });
+};
