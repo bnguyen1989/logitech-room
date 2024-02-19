@@ -1,3 +1,5 @@
+import { EditSVG } from "../../assets";
+import { IconButton } from "../Buttons/IconButton/IconButton";
 import { RadioButton } from "../RadioButton/RadioButton";
 import s from "./QuestionForm.module.scss";
 import React from "react";
@@ -11,7 +13,7 @@ export const QuestionForm: React.FC<PropsI> = () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do?",
       options: [
         { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
+        { value: true, text: "Option one" },
         { value: false, text: "Option one" },
         { value: false, text: "Option one" },
       ],
@@ -59,13 +61,21 @@ export const QuestionForm: React.FC<PropsI> = () => {
     },
   ];
   const [data, setData] = React.useState(listQuestion);
-  const handleClick = (index: number) => {
+  const handleClickEdit = (index: number) => {
     const currentData = data.map((item, i) => {
+      if (i < index) {
+        return item;
+      }
       if (i === index) {
         item.active = true;
         item.done = false;
       } else {
         item.active = false;
+        item.done = false;
+        item.options = item.options.map((option) => {
+          option.value = false;
+          return option;
+        });
       }
       return item;
     });
@@ -90,7 +100,12 @@ export const QuestionForm: React.FC<PropsI> = () => {
     <div className={s.container}>
       <div className={s.list}>
         {data.map((question, index) => (
-          <div key={index} className={s.wrapper}>
+          <div
+            key={index}
+            className={`${s.wrapper} ${
+              question.active ? s.wrapper_active : ""
+            } ${question.done ? s.wrapper_done : ""}`}
+          >
             <div className={s.mark_item}>
               <div
                 className={`${s.line} ${
@@ -101,7 +116,7 @@ export const QuestionForm: React.FC<PropsI> = () => {
                 }`}
               ></div>
               <div
-                className={`${s.mark} ${question.active ? s.mark_active : ""}`}
+                className={`${s.mark}`}
               >
                 {question.done ? <DoneSVG /> : null}
                 {question.active ? <ActiveSVG /> : null}
@@ -115,22 +130,26 @@ export const QuestionForm: React.FC<PropsI> = () => {
               ></div>
             </div>
             <div
-              className={`${s.item} ${question.active ? s.item_active : ""}`}
-              onClick={() => handleClick(index)}
+              className={`${s.item}`}
             >
               <div
-                className={`${s.triangle} ${
-                  question.active ? s.triangle_active : ""
-                }`}
+                className={`${s.triangle}`}
               ></div>
               <div className={s.header_item}>
-                <div className={s.title}>{question.title}</div>
-                <div className={s.text}>{question.question}</div>
+                <div className={s.item_text}>
+                  <div className={s.title}>{question.title}</div>
+                  <div className={s.text}>{question.question}</div>
+                </div>
+                <div
+                  className={`${s.edit_button}`}
+                >
+                  <IconButton onClick={() => handleClickEdit(index)}>
+                    <EditSVG />
+                  </IconButton>
+                </div>
               </div>
               <div
-                className={`${s.actions} ${
-                  question.active ? s.actions_active : ""
-                }`}
+                className={`${s.actions}`}
               >
                 {question.options.map((option, indexOption) => (
                   <RadioButton
