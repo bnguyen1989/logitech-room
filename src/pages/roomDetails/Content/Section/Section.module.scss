@@ -1,0 +1,23 @@
+.container {
+  .title {
+    color: var(--main-color-text);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+		padding-bottom: 15px;
+  }
+	.divider {
+		border-top: 1px solid #C3C6C8;
+		height: 1px;
+	}
+	.cards {
+		padding-top: 45px;
+		.wrapper {
+			.divider {
+				border-top: 1px dashed #e1e2e3;
+				height: 1px;
+			}
+		}
+	}
+}

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { DownloadSVG, EditSVG } from "../../../assets";
 import { Button } from "../../../components/Buttons/Button/Button";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
@@ -10,6 +11,11 @@ interface PropsI {
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc } = props;
+  const navigate = useNavigate();
+
+  const handleView = () => {
+    navigate("/room/1", { replace: true });
+  };
   return (
     <div className={s.container}>
       <div className={s.left_content}>
@@ -21,14 +27,14 @@ export const CardRoom: React.FC<PropsI> = (props) => {
         <div className={s.header}>
           <div className={s.title}>{title}</div>
           <div className={s.button_edit}>
-						<IconButton onClick={() => {}}>
-							<EditSVG />
-						</IconButton>
-					</div>
+            <IconButton onClick={() => {}}>
+              <EditSVG />
+            </IconButton>
+          </div>
         </div>
         <div className={s.desc}>{desc}</div>
         <div className={s.buttons}>
-          <Button onClick={() => {}} text={"View"} variant={"contained"} />
+          <Button onClick={handleView} text={"View"} variant={"contained"} />
           <IconButton onClick={() => {}} text={"Download"} variant={"outlined"}>
             <DownloadSVG />
           </IconButton>

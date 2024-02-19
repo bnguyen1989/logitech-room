@@ -5,3 +5,5 @@ export { ArrowDownSVG } from "./ArrowDown.tsx";
 export { ArrowSelectDownSVG } from "./ArrowSelectDown.tsx";
 export { DownloadSVG } from "./Download.tsx";
 export { EditSVG } from "./Edit.tsx";
+export { ShareSVG } from "./Share.tsx";
+export { ListSVG } from "./List.tsx";

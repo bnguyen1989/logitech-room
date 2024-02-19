@@ -16,12 +16,14 @@ import { getIsBuilding } from "../../../store/slices/configurator/selectors/sele
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { RevertSVG } from "../../../assets";
 import { setMySetupModal } from "../../../store/slices/modals/Modals.slice";
-import { Permission } from '../../../models/permission/Permission'
+import { Permission } from "../../../models/permission/Permission";
+import { useNavigate } from "react-router-dom";
 
 declare const permission: Permission;
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const activeStep = useAppSelector(getActiveStep);
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
@@ -43,14 +45,14 @@ export const Content: React.FC<PropsI> = () => {
 
   const handleBack = () => {
     if (!prevStep) {
-      dispatch(changeActiveStep(null));
+      navigate("/", { replace: true });
       return;
     }
     dispatch(changeActiveStep(prevStep));
   };
 
   const handleRevert = () => {
-    dispatch(changeActiveStep(null));
+    navigate("/", { replace: true });
   };
 
   return (

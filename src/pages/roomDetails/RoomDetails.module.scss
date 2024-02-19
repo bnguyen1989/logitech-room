@@ -1,0 +1,13 @@
+.container {
+  padding: 100px 0;
+	display: flex;
+	justify-content: center;
+	background-color: #FFFFFF;
+
+  .wrapper {
+		max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+  }
+}
