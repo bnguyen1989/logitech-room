@@ -56,7 +56,7 @@ export const getInitStepData = (): StepDataI => {
       key: StepName.ConferenceCamera,
       name: "Conference Camera",
       title: "Choose your conference camera.",
-      subtitle: "These recommendations are based on your previous answers.",
+      subtitle: "These recommendations are based on your previous answers. You selected: {2} deployment running {1} in a {0}.",
       cards: getConferenceCameraCardData(),
     },
     [StepName.AudioExtensions]: {

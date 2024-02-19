@@ -15,6 +15,25 @@ export const getActiveStep = (state: RootState) => {
     );
   }
 
+  if (activeStep?.key === StepName.ConferenceCamera) {
+    const selectedPrepareCards = getSelectedPrepareCards(state);
+    const roomSizeCard = selectedPrepareCards.find(
+      (card) => card.key === StepName.RoomSize
+    );
+    const platformCard = selectedPrepareCards.find(
+      (card) => card.key === StepName.Platform
+    );
+    const serviceCard = selectedPrepareCards.find(
+      (card) => card.key === StepName.Services
+    );
+    if (!roomSizeCard || !platformCard || !serviceCard) return activeStep;
+    const getName = (name: string) => `<b>${name}</b>`;
+    activeStep.subtitle = activeStep.subtitle
+      .replace("{0}", getName(roomSizeCard.title))
+      .replace("{1}", getName(platformCard.title))
+      .replace("{2}", getName(serviceCard.title));
+  }
+
   return activeStep;
 };
 
