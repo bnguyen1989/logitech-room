@@ -9,12 +9,21 @@
   z-index: 900;
   background-color: rgba(0, 0, 0, 0.50);
 
-  .container_modal {
+  .container_modal_center {
     background: #fff;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    z-index: 999;
+  }
+
+  .container_modal_right {
+    background: #fff;
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    bottom: 0;
     z-index: 999;
   }
 }
