@@ -7,3 +7,4 @@ export { DownloadSVG } from "./Download.tsx";
 export { EditSVG } from "./Edit.tsx";
 export { ShareSVG } from "./Share.tsx";
 export { ListSVG } from "./List.tsx";
+export { WarningSVG } from "./Warning.tsx";

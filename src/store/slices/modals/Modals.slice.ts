@@ -5,6 +5,7 @@ import { ModalI, ModalName } from './type';
 interface ModalsStateI {
   [ModalName.MY_SETUP]: ModalI;
   [ModalName.INFO_ITEM]: ModalI;
+  [ModalName.SELECT_PRODUCT]: ModalI;
 }
 
 const initialState: ModalsStateI = {
@@ -12,6 +13,9 @@ const initialState: ModalsStateI = {
     isOpen: false,
   },
   [ModalName.INFO_ITEM]: {
+    isOpen: false,
+  },
+  [ModalName.SELECT_PRODUCT]: {
     isOpen: false,
   },
 };
@@ -25,6 +29,9 @@ const ModalsSlice = createSlice({
 		},
     setInfoItemModal: (state, action: PayloadAction<ModalI>) => {
       state[ModalName.INFO_ITEM] = action.payload;
+    },
+    setSelectProductModal: (state, action: PayloadAction<ModalI>) => {
+      state[ModalName.SELECT_PRODUCT] = action.payload;
     }
   },
 });
@@ -32,6 +39,7 @@ const ModalsSlice = createSlice({
 export const {
   setMySetupModal,
   setInfoItemModal,
+  setSelectProductModal,
 } = ModalsSlice.actions;
 
 export default ModalsSlice.reducer;
