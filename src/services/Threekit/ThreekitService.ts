@@ -1,75 +1,68 @@
 import {
-  ConfiguratorDataValueType,
-  ThreekitDataT,
-  ThreekitDataValueType,
+  AttributeI,
 } from "../../models/configurator/type";
+import { isAssetType } from '../../utils/threekitUtils'
 import { ThreekitApi } from "../api/Threekit/ThreekitApi";
-import { AssetI, AssetProxyI, AttributeI, DataTableRowI } from "./type";
+import { AssetI, AssetProxyI, AttributeApiI } from "./type";
 
 export class ThreekitService {
   private threekitApi: ThreekitApi = new ThreekitApi();
 
   public async getDataAssetById(assetId: string) {
     const response = await this.threekitApi.getAssetById(assetId);
+    console.log("response", response.data);
+    console.log("response", JSON.stringify(response.data));
+    
     const asset: AssetI = response.data;
 
     type ObjAttrDataT = {
       [key: string]: {
-        [key: string]: string;
+        tagId: string;
       };
     };
     const objAttrData: ObjAttrDataT = asset.attributes
-      .filter((attr: AttributeI) => attr["proxy"]["type"] === "Asset")
-      .reduce((acc: ObjAttrDataT, attr: AttributeI) => {
-        const value = attr["proxy"]["values"][0] as AssetProxyI;
-        if (value["tagId"]) {
-          acc[attr["proxy"]["name"]] = {
+      .filter((attr: AttributeApiI) => attr["proxy"]["type"] === "Asset")
+      .reduce((acc: ObjAttrDataT, attr: AttributeApiI) => {
+        const values = attr["proxy"]["values"] as Array<AssetProxyI>;
+        values.forEach((value, index) => {
+          acc[`${attr["proxy"]["name"]} ${index}`] = {
             tagId: value["tagId"],
           };
-        } else if (value["assetId"]) {
-          acc[attr["proxy"]["name"]] = {
-            assetId: value["assetId"],
-          };
-        }
+        });
         return acc;
       }, {});
 
     const respPromises = Object.values(objAttrData)
       .filter(Boolean)
       .map((attrData) =>
-        attrData["assetId"]
-          ? this.threekitApi.getAssetById(attrData["assetId"])
-          : this.threekitApi.getAssetsByTag(attrData["tagId"])
+        this.threekitApi.getAssetsByTag(attrData["tagId"])
       );
     const results = await Promise.all(respPromises);
 
     const listAssetForAttr: { [key: string]: Array<object> } = {};
     Object.keys(objAttrData).forEach((key, index) => {
-      const id = objAttrData[key]["assetId"] || objAttrData[key]["tagId"];
-      if (objAttrData[key]["assetId"]) {
-        listAssetForAttr[id] = [results[index]?.data];
-        return;
-      }
+      const id = objAttrData[key]["tagId"];
       listAssetForAttr[id] = results[index]?.data.assets;
     });
 
-    const processAttribute = (attr: AttributeI) => {
-      const data: ThreekitDataValueType = {
-        name: attr["proxy"]["name"] as string,
-        defaultValue: attr["proxy"][
-          "defaultValue"
-        ] as ConfiguratorDataValueType,
-        type: attr["proxy"]["type"] as string,
+    const processAttribute = (attr: AttributeApiI) => {
+      const proxy = attr["proxy"];
+      const data: AttributeI = {
+        ...proxy,
         values: [],
       };
-      const isAsset = attr["proxy"]["type"] === "Asset";
+      const isAsset = isAssetType(proxy["type"]);
       if (isAsset) {
-        const value = attr["proxy"]["values"][0] as AssetProxyI;
-        const id = value["assetId"] || (value["tagId"] as string);
+        const assets: Array<AssetI> = [];
+        const values = attr["proxy"]["values"] as Array<AssetProxyI>;
+        values.forEach((value) => {
+          const id = value["tagId"];
+          assets.push(...listAssetForAttr[id] as Array<AssetI>);
+        });
 
         return {
           ...data,
-          values: listAssetForAttr[id],
+          values: assets,
         };
       }
 
@@ -79,33 +72,33 @@ export class ThreekitService {
       };
     };
 
-    const infoAttrData = asset.attributes.map(processAttribute);
+    // const infoAttrData = asset.attributes.map(processAttribute);
 
-    const resultObject: ThreekitDataT = {};
-    infoAttrData.forEach((obj) => {
-      const name = obj["name"] as string;
-      resultObject[name] = obj as ThreekitDataValueType;
-    });
+    // const resultObject: ThreekitDataT = {};
+    // infoAttrData.forEach((obj) => {
+    //   const name = obj["name"];
+    //   resultObject[name] = obj;
+    // });
 
-    const tableId_optionLookup = asset.metadata["_datatable_configOptions"];
-    const dataTables = await this.getDataTablesById(tableId_optionLookup);
+    // const tableId_optionLookup = asset.metadata["_datatable_configOptions"];
+    // const dataTables = await this.getDataTablesById(tableId_optionLookup);
 
-    const attributeName_arr = [];
-    if (dataTables && dataTables[0]) {
-      for (const attrName in dataTables[0].value) {
-        attributeName_arr.push(attrName);
-      }
-    }
+    // const attributeName_arr = [];
+    // if (dataTables && dataTables[0]) {
+    //   for (const attrName in dataTables[0].value) {
+    //     attributeName_arr.push(attrName);
+    //   }
+    // }
 
-    attributeName_arr.forEach((attrName) => {
-      const attr = this.getAttribute(attrName, Object.values(resultObject));
-      if (attr) {
-        const res = this.validateOption(dataTables, attrName, attr);
-        resultObject[attrName] = res;
-      }
-    });
+    // attributeName_arr.forEach((attrName) => {
+    //   const attr = this.getAttribute(attrName, Object.values(resultObject));
+    //   if (attr) {
+    //     const res = this.validateOption(dataTables, attrName, attr);
+    //     resultObject[attrName] = res;
+    //   }
+    // });
 
-    return resultObject;
+    return asset.attributes.map(processAttribute);
   }
 
   public async getDataTablesById(dataTableId: string) {
@@ -115,43 +108,43 @@ export class ThreekitService {
     return rows;
   }
 
-  private validateOption(
-    rows: Array<DataTableRowI>,
-    tableColName: string,
-    theAttrValuesArr: ThreekitDataValueType
-  ) {
-    const optionNames: Array<string> = [];
-    for (const row of rows) {
-      if (row.value[tableColName]) optionNames.push(row.value[tableColName]);
-    }
+  // private validateOption(
+  //   rows: Array<DataTableRowI>,
+  //   tableColName: string,
+  //   theAttrValuesArr: ThreekitDataValueType
+  // ) {
+  //   const optionNames: Array<string> = [];
+  //   for (const row of rows) {
+  //     if (row.value[tableColName]) optionNames.push(row.value[tableColName]);
+  //   }
 
-    const res: ThreekitDataValueType = { ...theAttrValuesArr };
+  //   const res: ThreekitDataValueType = { ...theAttrValuesArr };
 
-    if (res.type === "String") {
-      res.values = res.values.filter((option: ConfiguratorDataValueType) => {
-        return optionNames.includes(option as string);
-      });
-    }
+  //   if (res.type === "String") {
+  //     res.values = res.values.filter((option: ConfiguratorDataValueType) => {
+  //       return optionNames.includes(option as string);
+  //     });
+  //   }
 
-    if (theAttrValuesArr.type === "Asset") {
-      res.values = res.values.filter((option: ConfiguratorDataValueType) => {
-        return optionNames.includes((option as AssetI).name);
-      });
-    }
+  //   if (theAttrValuesArr.type === "Asset") {
+  //     res.values = res.values.filter((option: ConfiguratorDataValueType) => {
+  //       return optionNames.includes((option as AssetI).name);
+  //     });
+  //   }
 
-    return res;
-  }
+  //   return res;
+  // }
 
-  private getAttribute(name: string, attrArr: Array<ThreekitDataValueType>) {
-    const attr_asset = attrArr.find(
-      (attr) => attr.name === name && attr.type === "Asset"
-    );
-    if (attr_asset) return attr_asset;
-    const attr_str = attrArr.find(
-      (attr) => attr.name === name && attr.type === "String"
-    );
-    if (attr_str) return attr_str;
+  // private getAttribute(name: string, attrArr: Array<ThreekitDataValueType>) {
+  //   const attr_asset = attrArr.find(
+  //     (attr) => attr.name === name && attr.type === "Asset"
+  //   );
+  //   if (attr_asset) return attr_asset;
+  //   const attr_str = attrArr.find(
+  //     (attr) => attr.name === name && attr.type === "String"
+  //   );
+  //   if (attr_str) return attr_str;
 
-    return "";
-  }
+  //   return "";
+  // }
 }

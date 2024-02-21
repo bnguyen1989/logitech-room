@@ -1,6 +1,5 @@
 import { Configurator } from "./configurator/Configurator";
 import EventEmitter from "events";
-import { WorkSpace } from "./workSpace/WorkSpace";
 import { Command } from "./command/Command";
 import { Logger } from "./Logger";
 import { AddItemCommand } from "./command/AddItemCommand";
@@ -12,12 +11,8 @@ declare const logger: Logger;
 
 export class Application {
   private _currentConfigurator: Configurator = new Configurator();
-  public workSpace: WorkSpace;
   public eventEmitter: EventEmitter = new EventEmitter();
 
-  constructor() {
-    this.workSpace = new WorkSpace(this.currentConfigurator);
-  }
 
   public get currentConfigurator(): Configurator {
     return this._currentConfigurator;
@@ -25,19 +20,14 @@ export class Application {
 
   public set currentConfigurator(configurator: Configurator) {
     this._currentConfigurator = configurator;
-    this.workSpace.configurator = configurator;
   }
 
   public addItemConfiguration(
     nameProperty: string,
     assetId: string
   ): Promise<boolean> {
-    const asset = this.workSpace.getAssetById(assetId);
-    if (!asset) {
-      return Promise.resolve(false);
-    }
     return this.executeCommand(
-      new AddItemCommand(this.currentConfigurator, nameProperty, asset)
+      new AddItemCommand(this.currentConfigurator, nameProperty, assetId)
     );
   }
 
@@ -75,21 +65,18 @@ export class Application {
   }
 
   public executeCommand(command: Command): Promise<boolean> {
+    this.eventEmitter.emit("configuratorProcessing", true);
     return new Promise((resolve) => {
       command.execute().then((res) => {
+        this.eventEmitter.emit("configuratorProcessing", false);
         if (!res) {
           resolve(false);
           return;
         }
 
-        this.eventEmitter.emit("configuratorProcessing", true);
-        const changeProperties = command.getChangeProperties();
-        return this.workSpace.updateProperties(changeProperties).then(() => {
-          logger.log("ExecuteCommand", command);
-          this.eventEmitter.emit("executeCommand", command);
-          this.eventEmitter.emit("configuratorProcessing", false);
-          return resolve(true);
-        });
+        this.eventEmitter.emit("executeCommand", command);
+        logger.log("ExecuteCommand", command);
+        return resolve(true);
       });
     });
   }

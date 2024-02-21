@@ -18,22 +18,22 @@ export const geConfiguratorHandlers = (store: Store) => {
       const activeStep = store.getState().ui.activeStep;
       if (!activeStep) return;
       const card = activeStep.cards.find(
-        (card: ItemCardI) => card.threekit?.assetId === data.asset.id
+        (card: ItemCardI) => card.threekit?.assetId === data.assetId
       );
 
       const isCameraCard = isCamera(card?.keyPermission);
       if (isCameraCard) {
-        setCameraElement(data.asset.id)(store);
+        setCameraElement(data.assetId)(store);
       }
 
       const isMicCard = isMic(card?.keyPermission);
       if (isMicCard) {
-        setMicElement(data.asset.id)(store);
+        setMicElement(data.assetId)(store);
       }
 
       const isTapCard = isTap(card?.keyPermission);
       if (isTapCard) {
-        setTapElement(data.asset.id)(store);
+        setTapElement(data.assetId)(store);
       }
     }
 

@@ -15,7 +15,9 @@ export class ChangeCountItemCommand extends Command {
 	}
 
 	public executeCommand(): boolean {
-		this.configurator.setPropertyThreekitData(this.nameProperty, this.value);
+		this.configurator.setConfiguration({
+			[this.nameProperty]: this.value
+		});
     this.changeProperties.push(this.nameProperty);
 		return true;
 	}

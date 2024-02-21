@@ -17,7 +17,11 @@ export class RemoveItemCommand extends Command {
   }
 
   public executeCommand(): boolean {
-    this.configurator.setPropertyThreekitData(this.nameProperty, undefined);
+    this.configurator.setConfiguration({
+      [this.nameProperty]: {
+        assetId: "",
+      },
+    });
     this.changeProperties.push(this.nameProperty);
     return true;
   }

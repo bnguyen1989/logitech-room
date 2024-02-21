@@ -31,17 +31,15 @@ export const getUiHandlers = (store: Store) => {
 
   app.eventEmitter.on("executeCommand", (data) => {
     if (data instanceof AddItemCommand) {
-      const asset = data.asset as AssetI;
       const activeStep = store.getState().ui.activeStep;
       if (activeStep) {
         const index = activeStep.cards.findIndex(
-          (item: ItemCardI) => item.threekit?.assetId === asset.id
+          (item: ItemCardI) => item.threekit?.assetId === data.assetId
         );
         if (index !== -1) {
           store.dispatch(changeActiveCard(activeStep.cards[index]));
         }
       }
-      console.log(data.asset);
     }
 
     if (data instanceof RemoveItemCommand) {
@@ -113,7 +111,7 @@ function setAudioExtensionsData(configurator: Configurator) {
     const audioExtensionsCardData: Array<ItemCardI> = [];
     Configurator.AudioExtensionName.forEach((item) => {
       const [name, qtyName] = item;
-      const value = configurator.getValueByPropertyName(name);
+      const value = configurator.getAttributeByName(name);
       if (!value) {
         return;
       }
@@ -151,7 +149,8 @@ function setAudioExtensionsData(configurator: Configurator) {
       });
 
       if (qtyName) {
-        const qty = configurator.getValueByPropertyName(qtyName);
+        const qty = configurator.getAttributeByName(qtyName);
+        if (!qty) return;
         temp.forEach((item) => {
           const values = qty.values as Array<string>;
           const min = parseInt(values[0]);
@@ -182,7 +181,7 @@ function setCameraData(configurator: Configurator) {
     const cameraCardData: Array<ItemCardI> = [];
     Configurator.CameraName.forEach((item) => {
       const [name] = item;
-      const value = configurator.getValueByPropertyName(name);
+      const value = configurator.getAttributeByName(name);
       if (!value) {
         return;
       }
@@ -236,7 +235,7 @@ function setMeetingControllerData(configurator: Configurator) {
     const meetingControllerCardData: Array<ItemCardI> = [];
     Configurator.MeetingControllerName.forEach((item) => {
       const [name, qtyName] = item;
-      const value = configurator.getValueByPropertyName(name);
+      const value = configurator.getAttributeByName(name);
       if (!value) {
         return;
       }
@@ -259,7 +258,8 @@ function setMeetingControllerData(configurator: Configurator) {
       });
 
       if (qtyName) {
-        const qty = configurator.getValueByPropertyName(qtyName);
+        const qty = configurator.getAttributeByName(qtyName);
+        if (!qty) return;
         temp.forEach((item) => {
           const values = qty.values as Array<string>;
           const min = parseInt(values[0]);
@@ -290,7 +290,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
     const videoAccessoriesCardData: Array<ItemCardI> = [];
     Configurator.VideoAccessoriesName.forEach((item) => {
       const [name, qtyName] = item;
-      const value = configurator.getValueByPropertyName(name);
+      const value = configurator.getAttributeByName(name);
       if (!value) {
         return;
       }
@@ -312,7 +312,8 @@ function setVideoAccessoriesData(configurator: Configurator) {
       });
 
       if (qtyName) {
-        const qty = configurator.getValueByPropertyName(qtyName);
+        const qty = configurator.getAttributeByName(qtyName);
+        if (!qty) return;
         temp.forEach((item) => {
           const values = qty.values as Array<string>;
           const min = parseInt(values[0]);
@@ -343,7 +344,7 @@ function setSoftwareServicesData(configurator: Configurator) {
     const softwareServicesBaseData = getSoftwareServicesCardData();
     Configurator.SoftwareServicesName.forEach((item) => {
       const [name] = item;
-      const value = configurator.getValueByPropertyName(name);
+      const value = configurator.getAttributeByName(name);
       if (!value) {
         return;
       }
