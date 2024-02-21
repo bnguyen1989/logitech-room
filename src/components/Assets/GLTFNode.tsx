@@ -1,5 +1,8 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { Mesh, Object3D } from 'three';
+import { useAppSelector } from '../../hooks/redux';
+import { getNodes } from '../../store/slices/configurator/selectors/selectors';
+import { Product } from './Product';
 
 
 export type ThreeNodeProps = {
@@ -25,6 +28,8 @@ export const GLTFNode = ({
   threeNode,
   props
 }: ThreeNodeRendererProps): ReactNode => {
+  
+ 
   if (nodeMatchers) {
     for (let i = 0; i < nodeMatchers.length; i++) {
       const jsx = nodeMatchers[i](threeNode, nodeMatchers);

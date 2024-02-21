@@ -1,24 +1,37 @@
 import { IdGenerator } from "../IdGenerator";
-import {
-  AttributeI,
-  ConfigurationI,
-} from "./type";
+import { AttributeI, ConfigurationI } from "./type";
 
 export class Configurator {
   public id: string = IdGenerator.generateId();
-  private _assetId: string = '';
+  private _assetId: string = "";
   private attributes: Array<AttributeI> = [];
   private configuration: ConfigurationI = {};
 
-  public static AudioExtensionName = [['Room Mic', 'Qty - Micpod/Expansion']];
+  public static AudioExtensionName = [["Room Mic", "Qty - Micpod/Expansion"]];
 
-  public static CameraName = [['Room Camera'], ['Room Compute']];
+  public static CameraName = [["Room Camera"], ["Room Compute"]];
 
-  public static MeetingControllerName = [['Room Meeting Controller', 'Qty - Meeting Controller'], ['Room Sight'], ['Room Tap Scheduler'], ['Room Scribe'], ['Room Swytch']];
+  public static MeetingControllerName = [
+    ["Room Meeting Controller", "Qty - Meeting Controller"],
+    ["Room Sight"],
+    ["Room Tap Scheduler"],
+    ["Room Scribe"],
+    ["Room Swytch"],
+  ];
 
-  public static VideoAccessoriesName = [['Room Compute Mount'], ['Room Tap Mount', 'Qty - Tap Mount'], ['Room Camera Mount'], ['Room Mic Mount', 'Qty - Mic Mount'], ['Room Mic Pod Hub', 'Qty - Mic Pod Hub'], ['Room Mic Pod Extension Cable', 'Qty - Mic Pod Extension Cable']];
+  public static VideoAccessoriesName = [
+    ["Room Compute Mount"],
+    ["Room Tap Mount", "Qty - Tap Mount"],
+    ["Room Camera Mount"],
+    ["Room Mic Mount", "Qty - Mic Mount"],
+    ["Room Mic Pod Hub", "Qty - Mic Pod Hub"],
+    ["Room Mic Pod Extension Cable", "Qty - Mic Pod Extension Cable"],
+  ];
 
-  public static SoftwareServicesName = [['Room Device Management Software'], ['Room Support Service']];
+  public static SoftwareServicesName = [
+    ["Room Device Management Software"],
+    ["Room Support Service"],
+  ];
 
   public static getNameNodeForMic(id: number): string {
     return `Mic_Placement_${id}`;
@@ -28,9 +41,30 @@ export class Configurator {
     return `Tap_Placement_${id}`;
   }
 
-  public static getNameNodeForCamera(type: 'Cabinet' | 'Wall', id?: number): string {
-    if(type === 'Cabinet') return 'Camera_Cabinet_Placement'
+  public static getNameNodeForCamera(
+    type: "Cabinet" | "Wall",
+    id?: number
+  ): string {
+    if (type === "Cabinet") return "Camera_Cabinet_Placement";
     return `Camera_Wall_Placement_${id}`;
+  }
+
+  public static getAllPlacement(): string[] {
+    const getNameNodeForMic = this.getNameNodeForMic;
+    const getNameNodeForTap = this.getNameNodeForTap;
+    const getNameNodeForCamera = this.getNameNodeForCamera;
+ 
+    return [
+      getNameNodeForMic(1),
+      getNameNodeForMic(2),
+      getNameNodeForMic(3),
+      getNameNodeForTap(1),
+      getNameNodeForTap(2),
+      getNameNodeForTap(3), 
+      getNameNodeForCamera('Cabinet'), 
+      getNameNodeForCamera('Wall',1), 
+      getNameNodeForCamera('Wall',2), 
+    ];
   }
 
   public get assetId(): string {
@@ -40,7 +74,6 @@ export class Configurator {
   public set assetId(assetId: string) {
     this._assetId = assetId;
   }
-
 
   public setAttributes(attributes: Array<AttributeI>) {
     this.attributes = attributes;
