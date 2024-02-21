@@ -16,14 +16,14 @@ export interface AssetI {
   tagids: string[]
   head: string
   analytics: boolean
-  attributes: AttributeI[]
+  attributes: AttributeApiI[]
 }
 
 export interface MetadataI {
   [key: string]: string
 }
 
-export interface AttributeI {
+export interface AttributeApiI {
   id: string
   type: string
   name: string
@@ -37,13 +37,16 @@ export interface ProxyI {
   name: string
   metadata: MetadataI
   values: Array<AssetProxyI | string>;
-  defaultValue: AssetProxyI | string;
+  defaultValue: DefaultValueI | string;
   assetType?: string
 }
 
 export interface AssetProxyI {
-  assetId?: string
-	tagId?: string
+	tagId: string
+}
+
+export interface DefaultValueI {
+  assetId: string
 }
 
 export interface DataTableRowI {

@@ -1,20 +1,23 @@
 import { Configurator } from '../configurator/Configurator'
-import { AssetI } from '../configurator/type'
 import { Command } from './Command'
 
 export class AddItemCommand extends Command {
 	public name: string = 'AddItemCommand';
-	public asset: AssetI;
+	public assetId: string;
 	public nameProperty: string;
 
-	constructor(configurator: Configurator, nameProperty: string, asset: AssetI) {
+	constructor(configurator: Configurator, nameProperty: string, assetId: string) {
 		super(configurator);
-		this.asset = asset;
+		this.assetId = assetId;
 		this.nameProperty = nameProperty;
 	}
 
 	public executeCommand(): boolean {
-    this.configurator.setPropertyThreekitData(this.nameProperty, this.asset);
+    this.configurator.setConfiguration({
+			[this.nameProperty]: {
+				assetId: this.assetId
+			}
+		});
     this.changeProperties.push(this.nameProperty);
     return true;
   }

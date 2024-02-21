@@ -1,14 +1,14 @@
 import { IdGenerator } from "../IdGenerator";
 import {
-  ConfiguratorDataValueType,
-  NamePropertiesConfiguratorType,
-  ThreekitDataT,
+  AttributeI,
+  ConfigurationI,
 } from "./type";
 
 export class Configurator {
   public id: string = IdGenerator.generateId();
   private _assetId: string = '';
-  private _threekitData: ThreekitDataT = {};
+  private attributes: Array<AttributeI> = [];
+  private configuration: ConfigurationI = {};
 
   public static AudioExtensionName = [['Room Mic', 'Qty - Micpod/Expansion']];
 
@@ -41,38 +41,41 @@ export class Configurator {
     this._assetId = assetId;
   }
 
-  public get threekitData(): ThreekitDataT {
-    return this._threekitData;
+
+  public setAttributes(attributes: Array<AttributeI>) {
+    this.attributes = attributes;
   }
 
-  public set threekitData(threekitData: ThreekitDataT) {
-    this._threekitData = threekitData;
+  public getAttributes(): Array<AttributeI> {
+    return this.attributes;
   }
 
-  public setPropertyThreekitData(
-    propertyName: NamePropertiesConfiguratorType,
-    value: ConfiguratorDataValueType | undefined
-  ) {
-    this.threekitData[propertyName] = {
-      ...this.threekitData[propertyName],
-      currentValue: value,
+  public getConfiguration(): ConfigurationI {
+    return this.configuration;
+  }
+
+  public setConfiguration(configuration: ConfigurationI) {
+    this.configuration = {
+      ...this.configuration,
+      ...configuration,
     };
   }
 
-  public getValueByPropertyName(propertyName: NamePropertiesConfiguratorType) {
-    return this.threekitData[propertyName];
+  public getAttributeByName(name: string): AttributeI | undefined {
+    return this.attributes.find((attribute) => attribute.name === name);
   }
 
   public getSnapshot(): Configurator {
     const configurator = new Configurator();
-    if (configurator.threekitData) {
-      const threekitData = Object.assign(
+    if (configurator.configuration) {
+      const configuration = Object.assign(
         {},
-        this.threekitData
-      ) as ThreekitDataT;
-      configurator.threekitData = threekitData;
+        this.configuration
+      ) as ConfigurationI;
+      configurator.configuration = configuration;
     }
     configurator.assetId = this.assetId;
+    configurator.attributes = [...this.attributes];
     return configurator;
   }
 }
