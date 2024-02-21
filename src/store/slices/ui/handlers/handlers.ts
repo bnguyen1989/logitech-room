@@ -31,14 +31,9 @@ export const getUiHandlers = (store: Store) => {
 
   app.eventEmitter.on("executeCommand", (data) => {
     if (data instanceof AddItemCommand) {
-      const activeStep = store.getState().ui.activeStep;
-      if (activeStep) {
-        const index = activeStep.cards.findIndex(
-          (item: ItemCardI) => item.threekit?.assetId === data.assetId
-        );
-        if (index !== -1) {
-          store.dispatch(changeActiveCard(activeStep.cards[index]));
-        }
+      const card = getCardByAssetId(data.assetId, store);
+      if (card) {
+        store.dispatch(changeActiveCard(card));
       }
     }
 
@@ -47,49 +42,36 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeCountItemCommand) {
-      const activeStep = store.getState().ui.activeStep;
-      if (activeStep) {
-        const index = activeStep.cards.findIndex(
-          (item: ItemCardI) => item.threekit?.assetId === data.assetId
+      const card = getCardByAssetId(data.assetId, store);
+      if (card) {
+        const value = parseInt(data.value);
+        store.dispatch(
+          changeValueCard({
+            ...card,
+            counter: {
+              ...card.counter,
+              currentValue: value,
+            },
+          })
         );
-        if (index !== -1) {
-          const card = activeStep.cards[index];
-          const value = parseInt(data.value);
-
-          store.dispatch(
-            changeValueCard({
-              ...card,
-              counter: {
-                ...card.counter,
-                currentValue: value,
-              },
-            })
-          );
-        }
       }
     }
 
     if (data instanceof ChangeColorItemCommand) {
-      const activeStep = store.getState().ui.activeStep;
-      if (activeStep) {
-        const index = activeStep.cards.findIndex(
-          (item: ItemCardI) => item.threekit?.assetId === data.assetId
+      const card = getCardByAssetId(data.assetId, store);
+      if (card) {
+        const value = card.color?.colors.find(
+          (item: ColorItemI) => item.value === data.value
         );
-        if (index !== -1) {
-          const card = activeStep.cards[index];
-          const value = card.color?.colors.find(
-            (item: ColorItemI) => item.value === data.value
-          );
-          store.dispatch(
-            changeValueCard({
-              ...card,
-              color: {
-                ...card.color,
-                currentColor: value,
-              },
-            })
-          );
-        }
+        store.dispatch(
+          changeValueCard({
+            ...card,
+            color: {
+              ...card.color,
+              currentColor: value,
+            },
+          })
+        );
       }
     }
   });
@@ -104,6 +86,18 @@ export const getUiHandlers = (store: Store) => {
       setSoftwareServicesData(configurator)(store);
     }
   );
+};
+
+const getCardByAssetId = (assetId: string, store: Store) => {
+  const activeStep = store.getState().ui.activeStep;
+  if (activeStep) {
+    const index = activeStep.cards.findIndex(
+      (item: ItemCardI) => item.threekit?.assetId === assetId
+    );
+    if (index !== -1) {
+      return activeStep.cards[index];
+    }
+  }
 };
 
 function setAudioExtensionsData(configurator: Configurator) {
