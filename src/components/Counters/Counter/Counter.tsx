@@ -31,7 +31,7 @@ export const Counter: React.FC<PropsI> = (props) => {
           fill="none"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             clip-rule="evenodd"
             d="M0.833008 1.72915H9.16634V0.270813H0.833008V1.72915Z"
             fill="black"
@@ -48,7 +48,7 @@ export const Counter: React.FC<PropsI> = (props) => {
           fill="none"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             clip-rule="evenodd"
             d="M4.27051 4.27081V0.833313H5.72884V4.27081H9.16634V5.72915H5.72884V9.16665H4.27051V5.72915H0.833008V4.27081H4.27051Z"
             fill="black"
