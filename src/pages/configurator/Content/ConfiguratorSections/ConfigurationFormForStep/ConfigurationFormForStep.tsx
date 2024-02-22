@@ -1,8 +1,14 @@
 import { useDispatch } from "react-redux";
 import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
-import { changeActiveCard, changeValueCard } from "../../../../../store/slices/ui/Ui.slice";
-import { getActiveStep, getIsConfiguratorStep } from "../../../../../store/slices/ui/selectors/selectors";
+import {
+  changeActiveCard,
+  changeValueCard,
+} from "../../../../../store/slices/ui/Ui.slice";
+import {
+  getActiveStep,
+  getIsConfiguratorStep,
+} from "../../../../../store/slices/ui/selectors/selectors";
 import {
   ItemCardI,
   StepCardType,
@@ -10,13 +16,52 @@ import {
 } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
 import { StepName } from "../../../../../models/permission/type";
+import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
+import { useEffect, useState } from "react";
+import {
+  getRoomAssetId,
+  initThreekitData,
+} from "../../../../../utils/threekitUtils";
+import { changeAssetId } from "../../../../../store/slices/configurator/Configurator.slice";
 
 export const ConfigurationFormForStep = () => {
   const dispatch = useDispatch();
   const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
+  const [isStartLoadPlayer, setIsStartLoadPlayer] = useState(false);
 
-  if (!activeStep) return null;
+  useEffect(() => {
+    if (!activeStep) {
+      return;
+    }
+    setIsStartLoadPlayer(activeStep.key === StepName.Services);
+
+    const activeItems = permission.getActiveItems();
+    const cardsCurrentStep = activeStep.cards;
+    const activeDefaultItems = activeItems.filter((item) =>
+      item.getDefaultActive()
+    );
+    const cardDefault = cardsCurrentStep.find((card) =>
+      activeDefaultItems.some((item) => item.name === card.keyPermission)
+    ) as ItemCardI;
+    if (cardDefault && cardDefault.threekit) {
+      const threekit = cardDefault.threekit;
+      app.addItemConfiguration(threekit.key, threekit.assetId);
+    }
+  }, [activeStep?.key]);
+
+  useEffect(() => {
+    if (!isStartLoadPlayer) return;
+    const assetId = app.currentConfigurator.assetId;
+    if (assetId.length) return;
+
+    console.log("---- INIT THREEKIT DATA ----");
+
+    const roomAssetId = getRoomAssetId("", "");
+    app.currentConfigurator.assetId = roomAssetId;
+    initThreekitData();
+    dispatch(changeAssetId(roomAssetId));
+  }, [isStartLoadPlayer]);
 
   const onChange = (
     value: StepCardType,
@@ -97,6 +142,18 @@ export const ConfigurationFormForStep = () => {
     }
     return null;
   };
+
+  if (!activeStep) return null;
+
+  if (activeStep.key === StepName.SoftwareServices) {
+    return (
+      <SoftwareServiceSection
+        handleClickCard={handleClick}
+        onChangeValueCard={onChange}
+        cards={activeStep.cards}
+      />
+    );
+  }
 
   return (
     <div className={s.form}>
