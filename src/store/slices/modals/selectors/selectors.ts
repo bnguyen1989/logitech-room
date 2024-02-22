@@ -8,3 +8,7 @@ export const getSetupModalData = (state: RootState) => {
 export const getInfoItemModalData = (state: RootState) => {
   return state.modals[ModalName.INFO_ITEM];
 }
+
+export const getSelectProductModalData = (state: RootState) => {
+  return state.modals[ModalName.SELECT_PRODUCT];
+}

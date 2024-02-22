@@ -84,3 +84,27 @@ export const getSelectedPrepareCards = (state: RootState) => {
     );
   });
 };
+
+export const getSelectedConfiguratorCards = (state: RootState) => {
+  const { stepData } = state.ui;
+  const configuratorCards = [
+    ...stepData[StepName.ConferenceCamera].cards,
+    ...stepData[StepName.AudioExtensions].cards,
+    ...stepData[StepName.MeetingController].cards,
+    ...stepData[StepName.AudioExtensions].cards,
+    ...stepData[StepName.SoftwareServices].cards,
+  ];
+
+  return configuratorCards.filter((card) => {
+    const key = card.keyPermission;
+    const currentStep = permission.getCurrentStep();
+    if (!currentStep) return false;
+    const chainActiveElements = currentStep.getChainActiveElements();
+    return chainActiveElements.some((chainActiveElement) =>
+      chainActiveElement.some(
+        (activeElement) =>
+          activeElement.name === key && activeElement.getVisible()
+      )
+    );
+  });
+};

@@ -52,7 +52,7 @@ export const InfoModal: React.FC = () => {
       <div className={s.container}>
         <div className={s.close_button}>
           <IconButton onClick={handleClose}>
-            <CloseSVG />
+            <CloseSVG color={"white"} />
           </IconButton>
         </div>
         <div className={s.wrapper}>

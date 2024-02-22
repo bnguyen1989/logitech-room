@@ -1,0 +1,17 @@
+.form {
+  padding: 20px 20px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form::-webkit-scrollbar {
+  width: 12px;
+  height: 100px;
+}
+
+.form::-webkit-scrollbar-thumb {
+  background-color: #E1E2E3;
+  border-radius: 50px;
+}

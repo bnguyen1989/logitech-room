@@ -2,6 +2,7 @@
 export enum ModalName {
   MY_SETUP = 'MY_SETUP',
   INFO_ITEM = 'INFO_ITEM',
+  SELECT_PRODUCT = 'SELECT_PRODUCT',
 }
 
 export interface ModalI {

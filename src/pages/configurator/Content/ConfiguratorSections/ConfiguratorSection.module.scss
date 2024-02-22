@@ -3,12 +3,7 @@
   grid-template-columns: 65% 35%;
 	height: 100%;
 	width: 100%;
-	position: absolute;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 50;
+	position: relative;
 
 	.player {
 		width: 100%;
@@ -21,24 +16,6 @@
 			bottom: 5%;
 		}
 	}
-
-	.form {
-		padding: 20px 20px;
-		overflow-y: scroll;
-		display: flex;
-		flex-direction: column;
-    gap: 30px;
-	}
-
-	.form::-webkit-scrollbar {
-    width: 12px;
-    height: 100px;
-  }
-
-  .form::-webkit-scrollbar-thumb {
-    background-color: #E1E2E3;
-    border-radius: 50px;
-  }
-	
+ 
 
 }

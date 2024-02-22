@@ -8,7 +8,7 @@ export const ArrowDownSVG: React.FC = () => {
       fill="none"
     >
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         clip-rule="evenodd"
         d="M0 0L7.05956 10.0286L14.1191 0H0Z"
         fill="#6F7678"
