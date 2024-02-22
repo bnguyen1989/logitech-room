@@ -1,9 +1,9 @@
 import { Store } from "@reduxjs/toolkit";
 import { Application } from "../../../../models/Application";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { AssetI } from "../../../../services/Threekit/type";
+import { AssetI, DataTableRowI } from "../../../../services/Threekit/type";
 import { ConfiguratorDataValueType } from "../../../../models/configurator/type";
-import { ColorItemI, ItemCardI, StepName } from "../type";
+import { ColorItemI, ItemCardI, StepCardType, StepI, StepName } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
 import ControllerImg from "../../../../assets/images/items/controller.jpg";
@@ -11,6 +11,7 @@ import AccessImg from "../../../../assets/images/items/access.jpg";
 import ServiceImg from "../../../../assets/images/items/service.jpg";
 import {
   changeActiveCard,
+  changeActiveStep,
   changeProcessInitData,
   changeValueCard,
   setDataItemStep,
@@ -21,6 +22,8 @@ import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorIt
 import { getPermissionNameByItemName } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import { getSoftwareServicesCardData } from "../utils";
+import { changeAssetId, setDataTableLevel1 } from '../../configurator/Configurator.slice'
+import { getRoomAssetId, initThreekitData } from '../../../../utils/threekitUtils'
 
 declare const app: Application;
 
@@ -78,14 +81,53 @@ export const getUiHandlers = (store: Store) => {
 
   app.eventEmitter.on(
     "threekitDataInitialized",
-    (configurator: Configurator) => {
+    ({
+      configurator,
+      dataTables
+    }: {
+      configurator: Configurator;
+      dataTables: Array<DataTableRowI>;
+    }) => {
       setAudioExtensionsData(configurator)(store);
       setCameraData(configurator)(store);
       setMeetingControllerData(configurator)(store);
       setVideoAccessoriesData(configurator)(store);
       setSoftwareServicesData(configurator)(store);
+      store.dispatch(setDataTableLevel1(dataTables));
     }
   );
+
+  app.eventEmitter.on("changeStepToNext", (nextStep: StepI<StepCardType>) => {
+    const activeStep = store.getState().ui.activeStep;
+    const keyPermission = activeStep?.currentCard?.keyPermission;
+    if (nextStep.key === StepName.Platform && keyPermission) {
+      const roomAssetId = getRoomAssetId(keyPermission);
+      app.currentConfigurator.assetId = roomAssetId;
+      initThreekitData();
+      store.dispatch(changeAssetId(roomAssetId));
+    }
+    if(nextStep.key === StepName.ConferenceCamera) {
+      const idDataTable2Level = getDataIdDataTable2Level(store);
+      console.log("idDataTable2Level", idDataTable2Level);
+      
+      
+
+    }
+    store.dispatch(changeActiveStep(nextStep));
+  });
+
+  app.eventEmitter.on("changeStepToBack", (prevStep: StepI<StepCardType>) => {
+    store.dispatch(changeActiveStep(prevStep));
+  });
+};
+
+const getDataIdDataTable2Level = (store: Store) => {
+  const dataTable = store.getState().configurator.dataTable_level_1;
+  console.log("dataTable", dataTable);
+  
+
+
+  return '';
 };
 
 const getCardByAssetId = (assetId: string, store: Store) => {

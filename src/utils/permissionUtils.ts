@@ -34,8 +34,8 @@ export enum PlatformName {
 }
 
 export enum ServiceName {
-  Android = "Android",
-  PC = "PC",
+  Android = "Appliance",
+  PC = "PC based",
 }
 
 export enum CameraName {

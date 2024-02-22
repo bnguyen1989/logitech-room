@@ -5,25 +5,32 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { getSelectedPrepareCards } from "../../../../store/slices/ui/selectors/selectors";
 import { Card } from "./Card/Card";
 
-export const LoaderSection: React.FC = () => {
+interface PropsI {
+  cardShow?: boolean;
+  text?: string;
+}
+export const LoaderSection: React.FC<PropsI> = (props) => {
+  const { cardShow = true, text = "Building Your Room" } = props;
   const selectedCards = useAppSelector(getSelectedPrepareCards);
 
   return (
     <div className={s.container}>
-      <Loader text="Building Your Room" />
+      <Loader text={text} />
 
-      <div className={s.selected_cards}>
-        <div className={s.text}>
-          <div className={s.divider}></div>
-          <div className={s.title}>You Selected:</div>
-          <div className={s.divider}></div>
+      {cardShow && (
+        <div className={s.selected_cards}>
+          <div className={s.text}>
+            <div className={s.divider}></div>
+            <div className={s.title}>You Selected:</div>
+            <div className={s.divider}></div>
+          </div>
+          <div className={s.cards}>
+            {selectedCards.map((card, index) => (
+              <Card key={index} image={card.image} title={card.title} />
+            ))}
+          </div>
         </div>
-        <div className={s.cards}>
-          {selectedCards.map((card, index) => (
-            <Card key={index} image={card.image} title={card.title} />
-          ))}
-        </div>
-      </div>
+      )}
     </div>
   );
 };

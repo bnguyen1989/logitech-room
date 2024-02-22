@@ -8,7 +8,6 @@ import {
 } from "../../../store/slices/ui/selectors/selectors";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { changeActiveStep } from "../../../store/slices/ui/Ui.slice";
 import { PrepareSection } from "./PrepareSections/PrepareSection";
 import { ConfiguratorSection } from "./ConfiguratorSections/ConfiguratorSection";
 import { getIsBuilding } from "../../../store/slices/configurator/selectors/selectors";
@@ -18,8 +17,10 @@ import { setMySetupModal } from "../../../store/slices/modals/Modals.slice";
 import { Permission } from "../../../models/permission/Permission";
 import { useNavigate } from "react-router-dom";
 import { LoaderSection } from "./LoaderSection/LoaderSection";
+import { Application } from "../../../models/Application";
 
 declare const permission: Permission;
+declare const app: Application;
 
 interface PropsI {}
 export const Content: React.FC<PropsI> = () => {
@@ -39,8 +40,7 @@ export const Content: React.FC<PropsI> = () => {
       dispatch(setMySetupModal({ isOpen: true }));
       return;
     }
-
-    dispatch(changeActiveStep(nextStep));
+    app.eventEmitter.emit("changeStepToNext", nextStep);
   };
 
   const handleBack = () => {
@@ -48,7 +48,7 @@ export const Content: React.FC<PropsI> = () => {
       navigate("/", { replace: true });
       return;
     }
-    dispatch(changeActiveStep(prevStep));
+    app.eventEmitter.emit("changeStepToBack", prevStep);
   };
 
   const handleRevert = () => {
@@ -79,6 +79,11 @@ export const Content: React.FC<PropsI> = () => {
       {(isBuilding || isProcessInitData) && isConferenceCamera && (
         <div className={s.loader}>
           <LoaderSection />
+        </div>
+      )}
+      {isProcessInitData && !isConferenceCamera && (
+        <div className={s.loader}>
+          <LoaderSection cardShow={false} text={"Loading..."} />
         </div>
       )}
     </div>

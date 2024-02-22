@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Configuration } from "@threekit/rest-api";
+import { DataTableRowI } from "../../../services/Threekit/type";
 
 interface ConfiguratorStateI {
   assetId: string | null;
@@ -7,6 +8,8 @@ interface ConfiguratorStateI {
   showDimensions: boolean;
   configuration: Configuration;
   nodes: Record<string, string>;
+  dataTable_level_1: Array<DataTableRowI>;
+  dataTable_level_2: Array<DataTableRowI>;
 }
 
 const initialState: ConfiguratorStateI = {
@@ -15,6 +18,8 @@ const initialState: ConfiguratorStateI = {
   showDimensions: false,
   configuration: {},
   nodes: {},
+  dataTable_level_1: [],
+  dataTable_level_2: [],
 };
 
 const configuratorSlice = createSlice({
@@ -46,18 +51,30 @@ const configuratorSlice = createSlice({
       state.assetId = action.payload;
     },
     removeNodes: (state, action: PayloadAction<string>) => {
-			Object.keys(state.nodes).forEach((key) => {
-				const value = state.nodes[key];
-				if(value === action.payload) {
-					delete state.nodes[key];
-				}
-			})
+      Object.keys(state.nodes).forEach((key) => {
+        const value = state.nodes[key];
+        if (value === action.payload) {
+          delete state.nodes[key];
+        }
+      });
     },
-		removeNodeByKeys: (state, action: PayloadAction<string[]>) => {
-			action.payload.forEach((key) => {
-				delete state.nodes[key];
-			})
-		}
+    removeNodeByKeys: (state, action: PayloadAction<string[]>) => {
+      action.payload.forEach((key) => {
+        delete state.nodes[key];
+      });
+    },
+    setDataTableLevel1: (
+      state,
+      action: PayloadAction<Array<DataTableRowI>>
+    ) => {
+      state.dataTable_level_1 = action.payload;
+    },
+    setDataTableLevel2: (
+      state,
+      action: PayloadAction<Array<DataTableRowI>>
+    ) => {
+      state.dataTable_level_2 = action.payload;
+    },
   },
 });
 
@@ -68,6 +85,8 @@ export const {
   changeValueNodes,
   changeAssetId,
   removeNodes,
-	removeNodeByKeys
+  removeNodeByKeys,
+  setDataTableLevel1,
+  setDataTableLevel2,
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;
