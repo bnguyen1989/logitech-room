@@ -43,5 +43,15 @@ export const LoaderSection: React.FC = () => {
       </div>
     );
 
+    if(isProcessInitData && !isConferenceCamera) {
+      return (
+        <div className={s.loader}>
+          <div className={s.container}>
+            <Loader text="Loading Your Room" />
+          </div>
+        </div>
+      );
+    }
+
   return <></>;
 };

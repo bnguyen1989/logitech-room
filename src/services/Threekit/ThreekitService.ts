@@ -1,7 +1,7 @@
 import { AttributeI } from "../../models/configurator/type";
-import { isAssetType, isStringType } from "../../utils/threekitUtils";
+import { isAssetType } from "../../utils/threekitUtils";
 import { ThreekitApi } from "../api/Threekit/ThreekitApi";
-import { AssetI, AssetProxyI, AttributeApiI, DataTableRowI } from "./type";
+import { AssetI, AssetProxyI, AttributeApiI } from "./type";
 
 export class ThreekitService {
   private threekitApi: ThreekitApi = new ThreekitApi();
@@ -71,23 +71,12 @@ export class ThreekitService {
     const level1TableId = asset.metadata["_datatable_configOptions_level1"];
     const dataTables = await this.getDataTablesById(level1TableId);
 
-    const attributeName_arr = [];
-    if (dataTables && dataTables[0]) {
-      for (const attrName in dataTables[0].value) {
-        attributeName_arr.push(attrName);
-      }
-    }
-
-    attributeName_arr.forEach((attrName) => {
-      const attr = this.getAttribute(attrName, attributes as Array<AttributeI>);
-      if (attr) {
-        this.validateOption(dataTables, attrName, attr);
-      }
-    });
+    const attributesSequenceLevel1 = asset.metadata["_level1_attributes_sequence"].split(',').map((aStr) => aStr.trim());
 
     return {
       attributes,
-      dataTables: dataTables,
+      dataTables,
+      attributesSequenceLevel1
     };
   }
 
@@ -96,41 +85,5 @@ export class ThreekitService {
     const dataTable = response.data;
     const rows = dataTable.rows;
     return rows;
-  }
-
-  private validateOption(
-    rows: Array<DataTableRowI>,
-    tableColName: string,
-    theAttrValuesArr: AttributeI
-  ) {
-    const optionNames: Array<string> = [];
-    for (const row of rows) {
-      if (row.value[tableColName]) optionNames.push(row.value[tableColName]);
-    }
-
-    if (isStringType(theAttrValuesArr.type)) {
-      theAttrValuesArr.values = theAttrValuesArr.values.filter((option: string | AssetI) => {
-        return optionNames.includes(option as string);
-      });
-    }
-
-    if (isAssetType(theAttrValuesArr.type)) {
-      theAttrValuesArr.values = theAttrValuesArr.values.filter((option: string | AssetI) => {
-        return optionNames.includes((option as AssetI).name);
-      });
-    }
-  }
-
-  private getAttribute(name: string, attrArr: Array<AttributeI>) {
-    const attr_asset = attrArr.find(
-      (attr) => attr.name === name && isAssetType(attr.type)
-    );
-    if (attr_asset) return attr_asset;
-    const attr_str = attrArr.find(
-      (attr) => attr.name === name && isStringType(attr.type)
-    );
-    if (attr_str) return attr_str;
-
-    return null;
   }
 }

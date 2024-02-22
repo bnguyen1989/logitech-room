@@ -5,14 +5,18 @@ import { Logger } from "./Logger";
 import { AddItemCommand } from "./command/AddItemCommand";
 import { ChangeCountItemCommand } from "./command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "./command/ChangeColorItemCommand";
-import { RemoveItemCommand } from './command/RemoveItemCommand'
+import { RemoveItemCommand } from "./command/RemoveItemCommand";
+import { ChangeStepCommand } from "./command/ChangeStepCommand";
+import { StepName } from "./permission/type";
+import { DataTable } from './dataTable/DataTable'
 
 declare const logger: Logger;
 
 export class Application {
   private _currentConfigurator: Configurator = new Configurator();
   public eventEmitter: EventEmitter = new EventEmitter();
-
+  public dataTableLevel1: DataTable = new DataTable([]);
+  public dataTableLevel2: DataTable = new DataTable([]);
 
   public get currentConfigurator(): Configurator {
     return this._currentConfigurator;
@@ -31,10 +35,7 @@ export class Application {
     );
   }
 
-  public removeItem(
-    nameProperty: string,
-    assetId: string
-  ): Promise<boolean> {
+  public removeItem(nameProperty: string, assetId: string): Promise<boolean> {
     return this.executeCommand(
       new RemoveItemCommand(this.currentConfigurator, nameProperty, assetId)
     );
@@ -61,6 +62,12 @@ export class Application {
   ): Promise<boolean> {
     return this.executeCommand(
       new ChangeColorItemCommand(this.currentConfigurator, value, assetId)
+    );
+  }
+
+  public changeStep(stepName: StepName): Promise<boolean> {
+    return this.executeCommand(
+      new ChangeStepCommand(this.currentConfigurator, stepName)
     );
   }
 

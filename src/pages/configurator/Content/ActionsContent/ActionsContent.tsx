@@ -5,14 +5,15 @@ import { RevertSVG } from "../../../../assets";
 import { Button } from "../../../../components/Buttons/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { changeActiveStep } from "../../../../store/slices/ui/Ui.slice";
 import { setMySetupModal } from "../../../../store/slices/modals/Modals.slice";
 import { useAppSelector } from "../../../../hooks/redux";
 import { getNavigationStepData } from "../../../../store/slices/ui/selectors/selectors";
 import { Permission } from "../../../../models/permission/Permission";
+import { Application } from '../../../../models/Application'
 
 
 declare const permission: Permission;
+declare const app: Application;
 
 export const ActionsContent = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export const ActionsContent = () => {
       return;
     }
 
-    dispatch(changeActiveStep(nextStep));
+    app.changeStep(nextStep.key);
   };
 
   const handleBack = () => {
@@ -33,7 +34,8 @@ export const ActionsContent = () => {
       navigate("/", { replace: true });
       return;
     }
-    dispatch(changeActiveStep(prevStep));
+    
+    app.changeStep(prevStep.key);
   };
 
   const handleRevert = () => {

@@ -17,24 +17,17 @@ import {
 import s from "./ConfigurationFormForStep.module.scss";
 import { StepName } from "../../../../../models/permission/type";
 import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
-import { useEffect, useState } from "react";
-import {
-  getRoomAssetId,
-  initThreekitData,
-} from "../../../../../utils/threekitUtils";
-import { changeAssetId } from "../../../../../store/slices/configurator/Configurator.slice";
+import { useEffect } from "react";
 
 export const ConfigurationFormForStep = () => {
   const dispatch = useDispatch();
   const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
-  const [isStartLoadPlayer, setIsStartLoadPlayer] = useState(false);
 
   useEffect(() => {
     if (!activeStep) {
       return;
     }
-    setIsStartLoadPlayer(activeStep.key === StepName.Services);
 
     const activeItems = permission.getActiveItems();
     const cardsCurrentStep = activeStep.cards;
@@ -49,19 +42,6 @@ export const ConfigurationFormForStep = () => {
       app.addItemConfiguration(threekit.key, threekit.assetId);
     }
   }, [activeStep?.key]);
-
-  useEffect(() => {
-    if (!isStartLoadPlayer) return;
-    const assetId = app.currentConfigurator.assetId;
-    if (assetId.length) return;
-
-    console.log("---- INIT THREEKIT DATA ----");
-
-    const roomAssetId = getRoomAssetId("", "");
-    app.currentConfigurator.assetId = roomAssetId;
-    initThreekitData();
-    dispatch(changeAssetId(roomAssetId));
-  }, [isStartLoadPlayer]);
 
   const onChange = (
     value: StepCardType,
