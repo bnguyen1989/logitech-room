@@ -6,6 +6,7 @@ import {
   ConfiguratorDataValueType,
   ValueAssetStateI,
   ValueAttributeStateI,
+  ValueStringStateI,
 } from "../../../../models/configurator/type";
 import {
   ColorItemI,
@@ -152,14 +153,16 @@ function setStepData(
   const stepCardData: Array<ItemCardI> = [];
   itemNameList.forEach((item) => {
     const [name, qtyName] = item;
-    const value = configurator.getAttributeByName(name);
+    const value = configurator.getStateAttributeByName(name);
     if (!value) {
       return;
     }
 
     const temp: Array<ItemCardI> = [];
-    value.values.forEach((item: ConfiguratorDataValueType) => {
-      const asset = item as AssetI;
+    value.values.forEach((item: ValueAttributeStateI) => {
+      const asset = item as ValueAssetStateI;
+      if (!asset.visible) return;
+
       temp.push({
         key: stepName,
         image: image,
@@ -193,17 +196,25 @@ function setStepData(
     });
 
     if (qtyName) {
-      const qty = configurator.getAttributeByName(qtyName);
+      const qty = configurator.getStateAttributeByName(qtyName);
       if (!qty) return;
       temp.forEach((item) => {
-        const values = qty.values as Array<string>;
-        const min = parseInt(values[0]);
-        const max = parseInt(values[values.length - 1]);
+        const values = (qty.values as Array<ValueStringStateI>).filter(
+          (item) => item.visible
+        );
+        const min = parseInt(values[0].value);
+        const max = parseInt(values[values.length - 1].value);
+        const valueConfiguration = configurator.getConfiguration()[
+          qtyName
+        ] as string;
+        const currentValue = valueConfiguration
+          ? parseInt(valueConfiguration)
+          : min;
 
         item.counter = {
           min: min,
           max: max,
-          currentValue: min,
+          currentValue,
         };
       });
     }

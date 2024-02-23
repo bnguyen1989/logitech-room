@@ -49,11 +49,12 @@ export class ChangeStepBehavior extends Behavior {
           app.dataTableLevel1,
           app.dataTableLevel2
         ).getIdLevel2DataTable();
+        
         if (idDataTable2Level) {
           app.eventEmitter.emit("processInitThreekitData", true);
           return new ThreekitService()
             .getDataTablesById(idDataTable2Level)
-            .then(({ dataTables }) => {
+            .then((dataTables) => {
               app.dataTableLevel2 = new DataTable(dataTables);
               new RestrictionHandler(
                 app.currentConfigurator,
