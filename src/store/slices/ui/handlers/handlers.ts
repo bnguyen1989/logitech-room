@@ -2,8 +2,20 @@ import { Store } from "@reduxjs/toolkit";
 import { Application } from "../../../../models/Application";
 import { Configurator } from "../../../../models/configurator/Configurator";
 import { AssetI } from "../../../../services/Threekit/type";
-import { ConfiguratorDataValueType } from "../../../../models/configurator/type";
-import { ColorItemI, ItemCardI, StepCardType, StepI, StepName } from "../type";
+import {
+  ConfiguratorDataValueType,
+  ValueAssetStateI,
+  ValueAttributeStateI,
+} from "../../../../models/configurator/type";
+import {
+  ColorItemI,
+  ItemCardI,
+  PlatformCardI,
+  ServiceCardI,
+  StepCardType,
+  StepI,
+  StepName,
+} from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
 import ControllerImg from "../../../../assets/images/items/controller.jpg";
@@ -15,13 +27,19 @@ import {
   changeProcessInitData,
   changeValueCard,
   setDataItemStep,
+  setDataPlatformStep,
+  setDataServiceStep,
 } from "../Ui.slice";
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import { getPermissionNameByItemName } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
-import { getSoftwareServicesCardData } from "../utils";
+import {
+  getPlatformCardData,
+  getServicesCardData,
+  getSoftwareServicesCardData,
+} from "../utils";
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
 
@@ -98,6 +116,8 @@ export const getUiHandlers = (store: Store) => {
       setMeetingControllerData(configurator)(store);
       setVideoAccessoriesData(configurator)(store);
       setSoftwareServicesData(configurator)(store);
+      setPlatformData(configurator)(store);
+      setServiceData(configurator)(store);
       store.dispatch(changeAssetId(configurator.assetId));
     }
   );
@@ -248,6 +268,77 @@ function setVideoAccessoriesData(configurator: Configurator) {
       StepName.VideoAccessories,
       Configurator.VideoAccessoriesName,
       AccessImg
+    );
+  };
+}
+
+function setPlatformData(configurator: Configurator) {
+  return (store: Store) => {
+    const platformCardData: Array<PlatformCardI> = [];
+    const platformBaseData = getPlatformCardData();
+    Configurator.PlatformName.forEach((item) => {
+      const [name] = item;
+      const value = configurator.getStateAttributeByName(name);
+
+      if (!value) {
+        return;
+      }
+
+      value.values.forEach((item: ValueAttributeStateI) => {
+        const asset = item as ValueAssetStateI;
+        const baseCard = platformBaseData.find(
+          (item) => item.keyPermission === asset.name
+        );
+        if (!baseCard || !asset.visible) return;
+        platformCardData.push({
+          ...baseCard,
+          threekit: {
+            assetId: asset.id,
+            key: name,
+          },
+        });
+      });
+    });
+    store.dispatch(
+      setDataPlatformStep({
+        key: StepName.Platform,
+        values: platformCardData,
+      })
+    );
+  };
+}
+
+function setServiceData(configurator: Configurator) {
+  return (store: Store) => {
+    const serviceCardData: Array<ServiceCardI> = [];
+    const serviceBaseData = getServicesCardData();
+    Configurator.ServicesName.forEach((item) => {
+      const [name] = item;
+      const value = configurator.getStateAttributeByName(name);
+      if (!value) {
+        return;
+      }
+
+      value.values.forEach((item: ValueAttributeStateI) => {
+        const asset = item as ValueAssetStateI;
+        const baseCard = serviceBaseData.find(
+          (item) => item.keyPermission === asset.name
+        );
+        if (!baseCard || !asset.visible) return;
+        serviceCardData.push({
+          ...baseCard,
+          threekit: {
+            assetId: asset.id,
+            key: name,
+          },
+        });
+      });
+    });
+    store.dispatch(
+      setDataServiceStep({
+        key: StepName.Services,
+        values: serviceCardData,
+      })
     );
   };
 }

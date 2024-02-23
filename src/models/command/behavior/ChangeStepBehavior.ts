@@ -3,6 +3,7 @@ import { getRoomAssetId } from "../../../utils/threekitUtils";
 import { Application } from "../../Application";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
+import { RestrictionHandler } from "../../handlers/RestrictionHandler";
 import { Permission } from "../../permission/Permission";
 import { StepName } from "../../permission/type";
 import { ChangeStepCommand } from "../ChangeStepCommand";
@@ -32,17 +33,47 @@ export class ChangeStepBehavior extends Behavior {
             const configurator = app.currentConfigurator.getSnapshot();
             configurator.setAttributes(attributes as Array<AttributeI>);
             app.currentConfigurator = configurator;
+            new RestrictionHandler(
+              configurator,
+              app.dataTableLevel1,
+              app.dataTableLevel2
+            ).handle();
             app.eventEmitter.emit("threekitDataInitialized", configurator);
             app.eventEmitter.emit("processInitThreekitData", false);
             return resolve(true);
           });
       }
-      // if (nextStep.key === StepName.ConferenceCamera) {
-      //   const idDataTable2Level = getDataIdDataTable2Level(store);
-      //   console.log("idDataTable2Level", idDataTable2Level);
-      // }
+      if (command.stepName === StepName.AudioExtensions) {
+        const idDataTable2Level = new RestrictionHandler(
+          app.currentConfigurator,
+          app.dataTableLevel1,
+          app.dataTableLevel2
+        ).getIdLevel2DataTable();
+        if (idDataTable2Level) {
+          app.eventEmitter.emit("processInitThreekitData", true);
+          return new ThreekitService()
+            .getDataTablesById(idDataTable2Level)
+            .then(({ dataTables }) => {
+              app.dataTableLevel2 = new DataTable(dataTables);
+              new RestrictionHandler(
+                app.currentConfigurator,
+                app.dataTableLevel1,
+                app.dataTableLevel2
+              ).handle();
+              app.eventEmitter.emit("processInitThreekitData", false);
+              return resolve(true);
+            });
+        }
+        return resolve(true);
+      }
+      
+      new RestrictionHandler(
+        app.currentConfigurator,
+        app.dataTableLevel1,
+        app.dataTableLevel2
+      ).handle();
 
-      resolve(true);
+      return resolve(true);
     });
   }
 }

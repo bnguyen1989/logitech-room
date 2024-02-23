@@ -21,7 +21,7 @@ export const LoaderSection: React.FC = () => {
     .toLocaleLowerCase()
     .includes("conference camera");
 
-  if ((isBuilding || isProcessInitData) && isConferenceCamera)
+  if (isBuilding && isConferenceCamera)
     return (
       <div className={s.loader}>
         <div className={s.container}>
@@ -43,7 +43,7 @@ export const LoaderSection: React.FC = () => {
       </div>
     );
 
-    if(isProcessInitData && !isConferenceCamera) {
+    if(isProcessInitData) {
       return (
         <div className={s.loader}>
           <div className={s.container}>

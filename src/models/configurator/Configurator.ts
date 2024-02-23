@@ -1,7 +1,12 @@
 import { AssetI } from "../../services/Threekit/type";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
-import { AttributeI, AttributeStateI, AttributesStateI, ConfigurationI } from "./type";
+import {
+  AttributeI,
+  AttributeStateI,
+  AttributesStateI,
+  ConfigurationI,
+} from "./type";
 
 export class Configurator {
   public id: string = IdGenerator.generateId();
@@ -10,6 +15,10 @@ export class Configurator {
   private attributes: Array<AttributeI> = [];
   private configuration: ConfigurationI = {};
   private attributeState: AttributesStateI = {};
+
+  public static PlatformName = [["Room Service"]];
+
+  public static ServicesName = [["Room Deployment Mode"]];
 
   public static AudioExtensionName = [["Room Mic", "Qty - Micpod/Expansion"]];
 
@@ -96,7 +105,7 @@ export class Configurator {
           })),
         };
       }
-      if(isStringType(attribute.type)) {
+      if (isStringType(attribute.type)) {
         this.attributeState[attribute.id] = {
           disabledValues: [],
           hiddenValues: [],
@@ -111,7 +120,6 @@ export class Configurator {
       }
     });
   }
-  
 
   public getAttributes(): Array<AttributeI> {
     return this.attributes;
@@ -121,7 +129,10 @@ export class Configurator {
     return this.attributeState;
   }
 
-  public setAttributeState(id: string, attributeState: Partial<AttributeStateI>) {
+  public setAttributeState(
+    id: string,
+    attributeState: Partial<AttributeStateI>
+  ) {
     this.attributeState[id] = {
       ...this.attributeState[id],
       ...attributeState,
@@ -141,6 +152,13 @@ export class Configurator {
 
   public getAttributeByName(name: string): AttributeI | undefined {
     return this.attributes.find((attribute) => attribute.name === name);
+  }
+
+  public getStateAttributeByName(name: string): AttributeStateI | undefined {
+    const id = this.getAttributeByName(name)?.id;
+
+    if (!id) return;
+    return this.attributeState[id];
   }
 
   public getSnapshot(): Configurator {

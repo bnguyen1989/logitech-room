@@ -44,7 +44,7 @@ export const getInitStepData = (): StepDataI => {
       title: "What is your primary video conferencing platform?",
       subtitle:
         "Choose the video conferencing platform your organization uses most often.",
-      cards: getPlatformCardData(),
+      cards: [],
     },
     [StepName.Services]: {
       key: StepName.Services,
@@ -52,7 +52,7 @@ export const getInitStepData = (): StepDataI => {
       title:
         "Would you prefer to deploy via a dedicated video conferencing appliance, or a meeting room computer?",
       subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      cards: getServicesCardData(),
+      cards: [],
     },
     [StepName.ConferenceCamera]: {
       key: StepName.ConferenceCamera,
@@ -97,7 +97,7 @@ export const getInitStepData = (): StepDataI => {
   };
 };
 
-function getPlatformCardData(): Array<PlatformCardI> {
+export function getPlatformCardData(): Array<PlatformCardI> {
   return [
     {
       key: StepName.Platform,
@@ -170,7 +170,7 @@ function getRoomCardData(): Array<RoomCardI> {
   ];
 }
 
-function getServicesCardData(): Array<ServiceCardI> {
+export function getServicesCardData(): Array<ServiceCardI> {
   return [
     {
       key: StepName.Services,

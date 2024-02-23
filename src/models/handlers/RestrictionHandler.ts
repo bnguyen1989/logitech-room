@@ -138,6 +138,22 @@ export class RestrictionHandler extends Handler {
     return true;
   }
 
+  public getIdLevel2DataTable() {
+    const leadingSpecCharForDefault = "*";
+    const skipColumns = ["level2datatableId", "attrRules"];
+    const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
+    const level2row = this.findLevel2Row(
+      this.dataTableLevel1,
+      level1AttrSequenceArr,
+      leadingSpecCharForDefault
+    );
+
+    if (!level2row || !level2row.value) return null; //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
+
+    const level2datatableId = level2row.value[skipColumns[0]];
+    return level2datatableId;
+  }
+
   private getAttribute(name: string) {
     const attrArr = this.configurator.getAttributes() as Array<AttributeI>;
     const attr_asset = attrArr.find(
@@ -242,6 +258,8 @@ export class RestrictionHandler extends Handler {
 
           attrSpec.attrType = isContainId ? "Asset" : "String";
         } else {
+          console.log('Option', option, 'is not visible');
+          
           option.visible = false;
           if (
             selectedValue_str &&
@@ -268,6 +286,8 @@ export class RestrictionHandler extends Handler {
           attrSpec.defaultValue = option.id;
         }
       });
+      console.log("theAttrValuesArr", theAttrValuesArr);
+      
       this.configurator.setAttributeState(theAttrId, {
         values: theAttrValuesArr,
       });

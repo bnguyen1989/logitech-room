@@ -33,14 +33,6 @@ export interface StepI<CI> {
 	cards: Array<CI>;
 }
 
-export interface PlatformCardI {
-	key: StepName.Platform;
-	logo: string;
-	image: string;
-	title: string;
-	keyPermission?: string;
-}
-
 export interface RoomCardI {
 	key: StepName.RoomSize;
 	image: string;
@@ -49,12 +41,22 @@ export interface RoomCardI {
 	keyPermission?: string;
 }
 
+export interface PlatformCardI {
+	key: StepName.Platform;
+	logo: string;
+	image: string;
+	title: string;
+	keyPermission?: string;
+	threekit?: ThreekitI;
+}
+
 export interface ServiceCardI {
 	key: StepName.Services;
 	image: string;
 	title: string;
 	subtitle: string;
 	keyPermission?: string;
+	threekit?: ThreekitI;
 }
 
 export interface ColorItemI {

@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
     .toLocaleLowerCase()
     .includes("conference camera");
 
-  if ((isBuilding || isProcessInitData) && isConferenceCamera) {
+  if ((isBuilding && isConferenceCamera) || isProcessInitData) {
     return (
       <div className={s.container}>
         <div className={s.navigationMenu}>

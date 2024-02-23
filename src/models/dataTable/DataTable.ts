@@ -23,6 +23,10 @@ export class DataTable {
     return this._data.map((row) => row.value[columnName]);
   }
 
+  public isEmpty(): boolean {
+    return this._data.length === 0;
+  }
+
   public copy(): DataTable {
     return new DataTable(
       this._data.map((row) => ({ ...row, value: { ...row.value } }))

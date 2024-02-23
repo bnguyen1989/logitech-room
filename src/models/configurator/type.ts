@@ -27,12 +27,14 @@ export interface AttributesStateI {
 }
 
 export interface AttributeStateI {
-  disabledValues: Array<ValueStringStateI | ValueAssetStateI>;
+  disabledValues: Array<ValueAttributeStateI>;
   enabled: boolean;
-  hiddenValues: Array<ValueStringStateI | ValueAssetStateI>;
+  hiddenValues: Array<ValueAttributeStateI>;
   visible: boolean;
-  values: Array<ValueStringStateI | ValueAssetStateI>;
+  values: Array<ValueAttributeStateI>;
 }
+
+export type ValueAttributeStateI = ValueStringStateI | ValueAssetStateI;
 
 export interface ValueStringStateI {
   value: string;
