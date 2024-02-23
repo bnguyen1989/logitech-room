@@ -1,14 +1,15 @@
-import { AssetI } from "../../services/Threekit/type";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
 import {
   AttributeI,
   AttributeStateI,
+  ConfigurationI,
   ValueAssetStateI,
   ValueStringStateI,
 } from "../configurator/type";
 import { DataTable } from "../dataTable/DataTable";
 import { Handler } from "./Handler";
+import { AttrSpecI } from "./type";
 
 interface CacheI {
   [key: string]: {
@@ -18,13 +19,17 @@ interface CacheI {
 const CACHE_DATA: CacheI = {};
 
 export class RestrictionHandler extends Handler {
-  private dataTable: DataTable;
-  private level: number;
+  private dataTableLevel1: DataTable;
+  private dataTableLevel2: DataTable;
   private configurator: Configurator;
-  constructor(configurator: Configurator, dataTable: DataTable, level: number) {
+  constructor(
+    configurator: Configurator,
+    dataTableLevel1: DataTable,
+    dataTableLevel2: DataTable
+  ) {
     super();
-    this.dataTable = dataTable;
-    this.level = level;
+    this.dataTableLevel1 = dataTableLevel1;
+    this.dataTableLevel2 = dataTableLevel2;
     this.configurator = configurator;
   }
 
@@ -59,36 +64,8 @@ export class RestrictionHandler extends Handler {
       this.configurator
     );
 
-    const attributeName = this.dataTable.getColumnNames();
-
-    attributeName.forEach((attrName) => {
-      const attr = this.getAttribute(attrName);
-      if (attr) {
-        this.validateOption(attrName, attr);
-      }
-    });
+    
     return true;
-  }
-
-  private validateOption(tableColName: string, theAttrValuesArr: AttributeI) {
-    const optionNames: Array<string> =
-      this.dataTable.getValuesByColumn(tableColName);
-
-    if (isStringType(theAttrValuesArr.type)) {
-      theAttrValuesArr.values = theAttrValuesArr.values.filter(
-        (option: string | AssetI) => {
-          return optionNames.includes(option as string);
-        }
-      );
-    }
-
-    if (isAssetType(theAttrValuesArr.type)) {
-      theAttrValuesArr.values = theAttrValuesArr.values.filter(
-        (option: string | AssetI) => {
-          return optionNames.includes((option as AssetI).name);
-        }
-      );
-    }
   }
 
   private getAttribute(name: string) {
@@ -241,16 +218,7 @@ export class RestrictionHandler extends Handler {
     let attributeName_arr = dataTable
       .getColumnNames()
       .filter((attrName) => skipColumns.indexOf(attrName) < 0);
-    const attrSpec_obj: {
-      [key: string]: {
-        attrType: string;
-        allowBlank: boolean;
-        validOptionNames: Array<string>;
-        validOptionIds: Array<string>;
-        defaultValue: string;
-        preInvalid: string;
-      };
-    } = {};
+    const attrSpec_obj: AttrSpecI = {};
 
     let datarows = [...dataTable.data];
     //When there is attrSequence defined and user starts to select options from the attributes, shrink the options based on user selection.
@@ -298,5 +266,138 @@ export class RestrictionHandler extends Handler {
     });
 
     return attrSpec_obj;
+  }
+
+  private forceSetOption(validatedAttrSpec: AttrSpecI, setDefaults = false) {
+    if (!validatedAttrSpec) return undefined;
+    const setConfig_obj: ConfigurationI = {};
+    const validatedAttrNames = Object.keys(validatedAttrSpec);
+
+    for (let i = 0; i < validatedAttrNames.length; i++) {
+      const attrName = validatedAttrNames[i];
+      const currentSelectedValue = this.getSelectedValue(attrName);
+      const currentSelectedValue_str = currentSelectedValue
+        ? typeof currentSelectedValue === "object" && currentSelectedValue.id
+          ? currentSelectedValue.id
+          : currentSelectedValue
+        : "";
+      if (setDefaults) {
+        setConfig_obj[attrName] =
+          validatedAttrSpec[attrName].attrType === "Asset"
+            ? {
+                assetId: validatedAttrSpec[attrName].defaultValue,
+              }
+            : validatedAttrSpec[attrName].defaultValue;
+      }
+
+      if (
+        //When not allow blank and only one option available set it to that option if it's currently not that value
+        (!validatedAttrSpec[attrName].allowBlank &&
+          validatedAttrSpec[attrName].validOptionIds &&
+          validatedAttrSpec[attrName].validOptionIds.length === 1 &&
+          currentSelectedValue_str !==
+            validatedAttrSpec[attrName].validOptionIds[0]) ||
+        //When allow blank and only one option is blank, set it to blank if it's currently not blank
+        (validatedAttrSpec[attrName].allowBlank &&
+          validatedAttrSpec[attrName].validOptionIds.length === 0 &&
+          currentSelectedValue_str)
+      ) {
+        const setToVal = validatedAttrSpec[attrName].validOptionIds[0]
+          ? validatedAttrSpec[attrName].validOptionIds[0]
+          : "";
+        setConfig_obj[attrName] =
+          validatedAttrSpec[attrName].attrType === "Asset"
+            ? {
+                assetId: setToVal,
+              }
+            : setToVal;
+      }
+    }
+    console.log("setConfig_obj is", setConfig_obj);
+    return setConfig_obj;
+  }
+
+  private validateLevel1Attr(
+    localeTagStr: string,
+    dataTable: DataTable,
+    leadingSpecCharForDefault = "*",
+    skipColumns: Array<string> = [],
+    level1AttrSequenceArr = [],
+    currentIndexInLevel1Sequence: number
+  ) {
+    const setConfig_obj = this.validateAttributesWithDatatable(
+      localeTagStr,
+      dataTable,
+      leadingSpecCharForDefault,
+      skipColumns,
+      level1AttrSequenceArr,
+      currentIndexInLevel1Sequence
+    );
+    if (!setConfig_obj) return;
+
+    const forceSetConfig_obj = this.forceSetOption(setConfig_obj);
+
+    const forcedSetAttrs = forceSetConfig_obj
+      ? Object.keys(forceSetConfig_obj)
+      : [];
+    console.log("forcedSetAttrs", forcedSetAttrs);
+    if (forcedSetAttrs.length > 0 && forceSetConfig_obj) {
+      //console.log('setConfig_obj is', setConfig_obj);
+      this.configurator.setConfiguration(forceSetConfig_obj);
+    } else {
+      if (level1AttrSequenceArr[currentIndexInLevel1Sequence + 1]) {
+        const nextInSequenceSelectedValue = this.getSelectedValue(
+          level1AttrSequenceArr[currentIndexInLevel1Sequence + 1]
+        );
+        if (nextInSequenceSelectedValue) {
+          this.validateLevel1Attr(
+            localeTagStr,
+            dataTable,
+            leadingSpecCharForDefault,
+            skipColumns,
+            level1AttrSequenceArr,
+            currentIndexInLevel1Sequence + 1
+          );
+        }
+      }
+    }
+  }
+
+  private findLevel2Row(
+    dataTableLevel1: DataTable,
+    attrSequenceArr: Array<string>,
+    leadingSpecCharForDefault = "*"
+  ) {
+    if (attrSequenceArr.length < 1) return undefined;
+
+    const selectedValueArr: Array<string> = [];
+    for (let i = 0; i < attrSequenceArr.length; i++) {
+      const selectedValue = this.getSelectedValue(attrSequenceArr[i]);
+      const selectedValue_str = selectedValue
+        ? typeof selectedValue === "object" && selectedValue.id
+          ? selectedValue.name
+          : selectedValue
+        : "None";
+      selectedValueArr.push(selectedValue_str as string);
+    }
+
+    const rows = dataTableLevel1.data;
+    console.log("rows = ", { attrSequenceArr, rows });
+    for (const row of rows) {
+      let found_counter = 0;
+      attrSequenceArr.forEach((attrName, attrIndex) => {
+        if (row.value[attrName]) {
+          const rowValue = row.value[attrName].trim();
+          if (
+            rowValue === selectedValueArr[attrIndex] ||
+            rowValue === leadingSpecCharForDefault + selectedValueArr[attrIndex]
+          )
+            found_counter++;
+        }
+      });
+
+      if (found_counter === attrSequenceArr.length) return row;
+    }
+    return undefined;
   }
 }
