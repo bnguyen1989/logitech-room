@@ -2,7 +2,6 @@ import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
 import {
   AttributeI,
-  AttributeStateI,
   ConfigurationI,
   ValueAssetStateI,
   ValueStringStateI,
@@ -12,9 +11,12 @@ import { Handler } from "./Handler";
 import { AttrSpecI } from "./type";
 
 interface CacheI {
-  [key: string]: {
-    [key: string]: string;
-  };
+  [key: string]:
+    | {
+        [key: string]: string;
+      }
+    | string
+    | undefined;
 }
 const CACHE_DATA: CacheI = {};
 
@@ -39,7 +41,7 @@ export class RestrictionHandler extends Handler {
     const cache = CACHE_DATA;
     const triggeredByAttr: Array<string> = [];
     attrArr.forEach((attr) => {
-      if (cache.attrValCache) {
+      if (cache.attrValCache && typeof cache.attrValCache === "object") {
         let attrValue = configuration[attr.name];
         if (typeof attrValue === "object" && attrValue["assetId"]) {
           attrValue = attrValue["assetId"];
@@ -63,8 +65,76 @@ export class RestrictionHandler extends Handler {
     const triggeredByAttr = RestrictionHandler.getTriggeredAttribute(
       this.configurator
     );
+    const localeTagStr = "locale_US";
+    const leadingSpecCharForDefault = "*";
+    const skipColumns = ["level2datatableId", "attrRules"];
+    const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
+    const currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
+      triggeredByAttr[0]
+    );
+    const firstLevel1AttrSelectedValue = this.getSelectedValue(
+      level1AttrSequenceArr[0]
+    );
 
-    
+    if (
+      currentIndexInLevel1Sequence > -1 || //when user is configuring the level 1 attribute
+      !firstLevel1AttrSelectedValue //when it's the initial state
+    ) {
+      this.validateLevel1Attr(
+        localeTagStr,
+        this.dataTableLevel1,
+        leadingSpecCharForDefault,
+        skipColumns,
+        level1AttrSequenceArr,
+        currentIndexInLevel1Sequence
+      );
+    }
+
+    ////* 2nd - based on selection from level1 attributes to find level2 datatable to further validate level2 attributes
+    const level2row = this.findLevel2Row(
+      this.dataTableLevel1,
+      level1AttrSequenceArr,
+      leadingSpecCharForDefault
+    );
+
+    if (!level2row || !level2row.value) return true; //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
+
+    const level2datatableId = level2row.value[skipColumns[0]];
+    const attrRulesStr = level2row.value[skipColumns[1]];
+
+    let setLevel2Default_flag = false;
+    const cache = CACHE_DATA;
+    if (
+      !cache.level2datatableId ||
+      cache.level2datatableId !== level2datatableId
+    ) {
+      setLevel2Default_flag = true;
+      cache.level2datatableId = level2datatableId;
+    }
+
+    const setConfig_obj = this.validateAttributesWithDatatable(
+      localeTagStr,
+      this.dataTableLevel2,
+      leadingSpecCharForDefault
+    );
+    if (!setConfig_obj) return true;
+    const forceSetConfig_obj = this.forceSetOption(
+      setConfig_obj,
+      setLevel2Default_flag
+    );
+    const forcedSetAttrs = forceSetConfig_obj
+      ? Object.keys(forceSetConfig_obj)
+      : [];
+    if (forcedSetAttrs.length > 0 && forceSetConfig_obj) {
+      this.configurator.setConfiguration(forceSetConfig_obj);
+    }
+
+    ////*3rd call the rule(s) based on what's selected in the level1 datatable
+    const attrRulesArr = attrRulesStr
+      ? attrRulesStr.split(";").map((aStr) => aStr.trim())
+      : [];
+    console.log("attrRulesArr", attrRulesArr);
+
     return true;
   }
 
@@ -211,7 +281,7 @@ export class RestrictionHandler extends Handler {
     dataTable: DataTable,
     leadingSpecCharForDefault = "*",
     skipColumns: Array<string> = [],
-    attrSequenceArr = [],
+    attrSequenceArr: Array<string> = [],
     currentIndexInSequence = -1
   ) {
     if (currentIndexInSequence >= attrSequenceArr.length) return undefined;
@@ -322,7 +392,7 @@ export class RestrictionHandler extends Handler {
     dataTable: DataTable,
     leadingSpecCharForDefault = "*",
     skipColumns: Array<string> = [],
-    level1AttrSequenceArr = [],
+    level1AttrSequenceArr: Array<string> = [],
     currentIndexInLevel1Sequence: number
   ) {
     const setConfig_obj = this.validateAttributesWithDatatable(
