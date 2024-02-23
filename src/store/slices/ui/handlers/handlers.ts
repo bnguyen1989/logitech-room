@@ -28,8 +28,7 @@ import {
   changeProcessInitData,
   changeValueCard,
   setDataItemStep,
-  setDataPlatformStep,
-  setDataServiceStep,
+  setDataPrepareStep,
 } from "../Ui.slice";
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
@@ -238,6 +237,9 @@ function setStepData(
           min: min,
           max: max,
           currentValue,
+          threekit: {
+            key: qtyName,
+          }
         };
       });
     }
@@ -306,73 +308,66 @@ function setVideoAccessoriesData(configurator: Configurator) {
   };
 }
 
-function setPlatformData(configurator: Configurator) {
-  return (store: Store) => {
-    const platformCardData: Array<PlatformCardI> = [];
-    const platformBaseData = getPlatformCardData();
-    Configurator.PlatformName.forEach((item) => {
-      const [name] = item;
-      const value = configurator.getStateAttributeByName(name);
+function setStepDataPrepareCard<T extends PlatformCardI | ServiceCardI>(
+  configurator: Configurator,
+  store: Store,
+  baseData: Array<T>,
+  stepName: StepName.Platform | StepName.Services,
+  itemNameList: Array<Array<string>>
+) {
+  const cardData: Array<T> = [];
 
-      if (!value) {
-        return;
-      }
+  itemNameList.forEach((item) => {
+    const [name] = item;
+    const value = configurator.getStateAttributeByName(name);
+    if (!value) {
+      return;
+    }
 
-      value.values.forEach((item: ValueAttributeStateI) => {
-        const asset = item as ValueAssetStateI;
-        const baseCard = platformBaseData.find(
-          (item) => item.keyPermission === asset.name
-        );
-        if (!baseCard || !asset.visible) return;
-        platformCardData.push({
-          ...baseCard,
-          threekit: {
-            assetId: asset.id,
-            key: name,
-          },
-        });
+    value.values.forEach((item: ValueAttributeStateI) => {
+      const asset = item as ValueAssetStateI;
+      const baseCard = baseData.find(
+        (item) => item.keyPermission === asset.name
+      );
+      if (!baseCard || !asset.visible) return;
+      cardData.push({
+        ...baseCard,
+        threekit: {
+          assetId: asset.id,
+          key: name,
+        },
       });
     });
-    store.dispatch(
-      setDataPlatformStep({
-        key: StepName.Platform,
-        values: platformCardData,
-      })
+  });
+
+  store.dispatch(
+    setDataPrepareStep({
+      key: stepName,
+      values: cardData,
+    })
+  );
+}
+
+function setPlatformData(configurator: Configurator) {
+  return (store: Store) => {
+    setStepDataPrepareCard(
+      configurator,
+      store,
+      getPlatformCardData(),
+      StepName.Platform,
+      Configurator.PlatformName
     );
   };
 }
 
 function setServiceData(configurator: Configurator) {
   return (store: Store) => {
-    const serviceCardData: Array<ServiceCardI> = [];
-    const serviceBaseData = getServicesCardData();
-    Configurator.ServicesName.forEach((item) => {
-      const [name] = item;
-      const value = configurator.getStateAttributeByName(name);
-      if (!value) {
-        return;
-      }
-
-      value.values.forEach((item: ValueAttributeStateI) => {
-        const asset = item as ValueAssetStateI;
-        const baseCard = serviceBaseData.find(
-          (item) => item.keyPermission === asset.name
-        );
-        if (!baseCard || !asset.visible) return;
-        serviceCardData.push({
-          ...baseCard,
-          threekit: {
-            assetId: asset.id,
-            key: name,
-          },
-        });
-      });
-    });
-    store.dispatch(
-      setDataServiceStep({
-        key: StepName.Services,
-        values: serviceCardData,
-      })
+    setStepDataPrepareCard(
+      configurator,
+      store,
+      getServicesCardData(),
+      StepName.Services,
+      Configurator.ServicesName
     );
   };
 }

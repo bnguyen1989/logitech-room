@@ -72,6 +72,7 @@ export interface CounterI {
 	min: number;
 	max: number;
 	currentValue: number;
+	threekit: Pick<ThreekitI, "key">;
 }
 
 export interface ThreekitI {

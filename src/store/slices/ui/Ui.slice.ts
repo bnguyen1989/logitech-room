@@ -87,32 +87,25 @@ const uiSlice = createSlice({
         state.activeStep = state.stepData[state.activeStep.key];
       }
     },
-    setDataPlatformStep: (
+    setDataPrepareStep: (
       state,
       action: PayloadAction<{
-        key: StepName.Platform;
-        values: Array<PlatformCardI>;
+        key: StepName.Platform | StepName.Services;
+        values: Array<PlatformCardI | ServiceCardI>;
       }>
     ) => {
-      state.stepData[action.payload.key] = {
-        ...state.stepData[action.payload.key],
-        cards: action.payload.values,
-      };
-      if (state.activeStep && state.activeStep.key === action.payload.key) {
-        state.activeStep = state.stepData[state.activeStep.key];
+      if(action.payload.key === StepName.Platform){
+        state.stepData[action.payload.key] = {
+          ...state.stepData[action.payload.key],
+          cards: action.payload.values as Array<PlatformCardI>,
+        };
       }
-    },
-    setDataServiceStep: (
-      state,
-      action: PayloadAction<{
-        key: StepName.Services;
-        values: Array<ServiceCardI>;
-      }>
-    ) => {
-      state.stepData[action.payload.key] = {
-        ...state.stepData[action.payload.key],
-        cards: action.payload.values,
-      };
+      if(action.payload.key === StepName.Services){
+        state.stepData[action.payload.key] = {
+          ...state.stepData[action.payload.key],
+          cards: action.payload.values as Array<ServiceCardI>,
+        };
+      }
       if (state.activeStep && state.activeStep.key === action.payload.key) {
         state.activeStep = state.stepData[state.activeStep.key];
       }
@@ -130,7 +123,6 @@ export const {
   changeValueCard,
   setDataItemStep,
   changeProcessInitData,
-  setDataPlatformStep,
-  setDataServiceStep,
+  setDataPrepareStep
 } = uiSlice.actions;
 export default uiSlice.reducer;

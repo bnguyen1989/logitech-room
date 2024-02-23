@@ -53,7 +53,7 @@ export const ConfigurationFormForStep = () => {
       const threekit = (value as ItemCardI).threekit;
       if (counter && threekit) {
         app.changeCountItemConfiguration(
-          threekit.key,
+          counter.threekit.key,
           String(counter.currentValue),
           threekit.assetId
         );
