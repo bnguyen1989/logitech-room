@@ -15,8 +15,6 @@ declare const permission: Permission;
 export class ChangeStepBehavior extends Behavior {
   public async execute(command: ChangeStepCommand): Promise<boolean> {
     return new Promise((resolve) => {
-      console.log("command", command);
-
       const activeElement = permission.getActiveItems()[0];
       if (command.stepName === StepName.Platform && activeElement) {
         const roomAssetId = getRoomAssetId(activeElement.name);
@@ -28,7 +26,6 @@ export class ChangeStepBehavior extends Behavior {
             app.dataTableLevel1 = new DataTable(dataTables);
             app.currentConfigurator.attributesSequenceLevel1 =
               attributesSequenceLevel1;
-            console.log("dataTables", dataTables);
 
             const configurator = app.currentConfigurator.getSnapshot();
             configurator.setAttributes(attributes as Array<AttributeI>);
@@ -49,7 +46,7 @@ export class ChangeStepBehavior extends Behavior {
           app.dataTableLevel1,
           app.dataTableLevel2
         ).getIdLevel2DataTable();
-        
+
         if (idDataTable2Level) {
           app.eventEmitter.emit("processInitThreekitData", true);
           return new ThreekitService()
@@ -67,7 +64,7 @@ export class ChangeStepBehavior extends Behavior {
         }
         return resolve(true);
       }
-      
+
       new RestrictionHandler(
         app.currentConfigurator,
         app.dataTableLevel1,

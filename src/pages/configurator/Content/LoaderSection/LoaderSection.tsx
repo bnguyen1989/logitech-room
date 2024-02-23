@@ -46,7 +46,7 @@ export const LoaderSection: React.FC = () => {
     if(isProcessInitData) {
       return (
         <div className={s.loader}>
-          <div className={s.container}>
+          <div className={s.container_simple}>
             <Loader text="Loading Your Room" />
           </div>
         </div>

@@ -98,6 +98,29 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeStepCommand) {
+      const configurator = app.currentConfigurator;
+      if (data.stepName === StepName.Platform) {
+        setPlatformData(configurator)(store);
+      }
+      if (data.stepName === StepName.Services) {
+        setServiceData(configurator)(store);
+      }
+      if (data.stepName === StepName.AudioExtensions) {
+        setAudioExtensionsData(configurator)(store);
+      }
+      if (data.stepName === StepName.ConferenceCamera) {
+        setCameraData(configurator)(store);
+      }
+      if (data.stepName === StepName.MeetingController) {
+        setMeetingControllerData(configurator)(store);
+      }
+      if (data.stepName === StepName.VideoAccessories) {
+        setVideoAccessoriesData(configurator)(store);
+      }
+      if (data.stepName === StepName.SoftwareServices) {
+        setSoftwareServicesData(configurator)(store);
+      }
+
       const stepData = store.getState().ui.stepData;
       const listStepData: Array<StepI<StepCardType>> = Object.values(stepData);
       const step = listStepData.find(
