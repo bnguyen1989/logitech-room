@@ -3,7 +3,7 @@ import { getRoomAssetId } from "../../../utils/threekitUtils";
 import { Application } from "../../Application";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
-import { RestrictionHandler } from "../../handlers/RestrictionHandler";
+import { ConfigurationConstraintHandler } from "../../handlers/ConfigurationConstraintHandler";
 import { Permission } from "../../permission/Permission";
 import { StepName } from "../../permission/type";
 import { ChangeStepCommand } from "../ChangeStepCommand";
@@ -30,7 +30,7 @@ export class ChangeStepBehavior extends Behavior {
             const configurator = app.currentConfigurator.getSnapshot();
             configurator.setAttributes(attributes as Array<AttributeI>);
             app.currentConfigurator = configurator;
-            new RestrictionHandler(
+            new ConfigurationConstraintHandler(
               configurator,
               app.dataTableLevel1,
               app.dataTableLevel2
@@ -41,7 +41,7 @@ export class ChangeStepBehavior extends Behavior {
           });
       }
       if (command.stepName === StepName.AudioExtensions) {
-        const idDataTable2Level = new RestrictionHandler(
+        const idDataTable2Level = new ConfigurationConstraintHandler(
           app.currentConfigurator,
           app.dataTableLevel1,
           app.dataTableLevel2
@@ -53,7 +53,7 @@ export class ChangeStepBehavior extends Behavior {
             .getDataTablesById(idDataTable2Level)
             .then((dataTables) => {
               app.dataTableLevel2 = new DataTable(dataTables);
-              new RestrictionHandler(
+              new ConfigurationConstraintHandler(
                 app.currentConfigurator,
                 app.dataTableLevel1,
                 app.dataTableLevel2
@@ -65,7 +65,7 @@ export class ChangeStepBehavior extends Behavior {
         return resolve(true);
       }
 
-      new RestrictionHandler(
+      new ConfigurationConstraintHandler(
         app.currentConfigurator,
         app.dataTableLevel1,
         app.dataTableLevel2

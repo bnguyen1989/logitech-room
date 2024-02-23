@@ -20,7 +20,7 @@ interface CacheI {
 }
 const CACHE_DATA: CacheI = {};
 
-export class RestrictionHandler extends Handler {
+export class ConfigurationConstraintHandler extends Handler {
   private dataTableLevel1: DataTable;
   private dataTableLevel2: DataTable;
   private configurator: Configurator;
@@ -62,9 +62,8 @@ export class RestrictionHandler extends Handler {
   }
 
   public handle(): boolean {
-    const triggeredByAttr = RestrictionHandler.getTriggeredAttribute(
-      this.configurator
-    );
+    const triggeredByAttr =
+      ConfigurationConstraintHandler.getTriggeredAttribute(this.configurator);
     const localeTagStr = "locale_US";
     const leadingSpecCharForDefault = "*";
     const skipColumns = ["level2datatableId", "attrRules"];
@@ -258,8 +257,8 @@ export class RestrictionHandler extends Handler {
 
           attrSpec.attrType = isContainId ? "Asset" : "String";
         } else {
-          console.log('Option', option, 'is not visible');
-          
+          console.log("Option", option, "is not visible");
+
           option.visible = false;
           if (
             selectedValue_str &&
@@ -287,7 +286,7 @@ export class RestrictionHandler extends Handler {
         }
       });
       console.log("theAttrValuesArr", theAttrValuesArr);
-      
+
       this.configurator.setAttributeState(theAttrId, {
         values: theAttrValuesArr,
       });
