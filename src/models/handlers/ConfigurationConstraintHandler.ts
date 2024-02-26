@@ -132,9 +132,42 @@ export class ConfigurationConstraintHandler extends Handler {
     const attrRulesArr = attrRulesStr
       ? attrRulesStr.split(";").map((aStr) => aStr.trim())
       : [];
-    console.log("attrRulesArr", attrRulesArr);
+
+      //temp rule
+    if (attrRulesArr.indexOf("tapQty_tapIp") > -1) {
+      this.rule_tapQty10_tapIp();
+    }
 
     return true;
+  }
+
+  private rule_tapQty10_tapIp() {
+    const meetingControllerAttrName_str = "Room Meeting Controller";
+    const meetingControllerQtyAttr_str = "Qty - Meeting Controller";
+
+    const selectedMeetingController = this.getSelectedValue(
+      meetingControllerAttrName_str
+    );
+    if (
+      typeof selectedMeetingController === "object" &&
+      selectedMeetingController.name === "Logitech Tap IP"
+    ) {
+      const attribute = this.getAttribute(meetingControllerQtyAttr_str);
+      const attrState = this.configurator.getAttributeState();
+      const attributeValuesArr = attribute
+        ? attrState[attribute.id].values
+        : undefined;
+      if (attribute && attributeValuesArr) {
+        attributeValuesArr.forEach((option) => {
+          if ("value" in option && Number(option.value) <= 10) {
+            option.visible = true;
+          }
+        });
+        this.configurator.setAttributeState(attribute.id, {
+          values: attributeValuesArr,
+        });
+      }
+    }
   }
 
   public getIdLevel2DataTable() {
