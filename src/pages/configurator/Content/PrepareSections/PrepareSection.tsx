@@ -45,14 +45,14 @@ export const PrepareSection: React.FC = () => {
       if(card.keyPermission) {
         if (isContain) {
           if (permission.canRemoveActiveItemByName(card.keyPermission)) {
-            dispatch(removeActiveCard(card));
             permission.removeActiveItemByName(card.keyPermission);
+            dispatch(removeActiveCard(card));
           }
           return;
         }
         if (permission.canAddActiveElementByName(card.keyPermission)) {
-          dispatch(addActiveCard(card));
           permission.addActiveElementByName(card.keyPermission);
+          dispatch(addActiveCard(card));
         }
       }
       return;

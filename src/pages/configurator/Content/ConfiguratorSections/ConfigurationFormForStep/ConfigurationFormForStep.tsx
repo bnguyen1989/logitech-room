@@ -96,7 +96,7 @@ export const ConfigurationFormForStep = () => {
           onClick={onClick}
           active={!!currentActiveItem}
           onChange={onChange}
-          recommended={false}
+          recommended={card.recommended}
         />
       );
     }

@@ -33,30 +33,27 @@ export interface StepI<CI> {
 	cards: Array<CI>;
 }
 
-export interface RoomCardI {
-	key: StepName.RoomSize;
-	image: string;
+export interface BaseCardI {
 	title: string;
-	subtitle: string;
+	image: string;
 	keyPermission?: string;
+	threekit?: ThreekitI;
+	recommended?: boolean;
 }
 
-export interface PlatformCardI {
+export interface RoomCardI extends BaseCardI{
+	key: StepName.RoomSize;
+	subtitle: string;
+}
+
+export interface PlatformCardI extends BaseCardI {
 	key: StepName.Platform;
 	logo: string;
-	image: string;
-	title: string;
-	keyPermission?: string;
-	threekit?: ThreekitI;
 }
 
-export interface ServiceCardI {
+export interface ServiceCardI extends BaseCardI {
 	key: StepName.Services;
-	image: string;
-	title: string;
 	subtitle: string;
-	keyPermission?: string;
-	threekit?: ThreekitI;
 }
 
 export interface ColorItemI {
@@ -90,16 +87,12 @@ export interface SelectI {
 	data: Array<SelectDataI>;
 }
 
-export interface ItemCardI {
+export interface ItemCardI extends BaseCardI {
 	key: StepName.ConferenceCamera | StepName.AudioExtensions | StepName.MeetingController | StepName.VideoAccessories | StepName.SoftwareServices;
-	image: string;
 	header_title: string;
-	title: string;
 	subtitle?: string;
 	description?: string;
 	color?: ColorI;
 	counter?: CounterI;
 	select?: SelectI;
-	threekit?: ThreekitI;
-	keyPermission?: string;
 }

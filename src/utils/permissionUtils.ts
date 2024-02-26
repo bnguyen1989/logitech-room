@@ -134,7 +134,6 @@ function createStepConferenceCamera() {
       new ItemElement(CameraName.PreConfiguredMiniPC)
         .setVisible(false)
         .setRequired(true)
-        .setDefaultActive(true)
     )
     .setRequiredOne(true);
   stepConferenceCamera.allElements = [group];
@@ -146,10 +145,6 @@ function createStepAudioExtensions() {
   const group = new GroupElement()
     .addElement(
       new ItemElement(AudioExtensionName.RallyMicPod)
-    )
-    .addElement(
-      new ItemElement(AudioExtensionName.RallyMicPod)
-        .setDefaultActive(true)
         .setRecommended(true)
     );
   stepAudioExtensions.allElements = [group];
@@ -186,12 +181,10 @@ function createStepVideoAccessories() {
     .addElement(new ItemElement(VideoAccessoryName.TVMountForVideoBars))
     .addElement(
       new ItemElement(VideoAccessoryName.RallyMicPodMount)
-        .setDefaultActive(true)
     )
     .addElement(new ItemElement(VideoAccessoryName.RallyMicPodHub))
     .addElement(
       new ItemElement(VideoAccessoryName.MicPodExtensionCable)
-        .setDefaultActive(true)
         .setRecommended(true)
     );
   stepVideoAccessories.allElements = [group];

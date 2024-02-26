@@ -261,6 +261,10 @@ function setStepData(
     value.values.forEach((item: ValueAttributeStateI) => {
       const asset = item as ValueAssetStateI;
       if (!asset.visible) return;
+      const keyPermission = getPermissionNameByItemName(asset.name);
+      const elementPermission = permission.getElements().find(
+        (item) => item.name === keyPermission
+      );
 
       temp.push({
         key: stepName,
@@ -272,7 +276,8 @@ function setStepData(
           assetId: asset.id,
           key: name,
         },
-        keyPermission: getPermissionNameByItemName(asset.name),
+        keyPermission: keyPermission,
+        recommended: elementPermission?.getRecommended() || false,
         color: !isColor
           ? undefined
           : {

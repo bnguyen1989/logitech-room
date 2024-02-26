@@ -39,24 +39,23 @@ const uiSlice = createSlice({
       permission.changeStepName(StepName.RoomSize);
       state.activeStep = state.stepData[StepName.RoomSize];
     },
-    addActiveCard: (
-      state,
-      action: PayloadAction<StepCardType>
-    ) => {
+    addActiveCard: (state, action: PayloadAction<StepCardType>) => {
       const { activeStep } = state;
       if (activeStep) {
         const isExist = activeStep.activeCards.some(
           (card) => card.keyPermission === action.payload.keyPermission
         );
         if (!isExist) {
-          activeStep.activeCards.push(action.payload);
+          const activeItems = permission.getActiveItems();
+          const activeCards = activeStep.activeCards.filter((card) =>
+            activeItems.some((item) => item.name === card.keyPermission)
+          );
+          
+          activeStep.activeCards = [...activeCards, action.payload];
         }
       }
     },
-    removeActiveCard: (
-      state,
-      action: PayloadAction<StepCardType>
-    ) => {
+    removeActiveCard: (state, action: PayloadAction<StepCardType>) => {
       const { activeStep } = state;
       if (activeStep && action.payload) {
         const index = activeStep.activeCards.findIndex(
@@ -75,16 +74,20 @@ const uiSlice = createSlice({
       }>
     ) => {
       const { stepData } = state;
-      if(action.payload.key == StepName.RoomSize){
-        stepData[action.payload.key].activeCards = action.payload.cards as Array<RoomCardI>;
+      if (action.payload.key == StepName.RoomSize) {
+        stepData[action.payload.key].activeCards = action.payload
+          .cards as Array<RoomCardI>;
       }
-      if(action.payload.key == StepName.Platform){
-        stepData[action.payload.key].activeCards = action.payload.cards as Array<PlatformCardI>;
+      if (action.payload.key == StepName.Platform) {
+        stepData[action.payload.key].activeCards = action.payload
+          .cards as Array<PlatformCardI>;
       }
-      if(action.payload.key == StepName.Services){
-        stepData[action.payload.key].activeCards = action.payload.cards as Array<ServiceCardI>;
+      if (action.payload.key == StepName.Services) {
+        stepData[action.payload.key].activeCards = action.payload
+          .cards as Array<ServiceCardI>;
       }
-      stepData[action.payload.key].activeCards = action.payload.cards as Array<ItemCardI>;
+      stepData[action.payload.key].activeCards = action.payload
+        .cards as Array<ItemCardI>;
     },
     changeValueCard: (state, action: PayloadAction<StepCardType>) => {
       const { activeStep } = state;
@@ -125,13 +128,13 @@ const uiSlice = createSlice({
         values: Array<PlatformCardI | ServiceCardI>;
       }>
     ) => {
-      if(action.payload.key === StepName.Platform){
+      if (action.payload.key === StepName.Platform) {
         state.stepData[action.payload.key] = {
           ...state.stepData[action.payload.key],
           cards: action.payload.values as Array<PlatformCardI>,
         };
       }
-      if(action.payload.key === StepName.Services){
+      if (action.payload.key === StepName.Services) {
         state.stepData[action.payload.key] = {
           ...state.stepData[action.payload.key],
           cards: action.payload.values as Array<ServiceCardI>,
@@ -156,6 +159,6 @@ export const {
   changeValueCard,
   setDataItemStep,
   changeProcessInitData,
-  setDataPrepareStep
+  setDataPrepareStep,
 } = uiSlice.actions;
 export default uiSlice.reducer;
