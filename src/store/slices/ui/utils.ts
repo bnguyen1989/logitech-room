@@ -37,6 +37,7 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Choose the option that best matches the seating capacity of your room.",
       cards: getRoomCardData(),
+      activeCards: [],
     },
     [StepName.Platform]: {
       key: StepName.Platform,
@@ -44,7 +45,8 @@ export const getInitStepData = (): StepDataI => {
       title: "What is your primary video conferencing platform?",
       subtitle:
         "Choose the video conferencing platform your organization uses most often.",
-      cards: getPlatformCardData(),
+      cards: [],
+      activeCards: [],
     },
     [StepName.Services]: {
       key: StepName.Services,
@@ -52,7 +54,8 @@ export const getInitStepData = (): StepDataI => {
       title:
         "Would you prefer to deploy via a dedicated video conferencing appliance, or a meeting room computer?",
       subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      cards: getServicesCardData(),
+      cards: [],
+      activeCards: [],
     },
     [StepName.ConferenceCamera]: {
       key: StepName.ConferenceCamera,
@@ -61,6 +64,7 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "These recommendations are based on your previous answers. You selected: {2} deployment running {1} in a {0}.",
       cards: [],
+      activeCards: [],
     },
     [StepName.AudioExtensions]: {
       key: StepName.AudioExtensions,
@@ -69,6 +73,7 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Choose from the following audio extensions to make sure everyone can hear and be heard clearly. ",
       cards: [],
+      activeCards: [],
     },
     [StepName.MeetingController]: {
       key: StepName.MeetingController,
@@ -77,6 +82,7 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Select a controller that directly connects to the meeting room PC or video bar, or one that is untethered from the room system.",
       cards: [],
+      activeCards: [],
     },
     [StepName.VideoAccessories]: {
       key: StepName.VideoAccessories,
@@ -85,6 +91,7 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Add features and flexibility with these video conferencing accessories.",
       cards: [],
+      activeCards: [],
     },
     [StepName.SoftwareServices]: {
       key: StepName.SoftwareServices,
@@ -93,11 +100,12 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       cards: [],
+      activeCards: [],
     },
   };
 };
 
-function getPlatformCardData(): Array<PlatformCardI> {
+export function getPlatformCardData(): Array<PlatformCardI> {
   return [
     {
       key: StepName.Platform,
@@ -170,7 +178,7 @@ function getRoomCardData(): Array<RoomCardI> {
   ];
 }
 
-function getServicesCardData(): Array<ServiceCardI> {
+export function getServicesCardData(): Array<ServiceCardI> {
   return [
     {
       key: StepName.Services,

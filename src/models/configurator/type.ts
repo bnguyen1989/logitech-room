@@ -21,3 +21,27 @@ export interface AttributeI {
 export interface ConfigurationI {
   [key: string]: string | DefaultValueI;
 }
+
+export interface AttributesStateI {
+  [key: string]: AttributeStateI;
+}
+
+export interface AttributeStateI {
+  disabledValues: Array<ValueAttributeStateI>;
+  enabled: boolean;
+  hiddenValues: Array<ValueAttributeStateI>;
+  visible: boolean;
+  values: Array<ValueAttributeStateI>;
+}
+
+export type ValueAttributeStateI = ValueStringStateI | ValueAssetStateI;
+
+export interface ValueStringStateI {
+  value: string;
+  enabled: boolean;
+  visible: boolean;
+}
+export interface ValueAssetStateI extends AssetI{
+  enabled: boolean;
+  visible: boolean;
+}

@@ -57,3 +57,10 @@
   z-index: 100;
   background-color: #F4F4F4;
 }
+
+.container_simple {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

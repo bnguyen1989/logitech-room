@@ -8,9 +8,11 @@ export const getStepData = (state: RootState) => state.ui.stepData;
 export const getActiveStep = (state: RootState) => {
   let activeStep = state.ui.activeStep;
   if (activeStep) {
-    activeStep = { ...activeStep };
+    activeStep = JSON.parse(JSON.stringify(activeStep));
+    if(!activeStep) return null;
     const items = permission.getElements();
-    activeStep.cards = [...activeStep.cards].filter((card) =>
+    
+    activeStep.cards = activeStep.cards.filter((card) =>
       items.some((item) => item.name === card.keyPermission)
     );
   }
@@ -28,6 +30,7 @@ export const getActiveStep = (state: RootState) => {
     );
     if (!roomSizeCard || !platformCard || !serviceCard) return activeStep;
     const getName = (name: string) => `<b>${name}</b>`;
+    
     activeStep.subtitle = activeStep.subtitle
       .replace("{0}", getName(roomSizeCard.title))
       .replace("{1}", getName(platformCard.title))

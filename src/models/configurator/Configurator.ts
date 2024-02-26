@@ -1,11 +1,24 @@
+import { AssetI } from "../../services/Threekit/type";
+import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
-import { AttributeI, ConfigurationI } from "./type";
+import {
+  AttributeI,
+  AttributeStateI,
+  AttributesStateI,
+  ConfigurationI,
+} from "./type";
 
 export class Configurator {
   public id: string = IdGenerator.generateId();
+  public attributesSequenceLevel1: Array<string> = [];
   private _assetId: string = "";
   private attributes: Array<AttributeI> = [];
   private configuration: ConfigurationI = {};
+  private attributeState: AttributesStateI = {};
+
+  public static PlatformName = [["Room Service"]];
+
+  public static ServicesName = [["Room Deployment Mode"]];
 
   public static AudioExtensionName = [["Room Mic", "Qty - Micpod/Expansion"]];
 
@@ -53,17 +66,17 @@ export class Configurator {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
     const getNameNodeForCamera = this.getNameNodeForCamera;
- 
+
     return [
       getNameNodeForMic(1),
       getNameNodeForMic(2),
       getNameNodeForMic(3),
       getNameNodeForTap(1),
       getNameNodeForTap(2),
-      getNameNodeForTap(3), 
-      getNameNodeForCamera('Cabinet'), 
-      getNameNodeForCamera('Wall',1), 
-      getNameNodeForCamera('Wall',2), 
+      getNameNodeForTap(3),
+      getNameNodeForCamera("Cabinet"),
+      getNameNodeForCamera("Wall", 1),
+      getNameNodeForCamera("Wall", 2),
     ];
   }
 
@@ -77,10 +90,53 @@ export class Configurator {
 
   public setAttributes(attributes: Array<AttributeI>) {
     this.attributes = attributes;
+    this.attributes.forEach((attribute) => {
+      this.setConfiguration({ [attribute.name]: attribute.defaultValue });
+      if (isAssetType(attribute.type)) {
+        this.attributeState[attribute.id] = {
+          disabledValues: [],
+          hiddenValues: [],
+          enabled: true,
+          visible: true,
+          values: attribute.values.map((value: AssetI | string) => ({
+            ...(value as AssetI),
+            enabled: true,
+            visible: true,
+          })),
+        };
+      }
+      if (isStringType(attribute.type)) {
+        this.attributeState[attribute.id] = {
+          disabledValues: [],
+          hiddenValues: [],
+          enabled: true,
+          visible: true,
+          values: attribute.values.map((value: AssetI | string) => ({
+            value: value as string,
+            enabled: true,
+            visible: true,
+          })),
+        };
+      }
+    });
   }
 
   public getAttributes(): Array<AttributeI> {
     return this.attributes;
+  }
+
+  public getAttributeState(): AttributesStateI {
+    return this.attributeState;
+  }
+
+  public setAttributeState(
+    id: string,
+    attributeState: Partial<AttributeStateI>
+  ) {
+    this.attributeState[id] = {
+      ...this.attributeState[id],
+      ...attributeState,
+    };
   }
 
   public getConfiguration(): ConfigurationI {
@@ -98,6 +154,13 @@ export class Configurator {
     return this.attributes.find((attribute) => attribute.name === name);
   }
 
+  public getStateAttributeByName(name: string): AttributeStateI | undefined {
+    const id = this.getAttributeByName(name)?.id;
+
+    if (!id) return;
+    return this.attributeState[id];
+  }
+
   public getSnapshot(): Configurator {
     const configurator = new Configurator();
     if (configurator.configuration) {
@@ -109,6 +172,7 @@ export class Configurator {
     }
     configurator.assetId = this.assetId;
     configurator.attributes = [...this.attributes];
+    configurator.attributesSequenceLevel1 = [...this.attributesSequenceLevel1];
     return configurator;
   }
 }
