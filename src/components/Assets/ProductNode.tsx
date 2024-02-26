@@ -5,17 +5,17 @@ import { Product } from "./Product";
 
 type ProductProps = {
   nameNode: string;
-  parentNode?: THREE.Object3D;
+  parentNode: THREE.Object3D;
 };
 
-export const ProductNode: FC<ProductProps> = ({ nameNode }) => {
+export const ProductNode: FC<ProductProps> = ({ nameNode,parentNode }) => {
   const attachNodeNameToAssetId = useAppSelector(getNodes);
   if (!Object.keys(attachNodeNameToAssetId).includes(nameNode))
     return undefined;
  
   return (
     <Product
-      // parentNode={parentNode}
+      parentNode={parentNode}
       productAssetId={attachNodeNameToAssetId[nameNode]}
     />
   );

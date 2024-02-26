@@ -30,6 +30,7 @@ export const geConfiguratorHandlers = (store: Store) => {
       const isCameraCard = isCamera(card?.keyPermission);
       if (isCameraCard) {
         setCameraElement(data.assetId)(store);
+     
       }
 
       const isMicCard = isMic(card?.keyPermission);
