@@ -180,7 +180,9 @@ function createStepVideoAccessories() {
     .addElement(new ItemElement(VideoAccessoryName.WallMountForVideoBars))
     .addElement(new ItemElement(VideoAccessoryName.TVMountForVideoBars))
     .addElement(
-      new ItemElement(VideoAccessoryName.RallyMicPodMount)
+      new ItemElement(VideoAccessoryName.RallyMicPodMount).addDependence(
+        new ItemElement(AudioExtensionName.RallyMicPod)
+      ).setDefaultActive(true)
     )
     .addElement(new ItemElement(VideoAccessoryName.RallyMicPodHub))
     .addElement(
