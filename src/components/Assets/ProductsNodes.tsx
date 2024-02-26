@@ -8,7 +8,7 @@ export const ProductsNodes = () => {
   const nodeMatchers: NodeMatcher[] = [
     (threeNode) => {
       if (allNodePlacement.includes(threeNode.name)) {
-        return <ProductNode   nameNode={threeNode.name} />;
+        return <ProductNode parentNode={threeNode}  nameNode={threeNode.name} />;
       }
 
       return undefined;

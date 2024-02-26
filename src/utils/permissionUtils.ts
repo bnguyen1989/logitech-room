@@ -222,7 +222,7 @@ export const getPermissionNameByItemName = (itemName: string) => {
 
 export const isCamera = (name: string) => {
   return isCompareName(name)([
-    // CameraName.RallyBar,
+    CameraName.RallyBar,
     CameraName.RallyBarMini,
   ]);
 };
