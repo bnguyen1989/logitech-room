@@ -61,6 +61,19 @@ export class Permission {
     );
   }
 
+
+  public canAddActiveElementByName(itemName: string): boolean {
+    const currentStep = this.getCurrentStep();
+    if (!currentStep) {
+      return false;
+    }
+    const element = currentStep.getElementByName(itemName);
+    if (!element) {
+      return false;
+    }
+    return new AddActiveElementRule(element).validate(currentStep);
+  }
+
   public addActiveElementByName(itemName: string): void {
     const currentStep = this.getCurrentStep();
     if (!currentStep) {
@@ -70,13 +83,23 @@ export class Permission {
     if (!element) {
       return;
     }
-    const isAddElement = new AddActiveElementRule(element).validate(
-      currentStep
-    );
+    const isAddElement = this.canAddActiveElementByName(itemName);
     if (isAddElement) {
       currentStep.addActiveElement(element);
       new AddActiveElementHandler(element).handle(currentStep);
     }
+  }
+
+  public canRemoveActiveItemByName(itemName: string): boolean {
+    const currentStep = this.getCurrentStep();
+    if (!currentStep) {
+      return false;
+    }
+    const element = currentStep.getElementByName(itemName);
+    if (!element) {
+      return false;
+    }
+    return new RemoveActiveElementRule(element).validate(currentStep);
   }
 
   public removeActiveItemByName(itemName: string): void {
@@ -85,12 +108,11 @@ export class Permission {
       return;
     }
     const element = currentStep.getElementByName(itemName);
-    console.log('element --', element);
     
     if (!element) {
       return;
     }
-    const isRemove = new RemoveActiveElementRule(element).validate(currentStep);
+    const isRemove = this.canRemoveActiveItemByName(itemName);
     if (isRemove) {
       currentStep.removeActiveElement(element);
       new RemoveActiveElementHandler(element).handle(currentStep);

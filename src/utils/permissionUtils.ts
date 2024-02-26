@@ -125,19 +125,13 @@ function createStepConferenceCamera() {
   const stepConferenceCamera = new Step(StepName.ConferenceCamera);
   const group = new GroupElement()
     .addElement(
-      new ItemElement(CameraName.RallyBar).addDependence(
-        new ItemElement(RoomSizeName.Medium)
-      )
+      new ItemElement(CameraName.RallyBar)
     )
     .addElement(
-      new ItemElement(CameraName.RallyBarMini).addDependence(
-        new ItemElement(RoomSizeName.Medium)
-      )
+      new ItemElement(CameraName.RallyBarMini)
     )
     .addElement(
       new ItemElement(CameraName.PreConfiguredMiniPC)
-        .addDependence(new ItemElement(ServiceName.PC))
-        .addDependence(new ItemElement(RoomSizeName.Medium))
         .setVisible(false)
         .setRequired(true)
         .setDefaultActive(true)
@@ -151,13 +145,10 @@ function createStepAudioExtensions() {
   const stepAudioExtensions = new Step(StepName.AudioExtensions);
   const group = new GroupElement()
     .addElement(
-      new ItemElement(AudioExtensionName.RallyMicPod).addDependence(
-        new ItemElement(CameraName.RallyBar)
-      )
+      new ItemElement(AudioExtensionName.RallyMicPod)
     )
     .addElement(
       new ItemElement(AudioExtensionName.RallyMicPod)
-        .addDependence(new ItemElement(CameraName.RallyBarMini))
         .setDefaultActive(true)
         .setRecommended(true)
     );
@@ -169,26 +160,16 @@ function createStepMeetingController() {
   const stepMeetingController = new Step(StepName.MeetingController);
   const group1 = new GroupElement()
     .addElement(
-      new ItemElement(MeetingControllerName.LogitechTapIP).addDependence(
-        new ItemElement(ServiceName.Android)
-      )
+      new ItemElement(MeetingControllerName.LogitechTapIP)
     )
     .addElement(
-      new ItemElement(MeetingControllerName.LogitechTap).addDependence([
-        new ItemElement(ServiceName.Android),
-        new ItemElement(ServiceName.PC),
-      ])
+      new ItemElement(MeetingControllerName.LogitechTap)
     )
     .setRequiredOne(true);
 
   const group2 = new GroupElement()
     .addElement(new ItemElement(MeetingControllerName.LogitechSight))
     .addElement(new ItemElement(MeetingControllerName.LogitechTapScheduler))
-    .addElement(
-      new ItemElement(MeetingControllerName.LogitechScribe).addDependence(
-        new ItemElement(ServiceName.Android)
-      )
-    )
     .addElement(new ItemElement(MeetingControllerName.LogitechSwytch));
   stepMeetingController.allElements = [group1, group2];
   return stepMeetingController;
@@ -205,13 +186,11 @@ function createStepVideoAccessories() {
     .addElement(new ItemElement(VideoAccessoryName.TVMountForVideoBars))
     .addElement(
       new ItemElement(VideoAccessoryName.RallyMicPodMount)
-        .addDependence(new ItemElement(AudioExtensionName.RallyMicPod))
         .setDefaultActive(true)
     )
     .addElement(new ItemElement(VideoAccessoryName.RallyMicPodHub))
     .addElement(
       new ItemElement(VideoAccessoryName.MicPodExtensionCable)
-        .addDependence(new ItemElement(AudioExtensionName.RallyMicPod))
         .setDefaultActive(true)
         .setRecommended(true)
     );

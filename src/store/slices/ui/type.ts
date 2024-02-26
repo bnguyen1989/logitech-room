@@ -29,7 +29,7 @@ export interface StepI<CI> {
 	title: string;
 	subtitle: string;
 
-	currentCard?: CI;
+	activeCards: Array<CI>;
 	cards: Array<CI>;
 }
 

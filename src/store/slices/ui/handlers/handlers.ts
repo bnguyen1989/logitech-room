@@ -23,10 +23,12 @@ import ControllerImg from "../../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../../assets/images/items/access.jpg";
 import ServiceImg from "../../../../assets/images/items/service.jpg";
 import {
-  changeActiveCard,
+  addActiveCard,
   changeActiveStep,
   changeProcessInitData,
   changeValueCard,
+  removeActiveCard,
+  setActiveCardsForStep,
   setDataItemStep,
   setDataPrepareStep,
 } from "../Ui.slice";
@@ -53,13 +55,26 @@ export const getUiHandlers = (store: Store) => {
   app.eventEmitter.on("executeCommand", (data) => {
     if (data instanceof AddItemCommand) {
       const card = getCardByAssetId(data.assetId, store);
-      if (card) {
-        store.dispatch(changeActiveCard(card));
+      if (card.keyPermission) {
+        if (permission.canAddActiveElementByName(card.keyPermission)) {
+          permission.addActiveElementByName(card.keyPermission);
+          store.dispatch(addActiveCard(card));
+        }
+      } else if (card) {
+        store.dispatch(addActiveCard(card));
       }
     }
 
     if (data instanceof RemoveItemCommand) {
-      store.dispatch(changeActiveCard(undefined));
+      const card = getCardByAssetId(data.assetId, store);
+      if (card.keyPermission) {
+        if(permission.canRemoveActiveItemByName(card.keyPermission)) {
+          permission.removeActiveItemByName(card.keyPermission);
+          store.dispatch(removeActiveCard(card));
+        }
+      } else if (card) {
+        store.dispatch(removeActiveCard(card));
+      }
     }
 
     if (data instanceof ChangeCountItemCommand) {
@@ -97,27 +112,39 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeStepCommand) {
+      permission.changeStepName(data.stepName);
       const configurator = app.currentConfigurator;
+      const updateDataCard = updateDataByConfiguration(
+        configurator,
+        data.stepName
+      );
       if (data.stepName === StepName.Platform) {
         setPlatformData(configurator)(store);
+        updateDataCard(store, Configurator.PlatformName);
       }
       if (data.stepName === StepName.Services) {
         setServiceData(configurator)(store);
+        updateDataCard(store, Configurator.ServicesName);
       }
       if (data.stepName === StepName.AudioExtensions) {
         setAudioExtensionsData(configurator)(store);
+        updateDataCard(store, Configurator.AudioExtensionName);
       }
       if (data.stepName === StepName.ConferenceCamera) {
         setCameraData(configurator)(store);
+        updateDataCard(store, Configurator.CameraName);
       }
       if (data.stepName === StepName.MeetingController) {
         setMeetingControllerData(configurator)(store);
+        updateDataCard(store, Configurator.MeetingControllerName);
       }
       if (data.stepName === StepName.VideoAccessories) {
         setVideoAccessoriesData(configurator)(store);
+        updateDataCard(store, Configurator.VideoAccessoriesName);
       }
       if (data.stepName === StepName.SoftwareServices) {
         setSoftwareServicesData(configurator)(store);
+        updateDataCard(store, Configurator.SoftwareServicesName);
       }
 
       const stepData = store.getState().ui.stepData;
@@ -146,7 +173,57 @@ export const getUiHandlers = (store: Store) => {
   );
 };
 
-const getCardByAssetId = (assetId: string, store: Store) => {
+function updateDataByConfiguration(
+  configurator: Configurator,
+  stepName: StepName
+) {
+  return (store: Store, arrayAttributes: Array<Array<string>>) => {
+    const configuration = configurator.getConfiguration();
+    const cards: Array<StepCardType> =
+      store.getState().ui.stepData[stepName].cards;
+    const result: Array<StepCardType> = [];
+    arrayAttributes.forEach((item) => {
+      const [name, qtyName] = item;
+      const value = configuration[name];
+
+      let tempCard;
+      if (typeof value === "object") {
+        tempCard = cards.find(
+          (item) =>
+            item.key !== StepName.RoomSize &&
+            item.threekit?.assetId === value.assetId
+        );
+      }
+
+      if (!tempCard) {
+        return;
+      }
+
+      tempCard = JSON.parse(JSON.stringify(tempCard));
+
+      if (qtyName && "counter" in tempCard) {
+        const qty = configuration[qtyName];
+        if (!qty || !(typeof qty === "string")) return;
+        const currentValue = parseInt(qty);
+        if (tempCard.counter) {
+          tempCard.counter = {
+            ...tempCard.counter,
+            currentValue,
+          };
+        }
+      }
+
+      result.push(tempCard);
+    });
+    result.forEach((item) => {
+      if (!item.keyPermission) return;
+      permission.addActiveElementByName(item.keyPermission);
+    });
+    store.dispatch(setActiveCardsForStep({ key: stepName, cards: result }));
+  };
+}
+
+function getCardByAssetId(assetId: string, store: Store) {
   const activeStep = store.getState().ui.activeStep;
   if (activeStep) {
     const index = activeStep.cards.findIndex(
@@ -156,7 +233,7 @@ const getCardByAssetId = (assetId: string, store: Store) => {
       return activeStep.cards[index];
     }
   }
-};
+}
 
 function setStepData(
   configurator: Configurator,
@@ -239,7 +316,7 @@ function setStepData(
           currentValue,
           threekit: {
             key: qtyName,
-          }
+          },
         };
       });
     }

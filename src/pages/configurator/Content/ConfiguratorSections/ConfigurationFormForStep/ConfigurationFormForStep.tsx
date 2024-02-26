@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
-  changeActiveCard,
+  addActiveCard,
   changeValueCard,
 } from "../../../../../store/slices/ui/Ui.slice";
 import {
@@ -17,31 +17,11 @@ import {
 import s from "./ConfigurationFormForStep.module.scss";
 import { StepName } from "../../../../../models/permission/type";
 import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
-import { useEffect } from "react";
 
 export const ConfigurationFormForStep = () => {
   const dispatch = useDispatch();
   const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
-
-  useEffect(() => {
-    if (!activeStep) {
-      return;
-    }
-
-    const activeItems = permission.getActiveItems();
-    const cardsCurrentStep = activeStep.cards;
-    const activeDefaultItems = activeItems.filter((item) =>
-      item.getDefaultActive()
-    );
-    const cardDefault = cardsCurrentStep.find((card) =>
-      activeDefaultItems.some((item) => item.name === card.keyPermission)
-    ) as ItemCardI;
-    if (cardDefault && cardDefault.threekit) {
-      const threekit = cardDefault.threekit;
-      app.addItemConfiguration(threekit.key, threekit.assetId);
-    }
-  }, [activeStep?.key]);
 
   const onChange = (
     value: StepCardType,
@@ -84,7 +64,7 @@ export const ConfigurationFormForStep = () => {
     );
     const threekit = (card as ItemCardI).threekit;
     if (!threekit) {
-      dispatch(changeActiveCard(card));
+      dispatch(addActiveCard(card));
       return;
     }
 
@@ -105,9 +85,9 @@ export const ConfigurationFormForStep = () => {
       card.key === StepName.MeetingController ||
       card.key === StepName.VideoAccessories;
     if (isConfiguratorCard) {
-      const activeItems = permission.getActiveItems();
-      const currentActiveItem = activeItems.find(
-        (item) => item.name === card.keyPermission
+      const activeCards = activeStep?.activeCards || [];
+      const currentActiveItem = activeCards.find(
+        (item) => item.keyPermission === card.keyPermission
       );
       return (
         <CardItem
@@ -116,7 +96,7 @@ export const ConfigurationFormForStep = () => {
           onClick={onClick}
           active={!!currentActiveItem}
           onChange={onChange}
-          recommended={currentActiveItem?.getRecommended()}
+          recommended={false}
         />
       );
     }

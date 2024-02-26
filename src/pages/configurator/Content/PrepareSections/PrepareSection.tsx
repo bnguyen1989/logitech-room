@@ -15,10 +15,15 @@ import {
   StepName,
 } from "../../../../store/slices/ui/type";
 import s from "./PrepareSection.module.scss";
-import { changeActiveCard } from "../../../../store/slices/ui/Ui.slice";
+import {
+  addActiveCard,
+  removeActiveCard,
+} from "../../../../store/slices/ui/Ui.slice";
 import { Permission } from "../../../../models/permission/Permission";
+import { Application } from '../../../../models/Application'
 
 declare const permission: Permission;
+declare const app: Application;
 
 export const PrepareSection: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,24 +32,29 @@ export const PrepareSection: React.FC = () => {
 
   if (!activeStep || isConfiguratorStep) return null;
 
+  console.log('activeStep', activeStep);
+
   const handleClick = (card: StepCardType) => {
     const activeItems = permission.getActiveItems();
     const isContain = activeItems.some(
       (item) => item.name === card.keyPermission
     );
     const threekit = (card as PlatformCardI | ServiceCardI).threekit;
-    console.log("threekit", threekit);
 
     if (!threekit) {
-      if (card.title === activeStep.currentCard?.title) {
-        if (card.keyPermission) {
-          permission.removeActiveItemByName(card.keyPermission);
+      if(card.keyPermission) {
+        if (isContain) {
+          if (permission.canRemoveActiveItemByName(card.keyPermission)) {
+            dispatch(removeActiveCard(card));
+            permission.removeActiveItemByName(card.keyPermission);
+          }
+          return;
         }
-
-        dispatch(changeActiveCard(undefined));
-        return;
+        if (permission.canAddActiveElementByName(card.keyPermission)) {
+          dispatch(addActiveCard(card));
+          permission.addActiveElementByName(card.keyPermission);
+        }
       }
-      dispatch(changeActiveCard(card));
       return;
     }
 
@@ -58,12 +68,11 @@ export const PrepareSection: React.FC = () => {
 
   const getCardComponent = (card: StepCardType, index: number) => {
     const onClick = () => handleClick(card);
-    let isActive = false;
-    if (activeStep.currentCard) {
-      const activeItems = permission.getActiveItems();
-      isActive = activeItems.some((item) => item.name === card.keyPermission);
-    }
-    const isDisabled = activeStep.currentCard && !isActive;
+    const activeItems = activeStep.activeCards;
+    const isActive = activeItems.some(
+      (item) => item.keyPermission === card.keyPermission
+    );
+    const isDisabled = !!activeItems.length && !isActive;
     if (card.key === StepName.Platform) {
       return (
         <CardPlatform

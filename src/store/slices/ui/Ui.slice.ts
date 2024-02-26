@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   ItemCardI,
   PlatformCardI,
+  RoomCardI,
   ServiceCardI,
   StepCardType,
   StepDataI,
@@ -33,27 +34,57 @@ const uiSlice = createSlice({
       action: PayloadAction<StepI<StepCardType> | null>
     ) => {
       state.activeStep = action.payload;
-      if (action.payload) {
-        permission.changeStepName(action.payload.key);
-      } else {
-        permission.changeStepName(null);
-      }
     },
     moveToStartStep: (state) => {
       permission.changeStepName(StepName.RoomSize);
       state.activeStep = state.stepData[StepName.RoomSize];
     },
-    changeActiveCard: (
+    addActiveCard: (
       state,
-      action: PayloadAction<StepCardType | undefined>
+      action: PayloadAction<StepCardType>
     ) => {
       const { activeStep } = state;
       if (activeStep) {
-        activeStep.currentCard = action.payload;
-        if (action.payload?.keyPermission) {
-          permission.addActiveElementByName(action.payload.keyPermission);
+        const isExist = activeStep.activeCards.some(
+          (card) => card.keyPermission === action.payload.keyPermission
+        );
+        if (!isExist) {
+          activeStep.activeCards.push(action.payload);
         }
       }
+    },
+    removeActiveCard: (
+      state,
+      action: PayloadAction<StepCardType>
+    ) => {
+      const { activeStep } = state;
+      if (activeStep && action.payload) {
+        const index = activeStep.activeCards.findIndex(
+          (card) => card.title === action.payload.title
+        );
+        if (index !== -1) {
+          activeStep.activeCards.splice(index, 1);
+        }
+      }
+    },
+    setActiveCardsForStep: (
+      state,
+      action: PayloadAction<{
+        key: StepName;
+        cards: Array<StepCardType>;
+      }>
+    ) => {
+      const { stepData } = state;
+      if(action.payload.key == StepName.RoomSize){
+        stepData[action.payload.key].activeCards = action.payload.cards as Array<RoomCardI>;
+      }
+      if(action.payload.key == StepName.Platform){
+        stepData[action.payload.key].activeCards = action.payload.cards as Array<PlatformCardI>;
+      }
+      if(action.payload.key == StepName.Services){
+        stepData[action.payload.key].activeCards = action.payload.cards as Array<ServiceCardI>;
+      }
+      stepData[action.payload.key].activeCards = action.payload.cards as Array<ItemCardI>;
     },
     changeValueCard: (state, action: PayloadAction<StepCardType>) => {
       const { activeStep } = state;
@@ -119,7 +150,9 @@ const uiSlice = createSlice({
 export const {
   changeActiveStep,
   moveToStartStep,
-  changeActiveCard,
+  addActiveCard,
+  removeActiveCard,
+  setActiveCardsForStep,
   changeValueCard,
   setDataItemStep,
   changeProcessInitData,
