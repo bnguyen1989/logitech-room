@@ -8,7 +8,8 @@ import { ChangeColorItemCommand } from "./command/ChangeColorItemCommand";
 import { RemoveItemCommand } from "./command/RemoveItemCommand";
 import { ChangeStepCommand } from "./command/ChangeStepCommand";
 import { StepName } from "./permission/type";
-import { DataTable } from './dataTable/DataTable'
+import { DataTable } from "./dataTable/DataTable";
+import { ChangeSelectItemCommand } from "./command/ChangeSelectItemCommand";
 
 declare const logger: Logger;
 
@@ -68,6 +69,19 @@ export class Application {
   public changeStep(stepName: StepName): Promise<boolean> {
     return this.executeCommand(
       new ChangeStepCommand(this.currentConfigurator, stepName)
+    );
+  }
+
+  public changeSelectItemConfiguration(
+    nameProperty: string,
+    assetId: string
+  ): Promise<boolean> {
+    return this.executeCommand(
+      new ChangeSelectItemCommand(
+        this.currentConfigurator,
+        nameProperty,
+        assetId
+      )
     );
   }
 
