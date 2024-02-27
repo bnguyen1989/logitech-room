@@ -23,8 +23,6 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
     onChange({ ...data, select: { ...data.select, value } }, "select");
   };
 
-  // const isAction = !!data.select;
-
   return (
     <CardContainer
       onClick={onClick}
@@ -47,6 +45,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
                 value={data.select.value}
                 onSelect={handleChangeSelect}
                 options={data.select.data}
+                disabled={!active}
               />
             )}
           </div>

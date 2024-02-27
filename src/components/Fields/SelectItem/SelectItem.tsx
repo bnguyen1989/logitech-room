@@ -4,15 +4,17 @@ import s from "./SelectItem.module.scss";
 interface OptionI {
   label: string;
   value: string;
+  threekit: { assetId: string };
 }
 
 interface PropsI {
   value: OptionI;
   onSelect: (option: OptionI) => void;
   options: Array<OptionI>;
+  disabled?: boolean;
 }
 export const SelectItem: React.FC<PropsI> = (props) => {
-  const { value, onSelect, options } = props;
+  const { value, onSelect, options, disabled } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSelect = (option: OptionI) => {
@@ -21,16 +23,21 @@ export const SelectItem: React.FC<PropsI> = (props) => {
   };
 
   const toggleSelect = () => {
+    if (disabled) {
+      return;
+    }
     setIsOpen(!isOpen);
   };
 
-	const isActive = (currentValue: OptionI) => {
+  const isActive = (currentValue: OptionI) => {
     return value?.value === currentValue.value;
   };
 
   return (
     <div
-      className={`${s.container} ${isOpen ? s.active : ""}`}
+      className={`${s.container} ${isOpen ? s.active : ""} ${
+        disabled ? s.container_disabled : ""
+      }`}
       onClick={toggleSelect}
     >
       <div className={s.value}>{value.label}</div>

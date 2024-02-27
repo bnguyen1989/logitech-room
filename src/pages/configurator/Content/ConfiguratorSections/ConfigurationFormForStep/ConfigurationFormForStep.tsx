@@ -3,7 +3,6 @@ import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
   addActiveCard,
-  changeValueCard,
 } from "../../../../../store/slices/ui/Ui.slice";
 import {
   getActiveStep,
@@ -53,7 +52,14 @@ export const ConfigurationFormForStep = () => {
     }
 
     if (type === "select") {
-      dispatch(changeValueCard(value));
+      const select = (value as ItemCardI).select;
+      const threekit = (value as ItemCardI).threekit;
+      if (select && threekit) {
+        app.changeSelectItemConfiguration(
+          threekit.key,
+          select.value.threekit.assetId,
+        );
+      }
     }
   };
 

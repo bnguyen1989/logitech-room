@@ -81,6 +81,7 @@ export interface ThreekitI {
 export interface SelectDataI {
 	label: string;
 	value: string;
+	threekit: Pick<ThreekitI, "assetId">;
 }
 export interface SelectI {
 	value: SelectDataI;

@@ -1,9 +1,7 @@
 import { Store } from "@reduxjs/toolkit";
 import { Application } from "../../../../models/Application";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { AssetI } from "../../../../services/Threekit/type";
 import {
-  ConfiguratorDataValueType,
   ValueAssetStateI,
   ValueAttributeStateI,
   ValueStringStateI,
@@ -12,6 +10,7 @@ import {
   ColorItemI,
   ItemCardI,
   PlatformCardI,
+  SelectDataI,
   ServiceCardI,
   StepCardType,
   StepI,
@@ -44,6 +43,7 @@ import {
 } from "../utils";
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
+import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
 
 declare const app: Application;
 
@@ -68,7 +68,7 @@ export const getUiHandlers = (store: Store) => {
     if (data instanceof RemoveItemCommand) {
       const card = getCardByAssetId(data.assetId, store);
       if (card.keyPermission) {
-        if(permission.canRemoveActiveItemByName(card.keyPermission)) {
+        if (permission.canRemoveActiveItemByName(card.keyPermission)) {
           permission.removeActiveItemByName(card.keyPermission);
           store.dispatch(removeActiveCard(card));
         }
@@ -108,6 +108,36 @@ export const getUiHandlers = (store: Store) => {
             },
           })
         );
+      }
+    }
+
+    if (data instanceof ChangeSelectItemCommand) {
+      const activeStep = store.getState().ui.activeStep;
+      if (activeStep) {
+        const index = activeStep.cards.findIndex((item: ItemCardI) =>
+          item.select?.data.some((vs) => vs.threekit.assetId === data.assetId)
+        );
+        if (index !== -1) {
+          const card = activeStep.cards[index];
+          if (card) {
+            const value = card.select?.data.find(
+              (item: SelectDataI) => item.threekit.assetId === data.assetId
+            );
+            store.dispatch(
+              changeValueCard({
+                ...card,
+                select: {
+                  ...card.select,
+                  value,
+                },
+                threekit: {
+                  ...card.threekit,
+                  assetId: data.assetId,
+                },
+              })
+            );
+          }
+        }
       }
     }
 
@@ -262,9 +292,9 @@ function setStepData(
       const asset = item as ValueAssetStateI;
       if (!asset.visible) return;
       const keyPermission = getPermissionNameByItemName(asset.name);
-      const elementPermission = permission.getElements().find(
-        (item) => item.name === keyPermission
-      );
+      const elementPermission = permission
+        .getElements()
+        .find((item) => item.name === keyPermission);
 
       temp.push({
         key: stepName,
@@ -460,24 +490,34 @@ function setSoftwareServicesData(configurator: Configurator) {
     const softwareServicesBaseData = getSoftwareServicesCardData();
     Configurator.SoftwareServicesName.forEach((item) => {
       const [name] = item;
-      const value = configurator.getAttributeByName(name);
+      const value = configurator.getStateAttributeByName(name);
       if (!value) {
         return;
       }
 
       const temp: Array<ItemCardI> = [];
 
-      if (name.includes("Support")) {
+      const isSupport = (name: string) => name.includes("Support");
+      const isManagement = (name: string) => name.includes("Management");
+
+      if (isSupport(name)) {
         const baseCard = softwareServicesBaseData.find((item) =>
-          item.title.includes("Support")
+          isSupport(item.title)
         );
 
-        const values: Array<string> = [];
-        value.values.forEach((item: ConfiguratorDataValueType) => {
-          const asset = item as AssetI;
+        const values: Array<SelectDataI> = [];
+        value.values.forEach((item: ValueAttributeStateI) => {
+          const asset = item as ValueAssetStateI;
+          if (!asset.visible) return;
           const plan = asset.metadata["Service Plan"];
           if (plan) {
-            values.push(plan);
+            values.push({
+              label: plan,
+              value: plan,
+              threekit: {
+                assetId: asset.id,
+              },
+            });
           }
         });
 
@@ -485,29 +525,34 @@ function setSoftwareServicesData(configurator: Configurator) {
           temp.push({
             ...baseCard,
             select: {
-              value: {
-                label: values[0],
-                value: values[0],
-              },
-              data: values.map((item: string) => {
-                return {
-                  label: item,
-                  value: item,
-                };
-              }),
+              value: values[0],
+              data: values,
+            },
+            threekit: {
+              assetId: values[0].threekit.assetId,
+              key: name,
             },
           });
         }
-      } else if (name.includes("Management")) {
+      } else if (isManagement(name)) {
         const baseCard = softwareServicesBaseData.find((item) =>
-          item.title.includes("Management")
+          isManagement(item.title)
         );
-        if (baseCard) {
-          temp.push(baseCard);
-        }
+        value.values.forEach((item: ValueAttributeStateI) => {
+          const asset = item as ValueAssetStateI;
+          if (asset.visible && baseCard) {
+            temp.push({
+              ...baseCard,
+              threekit: {
+                assetId: asset.id,
+                key: name,
+              },
+            });
+          }
+        });
       } else {
-        value.values.forEach((item: ConfiguratorDataValueType) => {
-          const asset = item as AssetI;
+        value.values.forEach((item: ValueAttributeStateI) => {
+          const asset = item as ValueAssetStateI;
           temp.push({
             key: StepName.SoftwareServices,
             image: ServiceImg,

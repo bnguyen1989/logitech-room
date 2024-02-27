@@ -62,3 +62,8 @@
     background-color: #f3f3f3;
   }
 }
+
+.container_disabled {
+  opacity: 0.5;
+  user-select: none;
+}
