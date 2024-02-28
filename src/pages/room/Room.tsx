@@ -1,27 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import s from "./Room.module.scss";
 import { Header } from "./header/Header";
 import ImageRoom from "../../assets/images/pages/room/room.png";
 import { CardRoom } from "./cardRoom/CardRoom";
+import { ThreekitService } from "../../services/Threekit/ThreekitService";
+import { ConfigData } from "../../utils/threekitUtils";
+import { OrderI } from "../../services/Threekit/type";
+import { Loader } from "../../components/Loader/Loader";
 
+interface RoomI {
+  image: string;
+  title: string;
+  desc: string;
+  shortId: string;
+}
 export const Room: React.FC = () => {
-  const rooms = [
-    {
-      image: ImageRoom,
-      title: "Large Microsoft Teams Room",
-      desc: "A complete room solution is more than the sum of its parts. Including these components will help ensure the overall meeting experience is excellent for participants both in the room and remote.",
-    },
-    {
-      image: ImageRoom,
-      title: "Small Huddle Room",
-      desc: "A complete room solution is more than the sum of its parts. Including these components will help ensure the overall meeting experience is excellent for participants both in the room and remote.",
-    },
-    {
-      image: ImageRoom,
-      title: "Large Zoom Room",
-      desc: "A complete room solution is more than the sum of its parts. Including these components will help ensure the overall meeting experience is excellent for participants both in the room and remote.",
-    },
-  ];
+  const [rooms, setRooms] = useState<Array<RoomI>>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+    new ThreekitService()
+      .getOrders({ originOrgId: ConfigData.userId })
+      .then((res) => {
+        const dataRooms = res.orders.map((order: OrderI) => {
+          return {
+            image: ImageRoom,
+            title: order.metadata.name,
+            desc: order.metadata.description,
+            shortId: order.shortId,
+          };
+        });
+        setRooms(dataRooms);
+      })
+      .finally(() => {
+        setIsLoaded(false);
+      });
+  }, []);
   return (
     <div className={s.container}>
       <Header />
@@ -34,6 +49,11 @@ export const Room: React.FC = () => {
           </div>
         ))}
       </div>
+      {isLoaded && (
+        <div className={s.loader}>
+          <Loader />
+        </div>
+      )}
     </div>
   );
 };

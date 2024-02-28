@@ -1,8 +1,8 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch } from "react-redux";
 import { CloseSVG } from "../../../assets";
-import { useAppSelector } from '../../../hooks/redux'
-import { setMySetupModal } from '../../../store/slices/modals/Modals.slice'
-import { getSetupModalData } from '../../../store/slices/modals/selectors/selectors'
+import { useAppSelector } from "../../../hooks/redux";
+import { setMySetupModal } from "../../../store/slices/modals/Modals.slice";
+import { getSetupModalData } from "../../../store/slices/modals/selectors/selectors";
 import { Button } from "../../Buttons/Button/Button";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { CheckBox } from "../../CheckBox/CheckBox";
@@ -10,23 +10,73 @@ import { Field } from "../../Fields/Field/Field";
 import { Select } from "../../Fields/Select/Select";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import { ThreekitService } from "../../../services/Threekit/ThreekitService";
+import { ConfigData } from "../../../utils/threekitUtils";
+import { Application } from "../../../models/Application";
+import { getSelectedConfiguratorCards } from "../../../store/slices/ui/selectors/selectors";
+import { ItemCardI } from "../../../store/slices/ui/type";
+import { useState } from "react";
+
+declare const app: Application;
 
 export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const { isOpen } = useAppSelector(getSetupModalData);
+  const dispatch = useDispatch();
+  const { isOpen } = useAppSelector(getSetupModalData);
+  const selectedCards: Array<ItemCardI> = useAppSelector(
+    getSelectedConfiguratorCards
+  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const handleClose = () => {
-		dispatch(setMySetupModal({ isOpen: false }));
-	}
+  const handleClose = () => {
+    dispatch(setMySetupModal({ isOpen: false }));
+  };
+
+  const createOrder = async () => {
+    const cardData = selectedCards.map((card) => {
+      return {
+        metadata: {
+          data: JSON.stringify(card),
+        },
+        configurationId: card.threekit?.assetId || "",
+        count: 1,
+      };
+    });
+    return new ThreekitService().createOrder({
+      customerId: ConfigData.userId,
+      originOrgId: ConfigData.userId,
+      platform: {
+        id: "1",
+        platform: "1",
+        storeName: "1",
+      },
+      cart: cardData,
+      metadata: {
+        assetId: app.currentConfigurator.assetId,
+        configuration: JSON.stringify(
+          app.currentConfigurator.getConfiguration()
+        ),
+        description:
+          "A complete room solution is more than the sum of its parts. Including these components will help ensure the overall meeting experience is excellent for participants both in the room and remote.",
+        name: "Logitech Room Solution",
+      },
+    });
+  };
 
   const handleSeeResults = () => {
-    dispatch(setMySetupModal({ isOpen: false }));
-    navigate('/room', { replace: true });
-  }
+    setIsSubmitting(true);
+    createOrder()
+      .then(() => {
+        dispatch(setMySetupModal({ isOpen: false }));
+        navigate("/room", { replace: true });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
 
-	if (!isOpen) return null;
+  if (!isOpen) return null;
 
   return (
     <ModalContainer>
@@ -128,6 +178,7 @@ export const SetupModal: React.FC = () => {
             text={"See my results"}
             onClick={handleSeeResults}
             variant={"contained"}
+            disabled={isSubmitting}
           />
         </div>
       </div>

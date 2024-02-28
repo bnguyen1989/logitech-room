@@ -7,17 +7,17 @@ import { Modals } from './components/Modals/Modals'
 
 function App() {
   return (
-    <>
+    <div className={"app"}>
       <Routes>
         <Route path="/" element={<GetStarted />} />
         <Route path="/configurator" element={<Configurator />} />
         <Route path="/room" element={<Room />} />
-        <Route path="/room/:id" element={<RoomDetails />} />
+        <Route path="/room/:roomId" element={<RoomDetails />} />
         <Route path="*" element={<GetStarted />} />
       </Routes>
 
       <Modals />
-    </>
+    </div>
   );
 }
 
