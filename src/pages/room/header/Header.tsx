@@ -1,7 +1,14 @@
+import { useDispatch } from 'react-redux'
 import { Button } from "../../../components/Buttons/Button/Button";
 import s from "./Header.module.scss";
+import { setSelectProductModal } from '../../../store/slices/modals/Modals.slice'
 
 export const Header: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const handleShowModalProducts = () => {
+    dispatch(setSelectProductModal({ isOpen: true }));
+  }
   return (
     <div className={s.container}>
       <div className={s.text}>
@@ -20,6 +27,11 @@ export const Header: React.FC = () => {
         <Button
           onClick={() => {}}
           text={"Contact Sales"}
+          variant={"contained"}
+        />
+        <Button
+          onClick={handleShowModalProducts}
+          text={"Show Products"}
           variant={"contained"}
         />
       </div>
