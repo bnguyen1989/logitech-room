@@ -4,6 +4,7 @@ import { Configuration } from "@threekit/rest-api";
 interface ConfiguratorStateI {
   assetId: string | null;
   isBuilding: boolean;
+  isProcessing: boolean;
   showDimensions: boolean;
   configuration: Configuration;
   nodes: Record<string, string>;
@@ -12,6 +13,7 @@ interface ConfiguratorStateI {
 const initialState: ConfiguratorStateI = {
   assetId: null,
   isBuilding: true,
+  isProcessing: false,
   showDimensions: false,
   configuration: {},
   nodes: {},
@@ -58,6 +60,9 @@ const configuratorSlice = createSlice({
         delete state.nodes[key];
       });
     },
+    changeStatusProcessing: (state, action: PayloadAction<boolean>) => {
+      state.isProcessing = action.payload;
+    }
   },
 });
 
@@ -69,5 +74,6 @@ export const {
   changeAssetId,
   removeNodes,
   removeNodeByKeys,
+  changeStatusProcessing
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;

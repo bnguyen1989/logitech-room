@@ -3,6 +3,7 @@ import { Application } from "../../../../models/Application";
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ItemCardI, StepCardType } from "../../ui/type";
 import {
+  changeStatusProcessing,
   changeValueNodes,
   removeNodeByKeys,
   removeNodes,
@@ -30,7 +31,6 @@ export const geConfiguratorHandlers = (store: Store) => {
       const isCameraCard = isCamera(card?.keyPermission);
       if (isCameraCard) {
         setCameraElement(data.assetId)(store);
-     
       }
 
       const isMicCard = isMic(card?.keyPermission);
@@ -41,6 +41,10 @@ export const geConfiguratorHandlers = (store: Store) => {
       const isTapCard = isTap(card?.keyPermission);
       if (isTapCard) {
         setTapElement(data.assetId)(store);
+      }
+
+      if (isCameraCard || isMicCard || isTapCard) {
+        store.dispatch(changeStatusProcessing(true));
       }
     }
 
