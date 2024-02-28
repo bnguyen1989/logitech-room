@@ -1,7 +1,8 @@
 import { AttributeI } from "../../models/configurator/type";
 import { isAssetType } from "../../utils/threekitUtils";
 import { ThreekitApi } from "../api/Threekit/ThreekitApi";
-import { AssetI, AssetProxyI, AttributeApiI } from "./type";
+import { DataCreateOrderI, DataGetOrdersI } from "../api/Threekit/type";
+import { AssetI, AssetProxyI, AttributeApiI, OrderI, OrdersI } from "./type";
 
 export class ThreekitService {
   private threekitApi: ThreekitApi = new ThreekitApi();
@@ -71,12 +72,16 @@ export class ThreekitService {
     const level1TableId = asset.metadata["_datatable_configOptions_level1"];
     const dataTables = await this.getDataTablesById(level1TableId);
 
-    const attributesSequenceLevel1 = asset.metadata["_level1_attributes_sequence"].split(',').map((aStr) => aStr.trim());
+    const attributesSequenceLevel1 = asset.metadata[
+      "_level1_attributes_sequence"
+    ]
+      .split(",")
+      .map((aStr) => aStr.trim());
 
     return {
       attributes,
       dataTables,
-      attributesSequenceLevel1
+      attributesSequenceLevel1,
     };
   }
 
@@ -85,5 +90,17 @@ export class ThreekitService {
     const dataTable = response.data;
     const rows = dataTable.rows;
     return rows;
+  }
+
+  public async getOrders(data: DataGetOrdersI = {}): Promise<OrdersI> {
+    const response = await this.threekitApi.getOrders(data);
+    const dataOrders = response.data;
+    return dataOrders;
+  }
+
+  public async createOrder(data: DataCreateOrderI): Promise<OrderI> {
+    const response = await this.threekitApi.createOrder(data);
+    const dataOrder = response.data;
+    return dataOrder;
   }
 }

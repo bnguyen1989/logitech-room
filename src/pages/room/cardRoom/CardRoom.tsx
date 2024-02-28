@@ -8,13 +8,14 @@ interface PropsI {
   image: string;
   title: string;
   desc: string;
+  shortId: string;
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
-  const { image, title, desc } = props;
+  const { image, title, desc, shortId } = props;
   const navigate = useNavigate();
 
   const handleView = () => {
-    navigate("/room/1", { replace: true });
+    navigate(`/room/${shortId}`, { replace: true });
   };
   return (
     <div className={s.container}>

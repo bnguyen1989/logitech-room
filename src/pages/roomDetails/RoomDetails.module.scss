@@ -3,11 +3,27 @@
 	display: flex;
 	justify-content: center;
 	background-color: #FFFFFF;
+  position: relative;
 
   .wrapper {
 		max-width: 1400px;
     display: flex;
     flex-direction: column;
     gap: 100px;
+  }
+
+  .loader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -34,3 +34,7 @@ body {
   background-color: #F4F4F4;
   font-family: BrownPro;
 }
+
+.app {
+  height: 100vh;
+}
