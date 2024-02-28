@@ -9,3 +9,5 @@ export const getConfiguration = (state: RootState) => state.configurator.configu
 export const getNodes = (state: RootState) => state.configurator.nodes;
 
 export const getAssetId = (state: RootState) => state.configurator.assetId;
+
+export const getIsProcessing = (state: RootState) => state.configurator.isProcessing;
