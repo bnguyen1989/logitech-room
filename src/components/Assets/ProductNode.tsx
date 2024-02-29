@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useAppSelector } from "../../hooks/redux";
 import { getNodes } from "../../store/slices/configurator/selectors/selectors";
 import { Product } from "./Product";

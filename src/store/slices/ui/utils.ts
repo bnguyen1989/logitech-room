@@ -219,13 +219,6 @@ export function getSoftwareServicesCardData(): Array<ItemCardI> {
       description:
         "Lorem ipsum dolor sit amet, consectetur adipis cing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       keyPermission: SoftwareServicesName.SupportService,
-      select: {
-        value: { label: "3 years", value: "3 years" },
-        data: [
-          { label: "3 years", value: "3 years" },
-          { label: "Yes", value: "yes" },
-        ],
-      },
     },
   ];
 }

@@ -9,7 +9,7 @@ import { ProductsNodes } from "./ProductsNodes.js";
 
 export type RoomProps = {
   roomAssetId: string;
-  attachNodeNameToAssetId: Record<string, string>;
+  attachNodeNameToAssetId?: Record<string, string>;
 };
 
 export const logNode = (node: THREE.Object3D, depth = 0) => {

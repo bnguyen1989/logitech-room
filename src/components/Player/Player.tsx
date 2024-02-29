@@ -8,11 +8,8 @@ import Geoff2Stage from "../stages/Geoff2Stage.tsx";
 import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
-import {
-  getAssetId,
-  getNodes,
-} from "../../store/slices/configurator/selectors/selectors.ts";
-import { Profiler, useRef } from "react";
+import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
+import { useRef } from "react";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -27,56 +24,49 @@ export const Player: React.FC = () => {
 
   const assetId = useAppSelector(getAssetId);
 
-  // nodes = {
-  //   Mic_Placement_1: "fcb68690-af02-4b03-9ead-fad283f064bb",
-  //   Mic_Placement_3: "fcb68690-af02-4b03-9ead-fad283f064bb",
-  //   Mic_Placement_2: "fcb68690-af02-4b03-9ead-fad283f064bb",
-  // };
   if (!assetId) return null;
 
   return (
-   
-      <div className={s.container}>
-        <Head>
-          <title>{`Logitech`}</title>
-        </Head>
-        <Viewer
-          auth={bhoustonAuth}
-          resolver={ExporterResolver({
-            cache: true,
-            cacheScope: "v5",
-            mode: "experimental",
-            settings: {
-              prune: {
-                childless: false,
-                invisible: false,
-              },
+    <div className={s.container}>
+      <Head>
+        <title>{`Logitech`}</title>
+      </Head>
+      <Viewer
+        auth={bhoustonAuth}
+        resolver={ExporterResolver({
+          cache: true,
+          cacheScope: "v5",
+          mode: "experimental",
+          settings: {
+            prune: {
+              childless: false,
+              invisible: false,
             },
-          })}
-        >
-          <>
-            <CameraControls ref={cameraControlsRef} />
-            <Geoff2Stage cameraControlsRef={cameraControlsRef}>
-              <Room roomAssetId={assetId} />
-            </Geoff2Stage>
-            <OrbitControls
-              autoRotate={false}
-              autoRotateSpeed={0.15}
-              enableDamping={true}
-              enableZoom={false}
-              maxDistance={3}
-              minDistance={1}
-              panSpeed={0}
-              minZoom={1}
-              maxZoom={3}
-              minPolarAngle={Math.PI / 6}
-              maxPolarAngle={Math.PI / 2}
-              makeDefault
-              enabled={true}
-            />
-          </>
-        </Viewer>
-      </div>
- 
+          },
+        })}
+      >
+        <>
+          <CameraControls ref={cameraControlsRef} />
+          <Geoff2Stage cameraControlsRef={cameraControlsRef}>
+            <Room roomAssetId={assetId} />
+          </Geoff2Stage>
+          <OrbitControls
+            autoRotate={false}
+            autoRotateSpeed={0.15}
+            enableDamping={true}
+            enableZoom={false}
+            maxDistance={3}
+            minDistance={1}
+            panSpeed={0}
+            minZoom={1}
+            maxZoom={3}
+            minPolarAngle={Math.PI / 6}
+            maxPolarAngle={Math.PI / 2}
+            makeDefault
+            enabled={true}
+          />
+        </>
+      </Viewer>
+    </div>
   );
 };
