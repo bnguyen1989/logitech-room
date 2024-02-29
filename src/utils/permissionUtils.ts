@@ -281,6 +281,21 @@ export const isTap = (name: string) => {
   ]);
 };
 
+export const isCameraMount = (name: string) => {
+  return isCompareName(name)([
+    CameraName.WallMountForVideoBars,
+    CameraName.TVMountForVideoBars,
+  ]);
+};
+
+export const isTapMount = (name: string) => {
+  return isCompareName(name)([
+    VideoAccessoryName.WallMount,
+    VideoAccessoryName.RiserMount,
+    VideoAccessoryName.TableMount,
+  ]);
+};
+
 function isCompareName(name: string) {
   return (arrayNames: Array<string>) => {
     return arrayNames.some((item) => item.toLowerCase() === name.toLowerCase());

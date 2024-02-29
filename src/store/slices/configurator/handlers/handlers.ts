@@ -9,7 +9,16 @@ import {
   removeNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { isCamera, isMic, isScribe, isTap } from "../../../../utils/permissionUtils";
+import {
+  CameraName,
+  VideoAccessoryName,
+  isCamera,
+  isCameraMount,
+  isMic,
+  isScribe,
+  isTap,
+  isTapMount,
+} from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import { Permission } from "../../../../models/permission/Permission";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
@@ -50,6 +59,43 @@ export const geConfiguratorHandlers = (store: Store) => {
       if (isCameraCard || isMicCard || isTapCard) {
         store.dispatch(changeStatusProcessing(true));
       }
+
+      const isCameraMountCard = isCameraMount(card?.keyPermission);
+      if (isCameraMountCard) {
+        const assetId = getAssetIdByNameNodes([
+          Configurator.getNameNodeForCamera("Cabinet"),
+          Configurator.getNameNodeForCamera("Wall", 1),
+          Configurator.getNameNodeForCamera("Wall", 2),
+        ])(store);
+
+        if (assetId) {
+          const nameNode =
+            card?.keyPermission === CameraName.WallMountForVideoBars
+              ? Configurator.getNameNodeForCamera("Wall", 2)
+              : Configurator.getNameNodeForCamera("Wall", 1);
+          store.dispatch(removeNodes(assetId));
+          setElementByNameNode(assetId, nameNode)(store);
+        }
+      }
+      const isTapMountCard = isTapMount(card?.keyPermission);
+      if (isTapMountCard) {
+        const assetId = getAssetIdByNameNodes([
+          Configurator.getNameNodeForTap(1),
+          Configurator.getNameNodeForTap(2),
+          Configurator.getNameNodeForTap(3),
+        ])(store);
+        if (assetId) {
+          let nameNode = Configurator.getNameNodeForTap(1);
+          if (card?.keyPermission === VideoAccessoryName.TableMount) {
+            nameNode = Configurator.getNameNodeForTap(2);
+          }
+          if (card?.keyPermission === VideoAccessoryName.RiserMount) {
+            nameNode = Configurator.getNameNodeForTap(3);
+          }
+          store.dispatch(removeNodes(assetId));
+          setElementByNameNode(assetId, nameNode)(store);
+        }
+      }
     }
 
     if (data instanceof RemoveItemCommand) {
@@ -89,6 +135,17 @@ export const geConfiguratorHandlers = (store: Store) => {
     }
   });
 };
+
+function getAssetIdByNameNodes(arrayNodes: Array<string>) {
+  return (store: Store) => {
+    const nodes = store.getState().configurator.nodes;
+    for (const item of arrayNodes) {
+      if (nodes[item]) {
+        return nodes[item];
+      }
+    }
+  };
+}
 
 function updateNodesByConfiguration(
   configurator: Configurator,
@@ -136,6 +193,16 @@ function updateNodesByConfiguration(
   };
 }
 
+function setElementByNameNode(assetId: string, nameNode: string) {
+  return (store: Store) => {
+    store.dispatch(
+      changeValueNodes({
+        [nameNode]: assetId,
+      })
+    );
+  };
+}
+
 function setCameraElement(assetId: string) {
   return (store: Store) => {
     store.dispatch(
@@ -173,13 +240,39 @@ function removeElement(assetId: string) {
     const index = activeStep.cards.findIndex(
       (item: ItemCardI) => item.threekit?.assetId === assetId
     );
-    if (index !== -1) {
-      const card = activeStep.cards[index];
-      console.log("element", card);
+    if (index === -1) return;
 
-      permission.removeActiveItemByName(card.keyPermission);
-      store.dispatch(removeNodes(assetId));
+    const card = activeStep.cards[index];
+    permission.removeActiveItemByName(card.keyPermission);
+
+    const isCameraMountCard = isCameraMount(card?.keyPermission);
+    const isTapMountCard = isTapMount(card?.keyPermission);
+    if (isCameraMountCard || isTapMountCard) {
+      let nodes = [
+        Configurator.getNameNodeForCamera("Cabinet"),
+        Configurator.getNameNodeForCamera("Wall", 1),
+        Configurator.getNameNodeForCamera("Wall", 2),
+      ]
+      if(isTapMountCard) {
+        nodes = [
+          Configurator.getNameNodeForTap(1),
+          Configurator.getNameNodeForTap(2),
+          Configurator.getNameNodeForTap(3),
+        ]
+      }
+      const assetId = getAssetIdByNameNodes(nodes)(store);
+      if (assetId) {
+        store.dispatch(removeNodes(assetId));
+        if(isCameraMountCard) {
+          setCameraElement(assetId)(store);
+        } else {
+          setTapElement(assetId)(store);
+        }
+      }
+      return;
     }
+
+    store.dispatch(removeNodes(assetId));
   };
 }
 
