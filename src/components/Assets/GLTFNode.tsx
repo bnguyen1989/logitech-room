@@ -1,8 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { Mesh, Object3D } from 'three';
-import { useAppSelector } from '../../hooks/redux';
-import { getNodes } from '../../store/slices/configurator/selectors/selectors';
-import { Product } from './Product';
 
 
 export type ThreeNodeProps = {

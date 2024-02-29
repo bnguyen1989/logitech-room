@@ -8,6 +8,7 @@ declare global {
   var app: Application;
   var logger: Logger;
   var permission: Permission;
+  var MktoForms2: any;
 }
 
 export {};
