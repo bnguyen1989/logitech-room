@@ -39,6 +39,21 @@ form {
 	}
 }
 
+.mktoFieldWrap {
+	width: 100% !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	height: 100% !important;
+}
+
+.mktoFieldDescriptor {
+	width: 100% !important;
+}
+
+.mktoOffset {
+	display: none;
+}
+
 .mktoFormRow:nth-child(9) {
 	display: none;
 }
@@ -47,9 +62,7 @@ form {
 	display: none;
 }
 
-.mktoFormRow:nth-child(13) {
-	grid-column: span 2 !important;
-}
+.mktoFormRow:nth-child(13),
 .mktoFormRow:nth-child(14) {
 	grid-column: span 2 !important;
 }
@@ -145,21 +158,6 @@ form {
 			}
 		}
 	}
-}
-
-.mktoFieldWrap {
-	width: 100% !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	height: 100% !important;
-}
-
-.mktoFieldDescriptor {
-	width: 100% !important;
-}
-
-.mktoOffset {
-	display: none;
 }
 
 .mktoButtonRow {
