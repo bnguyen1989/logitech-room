@@ -9,7 +9,7 @@ import {
   removeNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { isCamera, isMic, isTap } from "../../../../utils/permissionUtils";
+import { isCamera, isMic, isScribe, isTap } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import { Permission } from "../../../../models/permission/Permission";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
@@ -30,6 +30,10 @@ export const geConfiguratorHandlers = (store: Store) => {
 
       const isCameraCard = isCamera(card?.keyPermission);
       if (isCameraCard) {
+        setCameraElement(data.assetId)(store);
+      }
+      const isScribeCard = isScribe(card?.keyPermission);
+      if (isScribeCard) {
         setCameraElement(data.assetId)(store);
       }
 

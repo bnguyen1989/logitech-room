@@ -1,3 +1,4 @@
+import { retry } from "@reduxjs/toolkit/query";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
 import {
@@ -9,6 +10,8 @@ import {
 import { DataTable } from "../dataTable/DataTable";
 import { Handler } from "./Handler";
 import { AttrSpecI } from "./type";
+import { ThreekitService } from "../../services/Threekit/ThreekitService";
+import { resolve } from "path";
 
 interface CacheI {
   [key: string]:
@@ -111,6 +114,38 @@ export class ConfigurationConstraintHandler extends Handler {
       cache.level2datatableId = level2datatableId;
     }
 
+    if (this.dataTableLevel2.data.length < 1 && level2datatableId) {
+      new ThreekitService()
+        .getDataTablesById(level2datatableId)
+        .then((dataTables) => {
+          this.dataTableLevel2 = new DataTable(dataTables);
+          app.dataTableLevel2 = new DataTable(dataTables);
+          // After loading the data, call the handler
+          this.proccesDataTableLavel2(
+            localeTagStr,
+            leadingSpecCharForDefault,
+            setLevel2Default_flag,
+            attrRulesStr
+          );
+        });
+    } else if (level2datatableId) {
+    // Let's make sure that the level 2 table ID exists before calling the handler
+      this.proccesDataTableLavel2(
+        localeTagStr,
+        leadingSpecCharForDefault,
+        setLevel2Default_flag,
+        attrRulesStr
+      );
+    }
+    return true;
+  }
+
+  public proccesDataTableLavel2(
+    localeTagStr: string,
+    leadingSpecCharForDefault: string,
+    setLevel2Default_flag: boolean,
+    attrRulesStr: string
+  ) {
     const setConfig_obj = this.validateAttributesWithDatatable(
       localeTagStr,
       this.dataTableLevel2,
@@ -130,15 +165,13 @@ export class ConfigurationConstraintHandler extends Handler {
 
     ////*3rd call the rule(s) based on what's selected in the level1 datatable
     const attrRulesArr = attrRulesStr
-      ? attrRulesStr.split(";").map((aStr) => aStr.trim())
+      ? attrRulesStr.split(";").map((aStr: any) => aStr.trim())
       : [];
 
-      //temp rule
+    //temp rule
     if (attrRulesArr.indexOf("tapQty_tapIp") > -1) {
       this.rule_tapQty10_tapIp();
     }
-
-    return true;
   }
 
   private rule_tapQty10_tapIp() {
