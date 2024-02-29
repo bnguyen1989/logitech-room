@@ -48,42 +48,6 @@
   }
 
   .form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 20px 20px;
-  }
-
-  .form > div:nth-last-child(-n + 2) {
-    grid-column: span 2;
-  }
-
-  .additional_info {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    .support_link {
-      display: flex;
-      color: var(--main-color-text);
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 300;
-      line-height: 24px;
-
-			& a {
-				padding-left: 5px;
-				color: var(--main-color-text);
-			}
-    }
-
-    color: var(--main-color-text);
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 20px;
-  }
-
-  .actions {
-
+    
   }
 }
