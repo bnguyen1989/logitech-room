@@ -1,7 +1,7 @@
 import { Store } from "@reduxjs/toolkit";
 import { Application } from "../../../../models/Application";
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
-import { ItemCardI, StepCardType } from "../../ui/type";
+import { BaseCardI, ItemCardI, StepCardType } from "../../ui/type";
 import {
   changeStatusProcessing,
   changeValueNodes,
@@ -10,8 +10,6 @@ import {
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
 import {
-  CameraName,
-  VideoAccessoryName,
   isCamera,
   isCameraMount,
   isMic,
@@ -24,6 +22,8 @@ import { Permission } from "../../../../models/permission/Permission";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { StepName } from "../../../../models/permission/type";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
+import { ItemElement } from "../../../../models/permission/elements/ItemElement";
+import { MountElement } from "../../../../models/permission/elements/MountElement";
 
 declare const app: Application;
 declare const permission: Permission;
@@ -33,14 +33,40 @@ export const geConfiguratorHandlers = (store: Store) => {
     if (data instanceof AddItemCommand) {
       const activeStep = store.getState().ui.activeStep;
       if (!activeStep) return;
-      const card = activeStep.cards.find(
-        (card: ItemCardI) => card.threekit?.assetId === data.assetId
+      const card: BaseCardI | undefined = activeStep.cards.find(
+        (card: BaseCardI) => card.threekit?.assetId === data.assetId
       );
 
-      const isCameraCard = isCamera(card?.keyPermission);
-      if (isCameraCard) {
-        setCameraElement(data.assetId)(store);
+      if (!card || !card.keyPermission) return;
+      const step = permission.getCurrentStep();
+
+      if (!step || !card.threekit) return;
+
+      const element = step.getElementByName(card.keyPermission);
+
+      if (element instanceof ItemElement) {
+        const defaultMount = element.getDefaultMount();
+        if (defaultMount && card.threekit) {
+          setElementByNameNode(
+            card.threekit.assetId,
+            defaultMount.nodeName
+          )(store);
+        }
+      } else if (element instanceof MountElement) {
+        const itemElement = step.getItemElementByMountName(element.name);
+        const cardItemElement = activeStep.cards.find(
+          (card: ItemCardI) => card.keyPermission === itemElement?.name
+        );
+        if (cardItemElement && cardItemElement.threekit) {
+          store.dispatch(removeNodes(cardItemElement.threekit.assetId));
+          store.dispatch(changeStatusProcessing(true));
+          setElementByNameNode(
+            cardItemElement.threekit.assetId,
+            element.nodeName
+          )(store);
+        }
       }
+
       const isScribeCard = isScribe(card?.keyPermission);
       if (isScribeCard) {
         setCameraElement(data.assetId)(store);
@@ -56,45 +82,8 @@ export const geConfiguratorHandlers = (store: Store) => {
         setTapElement(data.assetId)(store);
       }
 
-      if (isCameraCard || isMicCard || isTapCard) {
+      if (isMicCard || isTapCard) {
         store.dispatch(changeStatusProcessing(true));
-      }
-
-      const isCameraMountCard = isCameraMount(card?.keyPermission);
-      if (isCameraMountCard) {
-        const assetId = getAssetIdByNameNodes([
-          Configurator.getNameNodeForCamera("Cabinet"),
-          Configurator.getNameNodeForCamera("Wall", 1),
-          Configurator.getNameNodeForCamera("Wall", 2),
-        ])(store);
-
-        if (assetId) {
-          const nameNode =
-            card?.keyPermission === CameraName.WallMountForVideoBars
-              ? Configurator.getNameNodeForCamera("Wall", 2)
-              : Configurator.getNameNodeForCamera("Wall", 1);
-          store.dispatch(removeNodes(assetId));
-          setElementByNameNode(assetId, nameNode)(store);
-        }
-      }
-      const isTapMountCard = isTapMount(card?.keyPermission);
-      if (isTapMountCard) {
-        const assetId = getAssetIdByNameNodes([
-          Configurator.getNameNodeForTap(1),
-          Configurator.getNameNodeForTap(2),
-          Configurator.getNameNodeForTap(3),
-        ])(store);
-        if (assetId) {
-          let nameNode = Configurator.getNameNodeForTap(1);
-          if (card?.keyPermission === VideoAccessoryName.TableMount) {
-            nameNode = Configurator.getNameNodeForTap(2);
-          }
-          if (card?.keyPermission === VideoAccessoryName.RiserMount) {
-            nameNode = Configurator.getNameNodeForTap(3);
-          }
-          store.dispatch(removeNodes(assetId));
-          setElementByNameNode(assetId, nameNode)(store);
-        }
       }
     }
 
@@ -252,18 +241,18 @@ function removeElement(assetId: string) {
         Configurator.getNameNodeForCamera("Cabinet"),
         Configurator.getNameNodeForCamera("Wall", 1),
         Configurator.getNameNodeForCamera("Wall", 2),
-      ]
-      if(isTapMountCard) {
+      ];
+      if (isTapMountCard) {
         nodes = [
           Configurator.getNameNodeForTap(1),
           Configurator.getNameNodeForTap(2),
           Configurator.getNameNodeForTap(3),
-        ]
+        ];
       }
       const assetId = getAssetIdByNameNodes(nodes)(store);
       if (assetId) {
         store.dispatch(removeNodes(assetId));
-        if(isCameraMountCard) {
+        if (isCameraMountCard) {
           setCameraElement(assetId)(store);
         } else {
           setTapElement(assetId)(store);

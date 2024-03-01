@@ -8,6 +8,7 @@ import { ChangeStepHandler } from "./handlers/ChangeStepHandler";
 import { AddActiveElementHandler } from "./handlers/AddActiveElementHandler";
 import { RemoveActiveElementHandler } from "./handlers/RemoveActiveElementHandler";
 import { AddActiveElementRule } from "./rules/AddActiveElementRule";
+import { MountElement } from './elements/MountElement'
 
 export class Permission {
   public id: string = IdGenerator.generateId();
@@ -119,7 +120,7 @@ export class Permission {
     }
   }
 
-  public getElements(): Array<ItemElement> {
+  public getElements(): Array<ItemElement | MountElement> {
     const currentStep = this.getCurrentStep();
     if (currentStep) {
       return currentStep.getValidElements();
@@ -127,7 +128,7 @@ export class Permission {
     return [];
   }
 
-  public getActiveItems(): Array<ItemElement> {
+  public getActiveItems(): Array<ItemElement | MountElement> {
     const currentStep = this.getCurrentStep();
     if (currentStep) {
       return currentStep.getActiveElements();

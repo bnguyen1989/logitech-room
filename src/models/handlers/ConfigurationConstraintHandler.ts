@@ -1,4 +1,3 @@
-import { retry } from "@reduxjs/toolkit/query";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
 import {
@@ -11,7 +10,9 @@ import { DataTable } from "../dataTable/DataTable";
 import { Handler } from "./Handler";
 import { AttrSpecI } from "./type";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
-import { resolve } from "path";
+import { Application } from "../Application";
+
+declare const app: Application;
 
 interface CacheI {
   [key: string]:
@@ -64,7 +65,7 @@ export class ConfigurationConstraintHandler extends Handler {
     return triggeredByAttr;
   }
 
-  public handle(): boolean {
+  public async handle(): Promise<boolean> {
     const triggeredByAttr =
       ConfigurationConstraintHandler.getTriggeredAttribute(this.configurator);
     const localeTagStr = "locale_US";
@@ -114,12 +115,19 @@ export class ConfigurationConstraintHandler extends Handler {
       cache.level2datatableId = level2datatableId;
     }
 
-    if (this.dataTableLevel2.data.length < 1 && level2datatableId) {
-      new ThreekitService()
+    if (
+      (this.dataTableLevel2.isEmpty() && level2datatableId) ||
+      (!this.dataTableLevel2.isEmpty() &&
+        level2datatableId !== this.dataTableLevel2.id)
+    ) {
+      app.eventEmitter.emit("processInitThreekitData", true);
+      await new ThreekitService()
         .getDataTablesById(level2datatableId)
         .then((dataTables) => {
-          this.dataTableLevel2 = new DataTable(dataTables);
-          app.dataTableLevel2 = new DataTable(dataTables);
+          this.dataTableLevel2 = new DataTable(dataTables).setId(
+            level2datatableId
+          );
+          app.dataTableLevel2 = this.dataTableLevel2.copy();
           // After loading the data, call the handler
           this.proccesDataTableLavel2(
             localeTagStr,
@@ -127,9 +135,10 @@ export class ConfigurationConstraintHandler extends Handler {
             setLevel2Default_flag,
             attrRulesStr
           );
+          app.eventEmitter.emit("processInitThreekitData", false);
         });
     } else if (level2datatableId) {
-    // Let's make sure that the level 2 table ID exists before calling the handler
+      // Let's make sure that the level 2 table ID exists before calling the handler
       this.proccesDataTableLavel2(
         localeTagStr,
         leadingSpecCharForDefault,
@@ -201,22 +210,6 @@ export class ConfigurationConstraintHandler extends Handler {
         });
       }
     }
-  }
-
-  public getIdLevel2DataTable() {
-    const leadingSpecCharForDefault = "*";
-    const skipColumns = ["level2datatableId", "attrRules"];
-    const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
-    const level2row = this.findLevel2Row(
-      this.dataTableLevel1,
-      level1AttrSequenceArr,
-      leadingSpecCharForDefault
-    );
-
-    if (!level2row || !level2row.value) return null; //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
-
-    const level2datatableId = level2row.value[skipColumns[0]];
-    return level2datatableId;
   }
 
   private getAttribute(name: string) {

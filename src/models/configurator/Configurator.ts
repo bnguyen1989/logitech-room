@@ -16,6 +16,10 @@ export class Configurator {
   private configuration: ConfigurationI = {};
   private attributeState: AttributesStateI = {};
 
+  public static NameAttrWithMountNames: Record<string, string> = {
+    "Room Camera": "Room Camera Mount",
+  };
+
   public static PlatformName = [["Room Service"]];
 
   public static ServicesName = [["Room Deployment Mode"]];
@@ -29,6 +33,7 @@ export class Configurator {
 
   public static CameraName = [
     ["Room Camera"],
+    ["Room Camera Mount"],
     ["Room Compute"],
     ["Room Sight"],
     ["Room Scribe"],
@@ -45,7 +50,6 @@ export class Configurator {
   public static VideoAccessoriesName = [
     ["Room Compute Mount"],
     ["Room Tap Mount", "Qty - Tap Mount"],
-    ["Room Camera Mount"],
   ];
 
   public static SoftwareServicesName = [

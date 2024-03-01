@@ -1,6 +1,8 @@
+import { Configurator } from "../models/configurator/Configurator";
 import { Permission } from "../models/permission/Permission";
 import { GroupElement } from "../models/permission/elements/GroupElement";
 import { ItemElement } from "../models/permission/elements/ItemElement";
+import { MountElement } from "../models/permission/elements/MountElement";
 import { Step } from "../models/permission/step/Step";
 import { StepName } from "../models/permission/type";
 
@@ -41,7 +43,7 @@ export enum ServiceName {
 export enum CameraName {
   MeetUp = "MeetUp",
   RallyBarHuddle = "Logitech Rally Bar Huddle",
-  RallyBarMini = "Logitech Rally Bar Mini",
+  RallyBarMini = "Logitech Rally Bar Mini - Graphite",
   RallyBar = "Logitech Rally Bar",
   RallyPlus = "Logitech Rally Plus",
 
@@ -81,7 +83,6 @@ export enum VideoAccessoryName {
   WallMount = "Tap Mount - Wall Mount",
   RiserMount = "Tap Mount - Riser Mount",
   TableMount = "Tap Mount - Table Mount",
-  WallMountForVideoBars = "Wall Mount for Video Bars",
 }
 
 export enum SoftwareServicesName {
@@ -137,7 +138,24 @@ function createStepConferenceCamera() {
   const stepConferenceCamera = new Step(StepName.ConferenceCamera);
   const group = new GroupElement()
     .addElement(new ItemElement(CameraName.RallyBar))
-    .addElement(new ItemElement(CameraName.RallyBarMini))
+    .addElement(
+      new ItemElement(CameraName.RallyBarMini)
+        .addDependenceMount(
+          new MountElement(
+            CameraName.WallMountForVideoBars,
+            Configurator.getNameNodeForCamera("Wall", 1)
+          )
+        )
+        .addDependenceMount(
+          new MountElement(
+            CameraName.TVMountForVideoBars,
+            Configurator.getNameNodeForCamera("Wall", 2)
+          )
+        )
+        .setDefaultMount(
+          new MountElement("None", Configurator.getNameNodeForCamera("Cabinet"))
+        )
+    )
     .addElement(
       new ItemElement(CameraName.PreConfiguredMiniPC)
         .setVisible(false)
@@ -145,9 +163,6 @@ function createStepConferenceCamera() {
     )
     .setRequiredOne(true);
 
-  const groupMount = new GroupElement().addElement(
-    new ItemElement(CameraName.TVMountForVideoBars)
-  );
   const groupSight = new GroupElement().addElement(
     new ItemElement(CameraName.LogitechSight)
   );
@@ -155,12 +170,7 @@ function createStepConferenceCamera() {
     new ItemElement(CameraName.LogitechScribe)
   );
 
-  stepConferenceCamera.allElements = [
-    group,
-    groupSight,
-    groupMount,
-    groupScribe,
-  ];
+  stepConferenceCamera.allElements = [group, groupSight, groupScribe];
   return stepConferenceCamera;
 }
 
@@ -225,9 +235,9 @@ function createStepMeetingController() {
 
 function createStepVideoAccessories() {
   const stepVideoAccessories = new Step(StepName.VideoAccessories);
-  const group = new GroupElement()
-    .addElement(new ItemElement(VideoAccessoryName.ComputeMount))
-    .addElement(new ItemElement(VideoAccessoryName.WallMountForVideoBars));
+  const group = new GroupElement().addElement(
+    new ItemElement(VideoAccessoryName.ComputeMount)
+  );
 
   stepVideoAccessories.allElements = [group];
   return stepVideoAccessories;

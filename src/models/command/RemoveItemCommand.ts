@@ -17,12 +17,20 @@ export class RemoveItemCommand extends Command {
   }
 
   public executeCommand(): boolean {
-    this.configurator.setConfiguration({
-      [this.nameProperty]: {
-        assetId: "",
-      },
+    const namesRemove: Array<string> = [this.nameProperty];
+    const mountName = Configurator.NameAttrWithMountNames[this.nameProperty];
+    if (mountName) {
+      namesRemove.push(mountName);
+    }
+    namesRemove.forEach((name) => {
+      this.configurator.setConfiguration({
+        [name]: {
+          assetId: "",
+        },
+      });
+      this.changeProperties.push(name);
     });
-    this.changeProperties.push(this.nameProperty);
+
     return true;
   }
 }

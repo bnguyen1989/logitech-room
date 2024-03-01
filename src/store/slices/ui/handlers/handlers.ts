@@ -53,27 +53,36 @@ export const getUiHandlers = (store: Store) => {
   });
 
   app.eventEmitter.on("executeCommand", (data) => {
-    if (data instanceof AddItemCommand) {
+    if (data instanceof AddItemCommand || data instanceof RemoveItemCommand) {
       const card = getCardByAssetId(data.assetId, store);
       if (card.keyPermission) {
-        if (permission.canAddActiveElementByName(card.keyPermission)) {
+        if (data instanceof AddItemCommand) {
           permission.addActiveElementByName(card.keyPermission);
+        }
+        if (data instanceof RemoveItemCommand) {
+          permission.removeActiveItemByName(card.keyPermission);
+        }
+
+        const stepName = store.getState().ui.activeStep?.key;
+        if (!stepName) return;
+        const configurator = app.currentConfigurator;
+        updateDataCardByStepName(stepName)(store, configurator);
+        const stepData = store.getState().ui.stepData;
+        const listStepData: Array<StepI<StepCardType>> =
+          Object.values(stepData);
+        const step = listStepData.find(
+          (item: StepI<StepCardType>) => item.key === stepName
+        );
+        if (step) {
+          store.dispatch(changeActiveStep(step));
+        }
+      } else if (card) {
+        if (data instanceof AddItemCommand) {
           store.dispatch(addActiveCard(card));
         }
-      } else if (card) {
-        store.dispatch(addActiveCard(card));
-      }
-    }
-
-    if (data instanceof RemoveItemCommand) {
-      const card = getCardByAssetId(data.assetId, store);
-      if (card.keyPermission) {
-        if (permission.canRemoveActiveItemByName(card.keyPermission)) {
-          permission.removeActiveItemByName(card.keyPermission);
+        if (data instanceof RemoveItemCommand) {
           store.dispatch(removeActiveCard(card));
         }
-      } else if (card) {
-        store.dispatch(removeActiveCard(card));
       }
     }
 
@@ -144,38 +153,7 @@ export const getUiHandlers = (store: Store) => {
     if (data instanceof ChangeStepCommand) {
       permission.changeStepName(data.stepName);
       const configurator = app.currentConfigurator;
-      const updateDataCard = updateDataByConfiguration(
-        configurator,
-        data.stepName
-      );
-      if (data.stepName === StepName.Platform) {
-        setPlatformData(configurator)(store);
-        updateDataCard(store, Configurator.PlatformName);
-      }
-      if (data.stepName === StepName.Services) {
-        setServiceData(configurator)(store);
-        updateDataCard(store, Configurator.ServicesName);
-      }
-      if (data.stepName === StepName.AudioExtensions) {
-        setAudioExtensionsData(configurator)(store);
-        updateDataCard(store, Configurator.AudioExtensionName);
-      }
-      if (data.stepName === StepName.ConferenceCamera) {
-        setCameraData(configurator)(store);
-        updateDataCard(store, Configurator.CameraName);
-      }
-      if (data.stepName === StepName.MeetingController) {
-        setMeetingControllerData(configurator)(store);
-        updateDataCard(store, Configurator.MeetingControllerName);
-      }
-      if (data.stepName === StepName.VideoAccessories) {
-        setVideoAccessoriesData(configurator)(store);
-        updateDataCard(store, Configurator.VideoAccessoriesName);
-      }
-      if (data.stepName === StepName.SoftwareServices) {
-        setSoftwareServicesData(configurator)(store);
-        updateDataCard(store, Configurator.SoftwareServicesName);
-      }
+      updateDataCardByStepName(data.stepName)(store, configurator);
 
       const stepData = store.getState().ui.stepData;
       const listStepData: Array<StepI<StepCardType>> = Object.values(stepData);
@@ -202,6 +180,40 @@ export const getUiHandlers = (store: Store) => {
     }
   );
 };
+
+function updateDataCardByStepName(stepName: StepName) {
+  return (store: Store, configurator: Configurator) => {
+    const updateDataCard = updateDataByConfiguration(configurator, stepName);
+    if (stepName === StepName.Platform) {
+      setPlatformData(configurator)(store);
+      updateDataCard(store, Configurator.PlatformName);
+    }
+    if (stepName === StepName.Services) {
+      setServiceData(configurator)(store);
+      updateDataCard(store, Configurator.ServicesName);
+    }
+    if (stepName === StepName.AudioExtensions) {
+      setAudioExtensionsData(configurator)(store);
+      updateDataCard(store, Configurator.AudioExtensionName);
+    }
+    if (stepName === StepName.ConferenceCamera) {
+      setCameraData(configurator)(store);
+      updateDataCard(store, Configurator.CameraName);
+    }
+    if (stepName === StepName.MeetingController) {
+      setMeetingControllerData(configurator)(store);
+      updateDataCard(store, Configurator.MeetingControllerName);
+    }
+    if (stepName === StepName.VideoAccessories) {
+      setVideoAccessoriesData(configurator)(store);
+      updateDataCard(store, Configurator.VideoAccessoriesName);
+    }
+    if (stepName === StepName.SoftwareServices) {
+      setSoftwareServicesData(configurator)(store);
+      updateDataCard(store, Configurator.SoftwareServicesName);
+    }
+  };
+}
 
 function updateDataByConfiguration(
   configurator: Configurator,
