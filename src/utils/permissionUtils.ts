@@ -154,7 +154,10 @@ function createStepConferenceCamera() {
           )
         )
         .setDefaultMount(
-          new MountElement("None", Configurator.getNameNodeForCamera("Cabinet"))
+          new MountElement(
+            CameraName.RallyBarMini,
+            Configurator.getNameNodeForCamera("Cabinet")
+          )
         )
     )
     .addElement(

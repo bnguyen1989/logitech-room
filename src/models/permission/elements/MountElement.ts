@@ -9,6 +9,10 @@ export class MountElement extends BaseElement implements Element<MountElement>{
 		this.nodeName = nodeName;
 	}
 
+	public getNameNode(): string {
+		return this.nodeName;
+	}
+
   public copy(): MountElement {
 		const mountElement = new MountElement(this.name, this.nodeName);
     return mountElement;

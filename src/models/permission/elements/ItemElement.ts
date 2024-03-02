@@ -29,7 +29,7 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
     return this._dependenceMount;
   }
 
-  public setDefaultMount(mount: MountElement): ItemElement {
+  public setDefaultMount(mount: MountElement | null): ItemElement {
     this.defaultMount = mount;
     return this;
   }

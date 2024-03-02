@@ -10,17 +10,21 @@ export class CountableMountElement extends MountElement {
     super(name, nodeName);
   }
 
-  public getNexName(): string {
-    const index = this.getNextIndex();
+	public next(): CountableMountElement {
+		const index = this.getNextIndex(this.activeIndex);
 		this.activeIndex = index;
-    return `${this.nodeName}_${index}`;
-  }
+		return this;
+	}
 
-  public getPrevName(): string {
-    const index = this.getPrevIndex();
+	public prev(): CountableMountElement {
+		const index = this.getPrevIndex(this.activeIndex);
 		this.activeIndex = index;
-    return `${this.nodeName}_${index}`;
-  }
+		return this;
+	}
+
+	public getNameNode(): string {
+		return `${this.nodeName}_${this.activeIndex}`;
+	}
 
   public addNotAvailableIndex(index: number): void {
     this.notAvailableIndex.push(index);
@@ -57,22 +61,22 @@ export class CountableMountElement extends MountElement {
     return mountElement;
   }
 
-  private getNextIndex(): number {
+  private getNextIndex(index: number): number {
     const nexIndex = this.activeIndex + 1;
-    // if (this.notAvailableIndex.includes(nexIndex)) {
-    //   return this.getNextIndex();
-    // }
+    if (this.notAvailableIndex.includes(nexIndex)) {
+      return this.getNextIndex(index + 1);
+    }
     if (nexIndex > this.max) {
       return this.max;
     }
     return nexIndex;
   }
 
-  private getPrevIndex(): number {
+  private getPrevIndex(index: number): number {
     const prevIndex = this.activeIndex - 1;
-    // if (this.notAvailableIndex.includes(prevIndex)) {
-    //   return this.getPrevIndex();
-    // }
+    if (this.notAvailableIndex.includes(prevIndex)) {
+      return this.getPrevIndex(index - 1);
+    }
     if (prevIndex < this.min) {
       return this.min;
     }
