@@ -60,7 +60,7 @@ export const getInitStepData = (): StepDataI => {
     [StepName.ConferenceCamera]: {
       key: StepName.ConferenceCamera,
       name: "Conference Camera",
-      title: "Choose your conference camera.",
+      title: "Choose your conferencing camera(s).",
       subtitle:
         "These recommendations are based on your previous answers. You selected: {2} deployment running {1} in a {0}.",
       cards: [],
@@ -136,7 +136,7 @@ function getRoomCardData(): Array<RoomCardI> {
     {
       key: StepName.RoomSize,
       image: ImagePhonebooth,
-      title: "Phonebooth",
+      title: "Phone Booth",
       subtitle: "up to 3",
       keyPermission: RoomSizeName.Phonebooth,
     },
