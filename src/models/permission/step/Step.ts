@@ -40,12 +40,12 @@ export class Step {
       .find((element) => element.name === name);
   }
 
-  public getItemElementByMountName(name: string): ItemElement | undefined {
-    const elements = this.getSimpleElements();
+  public getActiveItemElementByMountName(name: string): ItemElement | undefined {
+    const elements = this._activeElements;
     const res = elements.find((element) => {
-      return element.getDependenceMount().some((mount) => mount.name === name);
+      return element instanceof ItemElement && element.getDependenceMount().some((mount) => mount.name === name);
     });
-    return res;
+    return res as ItemElement;
   }
 
   public addActiveElement(element: ItemElement | MountElement) {

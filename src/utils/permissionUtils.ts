@@ -1,5 +1,6 @@
 import { Configurator } from "../models/configurator/Configurator";
 import { Permission } from "../models/permission/Permission";
+import { CountableMountElement } from "../models/permission/elements/CountableMountElement";
 import { GroupElement } from "../models/permission/elements/GroupElement";
 import { ItemElement } from "../models/permission/elements/ItemElement";
 import { MountElement } from "../models/permission/elements/MountElement";
@@ -177,12 +178,16 @@ function createStepConferenceCamera() {
 function createStepAudioExtensions() {
   const stepAudioExtensions = new Step(StepName.AudioExtensions);
   const group = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallyMicPod).setRecommended(true)
-  );
-  const group1 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallyMicPodMount)
-      .addDependence(new ItemElement(AudioExtensionName.RallyMicPod))
-      .setDefaultActive(true)
+    new ItemElement(AudioExtensionName.RallyMicPod)
+      .addDependenceMount(
+        new CountableMountElement(
+          AudioExtensionName.RallyMicPodMount,
+          "Mic_Placement",
+          0,
+          3
+        )
+      )
+      .setRecommended(true)
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodPendantMount)
@@ -204,7 +209,6 @@ function createStepAudioExtensions() {
 
   stepAudioExtensions.allElements = [
     group,
-    group1,
     group2,
     group3,
     group4,

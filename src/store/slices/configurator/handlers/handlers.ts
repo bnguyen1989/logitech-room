@@ -24,6 +24,8 @@ import { StepName } from "../../../../models/permission/type";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 import { MountElement } from "../../../../models/permission/elements/MountElement";
+import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
+import { removeActiveCard } from "../../ui/Ui.slice";
 
 declare const app: Application;
 declare const permission: Permission;
@@ -47,13 +49,20 @@ export const geConfiguratorHandlers = (store: Store) => {
       if (element instanceof ItemElement) {
         const defaultMount = element.getDefaultMount();
         if (defaultMount && card.threekit) {
+          store.dispatch(changeStatusProcessing(true));
           setElementByNameNode(
             card.threekit.assetId,
             defaultMount.nodeName
           )(store);
         }
+        const [mountElement] = element.getDependenceMount();
+        if (mountElement instanceof CountableMountElement) {
+          mountElement.setActiveIndex(0);
+          const nodeName = mountElement.getNexName();
+          setElementByNameNode(card.threekit.assetId, nodeName)(store);
+        }
       } else if (element instanceof MountElement) {
-        const itemElement = step.getItemElementByMountName(element.name);
+        const itemElement = step.getActiveItemElementByMountName(element.name);
         const cardItemElement = activeStep.cards.find(
           (card: ItemCardI) => card.keyPermission === itemElement?.name
         );
@@ -71,20 +80,6 @@ export const geConfiguratorHandlers = (store: Store) => {
       if (isScribeCard) {
         setCameraElement(data.assetId)(store);
       }
-
-      const isMicCard = isMic(card?.keyPermission);
-      if (isMicCard) {
-        setMicElement(data.assetId)(store);
-      }
-
-      const isTapCard = isTap(card?.keyPermission);
-      if (isTapCard) {
-        setTapElement(data.assetId)(store);
-      }
-
-      if (isMicCard || isTapCard) {
-        store.dispatch(changeStatusProcessing(true));
-      }
     }
 
     if (data instanceof RemoveItemCommand) {
@@ -92,8 +87,46 @@ export const geConfiguratorHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeCountItemCommand) {
-      const value = parseInt(data.value);
-      changeCountElement(data.assetId, value)(store);
+      const activeStep = store.getState().ui.activeStep;
+      if (!activeStep) return;
+      const card: BaseCardI | undefined = activeStep.cards.find(
+        (card: BaseCardI) => card.threekit?.assetId === data.assetId
+      );
+
+      if (!card || !card.keyPermission) return;
+      const step = permission.getCurrentStep();
+
+      if (!step || !card.threekit) return;
+
+      const element = step.getElementByName(card.keyPermission);
+      if (element instanceof ItemElement) {
+        const [mountElement] = element.getDependenceMount();
+        if (mountElement instanceof CountableMountElement) {
+          const value = parseInt(data.value);
+          if (data.isIncrease) {
+            const nodeName = mountElement.getNexName();
+            setElementByNameNode(card.threekit.assetId, nodeName)(store);
+          } else {
+            const nodeName = mountElement.getPrevName();
+            setElementByNameNode(card.threekit.assetId, nodeName)(store);
+
+            const nodes = store.getState().configurator.nodes;
+            const keysNode = Object.keys(nodes).filter(
+              (key) => nodes[key] === data.assetId
+            );
+            if (keysNode.length > value) {
+              const deleteKeys = keysNode.slice(value);
+              store.dispatch(removeNodeByKeys(deleteKeys));
+            }
+          }
+
+          if (value === 0) {
+            permission.removeActiveItemByName(card.keyPermission);
+            store.dispatch(removeNodes(data.assetId));
+            store.dispatch(removeActiveCard(card as StepCardType));
+          }
+        }
+      }
     }
 
     if (data instanceof ChangeStepCommand) {
@@ -124,17 +157,6 @@ export const geConfiguratorHandlers = (store: Store) => {
     }
   });
 };
-
-function getAssetIdByNameNodes(arrayNodes: Array<string>) {
-  return (store: Store) => {
-    const nodes = store.getState().configurator.nodes;
-    for (const item of arrayNodes) {
-      if (nodes[item]) {
-        return nodes[item];
-      }
-    }
-  };
-}
 
 function updateNodesByConfiguration(
   configurator: Configurator,
@@ -202,26 +224,6 @@ function setCameraElement(assetId: string) {
   };
 }
 
-function setMicElement(assetId: string) {
-  return (store: Store) => {
-    store.dispatch(
-      changeValueNodes({
-        [Configurator.getNameNodeForMic(1)]: assetId,
-      })
-    );
-  };
-}
-
-function setTapElement(assetId: string) {
-  return (store: Store) => {
-    store.dispatch(
-      changeValueNodes({
-        [Configurator.getNameNodeForTap(1)]: assetId,
-      })
-    );
-  };
-}
-
 function removeElement(assetId: string) {
   return (store: Store) => {
     const activeStep = store.getState().ui.activeStep;
@@ -234,31 +236,30 @@ function removeElement(assetId: string) {
     const card = activeStep.cards[index];
     permission.removeActiveItemByName(card.keyPermission);
 
-    const isCameraMountCard = isCameraMount(card?.keyPermission);
-    const isTapMountCard = isTapMount(card?.keyPermission);
-    if (isCameraMountCard || isTapMountCard) {
-      let nodes = [
-        Configurator.getNameNodeForCamera("Cabinet"),
-        Configurator.getNameNodeForCamera("Wall", 1),
-        Configurator.getNameNodeForCamera("Wall", 2),
-      ];
-      if (isTapMountCard) {
-        nodes = [
-          Configurator.getNameNodeForTap(1),
-          Configurator.getNameNodeForTap(2),
-          Configurator.getNameNodeForTap(3),
-        ];
-      }
-      const assetId = getAssetIdByNameNodes(nodes)(store);
-      if (assetId) {
-        store.dispatch(removeNodes(assetId));
-        if (isCameraMountCard) {
-          setCameraElement(assetId)(store);
-        } else {
-          setTapElement(assetId)(store);
+    const element = permission.getCurrentStep()?.getElementByName(card.keyPermission);
+
+    if (element instanceof ItemElement) {
+      const [mountElement] = element.getDependenceMount();
+        if (mountElement instanceof CountableMountElement) {
+          mountElement.setActiveIndex(0);
+        }
+    }
+    if(element instanceof MountElement) {
+      const itemElement = permission.getCurrentStep()?.getActiveItemElementByMountName(element.name);
+      if(itemElement instanceof ItemElement) {
+        const defaultMount = itemElement.getDefaultMount();
+        const cardItemElement = activeStep.cards.find(
+          (card: ItemCardI) => card.keyPermission === itemElement?.name
+        );
+        if (defaultMount && cardItemElement && cardItemElement.threekit) {
+          store.dispatch(removeNodes(cardItemElement.threekit.assetId));
+          store.dispatch(changeStatusProcessing(true));
+          setElementByNameNode(
+            cardItemElement.threekit.assetId,
+            defaultMount.nodeName
+          )(store);
         }
       }
-      return;
     }
 
     store.dispatch(removeNodes(assetId));

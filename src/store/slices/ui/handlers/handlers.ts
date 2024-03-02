@@ -44,6 +44,8 @@ import {
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
 import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
+import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
+import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 
 declare const app: Application;
 
@@ -260,6 +262,16 @@ function updateDataByConfiguration(
     result.forEach((item) => {
       if (!item.keyPermission) return;
       permission.addActiveElementByName(item.keyPermission);
+      
+      const element = permission
+        .getCurrentStep()
+        ?.getElementByName(item.keyPermission);
+      if (element instanceof ItemElement && "counter" in item) {
+        const [mount] = element.getDependenceMount();
+        if (mount instanceof CountableMountElement && item.counter) {
+          mount.setActiveIndex(item.counter.currentValue);
+        }
+      }
     });
     store.dispatch(setActiveCardsForStep({ key: stepName, cards: result }));
   };

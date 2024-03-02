@@ -31,6 +31,14 @@ export class RemoveItemCommand extends Command {
       this.changeProperties.push(name);
     });
 
+    const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
+    if (qtyName) {
+      this.configurator.setConfiguration({
+        [qtyName]: "0",
+      });
+      this.changeProperties.push(qtyName);
+    }
+
     return true;
   }
 }

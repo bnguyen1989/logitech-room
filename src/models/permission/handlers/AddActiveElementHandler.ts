@@ -14,7 +14,7 @@ export class AddActiveElementHandler extends Handler {
 
   public handle(step: Step): boolean {
     if (this.element instanceof MountElement) {
-      const itemElement = step.getItemElementByMountName(this.element.name);
+      const itemElement = step.getActiveItemElementByMountName(this.element.name);
       if (itemElement) {
         const dependenceMount = itemElement
           .getDependenceMount()

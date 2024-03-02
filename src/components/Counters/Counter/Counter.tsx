@@ -5,23 +5,26 @@ interface PropsI {
   min: number;
   max: number;
   onChange: (value: number) => void;
+  disabled?: boolean;
 }
 export const Counter: React.FC<PropsI> = (props) => {
-  const { min, max, onChange, value } = props;
+  const { min, max, onChange, value, disabled } = props;
 
   const handleDecrement = () => {
+    if(disabled) return;
     if (value > min) {
       onChange(value - 1);
     }
   };
 
   const handleIncrement = () => {
+    if(disabled) return;
     if (value < max) {
       onChange(value + 1);
     }
   };
   return (
-    <div className={s.container}>
+    <div className={`${s.container} ${disabled ? s.container_disabled : ""}`}>
       <div className={s.decrement} onClick={handleDecrement}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

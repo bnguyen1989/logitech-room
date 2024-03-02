@@ -57,6 +57,21 @@ export class Configurator {
     ["Room Support Service"],
   ];
 
+  public static getQtyNameByAttrName(name: string): string {
+    return [
+      Configurator.AudioExtensionName,
+      Configurator.CameraName,
+      Configurator.MeetingControllerName,
+      Configurator.VideoAccessoriesName,
+    ].reduce((acc, curr) => {
+      const found = curr.find((item) => item[0] === name);
+      if (found && found[1]) {
+        return found[1];
+      }
+      return acc;
+    }, "");
+  }
+
   public static getNameNodeForMic(id: number): string {
     return `Mic_Placement_${id}`;
   }
