@@ -1,16 +1,13 @@
 import { MountElement } from "./MountElement";
 
 export class CountableMountElement extends MountElement {
-  public min: number;
-  public max: number;
-  public activeIndex: number;
+  public min: number = 0;
+  public max: number = 0;
+  public activeIndex: number = 0;
   public notAvailableIndex: Array<number> = [];
 
-  constructor(name: string, nodeName: string, min: number, max: number) {
+  constructor(name: string, nodeName: string) {
     super(name, nodeName);
-    this.min = min;
-    this.max = max;
-		this.activeIndex = min;
   }
 
   public getNexName(): string {
@@ -40,13 +37,23 @@ export class CountableMountElement extends MountElement {
 		this.activeIndex = index;
 	}
 
+	public setMin(min: number): void {
+		this.min = min;
+	}
+
+	public setMax(max: number): void {
+		this.max = max;
+	}
+
   public copy(): CountableMountElement {
     const mountElement = new CountableMountElement(
       this.name,
       this.nodeName,
-      this.min,
-      this.max
     );
+		mountElement.min = this.min;
+		mountElement.max = this.max;
+		mountElement.activeIndex = this.activeIndex;
+		mountElement.notAvailableIndex = this.notAvailableIndex;
     return mountElement;
   }
 

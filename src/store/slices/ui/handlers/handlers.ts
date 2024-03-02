@@ -262,7 +262,7 @@ function updateDataByConfiguration(
     result.forEach((item) => {
       if (!item.keyPermission) return;
       permission.addActiveElementByName(item.keyPermission);
-      
+
       const element = permission
         .getCurrentStep()
         ?.getElementByName(item.keyPermission);
@@ -270,6 +270,8 @@ function updateDataByConfiguration(
         const [mount] = element.getDependenceMount();
         if (mount instanceof CountableMountElement && item.counter) {
           mount.setActiveIndex(item.counter.currentValue);
+          mount.setMin(item.counter.min);
+          mount.setMax(item.counter.max);
         }
       }
     });
