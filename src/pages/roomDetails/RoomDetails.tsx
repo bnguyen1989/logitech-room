@@ -14,6 +14,7 @@ import { Loader } from "../../components/Loader/Loader";
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
+  const [nameRoom, setNameRoom] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export const RoomDetails: React.FC = () => {
       .then((res) => {
         const [room] = res.orders;
         if (!room) return;
+        setNameRoom(room.metadata.name);
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
           const card = JSON.parse(item.metadata.data) as ItemCardI;
@@ -73,7 +75,7 @@ export const RoomDetails: React.FC = () => {
   return (
     <div className={s.container}>
       <div className={s.wrapper}>
-        <Header />
+        <Header title={nameRoom} />
         <Content sections={sections} />
         <Footer />
       </div>

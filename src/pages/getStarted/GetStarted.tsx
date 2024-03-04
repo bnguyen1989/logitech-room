@@ -35,18 +35,17 @@ export const GetStarted: React.FC = () => {
           <div className={s.block_1}>
             Not sure where to start? Use our Room Configurator to instantly
             outfit any size meeting room with the perfect video conferencing
-            solution. You’ll walk away with a fully customized solution guide
-            based on your unique needs.
+            solution.
           </div>
           <div className={s.divider}></div>
           <div className={s.block_2}>
             <div className={s.block_2_title}>How it works:</div>
 
             <ul className={s.block_2_list}>
-              <li>Answer a few quick questions about your space.</li>
+              <li>Answer a few quick questions about your space</li>
               <li>Choose guided selections based on your room</li>
-              <li>Get a complete look at the room you configured</li>
-              <li>View and share your solution guide</li>
+              <li>Get a complete look at the room(s) you configured</li>
+              <li>View and share your detailed solutions per room</li>
             </ul>
           </div>
         </div>

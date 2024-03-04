@@ -10,10 +10,14 @@ import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
 import { ConfigData } from "../../../utils/threekitUtils";
 import { Application } from "../../../models/Application";
-import { getSelectedConfiguratorCards } from "../../../store/slices/ui/selectors/selectors";
-import { ItemCardI } from "../../../store/slices/ui/type";
+import {
+  getSelectedConfiguratorCards,
+  getSelectedPrepareCards,
+} from "../../../store/slices/ui/selectors/selectors";
+import { ItemCardI, StepName } from "../../../store/slices/ui/type";
 import { useEffect } from "react";
 import "./form.css";
+import { getDescriptionRoomBySize } from './utils'
 
 declare const app: Application;
 declare const MktoForms2: any;
@@ -25,6 +29,7 @@ export const SetupModal: React.FC = () => {
   const selectedCards: Array<ItemCardI> = useAppSelector(
     getSelectedConfiguratorCards
   );
+  const selectedPrepareCards = useAppSelector(getSelectedPrepareCards);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
@@ -49,6 +54,15 @@ export const SetupModal: React.FC = () => {
     });
   }, [isOpen]);
 
+  const getNameOrder = () => {
+    const name = selectedPrepareCards
+      .filter((item) => !(item.key !== StepName.Platform))
+      .map((item) => item.title.replace(" Room", ""))
+      .join(" ");
+
+    return `${name} Room`;
+  };
+
   const createOrder = async () => {
     const cardData = selectedCards.map((card) => {
       return {
@@ -59,6 +73,12 @@ export const SetupModal: React.FC = () => {
         count: 1,
       };
     });
+    const nameOrder = getNameOrder();
+    const nameRoomSize = selectedPrepareCards.find(
+      (card) => card.key === StepName.RoomSize 
+    )?.title;
+    if (!nameRoomSize) return;
+    const description = getDescriptionRoomBySize(nameRoomSize);
     return new ThreekitService().createOrder({
       customerId: ConfigData.userId,
       originOrgId: ConfigData.userId,
@@ -73,9 +93,8 @@ export const SetupModal: React.FC = () => {
         configuration: JSON.stringify(
           app.currentConfigurator.getConfiguration()
         ),
-        description:
-          "A complete room solution is more than the sum of its parts. Including these components will help ensure the overall meeting experience is excellent for participants both in the room and remote.",
-        name: "Logitech Room Solution",
+        description: description,
+        name: nameOrder,
       },
     });
   };
@@ -95,7 +114,7 @@ export const SetupModal: React.FC = () => {
             <div className={s.title}>Show me the complete setup</div>
             <div className={s.subtitle}>
               All finished! Complete the form below so we can share a detailed
-              look at your new space and a detailed shopping guide that you can
+              look at your new space and a detailed product details that you can
               download and share.
             </div>
           </div>
