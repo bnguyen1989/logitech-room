@@ -80,18 +80,30 @@ export class Configurator {
     return `Tap_Placement_${id}`;
   }
 
-  public static getNameNodeForCamera(
-    type: "Cabinet" | "Wall",
-    id?: number
-  ): string {
-    if (type === "Cabinet") return "Camera_Cabinet_Placement";
-    return `Camera_Wall_Placement_${id}`;
+  public static getNameNodeForCamera(type: "Wall" | "TV", id?: number): string {
+    if (type === "Wall") return "Camera_Wall_Placement";
+    return `Camera_TV_Placement_${id}`;
+  }
+
+  public static getNameNodeForScribe(): string {
+    return "Scribe_Placement";
+  }
+
+  public static getNameNodeSwytch(): string {
+    return "Swytch_Placement";
+  }
+
+  public static getNameNodeScheduler(): string {
+    return "Scheduler_Placement";
   }
 
   public static getAllPlacement(): string[] {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
     const getNameNodeForCamera = this.getNameNodeForCamera;
+    const getNameNodeForScribe = this.getNameNodeForScribe;
+    const getNameNodeSwytch = this.getNameNodeSwytch;
+    const getNameNodeScheduler = this.getNameNodeScheduler;
 
     return [
       getNameNodeForMic(1),
@@ -100,9 +112,12 @@ export class Configurator {
       getNameNodeForTap(1),
       getNameNodeForTap(2),
       getNameNodeForTap(3),
-      getNameNodeForCamera("Cabinet"),
-      getNameNodeForCamera("Wall", 1),
-      getNameNodeForCamera("Wall", 2),
+      getNameNodeForCamera("Wall"),
+      getNameNodeForCamera("TV", 1),
+      getNameNodeForCamera("TV", 2),
+      getNameNodeForScribe(),
+      getNameNodeSwytch(),
+      getNameNodeScheduler(),
     ];
   }
 

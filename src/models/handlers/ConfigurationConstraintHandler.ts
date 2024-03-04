@@ -181,6 +181,38 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.indexOf("tapQty_tapIp") > -1) {
       this.rule_tapQty10_tapIp();
     }
+
+    this.rule_Sight_Mic();
+  }
+
+  private rule_Sight_Mic() {
+    const sightAttrName_str = "Room Sight";
+    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+
+    const selectedSight = this.getSelectedValue(sightAttrName_str);
+
+    if(typeof selectedSight === "object") {
+      const attribute = this.getAttribute(micPodQtyAttrName_str);
+      const attrState = this.configurator.getAttributeState();
+      const attributeValuesArr = attribute
+        ? attrState[attribute.id].values
+        : undefined;
+      if (attribute && attributeValuesArr) {
+        const countVisible = attributeValuesArr.filter((option) => option.visible).length;
+        let tempCount = countVisible;
+        attributeValuesArr.forEach((option) => {
+          if(option.visible) {
+            tempCount--;
+          }
+          if(tempCount === 0) {
+            option.visible = false;
+          }
+        });
+        this.configurator.setAttributeState(attribute.id, {
+          values: attributeValuesArr,
+        });
+      }
+    }
   }
 
   private rule_tapQty10_tapIp() {

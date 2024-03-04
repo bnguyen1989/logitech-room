@@ -58,7 +58,8 @@ export enum CameraName {
   WallMountForVideoBars = "Wall Mount for Video Bars",
   RallyMountingKit = "Rally Mounting Kit",
 
-  LogitechScribe = "Logitech Scribe",
+  ComputeMount = "Compute Mount",
+
   LogitechSight = "Logitech Sight",
 }
 
@@ -75,15 +76,16 @@ export enum AudioExtensionName {
 export enum MeetingControllerName {
   LogitechTapIP = "Logitech Tap IP",
   LogitechTap = "Logitech Tap",
-  LogitechTapScheduler = "Logitech Tap Scheduler",
-  LogitechSwytch = "Logitech Swytch",
+
+  TapWallMount = "Tap Mount - Wall Mount",
+  TapRiserMount = "Tap Mount - Riser Mount",
+  TapTableMount = "Tap Mount - Table Mount",
 }
 
 export enum VideoAccessoryName {
-  ComputeMount = "Compute Mount",
-  WallMount = "Tap Mount - Wall Mount",
-  RiserMount = "Tap Mount - Riser Mount",
-  TableMount = "Tap Mount - Table Mount",
+  LogitechTapScheduler = "Logitech Tap Scheduler",
+  LogitechScribe = "Logitech Scribe",
+  LogitechSwytch = "Logitech Swytch",
 }
 
 export enum SoftwareServicesName {
@@ -144,19 +146,19 @@ function createStepConferenceCamera() {
         .addDependenceMount(
           new MountElement(
             CameraName.WallMountForVideoBars,
-            Configurator.getNameNodeForCamera("Wall", 1)
+            Configurator.getNameNodeForCamera("Wall")
           )
         )
         .addDependenceMount(
           new MountElement(
             CameraName.TVMountForVideoBars,
-            Configurator.getNameNodeForCamera("Wall", 2)
+            Configurator.getNameNodeForCamera("TV", 2)
           )
         )
         .setDefaultMount(
           new MountElement(
             CameraName.RallyBarMini,
-            Configurator.getNameNodeForCamera("Cabinet")
+            Configurator.getNameNodeForCamera("TV", 1)
           )
         )
     )
@@ -165,16 +167,23 @@ function createStepConferenceCamera() {
         .setVisible(false)
         .setRequired(true)
     )
+    .addElement(
+      new ItemElement(CameraName.ComputeMount)
+        .setVisible(false)
+        .setRequired(true)
+    )
     .setRequiredOne(true);
 
   const groupSight = new GroupElement().addElement(
-    new ItemElement(CameraName.LogitechSight)
-  );
-  const groupScribe = new GroupElement().addElement(
-    new ItemElement(CameraName.LogitechScribe)
+    new ItemElement(CameraName.LogitechSight).setDefaultMount(
+      new MountElement(
+        CameraName.LogitechSight,
+        Configurator.getNameNodeForMic(3)
+      )
+    )
   );
 
-  stepConferenceCamera.allElements = [group, groupSight, groupScribe];
+  stepConferenceCamera.allElements = [group, groupSight];
   return stepConferenceCamera;
 }
 
@@ -221,28 +230,74 @@ function createStepAudioExtensions() {
 
 function createStepMeetingController() {
   const stepMeetingController = new Step(StepName.MeetingController);
+  const setMountForTap = (item: ItemElement) => {
+    return item
+      .addDependenceMount(
+        new MountElement(
+          MeetingControllerName.TapWallMount,
+          Configurator.getNameNodeForTap(1)
+        )
+      )
+      .addDependenceMount(
+        new MountElement(
+          MeetingControllerName.TapRiserMount,
+          Configurator.getNameNodeForTap(2)
+        )
+      )
+      .addDependenceMount(
+        new MountElement(
+          MeetingControllerName.TapTableMount,
+          Configurator.getNameNodeForTap(3)
+        )
+      )
+      .setDefaultMount(
+        new MountElement(
+          MeetingControllerName.LogitechTapIP,
+          Configurator.getNameNodeForTap(3)
+        )
+      );
+  };
   const group1 = new GroupElement()
-    .addElement(new ItemElement(MeetingControllerName.LogitechTapIP))
-    .addElement(new ItemElement(MeetingControllerName.LogitechTap))
+    .addElement(
+      setMountForTap(new ItemElement(MeetingControllerName.LogitechTapIP))
+    )
+    .addElement(
+      setMountForTap(new ItemElement(MeetingControllerName.LogitechTap))
+    )
     .setRequiredOne(true);
 
-  const group2 = new GroupElement()
-    .addElement(new ItemElement(VideoAccessoryName.WallMount))
-    .addElement(new ItemElement(VideoAccessoryName.RiserMount))
-    .addElement(new ItemElement(VideoAccessoryName.TableMount));
-  const group3 = new GroupElement()
-    .addElement(new ItemElement(MeetingControllerName.LogitechTapScheduler))
-    .addElement(new ItemElement(MeetingControllerName.LogitechSwytch));
-
-  stepMeetingController.allElements = [group1, group2, group3];
+  stepMeetingController.allElements = [group1];
   return stepMeetingController;
 }
 
 function createStepVideoAccessories() {
   const stepVideoAccessories = new Step(StepName.VideoAccessories);
-  const group = new GroupElement().addElement(
-    new ItemElement(VideoAccessoryName.ComputeMount)
-  );
+
+  const group = new GroupElement()
+    .addElement(
+      new ItemElement(VideoAccessoryName.LogitechTapScheduler).setDefaultMount(
+        new MountElement(
+          VideoAccessoryName.LogitechTapScheduler,
+          Configurator.getNameNodeScheduler()
+        )
+      )
+    )
+    .addElement(
+      new ItemElement(VideoAccessoryName.LogitechSwytch).setDefaultMount(
+        new MountElement(
+          VideoAccessoryName.LogitechSwytch,
+          Configurator.getNameNodeSwytch()
+        )
+      )
+    )
+    .addElement(
+      new ItemElement(VideoAccessoryName.LogitechScribe).setDefaultMount(
+        new MountElement(
+          VideoAccessoryName.LogitechScribe,
+          Configurator.getNameNodeForScribe()
+        )
+      )
+    );
 
   stepVideoAccessories.allElements = [group];
   return stepVideoAccessories;
@@ -279,11 +334,12 @@ export const isCamera = (name: string) => {
   return isCompareName(name)([CameraName.RallyBar, CameraName.RallyBarMini]);
 };
 export const isScribe = (name: string) => {
-  return isCompareName(name)([CameraName.LogitechScribe]);
+  return isCompareName(name)([VideoAccessoryName.LogitechScribe]);
 };
-// export const isScribe = (name: string) => {
-//   return isCompareName(name)([CameraName.LogitechScribe]);
-// };
+
+export const isSight = (name: string) => {
+  return isCompareName(name)([CameraName.LogitechSight]);
+}
 
 export const isMic = (name: string) => {
   return isCompareName(name)([AudioExtensionName.RallyMicPod]);
@@ -305,9 +361,9 @@ export const isCameraMount = (name: string) => {
 
 export const isTapMount = (name: string) => {
   return isCompareName(name)([
-    VideoAccessoryName.WallMount,
-    VideoAccessoryName.RiserMount,
-    VideoAccessoryName.TableMount,
+    MeetingControllerName.TapWallMount,
+    MeetingControllerName.TapRiserMount,
+    MeetingControllerName.TapTableMount,
   ]);
 };
 

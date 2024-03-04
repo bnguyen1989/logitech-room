@@ -9,7 +9,6 @@ import {
   removeNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { isScribe } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import { Permission } from "../../../../models/permission/Permission";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
@@ -106,16 +105,6 @@ function setElementByNameNode(assetId: string, nameNode: string) {
   };
 }
 
-function setCameraElement(assetId: string) {
-  return (store: Store) => {
-    store.dispatch(
-      changeValueNodes({
-        [Configurator.getNameNodeForCamera("Cabinet")]: assetId,
-      })
-    );
-  };
-}
-
 function addElement(assetId: string, stateStep: StepI<StepCardType>) {
   return (store: Store) => {
     const card: BaseCardI | undefined = stateStep.cards.find(
@@ -157,11 +146,6 @@ function addElement(assetId: string, stateStep: StepI<StepCardType>) {
           element.getNameNode()
         )(store);
       }
-    }
-
-    const isScribeCard = isScribe(card?.keyPermission);
-    if (isScribeCard) {
-      setCameraElement(assetId)(store);
     }
   };
 }
