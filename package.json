@@ -14,9 +14,9 @@
     "@react-three/drei": "^9.96.1",
     "@react-three/fiber": "^8.15.14",
     "@reduxjs/toolkit": "^2.0.1",
-    "@threekit/react-three-fiber": "^0.1.19",
+    "@threekit/react-three-fiber": "^0.1.24",
     "@types/react-router-dom": "^5.3.3",
-    "@types/three": "^0.160.0",
+    "@types/three": "^0.161.0",
     "axios": "^1.6.7",
     "camera-controls": "^2.7.4",
     "events": "^3.3.0",
@@ -26,7 +26,7 @@
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.0",
     "sass": "^1.70.0",
-    "three": "^0.160.1",
+    "three": "^0.161.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

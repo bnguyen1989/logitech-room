@@ -1,6 +1,6 @@
-import type { ReactElement, ReactNode } from 'react';
-import type { Mesh, Object3D } from 'three';
-
+import type { ReactElement, ReactNode } from "react";
+import * as THREE from "three";
+import type { Mesh, Object3D } from "three";
 
 export type ThreeNodeProps = {
   nodeMatchers?: NodeMatcher[];
@@ -23,10 +23,8 @@ export type ThreeNodeRendererProps = {
 export const GLTFNode = ({
   nodeMatchers,
   threeNode,
-  props
+  props,
 }: ThreeNodeRendererProps): ReactNode => {
-  
- 
   if (nodeMatchers) {
     for (let i = 0; i < nodeMatchers.length; i++) {
       const jsx = nodeMatchers[i](threeNode, nodeMatchers);
@@ -45,13 +43,13 @@ export const GLTFNode = ({
     />
   ));
 
-  if ('isMesh' in threeNode) {
+  if ("isMesh" in threeNode) {
     const mesh = threeNode as Mesh;
     return (
       <mesh
         castShadow
         receiveShadow
-        key={mesh.uuid + '-mesh'}
+        key={mesh.uuid + "-mesh"}
         geometry={mesh.geometry}
         material={mesh.material}
         position={threeNode.position}
@@ -65,7 +63,7 @@ export const GLTFNode = ({
   } else {
     return (
       <group
-        key={threeNode.uuid + '-group'}
+        key={threeNode.uuid + "-group"}
         position={threeNode.position}
         scale={threeNode.scale}
         rotation={threeNode.rotation}
