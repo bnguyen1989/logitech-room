@@ -13,7 +13,7 @@ export class ChangeStepHandler extends Handler {
     const visibleElements = elements.filter((element) => {
       return element.getVisible();
     });
-    
+
     visibleElements.forEach((element) => {
       const isValidDependence = Handler.validateDependence(step, element);
       if (isValidDependence) {
@@ -21,16 +21,16 @@ export class ChangeStepHandler extends Handler {
       }
     });
 
-		const notVisibleElements = elements.filter((element) => {
+    const notVisibleElements = elements.filter((element) => {
       return !element.getVisible();
     });
 
-		notVisibleElements.forEach((element) => {
-			const isValidDependence = Handler.validateDependence(step, element);
-			if(isValidDependence && element.getDefaultActive()) {
-				step.addActiveElement(element);
-			}
-		});
+    notVisibleElements.forEach((element) => {
+      const isValidDependence = Handler.validateDependence(step, element);
+      if (isValidDependence && element.getDefaultActive()) {
+        step.addActiveElement(element);
+      }
+    });
 
     return true;
   }

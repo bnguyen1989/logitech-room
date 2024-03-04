@@ -1,25 +1,35 @@
-import { Configurator } from '../configurator/Configurator'
-import { Command } from './Command'
+import { Configurator } from "../configurator/Configurator";
+import { Command } from "./Command";
 
 export class ChangeCountItemCommand extends Command {
-	public name: string = 'ChangeCountItemCommand';
-	public nameProperty: string;
-	public value: string;
-	public assetId: string;
-	
-	constructor(configurator: Configurator, nameProperty: string, value: string, assetId: string) {
-		super(configurator);
-		this.nameProperty = nameProperty;
-		this.value = value;
-		this.assetId = assetId;
-	}
+  public name: string = "ChangeCountItemCommand";
+  public nameProperty: string;
+  public value: string;
+  public assetId: string;
+  public isIncrease: boolean = false;
 
-	public executeCommand(): boolean {
-		this.configurator.setConfiguration({
-			[this.nameProperty]: this.value
-		});
+  constructor(
+    configurator: Configurator,
+    nameProperty: string,
+    value: string,
+    assetId: string
+  ) {
+    super(configurator);
+    this.nameProperty = nameProperty;
+    this.value = value;
+    this.assetId = assetId;
+  }
+
+  public executeCommand(): boolean {
+    const configuration = this.configurator.getConfiguration();
+    const currentValue = parseInt(configuration[this.nameProperty] as string);
+    if (parseInt(this.value) > currentValue) {
+      this.isIncrease = true;
+    }
+    this.configurator.setConfiguration({
+      [this.nameProperty]: this.value,
+    });
     this.changeProperties.push(this.nameProperty);
-		return true;
-	}
-		
+    return true;
+  }
 }

@@ -26,7 +26,7 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
     if (!gltf) return;
     dispatch(changeStatusBuilding(false));
   }, [gltf]);
-console.log('Room');
+console.log('Room', gltf.scene);
 
   return <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />;
 };

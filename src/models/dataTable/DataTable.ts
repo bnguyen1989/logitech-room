@@ -1,6 +1,7 @@
 import { DataTableRowI } from "./type";
 
 export class DataTable {
+  public id: string | null = null;
   private _data: Array<DataTableRowI>;
 
   constructor(data: Array<DataTableRowI>) {
@@ -13,6 +14,11 @@ export class DataTable {
 
   public get data(): Array<DataTableRowI> {
     return this._data;
+  }
+
+  public setId(id: string | null): DataTable {
+    this.id = id;
+    return this;
   }
 
   public getColumnNames(): Array<string> {
@@ -30,6 +36,6 @@ export class DataTable {
   public copy(): DataTable {
     return new DataTable(
       this._data.map((row) => ({ ...row, value: { ...row.value } }))
-    );
+    ).setId(this.id);
   }
 }

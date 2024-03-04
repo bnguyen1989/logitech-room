@@ -1,18 +1,37 @@
 import { GroupElement } from "../elements/GroupElement";
 import { ItemElement } from "../elements/ItemElement";
+import { MountElement } from "../elements/MountElement";
 import { Step } from "../step/Step";
 import { Handler } from "./Handler";
 
 export class AddActiveElementHandler extends Handler {
-  private element: ItemElement;
+  private element: ItemElement | MountElement;
 
-  constructor(element: ItemElement) {
+  constructor(element: ItemElement | MountElement) {
     super();
     this.element = element;
   }
 
   public handle(step: Step): boolean {
-    console.log("element", this.element);
+    if (this.element instanceof MountElement) {
+      const itemElement = step.getActiveItemElementByMountName(
+        this.element.name
+      );
+      if (itemElement) {
+        const dependenceMount = itemElement
+          .getDependenceMount()
+          .filter((mount: MountElement) => mount.name !== this.element.name);
+        dependenceMount.forEach((mount) => {
+          step.removeActiveElement(mount);
+        });
+      }
+      return true;
+    }
+
+    const mountElements = this.element.getDependenceMount();
+    mountElements.forEach((mount) => {
+      step.addValidElement(mount);
+    });
 
     const groups = step.allElements.filter(
       (elem) => elem instanceof GroupElement && elem.isRequiredOne()

@@ -30,48 +30,29 @@ export class ChangeStepBehavior extends Behavior {
             const configurator = app.currentConfigurator.getSnapshot();
             configurator.setAttributes(attributes as Array<AttributeI>);
             app.currentConfigurator = configurator;
-            new ConfigurationConstraintHandler(
+            return new ConfigurationConstraintHandler(
               configurator,
               app.dataTableLevel1,
               app.dataTableLevel2
-            ).handle();
-            app.eventEmitter.emit("threekitDataInitialized", configurator);
-            app.eventEmitter.emit("processInitThreekitData", false);
-            return resolve(true);
+            )
+              .handle()
+              .then(() => {
+                app.eventEmitter.emit("threekitDataInitialized", configurator);
+                app.eventEmitter.emit("processInitThreekitData", false);
+                return resolve(true);
+              });
           });
       }
-      if (command.stepName === StepName.AudioExtensions) {
-        const idDataTable2Level = new ConfigurationConstraintHandler(
-          app.currentConfigurator,
-          app.dataTableLevel1,
-          app.dataTableLevel2
-        ).getIdLevel2DataTable();
 
-        if (idDataTable2Level) {
-          app.eventEmitter.emit("processInitThreekitData", true);
-          return new ThreekitService()
-            .getDataTablesById(idDataTable2Level)
-            .then((dataTables) => {
-              app.dataTableLevel2 = new DataTable(dataTables);
-              new ConfigurationConstraintHandler(
-                app.currentConfigurator,
-                app.dataTableLevel1,
-                app.dataTableLevel2
-              ).handle();
-              app.eventEmitter.emit("processInitThreekitData", false);
-              return resolve(true);
-            });
-        }
-        return resolve(true);
-      }
-
-      new ConfigurationConstraintHandler(
+      return new ConfigurationConstraintHandler(
         app.currentConfigurator,
         app.dataTableLevel1,
         app.dataTableLevel2
-      ).handle();
-
-      return resolve(true);
+      )
+        .handle()
+        .then(() => {
+          return resolve(true);
+        });
     });
   }
 }

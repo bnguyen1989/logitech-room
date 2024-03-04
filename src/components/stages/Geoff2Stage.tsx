@@ -21,9 +21,9 @@ const controls = {
     bIblIntensity: 2.1,
   },
   shadows: {
-    keySamples: 30,
+    keySamples: 90,
     keyFocus: 0,
-    keySize: 140,
+    keySize: 40,
     keyOpacity: 0.15,
     cOpacity: 0.7,
     cBlur: 0.55,
@@ -61,11 +61,11 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
   return (
     <>
       <Environment files={`/assets/ibl/Andrei_Beds_Env.hdr`} blur={0} />
-      <SoftShadows
+      {/* <SoftShadows
         size={controls.shadows.keySize}
         focus={controls.shadows.keyFocus}
         samples={controls.shadows.keySamples}
-      />
+      /> */}
       <group rotation={[0, (Math.PI / 180) * controls.lighting.keyRotation, 0]}>
         <directionalLight
           color={[1.0, 1.0, 1.0]}
