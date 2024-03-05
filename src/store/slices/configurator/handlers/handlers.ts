@@ -194,6 +194,7 @@ function addElement(assetId: string, stateStep: StepI<StepCardType>) {
             )(store);
           }
         } else {
+          store.dispatch(changeStatusProcessing(true));
           store.dispatch(removeNodes(cardItemElement.threekit.assetId));
           store.dispatch(removeNodes(card.threekit.assetId));
           setElementByNameNode(
@@ -269,6 +270,7 @@ function removeElement(assetId: string) {
             }
           } else {
             store.dispatch(removeNodes(cardItemElement.threekit.assetId));
+            store.dispatch(changeStatusProcessing(true));
             setElementByNameNode(
               cardItemElement.threekit.assetId,
               defaultMount.nodeName
