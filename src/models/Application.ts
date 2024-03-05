@@ -10,6 +10,7 @@ import { ChangeStepCommand } from "./command/ChangeStepCommand";
 import { StepName } from "./permission/type";
 import { DataTable } from "./dataTable/DataTable";
 import { ChangeSelectItemCommand } from "./command/ChangeSelectItemCommand";
+import { ConfigurationConstraintHandler } from "./handlers/ConfigurationConstraintHandler";
 
 declare const logger: Logger;
 
@@ -95,9 +96,17 @@ export class Application {
           return;
         }
 
-        this.eventEmitter.emit("executeCommand", command);
-        logger.log("ExecuteCommand", command);
-        return resolve(true);
+        return new ConfigurationConstraintHandler(
+          this.currentConfigurator,
+          this.dataTableLevel1,
+          this.dataTableLevel2
+        )
+          .handle()
+          .then(() => {
+            this.eventEmitter.emit("executeCommand", command);
+            logger.log("ExecuteCommand", command);
+            return resolve(true);
+          });
       });
     });
   }

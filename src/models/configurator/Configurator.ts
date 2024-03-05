@@ -16,35 +16,59 @@ export class Configurator {
   private configuration: ConfigurationI = {};
   private attributeState: AttributesStateI = {};
 
+  public static NameAttrWithMountNames: Record<string, string> = {
+    "Room Camera": "Room Camera Mount",
+  };
+
   public static PlatformName = [["Room Service"]];
 
   public static ServicesName = [["Room Deployment Mode"]];
 
-  public static AudioExtensionName = [["Room Mic", "Qty - Micpod/Expansion"]];
-
-  public static CameraName = [["Room Camera"], ["Room Compute"]];
-
-  public static MeetingControllerName = [
-    ["Room Meeting Controller", "Qty - Meeting Controller"],
+  public static CameraName = [
+    ["Room Camera"],
+    ["Room Camera Mount"],
+    ["Room Compute"],
+    ["Room Compute Mount"],
     ["Room Sight"],
-    ["Room Tap Scheduler"],
-    ["Room Scribe"],
-    ["Room Swytch"],
   ];
 
-  public static VideoAccessoriesName = [
-    ["Room Compute Mount"],
-    ["Room Tap Mount", "Qty - Tap Mount"],
-    ["Room Camera Mount"],
+  public static AudioExtensionName = [
+    ["Room Mic", "Qty - Micpod/Expansion"],
     ["Room Mic Mount", "Qty - Mic Mount"],
     ["Room Mic Pod Hub", "Qty - Mic Pod Hub"],
     ["Room Mic Pod Extension Cable", "Qty - Mic Pod Extension Cable"],
+  ];
+
+  public static MeetingControllerName = [
+    ["Room Meeting Controller", "Qty - Meeting Controller"],
+    ["Room Tap Mount", "Qty - Tap Mount"],
+  ];
+
+  public static VideoAccessoriesName = [
+    ["Room Tap Scheduler"],
+    ["Room Scribe"],
+    ["Room Swytch"],
   ];
 
   public static SoftwareServicesName = [
     ["Room Device Management Software"],
     ["Room Support Service"],
   ];
+
+  public static getQtyNameByAttrName(name: string): string {
+    return [
+      Configurator.AudioExtensionName,
+      Configurator.CameraName,
+      Configurator.MeetingControllerName,
+      Configurator.VideoAccessoriesName,
+    ].reduce((acc, curr) => {
+      const found = curr.find((item) => item[0] === name);
+      if (found && found[1]) {
+        return found[1];
+      }
+      return acc;
+    }, "");
+  }
 
   public static getNameNodeForMic(id: number): string {
     return `Mic_Placement_${id}`;
@@ -54,18 +78,30 @@ export class Configurator {
     return `Tap_Placement_${id}`;
   }
 
-  public static getNameNodeForCamera(
-    type: "Cabinet" | "Wall",
-    id?: number
-  ): string {
-    if (type === "Cabinet") return "Camera_Cabinet_Placement";
-    return `Camera_Wall_Placement_${id}`;
+  public static getNameNodeForCamera(type: "Wall" | "TV", id?: number): string {
+    if (type === "Wall") return "Camera_Wall_Placement";
+    return `Camera_TV_Placement_${id}`;
+  }
+
+  public static getNameNodeForScribe(): string {
+    return "Scribe_Placement";
+  }
+
+  public static getNameNodeSwytch(): string {
+    return "Swytch_Placement";
+  }
+
+  public static getNameNodeScheduler(): string {
+    return "Scheduler_Placement";
   }
 
   public static getAllPlacement(): string[] {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
     const getNameNodeForCamera = this.getNameNodeForCamera;
+    const getNameNodeForScribe = this.getNameNodeForScribe;
+    const getNameNodeSwytch = this.getNameNodeSwytch;
+    const getNameNodeScheduler = this.getNameNodeScheduler;
 
     return [
       getNameNodeForMic(1),
@@ -74,9 +110,12 @@ export class Configurator {
       getNameNodeForTap(1),
       getNameNodeForTap(2),
       getNameNodeForTap(3),
-      getNameNodeForCamera("Cabinet"),
-      getNameNodeForCamera("Wall", 1),
-      getNameNodeForCamera("Wall", 2),
+      getNameNodeForCamera("Wall"),
+      getNameNodeForCamera("TV", 1),
+      getNameNodeForCamera("TV", 2),
+      getNameNodeForScribe(),
+      getNameNodeSwytch(),
+      getNameNodeScheduler(),
     ];
   }
 

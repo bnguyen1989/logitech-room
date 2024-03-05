@@ -7,6 +7,7 @@ declare const permission: Permission;
 export const getStepData = (state: RootState) => state.ui.stepData;
 export const getActiveStep = (state: RootState) => {
   let activeStep = state.ui.activeStep;
+  
   if (activeStep) {
     activeStep = JSON.parse(JSON.stringify(activeStep));
     if(!activeStep) return null;

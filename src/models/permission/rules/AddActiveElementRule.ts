@@ -1,12 +1,13 @@
 import { ItemElement } from "../elements/ItemElement";
+import { MountElement } from '../elements/MountElement'
 import { Step } from "../step/Step";
 import { Rule } from "./Rule";
 
 export class AddActiveElementRule extends Rule {
   public name: string = "AddActiveElementRule";
-  public element: ItemElement;
+  public element: ItemElement | MountElement;
 
-  constructor(element: ItemElement) {
+  constructor(element: ItemElement | MountElement) {
     super();
     this.element = element;
   }

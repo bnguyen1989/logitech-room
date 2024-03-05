@@ -101,6 +101,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   onChange={handleChangeCounter}
                   min={data.counter.min}
                   max={data.counter.max}
+                  disabled={!active}
                 />
               )}
               {!!data.select && (

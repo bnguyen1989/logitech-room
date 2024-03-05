@@ -52,7 +52,7 @@ export const getInitStepData = (): StepDataI => {
       key: StepName.Services,
       name: "Lorem Services",
       title:
-        "Would you prefer to deploy via a dedicated video conferencing appliance, or a meeting room computer?",
+        "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
       subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
       cards: [],
       activeCards: [],
@@ -60,7 +60,7 @@ export const getInitStepData = (): StepDataI => {
     [StepName.ConferenceCamera]: {
       key: StepName.ConferenceCamera,
       name: "Conference Camera",
-      title: "Choose your conference camera.",
+      title: "Choose your conferencing camera(s).",
       subtitle:
         "These recommendations are based on your previous answers. You selected: {2} deployment running {1} in a {0}.",
       cards: [],
@@ -80,7 +80,7 @@ export const getInitStepData = (): StepDataI => {
       name: "Meeting Controller & Add On",
       title: "Choose your meeting controller.",
       subtitle:
-        "Select a controller that directly connects to the meeting room PC or video bar, or one that is untethered from the room system.",
+        "Select tethered or network-connected meeting controller for one-touch join meetings.",
       cards: [],
       activeCards: [],
     },
@@ -96,9 +96,9 @@ export const getInitStepData = (): StepDataI => {
     [StepName.SoftwareServices]: {
       key: StepName.SoftwareServices,
       name: "Software & Services",
-      title: "Let’s finish up by selecting your software and services.",
-      subtitle:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      title:
+        "Finish up by adding services and tools to ensure your deployment is always up and running.",
+      subtitle: "",
       cards: [],
       activeCards: [],
     },
@@ -136,7 +136,7 @@ function getRoomCardData(): Array<RoomCardI> {
     {
       key: StepName.RoomSize,
       image: ImagePhonebooth,
-      title: "Phonebooth",
+      title: "Phone Booth",
       subtitle: "up to 3",
       keyPermission: RoomSizeName.Phonebooth,
     },
@@ -185,7 +185,7 @@ export function getServicesCardData(): Array<ServiceCardI> {
       image: ImageAppliance,
       title: "Appliance-Based",
       subtitle:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis sapien fringilla, molestie nisl ut, venenatis elit.",
+        "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
       keyPermission: ServiceName.Android,
     },
     {
@@ -193,7 +193,7 @@ export function getServicesCardData(): Array<ServiceCardI> {
       image: ImagePCBased,
       title: "PC-Based",
       subtitle:
-        "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris eleifend vitae odio non elementum.",
+        "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
       keyPermission: ServiceName.PC,
     },
   ];

@@ -9,6 +9,10 @@ import {
 import { DataTable } from "../dataTable/DataTable";
 import { Handler } from "./Handler";
 import { AttrSpecI } from "./type";
+import { ThreekitService } from "../../services/Threekit/ThreekitService";
+import { Application } from "../Application";
+
+declare const app: Application;
 
 interface CacheI {
   [key: string]:
@@ -61,7 +65,7 @@ export class ConfigurationConstraintHandler extends Handler {
     return triggeredByAttr;
   }
 
-  public handle(): boolean {
+  public async handle(): Promise<boolean> {
     const triggeredByAttr =
       ConfigurationConstraintHandler.getTriggeredAttribute(this.configurator);
     const localeTagStr = "locale_US";
@@ -111,6 +115,46 @@ export class ConfigurationConstraintHandler extends Handler {
       cache.level2datatableId = level2datatableId;
     }
 
+    if (
+      (this.dataTableLevel2.isEmpty() && level2datatableId) ||
+      (!this.dataTableLevel2.isEmpty() &&
+        level2datatableId !== this.dataTableLevel2.id)
+    ) {
+      app.eventEmitter.emit("processInitThreekitData", true);
+      await new ThreekitService()
+        .getDataTablesById(level2datatableId)
+        .then((dataTables) => {
+          this.dataTableLevel2 = new DataTable(dataTables).setId(
+            level2datatableId
+          );
+          app.dataTableLevel2 = this.dataTableLevel2.copy();
+          // After loading the data, call the handler
+          this.proccesDataTableLavel2(
+            localeTagStr,
+            leadingSpecCharForDefault,
+            setLevel2Default_flag,
+            attrRulesStr
+          );
+          app.eventEmitter.emit("processInitThreekitData", false);
+        });
+    } else if (level2datatableId) {
+      // Let's make sure that the level 2 table ID exists before calling the handler
+      this.proccesDataTableLavel2(
+        localeTagStr,
+        leadingSpecCharForDefault,
+        setLevel2Default_flag,
+        attrRulesStr
+      );
+    }
+    return true;
+  }
+
+  public proccesDataTableLavel2(
+    localeTagStr: string,
+    leadingSpecCharForDefault: string,
+    setLevel2Default_flag: boolean,
+    attrRulesStr: string
+  ) {
     const setConfig_obj = this.validateAttributesWithDatatable(
       localeTagStr,
       this.dataTableLevel2,
@@ -130,15 +174,45 @@ export class ConfigurationConstraintHandler extends Handler {
 
     ////*3rd call the rule(s) based on what's selected in the level1 datatable
     const attrRulesArr = attrRulesStr
-      ? attrRulesStr.split(";").map((aStr) => aStr.trim())
+      ? attrRulesStr.split(";").map((aStr: any) => aStr.trim())
       : [];
 
-      //temp rule
+    //temp rule
     if (attrRulesArr.indexOf("tapQty_tapIp") > -1) {
       this.rule_tapQty10_tapIp();
     }
 
-    return true;
+    this.rule_Sight_Mic();
+  }
+
+  private rule_Sight_Mic() {
+    const sightAttrName_str = "Room Sight";
+    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+
+    const selectedSight = this.getSelectedValue(sightAttrName_str);
+
+    if(typeof selectedSight === "object") {
+      const attribute = this.getAttribute(micPodQtyAttrName_str);
+      const attrState = this.configurator.getAttributeState();
+      const attributeValuesArr = attribute
+        ? attrState[attribute.id].values
+        : undefined;
+      if (attribute && attributeValuesArr) {
+        const countVisible = attributeValuesArr.filter((option) => option.visible).length;
+        let tempCount = countVisible;
+        attributeValuesArr.forEach((option) => {
+          if(option.visible) {
+            tempCount--;
+          }
+          if(tempCount === 0) {
+            option.visible = false;
+          }
+        });
+        this.configurator.setAttributeState(attribute.id, {
+          values: attributeValuesArr,
+        });
+      }
+    }
   }
 
   private rule_tapQty10_tapIp() {
@@ -168,22 +242,6 @@ export class ConfigurationConstraintHandler extends Handler {
         });
       }
     }
-  }
-
-  public getIdLevel2DataTable() {
-    const leadingSpecCharForDefault = "*";
-    const skipColumns = ["level2datatableId", "attrRules"];
-    const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
-    const level2row = this.findLevel2Row(
-      this.dataTableLevel1,
-      level1AttrSequenceArr,
-      leadingSpecCharForDefault
-    );
-
-    if (!level2row || !level2row.value) return null; //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
-
-    const level2datatableId = level2row.value[skipColumns[0]];
-    return level2datatableId;
   }
 
   private getAttribute(name: string) {
