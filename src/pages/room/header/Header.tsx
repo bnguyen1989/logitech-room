@@ -2,13 +2,20 @@ import { useDispatch } from "react-redux";
 import { Button } from "../../../components/Buttons/Button/Button";
 import s from "./Header.module.scss";
 import { setSelectProductModal } from "../../../store/slices/modals/Modals.slice";
+import { useNavigate } from "react-router-dom";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleShowModalProducts = () => {
     dispatch(setSelectProductModal({ isOpen: true }));
   };
+
+  const handleAnotherRoom = () => {
+    navigate("/configurator", { replace: true });
+  };
+
   return (
     <div className={s.container}>
       <div className={s.text}>
@@ -20,7 +27,7 @@ export const Header: React.FC = () => {
       </div>
       <div className={s.buttons}>
         <Button
-          onClick={() => {}}
+          onClick={handleAnotherRoom}
           text={"Add Another Room"}
           variant={"outlined"}
         />

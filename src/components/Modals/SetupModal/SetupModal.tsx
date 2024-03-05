@@ -76,7 +76,7 @@ export const SetupModal: React.FC = () => {
     const nameOrder = getNameOrder();
     const nameRoomSize = selectedPrepareCards.find(
       (card) => card.key === StepName.RoomSize 
-    )?.title;
+    )?.keyPermission;
     if (!nameRoomSize) return;
     const description = getDescriptionRoomBySize(nameRoomSize);
     return new ThreekitService().createOrder({
