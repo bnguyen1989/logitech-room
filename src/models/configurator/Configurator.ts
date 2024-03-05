@@ -95,6 +95,26 @@ export class Configurator {
     return "Scheduler_placement";
   }
 
+  public static getNameNodeMicPodMount(): string {
+    return "Pod_Table_Mount_mic_point";
+  }
+
+  public static getNameNodeTapRiserMount(): string {
+    return "Tap_Riser_Mount_Placement"
+  }
+
+  public static getNameNodeTapTableMount(): string {
+    return "Tap_Table_Mount_Placement";
+  }
+
+  public static getNameNodeCameraWallMount(): string {
+    return "Camera_Wall_Mount_Placement";
+  }
+
+  public static getNameNodeCameraTVMount(): string {
+    return "Camera_TV_Mount_placement";
+  }
+
   public static getAllPlacement(): string[] {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
@@ -102,6 +122,9 @@ export class Configurator {
     const getNameNodeForScribe = this.getNameNodeForScribe;
     const getNameNodeSwytch = this.getNameNodeSwytch;
     const getNameNodeScheduler = this.getNameNodeScheduler;
+    const getNameNodeMicPodMount = this.getNameNodeMicPodMount;
+    const getNameNodeTapRiserMount = this.getNameNodeTapRiserMount;
+    const getNameNodeTapTableMount = this.getNameNodeTapTableMount;
 
     return [
       getNameNodeForMic(1),
@@ -116,6 +139,9 @@ export class Configurator {
       getNameNodeForScribe(),
       getNameNodeSwytch(),
       getNameNodeScheduler(),
+      getNameNodeMicPodMount(),
+      getNameNodeTapRiserMount(),
+      getNameNodeTapTableMount(),
     ];
   }
 

@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as THREE from "three";
 import { changeStatusProcessing } from "../../store/slices/configurator/Configurator.slice";
+import { ProductsNodes } from "./ProductsNodes.js";
+import { GLTFNode } from "./GLTFNode.js";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
@@ -28,7 +30,11 @@ export const Product: React.FC<ProductProps> = ({
       scale={parentNode.scale}
       rotation={parentNode.rotation}
     >
-      <primitive object={productGltf.scene.clone()} />
+      <GLTFNode
+        threeNode={productGltf.scene.clone()}
+        nodeMatchers={ProductsNodes()}
+      />
+      ;
     </group>
   );
 };

@@ -26,6 +26,14 @@ export class CountableMountElement extends MountElement {
 		return `${this.nodeName}_${this.activeIndex}`;
 	}
 
+  public getRangeNameNode(): string[] {
+    const range = [];
+    for (let i = this.min+1; i <= this.max; i++) {
+      range.push(`${this.nodeName}_${i}`);
+    }
+    return range;
+  }
+
   public addNotAvailableIndex(index: number): void {
     this.notAvailableIndex.push(index);
   }

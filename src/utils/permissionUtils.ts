@@ -146,12 +146,24 @@ function createStepConferenceCamera() {
           CameraName.WallMountForVideoBars,
           Configurator.getNameNodeForCamera("Wall")
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.WallMountForVideoBars,
+        //     Configurator.getNameNodeCameraWallMount()
+        //   )
+        // )
       )
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
           Configurator.getNameNodeForCamera("TV", 2)
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.TVMountForVideoBars,
+        //     Configurator.getNameNodeCameraTVMount()
+        //   )
+        // )
       )
       .setDefaultMount(
         new MountElement(
@@ -205,6 +217,11 @@ function createStepAudioExtensions() {
       new CountableMountElement(
         AudioExtensionName.RallyMicPodMount,
         "Mic_Placement"
+      ).setDependentMount(
+        new MountElement(
+          AudioExtensionName.RallyMicPod,
+          Configurator.getNameNodeMicPodMount()
+        )
       )
     )
   );
@@ -252,18 +269,28 @@ function createStepMeetingController() {
         new MountElement(
           MeetingControllerName.TapRiserMount,
           Configurator.getNameNodeForTap(2)
+        ).setDependentMount(
+          new MountElement(
+            MeetingControllerName.TapRiserMount,
+            Configurator.getNameNodeTapRiserMount()
+          )
         )
       )
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapTableMount,
-          Configurator.getNameNodeForTap(3)
+          Configurator.getNameNodeForTap(2)
+        ).setDependentMount(
+          new MountElement(
+            MeetingControllerName.TapTableMount,
+            Configurator.getNameNodeTapTableMount()
+          )
         )
       )
       .setDefaultMount(
         new MountElement(
-          MeetingControllerName.LogitechTapIP,
-          Configurator.getNameNodeForTap(3)
+          MeetingControllerName.TapWallMount,
+          Configurator.getNameNodeForTap(1)
         )
       );
   };

@@ -10,6 +10,10 @@ type ProductProps = {
 };
 
 export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
+  console.log("nameNode", nameNode);
+  console.log("parentNode", parentNode);
+  
+  
   const attachNodeNameToAssetId = useAppSelector(getNodes);
   if (!Object.keys(attachNodeNameToAssetId).includes(nameNode))
     return undefined;
