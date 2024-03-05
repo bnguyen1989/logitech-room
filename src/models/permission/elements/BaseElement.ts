@@ -48,6 +48,10 @@ export class BaseElement extends Element<BaseElement> {
     return this;
   }
 
+  public isEquals(element: BaseElement): boolean {
+    return this.name === element.name;
+  }
+
   public copy(): BaseElement {
     const baseElement = new BaseElement(this.name);
     return baseElement;
