@@ -257,18 +257,28 @@ function createStepMeetingController() {
         new MountElement(
           MeetingControllerName.TapRiserMount,
           Configurator.getNameNodeForTap(2)
+        ).setDependentMount(
+          new MountElement(
+            MeetingControllerName.TapRiserMount,
+            Configurator.getNameNodeTapRiserMount()
+          )
         )
       )
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapTableMount,
-          Configurator.getNameNodeForTap(3)
+          Configurator.getNameNodeForTap(2)
+        ).setDependentMount(
+          new MountElement(
+            MeetingControllerName.TapTableMount,
+            Configurator.getNameNodeTapTableMount()
+          )
         )
       )
       .setDefaultMount(
         new MountElement(
-          MeetingControllerName.LogitechTapIP,
-          Configurator.getNameNodeForTap(3)
+          MeetingControllerName.TapWallMount,
+          Configurator.getNameNodeForTap(1)
         )
       );
   };

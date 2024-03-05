@@ -99,6 +99,14 @@ export class Configurator {
     return "Pod_Table_Mount_mic_point";
   }
 
+  public static getNameNodeTapRiserMount(): string {
+    return "Tap_Riser_Mount_Placement"
+  }
+
+  public static getNameNodeTapTableMount(): string {
+    return "Tap_Table_Mount_Placement";
+  }
+
   public static getAllPlacement(): string[] {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
@@ -107,6 +115,8 @@ export class Configurator {
     const getNameNodeSwytch = this.getNameNodeSwytch;
     const getNameNodeScheduler = this.getNameNodeScheduler;
     const getNameNodeMicPodMount = this.getNameNodeMicPodMount;
+    const getNameNodeTapRiserMount = this.getNameNodeTapRiserMount;
+    const getNameNodeTapTableMount = this.getNameNodeTapTableMount;
 
     return [
       getNameNodeForMic(1),
@@ -122,6 +132,8 @@ export class Configurator {
       getNameNodeSwytch(),
       getNameNodeScheduler(),
       getNameNodeMicPodMount(),
+      getNameNodeTapRiserMount(),
+      getNameNodeTapTableMount(),
     ];
   }
 
