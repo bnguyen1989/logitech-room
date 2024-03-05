@@ -24,6 +24,14 @@ export class Configurator {
 
   public static ServicesName = [["Room Deployment Mode"]];
 
+  public static CameraName = [
+    ["Room Camera"],
+    ["Room Camera Mount"],
+    ["Room Compute"],
+    ["Room Compute Mount"],
+    ["Room Sight"],
+  ];
+
   public static AudioExtensionName = [
     ["Room Mic", "Qty - Micpod/Expansion"],
     ["Room Mic Mount", "Qty - Mic Mount"],
@@ -31,25 +39,15 @@ export class Configurator {
     ["Room Mic Pod Extension Cable", "Qty - Mic Pod Extension Cable"],
   ];
 
-  public static CameraName = [
-    ["Room Camera"],
-    ["Room Camera Mount"],
-    ["Room Compute"],
-    ["Room Sight"],
-    ["Room Scribe"],
-  ];
-
   public static MeetingControllerName = [
     ["Room Meeting Controller", "Qty - Meeting Controller"],
-
-    ["Room Tap Scheduler"],
-
-    ["Room Swytch"],
+    ["Room Tap Mount", "Qty - Tap Mount"],
   ];
 
   public static VideoAccessoriesName = [
-    ["Room Compute Mount"],
-    ["Room Tap Mount", "Qty - Tap Mount"],
+    ["Room Tap Scheduler"],
+    ["Room Scribe"],
+    ["Room Swytch"],
   ];
 
   public static SoftwareServicesName = [
