@@ -196,6 +196,11 @@ function createStepAudioExtensions() {
         new CountableMountElement(
           AudioExtensionName.RallyMicPod,
           "Mic_Placement"
+        ).setDependentMount(
+          new MountElement(
+            AudioExtensionName.RallyMicPodMount,
+            Configurator.getNameNodeMicPodMount()
+          )
         )
       )
       .setRecommended(true)

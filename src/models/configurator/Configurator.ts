@@ -95,6 +95,10 @@ export class Configurator {
     return "Scheduler_Placement";
   }
 
+  public static getNameNodeMicPodMount(): string {
+    return "Pod_Table_Mount_mic_point";
+  }
+
   public static getAllPlacement(): string[] {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
@@ -102,6 +106,7 @@ export class Configurator {
     const getNameNodeForScribe = this.getNameNodeForScribe;
     const getNameNodeSwytch = this.getNameNodeSwytch;
     const getNameNodeScheduler = this.getNameNodeScheduler;
+    const getNameNodeMicPodMount = this.getNameNodeMicPodMount;
 
     return [
       getNameNodeForMic(1),
@@ -116,6 +121,7 @@ export class Configurator {
       getNameNodeForScribe(),
       getNameNodeSwytch(),
       getNameNodeScheduler(),
+      getNameNodeMicPodMount(),
     ];
   }
 

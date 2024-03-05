@@ -8,6 +8,8 @@ export const ProductsNodes = () => {
 
   const nodeMatchers: NodeMatcher[] = [
     (threeNode) => {
+      console.log("threeNode.name", threeNode.name);
+      
       if (allNodePlacement.includes(threeNode.name)) {
         return (
           <Suspense>
