@@ -92,7 +92,7 @@ export class Configurator {
   }
 
   public static getNameNodeScheduler(): string {
-    return "Scheduler_Placement";
+    return "Scheduler_placement";
   }
 
   public static getNameNodeMicPodMount(): string {
