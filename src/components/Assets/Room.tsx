@@ -1,4 +1,5 @@
 import { useAsset } from "@threekit/react-three-fiber";
+import * as THREE from "three";
 
 import { GLTFNode } from "./GLTFNode.js";
 
@@ -26,7 +27,7 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
     if (!gltf) return;
     dispatch(changeStatusBuilding(false));
   }, [gltf]);
-console.log('Room', gltf.scene);
+  console.log("Room");
 
   return <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />;
 };

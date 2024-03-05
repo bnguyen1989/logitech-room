@@ -1,6 +1,7 @@
 import { useAsset } from "@threekit/react-three-fiber";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import * as THREE from "three";
 import { changeStatusProcessing } from "../../store/slices/configurator/Configurator.slice";
 
 export type ProductProps = {
@@ -14,7 +15,7 @@ export const Product: React.FC<ProductProps> = ({
 }) => {
   const dispatch = useDispatch();
   const productGltf = useAsset({ assetId: productAssetId });
-  
+
   useEffect(() => {
     if (!productGltf) return;
     dispatch(changeStatusProcessing(false));
