@@ -45,7 +45,7 @@ export enum CameraName {
   MeetUp = "MeetUp",
   RallyBarHuddle = "Logitech Rally Bar Huddle",
   RallyBarMini = "Logitech Rally Bar Mini - Graphite",
-  RallyBar = "Logitech Rally Bar",
+  RallyBar = "Logitech Rally Bar - Graphite",
   RallyPlus = "Logitech Rally Plus",
 
   AddCameras = "Add'l Cameras",
@@ -64,8 +64,8 @@ export enum CameraName {
 }
 
 export enum AudioExtensionName {
-  RallyMicPod = "Logitech Rally Mic Pod",
-  RallyMicPodMount = "Logitech Rally Mic Pod Mount",
+  RallyMicPod = "Logitech Rally Mic Pod - Graphite",
+  RallyMicPodMount = "Logitech Rally Mic Pod Mount - Graphite",
   RallyMicPodPendantMount = "Logitech Rally Mic Pod Pendant Mount",
   RallySpeaker = "Rally Speaker",
   RallyMicPodHub = "Rally Mic Pod Hub",
@@ -74,7 +74,7 @@ export enum AudioExtensionName {
 }
 
 export enum MeetingControllerName {
-  LogitechTapIP = "Logitech Tap IP",
+  LogitechTapIP = "Logitech Tap IP - Graphite",
   LogitechTap = "Logitech Tap",
 
   TapWallMount = "Tap Mount - Wall Mount",
@@ -83,7 +83,7 @@ export enum MeetingControllerName {
 }
 
 export enum VideoAccessoryName {
-  LogitechTapScheduler = "Logitech Tap Scheduler",
+  LogitechTapScheduler = "Logitech Tap Scheduler - Graphite",
   LogitechScribe = "Logitech Scribe",
   LogitechSwytch = "Logitech Swytch",
 }
@@ -194,25 +194,33 @@ function createStepAudioExtensions() {
     new ItemElement(AudioExtensionName.RallyMicPod)
       .addDependenceMount(
         new CountableMountElement(
-          AudioExtensionName.RallyMicPodMount,
+          AudioExtensionName.RallyMicPod,
           "Mic_Placement"
         )
       )
       .setRecommended(true)
   );
   const group2 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallyMicPodPendantMount)
+    new ItemElement(AudioExtensionName.RallyMicPodMount).addDependenceMount(
+      new CountableMountElement(
+        AudioExtensionName.RallyMicPodMount,
+        "Mic_Placement"
+      )
+    )
   );
   const group3 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallySpeaker)
+    new ItemElement(AudioExtensionName.RallyMicPodPendantMount)
   );
   const group4 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallyMicPodHub)
+    new ItemElement(AudioExtensionName.RallySpeaker)
   );
   const group5 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.CATCoupler)
+    new ItemElement(AudioExtensionName.RallyMicPodHub)
   );
   const group6 = new GroupElement().addElement(
+    new ItemElement(AudioExtensionName.CATCoupler)
+  );
+  const group7 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.MicPodExtensionCable).setRecommended(
       true
     )
@@ -225,6 +233,7 @@ function createStepAudioExtensions() {
     group4,
     group5,
     group6,
+    group7,
   ];
   return stepAudioExtensions;
 }
