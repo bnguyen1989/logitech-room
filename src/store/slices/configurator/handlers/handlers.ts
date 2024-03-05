@@ -134,15 +134,16 @@ function addElement(assetId: string, stateStep: StepI<StepCardType>) {
 
         const dependentMount = mountElement.getDependentMount();
         if (dependentMount) {
-          const element = step.getElementByName(dependentMount.name);
-          if (element instanceof ItemElement) {
-            const [mountElement] = element.getDependenceMount();
-            if (mountElement instanceof CountableMountElement) {
+          const elementDependent = step.getElementByName(dependentMount.name);
+          if (elementDependent instanceof ItemElement) {
+            const [mountElementDependent] =
+              elementDependent.getDependenceMount();
+            if (mountElementDependent) {
               const nodes = store.getState().configurator.nodes;
-              const assetId = nodes[mountElement.getNameNode()];
+              const assetId = nodes[mountElementDependent.getNameNode()];
               setElementByNameNode(
                 card.threekit.assetId,
-                mountElement.getNameNode()
+                nodeName
               )(store);
               setElementByNameNode(
                 assetId,
@@ -239,10 +240,35 @@ function changeCountElement(
       if (mountElement instanceof CountableMountElement) {
         if (isIncrease) {
           const nodeName = mountElement.next().getNameNode();
-          setElementByNameNode(card.threekit.assetId, nodeName)(store);
+          const dependentMount = mountElement.getDependentMount();
+          if (dependentMount) {
+            const nodes = store.getState().configurator.nodes;
+            const assetId = nodes[nodeName];
+            if (assetId) {
+              setElementByNameNode(card.threekit.assetId, nodeName)(store);
+              setElementByNameNode(
+                assetId,
+                dependentMount.getNameNode()
+              )(store);
+            }
+          } else {
+            setElementByNameNode(card.threekit.assetId, nodeName)(store);
+          }
         } else {
-          const nodeName = mountElement.prev().getNameNode();
-          setElementByNameNode(card.threekit.assetId, nodeName)(store);
+          const prevNodeName = mountElement.getNameNode();
+          mountElement.prev();
+          const dependentMount = mountElement.getDependentMount();
+          if (dependentMount) {
+            const nodes = store.getState().configurator.nodes;
+            const assetId = nodes[dependentMount.getNameNode()];
+            if (assetId) {
+              setElementByNameNode(
+                assetId,
+                prevNodeName
+              )(store);
+            }
+          } 
+
 
           const nodes = store.getState().configurator.nodes;
           const keysNode = Object.keys(nodes).filter(
@@ -255,6 +281,18 @@ function changeCountElement(
         }
 
         if (value === 0) {
+          const dependentMount = mountElement.getDependentMount();
+          if (dependentMount) {
+            const nodeName = mountElement.getNameNode();
+            const nodes = store.getState().configurator.nodes;
+            const assetId = nodes[dependentMount.getNameNode()];
+            if (assetId) {
+              setElementByNameNode(
+                assetId,
+                nodeName
+              )(store);
+            }
+          }
           permission.removeActiveItemByName(card.keyPermission);
           store.dispatch(removeNodes(assetId));
           store.dispatch(removeActiveCard(card as StepCardType));
