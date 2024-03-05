@@ -146,12 +146,24 @@ function createStepConferenceCamera() {
           CameraName.WallMountForVideoBars,
           Configurator.getNameNodeForCamera("Wall")
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.WallMountForVideoBars,
+        //     Configurator.getNameNodeCameraWallMount()
+        //   )
+        // )
       )
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
           Configurator.getNameNodeForCamera("TV", 2)
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.TVMountForVideoBars,
+        //     Configurator.getNameNodeCameraTVMount()
+        //   )
+        // )
       )
       .setDefaultMount(
         new MountElement(

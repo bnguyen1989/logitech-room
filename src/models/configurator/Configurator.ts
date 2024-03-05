@@ -107,6 +107,14 @@ export class Configurator {
     return "Tap_Table_Mount_Placement";
   }
 
+  public static getNameNodeCameraWallMount(): string {
+    return "Camera_Wall_Mount_Placement";
+  }
+
+  public static getNameNodeCameraTVMount(): string {
+    return "Camera_TV_Mount_placement";
+  }
+
   public static getAllPlacement(): string[] {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
