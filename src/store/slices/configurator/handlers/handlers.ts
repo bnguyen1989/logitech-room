@@ -131,14 +131,28 @@ function addElement(assetId: string, stateStep: StepI<StepCardType>) {
       if (mountElement instanceof CountableMountElement) {
         mountElement.setActiveIndex(0);
         const nodeName = mountElement.next().getNameNode();
-        setElementByNameNode(
-          "bdcc16d6-1ab1-4979-9b0b-3119bf5accf8",
-          nodeName
-        )(store);
-        setElementByNameNode(
-          card.threekit.assetId,
-          Configurator.getNameNodeMicPodMount()
-        )(store);
+
+        const dependentMount = mountElement.getDependentMount();
+        if (dependentMount) {
+          const element = step.getElementByName(dependentMount.name);
+          if (element instanceof ItemElement) {
+            const [mountElement] = element.getDependenceMount();
+            if (mountElement instanceof CountableMountElement) {
+              const nodes = store.getState().configurator.nodes;
+              const assetId = nodes[mountElement.getNameNode()];
+              setElementByNameNode(
+                card.threekit.assetId,
+                mountElement.getNameNode()
+              )(store);
+              setElementByNameNode(
+                assetId,
+                dependentMount.getNameNode()
+              )(store);
+            }
+          }
+        } else {
+          setElementByNameNode(card.threekit.assetId, nodeName)(store);
+        }
       }
     } else if (element instanceof MountElement) {
       const itemElement = step.getActiveItemElementByMountName(element.name);
