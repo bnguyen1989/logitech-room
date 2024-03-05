@@ -64,7 +64,7 @@ export enum CameraName {
 }
 
 export enum AudioExtensionName {
-  RallyMicPod = "Rally Mic Pod",
+  RallyMicPod = "Logitech Rally Mic Pod",
   RallyMicPodMount = "Logitech Rally Mic Pod Mount",
   RallyMicPodPendantMount = "Logitech Rally Mic Pod Pendant Mount",
   RallySpeaker = "Rally Speaker",
@@ -139,29 +139,30 @@ function createStepServices() {
 
 function createStepConferenceCamera() {
   const stepConferenceCamera = new Step(StepName.ConferenceCamera);
+  const setMountForCamera = (item: ItemElement) => {
+    return item
+      .addDependenceMount(
+        new MountElement(
+          CameraName.WallMountForVideoBars,
+          Configurator.getNameNodeForCamera("Wall")
+        )
+      )
+      .addDependenceMount(
+        new MountElement(
+          CameraName.TVMountForVideoBars,
+          Configurator.getNameNodeForCamera("TV", 2)
+        )
+      )
+      .setDefaultMount(
+        new MountElement(
+          CameraName.RallyBarMini,
+          Configurator.getNameNodeForCamera("TV", 1)
+        )
+      );
+  };
   const group = new GroupElement()
-    .addElement(new ItemElement(CameraName.RallyBar))
-    .addElement(
-      new ItemElement(CameraName.RallyBarMini)
-        .addDependenceMount(
-          new MountElement(
-            CameraName.WallMountForVideoBars,
-            Configurator.getNameNodeForCamera("Wall")
-          )
-        )
-        .addDependenceMount(
-          new MountElement(
-            CameraName.TVMountForVideoBars,
-            Configurator.getNameNodeForCamera("TV", 2)
-          )
-        )
-        .setDefaultMount(
-          new MountElement(
-            CameraName.RallyBarMini,
-            Configurator.getNameNodeForCamera("TV", 1)
-          )
-        )
-    )
+    .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
+    .addElement(setMountForCamera(new ItemElement(CameraName.RallyBarMini)))
     .addElement(
       new ItemElement(CameraName.PreConfiguredMiniPC)
         .setVisible(false)
@@ -339,7 +340,7 @@ export const isScribe = (name: string) => {
 
 export const isSight = (name: string) => {
   return isCompareName(name)([CameraName.LogitechSight]);
-}
+};
 
 export const isMic = (name: string) => {
   return isCompareName(name)([AudioExtensionName.RallyMicPod]);
