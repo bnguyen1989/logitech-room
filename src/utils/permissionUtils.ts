@@ -165,8 +165,13 @@ function createStepConferenceCamera() {
       )
       .setDefaultMount(
         new MountElement(
-          CameraName.RallyBarMini,
-          Configurator.getNameNodeForCamera("TV", 1)
+          CameraName.WallMountForVideoBars,
+          Configurator.getNameNodeForCamera("Wall")
+        ).setDependentMount(
+          new MountElement(
+            CameraName.WallMountForVideoBars,
+            Configurator.getNameNodeCameraWallMount()
+          )
         )
       );
   };
@@ -287,8 +292,13 @@ function createStepMeetingController() {
       )
       .setDefaultMount(
         new MountElement(
-          MeetingControllerName.TapWallMount,
-          Configurator.getNameNodeForTap(1)
+          MeetingControllerName.TapTableMount,
+          Configurator.getNameNodeForTap(2)
+        ).setDependentMount(
+          new MountElement(
+            MeetingControllerName.TapTableMount,
+            Configurator.getNameNodeTapTableMount()
+          )
         )
       );
   };
