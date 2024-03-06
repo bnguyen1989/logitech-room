@@ -50,7 +50,7 @@ export const getInitStepData = (): StepDataI => {
     },
     [StepName.Services]: {
       key: StepName.Services,
-      name: "Lorem Services",
+      name: "Deployment Type",
       title:
         "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
       subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
@@ -77,7 +77,7 @@ export const getInitStepData = (): StepDataI => {
     },
     [StepName.MeetingController]: {
       key: StepName.MeetingController,
-      name: "Meeting Controller & Add On",
+      name: "Meeting Controller",
       title: "Choose your meeting controller.",
       subtitle:
         "Select tethered or network-connected meeting controller for one-touch join meetings.",
@@ -86,10 +86,10 @@ export const getInitStepData = (): StepDataI => {
     },
     [StepName.VideoAccessories]: {
       key: StepName.VideoAccessories,
-      name: "Video Accessories",
-      title: "Pick your video conferencing accessories.",
+      name: "Additional Add-Ons",
+      title: "Choose your add-ons.",
       subtitle:
-        "Add features and flexibility with these video conferencing accessories.",
+        "Enhance the meeting experience with add-ons.",
       cards: [],
       activeCards: [],
     },
@@ -208,7 +208,7 @@ export function getSoftwareServicesCardData(): Array<ItemCardI> {
       title: "Device Management Software",
       subtitle: "(Including Sync)",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipis cing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
       keyPermission: SoftwareServicesName.LogitechSync,
     },
     {
@@ -217,7 +217,7 @@ export function getSoftwareServicesCardData(): Array<ItemCardI> {
       header_title: "LOGITECH SELECT",
       title: "24/7 Enterprise-Grade Support",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipis cing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,
     },
   ];

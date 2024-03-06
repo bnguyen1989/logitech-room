@@ -10,12 +10,10 @@ export const QuestionForm: React.FC<PropsI> = () => {
     {
       title: "Label",
       question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do?",
+        " What are your hours of support?",
       options: [
-        { value: false, text: "Option one" },
-        { value: true, text: "Option one" },
-        { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
+        { value: false, text: "Business Hours" },
+        { value: true, text: "24/7" },
       ],
       active: false,
       done: true,
@@ -23,12 +21,10 @@ export const QuestionForm: React.FC<PropsI> = () => {
     {
       title: "Label",
       question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do?",
+        "What’s your repair time for meeting rooms?",
       options: [
-        { value: false, text: "Option one" },
-        { value: true, text: "Option one" },
-        { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
+        { value: false, text: "Within 1 week" },
+        { value: false, text: "Within 1 hour" },
       ],
       active: true,
       done: false,
@@ -36,12 +32,11 @@ export const QuestionForm: React.FC<PropsI> = () => {
     {
       title: "Label",
       question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do?",
+        "What’s the typical lifecycle for meeting room hardware?",
       options: [
-        { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
+        { value: false, text: "Less than 2 years" },
+        { value: false, text: "2-4 years" },
+        { value: false, text: "5 years or more" },
       ],
       active: false,
       done: false,
@@ -49,11 +44,10 @@ export const QuestionForm: React.FC<PropsI> = () => {
     {
       title: "Label",
       question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do?",
+        "What support service is needed for you to ensure your meeting rooms are always up and running?",
       options: [
-        { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
-        { value: false, text: "Option one" },
+        { value: false, text: "Tech support when I need it" },
+        { value: false, text: "Dedicated, additional service and support" },
         { value: false, text: "Option one" },
       ],
       active: false,
@@ -81,6 +75,22 @@ export const QuestionForm: React.FC<PropsI> = () => {
     });
     setData(currentData);
   };
+
+  //temp create function for demo work this form
+  const handleClick = (index: number) => {
+    const currentData = data.map((item, i) => {
+      if (i === index) {
+        item.active = true;
+        item.done = false;
+      } else {
+        item.active = false;
+        item.done = false;
+      }
+      return item;
+    });
+    setData(currentData);
+  };
+  
   const handleChangeValue = (indexData: number, indexOption: number) => {
     return (value: boolean) => {
       const currentData = data.map((item, i) => {
@@ -136,7 +146,7 @@ export const QuestionForm: React.FC<PropsI> = () => {
                 className={`${s.triangle}`}
               ></div>
               <div className={s.header_item}>
-                <div className={s.item_text}>
+                <div className={s.item_text} onClick={() => handleClick(index)}>
                   <div className={s.title}>{question.title}</div>
                   <div className={s.text}>{question.question}</div>
                 </div>
