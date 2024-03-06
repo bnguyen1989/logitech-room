@@ -145,8 +145,7 @@ function createStepConferenceCamera() {
         new MountElement(
           CameraName.WallMountForVideoBars,
           Configurator.getNameNodeForCamera("Wall")
-        )
-        .setDependentMount(
+        ).setDependentMount(
           new MountElement(
             CameraName.WallMountForVideoBars,
             Configurator.getNameNodeCameraWallMount()
@@ -157,8 +156,7 @@ function createStepConferenceCamera() {
         new MountElement(
           CameraName.TVMountForVideoBars,
           Configurator.getNameNodeForCamera("TV", 2)
-        )
-        .setDependentMount(
+        ).setDependentMount(
           new MountElement(
             CameraName.TVMountForVideoBars,
             Configurator.getNameNodeCameraTVMount()
@@ -204,7 +202,7 @@ function createStepAudioExtensions() {
   const stepAudioExtensions = new Step(StepName.AudioExtensions);
   const group = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPod)
-      .addDependenceMount(
+      .setDefaultMount(
         new CountableMountElement(
           AudioExtensionName.RallyMicPod,
           "Mic_Placement"
@@ -213,7 +211,7 @@ function createStepAudioExtensions() {
       .setRecommended(true)
   );
   const group2 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallyMicPodMount).addDependenceMount(
+    new ItemElement(AudioExtensionName.RallyMicPodMount).setDefaultMount(
       new CountableMountElement(
         AudioExtensionName.RallyMicPodMount,
         "Mic_Placement"

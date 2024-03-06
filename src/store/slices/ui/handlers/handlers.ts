@@ -267,7 +267,7 @@ function updateDataByConfiguration(
         .getCurrentStep()
         ?.getElementByName(item.keyPermission);
       if (element instanceof ItemElement && "counter" in item) {
-        const [mount] = element.getDependenceMount();
+        const mount = element.getDefaultMount();
         if (mount instanceof CountableMountElement && item.counter) {
           mount.setActiveIndex(item.counter.currentValue);
           mount.setMin(item.counter.min);
