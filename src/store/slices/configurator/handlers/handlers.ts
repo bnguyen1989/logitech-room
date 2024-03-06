@@ -178,7 +178,9 @@ function addElement(assetId: string, stateStep: StepI<StepCardType>) {
       if (cardItemElement && cardItemElement.threekit) {
         const dependentMount = element.getDependentMount();
         if (dependentMount) {
+          const keysForRemove = itemElement?.getDependenceMount().map((mount) => mount.getNameNode()) || [];
           store.dispatch(removeNodes(cardItemElement.threekit.assetId));
+          store.dispatch(removeNodeByKeys(keysForRemove));
           store.dispatch(changeStatusProcessing(true));
           const dependentCard = stateStep.cards.find(
             (card) => card.keyPermission === dependentMount.name

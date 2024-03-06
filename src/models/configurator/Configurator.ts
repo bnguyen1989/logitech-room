@@ -125,6 +125,8 @@ export class Configurator {
     const getNameNodeMicPodMount = this.getNameNodeMicPodMount;
     const getNameNodeTapRiserMount = this.getNameNodeTapRiserMount;
     const getNameNodeTapTableMount = this.getNameNodeTapTableMount;
+    const getNameNodeCameraWallMount = this.getNameNodeCameraWallMount;
+    const getNameNodeCameraTVMount = this.getNameNodeCameraTVMount;
 
     return [
       getNameNodeForMic(1),
@@ -142,6 +144,8 @@ export class Configurator {
       getNameNodeMicPodMount(),
       getNameNodeTapRiserMount(),
       getNameNodeTapTableMount(),
+      getNameNodeCameraWallMount(),
+      getNameNodeCameraTVMount(),
     ];
   }
 
