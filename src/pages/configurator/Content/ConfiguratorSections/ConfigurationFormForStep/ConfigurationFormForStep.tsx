@@ -5,7 +5,7 @@ import {
   addActiveCard,
 } from "../../../../../store/slices/ui/Ui.slice";
 import {
-  getActiveStep,
+  getActiveStepData,
   getIsConfiguratorStep,
 } from "../../../../../store/slices/ui/selectors/selectors";
 import {
@@ -19,7 +19,7 @@ import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServic
 
 export const ConfigurationFormForStep = () => {
   const dispatch = useDispatch();
-  const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
+  const activeStepData: StepI<StepCardType> = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
   const onChange = (
@@ -91,7 +91,7 @@ export const ConfigurationFormForStep = () => {
       card.key === StepName.MeetingController ||
       card.key === StepName.VideoAccessories;
     if (isConfiguratorCard) {
-      const activeCards = activeStep?.activeCards || [];
+      const activeCards = activeStepData.activeCards || [];
       const currentActiveItem = activeCards.find(
         (item) => item.keyPermission === card.keyPermission
       );
@@ -109,21 +109,19 @@ export const ConfigurationFormForStep = () => {
     return null;
   };
 
-  if (!activeStep) return null;
-
-  if (activeStep.key === StepName.SoftwareServices) {
+  if (activeStepData.key === StepName.SoftwareServices) {
     return (
       <SoftwareServiceSection
         handleClickCard={handleClick}
         onChangeValueCard={onChange}
-        cards={activeStep.cards}
+        cards={activeStepData.cards}
       />
     );
   }
 
   return (
     <div className={s.form}>
-      {activeStep.cards.map((card, index) => getCardComponent(card, index))}
+      {activeStepData.cards.map((card, index) => getCardComponent(card, index))}
     </div>
   );
 };

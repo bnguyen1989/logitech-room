@@ -18,6 +18,7 @@ import { ItemElement } from "../../../../models/permission/elements/ItemElement"
 import { MountElement } from "../../../../models/permission/elements/MountElement";
 import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
 import { removeActiveCard } from "../../ui/Ui.slice";
+import { getActiveStep, getDataStepByName } from '../../ui/selectors/selectors'
 
 declare const app: Application;
 declare const permission: Permission;
@@ -25,9 +26,9 @@ declare const permission: Permission;
 export const geConfiguratorHandlers = (store: Store) => {
   app.eventEmitter.on("executeCommand", (data) => {
     if (data instanceof AddItemCommand) {
-      const activeStep = store.getState().ui.activeStep;
-      if (!activeStep) return;
-      addElement(data.assetId, activeStep)(store);
+      const activeStep = getActiveStep(store.getState());
+      const stepData = getDataStepByName(activeStep)(store.getState());
+      addElement(data.assetId, stepData)(store);
     }
 
     if (data instanceof RemoveItemCommand) {
@@ -35,14 +36,14 @@ export const geConfiguratorHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeCountItemCommand) {
-      const activeStep = store.getState().ui.activeStep;
-      if (!activeStep) return;
+      const activeStep = getActiveStep(store.getState());
+      const stepData = getDataStepByName(activeStep)(store.getState());
       const value = parseInt(data.value);
       changeCountElement(
         data.assetId,
         value,
         data.isIncrease,
-        activeStep
+        stepData
       )(store);
     }
 
@@ -226,12 +227,12 @@ function addElement(assetId: string, stateStep: StepI<StepCardType>) {
 
 function removeElement(assetId: string) {
   return (store: Store) => {
-    const activeStep = store.getState().ui.activeStep;
-    if (!activeStep) return;
+    const activeStep = getActiveStep(store.getState());
+    const stepData = getDataStepByName(activeStep)(store.getState());
 
     const card = findCard(
       (card: BaseCardI) => card.threekit?.assetId === assetId,
-      activeStep.cards
+      stepData.cards
     );
     if (!card) return;
 
@@ -269,7 +270,7 @@ function removeElement(assetId: string) {
         const defaultMount = itemElement.getDefaultMount();
         const cardItemElement = findCard(
           (card: BaseCardI) => card.keyPermission === itemElement?.name,
-          activeStep.cards
+          stepData.cards
         );
         if (defaultMount && cardItemElement) {
           const dependentMount = defaultMount.getDependentMount();
@@ -277,7 +278,7 @@ function removeElement(assetId: string) {
             store.dispatch(changeStatusProcessing(true));
             const dependentCard = findCard(
               (card: BaseCardI) => card.keyPermission === dependentMount.name,
-              activeStep.cards
+              stepData.cards
             );
             if (dependentCard) {
               setElementByNameNode(

@@ -3,7 +3,7 @@ import s from "./LoaderSection.module.scss";
 import { Loader } from "../../../../components/Loader/Loader";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
-  getActiveStep,
+  getActiveStepData,
   getIsProcessInitData,
   getSelectedPrepareCards,
 } from "../../../../store/slices/ui/selectors/selectors";
@@ -13,11 +13,11 @@ import { getIsBuilding } from "../../../../store/slices/configurator/selectors/s
 export const LoaderSection: React.FC = () => {
   const selectedCards = useAppSelector(getSelectedPrepareCards);
 
-  const activeStep = useAppSelector(getActiveStep);
+  const activeStepData = useAppSelector(getActiveStepData);
   const isBuilding = useAppSelector(getIsBuilding);
   const isProcessInitData = useAppSelector(getIsProcessInitData);
 
-  const isConferenceCamera = activeStep?.name
+  const isConferenceCamera = activeStepData.name
     .toLocaleLowerCase()
     .includes("conference camera");
 
@@ -43,15 +43,15 @@ export const LoaderSection: React.FC = () => {
       </div>
     );
 
-    if(isProcessInitData) {
-      return (
-        <div className={s.loader}>
-          <div className={s.container_simple}>
-            <Loader text="Loading Your Room" />
-          </div>
+  if (isProcessInitData) {
+    return (
+      <div className={s.loader}>
+        <div className={s.container_simple}>
+          <Loader text="Loading Your Room" />
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
   return <></>;
 };

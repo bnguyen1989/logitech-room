@@ -13,7 +13,6 @@ import {
   SelectDataI,
   ServiceCardI,
   StepCardType,
-  StepI,
   StepName,
 } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
@@ -48,6 +47,7 @@ import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand"
 import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
 import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
+import { getActiveStep, getDataStepByName } from "../selectors/selectors";
 
 declare const app: Application;
 
@@ -67,19 +67,11 @@ export const getUiHandlers = (store: Store) => {
           permission.removeActiveItemByName(card.keyPermission);
         }
 
-        const stepName = store.getState().ui.activeStep?.key;
-        if (!stepName) return;
+        const stepName = getActiveStep(store.getState());
         const configurator = app.currentConfigurator;
         updateDataCardByStepName(stepName)(store, configurator);
-        const stepData = store.getState().ui.stepData;
-        const listStepData: Array<StepI<StepCardType>> =
-          Object.values(stepData);
-        const step = listStepData.find(
-          (item: StepI<StepCardType>) => item.key === stepName
-        );
-        if (step) {
-          store.dispatch(changeActiveStep(step));
-        }
+
+        store.dispatch(changeActiveStep(stepName));
       } else if (card) {
         if (data instanceof AddItemCommand) {
           store.dispatch(addActiveCard(card));
@@ -125,13 +117,16 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeSelectItemCommand) {
-      const activeStep = store.getState().ui.activeStep;
+      const activeStep = getActiveStep(store.getState());
+      const stepData = getDataStepByName(activeStep)(store.getState());
       if (activeStep) {
-        const index = activeStep.cards.findIndex((item: ItemCardI) =>
-          item.select?.data.some((vs) => vs.threekit.assetId === data.assetId)
+        const index = stepData.cards.findIndex((item: any) =>
+          item.select?.data.some(
+            (vs: any) => vs.threekit.assetId === data.assetId
+          )
         );
         if (index !== -1) {
-          const card = activeStep.cards[index];
+          const card: any = stepData.cards[index];
           if (card) {
             const value = card.select?.data.find(
               (item: SelectDataI) => item.threekit.assetId === data.assetId
@@ -159,14 +154,7 @@ export const getUiHandlers = (store: Store) => {
       const configurator = app.currentConfigurator;
       updateDataCardByStepName(data.stepName)(store, configurator);
 
-      const stepData = store.getState().ui.stepData;
-      const listStepData: Array<StepI<StepCardType>> = Object.values(stepData);
-      const step = listStepData.find(
-        (item: StepI<StepCardType>) => item.key === data.stepName
-      );
-      if (step) {
-        store.dispatch(changeActiveStep(step));
-      }
+      store.dispatch(changeActiveStep(data.stepName));
     }
   });
 
@@ -281,15 +269,14 @@ function updateDataByConfiguration(
   };
 }
 
-function getCardByAssetId(assetId: string, store: Store) {
-  const activeStep = store.getState().ui.activeStep;
-  if (activeStep) {
-    const index = activeStep.cards.findIndex(
-      (item: ItemCardI) => item.threekit?.assetId === assetId
-    );
-    if (index !== -1) {
-      return activeStep.cards[index];
-    }
+function getCardByAssetId(assetId: string, store: Store): any {
+  const activeStep = getActiveStep(store.getState());
+  const stepData = getDataStepByName(activeStep)(store.getState());
+  const index = stepData.cards.findIndex(
+    (item: any) => item.threekit?.assetId === assetId
+  );
+  if (index !== -1) {
+    return stepData.cards[index];
   }
 }
 

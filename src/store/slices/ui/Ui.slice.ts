@@ -7,7 +7,6 @@ import {
   ServiceCardI,
   StepCardType,
   StepDataI,
-  StepI,
   StepName,
 } from "./type";
 import { getInitStepData } from "./utils";
@@ -17,14 +16,14 @@ declare const permission: Permission;
 interface UIStateI {
   processInitData: boolean;
   stepData: StepDataI;
-  activeStep: StepI<StepCardType> | null;
+  activeStep: StepName;
   selectedData: SelectedDataI;
 }
 
 const initialState: UIStateI = {
   processInitData: false,
   stepData: getInitStepData(),
-  activeStep: null,
+  activeStep: StepName.Services,
   selectedData: {},
 };
 
@@ -32,15 +31,12 @@ const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    changeActiveStep: (
-      state,
-      action: PayloadAction<StepI<StepCardType> | null>
-    ) => {
+    changeActiveStep: (state, action: PayloadAction<StepName>) => {
       state.activeStep = action.payload;
     },
     moveToStartStep: (state) => {
       permission.changeStepName(StepName.RoomSize);
-      state.activeStep = state.stepData[StepName.RoomSize];
+      state.activeStep = StepName.RoomSize;
     },
     createItem: (
       state,
@@ -68,8 +64,7 @@ const uiSlice = createSlice({
         property: Record<string, any>;
       }>
     ) => {
-      const { step, keyItemPermission, property } =
-        action.payload;
+      const { step, keyItemPermission, property } = action.payload;
 
       const stepData = state.selectedData[step] ?? {};
       const cardData = stepData[keyItemPermission] ?? {
@@ -92,29 +87,29 @@ const uiSlice = createSlice({
     },
     addActiveCard: (state, action: PayloadAction<StepCardType>) => {
       const { activeStep } = state;
-      if (activeStep) {
-        const isExist = activeStep.activeCards.some(
-          (card) => card.keyPermission === action.payload.keyPermission
+      const cards = state.stepData[activeStep].activeCards;
+      const isExist = cards.some(
+        (card) => card.keyPermission === action.payload.keyPermission
+      );
+      if (!isExist) {
+        const activeItems = permission.getActiveItems();
+        const activeCards = cards.filter((card) =>
+          activeItems.some((item) => item.name === card.keyPermission)
         );
-        if (!isExist) {
-          const activeItems = permission.getActiveItems();
-          const activeCards = activeStep.activeCards.filter((card) =>
-            activeItems.some((item) => item.name === card.keyPermission)
-          );
-          
-          activeStep.activeCards = [...activeCards, action.payload];
-        }
+
+        state.stepData[activeStep].activeCards = [
+          ...activeCards,
+          action.payload,
+        ] as any;
       }
     },
     removeActiveCard: (state, action: PayloadAction<StepCardType>) => {
       const { activeStep } = state;
-      if (activeStep && action.payload) {
-        const index = activeStep.activeCards.findIndex(
-          (card) => card.title === action.payload.title
-        );
-        if (index !== -1) {
-          activeStep.activeCards.splice(index, 1);
-        }
+      const index = state.stepData[activeStep].activeCards.findIndex(
+        (card) => card.title === action.payload.title
+      );
+      if (index !== -1) {
+        state.stepData[activeStep].activeCards.splice(index, 1);
       }
     },
     setActiveCardsForStep: (
@@ -141,15 +136,13 @@ const uiSlice = createSlice({
         .cards as Array<ItemCardI>;
     },
     changeValueCard: (state, action: PayloadAction<StepCardType>) => {
-      const { activeStep } = state;
-      if (activeStep) {
-        const { cards } = activeStep;
-        const index = cards.findIndex(
-          (card) => card.title === action.payload.title
-        );
-        if (index !== -1) {
-          cards[index] = action.payload;
-        }
+      const { activeStep, stepData } = state;
+      const { cards } = stepData[activeStep];
+      const index = cards.findIndex(
+        (card) => card.title === action.payload.title
+      );
+      if (index !== -1) {
+        cards[index] = action.payload;
       }
     },
     setDataItemStep: (
@@ -168,9 +161,6 @@ const uiSlice = createSlice({
         ...state.stepData[action.payload.key],
         cards: action.payload.values,
       };
-      if (state.activeStep && state.activeStep.key === action.payload.key) {
-        state.activeStep = state.stepData[state.activeStep.key];
-      }
     },
     setDataPrepareStep: (
       state,
@@ -190,9 +180,6 @@ const uiSlice = createSlice({
           ...state.stepData[action.payload.key],
           cards: action.payload.values as Array<ServiceCardI>,
         };
-      }
-      if (state.activeStep && state.activeStep.key === action.payload.key) {
-        state.activeStep = state.stepData[state.activeStep.key];
       }
     },
     changeProcessInitData: (state, action: PayloadAction<boolean>) => {

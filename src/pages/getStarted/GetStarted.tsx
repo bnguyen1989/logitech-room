@@ -1,21 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import s from "./GetStarted.module.scss";
 import BannerImage from "../../assets/images/getStarted/banner.png";
 import { Button } from "../../components/Buttons/Button/Button";
-import { useDispatch } from "react-redux";
-import { changeActiveStep } from "../../store/slices/ui/Ui.slice";
 import { useNavigate } from "react-router-dom";
 
 export const GetStarted: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const handleClick = () => {
     navigate("/configurator", { replace: true });
   };
-
-  useEffect(() => {
-    dispatch(changeActiveStep(null));
-  }, []);
 
   return (
     <div className={s.container}>

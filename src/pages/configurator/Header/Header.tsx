@@ -2,19 +2,17 @@ import { NavigationMenu } from "../../../components/NavigationMenu/NavigationMen
 import { useAppSelector } from "../../../hooks/redux";
 import { getIsBuilding } from "../../../store/slices/configurator/selectors/selectors";
 import {
-  getActiveStep,
+  getActiveStepData,
   getIsProcessInitData,
 } from "../../../store/slices/ui/selectors/selectors";
 import s from "./Header.module.scss";
 
 export const Header: React.FC = () => {
-  const activeStep = useAppSelector(getActiveStep);
+  const activeStepData = useAppSelector(getActiveStepData);
   const isBuilding = useAppSelector(getIsBuilding);
   const isProcessInitData = useAppSelector(getIsProcessInitData);
 
-  if (!activeStep) return null;
-
-  const isConferenceCamera = activeStep?.name
+  const isConferenceCamera = activeStepData.name
     .toLocaleLowerCase()
     .includes("conference camera");
 
@@ -34,10 +32,10 @@ export const Header: React.FC = () => {
         <NavigationMenu />
       </div>
       <div className={s.title}>
-        <div className={s.title_text}>{activeStep.title}</div>
+        <div className={s.title_text}>{activeStepData.title}</div>
         <div
           className={s.sub_title_text}
-          dangerouslySetInnerHTML={{ __html: activeStep.subtitle }}
+          dangerouslySetInnerHTML={{ __html: activeStepData.subtitle }}
         ></div>
       </div>
     </div>

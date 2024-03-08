@@ -1,24 +1,24 @@
-import s from './NavigationMenu.module.scss';
-import { useAppSelector } from '../../hooks/redux'
-import { getActiveStep, getStepData } from '../../store/slices/ui/selectors/selectors'
-import { StepCardType, StepI } from '../../store/slices/ui/type'
-
+import s from "./NavigationMenu.module.scss";
+import { useAppSelector } from "../../hooks/redux";
+import {
+  getActiveStepData,
+  getStepData,
+} from "../../store/slices/ui/selectors/selectors";
+import { StepCardType, StepI } from "../../store/slices/ui/type";
 
 export const NavigationMenu: React.FC = () => {
   const dataStep = useAppSelector(getStepData);
-  const activeStep = useAppSelector(getActiveStep);
-
-  if (!activeStep) return null;
+  const activeStepData = useAppSelector(getActiveStepData);
 
   const isActive = (step: StepI<StepCardType>) => {
-    return step.name === activeStep.name;
+    return step.name === activeStepData.name;
   };
 
   const listDataStep = Object.values(dataStep);
 
   return (
     <div className={s.container}>
-      <div className={s.name}>{activeStep.name}</div>
+      <div className={s.name}>{activeStepData.name}</div>
       <div className={s.menu}>
         {listDataStep.map((item, index) => (
           <div key={index} className={s.wrapper}>
@@ -31,7 +31,9 @@ export const NavigationMenu: React.FC = () => {
                 ></div>
               </div>
             </div>
-            {index !== listDataStep.length - 1 && <div className={s.divider}></div>}
+            {index !== listDataStep.length - 1 && (
+              <div className={s.divider}></div>
+            )}
           </div>
         ))}
       </div>

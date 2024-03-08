@@ -4,7 +4,7 @@ import { CardRoom } from "../../../../components/Cards/CardRoom/CardRoom";
 import { CardService } from "../../../../components/Cards/CardService/CardService";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
-  getActiveStep,
+  getActiveStepData,
   getIsConfiguratorStep,
 } from "../../../../store/slices/ui/selectors/selectors";
 import {
@@ -20,19 +20,19 @@ import {
   removeActiveCard,
 } from "../../../../store/slices/ui/Ui.slice";
 import { Permission } from "../../../../models/permission/Permission";
-import { Application } from '../../../../models/Application'
+import { Application } from "../../../../models/Application";
 
 declare const permission: Permission;
 declare const app: Application;
 
 export const PrepareSection: React.FC = () => {
   const dispatch = useDispatch();
-  const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
+  const activeStepData: StepI<StepCardType> = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
-  if (!activeStep || isConfiguratorStep) return null;
+  if (isConfiguratorStep) return null;
 
-  console.log('activeStep', activeStep);
+  console.log("activeStepData", activeStepData);
 
   const handleClick = (card: StepCardType) => {
     const activeItems = permission.getActiveItems();
@@ -42,7 +42,7 @@ export const PrepareSection: React.FC = () => {
     const threekit = (card as PlatformCardI | ServiceCardI).threekit;
 
     if (!threekit) {
-      if(card.keyPermission) {
+      if (card.keyPermission) {
         if (isContain) {
           if (permission.canRemoveActiveItemByName(card.keyPermission)) {
             permission.removeActiveItemByName(card.keyPermission);
@@ -68,7 +68,7 @@ export const PrepareSection: React.FC = () => {
 
   const getCardComponent = (card: StepCardType, index: number) => {
     const onClick = () => handleClick(card);
-    const activeItems = activeStep.activeCards;
+    const activeItems = activeStepData.activeCards;
     const isActive = activeItems.some(
       (item) => item.keyPermission === card.keyPermission
     );
@@ -110,7 +110,7 @@ export const PrepareSection: React.FC = () => {
   };
   return (
     <div className={s.container}>
-      {activeStep.cards.map((card, index) => getCardComponent(card, index))}
+      {activeStepData.cards.map((card, index) => getCardComponent(card, index))}
     </div>
   );
 };
