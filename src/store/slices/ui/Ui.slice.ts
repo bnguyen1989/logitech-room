@@ -3,6 +3,7 @@ import {
   ItemCardI,
   PlatformCardI,
   RoomCardI,
+  SelectedDataI,
   ServiceCardI,
   StepCardType,
   StepDataI,
@@ -17,12 +18,14 @@ interface UIStateI {
   processInitData: boolean;
   stepData: StepDataI;
   activeStep: StepI<StepCardType> | null;
+  selectedData: SelectedDataI;
 }
 
 const initialState: UIStateI = {
   processInitData: false,
   stepData: getInitStepData(),
   activeStep: null,
+  selectedData: {},
 };
 
 const uiSlice = createSlice({
@@ -38,6 +41,54 @@ const uiSlice = createSlice({
     moveToStartStep: (state) => {
       permission.changeStepName(StepName.RoomSize);
       state.activeStep = state.stepData[StepName.RoomSize];
+    },
+    createItem: (
+      state,
+      action: PayloadAction<{
+        step: string;
+        keyItemPermission: string;
+      }>
+    ) => {
+      const { step, keyItemPermission } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
+      const cardData = stepData[keyItemPermission] ?? {
+        selected: [],
+        property: {},
+      };
+      state.selectedData[step] = {
+        ...stepData,
+        [keyItemPermission]: cardData,
+      };
+    },
+    setPropertyItem: (
+      state,
+      action: PayloadAction<{
+        step: string;
+        keyItemPermission: string;
+        property: Record<string, any>;
+      }>
+    ) => {
+      const { step, keyItemPermission, property } =
+        action.payload;
+
+      const stepData = state.selectedData[step] ?? {};
+      const cardData = stepData[keyItemPermission] ?? {
+        selected: [],
+        property: {},
+      };
+
+      const updatedCardData = {
+        ...cardData,
+        property: {
+          ...cardData.property,
+          ...property,
+        },
+      };
+
+      state.selectedData[step] = {
+        ...stepData,
+        [keyItemPermission]: updatedCardData,
+      };
     },
     addActiveCard: (state, action: PayloadAction<StepCardType>) => {
       const { activeStep } = state;
@@ -160,5 +211,7 @@ export const {
   setDataItemStep,
   changeProcessInitData,
   setDataPrepareStep,
+  setPropertyItem,
+  createItem,
 } = uiSlice.actions;
 export default uiSlice.reducer;

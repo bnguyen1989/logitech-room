@@ -26,10 +26,12 @@ import {
   changeActiveStep,
   changeProcessInitData,
   changeValueCard,
+  createItem,
   removeActiveCard,
   setActiveCardsForStep,
   setDataItemStep,
   setDataPrepareStep,
+  setPropertyItem,
 } from "../Ui.slice";
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
@@ -385,6 +387,19 @@ function setStepData(
     stepCardData.push(...temp);
   });
 
+  stepCardData.forEach((tempCard) => {
+    store.dispatch(
+      setPropertyItem({
+        step: stepName,
+        keyItemPermission: tempCard.keyPermission ?? "",
+        property: {
+          count: tempCard.counter?.currentValue,
+          color: tempCard.color?.currentColor.value,
+        },
+      })
+    );
+  });
+
   store.dispatch(
     setDataItemStep({
       key: stepName,
@@ -476,6 +491,15 @@ function setStepDataPrepareCard<T extends PlatformCardI | ServiceCardI>(
         },
       });
     });
+  });
+
+  cardData.forEach((tempCard) => {
+    store.dispatch(
+      createItem({
+        step: stepName,
+        keyItemPermission: tempCard.keyPermission ?? "",
+      })
+    );
   });
 
   store.dispatch(
@@ -594,6 +618,15 @@ function setSoftwareServicesData(configurator: Configurator) {
       }
 
       softwareServicesCardData.push(...temp);
+    });
+
+    softwareServicesCardData.forEach((tempCard) => {
+      store.dispatch(
+        createItem({
+          step: StepName.SoftwareServices,
+          keyItemPermission: tempCard.keyPermission ?? "",
+        })
+      );
     });
 
     store.dispatch(

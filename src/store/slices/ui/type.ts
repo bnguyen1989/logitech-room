@@ -23,6 +23,19 @@ export interface StepDataI {
 	[StepName.SoftwareServices]: StepI<ItemCardI>;
 }
 
+export interface SelectedDataI {
+	[key_step: string]: {
+		[key_card: string]: {
+			selected: Array<string>;
+			property: {
+				[key: string]: any;
+				count?: number;
+				color?: string;
+			}
+		};
+	}
+}
+
 export interface StepI<CI> {
 	key: StepName;
 	name: string;
