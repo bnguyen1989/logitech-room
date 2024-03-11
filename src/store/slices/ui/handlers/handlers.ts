@@ -14,6 +14,7 @@ import {
   ServiceCardI,
   StepCardType,
   StepName,
+  TypeCardPermissionWithDataThreekit,
 } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
@@ -216,6 +217,12 @@ function updateDataByConfiguration(
     const cards: Array<StepCardType> =
       store.getState().ui.stepData[stepName].cards;
     const result: Array<StepCardType> = [];
+    console.log('stepName', stepName);
+
+
+    if (stepName === 'Conference Camera') {
+      debugger
+    }
     arrayAttributes.forEach((item) => {
       const [name, qtyName] = item;
       const value = configuration[name];
@@ -292,9 +299,11 @@ function setStepData(
   itemNameList: Array<Array<string>>,
   image: string,
   subtitle?: string,
-  isColor?: boolean
 ) {
   const stepCardData: Array<ItemCardI> = [];
+
+
+
   itemNameList.forEach((item) => {
     const [name, qtyName] = item;
     const value = configurator.getStateAttributeByName(name);
@@ -302,91 +311,77 @@ function setStepData(
       return;
     }
 
-    const temp: Array<ItemCardI> = [];
+
+    const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit = {}
+
     value.values.forEach((item: ValueAttributeStateI) => {
       const asset = item as ValueAssetStateI;
       if (!asset.visible) return;
       const keyPermission = getPermissionNameByItemName(asset.name);
+      if (!keyPermission) return
+
+      if (!cardPermissionWithDataThreekit[keyPermission]) {
+        cardPermissionWithDataThreekit[keyPermission] = {};
+      }
+
+      cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
+
+    })
+
+    const tempNew: Array<ItemCardI> = [];
+
+    Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
+
       const elementPermission = permission
         .getElements()
         .find((item) => item.name === keyPermission);
 
-      temp.push({
+      tempNew.push({
         key: stepName,
         image: image,
-        header_title: asset.name,
-        title: asset.name,
         subtitle: subtitle,
-        threekit: {
-          assetId: asset.id,
-          key: name,
-        },
         keyPermission: keyPermission,
+        threekitItems: cardPermissionWithDataThreekit[keyPermission],
         recommended: elementPermission?.getRecommended() || false,
-        color: !isColor
-          ? undefined
-          : {
-              currentColor: {
-                name: "Graphite",
-                value: "#434446",
-              },
-              colors: [
-                {
-                  name: "Graphite",
-                  value: "#434446",
-                },
-                {
-                  name: "White",
-                  value: "#FBFBFB",
-                },
-              ],
-            },
       });
-    });
+
+    })
+
+
+
 
     if (qtyName) {
       const qty = configurator.getStateAttributeByName(qtyName);
       if (!qty) return;
-      temp.forEach((item) => {
+      tempNew.forEach((item) => {
         const values = (qty.values as Array<ValueStringStateI>).filter(
           (item) => item.visible
         );
         const min = parseInt(values[0].value);
         const max = parseInt(values[values.length - 1].value);
-        const valueConfiguration = configurator.getConfiguration()[
-          qtyName
-        ] as string;
-        const currentValue = valueConfiguration
-          ? parseInt(valueConfiguration)
-          : min;
 
         item.counter = {
           min: min,
           max: max,
-          currentValue,
-          threekit: {
-            key: qtyName,
-          },
         };
       });
     }
 
-    stepCardData.push(...temp);
+    stepCardData.push(...tempNew);
   });
 
-  stepCardData.forEach((tempCard) => {
-    store.dispatch(
-      setPropertyItem({
-        step: stepName,
-        keyItemPermission: tempCard.keyPermission ?? "",
-        property: {
-          count: tempCard.counter?.currentValue,
-          color: tempCard.color?.currentColor.value,
-        },
-      })
-    );
-  });
-
+  // stepCardData.forEach((tempCard) => {
+  //   store.dispatch(
+  //     setPropertyItem({
+  //       step: stepName,
+  //       keyItemPermission: tempCard.keyPermission ?? "",
+  //       property: {
+  //         count: tempCard.counter?.currentValue,
+  //         color: tempCard.color?.currentColor.value,
+  //       },
+  //     })
+  //   );
+  // }); 
   store.dispatch(
     setDataItemStep({
       key: stepName,
@@ -410,6 +405,7 @@ function setAudioExtensionsData(configurator: Configurator) {
 }
 
 function setCameraData(configurator: Configurator) {
+
   return (store: Store) => {
     setStepData(
       configurator,

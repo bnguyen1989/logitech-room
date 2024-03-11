@@ -1,3 +1,4 @@
+import { ValueAssetStateI } from "../../../models/configurator/type";
 
 export enum StepName {
 	Platform = 'Platform',
@@ -46,15 +47,14 @@ export interface StepI<CI> {
 	cards: Array<CI>;
 }
 
-export interface BaseCardI {
-	title: string;
+export interface BaseCardI { 
 	image: string;
 	keyPermission?: string;
-	threekit?: ThreekitI;
 	recommended?: boolean;
+	threekitItems: Record<string, ValueAssetStateI>
 }
 
-export interface RoomCardI extends BaseCardI{
+export interface RoomCardI extends BaseCardI {
 	key: StepName.RoomSize;
 	subtitle: string;
 }
@@ -80,9 +80,8 @@ export interface ColorI {
 
 export interface CounterI {
 	min: number;
-	max: number;
-	currentValue: number;
-	threekit: Pick<ThreekitI, "key">;
+	max: number; 
+	// threekit: Pick<ThreekitI, "key">; ???????
 }
 
 export interface ThreekitI {
@@ -103,10 +102,12 @@ export interface SelectI {
 
 export interface ItemCardI extends BaseCardI {
 	key: StepName.ConferenceCamera | StepName.AudioExtensions | StepName.MeetingController | StepName.VideoAccessories | StepName.SoftwareServices;
-	header_title: string;
 	subtitle?: string;
 	description?: string;
-	color?: ColorI;
 	counter?: CounterI;
 	select?: SelectI;
 }
+
+
+
+export type TypeCardPermissionWithDataThreekit = Record<string, Record<string, ValueAssetStateI>>;
