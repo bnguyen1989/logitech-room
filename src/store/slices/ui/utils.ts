@@ -88,8 +88,7 @@ export const getInitStepData = (): StepDataI => {
       key: StepName.VideoAccessories,
       name: "Additional Add-Ons",
       title: "Choose your add-ons.",
-      subtitle:
-        "Enhance the meeting experience with add-ons.",
+      subtitle: "Enhance the meeting experience with add-ons.",
       cards: [],
       activeCards: [],
     },
@@ -221,4 +220,24 @@ export function getSoftwareServicesCardData(): Array<ItemCardI> {
       keyPermission: SoftwareServicesName.SupportService,
     },
   ];
+}
+
+export function formattingSubtitleByState(
+  text: string,
+  selectedPrepareCards: any
+) {
+  const getName = (name: string) => `<b>${name}</b>`;
+  const roomSizeCard = selectedPrepareCards.find(
+    (card: { key: string }) => card.key === StepName.RoomSize
+  );
+  const platformCard = selectedPrepareCards.find(
+    (card: { key: string }) => card.key === StepName.Platform
+  );
+  const serviceCard = selectedPrepareCards.find(
+    (card: { key: string }) => card.key === StepName.Services
+  );
+  return text
+    .replace("{0}", getName(roomSizeCard.title))
+    .replace("{1}", getName(platformCard.title))
+    .replace("{2}", getName(serviceCard.title));
 }

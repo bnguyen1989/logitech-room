@@ -1,6 +1,7 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
 import { StepName } from "../type";
+import { formattingSubtitleByState } from "../utils";
 
 declare const permission: Permission;
 
@@ -18,14 +19,11 @@ export const getActiveStepData = (state: RootState) => {
   const copyDataStep = JSON.parse(JSON.stringify(dataStep));
   const items = permission.getElements();
 
-  console.log("items", items);
-  
-
   copyDataStep.cards = copyDataStep.cards.filter((card: any) =>
     items.some((item) => item.name === card.keyPermission)
   );
 
-  if(activeStep === StepName.ConferenceCamera) {
+  if (activeStep === StepName.ConferenceCamera) {
     copyDataStep.subtitle = formattingSubtitleByState(
       copyDataStep.subtitle,
       getSelectedPrepareCards(state)
@@ -35,23 +33,6 @@ export const getActiveStepData = (state: RootState) => {
 
   return copyDataStep;
 };
-
-function formattingSubtitleByState(text: string, selectedPrepareCards: any) {
-  const getName = (name: string) => `<b>${name}</b>`;
-  const roomSizeCard = selectedPrepareCards.find(
-    (card: { key: string }) => card.key === StepName.RoomSize
-  );
-  const platformCard = selectedPrepareCards.find(
-    (card: { key: string }) => card.key === StepName.Platform
-  );
-  const serviceCard = selectedPrepareCards.find(
-    (card: { key: string }) => card.key === StepName.Services
-  );
-  return text
-    .replace("{0}", getName(roomSizeCard.title))
-    .replace("{1}", getName(platformCard.title))
-    .replace("{2}", getName(serviceCard.title));
-}
 
 export const getNavigationStepData = (state: RootState) => {
   const { stepData, activeStep } = state.ui;
