@@ -1,9 +1,9 @@
-import { ServiceCardI } from "../../../store/slices/ui/type";
+import { CardI } from '../../../store/slices/ui/type'
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardService.module.scss";
 
 interface PropsI {
-  data: ServiceCardI;
+  data: CardI;
   onClick: () => void;
   active?: boolean;
   disabled?: boolean;

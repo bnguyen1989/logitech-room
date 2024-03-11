@@ -1,9 +1,11 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
-import { StepName } from "../type";
+import { CardI, StepI, StepName } from "../type";
 import { formattingSubtitleByState } from "../utils";
 
 declare const permission: Permission;
+
+export const getSelectData = (state: RootState) => state.ui.selectedData;
 
 export const getStepData = (state: RootState) => state.ui.stepData;
 
@@ -16,12 +18,15 @@ export const getActiveStepData = (state: RootState) => {
   const activeStep = getActiveStep(state);
   const dataStep = getDataStepByName(activeStep)(state);
 
-  const copyDataStep = JSON.parse(JSON.stringify(dataStep));
+  const copyDataStep = JSON.parse(JSON.stringify(dataStep)) as StepI;
   const items = permission.getElements();
 
-  copyDataStep.cards = copyDataStep.cards.filter((card: any) =>
-    items.some((item) => item.name === card.keyPermission)
-  );
+  Object.values(dataStep.cards).forEach((card: CardI) => {
+    const isExist = items.some((item) => item.name === card.keyPermission);
+    if (!isExist) {
+      delete copyDataStep.cards[card.keyPermission];
+    }
+  });
 
   if (activeStep === StepName.ConferenceCamera) {
     copyDataStep.subtitle = formattingSubtitleByState(
@@ -61,43 +66,88 @@ export const getIsProcessInitData = (state: RootState) =>
   state.ui.processInitData;
 
 export const getSelectedPrepareCards = (state: RootState) => {
-  const { stepData } = state.ui;
-  const roomCards = stepData[StepName.RoomSize].cards;
-  const platformCards = stepData[StepName.Platform].cards;
-  const serviceCards = stepData[StepName.Services].cards;
-  const prepareCards = [...roomCards, ...platformCards, ...serviceCards];
+  const configuratorStepName = [
+    StepName.Platform,
+    StepName.RoomSize,
+    StepName.Services,
+  ];
 
-  return prepareCards.filter((card) => {
-    const key = card.keyPermission;
-    const currentStep = permission.getCurrentStep();
-    if (!currentStep) return false;
-    const chainActiveElements = currentStep.getChainActiveElements();
-    return chainActiveElements.some((chainActiveElement) =>
-      chainActiveElement.some((activeElement) => activeElement.name === key)
-    );
+  const result: CardI[] = [];
+  configuratorStepName.forEach((stepName) => {
+    const selectedCards = getSelectedCardsByStep(stepName)(state);
+    result.push(...selectedCards);
   });
+
+  return result;
 };
 
 export const getSelectedConfiguratorCards = (state: RootState) => {
-  const { stepData } = state.ui;
-  const configuratorCards = [
-    ...stepData[StepName.ConferenceCamera].cards,
-    ...stepData[StepName.AudioExtensions].cards,
-    ...stepData[StepName.MeetingController].cards,
-    ...stepData[StepName.AudioExtensions].cards,
-    ...stepData[StepName.SoftwareServices].cards,
+  const configuratorStepName = [
+    StepName.ConferenceCamera,
+    StepName.AudioExtensions,
+    StepName.MeetingController,
+    StepName.AudioExtensions,
+    StepName.SoftwareServices,
   ];
 
-  return configuratorCards.filter((card) => {
-    const key = card.keyPermission;
-    const currentStep = permission.getCurrentStep();
-    if (!currentStep) return false;
-    const chainActiveElements = currentStep.getChainActiveElements();
-    return chainActiveElements.some((chainActiveElement) =>
-      chainActiveElement.some(
-        (activeElement) =>
-          activeElement.name === key && activeElement.getVisible()
-      )
-    );
+  const result: CardI[] = [];
+  configuratorStepName.forEach((stepName) => {
+    const selectedCards = getSelectedCardsByStep(stepName)(state);
+    result.push(...selectedCards);
   });
+
+  return result;
 };
+
+export const getSelectedCardsByStep =
+  (stepName: StepName) => (state: RootState) => {
+    const selectedData = getSelectData(state);
+    const stepData = getStepData(state);
+    const cards = stepData[stepName].cards;
+    const selectedDataItem = selectedData[stepName] || {};
+
+    return Object.entries(selectedDataItem).reduce((acc, [key, value]) => {
+      if (value.selected.length) {
+        acc.push(cards[key]);
+      }
+      return acc;
+    }, [] as CardI[]);
+  };
+
+export const getCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const stepData = getStepData(state);
+    const cards = stepData[stepName].cards;
+    return cards[keyPermission];
+  };
+
+export const getSelectedDataByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const selectedData = getSelectData(state);
+    return selectedData[stepName][keyPermission];
+  };
+
+export const getPropertyColorCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    return data?.property.color;
+  };
+
+export const getPropertyCounterCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    return data?.property.count;
+  };
+
+export const getPropertySelectValueCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    return data?.property.select;
+  };
+
+export const getIsSelectedCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    if (!data) return false;
+    return data.selected.length > 0;
+  };

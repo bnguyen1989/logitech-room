@@ -14,10 +14,10 @@ import {
   getSelectedConfiguratorCards,
   getSelectedPrepareCards,
 } from "../../../store/slices/ui/selectors/selectors";
-import { ItemCardI, StepName } from "../../../store/slices/ui/type";
+import { CardI, StepName } from "../../../store/slices/ui/type";
 import { useEffect } from "react";
 import "./form.css";
-import { getDescriptionRoomBySize } from './utils'
+import { getDescriptionRoomBySize } from "./utils";
 
 declare const app: Application;
 declare const MktoForms2: any;
@@ -26,7 +26,7 @@ export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getSetupModalData);
-  const selectedCards: Array<ItemCardI> = useAppSelector(
+  const selectedCards: Array<CardI> = useAppSelector(
     getSelectedConfiguratorCards
   );
   const selectedPrepareCards = useAppSelector(getSelectedPrepareCards);
@@ -75,7 +75,7 @@ export const SetupModal: React.FC = () => {
     });
     const nameOrder = getNameOrder();
     const nameRoomSize = selectedPrepareCards.find(
-      (card) => card.key === StepName.RoomSize 
+      (card) => card.key === StepName.RoomSize
     )?.keyPermission;
     if (!nameRoomSize) return;
     const description = getDescriptionRoomBySize(nameRoomSize);

@@ -4,16 +4,12 @@ import { CardRoom } from "../../../../components/Cards/CardRoom/CardRoom";
 import { CardService } from "../../../../components/Cards/CardService/CardService";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
+  getActiveStep,
   getActiveStepData,
   getIsConfiguratorStep,
+  getSelectedCardsByStep,
 } from "../../../../store/slices/ui/selectors/selectors";
-import {
-  PlatformCardI,
-  ServiceCardI,
-  StepCardType,
-  StepI,
-  StepName,
-} from "../../../../store/slices/ui/type";
+import { CardI, StepI, StepName } from "../../../../store/slices/ui/type";
 import s from "./PrepareSection.module.scss";
 import {
   addActiveCard,
@@ -27,52 +23,57 @@ declare const app: Application;
 
 export const PrepareSection: React.FC = () => {
   const dispatch = useDispatch();
-  const activeStepData: StepI<StepCardType> = useAppSelector(getActiveStepData);
+  const activeStepData: StepI = useAppSelector(getActiveStepData);
+  const activeStep = useAppSelector(getActiveStep);
+  const selectCards = useAppSelector(getSelectedCardsByStep(activeStep));
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
   if (isConfiguratorStep) return null;
 
   console.log("activeStepData", activeStepData);
 
-  const handleClick = (card: StepCardType) => {
+  const handleClick = (card: CardI) => {
     const activeItems = permission.getActiveItems();
     const isContain = activeItems.some(
       (item) => item.name === card.keyPermission
     );
-    const threekit = (card as PlatformCardI | ServiceCardI).threekit;
+    const threekit = card.threekit;
 
     if (!threekit) {
       if (card.keyPermission) {
         if (isContain) {
           if (permission.canRemoveActiveItemByName(card.keyPermission)) {
             permission.removeActiveItemByName(card.keyPermission);
-            dispatch(removeActiveCard(card));
+            dispatch(removeActiveCard({ key: card.keyPermission }));
           }
           return;
         }
         if (permission.canAddActiveElementByName(card.keyPermission)) {
           permission.addActiveElementByName(card.keyPermission);
-          dispatch(addActiveCard(card));
+          dispatch(addActiveCard({ key: card.keyPermission }));
         }
       }
       return;
     }
 
     if (isContain && card.keyPermission) {
-      app.removeItem(threekit.key, threekit.assetId);
+      app.removeItem(threekit.key, card.keyPermission);
       return;
     }
 
-    app.addItemConfiguration(threekit.key, threekit.assetId);
+    app.addItemConfiguration(
+      threekit.key,
+      threekit.assetId,
+      card.keyPermission
+    );
   };
 
-  const getCardComponent = (card: StepCardType, index: number) => {
+  const getCardComponent = (card: CardI, index: number) => {
     const onClick = () => handleClick(card);
-    const activeItems = activeStepData.activeCards;
-    const isActive = activeItems.some(
+    const isActive = selectCards.some(
       (item) => item.keyPermission === card.keyPermission
     );
-    const isDisabled = !!activeItems.length && !isActive;
+    const isDisabled = !!selectCards.length && !isActive;
     if (card.key === StepName.Platform) {
       return (
         <CardPlatform
@@ -110,7 +111,9 @@ export const PrepareSection: React.FC = () => {
   };
   return (
     <div className={s.container}>
-      {activeStepData.cards.map((card, index) => getCardComponent(card, index))}
+      {Object.values(activeStepData.cards).map((card, index) =>
+        getCardComponent(card, index)
+      )}
     </div>
   );
 };

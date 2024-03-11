@@ -1,9 +1,9 @@
-import { RoomCardI } from "../../../store/slices/ui/type";
+import { CardI } from "../../../store/slices/ui/type";
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardRoom.module.scss";
 
 interface PropsI {
-  data: RoomCardI;
+  data: CardI;
   onClick: () => void;
   active?: boolean;
   disabled?: boolean;

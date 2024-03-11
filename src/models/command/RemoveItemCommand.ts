@@ -1,18 +1,16 @@
 import { Configurator } from "../configurator/Configurator";
-import { Command } from "./Command";
+import { ItemCommand } from "./ItemCommand";
 
-export class RemoveItemCommand extends Command {
+export class RemoveItemCommand extends ItemCommand {
   public name: string = "RemoveItemCommand";
-  public assetId: string;
   public nameProperty: string;
 
   constructor(
     configurator: Configurator,
     nameProperty: string,
-    assetId: string
+    keyItemPermission: string
   ) {
-    super(configurator);
-    this.assetId = assetId;
+    super(configurator, keyItemPermission);
     this.nameProperty = nameProperty;
   }
 

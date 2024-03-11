@@ -1,9 +1,9 @@
-import { PlatformCardI } from "../../../store/slices/ui/type";
+import { CardI } from "../../../store/slices/ui/type";
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardPlatform.module.scss";
 
 interface PropsI {
-  data: PlatformCardI;
+  data: CardI;
   onClick: () => void;
   active?: boolean;
   disabled?: boolean;
