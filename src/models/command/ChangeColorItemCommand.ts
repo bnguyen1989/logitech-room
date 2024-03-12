@@ -1,18 +1,16 @@
 import { Configurator } from "../configurator/Configurator";
-import { Command } from "./Command";
+import { ItemCommand } from "./ItemCommand";
 
-export class ChangeColorItemCommand extends Command {
-  public name: string = "ChangeCountItemCommand";
+export class ChangeColorItemCommand extends ItemCommand {
+  public name: string = "ChangeColorItemCommand";
   public value: string;
-  public assetId: string;
 
-  constructor(configurator: Configurator, value: string, assetId: string) {
-    super(configurator);
+  constructor(
+    configurator: Configurator,
+    value: string,
+    keyItemPermission: string
+  ) {
+    super(configurator, keyItemPermission);
     this.value = value;
-    this.assetId = assetId;
-  }
-
-  public executeCommand() {
-    return true;
   }
 }

@@ -6,10 +6,10 @@ import { Content } from "./Content/Content";
 import { useParams } from "react-router-dom";
 import ImageItem from "../../assets/images/pages/details/item.png";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
-import { ItemCardI } from "../../store/slices/ui/type";
 import { SectionI } from "./type";
 import { StepName } from "../../models/permission/type";
 import { Loader } from "../../components/Loader/Loader";
+import { CardI } from "../../store/slices/ui/type";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -27,7 +27,7 @@ export const RoomDetails: React.FC = () => {
         setNameRoom(room.metadata.name);
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
-          const card = JSON.parse(item.metadata.data) as ItemCardI;
+          const card = JSON.parse(item.metadata.data) as CardI;
 
           const sectionId = dataSections.findIndex(
             (section) => section.title === card.key
@@ -51,7 +51,7 @@ export const RoomDetails: React.FC = () => {
                 {
                   ...itemSection.data[0],
                   partNumber: "Graphite : 960-000000",
-                  count: card.counter?.currentValue || 1,
+                  count: 1,
                   amount: `$ 0.000.00`,
                 },
               ],

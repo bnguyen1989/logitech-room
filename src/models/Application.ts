@@ -30,40 +30,57 @@ export class Application {
 
   public addItemConfiguration(
     nameProperty: string,
-    assetId: string
+    assetId: string,
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
-      new AddItemCommand(this.currentConfigurator, nameProperty, assetId)
+      new AddItemCommand(
+        this.currentConfigurator,
+        nameProperty,
+        assetId,
+        keyItemPermission
+      )
     );
   }
 
-  public removeItem(nameProperty: string, assetId: string): Promise<boolean> {
+  public removeItem(
+    nameProperty: string,
+    keyItemPermission: string
+  ): Promise<boolean> {
     return this.executeCommand(
-      new RemoveItemCommand(this.currentConfigurator, nameProperty, assetId)
+      new RemoveItemCommand(
+        this.currentConfigurator,
+        nameProperty,
+        keyItemPermission
+      )
     );
   }
 
   public changeCountItemConfiguration(
     nameProperty: string,
     value: string,
-    assetId: string
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
       new ChangeCountItemCommand(
         this.currentConfigurator,
         nameProperty,
         value,
-        assetId
+        keyItemPermission
       )
     );
   }
 
   public changeColorItemConfiguration(
     value: string,
-    assetId: string
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
-      new ChangeColorItemCommand(this.currentConfigurator, value, assetId)
+      new ChangeColorItemCommand(
+        this.currentConfigurator,
+        value,
+        keyItemPermission
+      )
     );
   }
 
@@ -75,13 +92,15 @@ export class Application {
 
   public changeSelectItemConfiguration(
     nameProperty: string,
-    assetId: string
+    assetId: string,
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
       new ChangeSelectItemCommand(
         this.currentConfigurator,
         nameProperty,
-        assetId
+        assetId,
+        keyItemPermission
       )
     );
   }

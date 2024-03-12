@@ -1,23 +1,21 @@
 import { Configurator } from "../configurator/Configurator";
-import { Command } from "./Command";
+import { ItemCommand } from "./ItemCommand";
 
-export class ChangeCountItemCommand extends Command {
+export class ChangeCountItemCommand extends ItemCommand {
   public name: string = "ChangeCountItemCommand";
   public nameProperty: string;
   public value: string;
-  public assetId: string;
   public isIncrease: boolean = false;
 
   constructor(
     configurator: Configurator,
     nameProperty: string,
     value: string,
-    assetId: string
+    keyItemPermission: string
   ) {
-    super(configurator);
+    super(configurator, keyItemPermission);
     this.nameProperty = nameProperty;
     this.value = value;
-    this.assetId = assetId;
   }
 
   public executeCommand(): boolean {

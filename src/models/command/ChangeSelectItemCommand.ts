@@ -1,7 +1,7 @@
 import { Configurator } from "../configurator/Configurator";
-import { Command } from "./Command";
+import { ItemCommand } from "./ItemCommand";
 
-export class ChangeSelectItemCommand extends Command {
+export class ChangeSelectItemCommand extends ItemCommand {
   public name: string = "ChangeSelectItemCommand";
   public assetId: string;
   public nameProperty: string;
@@ -9,9 +9,10 @@ export class ChangeSelectItemCommand extends Command {
   constructor(
     configurator: Configurator,
     nameProperty: string,
-    assetId: string
+    assetId: string,
+    keyItemPermission: string
   ) {
-    super(configurator);
+    super(configurator, keyItemPermission);
     this.assetId = assetId;
     this.nameProperty = nameProperty;
   }

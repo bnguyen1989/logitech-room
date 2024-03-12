@@ -4,13 +4,13 @@ import {
   getActiveStepData,
   getStepData,
 } from "../../store/slices/ui/selectors/selectors";
-import { StepCardType, StepI } from "../../store/slices/ui/type";
+import { StepI } from "../../store/slices/ui/type";
 
 export const NavigationMenu: React.FC = () => {
   const dataStep = useAppSelector(getStepData);
   const activeStepData = useAppSelector(getActiveStepData);
 
-  const isActive = (step: StepI<StepCardType>) => {
+  const isActive = (step: StepI) => {
     return step.name === activeStepData.name;
   };
 

@@ -3,22 +3,22 @@ import { useAppSelector } from "../../../hooks/redux";
 import { getInfoItemModalData } from "../../../store/slices/modals/selectors/selectors";
 import { Button } from "../../Buttons/Button/Button";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
-import { ColorItem } from "../../ColorItem/ColorItem";
+// import { ColorItem } from "../../ColorItem/ColorItem";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./InfoModal.module.scss";
 import ItemImg from "../../../assets/images/items/RallyBar.png";
 import { VideoPlayer } from "../../VideoPlayer/VideoPlayer";
-import { useState } from "react";
+// import { useState } from "react";
 import { useDispatch } from 'react-redux'
 import { setInfoItemModal } from '../../../store/slices/modals/Modals.slice'
 
 export const InfoModal: React.FC = () => {
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getInfoItemModalData);
-  const [selectedColor, setSelectedColor] = useState({
-    name: "Graphite",
-    value: "#434446",
-  });
+  // const [selectedColor, setSelectedColor] = useState({
+  //   name: "Graphite",
+  //   value: "#434446",
+  // });
 
   const cards = [
     {
@@ -77,7 +77,7 @@ export const InfoModal: React.FC = () => {
               </div>
 
               <div className={s.colors}>
-                <ColorItem
+                {/* <ColorItem
                   value={selectedColor}
                   onChange={(v) => setSelectedColor(v)}
                   listColors={[
@@ -90,7 +90,7 @@ export const InfoModal: React.FC = () => {
                       value: "#FBFBFB",
                     },
                   ]}
-                />
+                /> */}
               </div>
               <div className={s.button}>
                 <Button

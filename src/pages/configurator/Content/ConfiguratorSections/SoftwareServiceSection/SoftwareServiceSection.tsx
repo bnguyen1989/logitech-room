@@ -2,36 +2,27 @@ import { ArrowSelectDownSVG } from "../../../../../assets";
 import { IconButton } from "../../../../../components/Buttons/IconButton/IconButton";
 import { CardSoftware } from "../../../../../components/Cards/CardSoftware/CardSoftware";
 import { QuestionForm } from "../../../../../components/QuestionForm/QuestionForm";
-import { StepCardType, StepName } from "../../../../../store/slices/ui/type";
+import { CardI, StepName } from "../../../../../store/slices/ui/type";
 import s from "./SoftwareServiceSection.module.scss";
 
 interface PropsI {
-  handleClickCard: (card: StepCardType) => void;
-  onChangeValueCard: (card: StepCardType, type: "select") => void;
-  cards: StepCardType[];
+  handleClickCard: (card: CardI) => void;
+  cards: CardI[];
 }
 export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
-  const { handleClickCard, onChangeValueCard, cards } = props;
+  const { handleClickCard, cards } = props;
 
-  const getCardComponent = (card: StepCardType, index: number) => {
+  const getCardComponent = (card: CardI, index: number) => {
     const onClick = () => handleClickCard(card);
     const isSoftwareServicesCard = card.key === StepName.SoftwareServices;
-    if (isSoftwareServicesCard) {
-      const activeItems = permission.getActiveItems();
-      const currentActiveItem = activeItems.find(
-        (item) => item.name === card.keyPermission
-      );
-      return (
-        <CardSoftware
-          key={index}
-          data={card}
-          onClick={onClick}
-          active={!!currentActiveItem}
-          onChange={onChangeValueCard}
-        />
-      );
-    }
-    return null;
+    if (!isSoftwareServicesCard) return null;
+    return (
+      <CardSoftware
+        key={index}
+        keyItemPermission = {card.keyPermission}
+        onClick={onClick}
+      />
+    );
   };
   return (
     <div className={s.container}>

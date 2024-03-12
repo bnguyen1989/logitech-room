@@ -1,11 +1,4 @@
-import {
-  ItemCardI,
-  PlatformCardI,
-  RoomCardI,
-  ServiceCardI,
-  StepDataI,
-  StepName,
-} from "./type";
+import { CardI, StepDataI, StepName } from "./type";
 import LogoMS from "../../../assets/images/platform/microsoft.jpg";
 import LogoGoogle from "../../../assets/images/platform/google.jpg";
 import LogoZoom from "../../../assets/images/platform/zoom.jpg";
@@ -37,7 +30,6 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Choose the option that best matches the seating capacity of your room.",
       cards: getRoomCardData(),
-      activeCards: [],
     },
     [StepName.Platform]: {
       key: StepName.Platform,
@@ -45,8 +37,7 @@ export const getInitStepData = (): StepDataI => {
       title: "What is your primary video conferencing platform?",
       subtitle:
         "Choose the video conferencing platform your organization uses most often.",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.Services]: {
       key: StepName.Services,
@@ -54,8 +45,7 @@ export const getInitStepData = (): StepDataI => {
       title:
         "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
       subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.ConferenceCamera]: {
       key: StepName.ConferenceCamera,
@@ -63,8 +53,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Choose your conferencing camera(s).",
       subtitle:
         "These recommendations are based on your previous answers. You selected: {2} deployment running {1} in a {0}.",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.AudioExtensions]: {
       key: StepName.AudioExtensions,
@@ -72,8 +61,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Add room-filling audio.",
       subtitle:
         "Choose from the following audio extensions to make sure everyone can hear and be heard clearly. ",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.MeetingController]: {
       key: StepName.MeetingController,
@@ -81,16 +69,14 @@ export const getInitStepData = (): StepDataI => {
       title: "Choose your meeting controller.",
       subtitle:
         "Select tethered or network-connected meeting controller for one-touch join meetings.",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.VideoAccessories]: {
       key: StepName.VideoAccessories,
       name: "Additional Add-Ons",
       title: "Choose your add-ons.",
       subtitle: "Enhance the meeting experience with add-ons.",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.SoftwareServices]: {
       key: StepName.SoftwareServices,
@@ -98,88 +84,87 @@ export const getInitStepData = (): StepDataI => {
       title:
         "Finish up by adding services and tools to ensure your deployment is always up and running.",
       subtitle: "",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
   };
 };
 
-export function getPlatformCardData(): Array<PlatformCardI> {
-  return [
-    {
+export function getPlatformCardData(): Record<string, CardI> {
+  return {
+    [PlatformName.GoogleMeet]: {
       key: StepName.Platform,
       logo: LogoGoogle,
       image: DeviceGoogle,
       title: "Google Meet",
       keyPermission: PlatformName.GoogleMeet,
     },
-    {
+    [PlatformName.MicrosoftTeams]: {
       key: StepName.Platform,
       logo: LogoMS,
       image: DeviceMS,
       title: "Microsoft Teams",
       keyPermission: PlatformName.MicrosoftTeams,
     },
-    {
+    [PlatformName.Zoom]: {
       key: StepName.Platform,
       logo: LogoZoom,
       image: DeviceZoom,
       title: "Zoom",
       keyPermission: PlatformName.Zoom,
     },
-  ];
+  };
 }
 
-function getRoomCardData(): Array<RoomCardI> {
-  return [
-    {
+function getRoomCardData(): Record<string, CardI> {
+  return {
+    [RoomSizeName.Phonebooth]: {
       key: StepName.RoomSize,
       image: ImagePhonebooth,
       title: "Phone Booth",
       subtitle: "up to 3",
       keyPermission: RoomSizeName.Phonebooth,
     },
-    {
+    [RoomSizeName.Huddle]: {
       key: StepName.RoomSize,
       image: ImageHundle,
       title: "Huddle Room",
       subtitle: "up to 6",
       keyPermission: RoomSizeName.Huddle,
     },
-    {
+    [RoomSizeName.Small]: {
       key: StepName.RoomSize,
       image: ImageSmall,
       title: "Small Room",
       subtitle: "up to 8",
       keyPermission: RoomSizeName.Small,
     },
-    {
+    [RoomSizeName.Medium]: {
       key: StepName.RoomSize,
       image: ImageMedium,
       title: "Medium Room",
       subtitle: "up to 12",
       keyPermission: RoomSizeName.Medium,
     },
-    {
+    [RoomSizeName.Large]: {
       key: StepName.RoomSize,
       image: ImageLarge,
       title: "Large Room",
       subtitle: "up to 20",
       keyPermission: RoomSizeName.Large,
     },
-    {
+    [RoomSizeName.Auditorium]: {
       key: StepName.RoomSize,
       image: ImageAuditorium,
       title: "Alternative",
       subtitle: "more than 20",
       keyPermission: RoomSizeName.Auditorium,
     },
-  ];
+  };
 }
 
-export function getServicesCardData(): Array<ServiceCardI> {
-  return [
-    {
+export function getServicesCardData(): Record<string, CardI> {
+  return {
+    [ServiceName.Android]: {
       key: StepName.Services,
       image: ImageAppliance,
       title: "Appliance-Based",
@@ -187,7 +172,7 @@ export function getServicesCardData(): Array<ServiceCardI> {
         "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
       keyPermission: ServiceName.Android,
     },
-    {
+    [ServiceName.PC]: {
       key: StepName.Services,
       image: ImagePCBased,
       title: "PC-Based",
@@ -195,12 +180,12 @@ export function getServicesCardData(): Array<ServiceCardI> {
         "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
       keyPermission: ServiceName.PC,
     },
-  ];
+  };
 }
 
-export function getSoftwareServicesCardData(): Array<ItemCardI> {
-  return [
-    {
+export function getSoftwareServicesCardData(): Record<string, CardI> {
+  return {
+    [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
       image: ServiceImg,
       header_title: "LOGITECH Basic",
@@ -210,7 +195,7 @@ export function getSoftwareServicesCardData(): Array<ItemCardI> {
         "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
       keyPermission: SoftwareServicesName.LogitechSync,
     },
-    {
+    [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
       image: ServiceImg,
       header_title: "LOGITECH SELECT",
@@ -219,7 +204,7 @@ export function getSoftwareServicesCardData(): Array<ItemCardI> {
         "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,
     },
-  ];
+  };
 }
 
 export function formattingSubtitleByState(
