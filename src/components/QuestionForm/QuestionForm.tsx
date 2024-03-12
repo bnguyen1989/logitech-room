@@ -265,7 +265,7 @@ function DoneSVG() {
       <circle cx="20.4277" cy="19.5" r="19.5" fill="#814EFA" />
       <path
         fillRule="evenodd"
-        clip-rule="evenodd"
+        clipRule="evenodd"
         d="M18.478 24.5L13.2402 19.8839L14.8214 18.4901L18.478 21.7124L26.6591 14.5L28.2402 15.8948L18.478 24.5Z"
         fill="white"
       />
