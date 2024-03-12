@@ -24,7 +24,7 @@ export const ColorItem: React.FC<PropsI> = (props) => {
   );
   
 
-  if (!card || !card.color || !!colorValue) return;
+  if (!card || !card.color || !colorValue) return;
 
   const handleChange = (value: ColorItemI) => {
     app.changeColorItemConfiguration(value.name, card.keyPermission);

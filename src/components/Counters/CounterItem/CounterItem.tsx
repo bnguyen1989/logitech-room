@@ -27,7 +27,7 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   console.log("count", count);
   
 
-  if (!card || !card.counter || !count) return null;
+  if (!card || !card.counter || count === undefined) return null;
 
   const { min, max, threekit } = card.counter;
 
