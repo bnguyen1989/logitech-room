@@ -1,7 +1,7 @@
 import { InformationSVG } from "../../../assets";
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardItem.module.scss";
-import { ColorItem } from "../../ColorItem/ColorItem";
+import { ColorSwitcherItem } from "../../ColorSwitchers/ColorSwitcherItem/ColorSwitcherItem";
 import { CounterItem } from "../../Counters/CounterItem/CounterItem";
 import { SelectItem } from "../../Fields/SelectItem/SelectItem";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
@@ -66,7 +66,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
               className={s.content_actions}
               style={{ paddingTop: isAction ? "20px" : "" }}
             >
-              <ColorItem keyItemPermission={card.keyPermission} />
+              <ColorSwitcherItem keyItemPermission={card.keyPermission} />
               <CounterItem
                 keyItemPermission={card.keyPermission}
                 disabled={!isActiveCard}
