@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { changeStatusBuilding } from "../../store/slices/configurator/Configurator.slice.js";
 import { ProductsNodes } from "./ProductsNodes.js";
+import { ProductResolver } from "./ProductResolver.js";
 
 export type RoomProps = {
   roomAssetId: string;
@@ -29,5 +30,9 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
   }, [gltf]);
   console.log("Room");
 
-  return <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />;
+  return (
+    <ProductResolver>
+    <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
+    </ProductResolver>
+  );
 };
