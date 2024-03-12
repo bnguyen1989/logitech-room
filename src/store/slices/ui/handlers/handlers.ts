@@ -304,24 +304,33 @@ function setStepData(
           },
         };
 
-        const property: Record<string, any> = {
-          count: currentValue,
-        };
-        if (item.color) {
-          property.color = item.color.colors[0].name;
-        }
-
         store.dispatch(
           setPropertyItem({
             step: stepName,
             keyItemPermission: item.keyPermission,
-            property,
+            property: {
+              count: currentValue,
+            },
           })
         );
       });
     }
 
     stepCardData.push(...temp);
+  });
+
+  stepCardData.forEach((tempCard) => {
+    if (tempCard.color) {
+      store.dispatch(
+        setPropertyItem({
+          step: stepName,
+          keyItemPermission: tempCard.keyPermission,
+          property: {
+            color: tempCard.color.colors[0].name,
+          },
+        })
+      );
+    }
   });
 
   const cardData = stepCardData.reduce((acc, item) => {
@@ -554,7 +563,7 @@ function setSoftwareServicesData(configurator: Configurator) {
     });
 
     softwareServicesCardData.forEach((tempCard) => {
-      if(tempCard.select) {
+      if (tempCard.select) {
         store.dispatch(
           setPropertyItem({
             step: StepName.SoftwareServices,
