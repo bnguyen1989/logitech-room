@@ -79,7 +79,7 @@ export class Configurator {
   }
 
   public static getNameNodeForCamera(type: "Wall" | "TV", id?: number): string {
-    if (type === "Wall") return "Camera_Wall_Placement";
+    if (type === "Wall") return "Camera_Wall_Placement_1";
     return `Camera_TV_Placement_${id}`;
   }
 

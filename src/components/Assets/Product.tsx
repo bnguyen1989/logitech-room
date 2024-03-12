@@ -17,11 +17,9 @@ export const Product: React.FC<ProductProps> = ({
 }) => {
   const dispatch = useDispatch();
   const productGltf = useAsset({ assetId: productAssetId });
+  console.log("productGltf", productGltf);
 
-  useEffect(() => {
-    if (!productGltf) return;
-    dispatch(changeStatusProcessing(false));
-  }, [productGltf]);
+  dispatch(changeStatusProcessing(false));
 
   return (
     <group
@@ -34,7 +32,6 @@ export const Product: React.FC<ProductProps> = ({
         threeNode={productGltf.scene.clone()}
         nodeMatchers={ProductsNodes()}
       />
-      ;
     </group>
   );
 };
