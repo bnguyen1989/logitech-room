@@ -8,11 +8,7 @@ import {
 } from "../../../../models/configurator/type";
 import {
   CardI,
-  ColorItemI,
-  ItemCardI,
-  PlatformCardI,
-  SelectDataI,
-  ServiceCardI,
+  // SelectDataI,
   StepName,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
@@ -20,7 +16,7 @@ import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
 import ControllerImg from "../../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../../assets/images/items/access.jpg";
-import ServiceImg from "../../../../assets/images/items/service.jpg";
+// import ServiceImg from "../../../../assets/images/items/service.jpg";
 import {
   changeActiveStep,
   changeProcessInitData,
@@ -44,7 +40,7 @@ import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand"
 import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
 import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
-import { getActiveStep, getDataStepByName } from "../selectors/selectors";
+import { getActiveStep, getAssetFromCard, getDataStepByName } from "../selectors/selectors";
 
 declare const app: Application;
 
@@ -178,9 +174,6 @@ function updateDataByConfiguration(
     const activeKeys: string[] = [];
     console.log("stepName", stepName);
 
-    if (stepName === "Conference Camera") {
-      debugger;
-    }
     arrayAttributes.forEach((item) => {
       const [name, qtyName] = item;
       const value = configuration[name];
@@ -190,7 +183,7 @@ function updateDataByConfiguration(
       }
 
       const tempCard = Object.values(cards).find(
-        (item) => item.threekit?.assetId === value.assetId
+        (item) => getAssetFromCard(item)(state).id === value.assetId
       );
 
       if (!tempCard) {
@@ -273,7 +266,7 @@ function setStepData(
       cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
     });
 
-    const temp: Array<ItemCardI> = [];
+    const temp: Array<CardI> = [];
 
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       const elementPermission = permission
@@ -285,7 +278,10 @@ function setStepData(
         image: image,
         subtitle: subtitle,
         keyPermission: keyPermission,
-        threekitItems: cardPermissionWithDataThreekit[keyPermission],
+        dataThreekit: {
+          attributeName: name,
+          threekitItems: cardPermissionWithDataThreekit[keyPermission],
+        },
         recommended: elementPermission?.getRecommended() || false,
       });
     });
@@ -308,6 +304,13 @@ function setStepData(
           // },
         };
 
+        const valueConfiguration = configurator.getConfiguration()[
+          qtyName
+        ] as string;
+        const currentValue = valueConfiguration
+          ? parseInt(valueConfiguration)
+          : min;
+
         store.dispatch(
           setPropertyItem({
             step: stepName,
@@ -323,10 +326,24 @@ function setStepData(
     stepCardData.push(...temp);
   });
 
+  stepCardData.forEach((tempCard) => {
+    store.dispatch(
+      createItem({
+        step: stepName,
+        keyItemPermission: tempCard.keyPermission,
+      })
+    );
+  });
+
+  const cards = stepCardData.reduce((acc, item) => {
+    acc[item.keyPermission] = item;
+    return acc;
+  }, {} as Record<string, CardI>);
+
   store.dispatch(
     setDataCardsStep({
       step: stepName,
-      cards: stepCardData,
+      cards,
     })
   );
 }
@@ -385,7 +402,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
 function setStepDataPrepareCard(
   configurator: Configurator,
   store: Store,
-  baseData: Array<CardI>,
+  baseData: Array<Omit<CardI, "dataThreekit">>,
   stepName: StepName.Platform | StepName.Services,
   itemNameList: Array<Array<string>>
 ) {
@@ -398,17 +415,34 @@ function setStepDataPrepareCard(
       return;
     }
 
+    const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit =
+      {};
+
     value.values.forEach((item: ValueAttributeStateI) => {
       const asset = item as ValueAssetStateI;
+      if (!asset.visible) return;
+      const keyPermission = getPermissionNameByItemName(asset.name);
+      if (!keyPermission) return;
+
+      if (!cardPermissionWithDataThreekit[keyPermission]) {
+        cardPermissionWithDataThreekit[keyPermission] = {};
+      }
+
+      cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
+    });
+
+    Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       const baseCard = baseData.find(
-        (item) => item.keyPermission === asset.name
+        (item) => item.keyPermission === keyPermission
       );
-      if (!baseCard || !asset.visible) return;
+
+      if (!baseCard) return;
+
       cardData.push({
         ...baseCard,
-        threekit: {
-          assetId: asset.id,
-          key: name,
+        dataThreekit: {
+          attributeName: name,
+          threekitItems: cardPermissionWithDataThreekit[keyPermission],
         },
       });
     });
@@ -475,72 +509,87 @@ function setSoftwareServicesData(configurator: Configurator) {
 
       const temp: Array<CardI> = [];
 
-      const isSupport = (name: string) => name.includes("Support");
-      const isManagement = (name: string) => name.includes("Management");
+      // const isSupport = (name: string) => name.includes("Support");
+      // const isManagement = (name: string) => name.includes("Management");
 
-      if (isSupport(name)) {
-        const baseCard = softwareServicesBaseData.find((item) =>
-          isSupport(item.title)
-        );
+      // if (isSupport(name)) {
+      //   const baseCard = softwareServicesBaseData.find((item) =>
+      //     isSupport(item.title)
+      //   );
 
-        const values: Array<SelectDataI> = [];
-        value.values.forEach((item: ValueAttributeStateI) => {
-          const asset = item as ValueAssetStateI;
-          if (!asset.visible) return;
-          const plan = asset.metadata["Service Plan"];
-          if (plan) {
-            values.push({
-              label: plan,
-              value: asset.id,
-            });
-          }
-        });
+      //   const values: Array<SelectDataI> = [];
+      //   value.values.forEach((item: ValueAttributeStateI) => {
+      //     const asset = item as ValueAssetStateI;
+      //     if (!asset.visible) return;
+      //     const plan = asset.metadata["Service Plan"];
+      //     if (plan) {
+      //       values.push({
+      //         label: plan,
+      //         value: asset.id,
+      //       });
+      //     }
+      //   });
 
-        if (baseCard) {
-          temp.push({
-            ...baseCard,
-            select: {
-              data: values,
-            },
-            threekit: {
-              assetId: values[0].value,
-              key: name,
-            },
-          });
+      //   if (baseCard) {
+      //     temp.push({
+      //       ...baseCard,
+      //       select: {
+      //         data: values,
+      //       },
+      //       threekit: {
+      //         assetId: values[0].value,
+      //         key: name,
+      //       },
+      //     });
+      //   }
+      // } else if (isManagement(name)) {
+      //   const baseCard = softwareServicesBaseData.find((item) =>
+      //     isManagement(item.title)
+      //   );
+      //   value.values.forEach((item: ValueAttributeStateI) => {
+      //     const asset = item as ValueAssetStateI;
+      //     if (asset.visible && baseCard) {
+      //       temp.push({
+      //         ...baseCard,
+      //         threekit: {
+      //           assetId: asset.id,
+      //           key: name,
+      //         },
+      //       });
+      //     }
+      //   });
+      // } else {}
+      const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit =
+        {};
+
+      value.values.forEach((item: ValueAttributeStateI) => {
+        const asset = item as ValueAssetStateI;
+        if (!asset.visible) return;
+        const keyPermission = getPermissionNameByItemName(asset.name);
+        if (!keyPermission) return;
+
+        if (!cardPermissionWithDataThreekit[keyPermission]) {
+          cardPermissionWithDataThreekit[keyPermission] = {};
         }
-      } else if (isManagement(name)) {
-        const baseCard = softwareServicesBaseData.find((item) =>
-          isManagement(item.title)
+
+        cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
+      });
+
+      Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
+        const baseCard = softwareServicesBaseData.find(
+          (item) => item.keyPermission === keyPermission
         );
-        value.values.forEach((item: ValueAttributeStateI) => {
-          const asset = item as ValueAssetStateI;
-          if (asset.visible && baseCard) {
-            temp.push({
-              ...baseCard,
-              threekit: {
-                assetId: asset.id,
-                key: name,
-              },
-            });
-          }
+
+        if (!baseCard) return;
+
+        softwareServicesCardData.push({
+          ...baseCard,
+          dataThreekit: {
+            attributeName: name,
+            threekitItems: cardPermissionWithDataThreekit[keyPermission]
+          },
         });
-      } else {
-        value.values.forEach((item: ValueAttributeStateI) => {
-          const asset = item as ValueAssetStateI;
-          temp.push({
-            key: StepName.SoftwareServices,
-            image: ServiceImg,
-            header_title: asset.name,
-            title: asset.name,
-            threekit: {
-              assetId: asset.id,
-              key: name,
-            },
-            keyPermission:
-              getPermissionNameByItemName(asset.name) || asset.name,
-          });
-        });
-      }
+      });
 
       softwareServicesCardData.push(...temp);
     });

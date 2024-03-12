@@ -100,7 +100,7 @@ export class Configurator {
   }
 
   public static getNameNodeTapRiserMount(): string {
-    return "Tap_Riser_Mount_Placement"
+    return "Tap_Riser_Mount_Placement";
   }
 
   public static getNameNodeTapTableMount(): string {
@@ -228,6 +228,14 @@ export class Configurator {
 
     if (!id) return;
     return this.attributeState[id];
+  }
+
+  public getAttributeByAssetName(name: string): AttributeI | undefined {
+    return this.attributes.find((attribute) =>
+      attribute.values.some(
+        (value) => typeof value === "object" && value.name === name
+      )
+    );
   }
 
   public getSnapshot(): Configurator {

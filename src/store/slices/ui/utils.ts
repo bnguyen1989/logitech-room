@@ -89,27 +89,27 @@ export const getInitStepData = (): StepDataI => {
   };
 };
 
-export function getPlatformCardData(): Record<string, CardI> {
+export function getPlatformCardData(): Record<string, TypeDataCardI> {
   return {
     [PlatformName.GoogleMeet]: {
       key: StepName.Platform,
       logo: LogoGoogle,
       image: DeviceGoogle,
-      title: "Google Meet",
+      // title: "Google Meet",
       keyPermission: PlatformName.GoogleMeet,
     },
     [PlatformName.MicrosoftTeams]: {
       key: StepName.Platform,
       logo: LogoMS,
       image: DeviceMS,
-      title: "Microsoft Teams",
+      // title: "Microsoft Teams",
       keyPermission: PlatformName.MicrosoftTeams,
     },
     [PlatformName.Zoom]: {
       key: StepName.Platform,
       logo: LogoZoom,
       image: DeviceZoom,
-      title: "Zoom",
+      // title: "Zoom",
       keyPermission: PlatformName.Zoom,
     },
   };
@@ -120,54 +120,79 @@ function getRoomCardData(): Record<string, CardI> {
     [RoomSizeName.Phonebooth]: {
       key: StepName.RoomSize,
       image: ImagePhonebooth,
-      title: "Phone Booth",
+      // title: "Phone Booth",
       subtitle: "up to 3",
       keyPermission: RoomSizeName.Phonebooth,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
     [RoomSizeName.Huddle]: {
       key: StepName.RoomSize,
       image: ImageHundle,
-      title: "Huddle Room",
+      // title: "Huddle Room",
       subtitle: "up to 6",
       keyPermission: RoomSizeName.Huddle,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
     [RoomSizeName.Small]: {
       key: StepName.RoomSize,
       image: ImageSmall,
-      title: "Small Room",
+      // title: "Small Room",
       subtitle: "up to 8",
       keyPermission: RoomSizeName.Small,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
     [RoomSizeName.Medium]: {
       key: StepName.RoomSize,
       image: ImageMedium,
-      title: "Medium Room",
+      // title: "Medium Room",
       subtitle: "up to 12",
       keyPermission: RoomSizeName.Medium,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
     [RoomSizeName.Large]: {
       key: StepName.RoomSize,
       image: ImageLarge,
-      title: "Large Room",
+      // title: "Large Room",
       subtitle: "up to 20",
       keyPermission: RoomSizeName.Large,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
     [RoomSizeName.Auditorium]: {
       key: StepName.RoomSize,
       image: ImageAuditorium,
-      title: "Alternative",
+      // title: "Alternative",
       subtitle: "more than 20",
       keyPermission: RoomSizeName.Auditorium,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
   };
 }
 
-export function getServicesCardData(): Record<string, CardI> {
+type TypeDataCardI = Omit<CardI, "dataThreekit">;
+export function getServicesCardData(): Record<string, TypeDataCardI> {
   return {
     [ServiceName.Android]: {
       key: StepName.Services,
       image: ImageAppliance,
-      title: "Appliance-Based",
+      // title: "Appliance-Based",
       subtitle:
         "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
       keyPermission: ServiceName.Android,
@@ -175,7 +200,7 @@ export function getServicesCardData(): Record<string, CardI> {
     [ServiceName.PC]: {
       key: StepName.Services,
       image: ImagePCBased,
-      title: "PC-Based",
+      // title: "PC-Based",
       subtitle:
         "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
       keyPermission: ServiceName.PC,
@@ -183,13 +208,13 @@ export function getServicesCardData(): Record<string, CardI> {
   };
 }
 
-export function getSoftwareServicesCardData(): Record<string, CardI> {
+export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
   return {
     [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      header_title: "LOGITECH Basic",
-      title: "Device Management Software",
+      // header_title: "LOGITECH Basic",
+      // title: "Device Management Software",
       subtitle: "(Including Sync)",
       description:
         "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
@@ -198,8 +223,8 @@ export function getSoftwareServicesCardData(): Record<string, CardI> {
     [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      header_title: "LOGITECH SELECT",
-      title: "24/7 Enterprise-Grade Support",
+      // header_title: "LOGITECH SELECT",
+      // title: "24/7 Enterprise-Grade Support",
       description:
         "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,

@@ -151,3 +151,14 @@ export const getIsSelectedCardByKeyPermission =
     if (!data) return false;
     return data.selected.length > 0;
   };
+
+export const getAssetFromCard = (card: CardI) => (state: RootState) => {
+  const threekitItems = card.dataThreekit.threekitItems;
+  const keyPermission = card.keyPermission;
+  const stepName = card.key;
+
+  const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+  const keySelected = data?.selected[0];
+  if (!keySelected) return threekitItems[keyPermission];
+  return threekitItems[keySelected];
+};

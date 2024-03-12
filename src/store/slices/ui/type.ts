@@ -57,7 +57,10 @@ export interface CardI {
   select?: SelectI;
   keyPermission: string;
   // threekit?: ThreekitI;
-  threekitItems: Record<string, ValueAssetStateI>;
+  dataThreekit: {
+    attributeName: string;
+    threekitItems: Record<string, ValueAssetStateI>;
+  };
   recommended?: boolean;
 }
 

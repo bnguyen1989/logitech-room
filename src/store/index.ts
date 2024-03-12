@@ -8,7 +8,7 @@ export const store = configureStore({
     ui: uiReducer,
     configurator: configuratorReducer,
     modals: modalsReducer,
-  }
+  }, 
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

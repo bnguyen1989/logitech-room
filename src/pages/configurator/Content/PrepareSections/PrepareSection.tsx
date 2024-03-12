@@ -37,9 +37,10 @@ export const PrepareSection: React.FC = () => {
     const isContain = activeItems.some(
       (item) => item.name === card.keyPermission
     );
-    const threekit = card.threekit;
+    const { attributeName, threekitItems } = card.dataThreekit;
+    const threekitAsset = threekitItems[card.keyPermission];
 
-    if (!threekit) {
+    if (!attributeName.length) {
       if (card.keyPermission) {
         if (isContain) {
           if (permission.canRemoveActiveItemByName(card.keyPermission)) {
@@ -57,13 +58,13 @@ export const PrepareSection: React.FC = () => {
     }
 
     if (isContain && card.keyPermission) {
-      app.removeItem(threekit.key, card.keyPermission);
+      app.removeItem(attributeName, card.keyPermission);
       return;
     }
 
     app.addItemConfiguration(
-      threekit.key,
-      threekit.assetId,
+      attributeName,
+      threekitAsset.id,
       card.keyPermission
     );
   };

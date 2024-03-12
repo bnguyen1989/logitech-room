@@ -1,7 +1,5 @@
-import { useDispatch } from "react-redux";
 import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
-import { addActiveCard } from "../../../../../store/slices/ui/Ui.slice";
 import {
   getActiveStepData,
   getIsConfiguratorStep,
@@ -12,7 +10,6 @@ import { StepName } from "../../../../../models/permission/type";
 import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
 
 export const ConfigurationFormForStep = () => {
-  const dispatch = useDispatch();
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
@@ -21,20 +18,18 @@ export const ConfigurationFormForStep = () => {
     const isContain = activeItems.some(
       (item) => item.name === card.keyPermission
     );
-    const threekit = card.threekit;
-    if (!threekit) {
-      dispatch(addActiveCard({ key: card.keyPermission }));
-      return;
-    }
+
+    const {attributeName, threekitItems} = card.dataThreekit;
+    const threekitAsset = threekitItems[card.keyPermission];
 
     if (isContain && card.keyPermission) {
-      app.removeItem(threekit.key, card.keyPermission);
+      app.removeItem(attributeName, card.keyPermission);
       return;
     }
 
     app.addItemConfiguration(
-      threekit.key,
-      threekit.assetId,
+      attributeName,
+      threekitAsset.id,
       card.keyPermission
     );
   };
