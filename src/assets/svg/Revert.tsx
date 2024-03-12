@@ -18,7 +18,7 @@ export const RevertSVG: React.FC = () => {
       >
         <path
           fillRule="evenodd"
-          clip-rule="evenodd"
+          clipRule="evenodd"
           d="M34.5 17.0003H14.7106V32.4793H34.5V17.0003Z"
           fill="white"
         />
@@ -26,7 +26,7 @@ export const RevertSVG: React.FC = () => {
       <g mask="url(#mask0_4571_7414)">
         <path
           fillRule="evenodd"
-          clip-rule="evenodd"
+          clipRule="evenodd"
           d="M19.5 20.0348H28.6672C31.8889 20.0348 34.5 22.8206 34.5 26.257C34.5 29.6952 31.8917 32.4792 28.6672 32.4792H15.8889V30.7015H28.6672C30.9711 30.7015 32.8333 28.7139 32.8333 26.257C32.8333 23.8019 30.9683 21.8126 28.6672 21.8126H19.5V24.8478L14.7106 20.9237L19.5 17.0001V20.0348Z"
           fill="white"
         />
