@@ -44,40 +44,20 @@ export interface StepI {
   cards: Record<string, CardI>;
 }
 
-export interface BaseCardI {
-  image: string;
-  keyPermission?: string;
-  recommended?: boolean;
-  threekitItems: Record<string, ValueAssetStateI>;
-}
-
-export interface RoomCardI extends BaseCardI {
-  key: StepName.RoomSize;
-  subtitle: string;
-}
-
-export interface PlatformCardI extends BaseCardI {
-  key: StepName.Platform;
-  logo: string;
-}
-
-export interface ServiceCardI extends BaseCardI {
-  key: StepName.Services;
-  subtitle: string;
-}
 export interface CardI {
   key: StepName;
-  title: string;
+  // title: string;
   image: string;
   logo?: string;
   subtitle?: string;
-  header_title?: string;
+  // header_title?: string;
   description?: string;
-  color?: ColorI;
+  // color?: ColorI;
   counter?: CounterI;
   select?: SelectI;
   keyPermission: string;
-  threekit?: ThreekitI;
+  // threekit?: ThreekitI;
+  threekitItems: Record<string, ValueAssetStateI>;
   recommended?: boolean;
 }
 
@@ -107,19 +87,6 @@ export interface SelectDataI {
 export interface SelectI {
   value: SelectDataI;
   data: Array<SelectDataI>;
-}
-
-export interface ItemCardI extends BaseCardI {
-  key:
-    | StepName.ConferenceCamera
-    | StepName.AudioExtensions
-    | StepName.MeetingController
-    | StepName.VideoAccessories
-    | StepName.SoftwareServices;
-  subtitle?: string;
-  description?: string;
-  counter?: CounterI;
-  select?: SelectI;
 }
 
 export type TypeCardPermissionWithDataThreekit = Record<

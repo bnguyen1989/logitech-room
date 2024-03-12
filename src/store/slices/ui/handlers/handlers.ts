@@ -248,7 +248,7 @@ function setStepData(
   image: string,
   subtitle?: string
 ) {
-  const stepCardData: Array<ItemCardI> = [];
+  const stepCardData: Array<CardI> = [];
 
   itemNameList.forEach((item) => {
     const [name, qtyName] = item;
@@ -273,14 +273,14 @@ function setStepData(
       cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
     });
 
-    const tempNew: Array<ItemCardI> = [];
+    const temp: Array<ItemCardI> = [];
 
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       const elementPermission = permission
         .getElements()
         .find((item) => item.name === keyPermission);
 
-      tempNew.push({
+      temp.push({
         key: stepName,
         image: image,
         subtitle: subtitle,
@@ -293,7 +293,7 @@ function setStepData(
     if (qtyName) {
       const qty = configurator.getStateAttributeByName(qtyName);
       if (!qty) return;
-      tempNew.forEach((item) => {
+      temp.forEach((item) => {
         const values = (qty.values as Array<ValueStringStateI>).filter(
           (item) => item.visible
         );
@@ -325,7 +325,7 @@ function setStepData(
       });
     }
 
-    stepCardData.push(...tempNew);
+    stepCardData.push(...temp);
   });
 
   // stepCardData.forEach((tempCard) => {
