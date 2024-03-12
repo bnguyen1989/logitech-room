@@ -308,18 +308,13 @@ function setStepData(
           // },
         };
 
-        const property: Record<string, any> = {
-          count: currentValue,
-        };
-        if (item.color) {
-          property.color = item.color.colors[0].name;
-        }
-
         store.dispatch(
           setPropertyItem({
             step: stepName,
             keyItemPermission: item.keyPermission,
-            property,
+            property: {
+              count: currentValue,
+            },
           })
         );
       });
@@ -328,18 +323,6 @@ function setStepData(
     stepCardData.push(...temp);
   });
 
-  // stepCardData.forEach((tempCard) => {
-  //   store.dispatch(
-  //     setPropertyItem({
-  //       step: stepName,
-  //       keyItemPermission: tempCard.keyPermission ?? "",
-  //       property: {
-  //         count: tempCard.counter?.currentValue,
-  //         color: tempCard.color?.currentColor.value,
-  //       },
-  //     })
-  //   );
-  // });
   store.dispatch(
     setDataCardsStep({
       step: stepName,
