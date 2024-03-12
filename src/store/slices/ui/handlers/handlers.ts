@@ -6,7 +6,16 @@ import {
   ValueAttributeStateI,
   ValueStringStateI,
 } from "../../../../models/configurator/type";
-import { CardI, SelectDataI, StepName } from "../type";
+import {
+  CardI,
+  ColorItemI,
+  ItemCardI,
+  PlatformCardI,
+  SelectDataI,
+  ServiceCardI,
+  StepName,
+  TypeCardPermissionWithDataThreekit,
+} from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
 import ControllerImg from "../../../../assets/images/items/controller.jpg";
@@ -162,10 +171,16 @@ function updateDataByConfiguration(
 ) {
   return (store: Store, arrayAttributes: Array<Array<string>>) => {
     const configuration = configurator.getConfiguration();
+
     const state = store.getState();
     const stepData = getDataStepByName(stepName)(state);
     const cards: Record<string, CardI> = stepData.cards;
     const activeKeys: string[] = [];
+    console.log("stepName", stepName);
+
+    if (stepName === "Conference Camera") {
+      debugger;
+    }
     arrayAttributes.forEach((item) => {
       const [name, qtyName] = item;
       const value = configuration[name];
@@ -231,10 +246,10 @@ function setStepData(
     | StepName.SoftwareServices,
   itemNameList: Array<Array<string>>,
   image: string,
-  subtitle?: string,
-  isColor?: boolean
+  subtitle?: string
 ) {
   const stepCardData: Array<CardI> = [];
+
   itemNameList.forEach((item) => {
     const [name, qtyName] = item;
     const value = configurator.getStateAttributeByName(name);
@@ -242,11 +257,25 @@ function setStepData(
       return;
     }
 
-    const temp: Array<CardI> = [];
+    const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit =
+      {};
+
     value.values.forEach((item: ValueAttributeStateI) => {
       const asset = item as ValueAssetStateI;
       if (!asset.visible) return;
       const keyPermission = getPermissionNameByItemName(asset.name);
+      if (!keyPermission) return;
+
+      if (!cardPermissionWithDataThreekit[keyPermission]) {
+        cardPermissionWithDataThreekit[keyPermission] = {};
+      }
+
+      cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
+    });
+
+    const temp: Array<ItemCardI> = [];
+
+    Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       const elementPermission = permission
         .getElements()
         .find((item) => item.name === keyPermission);
@@ -254,29 +283,10 @@ function setStepData(
       temp.push({
         key: stepName,
         image: image,
-        header_title: asset.name,
-        title: asset.name,
         subtitle: subtitle,
-        threekit: {
-          assetId: asset.id,
-          key: name,
-        },
-        keyPermission: keyPermission || asset.name,
+        keyPermission: keyPermission,
+        threekitItems: cardPermissionWithDataThreekit[keyPermission],
         recommended: elementPermission?.getRecommended() || false,
-        color: !isColor
-          ? undefined
-          : {
-              colors: [
-                {
-                  name: "Graphite",
-                  value: "#434446",
-                },
-                {
-                  name: "White",
-                  value: "#FBFBFB",
-                },
-              ],
-            },
       });
     });
 
@@ -289,19 +299,13 @@ function setStepData(
         );
         const min = parseInt(values[0].value);
         const max = parseInt(values[values.length - 1].value);
-        const valueConfiguration = configurator.getConfiguration()[
-          qtyName
-        ] as string;
-        const currentValue = valueConfiguration
-          ? parseInt(valueConfiguration)
-          : min;
 
         item.counter = {
           min: min,
           max: max,
-          threekit: {
-            key: qtyName,
-          },
+          // threekit: { ???????
+          //   key: qtyName,
+          // },
         };
 
         store.dispatch(
@@ -319,29 +323,10 @@ function setStepData(
     stepCardData.push(...temp);
   });
 
-  stepCardData.forEach((tempCard) => {
-    if (tempCard.color) {
-      store.dispatch(
-        setPropertyItem({
-          step: stepName,
-          keyItemPermission: tempCard.keyPermission,
-          property: {
-            color: tempCard.color.colors[0].name,
-          },
-        })
-      );
-    }
-  });
-
-  const cardData = stepCardData.reduce((acc, item) => {
-    acc[item.keyPermission] = item;
-    return acc;
-  }, {} as Record<string, CardI>);
-
   store.dispatch(
     setDataCardsStep({
       step: stepName,
-      cards: cardData,
+      cards: stepCardData,
     })
   );
 }
@@ -354,8 +339,7 @@ function setAudioExtensionsData(configurator: Configurator) {
       StepName.AudioExtensions,
       Configurator.AudioExtensionName,
       MicImg,
-      undefined,
-      true
+      undefined
     );
   };
 }
@@ -368,8 +352,7 @@ function setCameraData(configurator: Configurator) {
       StepName.ConferenceCamera,
       Configurator.CameraName,
       CameraImg,
-      undefined,
-      true
+      undefined
     );
   };
 }

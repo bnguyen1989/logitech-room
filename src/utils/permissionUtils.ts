@@ -44,8 +44,8 @@ export enum ServiceName {
 export enum CameraName {
   MeetUp = "MeetUp",
   RallyBarHuddle = "Logitech Rally Bar Huddle",
-  RallyBarMini = "Logitech Rally Bar Mini - Graphite",
-  RallyBar = "Logitech Rally Bar - Graphite",
+  RallyBarMini = "Logitech Rally Bar Mini",
+  RallyBar = "Logitech Rally Bar",
   RallyPlus = "Logitech Rally Plus",
 
   AddCameras = "Add'l Cameras",
@@ -358,7 +358,7 @@ function createStepSoftwareServices() {
   return stepSoftwareServices;
 }
 
-export const getPermissionNameByItemName = (itemName: string) => {
+export const getPermissionNameByItemName = (threekitItemName: string): string | undefined => {
   const permissionNames = [
     ...Object.values(PlatformName),
     ...Object.values(RoomSizeName),
@@ -370,8 +370,22 @@ export const getPermissionNameByItemName = (itemName: string) => {
     ...Object.values(SoftwareServicesName),
   ];
 
+  const isItemNameMatching = (threekitItemName_local: string) => (permissionName: string) => threekitItemName_local.toLowerCase() === permissionName.toLowerCase();
+
+  const isColorItemNameMatching = (threekitItemName_local: string) => (permissionName: string) => {
+    const SeparatorItemColor = ' - '
+
+    const isIncludeSeparator = threekitItemName_local.toLowerCase().includes(SeparatorItemColor)
+    if (!isIncludeSeparator) return false;
+
+    const [nameItem] = threekitItemName_local.split(' - ')
+
+    return isItemNameMatching(nameItem)(permissionName)
+  }
+
+
   return permissionNames.find(
-    (name) => itemName.toLowerCase() === name.toLowerCase()
+    (permissionName) => isItemNameMatching(threekitItemName)(permissionName) || isColorItemNameMatching(threekitItemName)(permissionName)
   );
 };
 
