@@ -40,7 +40,11 @@ import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand"
 import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
 import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
-import { getActiveStep, getAssetFromCard, getDataStepByName } from "../selectors/selectors";
+import {
+  getActiveStep,
+  getAssetFromCard,
+  getDataStepByName,
+} from "../selectors/selectors";
 
 declare const app: Application;
 
@@ -327,12 +331,28 @@ function setStepData(
   });
 
   stepCardData.forEach((tempCard) => {
-    store.dispatch(
-      createItem({
-        step: stepName,
-        keyItemPermission: tempCard.keyPermission,
-      })
-    );
+    const { threekitItems } = tempCard.dataThreekit;
+
+    //temp solution, but need to be refactored, because threekitItems can include isn't color items
+    const isColors = Object.keys(threekitItems).length === 2;
+    if (isColors) {
+      store.dispatch(
+        setPropertyItem({
+          step: stepName,
+          keyItemPermission: tempCard.keyPermission,
+          property: {
+            color: "Graphite",
+          },
+        })
+      );
+    } else {
+      store.dispatch(
+        createItem({
+          step: stepName,
+          keyItemPermission: tempCard.keyPermission,
+        })
+      );
+    }
   });
 
   const cards = stepCardData.reduce((acc, item) => {
@@ -586,7 +606,7 @@ function setSoftwareServicesData(configurator: Configurator) {
           ...baseCard,
           dataThreekit: {
             attributeName: name,
-            threekitItems: cardPermissionWithDataThreekit[keyPermission]
+            threekitItems: cardPermissionWithDataThreekit[keyPermission],
           },
         });
       });
