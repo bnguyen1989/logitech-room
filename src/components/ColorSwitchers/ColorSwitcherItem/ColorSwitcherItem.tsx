@@ -1,13 +1,12 @@
 import { ColorItemI } from "../../../store/slices/ui/type";
 import {
   getActiveStep,
-  getCardByKeyPermission,
-  getPropertyColorCardByKeyPermission,
+  getCardByKeyPermission, 
 } from "../../../store/slices/ui/selectors/selectors";
 import { useAppSelector } from "../../../hooks/redux";
 import { Application } from "../../../models/Application";
 import { ColorSwitcher } from "../ColorSwitcher/ColorSwitcher";
-import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
+import { getColorsFromCard, getPropertyColorCardByKeyPermission } from "../../../store/slices/ui/selectors/selectorsColorsCard";
 
 declare const app: Application;
 
