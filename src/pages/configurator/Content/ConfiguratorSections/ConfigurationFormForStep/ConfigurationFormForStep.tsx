@@ -2,6 +2,7 @@ import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
   getActiveStepData,
+  getAssetFromCard,
   getIsConfiguratorStep,
 } from "../../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../../store/slices/ui/type";
@@ -10,6 +11,7 @@ import { StepName } from "../../../../../models/permission/type";
 import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
 
 export const ConfigurationFormForStep = () => {
+  const state = useAppSelector((state) => state);
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
@@ -19,8 +21,8 @@ export const ConfigurationFormForStep = () => {
       (item) => item.name === card.keyPermission
     );
 
-    const {attributeName, threekitItems} = card.dataThreekit;
-    const threekitAsset = threekitItems[card.keyPermission];
+    const {attributeName} = card.dataThreekit;
+    const threekitAsset = getAssetFromCard(card)(state);
 
     if (isContain && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
