@@ -1,6 +1,7 @@
 import { AssetI } from "../../services/Threekit/type";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
+import { StepName } from '../permission/type'
 import {
   AttributeI,
   AttributeStateI,
@@ -54,6 +55,28 @@ export class Configurator {
     ["Room Device Management Software"],
     ["Room Support Service"],
   ];
+
+  public static getNamesAttrByStepName(stepName: string): Array<Array<string>> {
+    switch (stepName) {
+      case StepName.Platform:
+        return Configurator.PlatformName;
+      case StepName.Services:
+        return Configurator.ServicesName;
+      case StepName.ConferenceCamera:
+        return Configurator.CameraName;
+      case StepName.AudioExtensions:
+        return Configurator.AudioExtensionName;
+      case StepName.MeetingController:
+        return Configurator.MeetingControllerName;
+      case StepName.VideoAccessories:
+        return Configurator.VideoAccessoriesName;
+      case StepName.SoftwareServices:
+        return Configurator.SoftwareServicesName;
+      default:
+        return [];
+    }
+  }
+
 
   public static getQtyNameByAttrName(name: string): string {
     return [

@@ -7,6 +7,7 @@ import {
   getActiveStep,
   getActiveStepData,
   getIsConfiguratorStep,
+  getIsSelectedCardByKeyPermission,
   getSelectedCardsByStep,
 } from "../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI, StepName } from "../../../../store/slices/ui/type";
@@ -15,14 +16,13 @@ import {
   addActiveCard,
   removeActiveCard,
 } from "../../../../store/slices/ui/Ui.slice";
-import { Permission } from "../../../../models/permission/Permission";
 import { Application } from "../../../../models/Application";
 
-declare const permission: Permission;
 declare const app: Application;
 
 export const PrepareSection: React.FC = () => {
   const dispatch = useDispatch();
+  const state = useAppSelector((state) => state);
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const activeStep = useAppSelector(getActiveStep);
   const selectCards = useAppSelector(getSelectedCardsByStep(activeStep));
@@ -33,31 +33,24 @@ export const PrepareSection: React.FC = () => {
   console.log("activeStepData", activeStepData);
 
   const handleClick = (card: CardI) => {
-    const activeItems = permission.getActiveItems();
-    const isContain = activeItems.some(
-      (item) => item.name === card.keyPermission
-    );
+    const isSelectCard = getIsSelectedCardByKeyPermission(
+      activeStep,
+      card.keyPermission
+    )(state);
+
     const { attributeName, threekitItems } = card.dataThreekit;
     const threekitAsset = threekitItems[card.keyPermission];
 
     if (!attributeName.length) {
-      if (card.keyPermission) {
-        if (isContain) {
-          if (permission.canRemoveActiveItemByName(card.keyPermission)) {
-            permission.removeActiveItemByName(card.keyPermission);
-            dispatch(removeActiveCard({ key: card.keyPermission }));
-          }
-          return;
-        }
-        if (permission.canAddActiveElementByName(card.keyPermission)) {
-          permission.addActiveElementByName(card.keyPermission);
-          dispatch(addActiveCard({ key: card.keyPermission }));
-        }
+      if (isSelectCard) {
+        dispatch(removeActiveCard({ key: card.keyPermission }));
+        return;
       }
+      dispatch(addActiveCard({ key: card.keyPermission }));
       return;
     }
 
-    if (isContain && card.keyPermission) {
+    if (isSelectCard) {
       app.removeItem(attributeName, card.keyPermission);
       return;
     }

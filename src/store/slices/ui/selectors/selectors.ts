@@ -128,7 +128,9 @@ export const getCardByKeyPermission =
 export const getSelectedDataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const selectedData = getSelectData(state);
-    return selectedData[stepName][keyPermission];
+    const stepSelectData = selectedData[stepName];
+    if(!stepSelectData) return;
+    return stepSelectData[keyPermission];
   };
 
 

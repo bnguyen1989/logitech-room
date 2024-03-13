@@ -1,7 +1,6 @@
 import { Store } from "@reduxjs/toolkit";
 import { Application } from "../../../../models/Application";
-import { AddItemCommand } from "../../../../models/command/AddItemCommand";
-import { CardI, StepI } from "../../ui/type";
+import { CardI } from "../../ui/type";
 import {
   changeStatusProcessing,
   changeValueNodes,
@@ -9,11 +8,9 @@ import {
   removeNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import { Permission } from "../../../../models/permission/Permission";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { StepName } from "../../../../models/permission/type";
-import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 import { MountElement } from "../../../../models/permission/elements/MountElement";
 import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
@@ -21,6 +18,7 @@ import { removeActiveCard } from "../../ui/Ui.slice";
 import {
   getActiveStep,
   getAssetFromCard,
+  getCardByKeyPermission,
   getDataStepByName,
 } from "../../ui/selectors/selectors";
 
@@ -29,20 +27,6 @@ declare const permission: Permission;
 
 export const geConfiguratorHandlers = (store: Store) => {
   app.eventEmitter.on("executeCommand", (data) => {
-    if (data instanceof AddItemCommand) {
-      const activeStep = getActiveStep(store.getState());
-      const stepData = getDataStepByName(activeStep)(store.getState());
-      const card = stepData.cards[data.keyItemPermission];
-      addElement(card, stepData)(store);
-    }
-
-    if (data instanceof RemoveItemCommand) {
-      const activeStep = getActiveStep(store.getState());
-      const stepData = getDataStepByName(activeStep)(store.getState());
-      const card = stepData.cards[data.keyItemPermission];
-      removeElement(card)(store);
-    }
-
     if (data instanceof ChangeCountItemCommand) {
       const activeStep = getActiveStep(store.getState());
       const stepData = getDataStepByName(activeStep)(store.getState());
@@ -50,37 +34,10 @@ export const geConfiguratorHandlers = (store: Store) => {
       const value = parseInt(data.value);
       changeCountElement(card, value, data.isIncrease)(store);
     }
-
-    if (data instanceof ChangeStepCommand) {
-      const configurator = app.currentConfigurator;
-      const updateNodes = updateNodesByConfiguration(
-        configurator,
-        data.stepName
-      );
-
-      if (data.stepName === StepName.Platform) {
-        updateNodes(store, Configurator.PlatformName);
-      }
-      if (data.stepName === StepName.Services) {
-        updateNodes(store, Configurator.ServicesName);
-      }
-      if (data.stepName === StepName.AudioExtensions) {
-        updateNodes(store, Configurator.AudioExtensionName);
-      }
-      if (data.stepName === StepName.ConferenceCamera) {
-        updateNodes(store, Configurator.CameraName);
-      }
-      if (data.stepName === StepName.MeetingController) {
-        updateNodes(store, Configurator.MeetingControllerName);
-      }
-      if (data.stepName === StepName.VideoAccessories) {
-        updateNodes(store, Configurator.VideoAccessoriesName);
-      }
-    }
   });
 };
 
-function updateNodesByConfiguration(
+export function updateNodesByConfiguration(
   configurator: Configurator,
   stepName: StepName
 ) {
@@ -100,7 +57,7 @@ function updateNodesByConfiguration(
           Object.values(step.cards)
         );
         if (!card) return;
-        addElement(card, step)(store);
+        addElement(card, stepName)(store);
       }
     });
   };
@@ -116,7 +73,7 @@ function setElementByNameNode(assetId: string, nameNode: string) {
   };
 }
 
-function addElement(card: CardI, stateStep: StepI) {
+export function addElement(card: CardI, stepName: StepName) {
   return (store: Store) => {
     const state = store.getState();
     const step = permission.getCurrentStep();
@@ -163,7 +120,10 @@ function addElement(card: CardI, stateStep: StepI) {
             setElementByNameNode(cardAsset.id, existDependentMountName)(store);
           } else {
             store.dispatch(changeStatusProcessing(true));
-            const dependentCard = stateStep.cards[dependentMount.name];
+            const dependentCard = getCardByKeyPermission(
+              stepName,
+              dependentMount.name
+            )(state);
             if (dependentCard) {
               const value = nodes[defaultMount.getNameNode()];
               const dependentCardAsset = getAssetFromCard(dependentCard)(state);
@@ -186,7 +146,10 @@ function addElement(card: CardI, stateStep: StepI) {
     } else if (element instanceof MountElement) {
       const itemElement = step.getActiveItemElementByMountName(element.name);
       if (!itemElement) return;
-      const cardItemElement = stateStep.cards[itemElement.name];
+      const cardItemElement = getCardByKeyPermission(
+        stepName,
+        itemElement.name
+      )(state);
       const cardItemElementAsset = getAssetFromCard(cardItemElement)(state);
       if (cardItemElement) {
         const dependentMount = element.getDependentMount();
@@ -198,7 +161,10 @@ function addElement(card: CardI, stateStep: StepI) {
           store.dispatch(removeNodes(cardItemElementAsset.id));
           store.dispatch(removeNodeByKeys(keysForRemove));
           store.dispatch(changeStatusProcessing(true));
-          const dependentCard = stateStep.cards[dependentMount.name];
+          const dependentCard = getCardByKeyPermission(
+            stepName,
+            dependentMount.name
+          )(state);
           const dependentCardAsset = getAssetFromCard(dependentCard)(state);
           if (dependentCard) {
             setElementByNameNode(
@@ -224,7 +190,7 @@ function addElement(card: CardI, stateStep: StepI) {
   };
 }
 
-function removeElement(card: CardI) {
+export function removeElement(card: CardI) {
   return (store: Store) => {
     const state = store.getState();
     const activeStep = getActiveStep(state);

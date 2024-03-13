@@ -18,9 +18,11 @@ import ControllerImg from "../../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../../assets/images/items/access.jpg";
 // import ServiceImg from "../../../../assets/images/items/service.jpg";
 import {
+  addActiveCard,
   changeActiveStep,
   changeProcessInitData,
   createItem,
+  removeActiveCard,
   setActiveCardsForStep,
   setDataCardsStep,
   setPropertyItem,
@@ -54,17 +56,12 @@ export const getUiHandlers = (store: Store) => {
   });
 
   app.eventEmitter.on("executeCommand", (data) => {
-    if (data instanceof AddItemCommand || data instanceof RemoveItemCommand) {
-      if (data instanceof AddItemCommand) {
-        permission.addActiveElementByName(data.keyItemPermission);
-      }
-      if (data instanceof RemoveItemCommand) {
-        permission.removeActiveItemByName(data.keyItemPermission);
-      }
+    if (data instanceof AddItemCommand) {
+      store.dispatch(addActiveCard({ key: data.keyItemPermission }));
+    }
 
-      const stepName = getActiveStep(store.getState());
-      const configurator = app.currentConfigurator;
-      updateDataCardByStepName(stepName)(store, configurator);
+    if(data instanceof RemoveItemCommand) {
+      store.dispatch(removeActiveCard({ key: data.keyItemPermission }));
     }
 
     if (data instanceof ChangeCountItemCommand) {
@@ -108,9 +105,9 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeStepCommand) {
-      permission.changeStepName(data.stepName);
-      const configurator = app.currentConfigurator;
-      updateDataCardByStepName(data.stepName)(store, configurator);
+      // permission.changeStepName(data.stepName);
+      // const configurator = app.currentConfigurator;
+      // updateDataCardByStepName(data.stepName)(store, configurator);
 
       store.dispatch(changeActiveStep(data.stepName));
     }
@@ -131,7 +128,7 @@ export const getUiHandlers = (store: Store) => {
   );
 };
 
-function updateDataCardByStepName(stepName: StepName) {
+export function updateDataCardByStepName(stepName: StepName) {
   return (store: Store, configurator: Configurator) => {
     const updateDataCard = updateDataByConfiguration(configurator, stepName);
     if (stepName === StepName.Platform) {
