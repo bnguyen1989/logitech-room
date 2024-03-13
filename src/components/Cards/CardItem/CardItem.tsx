@@ -12,6 +12,7 @@ import {
   getActiveStep,
   getCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
+  getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
 
 interface PropsI {
@@ -26,6 +27,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   );
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const title = useAppSelector(
+    getTitleCardByKeyPermission(activeStep, keyItemPermission)
   );
   const dispatch = useDispatch();
 
@@ -54,7 +58,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
         <div className={s.right_content}>
           <div className={s.header} onClick={onClick}>
             {/* <div className={s.header_title}>{card.header_title}</div> */}
-            {/* <div className={s.title}>{card.title}</div> */}
+            <div className={s.title}>{title}</div>
             {!!card.subtitle && (
               <div className={s.subtitle}>{card.subtitle}</div>
             )}

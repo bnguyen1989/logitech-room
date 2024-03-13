@@ -1,3 +1,5 @@
+import { useAppSelector } from '../../../hooks/redux'
+import { getActiveStep, getTitleCardByKeyPermission } from '../../../store/slices/ui/selectors/selectors'
 import { CardI } from '../../../store/slices/ui/type'
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardService.module.scss";
@@ -10,6 +12,11 @@ interface PropsI {
 }
 export const CardService: React.FC<PropsI> = (props) => {
   const { data, onClick, active, disabled } = props;
+  const activeStep = useAppSelector(getActiveStep);
+  const title = useAppSelector(
+    getTitleCardByKeyPermission(activeStep, data.keyPermission)
+  );
+
   return (
     <CardContainer
       onClick={onClick}
@@ -22,7 +29,7 @@ export const CardService: React.FC<PropsI> = (props) => {
           <img src={data.image} alt="" />
         </div>
         <div className={s.text}>
-          {/* <div className={s.title}>{data.title}</div> */}
+          <div className={s.title}>{title}</div>
           <div className={s.subtitle}>{data.subtitle}</div>
         </div>
       </div>

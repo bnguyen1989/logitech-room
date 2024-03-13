@@ -251,3 +251,36 @@ export function formattingSubtitleByState(
     .replace("{1}", getName(platformCard.title))
     .replace("{2}", getName(serviceCard.title));
 }
+
+export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
+  switch (keyPermission) {
+    case RoomSizeName.Phonebooth:
+      return "Phone Booth";
+    case RoomSizeName.Huddle:
+      return "Huddle Room";
+    case RoomSizeName.Small:
+      return "Small Room";
+    case RoomSizeName.Medium:
+      return "Medium Room";
+    case RoomSizeName.Large:
+      return "Large Room";
+    case RoomSizeName.Auditorium:
+      return "Auditorium";
+    case PlatformName.GoogleMeet:
+      return "Google Meet";
+    case PlatformName.MicrosoftTeams:
+      return "Microsoft Teams";
+    case PlatformName.Zoom:
+      return "Zoom";
+    case ServiceName.Android:
+      return "Appliance-Based";
+    case ServiceName.PC:
+      return "PC-Based";
+    case SoftwareServicesName.LogitechSync:
+      return "Device Management Software";
+    case SoftwareServicesName.SupportService:
+      return "24/7 Enterprise-Grade Support";
+    default:
+      return "";
+  }
+}

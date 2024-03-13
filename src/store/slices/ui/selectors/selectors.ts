@@ -1,8 +1,11 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
-import { getSeparatorItemColor } from '../../../../utils/baseUtils'
+import { getSeparatorItemColor } from "../../../../utils/baseUtils";
 import { CardI, StepI, StepName } from "../type";
-import { formattingSubtitleByState } from "../utils";
+import {
+  formattingSubtitleByState,
+  getTitleFromDataByKeyPermission,
+} from "../utils";
 
 declare const permission: Permission;
 
@@ -166,3 +169,38 @@ export const getAssetFromCard = (card: CardI) => (state: RootState) => {
   const nameAsset = `${keyPermission}${separatorItemColor}${color}`;
   return threekitItems[nameAsset];
 };
+
+export const getTitleCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const title = getTitleFromMetadataByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+    if (title) return title;
+
+    return getTitleFromDataByKeyPermission(keyPermission);
+  };
+
+export const getTitleFromMetadataByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const card = getCardByKeyPermission(stepName, keyPermission)(state);
+    const asset = getAssetFromCard(card)(state);
+    const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
+    return metadata["Product Name"] || metadata["Name"] || asset?.name;
+  };
+
+export const getStepNameByKeyPermission =
+  (keyPermission: string) => (state: RootState) => {
+    const stepData = getStepData(state);
+    const step = Object.entries(stepData).filter((item) => {
+      return !!item[1].cards[keyPermission];
+    });
+    return step[0][0] as StepName;
+  };
+
+export const getMetadataByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const card = getCardByKeyPermission(stepName, keyPermission)(state);
+    const asset = getAssetFromCard(card)(state);
+    return asset?.metadata;
+  };

@@ -1,4 +1,5 @@
 import { CardI } from "../../../store/slices/ui/type";
+import { getTitleFromDataByKeyPermission } from "../../../store/slices/ui/utils";
 import { CardContainer } from "../CardContainer/CardContainer";
 import s from "./CardRoom.module.scss";
 
@@ -10,6 +11,8 @@ interface PropsI {
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { data, onClick, active, disabled } = props;
+  const title = getTitleFromDataByKeyPermission(data.keyPermission);
+
   return (
     <CardContainer
       onClick={onClick}
@@ -24,7 +27,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
 
         <div className={s.text}>
           <div className={s.subtitle}>{data.subtitle}</div>
-          {/* <div className={s.title}>{data.title}</div> */}
+          <div className={s.title}>{title}</div>
         </div>
       </div>
     </CardContainer>
