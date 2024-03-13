@@ -46,13 +46,13 @@ export const SelectProductModal: React.FC = () => {
               <div className={s.card}>
                 <div className={s.left_content}>
                   <div className={s.image}>
-                    <img src={card.image} alt={card.title} />
+                    <img src={card.image} alt={"image"} />
                   </div>
                 </div>
                 <div className={s.right_content}>
                   <div className={s.text}>
                     <div className={s.header_title}>{card.key}</div>
-                    <div className={s.title_text}>{card.title}</div>
+                    {/* <div className={s.title_text}>{card.title}</div> */}
                     <div className={s.subtitle}>{card.subtitle}</div>
                   </div>
                   <div className={s.button_edit}>

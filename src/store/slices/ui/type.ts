@@ -75,7 +75,7 @@ export interface ColorI {
 export interface CounterI {
   min: number;
   max: number;
-  // threekit: Pick<ThreekitI, "key">; ???????
+  threekit: Pick<ThreekitI, "key">;
 }
 
 export interface ThreekitI {

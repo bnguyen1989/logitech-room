@@ -36,8 +36,8 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
       <div className={s.container}>
         <div className={s.content}>
           <div className={s.header} onClick={onClick}>
-            <div className={s.header_title}>{card.header_title}</div>
-            <div className={s.title}>{card.title}</div>
+            {/* <div className={s.header_title}>{card.header_title}</div> */}
+            {/* <div className={s.title}>{card.title}</div> */}
             {!!card.subtitle && (
               <div className={s.subtitle}>{card.subtitle}</div>
             )}

@@ -33,9 +33,9 @@ export const SelectItem: React.FC<PropsI> = (props) => {
   if (!card || !card.select || !selectValue) return null;
 
   const handleSelect = (option: OptionI) => {
-    if (!card.threekit) return;
+    const attributeName = card.dataThreekit.attributeName;
     app.changeSelectItemConfiguration(
-      card.threekit.key,
+      attributeName,
       option.value,
       card.keyPermission
     );

@@ -19,12 +19,12 @@ export const CardRoom: React.FC<PropsI> = (props) => {
     >
       <div className={s.container}>
         <div className={s.image}>
-          <img src={data.image} alt={data.title} />
+          <img src={data.image} alt={"image"} />
         </div>
 
         <div className={s.text}>
           <div className={s.subtitle}>{data.subtitle}</div>
-          <div className={s.title}>{data.title}</div>
+          {/* <div className={s.title}>{data.title}</div> */}
         </div>
       </div>
     </CardContainer>

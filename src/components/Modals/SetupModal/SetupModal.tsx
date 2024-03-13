@@ -55,21 +55,24 @@ export const SetupModal: React.FC = () => {
   }, [isOpen]);
 
   const getNameOrder = () => {
-    const name = selectedPrepareCards
-      .filter((item) => !(item.key !== StepName.Platform))
-      .map((item) => item.title.replace(" Room", ""))
-      .join(" ");
+    // const name = selectedPrepareCards
+    //   .filter((item) => !(item.key !== StepName.Platform))
+    //   .map((item) => item.title.replace(" Room", ""))
+    //   .join(" ");
+
+    const name = "Test";
 
     return `${name} Room`;
   };
 
   const createOrder = async () => {
     const cardData = selectedCards.map((card) => {
+      const cardAssetId = card.dataThreekit?.threekitItems[card.keyPermission].id;
       return {
         metadata: {
           data: JSON.stringify(card),
         },
-        configurationId: card.threekit?.assetId || "",
+        configurationId: cardAssetId || "",
         count: 1,
       };
     });

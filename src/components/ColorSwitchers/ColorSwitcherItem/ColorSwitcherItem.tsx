@@ -23,9 +23,20 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     getPropertyColorCardByKeyPermission(activeStep, keyItemPermission)
   );
 
-  if (!card || !card.color || !colorValue) return;
+  if (!card || !colorValue) return;
 
-  const value = card.color.colors.find((color) => color.name === colorValue);
+  const colors = [
+    {
+      name: "Graphite",
+      value: "#434446",
+    },
+    {
+      name: "White",
+      value: "#FBFBFB",
+    },
+  ];
+
+  const value = colors.find((color) => color.name === colorValue);
 
   if (!value) return;
 
@@ -34,10 +45,6 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
   };
 
   return (
-    <ColorSwitcher
-      value={value}
-      onChange={handleChange}
-      listColors={card.color.colors}
-    />
+    <ColorSwitcher value={value} onChange={handleChange} listColors={colors} />
   );
 };

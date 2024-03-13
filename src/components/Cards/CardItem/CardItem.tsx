@@ -35,7 +35,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
     dispatch(setInfoItemModal({ isOpen: true }));
   };
 
-  const isAction = card.counter || card.color || card.select;
+  // const isAction = card.counter || card.color || card.select;
+  const isAction = card.counter || card.select;
 
   return (
     <CardContainer
@@ -52,8 +53,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
         </div>
         <div className={s.right_content}>
           <div className={s.header} onClick={onClick}>
-            <div className={s.header_title}>{card.header_title}</div>
-            <div className={s.title}>{card.title}</div>
+            {/* <div className={s.header_title}>{card.header_title}</div> */}
+            {/* <div className={s.title}>{card.title}</div> */}
             {!!card.subtitle && (
               <div className={s.subtitle}>{card.subtitle}</div>
             )}

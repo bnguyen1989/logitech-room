@@ -299,9 +299,9 @@ function setStepData(
         item.counter = {
           min: min,
           max: max,
-          // threekit: { ???????
-          //   key: qtyName,
-          // },
+          threekit: {
+            key: qtyName,
+          },
         };
 
         const valueConfiguration = configurator.getConfiguration()[

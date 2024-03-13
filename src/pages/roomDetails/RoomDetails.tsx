@@ -37,7 +37,7 @@ export const RoomDetails: React.FC = () => {
             title: card.key,
             data: [
               {
-                title: card.title,
+                title: "card.title",
                 subtitle: card.description || card.subtitle || "",
                 image: ImageItem,
               },

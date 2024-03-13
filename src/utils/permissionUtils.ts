@@ -6,6 +6,7 @@ import { ItemElement } from "../models/permission/elements/ItemElement";
 import { MountElement } from "../models/permission/elements/MountElement";
 import { Step } from "../models/permission/step/Step";
 import { StepName } from "../models/permission/type";
+import { getSeparatorItemColor } from "./baseUtils";
 
 export const initPermission = () => {
   const permission = new Permission();
@@ -64,8 +65,8 @@ export enum CameraName {
 }
 
 export enum AudioExtensionName {
-  RallyMicPod = "Logitech Rally Mic Pod - Graphite",
-  RallyMicPodMount = "Logitech Rally Mic Pod Mount - Graphite",
+  RallyMicPod = "Logitech Rally Mic Pod",
+  RallyMicPodMount = "Logitech Rally Mic Pod Mount",
   RallyMicPodPendantMount = "Logitech Rally Mic Pod Pendant Mount",
   RallySpeaker = "Rally Speaker",
   RallyMicPodHub = "Rally Mic Pod Hub",
@@ -74,7 +75,7 @@ export enum AudioExtensionName {
 }
 
 export enum MeetingControllerName {
-  LogitechTapIP = "Logitech Tap IP - Graphite",
+  LogitechTapIP = "Logitech Tap IP",
   LogitechTap = "Logitech Tap",
 
   TapWallMount = "Tap Mount - Wall Mount",
@@ -83,7 +84,7 @@ export enum MeetingControllerName {
 }
 
 export enum VideoAccessoryName {
-  LogitechTapScheduler = "Logitech Tap Scheduler - Graphite",
+  LogitechTapScheduler = "Logitech Tap Scheduler",
   LogitechScribe = "Logitech Scribe",
   LogitechSwytch = "Logitech Swytch",
 }
@@ -358,7 +359,9 @@ function createStepSoftwareServices() {
   return stepSoftwareServices;
 }
 
-export const getPermissionNameByItemName = (threekitItemName: string): string | undefined => {
+export const getPermissionNameByItemName = (
+  threekitItemName: string
+): string | undefined => {
   const permissionNames = [
     ...Object.values(PlatformName),
     ...Object.values(RoomSizeName),
@@ -370,22 +373,28 @@ export const getPermissionNameByItemName = (threekitItemName: string): string | 
     ...Object.values(SoftwareServicesName),
   ];
 
-  const isItemNameMatching = (threekitItemName_local: string) => (permissionName: string) => threekitItemName_local.toLowerCase() === permissionName.toLowerCase();
+  const isItemNameMatching =
+    (threekitItemName_local: string) => (permissionName: string) =>
+      threekitItemName_local.toLowerCase() === permissionName.toLowerCase();
 
-  const isColorItemNameMatching = (threekitItemName_local: string) => (permissionName: string) => {
-    const SeparatorItemColor = ' - '
+  const isColorItemNameMatching =
+    (threekitItemName_local: string) => (permissionName: string) => {
+      const separatorItemColor = getSeparatorItemColor();
 
-    const isIncludeSeparator = threekitItemName_local.toLowerCase().includes(SeparatorItemColor)
-    if (!isIncludeSeparator) return false;
+      const isIncludeSeparator = threekitItemName_local
+        .toLowerCase()
+        .includes(separatorItemColor);
+      if (!isIncludeSeparator) return false;
 
-    const [nameItem] = threekitItemName_local.split(' - ')
+      const [nameItem] = threekitItemName_local.split(separatorItemColor);
 
-    return isItemNameMatching(nameItem)(permissionName)
-  }
-
+      return isItemNameMatching(nameItem)(permissionName);
+    };
 
   return permissionNames.find(
-    (permissionName) => isItemNameMatching(threekitItemName)(permissionName) || isColorItemNameMatching(threekitItemName)(permissionName)
+    (permissionName) =>
+      isItemNameMatching(threekitItemName)(permissionName) ||
+      isColorItemNameMatching(threekitItemName)(permissionName)
   );
 };
 

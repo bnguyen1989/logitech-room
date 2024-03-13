@@ -35,7 +35,7 @@ export const LoaderSection: React.FC = () => {
             </div>
             <div className={s.cards}>
               {selectedCards.map((card, index) => (
-                <Card key={index} image={card.image} title={card.title} />
+                <Card key={index} image={card.image} title={"card.title"} />
               ))}
             </div>
           </div>

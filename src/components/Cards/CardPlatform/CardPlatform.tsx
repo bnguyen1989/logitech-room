@@ -27,7 +27,7 @@ export const CardPlatform: React.FC<PropsI> = (props) => {
           <img src={data.image} alt="image" />
         </div>
 
-        <div className={s.title}>{data.title}</div>
+        {/* <div className={s.title}>{data.title}</div> */}
       </div>
     </CardContainer>
   );

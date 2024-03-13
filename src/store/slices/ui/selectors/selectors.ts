@@ -1,5 +1,6 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
+import { getSeparatorItemColor } from '../../../../utils/baseUtils'
 import { CardI, StepI, StepName } from "../type";
 import { formattingSubtitleByState } from "../utils";
 
@@ -158,7 +159,10 @@ export const getAssetFromCard = (card: CardI) => (state: RootState) => {
   const stepName = card.key;
 
   const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
-  const keySelected = data?.selected[0];
-  if (!keySelected) return threekitItems[keyPermission];
-  return threekitItems[keySelected];
+  const color = data?.property.color;
+  if (!color) return threekitItems[keyPermission];
+
+  const separatorItemColor = getSeparatorItemColor();
+  const nameAsset = `${keyPermission}${separatorItemColor}${color}`;
+  return threekitItems[nameAsset];
 };

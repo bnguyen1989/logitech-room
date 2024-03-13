@@ -22,7 +22,7 @@ export const CardService: React.FC<PropsI> = (props) => {
           <img src={data.image} alt="" />
         </div>
         <div className={s.text}>
-          <div className={s.title}>{data.title}</div>
+          {/* <div className={s.title}>{data.title}</div> */}
           <div className={s.subtitle}>{data.subtitle}</div>
         </div>
       </div>
