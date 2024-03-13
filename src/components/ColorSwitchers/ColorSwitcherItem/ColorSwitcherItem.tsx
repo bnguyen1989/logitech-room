@@ -7,44 +7,38 @@ import {
 import { useAppSelector } from "../../../hooks/redux";
 import { Application } from "../../../models/Application";
 import { ColorSwitcher } from "../ColorSwitcher/ColorSwitcher";
+import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
 
 declare const app: Application;
 
 interface PropsI {
   keyItemPermission: string;
 }
+
+
 export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
   const { keyItemPermission } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
+
+
+
   const colorValue = useAppSelector(
     getPropertyColorCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const availableColorsData = useAppSelector(getColorsFromCard(keyItemPermission))
 
-  if (!card || !colorValue) return;
+  if (!card) return;
+  if (availableColorsData.length < 1) return;
 
-  const colors = [
-    {
-      name: "Graphite",
-      value: "#434446",
-    },
-    {
-      name: "White",
-      value: "#FBFBFB",
-    },
-  ];
-
-  const value = colors.find((color) => color.name === colorValue);
-
-  if (!value) return;
 
   const handleChange = (value: ColorItemI) => {
     app.changeColorItemConfiguration(value.name, card.keyPermission);
   };
 
   return (
-    <ColorSwitcher value={value} onChange={handleChange} listColors={colors} />
+    <ColorSwitcher value={colorValue} onChange={handleChange} listColors={availableColorsData} />
   );
 };

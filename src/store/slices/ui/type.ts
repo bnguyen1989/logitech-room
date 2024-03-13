@@ -44,6 +44,9 @@ export interface StepI {
   cards: Record<string, CardI>;
 }
 
+export type typeThreekitValue = Record<string, ValueAssetStateI>;
+export type TypeCardPermissionWithDataThreekit = Record<string, typeThreekitValue>;
+
 export interface CardI {
   key: StepName;
   // title: string;
@@ -59,7 +62,7 @@ export interface CardI {
   // threekit?: ThreekitI;
   dataThreekit: {
     attributeName: string;
-    threekitItems: Record<string, ValueAssetStateI>;
+    threekitItems: typeThreekitValue;
   };
   recommended?: boolean;
 }
@@ -92,7 +95,3 @@ export interface SelectI {
   data: Array<SelectDataI>;
 }
 
-export type TypeCardPermissionWithDataThreekit = Record<
-  string,
-  Record<string, ValueAssetStateI>
->;

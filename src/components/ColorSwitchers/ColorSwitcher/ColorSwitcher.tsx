@@ -2,7 +2,7 @@ import { ColorItemI } from "../../../store/slices/ui/type";
 import s from "./ColorSwitcher.module.scss";
 
 interface PropsI {
-  value: ColorItemI;
+  value: string;
   onChange: (value: ColorItemI) => void;
   listColors: ColorItemI[];
 }
@@ -14,19 +14,24 @@ export const ColorSwitcher: React.FC<PropsI> = (props) => {
   };
   return (
     <div className={s.container}>
-      {listColors.map((color, index) => (
-        <div
-          key={index}
-          className={`${s.color} ${
-            color.value === value.value ? s.active_color : ""
-          }`}
-          style={{
-            backgroundColor: color.value,
-          }}
-          onClick={() => handleChange(color)}
-        ></div>
-      ))}
-      <div className={s.text}>{value.name}</div>
+      {listColors.map((color, index) => {
+
+
+        let classItem = `${s.color}`
+        if (color.value === value) classItem += ` ${s.active_color}`
+
+        return (
+          <div
+            key={index}
+            className={classItem}
+            style={{
+              backgroundColor: color.value,
+            }}
+            onClick={() => handleChange(color)}
+          ></div>
+        )
+      })}
+      <div className={s.text}>{value}</div>
     </div>
   );
 };

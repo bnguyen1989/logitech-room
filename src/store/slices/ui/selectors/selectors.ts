@@ -128,11 +128,7 @@ export const getSelectedDataByKeyPermission =
     return selectedData[stepName][keyPermission];
   };
 
-export const getPropertyColorCardByKeyPermission =
-  (stepName: StepName, keyPermission: string) => (state: RootState) => {
-    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
-    return data?.property.color;
-  };
+
 
 export const getPropertyCounterCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
@@ -152,6 +148,13 @@ export const getIsSelectedCardByKeyPermission =
     if (!data) return false;
     return data.selected.length > 0;
   };
+
+export const getAllAssetFromCard = (keyItemPermission: string) => (state: RootState) => {
+  const activeStep = getActiveStep(state);
+  const card = getCardByKeyPermission(activeStep, keyItemPermission)(state);
+  return card.dataThreekit.threekitItems;
+};
+
 
 export const getAssetFromCard = (card: CardI) => (state: RootState) => {
   const threekitItems = card.dataThreekit.threekitItems;
