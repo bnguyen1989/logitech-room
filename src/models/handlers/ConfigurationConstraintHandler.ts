@@ -191,20 +191,22 @@ export class ConfigurationConstraintHandler extends Handler {
 
     const selectedSight = this.getSelectedValue(sightAttrName_str);
 
-    if(typeof selectedSight === "object") {
+    if (typeof selectedSight === "object") {
       const attribute = this.getAttribute(micPodQtyAttrName_str);
       const attrState = this.configurator.getAttributeState();
       const attributeValuesArr = attribute
         ? attrState[attribute.id].values
         : undefined;
       if (attribute && attributeValuesArr) {
-        const countVisible = attributeValuesArr.filter((option) => option.visible).length;
+        const countVisible = attributeValuesArr.filter(
+          (option) => option.visible
+        ).length;
         let tempCount = countVisible;
         attributeValuesArr.forEach((option) => {
-          if(option.visible) {
+          if (option.visible) {
             tempCount--;
           }
-          if(tempCount === 0) {
+          if (tempCount === 0) {
             option.visible = false;
           }
         });
@@ -322,7 +324,12 @@ export class ConfigurationConstraintHandler extends Handler {
         : selectedValue
       : "None";
     if (theAttrValuesArr) {
-      theAttrValuesArr.forEach((option) => {
+      
+      const copyAttrValuesArr = JSON.parse(
+        JSON.stringify(theAttrValuesArr)
+      ) as Array<ValueStringStateI | ValueAssetStateI>;
+
+      copyAttrValuesArr.forEach((option) => {
         //Only show option when it's in the datatable
         const isContainName = "name" in option;
         const isContainValue = "value" in option;
@@ -376,10 +383,10 @@ export class ConfigurationConstraintHandler extends Handler {
           attrSpec.defaultValue = option.id;
         }
       });
-      console.log("theAttrValuesArr", theAttrValuesArr);
+      console.log("copyAttrValuesArr", copyAttrValuesArr);
 
       this.configurator.setAttributeState(theAttrId, {
-        values: theAttrValuesArr,
+        values: copyAttrValuesArr,
       });
     }
 
