@@ -1,9 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CardI, SelectedDataI, StepDataI, StepName } from "./type";
 import { getInitStepData } from "./utils";
-import { Permission } from "../../../models/permission/Permission";
 
-declare const permission: Permission;
 interface UIStateI {
   processInitData: boolean;
   stepData: StepDataI;
@@ -26,7 +24,6 @@ const uiSlice = createSlice({
       state.activeStep = action.payload;
     },
     moveToStartStep: (state) => {
-      permission.changeStepName(StepName.RoomSize);
       state.activeStep = StepName.RoomSize;
     },
     createItem: (
@@ -93,6 +90,25 @@ const uiSlice = createSlice({
         [key]: cardData,
       };
     },
+    addActiveCards: (
+      state,
+      action: PayloadAction<{
+        keys: string[];
+      }>
+    ) => {
+      const { keys } = action.payload;
+      const { activeStep } = state;
+      const stepData = state.selectedData[activeStep] ?? {};
+      keys.forEach((key) => {
+        const cardData = stepData[key] ?? {
+          selected: [],
+          property: {},
+        };
+        cardData.selected = [key];
+        stepData[key] = cardData;
+      });
+      state.selectedData[activeStep] = stepData;
+    },
     removeActiveCard: (state, action: PayloadAction<{ key: string }>) => {
       const { activeStep } = state;
       const { key } = action.payload;
@@ -102,6 +118,22 @@ const uiSlice = createSlice({
         card.selected.splice(index, 1);
       }
       state.selectedData[activeStep][key] = card;
+    },
+    removeActiveCards: (
+      state,
+      action: PayloadAction<{
+        keys: string[];
+      }>
+    ) => {
+      const { keys } = action.payload;
+      const { activeStep } = state;
+      const stepData = state.selectedData[activeStep] ?? {};
+      keys.forEach((key) => {
+        const card = stepData[key];
+        card.selected = [];
+        stepData[key] = card;
+      });
+      state.selectedData[activeStep] = stepData;
     },
     setActiveCardsForStep: (
       state,
@@ -152,5 +184,7 @@ export const {
   setPropertyItem,
   createItem,
   setDataCardsStep,
+  removeActiveCards,
+  addActiveCards,
 } = uiSlice.actions;
 export default uiSlice.reducer;

@@ -40,12 +40,11 @@ import {
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
 import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
-import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
-import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 import {
   getActiveStep,
   getAssetFromCard,
   getDataStepByName,
+  getIsRecommendedCardByKeyPermission,
 } from "../selectors/selectors";
 
 declare const app: Application;
@@ -60,7 +59,7 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(addActiveCard({ key: data.keyItemPermission }));
     }
 
-    if(data instanceof RemoveItemCommand) {
+    if (data instanceof RemoveItemCommand) {
       store.dispatch(removeActiveCard({ key: data.keyItemPermission }));
     }
 
@@ -105,10 +104,6 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeStepCommand) {
-      // permission.changeStepName(data.stepName);
-      // const configurator = app.currentConfigurator;
-      // updateDataCardByStepName(data.stepName)(store, configurator);
-
       store.dispatch(changeActiveStep(data.stepName));
     }
   });
@@ -209,18 +204,18 @@ function updateDataByConfiguration(
           })
         );
 
-        permission.addActiveElementByName(keyPermission);
-        const element = permission
-          .getCurrentStep()
-          ?.getElementByName(keyPermission);
-        if (element instanceof ItemElement && tempCard.counter) {
-          const mount = element.getDefaultMount();
-          if (mount instanceof CountableMountElement) {
-            mount.setActiveIndex(currentValue);
-            mount.setMin(tempCard.counter.min);
-            mount.setMax(tempCard.counter.max);
-          }
-        }
+        // permission.addActiveElementByName(keyPermission);
+        // const element = permission
+        //   .getCurrentStep()
+        //   ?.getElementByName(keyPermission);
+        // if (element instanceof ItemElement && tempCard.counter) {
+        //   const mount = element.getDefaultMount();
+        //   if (mount instanceof CountableMountElement) {
+        //     mount.setActiveIndex(currentValue);
+        //     mount.setMin(tempCard.counter.min);
+        //     mount.setMax(tempCard.counter.max);
+        //   }
+        // }
       }
     });
     store.dispatch(
@@ -270,9 +265,10 @@ function setStepData(
     const temp: Array<CardI> = [];
 
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
-      const elementPermission = permission
-        .getElements()
-        .find((item) => item.name === keyPermission);
+      const isRecommended = getIsRecommendedCardByKeyPermission(
+        stepName,
+        keyPermission
+      )(store.getState());
 
       temp.push({
         key: stepName,
@@ -283,7 +279,7 @@ function setStepData(
           attributeName: name,
           threekitItems: cardPermissionWithDataThreekit[keyPermission],
         },
-        recommended: elementPermission?.getRecommended() || false,
+        recommended: isRecommended,
       });
     });
 

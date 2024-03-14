@@ -1,5 +1,4 @@
 import { Configurator } from "../models/configurator/Configurator";
-import { Permission } from "../models/permission/Permission";
 import { CountableMountElement } from "../models/permission/elements/CountableMountElement";
 import { GroupElement } from "../models/permission/elements/GroupElement";
 import { ItemElement } from "../models/permission/elements/ItemElement";
@@ -7,20 +6,6 @@ import { MountElement } from "../models/permission/elements/MountElement";
 import { Step } from "../models/permission/step/Step";
 import { StepName } from "../models/permission/type";
 import { getSeparatorItemColor } from "./baseUtils";
-
-export const initPermission = () => {
-  const permission = new Permission();
-  permission.addStep(createStepRoomSize());
-  permission.addStep(createStepPlatform());
-  permission.addStep(createStepServices());
-  permission.addStep(createStepConferenceCamera());
-  permission.addStep(createStepAudioExtensions());
-  permission.addStep(createStepMeetingController());
-  permission.addStep(createStepVideoAccessories());
-  permission.addStep(createStepSoftwareServices());
-
-  global["permission"] = permission;
-};
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -94,7 +79,7 @@ export enum SoftwareServicesName {
   SupportService = "Support Service",
 }
 
-function createStepRoomSize() {
+export function createStepRoomSize() {
   const stepRoomSize = new Step(StepName.RoomSize);
   const group = new GroupElement()
     .addElement(new ItemElement(RoomSizeName.Phonebooth))
@@ -109,7 +94,7 @@ function createStepRoomSize() {
   return stepRoomSize;
 }
 
-function createStepPlatform() {
+export function createStepPlatform() {
   const stepPlatform = new Step(StepName.Platform);
   const group = new GroupElement()
     .addElement(
@@ -128,7 +113,7 @@ function createStepPlatform() {
   return stepPlatform;
 }
 
-function createStepServices() {
+export function createStepServices() {
   const stepServices = new Step(StepName.Services);
   const group = new GroupElement()
     .addElement(new ItemElement(ServiceName.Android))
@@ -138,7 +123,7 @@ function createStepServices() {
   return stepServices;
 }
 
-function createStepConferenceCamera() {
+export function createStepConferenceCamera() {
   const stepConferenceCamera = new Step(StepName.ConferenceCamera);
   const setMountForCamera = (item: ItemElement) => {
     return item
@@ -204,7 +189,7 @@ function createStepConferenceCamera() {
   return stepConferenceCamera;
 }
 
-function createStepAudioExtensions() {
+export function createStepAudioExtensions() {
   const stepAudioExtensions = new Step(StepName.AudioExtensions);
   const group = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPod)
@@ -259,7 +244,7 @@ function createStepAudioExtensions() {
   return stepAudioExtensions;
 }
 
-function createStepMeetingController() {
+export function createStepMeetingController() {
   const stepMeetingController = new Step(StepName.MeetingController);
   const setMountForTap = (item: ItemElement) => {
     return item
@@ -316,7 +301,7 @@ function createStepMeetingController() {
   return stepMeetingController;
 }
 
-function createStepVideoAccessories() {
+export function createStepVideoAccessories() {
   const stepVideoAccessories = new Step(StepName.VideoAccessories);
 
   const group = new GroupElement()
@@ -349,7 +334,7 @@ function createStepVideoAccessories() {
   return stepVideoAccessories;
 }
 
-function createStepSoftwareServices() {
+export function createStepSoftwareServices() {
   const stepSoftwareServices = new Step(StepName.SoftwareServices);
   const group = new GroupElement()
     .addElement(new ItemElement(SoftwareServicesName.LogitechSync))

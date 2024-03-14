@@ -7,8 +7,6 @@ import {
   getTitleFromDataByKeyPermission,
 } from "../utils";
 
-declare const permission: Permission;
-
 export const getSelectData = (state: RootState) => state.ui.selectedData;
 
 export const getStepData = (state: RootState) => state.ui.stepData;
@@ -23,6 +21,8 @@ export const getActiveStepData = (state: RootState) => {
   const dataStep = getDataStepByName(activeStep)(state);
 
   const copyDataStep = JSON.parse(JSON.stringify(dataStep)) as StepI;
+  const activeKeys = getKeyActiveCards(state);
+  const permission = new Permission(activeKeys, activeStep);
   const items = permission.getElements();
 
   Object.values(dataStep.cards).forEach((card: CardI) => {
@@ -129,11 +129,9 @@ export const getSelectedDataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const selectedData = getSelectData(state);
     const stepSelectData = selectedData[stepName];
-    if(!stepSelectData) return;
+    if (!stepSelectData) return;
     return stepSelectData[keyPermission];
   };
-
-
 
 export const getPropertyCounterCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
@@ -154,12 +152,12 @@ export const getIsSelectedCardByKeyPermission =
     return data.selected.length > 0;
   };
 
-export const getAllAssetFromCard = (keyItemPermission: string) => (state: RootState) => {
-  const activeStep = getActiveStep(state);
-  const card = getCardByKeyPermission(activeStep, keyItemPermission)(state);
-  return card.dataThreekit.threekitItems;
-};
-
+export const getAllAssetFromCard =
+  (keyItemPermission: string) => (state: RootState) => {
+    const activeStep = getActiveStep(state);
+    const card = getCardByKeyPermission(activeStep, keyItemPermission)(state);
+    return card.dataThreekit.threekitItems;
+  };
 
 export const getAssetFromCard = (card: CardI) => (state: RootState) => {
   const threekitItems = card.dataThreekit.threekitItems;
@@ -209,3 +207,37 @@ export const getMetadataByKeyPermission =
     const asset = getAssetFromCard(card)(state);
     return asset?.metadata;
   };
+
+export const getKeyActiveCards = (state: RootState) => {
+  const res: Array<string> = [];
+  const selectedData = getSelectData(state);
+  Object.values(selectedData).forEach((item) => {
+    Object.keys(item).forEach((key) => {
+      if (item[key].selected.length) {
+        res.push(key);
+      }
+    });
+  });
+  return res;
+};
+
+export const getIsRecommendedCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const card = getCardByKeyPermission(stepName, keyPermission)(state);
+
+    const activeKeys = getKeyActiveCards(state);
+    const permission = new Permission(activeKeys, stepName);
+    return (
+      card?.recommended ||
+      permission.isRecommendedElementByName(keyPermission)
+    );
+  };
+
+export const getIsCanChangeStep = (state: RootState) => {
+  const activeStep = getActiveStep(state);
+  const activeKeys = getKeyActiveCards(state);
+  
+  const permission = new Permission(activeKeys, activeStep);
+
+  return permission.canNextStep();
+}

@@ -40,6 +40,16 @@ export class Step {
       .find((element) => element.name === name);
   }
 
+  public addActiveElementByName(itemName: string): void {
+    const element = this.getElementByName(itemName);
+    console.log("Permission - element", element);
+    
+    if (!element) {
+      return;
+    }
+    this.addActiveElement(element);
+  }
+
   public getActiveItemElementByMountName(name: string): ItemElement | undefined {
     const elements = this._activeElements;
     const res = elements.find((element) => {
@@ -49,7 +59,14 @@ export class Step {
   }
 
   public addActiveElement(element: ItemElement | MountElement) {
-    this._activeElements.push(element);
+    const isExist = this._activeElements.some(
+      (activeItem: ItemElement | MountElement) => activeItem.name === element.name
+    );
+    if (!isExist) {
+      this._activeElements.push(element);
+    }
+    console.log("Permission - activeElements", this._activeElements);
+    
     return this;
   }
 
@@ -97,11 +114,6 @@ export class Step {
 
   public isEmptyActiveElements(): boolean {
     return this._activeElements.length === 0;
-  }
-
-  public clearTempData() {
-    this._activeElements = [];
-    this.validElements = [];
   }
 
   public set allElements(elements: Array<ItemElement | GroupElement>) {

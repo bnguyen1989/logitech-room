@@ -1,9 +1,11 @@
 import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
+  getActiveStep,
   getActiveStepData,
   getAssetFromCard,
   getIsConfiguratorStep,
+  getIsSelectedCardByKeyPermission,
 } from "../../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
@@ -12,19 +14,20 @@ import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServic
 
 export const ConfigurationFormForStep = () => {
   const state = useAppSelector((state) => state);
+  const activeStep = useAppSelector(getActiveStep);
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
   const handleClick = (card: CardI) => {
-    const activeItems = permission.getActiveItems();
-    const isContain = activeItems.some(
-      (item) => item.name === card.keyPermission
-    );
+    const isSelectCard = getIsSelectedCardByKeyPermission(
+      activeStep,
+      card.keyPermission
+    )(state);
 
-    const {attributeName} = card.dataThreekit;
+    const { attributeName } = card.dataThreekit;
     const threekitAsset = getAssetFromCard(card)(state);
 
-    if (isContain && card.keyPermission) {
+    if (isSelectCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
       return;
     }

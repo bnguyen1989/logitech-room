@@ -20,10 +20,10 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
+  getKeyActiveCards,
 } from "../../ui/selectors/selectors";
 
 declare const app: Application;
-declare const permission: Permission;
 
 export const geConfiguratorHandlers = (store: Store) => {
   app.eventEmitter.on("executeCommand", (data) => {
@@ -76,6 +76,8 @@ function setElementByNameNode(assetId: string, nameNode: string) {
 export function addElement(card: CardI, stepName: StepName) {
   return (store: Store) => {
     const state = store.getState();
+    const activeKeys = getKeyActiveCards(state);
+    const permission = new Permission(activeKeys, stepName);
     const step = permission.getCurrentStep();
     if (!card || !step) return;
 
@@ -195,12 +197,12 @@ export function removeElement(card: CardI) {
     const state = store.getState();
     const activeStep = getActiveStep(state);
     const stepData = getDataStepByName(activeStep)(state);
+    const activeKeys = getKeyActiveCards(state);
+    const permission = new Permission(activeKeys, activeStep);
 
     if (!card) return;
 
     const cardAsset = getAssetFromCard(card)(state);
-
-    permission.removeActiveItemByName(card.keyPermission);
 
     const element = permission
       .getCurrentStep()
@@ -227,6 +229,10 @@ export function removeElement(card: CardI) {
       }
     }
     if (element instanceof MountElement) {
+      const permission = new Permission(
+        store.getState().ui.selectedData[activeStep].selected,
+        activeStep
+      );
       const itemElement = permission
         .getCurrentStep()
         ?.getActiveItemElementByMountName(element.name);
@@ -269,6 +275,9 @@ export function removeElement(card: CardI) {
 function changeCountElement(card: CardI, value: number, isIncrease: boolean) {
   return (store: Store) => {
     const state = store.getState();
+    const activeStep = getActiveStep(state);
+    const activeKeys = getKeyActiveCards(state);
+    const permission = new Permission(activeKeys, activeStep);
     const step = permission.getCurrentStep();
     if (!card || !step) return;
 
@@ -326,7 +335,6 @@ function changeCountElement(card: CardI, value: number, isIncrease: boolean) {
               setElementByNameNode(assetId, nodeName)(store);
             }
           }
-          permission.removeActiveItemByName(card.keyPermission);
           store.dispatch(removeNodes(cardAsset.id));
           store.dispatch(removeActiveCard({ key: card.keyPermission }));
         }

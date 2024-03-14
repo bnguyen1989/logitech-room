@@ -4,11 +4,6 @@ import { Handler } from "./Handler";
 
 export class ChangeStepHandler extends Handler {
   public handle(step: Step): boolean {
-    const validElements = step.getValidElements();
-    if (validElements.length > 0) {
-      return true;
-    }
-    step.clearTempData();
     const elements = step.getSimpleElements();
     const visibleElements = elements.filter((element) => {
       return element.getVisible();
@@ -29,6 +24,20 @@ export class ChangeStepHandler extends Handler {
       const isValidDependence = Handler.validateDependence(step, element);
       if (isValidDependence && element.getDefaultActive()) {
         step.addActiveElement(element);
+      }
+    });
+
+    const stepActiveElements = step.getActiveElements();
+    stepActiveElements.forEach((element) => {
+      if (element instanceof ItemElement) {
+        const mountElements = element.getDependenceMount();
+        const defaultMountElement = element.getDefaultMount();
+        mountElements.forEach((mount) => {
+          step.addValidElement(mount);
+          if(defaultMountElement && mount.name === defaultMountElement.name) {
+            step.addActiveElement(mount);
+          }
+        });
       }
     });
 

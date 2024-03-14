@@ -16,6 +16,9 @@ export class ChangeStepRule extends Rule {
       return true;
     }
 
+    console.log("Permission - Step", step);
+    
+
     const groups = step.allElements.filter(
       (element) => element instanceof GroupElement && element.isRequiredOne()
     ) as Array<GroupElement>;

@@ -4,20 +4,18 @@ import { Application } from "../../Application";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
 import { ConfigurationConstraintHandler } from "../../handlers/ConfigurationConstraintHandler";
-import { Permission } from "../../permission/Permission";
 import { StepName } from "../../permission/type";
 import { ChangeStepCommand } from "../ChangeStepCommand";
 import Behavior from "./Behavior";
 
 declare const app: Application;
-declare const permission: Permission;
 
 export class ChangeStepBehavior extends Behavior {
   public async execute(command: ChangeStepCommand): Promise<boolean> {
     return new Promise((resolve) => {
-      const activeElement = permission.getActiveItems()[0];
-      if (command.stepName === StepName.Platform && activeElement) {
-        const roomAssetId = getRoomAssetId(activeElement.name);
+      const keyItemPermission = "";
+      if (command.stepName === StepName.Platform) {
+        const roomAssetId = getRoomAssetId(keyItemPermission);
         app.currentConfigurator.assetId = roomAssetId;
         app.eventEmitter.emit("processInitThreekitData", true);
         return new ThreekitService()

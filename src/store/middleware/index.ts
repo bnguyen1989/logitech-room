@@ -4,17 +4,18 @@ import { Application } from "../../models/Application";
 import {
   addElement,
   removeElement,
-	updateNodesByConfiguration,
+  updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
 import { Permission } from "../../models/permission/Permission";
 import {
   getActiveStep,
   getCardByKeyPermission,
+  getKeyActiveCards,
 } from "../slices/ui/selectors/selectors";
-import { Configurator } from '../../models/configurator/Configurator'
+import { Configurator } from "../../models/configurator/Configurator";
+import { addActiveCards, removeActiveCards } from "../slices/ui/Ui.slice";
 
 declare const app: Application;
-declare const permission: Permission;
 
 export const middleware: Middleware =
   (store: any) => (next) => async (action: any) => {
@@ -22,9 +23,32 @@ export const middleware: Middleware =
     const currentConfigurator = app.currentConfigurator;
 
     switch (action.type) {
+      case "ui/addActiveCard": {
+        const { key } = action.payload;
+        const activeKeys = getKeyActiveCards(state);
+        const activeStep = getActiveStep(state);
+
+        const permission = new Permission(activeKeys, activeStep);
+
+        if (!permission.canAddActiveElementByName(key)) return;
+
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
+        break;
+      }
+      case "ui/removeActiveCard": {
+        const { key } = action.payload;
+        const activeKeys = getKeyActiveCards(state);
+        const activeStep = getActiveStep(state);
+
+        const permission = new Permission(activeKeys, activeStep);
+
+        if (!permission.canRemoveActiveElementByName(key)) return;
+
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
+        break;
+      }
       case "ui/changeActiveStep": {
         const stepName = action.payload;
-        permission.changeStepName(stepName);
         updateDataCardByStepName(stepName)(store, currentConfigurator);
         break;
       }
@@ -37,10 +61,14 @@ export const middleware: Middleware =
     switch (action.type) {
       case "ui/addActiveCard": {
         const { key } = action.payload;
+        const activeKeys = getKeyActiveCards(state);
+        const activeStep = getActiveStep(state);
+
+        const permission = new Permission([...activeKeys, key], activeStep);
         permission.addActiveElementByName(key);
 
-        const activeStep = getActiveStep(state);
-        updateDataCardByStepName(activeStep)(store, currentConfigurator);
+        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
+        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         addElement(card, activeStep)(store);
@@ -51,10 +79,14 @@ export const middleware: Middleware =
 
       case "ui/removeActiveCard": {
         const { key } = action.payload;
-        permission.removeActiveItemByName(key);
-
+        const activeKeys = getKeyActiveCards(state);
         const activeStep = getActiveStep(state);
-        updateDataCardByStepName(activeStep)(store, currentConfigurator);
+
+        const permission = new Permission(activeKeys, activeStep);
+        permission.removeActiveElementByName(key);
+
+        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
+        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card)(store);
@@ -63,17 +95,25 @@ export const middleware: Middleware =
         break;
       }
 
-			case "ui/changeActiveStep": {
-				const stepName = action.payload;
-				const updateNodes = updateNodesByConfiguration(
-					currentConfigurator,
-					stepName
-				);
+      case "ui/changeActiveStep": {
+        const stepName = action.payload;
+        const activeKeys = getKeyActiveCards(state);
+        const activeStep = getActiveStep(state);
 
-				const attributeNames = Configurator.getNamesAttrByStepName(stepName);
-				updateNodes(store, attributeNames);
-				break;
-			}
+        const permission = new Permission(activeKeys, activeStep);
+
+        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
+        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+
+        const updateNodes = updateNodesByConfiguration(
+          currentConfigurator,
+          stepName
+        );
+
+        const attributeNames = Configurator.getNamesAttrByStepName(stepName);
+        updateNodes(store, attributeNames);
+        break;
+      }
       default:
         break;
     }
