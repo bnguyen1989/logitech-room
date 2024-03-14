@@ -18,10 +18,10 @@ export const Product: React.FC<ProductProps> = ({
   const dispatch = useDispatch();
   const productGltf = useAsset({ assetId: productAssetId });
 
-  useEffect(() => {
-    if (!productGltf) return;
-    dispatch(changeStatusProcessing(false));
-  }, [productGltf]);
+  dispatch(changeStatusProcessing(false));
+  // useEffect(() => {
+  //   if (!productGltf) return;
+  // }, [productGltf]);
 
   return (
     <group
