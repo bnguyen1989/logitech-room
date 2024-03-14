@@ -7,6 +7,7 @@ import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { useAppSelector } from "../../../hooks/redux";
 import {
   getActiveStep,
+  getAssetFromCard,
   getCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getTitleCardByKeyPermission,
@@ -14,14 +15,14 @@ import {
 
 interface PropsI {
   keyItemPermission: string;
-  onClick: () => void;
 }
 export const CardSoftware: React.FC<PropsI> = (props) => {
-  const { onClick, keyItemPermission } = props;
+  const { keyItemPermission } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const threekitAsset = useAppSelector(getAssetFromCard(card));
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -29,17 +30,31 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
 
+  const handleClick = () => {
+    const { attributeName } = card.dataThreekit;
+    if (isActiveCard && card.keyPermission) {
+      app.removeItem(attributeName, card.keyPermission);
+      return;
+    }
+
+    app.addItemConfiguration(
+      attributeName,
+      threekitAsset.id,
+      card.keyPermission
+    );
+  };
+
   if (!card) return null;
 
   return (
     <CardContainer
-      onClick={onClick}
+      onClick={handleClick}
       active={isActiveCard}
       style={{ padding: "0px" }}
     >
       <div className={s.container}>
         <div className={s.content}>
-          <div className={s.header} onClick={onClick}>
+          <div className={s.header} onClick={handleClick}>
             {/* <div className={s.header_title}>{card.header_title}</div> */}
             <div className={s.title}>{title}</div>
             {!!card.subtitle && (

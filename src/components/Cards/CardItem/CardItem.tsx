@@ -10,6 +10,7 @@ import { setInfoItemModal } from "../../../store/slices/modals/Modals.slice";
 import { useAppSelector } from "../../../hooks/redux";
 import {
   getActiveStep,
+  getAssetFromCard,
   getCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getTitleCardByKeyPermission,
@@ -17,14 +18,14 @@ import {
 
 interface PropsI {
   keyItemPermission: string;
-  onClick: () => void;
 }
 export const CardItem: React.FC<PropsI> = (props) => {
-  const { keyItemPermission, onClick } = props;
+  const { keyItemPermission } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const threekitAsset = useAppSelector(getAssetFromCard(card));
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -39,24 +40,38 @@ export const CardItem: React.FC<PropsI> = (props) => {
     dispatch(setInfoItemModal({ isOpen: true }));
   };
 
+  const handleClick = () => {
+    const { attributeName } = card.dataThreekit;
+    if (isActiveCard && card.keyPermission) {
+      app.removeItem(attributeName, card.keyPermission);
+      return;
+    }
+
+    app.addItemConfiguration(
+      attributeName,
+      threekitAsset.id,
+      card.keyPermission
+    );
+  };
+
   // const isAction = card.counter || card.color || card.select;
   const isAction = card.counter || card.select;
 
   return (
     <CardContainer
-      onClick={onClick}
+      onClick={handleClick}
       recommended={card.recommended}
       style={{ padding: "25px 20px" }}
       active={isActiveCard}
     >
       <div className={s.container}>
-        <div className={s.left_content} onClick={onClick}>
+        <div className={s.left_content} onClick={handleClick}>
           <div className={s.image}>
             <img src={card.image} alt="item" />
           </div>
         </div>
         <div className={s.right_content}>
-          <div className={s.header} onClick={onClick}>
+          <div className={s.header} onClick={handleClick}>
             {/* <div className={s.header_title}>{card.header_title}</div> */}
             <div className={s.title}>{title}</div>
             {!!card.subtitle && (

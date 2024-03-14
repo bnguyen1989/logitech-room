@@ -1,11 +1,8 @@
 import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
-  getActiveStep,
   getActiveStepData,
-  getAssetFromCard,
   getIsConfiguratorStep,
-  getIsSelectedCardByKeyPermission,
 } from "../../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
@@ -13,50 +10,17 @@ import { StepName } from "../../../../../models/permission/type";
 import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
 
 export const ConfigurationFormForStep = () => {
-  const state = useAppSelector((state) => state);
-  const activeStep = useAppSelector(getActiveStep);
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
 
-  const handleClick = (card: CardI) => {
-    const isSelectCard = getIsSelectedCardByKeyPermission(
-      activeStep,
-      card.keyPermission
-    )(state);
-
-    const { attributeName } = card.dataThreekit;
-    const threekitAsset = getAssetFromCard(card)(state);
-
-    if (isSelectCard && card.keyPermission) {
-      app.removeItem(attributeName, card.keyPermission);
-      return;
-    }
-
-    app.addItemConfiguration(
-      attributeName,
-      threekitAsset.id,
-      card.keyPermission
-    );
-  };
-
   const getCardComponent = (card: CardI, index: number) => {
     if (!isConfiguratorStep) return null;
-    const onClick = () => handleClick(card);
-    return (
-      <CardItem
-        key={index}
-        keyItemPermission={card.keyPermission}
-        onClick={onClick}
-      />
-    );
+    return <CardItem key={index} keyItemPermission={card.keyPermission} />;
   };
 
   if (activeStepData.key === StepName.SoftwareServices) {
     return (
-      <SoftwareServiceSection
-        handleClickCard={handleClick}
-        cards={Object.values(activeStepData.cards)}
-      />
+      <SoftwareServiceSection cards={Object.values(activeStepData.cards)} />
     );
   }
 

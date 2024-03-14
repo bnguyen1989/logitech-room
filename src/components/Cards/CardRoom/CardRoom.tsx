@@ -1,35 +1,35 @@
-import { CardI } from "../../../store/slices/ui/type";
+import { useAppSelector } from "../../../hooks/redux";
+import {
+  getActiveStep,
+  getCardByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectors";
 import { getTitleFromDataByKeyPermission } from "../../../store/slices/ui/utils";
-import { CardContainer } from "../CardContainer/CardContainer";
+import { PrepareCardContainer } from "../PrepareCardContainer/PrepareCardContainer";
 import s from "./CardRoom.module.scss";
 
 interface PropsI {
-  data: CardI;
-  onClick: () => void;
-  active?: boolean;
-  disabled?: boolean;
+  keyItemPermission: string;
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
-  const { data, onClick, active, disabled } = props;
-  const title = getTitleFromDataByKeyPermission(data.keyPermission);
+  const { keyItemPermission } = props;
+  const activeStep = useAppSelector(getActiveStep);
+  const title = getTitleFromDataByKeyPermission(keyItemPermission);
+  const card = useAppSelector(
+    getCardByKeyPermission(activeStep, keyItemPermission)
+  );
 
   return (
-    <CardContainer
-      onClick={onClick}
-      active={active}
-      disabled={disabled}
-      isFullClick
-    >
+    <PrepareCardContainer keyItemPermission={keyItemPermission}>
       <div className={s.container}>
         <div className={s.image}>
-          <img src={data.image} alt={"image"} />
+          <img src={card.image} alt={"image"} />
         </div>
 
         <div className={s.text}>
-          <div className={s.subtitle}>{data.subtitle}</div>
+          <div className={s.subtitle}>{card.subtitle}</div>
           <div className={s.title}>{title}</div>
         </div>
       </div>
-    </CardContainer>
+    </PrepareCardContainer>
   );
 };

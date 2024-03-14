@@ -6,23 +6,15 @@ import { CardI, StepName } from "../../../../../store/slices/ui/type";
 import s from "./SoftwareServiceSection.module.scss";
 
 interface PropsI {
-  handleClickCard: (card: CardI) => void;
   cards: CardI[];
 }
 export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
-  const { handleClickCard, cards } = props;
+  const { cards } = props;
 
   const getCardComponent = (card: CardI, index: number) => {
-    const onClick = () => handleClickCard(card);
     const isSoftwareServicesCard = card.key === StepName.SoftwareServices;
     if (!isSoftwareServicesCard) return null;
-    return (
-      <CardSoftware
-        key={index}
-        keyItemPermission = {card.keyPermission}
-        onClick={onClick}
-      />
-    );
+    return <CardSoftware key={index} keyItemPermission={card.keyPermission} />;
   };
   return (
     <div className={s.container}>
