@@ -232,26 +232,6 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
   };
 }
 
-export function formattingSubtitleByState(
-  text: string,
-  selectedPrepareCards: any
-) {
-  const getName = (name: string) => `<b>${name}</b>`;
-  const roomSizeCard = selectedPrepareCards.find(
-    (card: { key: string }) => card.key === StepName.RoomSize
-  );
-  const platformCard = selectedPrepareCards.find(
-    (card: { key: string }) => card.key === StepName.Platform
-  );
-  const serviceCard = selectedPrepareCards.find(
-    (card: { key: string }) => card.key === StepName.Services
-  );
-  return text
-    .replace("{0}", getName(roomSizeCard.title))
-    .replace("{1}", getName(platformCard.title))
-    .replace("{2}", getName(serviceCard.title));
-}
-
 export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
   switch (keyPermission) {
     case RoomSizeName.Phonebooth:

@@ -6,11 +6,10 @@ import {
   removeElement,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
-import { Permission } from "../../models/permission/Permission";
 import {
   getActiveStep,
   getCardByKeyPermission,
-  getKeyActiveCards,
+  getPermission,
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
 import { addActiveCards, removeActiveCards } from "../slices/ui/Ui.slice";
@@ -19,16 +18,15 @@ declare const app: Application;
 
 export const middleware: Middleware =
   (store: any) => (next) => async (action: any) => {
-    const state = store.getState();
+    let state = store.getState();
     const currentConfigurator = app.currentConfigurator;
 
     switch (action.type) {
       case "ui/addActiveCard": {
         const { key } = action.payload;
-        const activeKeys = getKeyActiveCards(state);
         const activeStep = getActiveStep(state);
 
-        const permission = new Permission(activeKeys, activeStep);
+        const permission = getPermission(activeStep)(state);
 
         if (!permission.canAddActiveElementByName(key)) return;
 
@@ -37,10 +35,9 @@ export const middleware: Middleware =
       }
       case "ui/removeActiveCard": {
         const { key } = action.payload;
-        const activeKeys = getKeyActiveCards(state);
         const activeStep = getActiveStep(state);
 
-        const permission = new Permission(activeKeys, activeStep);
+        const permission = getPermission(activeStep)(state);
 
         if (!permission.canRemoveActiveElementByName(key)) return;
 
@@ -57,50 +54,43 @@ export const middleware: Middleware =
     }
 
     const res = next(action);
+    state = store.getState();
 
     switch (action.type) {
       case "ui/addActiveCard": {
         const { key } = action.payload;
-        const activeKeys = getKeyActiveCards(state);
         const activeStep = getActiveStep(state);
 
-        const permission = new Permission([...activeKeys, key], activeStep);
-        permission.addActiveElementByName(key);
+        const permission = getPermission(activeStep)(state);
+        permission.processAddActiveElementByName(key);
 
         store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
         store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         addElement(card, activeStep)(store);
-
-        console.log("Middleware triggered: ui/addActiveCard");
         break;
       }
 
       case "ui/removeActiveCard": {
         const { key } = action.payload;
-        const activeKeys = getKeyActiveCards(state);
         const activeStep = getActiveStep(state);
 
-        const permission = new Permission(activeKeys, activeStep);
-        permission.removeActiveElementByName(key);
+        const permission = getPermission(activeStep)(state);
+        permission.processRemoveActiveElementByName(key);
 
         store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
         store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card)(store);
-
-        console.log("Middleware triggered: ui/removeActiveCard");
         break;
       }
 
       case "ui/changeActiveStep": {
         const stepName = action.payload;
-        const activeKeys = getKeyActiveCards(state);
-        const activeStep = getActiveStep(state);
 
-        const permission = new Permission(activeKeys, activeStep);
+        const permission = getPermission(stepName)(state);
 
         store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
         store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));

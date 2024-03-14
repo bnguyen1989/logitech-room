@@ -15,8 +15,6 @@ export class ChangeStepRule extends Rule {
     if (this.direction === "prev") {
       return true;
     }
-
-    console.log("Permission - Step", step);
     
 
     const groups = step.allElements.filter(

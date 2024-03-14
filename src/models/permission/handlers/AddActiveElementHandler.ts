@@ -33,6 +33,18 @@ export class AddActiveElementHandler extends Handler {
       step.addValidElement(mount);
     });
 
+    const defaultMountElement = this.element.getDefaultMount();
+    if (defaultMountElement instanceof MountElement) {
+      const activeElements = step.getActiveElements();
+      const isAddMountElementInActive = mountElements.some((mount) =>
+        activeElements.some((elem) => elem.name === mount.name)
+      );
+
+      if (!isAddMountElementInActive) {
+        step.addActiveElement(defaultMountElement);
+      }
+    }
+
     const groups = step.allElements.filter(
       (elem) => elem instanceof GroupElement && elem.isRequiredOne()
     );

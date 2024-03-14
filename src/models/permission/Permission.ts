@@ -51,7 +51,7 @@ export class Permission {
   public setActiveItemsSteps(arrayActiveKeys: Array<string>): void {
     this.steps.forEach((step) => {
       arrayActiveKeys.forEach((key) => {
-        step.addActiveElementByName(key);  
+        step.addActiveElementByName(key);
       });
     });
   }
@@ -89,7 +89,7 @@ export class Permission {
     return new AddActiveElementRule(element).validate(currentStep);
   }
 
-  public addActiveElementByName(itemName: string): void {
+  public processAddActiveElementByName(itemName: string): void {
     const currentStep = this.getCurrentStep();
     if (!currentStep) {
       return;
@@ -98,11 +98,7 @@ export class Permission {
     if (!element) {
       return;
     }
-    const isAddElement = this.canAddActiveElementByName(itemName);
-    if (isAddElement) {
-      currentStep.addActiveElement(element);
-      new AddActiveElementHandler(element).handle(currentStep);
-    }
+    new AddActiveElementHandler(element).handle(currentStep);
   }
 
   public canRemoveActiveElementByName(itemName: string): boolean {
@@ -117,7 +113,7 @@ export class Permission {
     return new RemoveActiveElementRule(element).validate(currentStep);
   }
 
-  public removeActiveElementByName(itemName: string): void {
+  public processRemoveActiveElementByName(itemName: string): void {
     const currentStep = this.getCurrentStep();
     if (!currentStep) {
       return;
@@ -127,11 +123,7 @@ export class Permission {
     if (!element) {
       return;
     }
-    const isRemove = this.canRemoveActiveElementByName(itemName);
-    if (isRemove) {
-      currentStep.removeActiveElement(element);
-      new RemoveActiveElementHandler(element).handle(currentStep);
-    }
+    new RemoveActiveElementHandler(element).handle(currentStep);
   }
 
   public getElements(): Array<ItemElement | MountElement> {

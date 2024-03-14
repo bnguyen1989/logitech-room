@@ -2,10 +2,7 @@ import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
 import { getSeparatorItemColor } from "../../../../utils/baseUtils";
 import { CardI, StepI, StepName } from "../type";
-import {
-  formattingSubtitleByState,
-  getTitleFromDataByKeyPermission,
-} from "../utils";
+import { getTitleFromDataByKeyPermission } from "../utils";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
 
@@ -18,29 +15,13 @@ export const getDataStepByName = (stepName: StepName) => (state: RootState) =>
 
 export const getActiveStepData = (state: RootState) => {
   const activeStep = getActiveStep(state);
-  const dataStep = getDataStepByName(activeStep)(state);
-
-  const copyDataStep = JSON.parse(JSON.stringify(dataStep)) as StepI;
-  const activeKeys = getKeyActiveCards(state);
-  const permission = new Permission(activeKeys, activeStep);
-  const items = permission.getElements();
-
-  Object.values(dataStep.cards).forEach((card: CardI) => {
-    const isExist = items.some((item) => item.name === card.keyPermission);
-    if (!isExist) {
-      delete copyDataStep.cards[card.keyPermission];
-    }
-  });
+  const dataStep = getCorrectStepDataByPermission(activeStep)(state);
 
   if (activeStep === StepName.ConferenceCamera) {
-    copyDataStep.subtitle = formattingSubtitleByState(
-      copyDataStep.subtitle,
-      getSelectedPrepareCards(state)
-    );
-    return copyDataStep;
+    dataStep.subtitle = getFormattingSubtitleByState(dataStep.subtitle)(state);
   }
 
-  return copyDataStep;
+  return dataStep;
 };
 
 export const getNavigationStepData = (state: RootState) => {
@@ -188,6 +169,7 @@ export const getTitleFromMetadataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const card = getCardByKeyPermission(stepName, keyPermission)(state);
     const asset = getAssetFromCard(card)(state);
+    if(!asset) return;
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
     return metadata["Product Name"] || metadata["Name"] || asset?.name;
   };
@@ -228,16 +210,72 @@ export const getIsRecommendedCardByKeyPermission =
     const activeKeys = getKeyActiveCards(state);
     const permission = new Permission(activeKeys, stepName);
     return (
-      card?.recommended ||
-      permission.isRecommendedElementByName(keyPermission)
+      card?.recommended || permission.isRecommendedElementByName(keyPermission)
     );
   };
 
 export const getIsCanChangeStep = (state: RootState) => {
-  const activeStep = getActiveStep(state);
-  const activeKeys = getKeyActiveCards(state);
-  
-  const permission = new Permission(activeKeys, activeStep);
-
+  const permission = getPermission()(state);
   return permission.canNextStep();
-}
+};
+
+export const getPermission = (stepName?: StepName) => (state: RootState) => {
+  const currentStep = stepName ?? getActiveStep(state);
+  const activeKeys = getKeyActiveCards(state);
+  return new Permission(activeKeys, currentStep);
+};
+
+export const getCorrectStepDataByPermission =
+  (stepName: StepName) => (state: RootState) => {
+    const dataStep = getDataStepByName(stepName)(state);
+
+    const copyDataStep = JSON.parse(JSON.stringify(dataStep)) as StepI;
+    const permission = getPermission(stepName)(state);
+    const items = permission.getElements();
+
+    Object.values(dataStep.cards).forEach((card: CardI) => {
+      const isExist = items.some((item) => item.name === card.keyPermission);
+      if (!isExist) {
+        delete copyDataStep.cards[card.keyPermission];
+      }
+    });
+
+    return copyDataStep;
+  };
+
+export const getFormattingSubtitleByState =
+  (text: string) => (state: RootState) => {
+    const selectedPrepareCards = getSelectedPrepareCards(state);
+    const getName = (name: string) => `<b>${name}</b>`;
+    const roomSizeCard = selectedPrepareCards.find(
+      (card: { key: string }) => card.key === StepName.RoomSize
+    );
+    const platformCard = selectedPrepareCards.find(
+      (card: { key: string }) => card.key === StepName.Platform
+    );
+    const serviceCard = selectedPrepareCards.find(
+      (card: { key: string }) => card.key === StepName.Services
+    );
+
+    if (!roomSizeCard || !platformCard || !serviceCard) return text;
+
+    const roomSizeTile = getTitleCardByKeyPermission(
+      StepName.RoomSize,
+      roomSizeCard.keyPermission
+    )(state);
+
+    const platformTile = getTitleCardByKeyPermission(
+      StepName.Platform,
+      platformCard.keyPermission
+    )(state);
+
+    const serviceTile = getTitleCardByKeyPermission(
+      StepName.Services,
+      serviceCard.keyPermission
+    )(state);
+
+    return text
+      .replace("{0}", getName(roomSizeTile))
+      .replace("{1}", getName(platformTile))
+      .replace("{2}", getName(serviceTile));
+  };

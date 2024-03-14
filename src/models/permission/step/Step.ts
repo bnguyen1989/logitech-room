@@ -42,7 +42,6 @@ export class Step {
 
   public addActiveElementByName(itemName: string): void {
     const element = this.getElementByName(itemName);
-    console.log("Permission - element", element);
     
     if (!element) {
       return;
@@ -65,7 +64,6 @@ export class Step {
     if (!isExist) {
       this._activeElements.push(element);
     }
-    console.log("Permission - activeElements", this._activeElements);
     
     return this;
   }
@@ -79,6 +77,10 @@ export class Step {
   }
 
   public addValidElement(element: ItemElement | MountElement) {
+    const isExist = this.validElements.some(
+      (elem) => elem.name === element.name
+    );
+    if (isExist) return this;
     this.validElements.push(element);
     return this;
   }

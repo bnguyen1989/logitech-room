@@ -8,7 +8,6 @@ import {
   removeNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { Permission } from "../../../../models/permission/Permission";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { StepName } from "../../../../models/permission/type";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
@@ -20,7 +19,7 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
-  getKeyActiveCards,
+  getPermission,
 } from "../../ui/selectors/selectors";
 
 declare const app: Application;
@@ -76,8 +75,7 @@ function setElementByNameNode(assetId: string, nameNode: string) {
 export function addElement(card: CardI, stepName: StepName) {
   return (store: Store) => {
     const state = store.getState();
-    const activeKeys = getKeyActiveCards(state);
-    const permission = new Permission(activeKeys, stepName);
+    const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
     if (!card || !step) return;
 
@@ -197,8 +195,7 @@ export function removeElement(card: CardI) {
     const state = store.getState();
     const activeStep = getActiveStep(state);
     const stepData = getDataStepByName(activeStep)(state);
-    const activeKeys = getKeyActiveCards(state);
-    const permission = new Permission(activeKeys, activeStep);
+    const permission = getPermission(activeStep)(state);
 
     if (!card) return;
 
@@ -229,10 +226,6 @@ export function removeElement(card: CardI) {
       }
     }
     if (element instanceof MountElement) {
-      const permission = new Permission(
-        store.getState().ui.selectedData[activeStep].selected,
-        activeStep
-      );
       const itemElement = permission
         .getCurrentStep()
         ?.getActiveItemElementByMountName(element.name);
@@ -276,8 +269,7 @@ function changeCountElement(card: CardI, value: number, isIncrease: boolean) {
   return (store: Store) => {
     const state = store.getState();
     const activeStep = getActiveStep(state);
-    const activeKeys = getKeyActiveCards(state);
-    const permission = new Permission(activeKeys, activeStep);
+    const permission = getPermission(activeStep)(state);
     const step = permission.getCurrentStep();
     if (!card || !step) return;
 
