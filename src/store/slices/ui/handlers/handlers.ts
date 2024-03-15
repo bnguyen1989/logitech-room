@@ -2,13 +2,14 @@ import { Store } from "@reduxjs/toolkit";
 import { Application } from "../../../../models/Application";
 import { Configurator } from "../../../../models/configurator/Configurator";
 import {
+  AttributeStateI,
   ValueAssetStateI,
   ValueAttributeStateI,
   ValueStringStateI,
 } from "../../../../models/configurator/type";
 import {
   CardI,
-  // SelectDataI,
+  SelectDataI,
   StepName,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
@@ -16,7 +17,6 @@ import MicImg from "../../../../assets/images/items/mic.jpg";
 import CameraImg from "../../../../assets/images/items/camera.jpg";
 import ControllerImg from "../../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../../assets/images/items/access.jpg";
-// import ServiceImg from "../../../../assets/images/items/service.jpg";
 import {
   addActiveCard,
   changeActiveStep,
@@ -30,7 +30,10 @@ import {
 import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
-import { getPermissionNameByItemName } from "../../../../utils/permissionUtils";
+import {
+  getPermissionNameByItemName,
+  isSupportService,
+} from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
   getPlatformCardData,
@@ -247,20 +250,7 @@ function setStepData(
     }
 
     const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit =
-      {};
-
-    value.values.forEach((item: ValueAttributeStateI) => {
-      const asset = item as ValueAssetStateI;
-      if (!asset.visible) return;
-      const keyPermission = getPermissionNameByItemName(asset.name);
-      if (!keyPermission) return;
-
-      if (!cardPermissionWithDataThreekit[keyPermission]) {
-        cardPermissionWithDataThreekit[keyPermission] = {};
-      }
-
-      cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
-    });
+      getCardPermissionWithDataThreekit(value);
 
     const temp: Array<CardI> = [];
 
@@ -348,17 +338,7 @@ function setStepData(
     }
   });
 
-  const cards = stepCardData.reduce((acc, item) => {
-    acc[item.keyPermission] = item;
-    return acc;
-  }, {} as Record<string, CardI>);
-
-  store.dispatch(
-    setDataCardsStep({
-      step: stepName,
-      cards,
-    })
-  );
+  setDataCard(stepCardData, stepName)(store);
 }
 
 function setAudioExtensionsData(configurator: Configurator) {
@@ -429,20 +409,7 @@ function setStepDataPrepareCard(
     }
 
     const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit =
-      {};
-
-    value.values.forEach((item: ValueAttributeStateI) => {
-      const asset = item as ValueAssetStateI;
-      if (!asset.visible) return;
-      const keyPermission = getPermissionNameByItemName(asset.name);
-      if (!keyPermission) return;
-
-      if (!cardPermissionWithDataThreekit[keyPermission]) {
-        cardPermissionWithDataThreekit[keyPermission] = {};
-      }
-
-      cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
-    });
+      getCardPermissionWithDataThreekit(value);
 
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       const baseCard = baseData.find(
@@ -470,17 +437,7 @@ function setStepDataPrepareCard(
     );
   });
 
-  const cards = cardData.reduce((acc, item) => {
-    acc[item.keyPermission] = item;
-    return acc;
-  }, {} as Record<string, CardI>);
-
-  store.dispatch(
-    setDataCardsStep({
-      step: stepName,
-      cards,
-    })
-  );
+  setDataCard(cardData, stepName)(store);
 }
 
 function setPlatformData(configurator: Configurator) {
@@ -520,73 +477,48 @@ function setSoftwareServicesData(configurator: Configurator) {
         return;
       }
 
-      const temp: Array<CardI> = [];
+      const isSupport = (name: string) => name.includes("Support");
+      if (isSupport(name)) {
+        const baseCard = softwareServicesBaseData.find((item) =>
+          isSupportService(item.keyPermission)
+        );
 
-      // const isSupport = (name: string) => name.includes("Support");
-      // const isManagement = (name: string) => name.includes("Management");
+        if (!baseCard) return;
 
-      // if (isSupport(name)) {
-      //   const baseCard = softwareServicesBaseData.find((item) =>
-      //     isSupport(item.title)
-      //   );
+        const values: Array<SelectDataI> = [];
+        let threekitItems: Record<string, ValueAssetStateI> = {};
+        value.values.forEach((item: ValueAttributeStateI) => {
+          const asset = item as ValueAssetStateI;
+          if (!asset.visible) return;
+          if (!threekitItems[baseCard.keyPermission]) {
+            threekitItems = {
+              [baseCard.keyPermission]: asset,
+            };
+          }
+          const plan = asset.metadata["Service Plan"];
+          if (plan) {
+            values.push({
+              label: plan,
+              value: asset.id,
+            });
+          }
+        });
 
-      //   const values: Array<SelectDataI> = [];
-      //   value.values.forEach((item: ValueAttributeStateI) => {
-      //     const asset = item as ValueAssetStateI;
-      //     if (!asset.visible) return;
-      //     const plan = asset.metadata["Service Plan"];
-      //     if (plan) {
-      //       values.push({
-      //         label: plan,
-      //         value: asset.id,
-      //       });
-      //     }
-      //   });
+        softwareServicesCardData.push({
+          ...baseCard,
+          select: {
+            data: values,
+          },
+          dataThreekit: {
+            attributeName: name,
+            threekitItems,
+          },
+        });
+        return;
+      }
 
-      //   if (baseCard) {
-      //     temp.push({
-      //       ...baseCard,
-      //       select: {
-      //         data: values,
-      //       },
-      //       threekit: {
-      //         assetId: values[0].value,
-      //         key: name,
-      //       },
-      //     });
-      //   }
-      // } else if (isManagement(name)) {
-      //   const baseCard = softwareServicesBaseData.find((item) =>
-      //     isManagement(item.title)
-      //   );
-      //   value.values.forEach((item: ValueAttributeStateI) => {
-      //     const asset = item as ValueAssetStateI;
-      //     if (asset.visible && baseCard) {
-      //       temp.push({
-      //         ...baseCard,
-      //         threekit: {
-      //           assetId: asset.id,
-      //           key: name,
-      //         },
-      //       });
-      //     }
-      //   });
-      // } else {}
       const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit =
-        {};
-
-      value.values.forEach((item: ValueAttributeStateI) => {
-        const asset = item as ValueAssetStateI;
-        if (!asset.visible) return;
-        const keyPermission = getPermissionNameByItemName(asset.name);
-        if (!keyPermission) return;
-
-        if (!cardPermissionWithDataThreekit[keyPermission]) {
-          cardPermissionWithDataThreekit[keyPermission] = {};
-        }
-
-        cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
-      });
+        getCardPermissionWithDataThreekit(value);
 
       Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
         const baseCard = softwareServicesBaseData.find(
@@ -603,8 +535,6 @@ function setSoftwareServicesData(configurator: Configurator) {
           },
         });
       });
-
-      softwareServicesCardData.push(...temp);
     });
 
     softwareServicesCardData.forEach((tempCard) => {
@@ -623,20 +553,45 @@ function setSoftwareServicesData(configurator: Configurator) {
       store.dispatch(
         createItem({
           step: StepName.SoftwareServices,
-          keyItemPermission: tempCard.keyPermission ?? "",
+          keyItemPermission: tempCard.keyPermission,
         })
       );
     });
 
-    const cards = softwareServicesCardData.reduce((acc, item) => {
+    setDataCard(softwareServicesCardData, StepName.SoftwareServices)(store);
+  };
+}
+
+function getCardPermissionWithDataThreekit(attribute: AttributeStateI) {
+  const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit = {};
+
+  attribute.values.forEach((item: ValueAttributeStateI) => {
+    const asset = item as ValueAssetStateI;
+    if (!asset.visible) return;
+    const keyPermission = getPermissionNameByItemName(asset.name);
+    if (!keyPermission) return;
+
+    if (!cardPermissionWithDataThreekit[keyPermission]) {
+      cardPermissionWithDataThreekit[keyPermission] = {};
+    }
+
+    cardPermissionWithDataThreekit[keyPermission][asset.name] = asset;
+  });
+
+  return cardPermissionWithDataThreekit;
+}
+
+function setDataCard(cards: Array<CardI>, stepName: StepName) {
+  return (store: Store) => {
+    const cardsData = cards.reduce((acc, item) => {
       acc[item.keyPermission] = item;
       return acc;
     }, {} as Record<string, CardI>);
 
     store.dispatch(
       setDataCardsStep({
-        step: StepName.SoftwareServices,
-        cards,
+        step: stepName,
+        cards: cardsData,
       })
     );
   };

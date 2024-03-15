@@ -91,7 +91,6 @@ export interface SelectDataI {
   value: string;
 }
 export interface SelectI {
-  value: SelectDataI;
   data: Array<SelectDataI>;
 }
 

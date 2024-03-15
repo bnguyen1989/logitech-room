@@ -420,6 +420,10 @@ export const isTapMount = (name: string) => {
   ]);
 };
 
+export const isSupportService = (name: string) => {
+  return isCompareName(name)([SoftwareServicesName.SupportService]);
+}
+
 function isCompareName(name: string) {
   return (arrayNames: Array<string>) => {
     return arrayNames.some((item) => item.toLowerCase() === name.toLowerCase());
