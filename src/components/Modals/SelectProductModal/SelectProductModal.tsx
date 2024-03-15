@@ -2,12 +2,13 @@ import React from "react";
 import s from "./SelectProductModal.module.scss";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
-import { CloseSVG, EditSVG, WarningSVG } from "../../../assets";
+import { CloseSVG, WarningSVG } from "../../../assets";
 import { useAppSelector } from "../../../hooks/redux";
 import { getSelectedConfiguratorCards } from "../../../store/slices/ui/selectors/selectors";
 import { getSelectProductModalData } from "../../../store/slices/modals/selectors/selectors";
 import { useDispatch } from "react-redux";
 import { setSelectProductModal } from "../../../store/slices/modals/Modals.slice";
+import { SelectProductCard } from "./card/SelectProductCard";
 
 export const SelectProductModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -41,28 +42,10 @@ export const SelectProductModal: React.FC = () => {
         </div>
         <div className={s.cards}>
           {selectedCards.map((card, index) => (
-            <div key={index} className={s.wrapper}>
-              <div className={s.divider}></div>
-              <div className={s.card}>
-                <div className={s.left_content}>
-                  <div className={s.image}>
-                    <img src={card.image} alt={"image"} />
-                  </div>
-                </div>
-                <div className={s.right_content}>
-                  <div className={s.text}>
-                    <div className={s.header_title}>{card.key}</div>
-                    {/* <div className={s.title_text}>{card.title}</div> */}
-                    <div className={s.subtitle}>{card.subtitle}</div>
-                  </div>
-                  <div className={s.button_edit}>
-                    <IconButton onClick={() => {}}>
-                      <EditSVG />
-                    </IconButton>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SelectProductCard
+              key={index}
+              keyItemPermission={card.keyPermission}
+            />
           ))}
         </div>
       </div>

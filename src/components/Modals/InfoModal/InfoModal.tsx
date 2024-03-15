@@ -16,10 +16,7 @@ import { ColorSwitcher } from "../../ColorSwitchers/ColorSwitcher/ColorSwitcher"
 export const InfoModal: React.FC = () => {
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getInfoItemModalData);
-  const [selectedColor, setSelectedColor] = useState({
-    name: "Graphite",
-    value: "#434446",
-  });
+  const [selectedColor, setSelectedColor] = useState<string>("Graphite");
 
   const cards = [
     {
@@ -80,7 +77,7 @@ export const InfoModal: React.FC = () => {
               <div className={s.colors}>
                 <ColorSwitcher
                   value={selectedColor}
-                  onChange={(v) => setSelectedColor(v)}
+                  onChange={(v) => setSelectedColor(v.name)}
                   listColors={[
                     {
                       name: "Graphite",
