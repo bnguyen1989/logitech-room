@@ -3,6 +3,7 @@ import { updateDataCardByStepName } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
   addElement,
+  changeCountElement,
   removeElement,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
@@ -10,9 +11,15 @@ import {
   getActiveStep,
   getCardByKeyPermission,
   getPermission,
+  getPropertyCounterCardByKeyPermission,
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
-import { addActiveCards, removeActiveCards } from "../slices/ui/Ui.slice";
+import {
+  addActiveCards,
+  removeActiveCards,
+  setPropertyItem,
+} from "../slices/ui/Ui.slice";
+import { CUSTOM_UI_ACTION_NAME, UI_ACTION_NAME } from "../slices/ui/utils";
 
 declare const app: Application;
 
@@ -22,7 +29,7 @@ export const middleware: Middleware =
     const currentConfigurator = app.currentConfigurator;
 
     switch (action.type) {
-      case "ui/addActiveCard": {
+      case UI_ACTION_NAME.ADD_ACTIVE_CARD: {
         const { key } = action.payload;
         const activeStep = getActiveStep(state);
 
@@ -33,7 +40,7 @@ export const middleware: Middleware =
         updateDataCardByStepName(activeStep)(store, currentConfigurator);
         break;
       }
-      case "ui/removeActiveCard": {
+      case UI_ACTION_NAME.REMOVE_ACTIVE_CARD: {
         const { key } = action.payload;
         const activeStep = getActiveStep(state);
 
@@ -44,7 +51,7 @@ export const middleware: Middleware =
         updateDataCardByStepName(activeStep)(store, currentConfigurator);
         break;
       }
-      case "ui/changeActiveStep": {
+      case UI_ACTION_NAME.CHANGE_ACTIVE_STEP: {
         const stepName = action.payload;
         updateDataCardByStepName(stepName)(store, currentConfigurator);
         break;
@@ -57,7 +64,7 @@ export const middleware: Middleware =
     state = store.getState();
 
     switch (action.type) {
-      case "ui/addActiveCard": {
+      case UI_ACTION_NAME.ADD_ACTIVE_CARD: {
         const { key } = action.payload;
         const activeStep = getActiveStep(state);
 
@@ -72,7 +79,7 @@ export const middleware: Middleware =
         break;
       }
 
-      case "ui/removeActiveCard": {
+      case UI_ACTION_NAME.REMOVE_ACTIVE_CARD: {
         const { key } = action.payload;
         const activeStep = getActiveStep(state);
 
@@ -87,7 +94,7 @@ export const middleware: Middleware =
         break;
       }
 
-      case "ui/changeActiveStep": {
+      case UI_ACTION_NAME.CHANGE_ACTIVE_STEP: {
         const stepName = action.payload;
 
         const permission = getPermission(stepName)(state);
@@ -102,6 +109,29 @@ export const middleware: Middleware =
 
         const attributeNames = Configurator.getNamesAttrByStepName(stepName);
         updateNodes(store, attributeNames);
+        break;
+      }
+
+      case CUSTOM_UI_ACTION_NAME.CHANGE_COUNT_ITEM: {
+        const { key, count } = action.payload;
+        const activeStep = getActiveStep(state);
+        const prevCount = getPropertyCounterCardByKeyPermission(
+          activeStep,
+          key
+        )(state);
+        if (prevCount === undefined) return;
+
+        store.dispatch(
+          setPropertyItem({
+            step: activeStep,
+            keyItemPermission: key,
+            property: {
+              count: count,
+            },
+          })
+        );
+
+        changeCountElement(key, activeStep, count, prevCount)(store);
         break;
       }
       default:

@@ -36,6 +36,7 @@ import {
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
+  CUSTOM_UI_ACTION_NAME,
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
@@ -67,17 +68,14 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeCountItemCommand) {
-      const activeStep = getActiveStep(store.getState());
       const value = parseInt(data.value);
-      store.dispatch(
-        setPropertyItem({
-          step: activeStep,
-          keyItemPermission: data.keyItemPermission,
-          property: {
-            count: value,
-          },
-        })
-      );
+      store.dispatch({
+        type: CUSTOM_UI_ACTION_NAME.CHANGE_COUNT_ITEM,
+        payload: {
+          key: data.keyItemPermission,
+          count: value,
+        },
+      });
     }
 
     if (data instanceof ChangeColorItemCommand) {
@@ -206,19 +204,6 @@ function updateDataByConfiguration(
             },
           })
         );
-
-        // permission.addActiveElementByName(keyPermission);
-        // const element = permission
-        //   .getCurrentStep()
-        //   ?.getElementByName(keyPermission);
-        // if (element instanceof ItemElement && tempCard.counter) {
-        //   const mount = element.getDefaultMount();
-        //   if (mount instanceof CountableMountElement) {
-        //     mount.setActiveIndex(currentValue);
-        //     mount.setMin(tempCard.counter.min);
-        //     mount.setMax(tempCard.counter.max);
-        //   }
-        // }
       }
     });
     store.dispatch(

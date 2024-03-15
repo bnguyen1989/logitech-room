@@ -21,6 +21,16 @@ import {
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
 
+export enum UI_ACTION_NAME {
+  ADD_ACTIVE_CARD = "ui/addActiveCard",
+  REMOVE_ACTIVE_CARD = "ui/removeActiveCard",
+  CHANGE_ACTIVE_STEP = "ui/changeActiveStep",
+}
+
+export enum CUSTOM_UI_ACTION_NAME {
+  CHANGE_COUNT_ITEM = "CUSTOM/CHANGE_COUNT_ITEM",
+}
+
 export const getInitStepData = (): StepDataI => {
   return {
     [StepName.RoomSize]: {
