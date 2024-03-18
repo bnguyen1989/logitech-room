@@ -75,7 +75,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
         >
           <path
             fillRule="evenodd"
-            clip-rule="evenodd"
+            clipRule="evenodd"
             d="M8.13647 9.3355L4.49997 5.6985L3.79297 6.4055L8.13647 10.75L12.4995 6.38651L11.7925 5.67951L8.13647 9.3355Z"
             fill="black"
           />
@@ -89,7 +89,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
           >
             <path
               fillRule="evenodd"
-              clip-rule="evenodd"
+              clipRule="evenodd"
               d="M8.13647 9.3355L4.49997 5.6985L3.79297 6.4055L8.13647 10.75L12.4995 6.38651L11.7925 5.67951L8.13647 9.3355Z"
               fill="white"
             />

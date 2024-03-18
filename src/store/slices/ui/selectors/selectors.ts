@@ -169,9 +169,15 @@ export const getTitleFromMetadataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const card = getCardByKeyPermission(stepName, keyPermission)(state);
     const asset = getAssetFromCard(card)(state);
-    if(!asset) return;
+    if (!asset) return;
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
     return metadata["Product Name"] || metadata["Name"] || asset?.name;
+  };
+
+export const getPriceFromMetadataByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
+    return metadata?.Price || "0.000";
   };
 
 export const getStepNameByKeyPermission =

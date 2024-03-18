@@ -8,29 +8,17 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { ConfigData } from "../../../utils/threekitUtils";
-import { Application } from "../../../models/Application";
-import {
-  getSelectedConfiguratorCards,
-  getSelectedPrepareCards,
-} from "../../../store/slices/ui/selectors/selectors";
-import { CardI, StepName } from "../../../store/slices/ui/type";
 import { useEffect } from "react";
 import "./form.css";
-import { getDescriptionRoomBySize } from "./utils";
-import { getTitleFromDataByKeyPermission } from "../../../store/slices/ui/utils";
+import { getOrderData } from '../../../store/slices/ui/selectors/selectorsOrder'
 
-declare const app: Application;
 declare const MktoForms2: any;
 
 export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getSetupModalData);
-  const selectedCards: Array<CardI> = useAppSelector(
-    getSelectedConfiguratorCards
-  );
-  const selectedPrepareCards = useAppSelector(getSelectedPrepareCards);
+  const orderData = useAppSelector(getOrderData);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
@@ -42,7 +30,7 @@ export const SetupModal: React.FC = () => {
 
     MktoForms2.whenReady((form: any) => {
       form.onSubmit(() => {
-        createOrder().then(() => {
+        new ThreekitService().createOrder(orderData).then(() => {
           dispatch(setMySetupModal({ isOpen: false }));
           navigate("/room", { replace: true });
         });
@@ -54,55 +42,6 @@ export const SetupModal: React.FC = () => {
       }
     });
   }, [isOpen]);
-
-  const getNameOrder = () => {
-    const name = selectedPrepareCards
-      .filter((item) => !(item.key !== StepName.Platform))
-      .map((item) =>
-        getTitleFromDataByKeyPermission(item.keyPermission).replace(" Room", "")
-      )
-      .join(" ");
-
-    return `${name} Room`;
-  };
-
-  const createOrder = async () => {
-    const cardData = selectedCards.map((card) => {
-      const cardAssetId =
-        card.dataThreekit?.threekitItems[card.keyPermission].id;
-      return {
-        metadata: {
-          data: JSON.stringify(card),
-        },
-        configurationId: cardAssetId || "",
-        count: 1,
-      };
-    });
-    const nameOrder = getNameOrder();
-    const nameRoomSize = selectedPrepareCards.find(
-      (card) => card.key === StepName.RoomSize
-    )?.keyPermission;
-    if (!nameRoomSize) return;
-    const description = getDescriptionRoomBySize(nameRoomSize);
-    return new ThreekitService().createOrder({
-      customerId: ConfigData.userId,
-      originOrgId: ConfigData.userId,
-      platform: {
-        id: "1",
-        platform: "1",
-        storeName: "1",
-      },
-      cart: cardData,
-      metadata: {
-        assetId: app.currentConfigurator.assetId,
-        configuration: JSON.stringify(
-          app.currentConfigurator.getConfiguration()
-        ),
-        description: description,
-        name: nameOrder,
-      },
-    });
-  };
 
   if (!isOpen) return null;
 

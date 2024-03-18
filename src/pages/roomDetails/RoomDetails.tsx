@@ -17,6 +17,23 @@ export const RoomDetails: React.FC = () => {
   const [nameRoom, setNameRoom] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const getTitleSectionOrderByStepName = (stepName: StepName) => {
+    switch (stepName) {
+      case StepName.ConferenceCamera:
+        return "Conferencing Cameras";
+      case StepName.AudioExtensions:
+        return "Audio Add-Ons";
+      case StepName.MeetingController:
+        return "Audio Accessories";
+      case StepName.VideoAccessories:
+        return "Video Conferencing Add-Ons";
+      case StepName.SoftwareServices:
+        return "Services";
+      default:
+        return "";
+    }
+  };
+
   useEffect(() => {
     setIsLoaded(true);
     new ThreekitService()
@@ -27,17 +44,19 @@ export const RoomDetails: React.FC = () => {
         setNameRoom(room.metadata.name);
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
-          const card = JSON.parse(item.metadata.data) as CardI;
+          const { data, color, price, count, title } = item.metadata;
+          const card = JSON.parse(data) as CardI;
 
           const sectionId = dataSections.findIndex(
-            (section) => section.title === card.key
+            (section) =>
+              section.title === getTitleSectionOrderByStepName(card.key)
           );
 
           let itemSection: SectionI = {
-            title: card.key,
+            title: getTitleSectionOrderByStepName(card.key),
             data: [
               {
-                title: "card.title",
+                title: title,
                 subtitle: card.description || card.subtitle || "",
                 image: ImageItem,
               },
@@ -45,14 +64,15 @@ export const RoomDetails: React.FC = () => {
           };
 
           if (card.key !== StepName.SoftwareServices) {
+            const amount = `$ ${parseFloat(price) * parseInt(count)}`;
             itemSection = {
               ...itemSection,
               data: [
                 {
                   ...itemSection.data[0],
-                  partNumber: "Graphite : 960-000000",
-                  count: 1,
-                  amount: `$ 0.000.00`,
+                  partNumber: `${color} : 960-000000`,
+                  count: parseInt(count),
+                  amount,
                 },
               ],
             };
