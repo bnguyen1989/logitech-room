@@ -24,6 +24,16 @@ export class ChangeStepHandler extends Handler {
         mountElements.forEach((mount) => {
           step.addValidElement(mount);
         });
+
+        const isSomeMountActive = mountElements.some((mount) => {
+          return stepActiveElements.some((activeElement) => {
+            return activeElement.name === mount.name;
+          });
+        });
+        const defaultMount = element.getDefaultMount();
+        if(mountElements.length && !isSomeMountActive && defaultMount) {
+          step.addActiveElement(defaultMount);
+        }
       }
     });
     return true;
