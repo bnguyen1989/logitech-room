@@ -113,7 +113,7 @@ export const middleware: Middleware =
       }
 
       case CUSTOM_UI_ACTION_NAME.CHANGE_COUNT_ITEM: {
-        const { key, count } = action.payload;
+        const { key, value } = action.payload;
         const activeStep = getActiveStep(state);
         const prevCount = getPropertyCounterCardByKeyPermission(
           activeStep,
@@ -126,12 +126,31 @@ export const middleware: Middleware =
             step: activeStep,
             keyItemPermission: key,
             property: {
-              count: count,
+              count: value,
             },
           })
         );
 
-        changeCountElement(key, activeStep, count, prevCount)(store);
+        changeCountElement(key, activeStep, value, prevCount)(store);
+        break;
+      }
+
+      case CUSTOM_UI_ACTION_NAME.CHANGE_COLOR_ITEM: {
+        const { key, value } = action.payload;
+        const activeStep = getActiveStep(state);
+
+        store.dispatch(
+          setPropertyItem({
+            step: activeStep,
+            keyItemPermission: key,
+            property: {
+              color: value,
+            },
+          })
+        );
+
+        const card = getCardByKeyPermission(activeStep, key)(state);
+        addElement(card, activeStep)(store);
         break;
       }
       default:

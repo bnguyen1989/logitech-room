@@ -36,7 +36,6 @@ import {
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
-  CUSTOM_UI_ACTION_NAME,
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
@@ -50,6 +49,8 @@ import {
   getDataStepByName,
   getIsRecommendedCardByKeyPermission,
 } from "../selectors/selectors";
+import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
+import { changeColorItem, changeCountItem } from "../actions/actions";
 
 declare const app: Application;
 
@@ -69,24 +70,14 @@ export const getUiHandlers = (store: Store) => {
 
     if (data instanceof ChangeCountItemCommand) {
       const value = parseInt(data.value);
-      store.dispatch({
-        type: CUSTOM_UI_ACTION_NAME.CHANGE_COUNT_ITEM,
-        payload: {
-          key: data.keyItemPermission,
-          count: value,
-        },
-      });
+      store.dispatch(changeCountItem({ key: data.keyItemPermission, value }));
     }
 
     if (data instanceof ChangeColorItemCommand) {
-      const activeStep = getActiveStep(store.getState());
       store.dispatch(
-        setPropertyItem({
-          step: activeStep,
-          keyItemPermission: data.keyItemPermission,
-          property: {
-            color: data.value,
-          },
+        changeColorItem({
+          key: data.keyItemPermission,
+          value: data.value,
         })
       );
     }
@@ -301,9 +292,14 @@ function setStepData(
   stepCardData.forEach((tempCard) => {
     const { threekitItems } = tempCard.dataThreekit;
 
-    //temp solution, but need to be refactored, because threekitItems can include isn't color items
-    const isColors = Object.keys(threekitItems).length === 2;
-    if (isColors) {
+    const color = getPropertyColorCardByKeyPermission(
+      stepName,
+      tempCard.keyPermission
+    )(store.getState());
+
+    //temp solution, but need to be refactored, because threekitItems can include isn't color items (Object.keys(threekitItems).length === 2)
+    const isSetColors = Object.keys(threekitItems).length === 2 && !color;
+    if (isSetColors) {
       store.dispatch(
         setPropertyItem({
           step: stepName,

@@ -130,7 +130,7 @@ export function createStepConferenceCamera() {
       .addDependenceMount(
         new MountElement(
           CameraName.WallMountForVideoBars,
-          Configurator.getNameNodeForCamera("Wall")
+          Configurator.getNameNodeForCamera("Wall", 1)
         ).setDependentMount(
           new MountElement(
             CameraName.WallMountForVideoBars,
@@ -152,7 +152,7 @@ export function createStepConferenceCamera() {
       .setDefaultMount(
         new MountElement(
           CameraName.WallMountForVideoBars,
-          Configurator.getNameNodeForCamera("Wall")
+          Configurator.getNameNodeForCamera("Wall", 1)
         ).setDependentMount(
           new MountElement(
             CameraName.WallMountForVideoBars,
@@ -251,13 +251,13 @@ export function createStepMeetingController() {
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapWallMount,
-          Configurator.getNameNodeForTap(1)
+          Configurator.getNameNodeForTap("Wall", 1)
         )
       )
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapRiserMount,
-          Configurator.getNameNodeForTap(2)
+          Configurator.getNameNodeForTap("Table", 1)
         ).setDependentMount(
           new MountElement(
             MeetingControllerName.TapRiserMount,
@@ -268,7 +268,7 @@ export function createStepMeetingController() {
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapTableMount,
-          Configurator.getNameNodeForTap(2)
+          Configurator.getNameNodeForTap("Table", 1)
         ).setDependentMount(
           new MountElement(
             MeetingControllerName.TapTableMount,
@@ -279,7 +279,7 @@ export function createStepMeetingController() {
       .setDefaultMount(
         new MountElement(
           MeetingControllerName.TapTableMount,
-          Configurator.getNameNodeForTap(2)
+          Configurator.getNameNodeForTap("Table", 1)
         ).setDependentMount(
           new MountElement(
             MeetingControllerName.TapTableMount,
@@ -422,7 +422,7 @@ export const isTapMount = (name: string) => {
 
 export const isSupportService = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.SupportService]);
-}
+};
 
 function isCompareName(name: string) {
   return (arrayNames: Array<string>) => {

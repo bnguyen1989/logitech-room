@@ -29,6 +29,7 @@ export enum UI_ACTION_NAME {
 
 export enum CUSTOM_UI_ACTION_NAME {
   CHANGE_COUNT_ITEM = "CUSTOM/CHANGE_COUNT_ITEM",
+  CHANGE_COLOR_ITEM = "CUSTOM/CHANGE_COLOR_ITEM",
 }
 
 export const getInitStepData = (): StepDataI => {

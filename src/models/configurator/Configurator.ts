@@ -1,7 +1,7 @@
 import { AssetI } from "../../services/Threekit/type";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
-import { StepName } from '../permission/type'
+import { StepName } from "../permission/type";
 import {
   AttributeI,
   AttributeStateI,
@@ -77,7 +77,6 @@ export class Configurator {
     }
   }
 
-
   public static getQtyNameByAttrName(name: string): string {
     return [
       Configurator.AudioExtensionName,
@@ -97,13 +96,12 @@ export class Configurator {
     return `Mic_Placement_${id}`;
   }
 
-  public static getNameNodeForTap(id: number): string {
-    return `Tap_Placement_${id}`;
+  public static getNameNodeForTap(type: "Wall" | "Table", id: number): string {
+    return `Tap_Placement_${type}_${id}`;
   }
 
-  public static getNameNodeForCamera(type: "Wall" | "TV", id?: number): string {
-    if (type === "Wall") return "Camera_Wall_Placement_1";
-    return `Camera_TV_Placement_${id}`;
+  public static getNameNodeForCamera(type: "Wall" | "TV", id: number): string {
+    return `Camera_${type}_Placement_${id}`;
   }
 
   public static getNameNodeForScribe(): string {
@@ -155,10 +153,10 @@ export class Configurator {
       getNameNodeForMic(1),
       getNameNodeForMic(2),
       getNameNodeForMic(3),
-      getNameNodeForTap(1),
-      getNameNodeForTap(2),
-      getNameNodeForTap(3),
-      getNameNodeForCamera("Wall"),
+      getNameNodeForTap("Wall", 1),
+      getNameNodeForTap("Table", 1),
+      getNameNodeForTap("Table", 2),
+      getNameNodeForCamera("Wall", 1),
       getNameNodeForCamera("TV", 1),
       getNameNodeForCamera("TV", 2),
       getNameNodeForScribe(),
