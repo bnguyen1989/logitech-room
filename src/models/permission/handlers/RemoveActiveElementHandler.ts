@@ -16,7 +16,7 @@ export class RemoveActiveElementHandler extends Handler {
       return true;
     }
 
-    const validElements = step.getValidElements();
+    const validElements = [...step.getValidElements(), ...step.getActiveElements()];
     validElements.forEach((element) => {
       if (element instanceof MountElement) {
         return;
@@ -32,6 +32,9 @@ export class RemoveActiveElementHandler extends Handler {
       step.removeValidElement(element);
       step.removeActiveElement(element);
     });
+
+    console.log("RemoveActiveElementHandler", step.getActiveElements());
+    
 
     return true;
   }

@@ -1,13 +1,23 @@
-import { RootState } from '../../../'
+import { RootState } from "../../../";
 
-export const getIsBuilding = (state: RootState) => state.configurator.isBuilding;
+export const getIsBuilding = (state: RootState) =>
+  state.configurator.isBuilding;
 
-export const getShowDimensions = (state: RootState) => state.configurator.showDimensions;
+export const getShowDimensions = (state: RootState) =>
+  state.configurator.showDimensions;
 
-export const getConfiguration = (state: RootState) => state.configurator.configuration;
+export const getConfiguration = (state: RootState) =>
+  state.configurator.configuration;
 
 export const getNodes = (state: RootState) => state.configurator.nodes;
 
+export const getAssetIdByNameNode =
+  (nameNode: string) => (state: RootState) => {
+    const nodes = getNodes(state);
+    return nodes[nameNode];
+  };
+
 export const getAssetId = (state: RootState) => state.configurator.assetId;
 
-export const getIsProcessing = (state: RootState) => state.configurator.isProcessing;
+export const getIsProcessing = (state: RootState) =>
+  state.configurator.isProcessing;

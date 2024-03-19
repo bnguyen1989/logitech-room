@@ -89,6 +89,10 @@ export class Permission {
     return new AddActiveElementRule(element).validate(currentStep);
   }
 
+  public processChangeColorElementByName(itemName: string): void {
+    this.canAddActiveElementByName(itemName);
+  }
+
   public processAddActiveElementByName(itemName: string): void {
     const currentStep = this.getCurrentStep();
     if (!currentStep) {
@@ -157,6 +161,14 @@ export class Permission {
     const chainActiveElements = currentStep.getChainActiveElements();
     const keys = chainActiveElements.flat().map((element) => element.name);
     return keys.filter((key) => !this.arrayActiveKeys.includes(key));
+  }
+
+  public getChangeColorKeys(name: string): Array<string> {
+    const currentStep = this.getCurrentStep();
+    if (!currentStep) return [];
+    const element = currentStep.getElementByName(name);
+    if (!(element instanceof ItemElement)) return [];
+    return element.getDependenceColor();
   }
 
   public isRecommendedElementByName(itemName: string): boolean {

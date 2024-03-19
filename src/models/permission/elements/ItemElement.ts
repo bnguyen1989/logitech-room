@@ -3,20 +3,21 @@ import { Element } from "./Element";
 import { MountElement } from "./MountElement";
 
 export class ItemElement extends BaseElement implements Element<ItemElement> {
-  private _dependence: Array<ItemElement | Array<ItemElement>> = [];
+  private _dependence: Array<string | Array<string>> = [];
   private _dependenceMount: Array<MountElement> = [];
+  private _dependenceColor: Array<string> = [];
   private defaultMount: MountElement | null = null;
 
   constructor(name: string) {
     super(name);
   }
 
-  public addDependence(item: ItemElement | ItemElement[]): ItemElement {
+  public addDependence(item: string | string[]): ItemElement {
     this._dependence.push(item);
     return this;
   }
 
-  public getDependence(): Array<ItemElement | Array<ItemElement>> {
+  public getDependence(): Array<string | Array<string>> {
     return this._dependence;
   }
 
@@ -27,6 +28,15 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   public getDependenceMount(): Array<MountElement> {
     return this._dependenceMount;
+  }
+
+  public addDependenceColor(item: string): ItemElement {
+    this._dependenceColor.push(item);
+    return this;
+  }
+
+  public getDependenceColor(): Array<string> {
+    return this._dependenceColor;
   }
 
   public setDefaultMount(mount: MountElement | null): ItemElement {

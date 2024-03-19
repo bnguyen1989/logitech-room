@@ -8,15 +8,15 @@ export abstract class Handler {
 		if(!dependence.length) {
 			return true;
 		}
-		return dependence.every((element) => {
+		return dependence.every((item) => {
 			return chainActiveElements.some((activeElements) => {
 				return activeElements.some((activeElement) => {
-					if(Array.isArray(element)) {
-						return element.some((itemElement) => {
-							return itemElement.name === activeElement.name;
+					if(Array.isArray(item)) {
+						return item.some((itemElement) => {
+							return itemElement === activeElement.name;
 						});
 					}
-					return activeElement.name === element.name;
+					return activeElement.name === item;
 				});
 			});
 		});

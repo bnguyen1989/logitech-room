@@ -3,6 +3,7 @@ import { updateDataCardByStepName } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
   addElement,
+  changeColorElement,
   changeCountElement,
   removeElement,
   updateNodesByConfiguration,
@@ -149,8 +150,27 @@ export const middleware: Middleware =
           })
         );
 
-        const card = getCardByKeyPermission(activeStep, key)(state);
-        addElement(card, activeStep)(store);
+        const permission = getPermission(activeStep)(state);
+        permission.processChangeColorElementByName(key);
+
+        permission.getChangeColorKeys(key).forEach((item) => {
+          store.dispatch(
+            setPropertyItem({
+              step: activeStep,
+              keyItemPermission: item,
+              property: {
+                color: value,
+              },
+            })
+          );
+        });
+
+        store.dispatch(
+          addActiveCards({ keys: [...permission.getAddKeys(), key] })
+        );
+        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+
+        changeColorElement(key, activeStep)(store);
         break;
       }
       default:

@@ -99,11 +99,11 @@ export function createStepPlatform() {
   const group = new GroupElement()
     .addElement(
       new ItemElement(PlatformName.GoogleMeet).addDependence([
-        new ItemElement(RoomSizeName.Phonebooth),
-        new ItemElement(RoomSizeName.Huddle),
-        new ItemElement(RoomSizeName.Small),
-        new ItemElement(RoomSizeName.Medium),
-        new ItemElement(RoomSizeName.Large),
+        RoomSizeName.Phonebooth,
+        RoomSizeName.Huddle,
+        RoomSizeName.Small,
+        RoomSizeName.Medium,
+        RoomSizeName.Large,
       ])
     )
     .addElement(new ItemElement(PlatformName.MicrosoftTeams))
@@ -199,20 +199,24 @@ export function createStepAudioExtensions() {
           "Mic_Placement"
         )
       )
+      .addDependenceColor(AudioExtensionName.RallyMicPodMount)
       .setRecommended(true)
   );
   const group2 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallyMicPodMount).setDefaultMount(
-      new CountableMountElement(
-        AudioExtensionName.RallyMicPodMount,
-        "Mic_Placement"
-      ).setDependentMount(
-        new MountElement(
-          AudioExtensionName.RallyMicPod,
-          Configurator.getNameNodeMicPodMount()
+    new ItemElement(AudioExtensionName.RallyMicPodMount)
+      .setDefaultMount(
+        new CountableMountElement(
+          AudioExtensionName.RallyMicPodMount,
+          "Mic_Placement"
+        ).setDependentMount(
+          new MountElement(
+            AudioExtensionName.RallyMicPod,
+            Configurator.getNameNodeMicPodMount()
+          )
         )
       )
-    )
+      .addDependence(AudioExtensionName.RallyMicPod)
+      .addDependenceColor(AudioExtensionName.RallyMicPod)
   );
   const group3 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodPendantMount)
