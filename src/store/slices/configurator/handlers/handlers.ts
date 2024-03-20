@@ -291,7 +291,25 @@ export function changeColorElement(
         }
 
         const dependentMount = defaultMount.getDependentMount();
-        if (dependentMount) {
+        if (dependentMount && dependenceKeyItemsColor.length) {
+          const nameDependent = dependenceKeyItemsColor[0];
+          const element = step.getElementByName(nameDependent);
+          if (element instanceof ItemElement) {
+            const cardElement = getCardByKeyPermission(
+              stepName,
+              nameDependent
+            )(state);
+            const cardAssetElement = getAssetFromCard(cardElement)(state);
+            names.forEach((name) => {
+              const isExist = !!getAssetIdByNameNode(name)(state);
+              if (!isExist) return;
+              setElementByNameNode(cardAsset.id, name)(store);
+            });
+            setElementByNameNode(
+              cardAssetElement.id,
+              dependentMount.getNameNode()
+            )(store);
+          }
           return;
         }
 
