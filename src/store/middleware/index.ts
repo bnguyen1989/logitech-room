@@ -132,6 +132,23 @@ export const middleware: Middleware =
           })
         );
 
+        const permission = getPermission(activeStep)(state);
+        Object.entries(permission.getItemsNeedChange(key)).forEach(
+          ([key, arr]) => {
+            const count = arr.includes("count");
+            if(!count) return;
+            store.dispatch(
+              setPropertyItem({
+                step: activeStep,
+                keyItemPermission: key,
+                property: {
+                  count: value,
+                },
+              })
+            );
+          }
+        );
+
         changeCountElement(key, activeStep, value, prevCount)(store);
         break;
       }
@@ -153,17 +170,22 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processChangeColorElementByName(key);
 
-        permission.getChangeColorKeys(key).forEach((item) => {
-          store.dispatch(
-            setPropertyItem({
-              step: activeStep,
-              keyItemPermission: item,
-              property: {
-                color: value,
-              },
-            })
-          );
-        });
+
+        Object.entries(permission.getItemsNeedChange(key)).forEach(
+          ([key, arr]) => {
+            const color = arr.includes("color");
+            if(!color) return;
+            store.dispatch(
+              setPropertyItem({
+                step: activeStep,
+                keyItemPermission: key,
+                property: {
+                  color: value,
+                },
+              })
+            );
+          }
+        );
 
         store.dispatch(
           addActiveCards({ keys: [...permission.getAddKeys(), key] })

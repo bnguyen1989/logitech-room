@@ -72,12 +72,14 @@ export class Application {
   }
 
   public changeColorItemConfiguration(
+    nameProperty: string,
     value: string,
     keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
       new ChangeColorItemCommand(
         this.currentConfigurator,
+        nameProperty,
         value,
         keyItemPermission
       )

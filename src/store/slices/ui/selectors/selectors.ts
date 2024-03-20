@@ -285,3 +285,13 @@ export const getFormattingSubtitleByState =
       .replace("{1}", getName(platformTile))
       .replace("{2}", getName(serviceTile));
   };
+
+export const getIsDisabledActionByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    if (!step) return false;
+    const element = step.getElementByName(keyPermission);
+    if (!element) return false;
+    return element.getActionDisabled();
+  };

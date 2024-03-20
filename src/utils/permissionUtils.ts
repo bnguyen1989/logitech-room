@@ -3,6 +3,7 @@ import { CountableMountElement } from "../models/permission/elements/CountableMo
 import { GroupElement } from "../models/permission/elements/GroupElement";
 import { ItemElement } from "../models/permission/elements/ItemElement";
 import { MountElement } from "../models/permission/elements/MountElement";
+import { ReferenceMountElement } from '../models/permission/elements/ReferenceMountElement'
 import { Step } from "../models/permission/step/Step";
 import { StepName } from "../models/permission/type";
 import { getSeparatorItemColor } from "./baseUtils";
@@ -199,24 +200,32 @@ export function createStepAudioExtensions() {
           "Mic_Placement"
         )
       )
-      .addDependenceColor(AudioExtensionName.RallyMicPodMount)
+      .addAutoChangeItems({
+        [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
+      })
       .setRecommended(true)
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)
+      // .setDefaultMount(
+      //   new CountableMountElement(
+      //     AudioExtensionName.RallyMicPodMount,
+      //     "Mic_Placement"
+      //   ).setDependentMount(
+      //     new MountElement(
+      //       AudioExtensionName.RallyMicPod,
+      //       Configurator.getNameNodeMicPodMount()
+      //     )
+      //   )
+      // )
       .setDefaultMount(
-        new CountableMountElement(
-          AudioExtensionName.RallyMicPodMount,
-          "Mic_Placement"
-        ).setDependentMount(
-          new MountElement(
-            AudioExtensionName.RallyMicPod,
-            Configurator.getNameNodeMicPodMount()
-          )
+        new ReferenceMountElement(
+          AudioExtensionName.RallyMicPod,
+          Configurator.getNameNodeMicPodMount()
         )
       )
       .addDependence(AudioExtensionName.RallyMicPod)
-      .addDependenceColor(AudioExtensionName.RallyMicPod)
+      .setActionDisabled(true)
   );
   const group3 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodPendantMount)

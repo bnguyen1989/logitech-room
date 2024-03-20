@@ -6,6 +6,7 @@ export class BaseElement extends Element<BaseElement> {
   private _defaultActive: boolean = false;
   private _isRequired: boolean = false;
   private _isRecommended: boolean = false;
+  private _isActionDisabled: boolean = false;
 
   constructor(name: string) {
     super();
@@ -45,6 +46,15 @@ export class BaseElement extends Element<BaseElement> {
 
   public setRecommended(value: boolean) {
     this._isRecommended = value;
+    return this;
+  }
+
+  public getActionDisabled(): boolean {
+    return this._isActionDisabled;
+  }
+
+  public setActionDisabled(value: boolean) {
+    this._isActionDisabled = value;
     return this;
   }
 

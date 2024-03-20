@@ -12,6 +12,7 @@ import {
   getActiveStep,
   getAssetFromCard,
   getCardByKeyPermission,
+  getIsDisabledActionByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
@@ -31,6 +32,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   );
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const isDisabledActions = useAppSelector(
+    getIsDisabledActionByKeyPermission(activeStep, keyItemPermission)
   );
   const dispatch = useDispatch();
 
@@ -86,14 +90,17 @@ export const CardItem: React.FC<PropsI> = (props) => {
               className={s.content_actions}
               style={{ paddingTop: isAction ? "20px" : "" }}
             >
-              <ColorSwitcherItem keyItemPermission={card.keyPermission} />
+              <ColorSwitcherItem
+                keyItemPermission={card.keyPermission}
+                disabled={isDisabledActions}
+              />
               <CounterItem
                 keyItemPermission={card.keyPermission}
-                disabled={!isActiveCard}
+                disabled={!isActiveCard || isDisabledActions}
               />
               <SelectItem
                 keyItemPermission={card.keyPermission}
-                disabled={!isActiveCard}
+                disabled={!isActiveCard || isDisabledActions}
               />
             </div>
             <div className={s.info}>

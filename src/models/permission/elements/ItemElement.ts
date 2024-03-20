@@ -5,8 +5,8 @@ import { MountElement } from "./MountElement";
 export class ItemElement extends BaseElement implements Element<ItemElement> {
   private _dependence: Array<string | Array<string>> = [];
   private _dependenceMount: Array<MountElement> = [];
-  private _dependenceColor: Array<string> = [];
   private defaultMount: MountElement | null = null;
+  private _autoChangeItems: Record<string, Array<string>> = {};
 
   constructor(name: string) {
     super(name);
@@ -30,13 +30,18 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
     return this._dependenceMount;
   }
 
-  public addDependenceColor(item: string): ItemElement {
-    this._dependenceColor.push(item);
+  public addAutoChangeItems(
+    value: Record<string, Array<string>>
+  ): ItemElement {
+    this._autoChangeItems = {
+      ...this._autoChangeItems,
+      ...value,
+    };
     return this;
   }
 
-  public getDependenceColor(): Array<string> {
-    return this._dependenceColor;
+  public getAutoChangeItems(): Record<string, Array<string>> {
+    return this._autoChangeItems;
   }
 
   public setDefaultMount(mount: MountElement | null): ItemElement {

@@ -163,12 +163,12 @@ export class Permission {
     return keys.filter((key) => !this.arrayActiveKeys.includes(key));
   }
 
-  public getChangeColorKeys(name: string): Array<string> {
+  public getItemsNeedChange(name: string): Record<string, Array<string>> {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) return [];
+    if (!currentStep) return {};
     const element = currentStep.getElementByName(name);
-    if (!(element instanceof ItemElement)) return [];
-    return element.getDependenceColor();
+    if (!(element instanceof ItemElement)) return {};
+    return element.getAutoChangeItems();
   }
 
   public isRecommendedElementByName(itemName: string): boolean {
