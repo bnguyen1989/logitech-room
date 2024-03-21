@@ -16,6 +16,10 @@ import {
   getIsSelectedCardByKeyPermission,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
+import {
+  getAllLangProduct,
+  getLangProductBlade1,
+} from "../../../store/slices/ui/selectors/selectoreLangProduct";
 
 interface PropsI {
   keyItemPermission: string;
@@ -26,6 +30,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const langProduct = useAppSelector(getLangProductBlade1(keyItemPermission));
+  // console.log("langProduct", langProduct);
+
   const threekitAsset = useAppSelector(getAssetFromCard(card));
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
@@ -77,9 +84,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
         <div className={s.right_content}>
           <div className={s.header} onClick={handleClick}>
             {/* <div className={s.header_title}>{card.header_title}</div> */}
-            <div className={s.title}>{title}</div>
-            {!!card.subtitle && (
-              <div className={s.subtitle}>{card.subtitle}</div>
+            {langProduct && (
+              <div className={s.title}>{langProduct.ProductName}</div>
+            )}
+            {langProduct && !!langProduct.ShortDescription && (
+              <div className={s.subtitle}>{langProduct.ShortDescription}</div>
             )}
           </div>
           <div
