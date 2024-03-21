@@ -14,12 +14,10 @@ import {
   getCardByKeyPermission,
   getIsDisabledActionByKeyPermission,
   getIsSelectedCardByKeyPermission,
+  getMetadataProductNameAssetFromCard,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
-import {
-  getAllLangProduct,
-  getLangProductBlade1,
-} from "../../../store/slices/ui/selectors/selectoreLangProduct";
+import { getLangProductBlade1, getLangProductImage } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 
 interface PropsI {
   keyItemPermission: string;
@@ -30,10 +28,16 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
-  const langProduct = useAppSelector(getLangProductBlade1(keyItemPermission));
-  // console.log("langProduct", langProduct);
+  const productName = useAppSelector(getMetadataProductNameAssetFromCard(card));
+  console.log("card", card);
+
+  const langProduct = useAppSelector(getLangProductBlade1(productName));
+  const langProductImage = useAppSelector(getLangProductImage(productName));
 
   const threekitAsset = useAppSelector(getAssetFromCard(card));
+
+  console.log("langProduct");
+
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -78,15 +82,13 @@ export const CardItem: React.FC<PropsI> = (props) => {
       <div className={s.container}>
         <div className={s.left_content} onClick={handleClick}>
           <div className={s.image}>
-            <img src={card.image} alt="item" />
+            <img src={langProductImage} alt="item" />
           </div>
         </div>
         <div className={s.right_content}>
           <div className={s.header} onClick={handleClick}>
             {/* <div className={s.header_title}>{card.header_title}</div> */}
-            {langProduct && (
-              <div className={s.title}>{langProduct.ProductName}</div>
-            )}
+            <div className={s.title}>{title}</div>
             {langProduct && !!langProduct.ShortDescription && (
               <div className={s.subtitle}>{langProduct.ShortDescription}</div>
             )}
