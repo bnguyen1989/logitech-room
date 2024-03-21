@@ -196,13 +196,13 @@ export const getMetadataByKeyPermission =
     return asset?.metadata;
   };
 
-export const getKeyActiveCards = (state: RootState) => {
-  const res: Array<string> = [];
+export const getDataActiveCards = (state: RootState) => {
+  const res: Record<string, Record<string, any>> = {}
   const selectedData = getSelectData(state);
   Object.values(selectedData).forEach((item) => {
     Object.keys(item).forEach((key) => {
       if (item[key].selected.length) {
-        res.push(key);
+        res[key] = item[key].property;
       }
     });
   });
@@ -213,8 +213,7 @@ export const getIsRecommendedCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const card = getCardByKeyPermission(stepName, keyPermission)(state);
 
-    const activeKeys = getKeyActiveCards(state);
-    const permission = new Permission(activeKeys, stepName);
+    const permission = getPermission(stepName)(state);
     return (
       card?.recommended || permission.isRecommendedElementByName(keyPermission)
     );
@@ -227,8 +226,8 @@ export const getIsCanChangeStep = (state: RootState) => {
 
 export const getPermission = (stepName?: StepName) => (state: RootState) => {
   const currentStep = stepName ?? getActiveStep(state);
-  const activeKeys = getKeyActiveCards(state);
-  return new Permission(activeKeys, currentStep);
+  const activeData = getDataActiveCards(state);
+  return new Permission(activeData, currentStep);
 };
 
 export const getCorrectStepDataByPermission =

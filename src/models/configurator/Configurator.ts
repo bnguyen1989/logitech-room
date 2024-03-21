@@ -37,6 +37,7 @@ export class Configurator {
   public static AudioExtensionName = [
     ["Room Mic", "Qty - Micpod/Expansion"],
     ["Room Mic Mount", "Qty - Mic Mount"],
+    ["Room Mic Pod Pendant Mount", "Qty - Mic Pendant Mount"],
     ["Room Mic Pod Hub", "Qty - Mic Pod Hub"],
     ["Room Mic Pod Extension Cable", "Qty - Mic Pod Extension Cable"],
   ];
@@ -93,7 +94,8 @@ export class Configurator {
     }, "");
   }
 
-  public static getNameNodeForMic(id: number): string {
+  public static getNameNodeForMic(id?: number): string {
+    if(!id) return `Mic_Placement`;
     return `Mic_Placement_${id}`;
   }
 
@@ -137,6 +139,15 @@ export class Configurator {
     return "Camera_TV_Mount_placement";
   }
 
+  public static getNameNodePendantMount(id?: number): string {
+    if(!id) return `Mic_Placement_pedant`;
+    return `Mic_Placement_pedant_${id}`;
+  }
+
+  public static getNameNodePodPendantMount(): string {
+    return "Pod_Pendant_Mount_Point"
+  }
+
   public static getAllPlacement(): string[] {
     const getNameNodeForMic = this.getNameNodeForMic;
     const getNameNodeForTap = this.getNameNodeForTap;
@@ -149,6 +160,8 @@ export class Configurator {
     const getNameNodeTapTableMount = this.getNameNodeTapTableMount;
     const getNameNodeCameraWallMount = this.getNameNodeCameraWallMount;
     const getNameNodeCameraTVMount = this.getNameNodeCameraTVMount;
+    const getNameNodePendantMount = this.getNameNodePendantMount;
+    const getNameNodePodPendantMount = this.getNameNodePodPendantMount;
 
     return [
       getNameNodeForMic(1),
@@ -168,6 +181,9 @@ export class Configurator {
       getNameNodeTapTableMount(),
       getNameNodeCameraWallMount(),
       getNameNodeCameraTVMount(),
+      getNameNodePendantMount(1),
+      getNameNodePendantMount(2),
+      getNameNodePodPendantMount(),
     ];
   }
 

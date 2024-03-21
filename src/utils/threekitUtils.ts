@@ -10,9 +10,9 @@ export const ConfigData = {
 export const getRoomAssetId = (roomSize: string) => {
   switch (roomSize) {
     case RoomSizeName.Medium:
-      return "2abd3c51-5f2f-4ddd-96f4-18b445cd80f4";
+      return "3bb4f42a-939d-4392-b073-f6e333c50a06";
     default:
-      return "2abd3c51-5f2f-4ddd-96f4-18b445cd80f4";
+      return "3bb4f42a-939d-4392-b073-f6e333c50a06";
   }
 };
 

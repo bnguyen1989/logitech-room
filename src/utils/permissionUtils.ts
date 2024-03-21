@@ -197,7 +197,7 @@ export function createStepAudioExtensions() {
       .setDefaultMount(
         new CountableMountElement(
           AudioExtensionName.RallyMicPod,
-          "Mic_Placement"
+          Configurator.getNameNodeForMic()
         )
       )
       .addAutoChangeItems({
@@ -207,17 +207,6 @@ export function createStepAudioExtensions() {
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)
-      // .setDefaultMount(
-      //   new CountableMountElement(
-      //     AudioExtensionName.RallyMicPodMount,
-      //     "Mic_Placement"
-      //   ).setDependentMount(
-      //     new MountElement(
-      //       AudioExtensionName.RallyMicPod,
-      //       Configurator.getNameNodeMicPodMount()
-      //     )
-      //   )
-      // )
       .setDefaultMount(
         new ReferenceMountElement(
           AudioExtensionName.RallyMicPod,
@@ -229,6 +218,17 @@ export function createStepAudioExtensions() {
   );
   const group3 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodPendantMount)
+    .setDefaultMount(
+     new ReferenceMountElement(
+      AudioExtensionName.RallyMicPod,
+      Configurator.getNameNodePodPendantMount()
+     ).setDependentMount(
+      new CountableMountElement(
+        AudioExtensionName.RallyMicPodPendantMount,
+        Configurator.getNameNodePendantMount()
+      )
+     )
+    )
   );
   const group4 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallySpeaker)

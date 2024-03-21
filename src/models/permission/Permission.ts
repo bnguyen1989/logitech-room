@@ -23,13 +23,16 @@ export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
   private steps: Array<Step> = [];
-  private arrayActiveKeys: Array<string> = [];
+  private arrayActiveData: Record<string, Record<string, any>>;
 
-  constructor(arrayActiveKeys: Array<string> = [], stepName: StepName) {
+  constructor(
+    arrayActiveData: Record<string, Record<string, any>> = {},
+    stepName: StepName
+  ) {
     this.init();
     this.currentStepName = stepName;
-    this.arrayActiveKeys = arrayActiveKeys;
-    this.setActiveItemsSteps(arrayActiveKeys);
+    this.arrayActiveData = arrayActiveData;
+    this.setActiveItemsSteps(arrayActiveData);
 
     const currentStep = this.getCurrentStep();
     if (currentStep) {
@@ -48,7 +51,10 @@ export class Permission {
     this.addStep(createStepSoftwareServices());
   }
 
-  public setActiveItemsSteps(arrayActiveKeys: Array<string>): void {
+  public setActiveItemsSteps(
+    arrayActiveData: Record<string, Record<string, any>>
+  ): void {
+    const arrayActiveKeys = Object.keys(arrayActiveData);
     this.steps.forEach((step) => {
       arrayActiveKeys.forEach((key) => {
         step.addActiveElementByName(key);
@@ -150,17 +156,20 @@ export class Permission {
     const currentStep = this.getCurrentStep();
     if (!currentStep) return [];
 
+    const arrayActiveKeys = Object.keys(this.arrayActiveData);
     const chainActiveElements = currentStep.getChainActiveElements();
     const keys = chainActiveElements.flat().map((element) => element.name);
-    return this.arrayActiveKeys.filter((key) => !keys.includes(key));
+    return arrayActiveKeys.filter((key) => !keys.includes(key));
   }
 
   public getAddKeys(): Array<string> {
     const currentStep = this.getCurrentStep();
     if (!currentStep) return [];
+
+    const arrayActiveKeys = Object.keys(this.arrayActiveData);
     const chainActiveElements = currentStep.getChainActiveElements();
     const keys = chainActiveElements.flat().map((element) => element.name);
-    return keys.filter((key) => !this.arrayActiveKeys.includes(key));
+    return keys.filter((key) => !arrayActiveKeys.includes(key));
   }
 
   public getItemsNeedChange(name: string): Record<string, Array<string>> {
