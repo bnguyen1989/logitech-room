@@ -36,6 +36,7 @@ const configuratorSlice = createSlice({
         value: Configuration;
       }>
     ) => {
+      //@ts-ignore
       state.configuration[action.payload.key] = action.payload.value;
     },
     changeValueNodes: (
@@ -62,7 +63,7 @@ const configuratorSlice = createSlice({
     },
     changeStatusProcessing: (state, action: PayloadAction<boolean>) => {
       state.isProcessing = action.payload;
-    }
+    },
   },
 });
 
@@ -74,6 +75,6 @@ export const {
   changeAssetId,
   removeNodes,
   removeNodeByKeys,
-  changeStatusProcessing
+  changeStatusProcessing,
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;

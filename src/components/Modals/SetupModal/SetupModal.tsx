@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
 import { useEffect } from "react";
 import "./form.css";
-import { getOrderData } from '../../../store/slices/ui/selectors/selectorsOrder'
+import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 
 declare const MktoForms2: any;
 
@@ -18,7 +18,7 @@ export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getSetupModalData);
-  const orderData = useAppSelector(getOrderData);
+  const orderData: any = useAppSelector(getOrderData);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
