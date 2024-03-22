@@ -36,6 +36,7 @@ const configuratorSlice = createSlice({
         value: Configuration;
       }>
     ) => {
+      //@ts-ignore
       state.configuration[action.payload.key] = action.payload.value;
     },
     changeValueNodes: (
