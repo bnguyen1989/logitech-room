@@ -3,7 +3,8 @@ import { Element } from "./Element";
 import { MountElement } from "./MountElement";
 
 export class ItemElement extends BaseElement implements Element<ItemElement> {
-  private _dependence: Array<string | Array<string>> = [];
+  private _dependence: Array<Record<string, any> | Array<Record<string, any>>> =
+    [];
   private _dependenceMount: Array<MountElement> = [];
   private defaultMount: MountElement | null = null;
   private _autoChangeItems: Record<string, Array<string>> = {};
@@ -12,12 +13,16 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
     super(name);
   }
 
-  public addDependence(item: string | string[]): ItemElement {
+  public addDependence(
+    item: Record<string, any> | Array<Record<string, any>>
+  ): ItemElement {
     this._dependence.push(item);
     return this;
   }
 
-  public getDependence(): Array<string | Array<string>> {
+  public getDependence(): Array<
+    Record<string, any> | Array<Record<string, any>>
+  > {
     return this._dependence;
   }
 
@@ -30,9 +35,7 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
     return this._dependenceMount;
   }
 
-  public addAutoChangeItems(
-    value: Record<string, Array<string>>
-  ): ItemElement {
+  public addAutoChangeItems(value: Record<string, Array<string>>): ItemElement {
     this._autoChangeItems = {
       ...this._autoChangeItems,
       ...value,

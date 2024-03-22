@@ -3,7 +3,7 @@ import { CountableMountElement } from "../models/permission/elements/CountableMo
 import { GroupElement } from "../models/permission/elements/GroupElement";
 import { ItemElement } from "../models/permission/elements/ItemElement";
 import { MountElement } from "../models/permission/elements/MountElement";
-import { ReferenceMountElement } from '../models/permission/elements/ReferenceMountElement'
+import { ReferenceMountElement } from "../models/permission/elements/ReferenceMountElement";
 import { Step } from "../models/permission/step/Step";
 import { StepName } from "../models/permission/type";
 import { getSeparatorItemColor } from "./baseUtils";
@@ -100,11 +100,11 @@ export function createStepPlatform() {
   const group = new GroupElement()
     .addElement(
       new ItemElement(PlatformName.GoogleMeet).addDependence([
-        RoomSizeName.Phonebooth,
-        RoomSizeName.Huddle,
-        RoomSizeName.Small,
-        RoomSizeName.Medium,
-        RoomSizeName.Large,
+        new ItemElement(RoomSizeName.Phonebooth),
+        new ItemElement(RoomSizeName.Huddle),
+        new ItemElement(RoomSizeName.Small),
+        new ItemElement(RoomSizeName.Medium),
+        new ItemElement(RoomSizeName.Large),
       ])
     )
     .addElement(new ItemElement(PlatformName.MicrosoftTeams))
@@ -213,22 +213,27 @@ export function createStepAudioExtensions() {
           Configurator.getNameNodeMicPodMount()
         )
       )
-      .addDependence(AudioExtensionName.RallyMicPod)
+      .addDependence(new ItemElement(AudioExtensionName.RallyMicPod))
       .setActionDisabled(true)
   );
   const group3 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodPendantMount)
-    .setDefaultMount(
-     new ReferenceMountElement(
-      AudioExtensionName.RallyMicPod,
-      Configurator.getNameNodePodPendantMount()
-     ).setDependentMount(
-      new CountableMountElement(
-        AudioExtensionName.RallyMicPodPendantMount,
-        Configurator.getNameNodePendantMount()
+      .setDefaultMount(
+        new ReferenceMountElement(
+          AudioExtensionName.RallyMicPod,
+          Configurator.getNameNodePodPendantMount()
+        ).setDependentMount(
+          new CountableMountElement(
+            AudioExtensionName.RallyMicPodPendantMount,
+            Configurator.getNameNodePendantMount()
+          )
+        )
       )
-     )
-    )
+      .addDependence(
+        new ItemElement(AudioExtensionName.RallyMicPod).setProperty({
+          color: "White",
+        })
+      )
   );
   const group4 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallySpeaker)

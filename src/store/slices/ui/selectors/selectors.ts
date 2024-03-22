@@ -214,7 +214,20 @@ export const getDataActiveCards = (state: RootState) => {
   Object.values(selectedData).forEach((item) => {
     Object.keys(item).forEach((key) => {
       if (item[key].selected.length) {
-        res[key] = item[key].property;
+        const stepName = getStepNameByKeyPermission(key)(state);
+        const card = getCardByKeyPermission(stepName, key)(state);
+        let obj = {};
+        if (card?.counter) {
+          obj = {
+            counterMin: card.counter.min,
+            counterMax: card.counter.max,
+          }
+        }
+        
+        res[key] = {
+          ...item[key].property,
+          ...obj
+        };
       }
     });
   });

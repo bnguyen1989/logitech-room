@@ -7,10 +7,23 @@ export class BaseElement extends Element<BaseElement> {
   private _isRequired: boolean = false;
   private _isRecommended: boolean = false;
   private _isActionDisabled: boolean = false;
+  private property: Record<string, any> = {};
 
   constructor(name: string) {
     super();
     this.name = name;
+  }
+
+  public setProperty(property: Record<string, any>): BaseElement {
+    this.property = {
+      ...this.property,
+      ...property,
+    };
+    return this;
+  }
+
+  public getProperty(): Record<string, any> {
+    return this.property;
   }
 
   public getVisible(): boolean {

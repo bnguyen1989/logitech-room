@@ -19,6 +19,8 @@ import {
 import { AddActiveElementHandler } from "./handlers/AddActiveElementHandler";
 import { RemoveActiveElementHandler } from "./handlers/RemoveActiveElementHandler";
 import { ChangeStepHandler } from "./handlers/ChangeStepHandler";
+import { CountableMountElement } from "./elements/CountableMountElement";
+import { ReferenceMountElement } from "./elements/ReferenceMountElement";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
@@ -54,10 +56,36 @@ export class Permission {
   public setActiveItemsSteps(
     arrayActiveData: Record<string, Record<string, any>>
   ): void {
-    const arrayActiveKeys = Object.keys(arrayActiveData);
     this.steps.forEach((step) => {
-      arrayActiveKeys.forEach((key) => {
-        step.addActiveElementByName(key);
+      Object.entries(arrayActiveData).forEach(([key, value]) => {
+        const element = step.getElementByName(key);
+        if (!element) return;
+        if (!(element instanceof ItemElement)) {
+          step.addActiveElementByName(key);
+          return;
+        }
+        if (value?.color) {
+          element.setProperty({ color: value.color });
+        }
+        if (value?.count) {
+          const setDataCountableMount = (element: CountableMountElement) => {
+            element.setActiveIndex(value.count);
+            element.setMin(value.counterMin);
+            element.setMax(value.counterMax);
+          };
+          const defaultMount = element.getDefaultMount();
+          if (defaultMount instanceof CountableMountElement) {
+            setDataCountableMount(defaultMount);
+          }
+          if (defaultMount instanceof ReferenceMountElement) {
+            const dependentMount = defaultMount.getDependentMount();
+            if (dependentMount instanceof CountableMountElement) {
+              setDataCountableMount(dependentMount);
+            }
+          }
+        }
+        
+        step.addActiveElement(element);
       });
     });
   }

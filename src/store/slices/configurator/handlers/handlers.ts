@@ -75,8 +75,6 @@ export function addElement(card: CardI, stepName: StepName) {
 
       if (defaultMount instanceof CountableMountElement) {
         if (!card.counter) return;
-        defaultMount.setMin(card.counter.min);
-        defaultMount.setMax(card.counter.max);
         defaultMount.setActiveIndex(0);
         const nodeName = defaultMount.next().getNameNode();
         setElementByNameNode(cardAsset.id, nodeName)(store);
@@ -86,8 +84,6 @@ export function addElement(card: CardI, stepName: StepName) {
         const mountElement = elementReference.getDefaultMount();
         if (!(mountElement instanceof CountableMountElement)) return;
         if (!card.counter) return;
-        mountElement.setMin(card.counter.min);
-        mountElement.setMax(card.counter.max);
         const nameNodes = mountElement.getRangeNameNode();
         const dependentMount = defaultMount.getDependentMount();
         if(!dependentMount) {
@@ -225,8 +221,6 @@ export function removeElement(card: CardI) {
         const mountElementReference = elementReference.getDefaultMount();
         if (!(mountElementReference instanceof CountableMountElement)) return;
         if (!card.counter) return;
-        mountElementReference.setMin(card.counter.min);
-        mountElementReference.setMax(card.counter.max);
         const namesNode = mountElementReference.getRangeNameNode();
         const cardReference = getCardByKeyPermission(
           activeStep,
@@ -298,8 +292,6 @@ export function changeColorElement(
 
       if (defaultMount instanceof CountableMountElement) {
         if (!card.counter) return;
-        defaultMount.setMin(card.counter.min);
-        defaultMount.setMax(card.counter.max);
 
         const names = defaultMount.getRangeNameNode();
 
@@ -376,8 +368,6 @@ export function changeCountElement(
       return;
 
     mountElement.setActiveIndex(prevValue);
-    mountElement.setMin(card.counter.min);
-    mountElement.setMax(card.counter.max);
 
     const autoChangeItems = element.getAutoChangeItems();
     const isChangeAutoItems = !!Object.keys(autoChangeItems).length;
