@@ -1,5 +1,4 @@
-import { useAsset } from "@threekit/react-three-fiber";
-import { useEffect } from "react";
+import { useAsset } from "@threekit/react-three-fiber"; 
 import { useDispatch } from "react-redux";
 import * as THREE from "three";
 import { changeStatusProcessing } from "../../store/slices/configurator/Configurator.slice";

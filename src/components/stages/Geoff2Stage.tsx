@@ -1,8 +1,7 @@
 import {
   ContactShadows,
   Environment,
-  Resize,
-  SoftShadows,
+  Resize, 
 } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Align } from "@threekit/react-three-fiber";
