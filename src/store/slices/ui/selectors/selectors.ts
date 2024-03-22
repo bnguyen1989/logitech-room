@@ -154,6 +154,18 @@ export const getAssetFromCard = (card: CardI) => (state: RootState) => {
   return threekitItems[nameAsset];
 };
 
+export const getMetadataAssetFromCard = (card: CardI) => (state: RootState) => {
+  const threekitAsset = getAssetFromCard(card)(state);
+
+  return threekitAsset.metadata;
+};
+export const getMetadataProductNameAssetFromCard =
+  (card: CardI) => (state: RootState) => {
+    const threekitAsset = getMetadataAssetFromCard(card)(state);
+
+    return threekitAsset["Product Name"].trim();
+  };
+
 export const getTitleCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const title = getTitleFromMetadataByKeyPermission(
@@ -197,7 +209,7 @@ export const getMetadataByKeyPermission =
   };
 
 export const getDataActiveCards = (state: RootState) => {
-  const res: Record<string, Record<string, any>> = {}
+  const res: Record<string, Record<string, any>> = {};
   const selectedData = getSelectData(state);
   Object.values(selectedData).forEach((item) => {
     Object.keys(item).forEach((key) => {

@@ -27,6 +27,7 @@ export interface AssetI {
 }
 
 export interface MetadataI {
+  ["Product Name"]: string;
   [key: string]: string;
 }
 

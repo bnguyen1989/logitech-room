@@ -7,10 +7,12 @@ interface UIStateI {
   stepData: StepDataI;
   activeStep: StepName;
   selectedData: SelectedDataI;
+  langTextProduct: Record<string, any>;
 }
 
 const initialState: UIStateI = {
   processInitData: false,
+  langTextProduct: {},
   stepData: getInitStepData(),
   activeStep: StepName.Services,
   selectedData: {},
@@ -22,6 +24,9 @@ const uiSlice = createSlice({
   reducers: {
     changeActiveStep: (state, action: PayloadAction<StepName>) => {
       state.activeStep = action.payload;
+    },
+    setLangText: (state, action) => {
+      state.langTextProduct = action.payload;
     },
     moveToStartStep: (state) => {
       state.activeStep = StepName.RoomSize;
@@ -177,6 +182,7 @@ const uiSlice = createSlice({
 export const {
   changeActiveStep,
   moveToStartStep,
+  setLangText,
   addActiveCard,
   removeActiveCard,
   setActiveCardsForStep,
