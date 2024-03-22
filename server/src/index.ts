@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 80;
 
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true })); // Для парсинга application/x-www-form-urlencoded
 
 app.use("/products", userRouterProduct);
 app.use("/languages", userLang);

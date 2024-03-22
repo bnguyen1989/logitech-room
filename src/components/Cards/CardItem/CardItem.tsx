@@ -17,7 +17,10 @@ import {
   getMetadataProductNameAssetFromCard,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
-import { getLangProductBlade1, getLangProductImage } from "../../../store/slices/ui/selectors/selectoreLangProduct";
+import {
+  getLangProductBlade1,
+  getLangProductImage,
+} from "../../../store/slices/ui/selectors/selectoreLangProduct";
 
 interface PropsI {
   keyItemPermission: string;
@@ -32,7 +35,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   console.log("card", card);
 
   const langProduct = useAppSelector(getLangProductBlade1(productName));
-  const langProductImage = useAppSelector(getLangProductImage(productName));
+  const langProductImage = useAppSelector(
+    getLangProductImage(productName, keyItemPermission)
+  );
 
   const threekitAsset = useAppSelector(getAssetFromCard(card));
 

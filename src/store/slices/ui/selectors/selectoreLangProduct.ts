@@ -1,29 +1,18 @@
 import { RootState } from "../../../";
+import { getActiveStep } from "./selectors";
+import { getPropertyColorCardByKeyPermission } from "./selectorsColorsCard";
 
 export const getAllLangProducts = (state: RootState) => {
   return state.ui.langTextProduct;
 };
 
 export const getLangProduct = (keyProduct: string) => (state: RootState) => {
-  if (keyProduct === "Rally Bar") {
-    debugger;
-  }
-  console.log("keyProduct", keyProduct);
-
-  // const keyProductShort = keyProduct.split("Logitech ")[1];
-
   if (state.ui.langTextProduct[keyProduct]) {
     return state.ui.langTextProduct[keyProduct];
   }
   if (state.ui.langTextProduct[keyProduct.toUpperCase()]) {
     return state.ui.langTextProduct[keyProduct.toUpperCase()];
   }
-  // if (
-  //   keyProductShort &&
-  //   state.ui.langTextProduct[keyProductShort.toUpperCase()]
-  // ) {
-  //   return state.ui.langTextProduct[keyProductShort.toUpperCase()];
-  // }
 
   return undefined;
 };
@@ -45,12 +34,31 @@ export const getLangProductBlade1 =
   };
 
 export const getLangProductImage =
-  (keyProduct: string) => (state: RootState) => {
+  (keyProduct: string, keyItemPermission: string) => (state: RootState) => {
     const Blade_1: Blade1Type = getLangProductBlade1(keyProduct)(state);
+
+    const activeStep = getActiveStep(state);
+    const activeColor = getPropertyColorCardByKeyPermission(
+      activeStep,
+      keyItemPermission
+    )(state);
 
     if (!Blade_1) return undefined;
     if (!Blade_1["Colors"]) return undefined;
     if (Object.keys(Blade_1["Colors"]).length < 1) return undefined;
+
+    if (activeColor) {
+      if (Blade_1["Colors"][activeColor]) return Blade_1["Colors"][activeColor];
+      console.log("activeColorData", {
+        keyItemPermission,
+        activeColor,
+        Blade_1Data: Blade_1["Colors"],
+        dataColor: Blade_1["Colors"][activeColor],
+      });
+    }
+
+    // debugger
+
     const keyImg = Object.keys(Blade_1["Colors"])[0];
     return Blade_1["Colors"][keyImg];
   };
