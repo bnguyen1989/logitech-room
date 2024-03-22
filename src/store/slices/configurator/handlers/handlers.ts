@@ -86,20 +86,20 @@ export function addElement(card: CardI, stepName: StepName) {
         if (!card.counter) return;
         const nameNodes = mountElement.getRangeNameNode();
         const dependentMount = defaultMount.getDependentMount();
-        if(!dependentMount) {
+        if (!dependentMount) {
           updateAssetIdNodeNames(nameNodes, cardAsset.id)(store);
         }
-        // if (dependentMount instanceof CountableMountElement) {
-        //   const count = getCountActiveNameNodes(nameNodes)(store);
-        //   dependentMount.setActiveIndex(count);
-        //   store.dispatch(removeNodeByKeys(nameNodes))
-        //   dependentMount.setMin(card.counter.min);
-        //   dependentMount.setMax(card.counter.max);
-          
-        //   const namesNode = dependentMount.getAvailableNameNode();
-        //   console.log("namesNode", namesNode);
-        //   setAssetIdNodeNames(namesNode, cardAsset.id)(store);
-        // } 
+
+        //Temp comment Code for mount pendant 
+        if (dependentMount instanceof CountableMountElement) {
+          const count = getCountActiveNameNodes(nameNodes)(store);
+          dependentMount.setActiveIndex(count);
+          store.dispatch(removeNodeByKeys(nameNodes));
+          const namesNode = dependentMount.getAvailableNameNode();
+          console.log("namesNode", namesNode);
+
+          setAssetIdNodeNames(namesNode, cardAsset.id)(store);
+        }
 
         const cardReference = getCardByKeyPermission(
           stepName,
@@ -228,7 +228,22 @@ export function removeElement(card: CardI) {
         )(state);
         const cardAssetReference = getAssetFromCard(cardReference)(state);
         store.dispatch(removeNodes(cardAssetReference.id));
-        updateAssetIdNodeNames(namesNode, cardAssetReference.id)(store);
+        const dependentMount = mountElement.getDependentMount();
+        if (!dependentMount) {
+          updateAssetIdNodeNames(namesNode, cardAssetReference.id)(store);
+        }
+
+        //Temp comment Code for unmount pendant 
+        if (dependentMount instanceof CountableMountElement) {
+          dependentMount.setMin(mountElementReference.min);
+          dependentMount.setMax(mountElementReference.max);
+          const namesNodeDependent = dependentMount.getRangeNameNode();
+          store.dispatch(removeNodeByKeys(namesNodeDependent));
+          const availableNodeNames =
+            mountElementReference.getAvailableNameNode();
+
+          setAssetIdNodeNames(availableNodeNames, cardAssetReference.id)(store);
+        }
       }
     }
     if (element instanceof MountElement) {
@@ -417,10 +432,7 @@ function findCard(
   return card as Required<CardI>;
 }
 
-function updateAssetIdNodeNames(
-  namesNode: Array<string>,
-  assetId: string,
-) {
+function updateAssetIdNodeNames(namesNode: Array<string>, assetId: string) {
   return (store: Store) => {
     const state = store.getState();
     namesNode.forEach((name) => {
@@ -431,20 +443,19 @@ function updateAssetIdNodeNames(
   };
 }
 
-// function setAssetIdNodeNames(namesNode: Array<string>, assetId: string) {
-//   return (store: Store) => {
-//     namesNode.forEach((name) => {
-//       setElementByNameNode(assetId, name)(store);
-//     });
-//   };
-// }
+function setAssetIdNodeNames(namesNode: Array<string>, assetId: string) {
+  return (store: Store) => {
+    namesNode.forEach((name) => {
+      setElementByNameNode(assetId, name)(store);
+    });
+  };
+}
 
-// function getCountActiveNameNodes(namesNode: Array<string>) {
-//   return (store: Store) => {
-//     const state = store.getState();
-//     const nodes = getNodes(state);
-//     const activeNames = namesNode.filter((name) => nodes[name]);
-//     return activeNames.length;
-//   }
-
-// }
+function getCountActiveNameNodes(namesNode: Array<string>) {
+  return (store: Store) => {
+    const state = store.getState();
+    const nodes = getNodes(state);
+    const activeNames = namesNode.filter((name) => nodes[name]);
+    return activeNames.length;
+  };
+}
