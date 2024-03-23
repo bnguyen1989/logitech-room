@@ -183,6 +183,117 @@ export class ConfigurationConstraintHandler extends Handler {
     }
 
     this.rule_Sight_Mic();
+    this.rule_Mic_Mount_Mic();
+    this.rule_Pendant_Mic();
+    this.rule_Pendant_Mount_Mic();
+  }
+
+  private rule_Mic_Mount_Mic() {
+    const micAttrName_str = "Room Mic";
+    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+
+    const mountMicQtyAttrName_str = "Qty - Mic Mount";
+
+    const selectedMic = this.getSelectedValue(micAttrName_str);
+    const selectedQtyMicPod = this.getSelectedValue(micPodQtyAttrName_str);
+
+    if (
+      typeof selectedMic === "object" &&
+      typeof selectedQtyMicPod === "string"
+    ) {
+      const count = parseInt(selectedQtyMicPod);
+      const attribute = this.getAttribute(mountMicQtyAttrName_str);
+      const attrState = this.configurator.getAttributeState();
+      const attributeValuesArr = attribute
+        ? attrState[attribute.id].values
+        : undefined;
+      if (attribute && attributeValuesArr) {
+        let tempCount = 0;
+        attributeValuesArr.forEach((option) => {
+          if (tempCount > count) {
+            option.visible = false;
+          }
+          tempCount+=1;
+        });
+        this.configurator.setAttributeState(attribute.id, {
+          values: attributeValuesArr,
+        });
+      }
+    }
+
+  }
+
+  private rule_Pendant_Mic() {
+    const micAttrName_str = "Room Mic";
+    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+
+    const pendantQtyAttrName_str = "Qty - Mic Pendant Mount";
+
+    const selectedMic = this.getSelectedValue(micAttrName_str);
+    const selectedQtyMicPod = this.getSelectedValue(micPodQtyAttrName_str);
+
+    if (
+      typeof selectedMic === "object" &&
+      typeof selectedQtyMicPod === "string"
+    ) {
+      const count = parseInt(selectedQtyMicPod);
+      const attribute = this.getAttribute(pendantQtyAttrName_str);
+      const attrState = this.configurator.getAttributeState();
+      const attributeValuesArr = attribute
+        ? attrState[attribute.id].values
+        : undefined;
+      if (attribute && attributeValuesArr) {
+        let tempCount = 0;
+        attributeValuesArr.forEach((option) => {
+          if (tempCount > count) {
+            option.visible = false;
+          }
+          tempCount+=1;
+        });
+        this.configurator.setAttributeState(attribute.id, {
+          values: attributeValuesArr,
+        });
+      }
+    }
+  }
+
+  private rule_Pendant_Mount_Mic() {
+    const pendantAttrName_str = "Room Mic Pod Pendant Mount";
+    const pendantQtyAttrName_str = "Qty - Mic Pendant Mount";
+
+    const micMountQtyAttrName_str = "Qty - Mic Mount";
+
+    const selectedPendant = this.getSelectedValue(pendantAttrName_str);
+    const selectedQtyPendant = this.getSelectedValue(pendantQtyAttrName_str);
+
+    if (
+      typeof selectedPendant === "object" &&
+      typeof selectedQtyPendant === "string"
+    ) {
+      const count = parseInt(selectedQtyPendant);
+      const attribute = this.getAttribute(micMountQtyAttrName_str);
+      const attrState = this.configurator.getAttributeState();
+      const attributeValuesArr = attribute
+        ? attrState[attribute.id].values
+        : undefined;
+      if (attribute && attributeValuesArr) {
+        const countVisible = attributeValuesArr.filter(
+          (option) => option.visible
+        ).length;
+        let tempCount = countVisible;
+        attributeValuesArr.forEach((option) => {
+          if (option.visible) {
+            tempCount--;
+          }
+          if (tempCount < count) {
+            option.visible = false;
+          }
+        });
+        this.configurator.setAttributeState(attribute.id, {
+          values: attributeValuesArr,
+        });
+      }
+    }
   }
 
   private rule_Sight_Mic() {
@@ -324,7 +435,6 @@ export class ConfigurationConstraintHandler extends Handler {
         : selectedValue
       : "None";
     if (theAttrValuesArr) {
-      
       const copyAttrValuesArr = JSON.parse(
         JSON.stringify(theAttrValuesArr)
       ) as Array<ValueStringStateI | ValueAssetStateI>;

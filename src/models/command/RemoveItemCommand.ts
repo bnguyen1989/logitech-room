@@ -16,9 +16,9 @@ export class RemoveItemCommand extends ItemCommand {
 
   public executeCommand(): boolean {
     const namesRemove: Array<string> = [this.nameProperty];
-    const mountName = Configurator.NameAttrWithMountNames[this.nameProperty];
-    if (mountName) {
-      namesRemove.push(mountName);
+    const mountNames = Configurator.NameAttrWithMountNames[this.nameProperty];
+    if (mountNames) {
+      namesRemove.push(...mountNames);
     }
     namesRemove.forEach((name) => {
       this.configurator.setConfiguration({

@@ -202,7 +202,6 @@ export function createStepAudioExtensions() {
       )
       .addAutoChangeItems({
         [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
-        [AudioExtensionName.RallyMicPodPendantMount]: ["count"]
       })
       .setRecommended(true)
   );

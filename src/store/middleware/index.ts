@@ -38,6 +38,9 @@ export const middleware: Middleware =
 
         if (!permission.canAddActiveElementByName(key)) return;
 
+        const card = getCardByKeyPermission(activeStep, key)(state);
+        if(card?.counter && card.counter.max === 0) return;
+
         updateDataCardByStepName(activeStep)(store, currentConfigurator);
         break;
       }
@@ -149,6 +152,7 @@ export const middleware: Middleware =
           }
         );
 
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
         changeCountElement(key, activeStep, value, prevCount)(store);
         break;
       }
