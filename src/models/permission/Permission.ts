@@ -5,7 +5,7 @@ import { Step } from "./step/Step";
 import { ChangeStepRule } from "./rules/ChangeStepRule";
 import { RemoveActiveElementRule } from "./rules/RemoveActiveElementRule";
 import { AddActiveElementRule } from "./rules/AddActiveElementRule";
-import { MountElement } from "./elements/MountElement";
+import { MountElement } from "./elements/mounts/MountElement";
 import {
   createStepAudioExtensions,
   createStepConferenceCamera,
@@ -19,8 +19,8 @@ import {
 import { AddActiveElementHandler } from "./handlers/AddActiveElementHandler";
 import { RemoveActiveElementHandler } from "./handlers/RemoveActiveElementHandler";
 import { ChangeStepHandler } from "./handlers/ChangeStepHandler";
-import { CountableMountElement } from "./elements/CountableMountElement";
-import { ReferenceMountElement } from "./elements/ReferenceMountElement";
+import { CountableMountElement } from "./elements/mounts/CountableMountElement";
+import { ReferenceMountElement } from "./elements/mounts/ReferenceMountElement";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;

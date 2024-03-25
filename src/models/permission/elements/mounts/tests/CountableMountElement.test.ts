@@ -1,4 +1,4 @@
-import { CountableMountElement } from "./CountableMountElement";
+import { CountableMountElement } from "../CountableMountElement";
 
 describe("CountableMountElement", () => {
   describe("get correct name node", () => {

@@ -1,9 +1,9 @@
 import { Configurator } from "../models/configurator/Configurator";
-import { CountableMountElement } from "../models/permission/elements/CountableMountElement";
+import { CountableMountElement } from "../models/permission/elements/mounts/CountableMountElement";
 import { GroupElement } from "../models/permission/elements/GroupElement";
 import { ItemElement } from "../models/permission/elements/ItemElement";
-import { MountElement } from "../models/permission/elements/MountElement";
-import { ReferenceMountElement } from "../models/permission/elements/ReferenceMountElement";
+import { MountElement } from "../models/permission/elements/mounts/MountElement";
+import { ReferenceMountElement } from "../models/permission/elements/mounts/ReferenceMountElement";
 import { Step } from "../models/permission/step/Step";
 import { StepName } from "../models/permission/type";
 import { getSeparatorItemColor } from "./baseUtils";

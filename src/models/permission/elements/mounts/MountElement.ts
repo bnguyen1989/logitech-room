@@ -1,5 +1,5 @@
-import { BaseElement } from './BaseElement'
-import { Element } from "./Element";
+import { BaseElement } from '../BaseElement'
+import { Element } from "../Element";
 
 export class MountElement extends BaseElement implements Element<MountElement>{
 	public nodeName: string;

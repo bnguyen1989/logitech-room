@@ -1,4 +1,4 @@
-import { CountableMountElement } from "../elements/CountableMountElement";
+import { CountableMountElement } from "../elements/mounts/CountableMountElement";
 import { ItemElement } from "../elements/ItemElement";
 import { Step } from "../step/Step";
 import { Handler } from "./Handler";

@@ -1,6 +1,6 @@
 import { GroupElement } from "../elements/GroupElement";
 import { ItemElement } from "../elements/ItemElement";
-import { MountElement } from "../elements/MountElement";
+import { MountElement } from "../elements/mounts/MountElement";
 import { StepName } from "../type";
 
 export class Step {

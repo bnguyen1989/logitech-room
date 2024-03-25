@@ -1,6 +1,6 @@
 import { BaseElement } from "./BaseElement";
 import { Element } from "./Element";
-import { MountElement } from "./MountElement";
+import { MountElement } from "./mounts/MountElement";
 
 export class ItemElement extends BaseElement implements Element<ItemElement> {
   private dependence: Array<ItemElement | Array<ItemElement>> = [];

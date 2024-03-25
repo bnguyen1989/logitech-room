@@ -9,8 +9,8 @@ import {
 import { Configurator } from "../../../../models/configurator/Configurator";
 import { StepName } from "../../../../models/permission/type";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
-import { MountElement } from "../../../../models/permission/elements/MountElement";
-import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
+import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
+import { CountableMountElement } from "../../../../models/permission/elements/mounts/CountableMountElement";
 import { setPropertyItem } from "../../ui/Ui.slice";
 import {
   getActiveStep,
@@ -21,7 +21,7 @@ import {
   getPermission,
 } from "../../ui/selectors/selectors";
 import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
-import { ReferenceMountElement } from "../../../../models/permission/elements/ReferenceMountElement";
+import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
 
 export function updateNodesByConfiguration(
   configurator: Configurator,
@@ -245,14 +245,15 @@ export function removeElement(card: CardI) {
           const keysActiveChange = Object.keys(
             elementReference.getAutoChangeItems()
           );
-          if (keysActiveChange.length) {
-            const key = keysActiveChange[0];
+          const keyAutoChangeItem = keysActiveChange[0];
+          if (keyAutoChangeItem) {
             const isSelectElement = getIsSelectedCardByKeyPermission(
               activeStep,
-              key
+              keyAutoChangeItem
             )(state);
             if (isSelectElement) {
-              const elementActiveChange = step.getElementByName(key);
+              const elementActiveChange =
+                step.getElementByName(keyAutoChangeItem);
               if (!(elementActiveChange instanceof ItemElement)) return;
               const mountElementActiveChange =
                 elementActiveChange.getDefaultMount();
@@ -260,7 +261,7 @@ export function removeElement(card: CardI) {
                 return;
               const cardActiveChange = getCardByKeyPermission(
                 activeStep,
-                key
+                keyAutoChangeItem
               )(state);
               const cardAssetActiveChange =
                 getAssetFromCard(cardActiveChange)(state);
@@ -420,7 +421,7 @@ export function changeCountElement(
       store.dispatch(removeNodes(cardAsset.id));
       const nameProperty = card.dataThreekit.attributeName;
       app.removeItem(nameProperty, card.keyPermission);
-    }
+    };
 
     if (mountElement instanceof ReferenceMountElement) {
       const element = step.getElementByName(mountElement.name);
@@ -449,20 +450,20 @@ export function changeCountElement(
       } else {
         const nodeName = dependentMount.getNameNode();
         const availableNameNodes = defaultMountElement.getAvailableNameNode();
-        const activeNameNodes = getActiveNameNodes(availableNameNodes)(store);
         const notActiveNameNodes = getNotActiveNodes(availableNameNodes)(store);
         const lastNotActiveNameNode =
           notActiveNameNodes[notActiveNameNodes.length - 1];
-        if (activeNameNodes.length) {
+        if (notActiveNameNodes.length) {
           const keysActiveChange = Object.keys(element.getAutoChangeItems());
-          if (keysActiveChange.length) {
-            const key = keysActiveChange[0];
+          const keyAutoChangeItem = keysActiveChange[0];
+          if (keyAutoChangeItem) {
             const isSelectElement = getIsSelectedCardByKeyPermission(
               stepName,
-              key
+              keyAutoChangeItem
             )(state);
             if (isSelectElement) {
-              const elementActiveChange = step.getElementByName(key);
+              const elementActiveChange =
+                step.getElementByName(keyAutoChangeItem);
               if (!(elementActiveChange instanceof ItemElement)) return;
               const mountElementActiveChange =
                 elementActiveChange.getDefaultMount();
@@ -470,7 +471,7 @@ export function changeCountElement(
                 return;
               const cardActiveChange = getCardByKeyPermission(
                 stepName,
-                key
+                keyAutoChangeItem
               )(state);
               const cardAssetActiveChange =
                 getAssetFromCard(cardActiveChange)(state);
@@ -484,7 +485,7 @@ export function changeCountElement(
               )(store);
               store.dispatch(removeNodeByKeys([nodeName]));
               if (value === 0) {
-                removeElement()
+                removeElement();
               }
               return;
             }
@@ -493,7 +494,7 @@ export function changeCountElement(
         setElementByNameNode(cardAssetElement.id, lastNotActiveNameNode)(store);
         store.dispatch(removeNodeByKeys([nodeName]));
         if (value === 0) {
-          removeElement()
+          removeElement();
         }
       }
     }
@@ -542,7 +543,7 @@ export function changeCountElement(
     }
 
     if (value === 0) {
-      removeElement()
+      removeElement();
     }
   };
 }
