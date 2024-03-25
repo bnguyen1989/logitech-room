@@ -256,8 +256,12 @@ function setStepData(
         const values = (qty.values as Array<ValueStringStateI>).filter(
           (item) => item.visible
         );
-        const min = parseInt(values[0].value);
-        const max = parseInt(values[values.length - 1].value);
+        let min = 0;
+        let max = 0;
+        if(values.length) {
+          min = parseInt(values[0].value)
+          max = parseInt(values[values.length - 1].value);
+        }
 
         item.counter = {
           min: min,

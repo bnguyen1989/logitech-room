@@ -16,7 +16,9 @@ import {
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
 import {
+  addActiveCard,
   addActiveCards,
+  removeActiveCard,
   removeActiveCards,
   setPropertyItem,
 } from "../slices/ui/Ui.slice";
@@ -75,8 +77,13 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processAddActiveElementByName(key);
 
-        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
-        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+        permission.getAddKeys().forEach((key) => {
+          store.dispatch(addActiveCard({ key }));
+        })
+
+        permission.getRemoveKeys().forEach((key) => {
+          store.dispatch(removeActiveCard({ key }));
+        })
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         addElement(card, activeStep)(store);
@@ -90,8 +97,14 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processRemoveActiveElementByName(key);
 
-        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
-        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+
+        permission.getAddKeys().forEach((key) => {
+          store.dispatch(addActiveCard({ key }));
+        })
+
+        permission.getRemoveKeys().forEach((key) => {
+          store.dispatch(removeActiveCard({ key }));
+        })
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card)(store);

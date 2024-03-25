@@ -203,6 +203,9 @@ export function createStepAudioExtensions() {
       .addAutoChangeItems({
         [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
       })
+      .addReservationMount({
+        [CameraName.LogitechSight]: [3],
+      })
       .setRecommended(true)
   );
   const group2 = new GroupElement().addElement(
@@ -232,7 +235,7 @@ export function createStepAudioExtensions() {
       .addDependence(
         new ItemElement(AudioExtensionName.RallyMicPod).setProperty({
           color: "White",
-        })
+        }) as ItemElement
       )
   );
   const group4 = new GroupElement().addElement(

@@ -11,7 +11,7 @@ import { StepName } from "../../../../models/permission/type";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 import { MountElement } from "../../../../models/permission/elements/MountElement";
 import { CountableMountElement } from "../../../../models/permission/elements/CountableMountElement";
-import { removeActiveCard, setPropertyItem } from "../../ui/Ui.slice";
+import { setPropertyItem } from "../../ui/Ui.slice";
 import {
   getActiveStep,
   getAssetFromCard,
@@ -416,6 +416,12 @@ export function changeCountElement(
 
     if (!mountElement) return;
 
+    const removeElement = () => {
+      store.dispatch(removeNodes(cardAsset.id));
+      const nameProperty = card.dataThreekit.attributeName;
+      app.removeItem(nameProperty, card.keyPermission);
+    }
+
     if (mountElement instanceof ReferenceMountElement) {
       const element = step.getElementByName(mountElement.name);
       if (!(element instanceof ItemElement)) return;
@@ -476,9 +482,9 @@ export function changeCountElement(
                 cardAssetElement.id,
                 mountElementActiveChange.getNameNode()
               )(store);
+              store.dispatch(removeNodeByKeys([nodeName]));
               if (value === 0) {
-                store.dispatch(removeNodes(cardAsset.id));
-                store.dispatch(removeActiveCard({ key: card.keyPermission }));
+                removeElement()
               }
               return;
             }
@@ -487,8 +493,7 @@ export function changeCountElement(
         setElementByNameNode(cardAssetElement.id, lastNotActiveNameNode)(store);
         store.dispatch(removeNodeByKeys([nodeName]));
         if (value === 0) {
-          store.dispatch(removeNodes(cardAsset.id));
-          store.dispatch(removeActiveCard({ key: card.keyPermission }));
+          removeElement()
         }
       }
     }
@@ -537,8 +542,7 @@ export function changeCountElement(
     }
 
     if (value === 0) {
-      store.dispatch(removeNodes(cardAsset.id));
-      store.dispatch(removeActiveCard({ key: card.keyPermission }));
+      removeElement()
     }
   };
 }

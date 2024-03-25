@@ -77,6 +77,12 @@ export class BaseElement extends Element<BaseElement> {
 
   public copy(): BaseElement {
     const baseElement = new BaseElement(this.name);
+    baseElement.setVisible(this.getVisible());
+    baseElement.setDefaultActive(this.getDefaultActive());
+    baseElement.setRequired(this.getRequired());
+    baseElement.setRecommended(this.getRecommended());
+    baseElement.setActionDisabled(this.getActionDisabled());
+    baseElement.setProperty(this.getProperty());
     return baseElement;
   }
 }
