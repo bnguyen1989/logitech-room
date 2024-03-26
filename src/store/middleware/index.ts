@@ -2,7 +2,6 @@ import { Middleware } from "@reduxjs/toolkit";
 import { updateDataCardByStepName } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
-  addElement,
   changeColorElement,
   changeCountElement,
   removeElement,
@@ -80,8 +79,13 @@ export const middleware: Middleware =
         store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
         store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
 
-        const card = getCardByKeyPermission(activeStep, key)(state);
-        addElement(card, activeStep)(store);
+        const updateNodes = updateNodesByConfiguration(
+          currentConfigurator,
+          activeStep
+        );
+
+        const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
+        updateNodes(store, attributeNames);
         break;
       }
 

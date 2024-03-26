@@ -248,7 +248,9 @@ export function createStepAudioExtensions() {
     new ItemElement(AudioExtensionName.CATCoupler)
   );
   const group7 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.MicPodExtensionCable).setRecommended(
+    new ItemElement(AudioExtensionName.MicPodExtensionCable)
+    .addDependence(new ItemElement(AudioExtensionName.RallyMicPod))
+    .setRecommended(
       true
     )
   );

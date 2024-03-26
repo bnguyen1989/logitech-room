@@ -43,6 +43,11 @@ export function updateNodesByConfiguration(
           Object.values(step.cards)
         );
         if (!card) return;
+        
+        const nodes = getNodes(state);
+        const keys = Object.keys(nodes);
+        const key = keys.find((key) => nodes[key] === value.assetId);
+        if(key) return;
         addElement(card, stepName)(store);
       }
     });
