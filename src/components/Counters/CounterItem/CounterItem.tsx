@@ -2,6 +2,7 @@ import { useAppSelector } from "../../../hooks/redux";
 import { Application } from "../../../models/Application";
 import {
   getActiveStep,
+  getAssetFromCard,
   getCardByKeyPermission,
   getPropertyCounterCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
@@ -20,18 +21,21 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const cardAsset = useAppSelector(getAssetFromCard(card));
   const count = useAppSelector(
     getPropertyCounterCardByKeyPermission(activeStep, keyItemPermission)
   );
-
-  console.log("count", count);
-  
 
   if (!card || !card.counter || count === undefined) return null;
 
   const { min, max, threekit } = card.counter;
 
   const handleChange = (value: number) => {
+    if (value > count && value === 1) {
+      const attributeName = card.dataThreekit.attributeName;
+      app.addItemConfiguration(attributeName, cardAsset.id, card.keyPermission);
+      return
+    }
     app.changeCountItemConfiguration(
       threekit.key,
       value.toString(),
