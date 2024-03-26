@@ -11,6 +11,7 @@ import { Handler } from "./Handler";
 import { AttrSpecI, RuleName } from "./type";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { Application } from "../Application";
+import { getSeparatorItemColor } from "../../utils/baseUtils";
 
 declare const app: Application;
 
@@ -455,18 +456,26 @@ export class ConfigurationConstraintHandler extends Handler {
     const attributeMicMount = this.getAttribute(micMountAttrName_str);
     if (!attributeMicMount) return;
 
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attrState[attributeMicMount.id].values;
-    if (!attributeValuesArr) return;
-
-    const visibleMicMount = attributeValuesArr.find(
-      (option) => option.visible
+    const micAsset = this.findAssetByAssetId(
+      selectedMic.id,
+      micAttrName_str
     ) as ValueAssetStateI;
-    if (!visibleMicMount) return;
+    if (!micAsset) return;
+
+    const namesAssetMount = attributeMicMount.values.map(
+      (value) => (value as ValueAssetStateI).name
+    );
+    const color = this.getColorFromAssetName(micAsset.name);
+    const micMountAssetName = this.getNameAssetByColor(color, namesAssetMount);
+
+    const micMountAsset = attributeMicMount.values.find(
+      (value) => (value as ValueAssetStateI).name === micMountAssetName
+    ) as ValueAssetStateI;
+    if (!micMountAsset) return;
 
     this.configurator.setConfiguration({
       [micMountAttrName_str]: {
-        assetId: visibleMicMount.id,
+        assetId: micMountAsset.id,
       },
       [micMountQtyAttrName_str]: qtyMicPod,
     });
@@ -877,5 +886,30 @@ export class ConfigurationConstraintHandler extends Handler {
       if (found_counter === attrSequenceArr.length) return row;
     }
     return undefined;
+  }
+
+  private findAssetByAssetId(assetId: string, attrName: string) {
+    const attr = this.getAttribute(attrName);
+    if (!attr) return undefined;
+    const attrState = this.configurator.getAttributeState();
+    const attrValuesArr = attrState[attr.id].values;
+    if (!attrValuesArr) return undefined;
+    return attrValuesArr.find(
+      (option) =>
+        typeof option === "object" &&
+        (option as ValueAssetStateI).id === assetId
+    ) as ValueAssetStateI;
+  }
+
+  private getColorFromAssetName(name: string) {
+    const colorSeparator = getSeparatorItemColor();
+    const color = name.split(colorSeparator)[1];
+    return color;
+  }
+
+  private getNameAssetByColor(color: string, names: Array<string>) {
+    const colorSeparator = getSeparatorItemColor();
+    const name = names.find((n) => n.includes(colorSeparator + color));
+    return name;
   }
 }

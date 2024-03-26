@@ -275,6 +275,11 @@ export function createStepMeetingController() {
         new MountElement(
           MeetingControllerName.TapWallMount,
           Configurator.getNameNodeForTap("Wall", 1)
+        ).setDependentMount(
+          new MountElement(
+            MeetingControllerName.TapWallMount,
+            Configurator.getNameNodeForTap("Wall", 1)
+          )
         )
       )
       .addDependenceMount(
