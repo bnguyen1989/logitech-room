@@ -55,16 +55,13 @@ export interface CardI {
   subtitle?: string;
   // header_title?: string;
   description?: string;
-  // color?: ColorI;
   counter?: CounterI;
   select?: SelectI;
   keyPermission: string;
-  // threekit?: ThreekitI;
   dataThreekit: {
     attributeName: string;
     threekitItems: typeThreekitValue;
   };
-  recommended?: boolean;
 }
 
 export interface ColorItemI {

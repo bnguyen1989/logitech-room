@@ -46,8 +46,7 @@ import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelect
 import {
   getActiveStep,
   getAssetFromCard,
-  getDataStepByName,
-  getIsRecommendedCardByKeyPermission,
+  getDataStepByName
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -231,11 +230,6 @@ function setStepData(
     const temp: Array<CardI> = [];
 
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
-      const isRecommended = getIsRecommendedCardByKeyPermission(
-        stepName,
-        keyPermission
-      )(store.getState());
-
       temp.push({
         key: stepName,
         image: image,
@@ -245,7 +239,6 @@ function setStepData(
           attributeName: name,
           threekitItems: cardPermissionWithDataThreekit[keyPermission],
         },
-        recommended: isRecommended,
       });
     });
 

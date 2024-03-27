@@ -13,6 +13,7 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getIsDisabledActionByKeyPermission,
+  getIsRecommendedCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
   getTitleCardByKeyPermission,
@@ -52,6 +53,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const isDisabledActions = useAppSelector(
     getIsDisabledActionByKeyPermission(activeStep, keyItemPermission)
   );
+  const recommended: boolean = useAppSelector(
+    getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
+  );
   const dispatch = useDispatch();
 
   if (!card) return null;
@@ -80,7 +84,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
   return (
     <CardContainer
       onClick={handleClick}
-      recommended={card.recommended}
+      recommended={recommended}
       style={{ padding: "25px 20px" }}
       active={isActiveCard}
     >

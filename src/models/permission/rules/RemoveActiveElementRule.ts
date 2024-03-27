@@ -17,10 +17,8 @@ export class RemoveActiveElementRule extends Rule {
       return true;
     }
     const isRequired = this.element.getRequired();
-    const isDefaultActive = this.element.getDefaultActive();
     return !(
       isRequired &&
-      isDefaultActive &&
       step.getActiveElements().length > 1
     );
   }

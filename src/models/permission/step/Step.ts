@@ -10,6 +10,13 @@ export class Step {
   private _allElements: Array<ItemElement | GroupElement> = [];
   private validElements: Array<ItemElement | MountElement> = [];
 
+  public static getElementByName(
+    name: string,
+    array: Array<ItemElement | MountElement>
+  ) {
+    return array.find((element) => element.name === name);
+  }
+
   constructor(name: StepName) {
     this.name = name;
   }
@@ -42,29 +49,35 @@ export class Step {
 
   public addActiveElementByName(itemName: string): void {
     const element = this.getElementByName(itemName);
-    
+
     if (!element) {
       return;
     }
     this.addActiveElement(element);
   }
 
-  public getActiveItemElementByMountName(name: string): ItemElement | undefined {
+  public getActiveItemElementByMountName(
+    name: string
+  ): ItemElement | undefined {
     const elements = this._activeElements;
     const res = elements.find((element) => {
-      return element instanceof ItemElement && element.getDependenceMount().some((mount) => mount.name === name);
+      return (
+        element instanceof ItemElement &&
+        element.getDependenceMount().some((mount) => mount.name === name)
+      );
     });
     return res as ItemElement;
   }
 
   public addActiveElement(element: ItemElement | MountElement) {
     const isExist = this._activeElements.some(
-      (activeItem: ItemElement | MountElement) => activeItem.name === element.name
+      (activeItem: ItemElement | MountElement) =>
+        activeItem.name === element.name
     );
     if (!isExist) {
       this._activeElements.push(element);
     }
-    
+
     return this;
   }
 
@@ -98,20 +111,12 @@ export class Step {
     );
   }
 
+  public getChainElements(): Array<Array<ItemElement | MountElement>> {
+    return this.getChainElementsByCondition((step) => step.getSimpleElements());
+  }
+
   public getChainActiveElements(): Array<Array<ItemElement | MountElement>> {
-    const keys: Array<Array<ItemElement | MountElement>> = [];
-    if (this._activeElements.length > 0) {
-      keys.push(this._activeElements);
-    }
-    let step: Step | null = this.prevStep;
-    while (step) {
-      const activeElements = step.getActiveElements();
-      if (activeElements.length > 0) {
-        keys.push(activeElements);
-      }
-      step = step.prevStep;
-    }
-    return keys.reverse();
+    return this.getChainElementsByCondition((step) => step.getActiveElements());
   }
 
   public isEmptyActiveElements(): boolean {
@@ -132,5 +137,24 @@ export class Step {
 
   public get prevStep(): Step | null {
     return this._prevStep;
+  }
+
+  private getChainElementsByCondition(
+    callback: (step: Step) => Array<ItemElement | MountElement>
+  ) {
+    const keys: Array<Array<ItemElement | MountElement>> = [];
+    const elements = callback(this);
+    if (elements.length > 0) {
+      keys.push(elements);
+    }
+    let step: Step | null = this.prevStep;
+    while (step) {
+      const elements = callback(step);
+      if (elements.length > 0) {
+        keys.push(elements);
+      }
+      step = step.prevStep;
+    }
+    return keys.reverse();
   }
 }
