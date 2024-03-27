@@ -5,7 +5,7 @@ import { Step } from "./step/Step";
 import { ChangeStepRule } from "./rules/ChangeStepRule";
 import { RemoveActiveElementRule } from "./rules/RemoveActiveElementRule";
 import { AddActiveElementRule } from "./rules/AddActiveElementRule";
-import { MountElement } from "./elements/MountElement";
+import { MountElement } from "./elements/mounts/MountElement";
 import {
   createStepAudioExtensions,
   createStepConferenceCamera,
@@ -19,20 +19,23 @@ import {
 import { AddActiveElementHandler } from "./handlers/AddActiveElementHandler";
 import { RemoveActiveElementHandler } from "./handlers/RemoveActiveElementHandler";
 import { ChangeStepHandler } from "./handlers/ChangeStepHandler";
+import { CountableMountElement } from "./elements/mounts/CountableMountElement";
+import { ReferenceMountElement } from "./elements/mounts/ReferenceMountElement";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
   private steps: Array<Step> = [];
-  private arrayActiveData: Record<string, Record<string, any>>;
+  private activeKeyItems: Array<string> = [];
 
   constructor(
-    arrayActiveData: Record<string, Record<string, any>> = {},
+    activeKeyItems: Array<string> = [],
+    dataItems: Record<string, Record<string, any>> = {},
     stepName: StepName
   ) {
     this.init();
     this.currentStepName = stepName;
-    this.arrayActiveData = arrayActiveData;
-    this.setActiveItemsSteps(arrayActiveData);
+    this.activeKeyItems = activeKeyItems;
+    this.setInitDataItemsSteps(dataItems);
 
     const currentStep = this.getCurrentStep();
     if (currentStep) {
@@ -51,13 +54,44 @@ export class Permission {
     this.addStep(createStepSoftwareServices());
   }
 
-  public setActiveItemsSteps(
+  public setInitDataItemsSteps(
     arrayActiveData: Record<string, Record<string, any>>
   ): void {
-    const arrayActiveKeys = Object.keys(arrayActiveData);
     this.steps.forEach((step) => {
-      arrayActiveKeys.forEach((key) => {
-        step.addActiveElementByName(key);
+      Object.entries(arrayActiveData).forEach(([key, value]) => {
+        const element = step.getElementByName(key);
+        if (!element) return;
+        if (!(element instanceof ItemElement)) {
+          if (this.activeKeyItems.includes(key)) {
+            step.addActiveElementByName(key);
+          }
+          return;
+        }
+        if (value?.color) {
+          element.setProperty({ color: value.color });
+        }
+        if (value?.count) {
+          const setDataCountableMount = (element: CountableMountElement) => {
+            element.setActiveIndex(value.count);
+            element.setMin(value.counterMin);
+            element.setMax(value.counterMax);
+          };
+          const defaultMount = element.getDefaultMount();
+          if (defaultMount instanceof CountableMountElement) {
+            setDataCountableMount(defaultMount);
+          }
+          if (defaultMount instanceof ReferenceMountElement) {
+            const dependentMount = defaultMount.getDependentMount();
+            if (dependentMount instanceof CountableMountElement) {
+              setDataCountableMount(dependentMount);
+            }
+          }
+        }
+
+        const isActiveElement = this.activeKeyItems.includes(element.name);
+        if (isActiveElement) {
+          step.addActiveElement(element);
+        }
       });
     });
   }
@@ -156,7 +190,7 @@ export class Permission {
     const currentStep = this.getCurrentStep();
     if (!currentStep) return [];
 
-    const arrayActiveKeys = Object.keys(this.arrayActiveData);
+    const arrayActiveKeys = this.activeKeyItems;
     const chainActiveElements = currentStep.getChainActiveElements();
     const keys = chainActiveElements.flat().map((element) => element.name);
     return arrayActiveKeys.filter((key) => !keys.includes(key));
@@ -166,7 +200,7 @@ export class Permission {
     const currentStep = this.getCurrentStep();
     if (!currentStep) return [];
 
-    const arrayActiveKeys = Object.keys(this.arrayActiveData);
+    const arrayActiveKeys = this.activeKeyItems;
     const chainActiveElements = currentStep.getChainActiveElements();
     const keys = chainActiveElements.flat().map((element) => element.name);
     return keys.filter((key) => !arrayActiveKeys.includes(key));

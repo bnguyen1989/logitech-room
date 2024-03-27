@@ -208,19 +208,6 @@ export const getMetadataByKeyPermission =
     return asset?.metadata;
   };
 
-export const getDataActiveCards = (state: RootState) => {
-  const res: Record<string, Record<string, any>> = {};
-  const selectedData = getSelectData(state);
-  Object.values(selectedData).forEach((item) => {
-    Object.keys(item).forEach((key) => {
-      if (item[key].selected.length) {
-        res[key] = item[key].property;
-      }
-    });
-  });
-  return res;
-};
-
 export const getIsRecommendedCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const card = getCardByKeyPermission(stepName, keyPermission)(state);
@@ -238,8 +225,9 @@ export const getIsCanChangeStep = (state: RootState) => {
 
 export const getPermission = (stepName?: StepName) => (state: RootState) => {
   const currentStep = stepName ?? getActiveStep(state);
-  const activeData = getDataActiveCards(state);
-  return new Permission(activeData, currentStep);
+  const activeKeys = getAllKeyActiveCards(state);
+  const initData = getInitDataCardsForPermission(state);
+  return new Permission(activeKeys, initData, currentStep);
 };
 
 export const getCorrectStepDataByPermission =
@@ -306,3 +294,38 @@ export const getIsDisabledActionByKeyPermission =
     if (!element) return false;
     return element.getActionDisabled();
   };
+
+export const getAllKeyActiveCards = (state: RootState) => {
+  const selectedData = getSelectData(state);
+  return Object.values(selectedData).reduce((acc, item) => {
+    Object.keys(item).forEach((key) => {
+      if (item[key].selected.length) {
+        acc.push(key);
+      }
+    });
+    return acc;
+  }, [] as string[]);
+};
+
+const getInitDataCardsForPermission = (state: RootState) => {
+  const res: Record<string, Record<string, any>> = {};
+  const selectedData = getSelectData(state);
+  Object.entries(selectedData).forEach(([stepName, value]) => {
+    Object.keys(value).forEach((key) => {
+      const card = getCardByKeyPermission(stepName as StepName, key)(state);
+      let obj = {};
+      if (card?.counter) {
+        obj = {
+          counterMin: card.counter.min,
+          counterMax: card.counter.max,
+        };
+      }
+
+      res[key] = {
+        ...value[key].property,
+        ...obj,
+      };
+    });
+  });
+  return res;
+};

@@ -7,10 +7,23 @@ export class BaseElement extends Element<BaseElement> {
   private _isRequired: boolean = false;
   private _isRecommended: boolean = false;
   private _isActionDisabled: boolean = false;
+  private property: Record<string, any> = {};
 
   constructor(name: string) {
     super();
     this.name = name;
+  }
+
+  public setProperty(property: Record<string, any>): BaseElement {
+    this.property = {
+      ...this.property,
+      ...property,
+    };
+    return this;
+  }
+
+  public getProperty(): Record<string, any> {
+    return this.property;
   }
 
   public getVisible(): boolean {
@@ -64,6 +77,12 @@ export class BaseElement extends Element<BaseElement> {
 
   public copy(): BaseElement {
     const baseElement = new BaseElement(this.name);
+    baseElement.setVisible(this.getVisible());
+    baseElement.setDefaultActive(this.getDefaultActive());
+    baseElement.setRequired(this.getRequired());
+    baseElement.setRecommended(this.getRecommended());
+    baseElement.setActionDisabled(this.getActionDisabled());
+    baseElement.setProperty(this.getProperty());
     return baseElement;
   }
 }

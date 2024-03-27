@@ -2,7 +2,6 @@ import { Middleware } from "@reduxjs/toolkit";
 import { updateDataCardByStepName } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
-  addElement,
   changeColorElement,
   changeCountElement,
   removeElement,
@@ -16,7 +15,9 @@ import {
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
 import {
+  addActiveCard,
   addActiveCards,
+  removeActiveCard,
   removeActiveCards,
   setPropertyItem,
 } from "../slices/ui/Ui.slice";
@@ -37,6 +38,9 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
 
         if (!permission.canAddActiveElementByName(key)) return;
+
+        const card = getCardByKeyPermission(activeStep, key)(state);
+        if(card?.counter && card.counter.max === 0) return;
 
         updateDataCardByStepName(activeStep)(store, currentConfigurator);
         break;
@@ -75,8 +79,13 @@ export const middleware: Middleware =
         store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
         store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
 
-        const card = getCardByKeyPermission(activeStep, key)(state);
-        addElement(card, activeStep)(store);
+        const updateNodes = updateNodesByConfiguration(
+          currentConfigurator,
+          activeStep
+        );
+
+        const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
+        updateNodes(store, attributeNames);
         break;
       }
 
@@ -87,8 +96,14 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processRemoveActiveElementByName(key);
 
-        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
-        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+
+        permission.getAddKeys().forEach((key) => {
+          store.dispatch(addActiveCard({ key }));
+        })
+
+        permission.getRemoveKeys().forEach((key) => {
+          store.dispatch(removeActiveCard({ key }));
+        })
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card)(store);
@@ -149,6 +164,7 @@ export const middleware: Middleware =
           }
         );
 
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
         changeCountElement(key, activeStep, value, prevCount)(store);
         break;
       }

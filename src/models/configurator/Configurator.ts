@@ -17,9 +17,10 @@ export class Configurator {
   private configuration: ConfigurationI = {};
   private attributeState: AttributesStateI = {};
 
-  public static NameAttrWithMountNames: Record<string, string> = {
-    "Room Camera": "Room Camera Mount",
-    "Room Mic": "Room Mic Mount",
+  public static NameAttrWithMountNames: Record<string, Array<string>> = {
+    "Room Camera": ["Room Camera Mount"],
+    "Room Mic": ["Room Mic Mount", "Room Mic Pod Pendant Mount"],
+    "Room Meeting Controller": ["Room Tap Mount"]
   };
 
   public static PlatformName = [["Room Service"]];

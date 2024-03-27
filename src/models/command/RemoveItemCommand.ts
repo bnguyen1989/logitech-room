@@ -16,9 +16,9 @@ export class RemoveItemCommand extends ItemCommand {
 
   public executeCommand(): boolean {
     const namesRemove: Array<string> = [this.nameProperty];
-    const mountName = Configurator.NameAttrWithMountNames[this.nameProperty];
-    if (mountName) {
-      namesRemove.push(mountName);
+    const mountNames = Configurator.NameAttrWithMountNames[this.nameProperty];
+    if (mountNames) {
+      namesRemove.push(...mountNames);
     }
     namesRemove.forEach((name) => {
       this.configurator.setConfiguration({
@@ -27,15 +27,15 @@ export class RemoveItemCommand extends ItemCommand {
         },
       });
       this.changeProperties.push(name);
-    });
 
-    const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
-    if (qtyName) {
-      this.configurator.setConfiguration({
-        [qtyName]: "0",
-      });
-      this.changeProperties.push(qtyName);
-    }
+      const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
+      if (qtyName) {
+        this.configurator.setConfiguration({
+          [qtyName]: "0",
+        });
+        this.changeProperties.push(qtyName);
+      }
+    });
 
     return true;
   }

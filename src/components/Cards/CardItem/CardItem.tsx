@@ -112,7 +112,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
               />
               <CounterItem
                 keyItemPermission={card.keyPermission}
-                disabled={!isActiveCard || isDisabledActions}
+                disabled={isDisabledActions}
               />
               <SelectItem
                 keyItemPermission={card.keyPermission}
