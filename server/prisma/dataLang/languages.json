@@ -1,0 +1,27 @@
+[
+  {
+    "languageCode": "en-us",
+    "localeCode": "en-us",
+    "currencyCode": "USD"
+  },
+  {
+    "languageCode": "de-de",
+    "localeCode": "de-de",
+    "currencyCode": "EUR"
+  },
+  {
+    "languageCode": "es-mx",
+    "localeCode": "es-mx",
+    "currencyCode": "MXN"
+  },
+  {
+    "languageCode": "en-gb",
+    "localeCode": "en-gb",
+    "currencyCode": "GBP"
+  },
+  {
+    "languageCode": "es-es",
+    "localeCode": "es-es",
+    "currencyCode": "EUR"
+  }
+]
