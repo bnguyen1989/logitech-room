@@ -12,12 +12,27 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setInfoItemModal } from "../../../store/slices/modals/Modals.slice";
 import { ColorSwitcher } from "../../ColorSwitchers/ColorSwitcher/ColorSwitcher";
+import {
+  getLangForModalProduct,
+  getLangProduct,
+  getLangProductBlade1,
+  getLangProductImage,
+} from "../../../store/slices/ui/selectors/selectoreLangProduct";
 
 export const InfoModal: React.FC = () => {
   const dispatch = useDispatch();
-  const { isOpen } = useAppSelector(getInfoItemModalData);
+  const { isOpen, product, keyItemPermission } =
+    useAppSelector(getInfoItemModalData);
   const [selectedColor, setSelectedColor] = useState<string>("Graphite");
+  console.log("product", product);
 
+  const dataProduct = useAppSelector(getLangForModalProduct(product));
+  console.log("dataProduct", dataProduct);
+  const langProductImage = useAppSelector(
+    getLangProductImage(product, keyItemPermission)
+  );
+
+  if (!dataProduct) return <></>;
   const cards = [
     {
       image:
@@ -45,6 +60,8 @@ export const InfoModal: React.FC = () => {
 
   if (!isOpen) return null;
 
+  console.log("langsProduct", dataProduct);
+
   return (
     <ModalContainer>
       <div className={s.container}>
@@ -54,69 +71,81 @@ export const InfoModal: React.FC = () => {
           </IconButton>
         </div>
         <div className={s.wrapper}>
-          <div className={s.item}>
-            <div className={s.left_item}>
-              <div className={s.image}>
-                <img src={ItemImg} alt="image_item" />
-              </div>
-              <div className={s.viewer}></div>
-            </div>
-            <div className={s.right_item}>
-              <div className={s.text}>
-                <div className={s.title}>Rally Bar</div>
-                <div className={s.subtitle}>
-                  All-in-one video bar for medium to large rooms
+          {dataProduct && (
+            <div className={s.item}>
+              <div className={s.left_item}>
+                <div className={s.image}>
+                  <img src={ItemImg} alt="image_item" />
                 </div>
-                <div className={s.desc}>
-                  Logitech Rally Bar is the premier video bar for medium to
-                  large meeting rooms. Discover remarkably simple, all-in-one
-                  video conferencing with brilliant optics & audio.
-                </div>
+                <div className={s.viewer}></div>
               </div>
+              <div className={s.right_item}>
+                <div className={s.text}>
+                  {dataProduct && dataProduct["ProductName"] && (
+                    <div className={s.title}>{dataProduct["ProductName"]}</div>
+                  )}
 
-              <div className={s.colors}>
-                <ColorSwitcher
-                  value={selectedColor}
-                  onChange={(v) => setSelectedColor(v.name)}
-                  listColors={[
-                    {
-                      name: "Graphite",
-                      value: "#434446",
-                    },
-                    {
-                      name: "White",
-                      value: "#FBFBFB",
-                    },
-                  ]}
-                />
-              </div>
-              <div className={s.button}>
-                <Button
-                  text={"Add to Room"}
-                  onClick={() => {}}
-                  variant={"contained"}
-                />
+                  {dataProduct && dataProduct["ShortDescription"] && (
+                    <div className={s.subtitle}>
+                      {dataProduct["ShortDescription"]}
+                    </div>
+                  )}
+                  {dataProduct && dataProduct["LongDescription"] && (
+                    <div className={s.desc}>
+                      {dataProduct["LongDescription"]}
+                    </div>
+                  )}
+                </div>
+
+                <div className={s.colors}>
+                  <ColorSwitcher
+                    value={selectedColor}
+                    onChange={(v) => setSelectedColor(v.name)}
+                    listColors={[
+                      {
+                        name: "Graphite",
+                        value: "#434446",
+                      },
+                      {
+                        name: "White",
+                        value: "#FBFBFB",
+                      },
+                    ]}
+                  />
+                </div>
+                <div className={s.button}>
+                  <Button
+                    text={"Add to Room"}
+                    onClick={() => {}}
+                    variant={"contained"}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
           <div className={s.section_video}>
             <div className={s.left_content}>
-              <div className={s.title_video}>
-                ALL-IN-ONE VIDEO BAR FOR MEDIUM AND LARGE ROOMS
-              </div>
-              <div className={s.decs_video}>
-                Discover remarkably a simple all-in-one video conferencing set
-                up with brilliant optics, AI based audio, remote management with
-                Sync, and more.
-              </div>
+              {dataProduct && dataProduct["Headline"] && (
+                <div className={s.title_video}>{dataProduct["Headline"]}</div>
+              )}
+
+              {dataProduct && dataProduct["Description"] && (
+                <div className={s.decs_video}>{dataProduct["Description"]}</div>
+              )}
             </div>
             <div className={s.right_content}>
               <div className={s.video}>
-                <VideoPlayer
+                {dataProduct &&
+                  dataProduct["Image|Video"] &&
+                  dataProduct["Image|Video"]["Video"] && (
+                    <VideoPlayer path={dataProduct["Image|Video"]["Video"]} />
+                  )}
+                {/* <VideoPlayer
                   path={
                     "https://resource.logitech.com/content/dam/logitech/en/products/video-conferencing/rally-bar/buy/rally-bar-overview.mp4"
                   }
-                />
+                /> */}
               </div>
             </div>
           </div>

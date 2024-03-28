@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { ModalI, ModalName } from './type';
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { ModalI, ModalName } from "./type";
 
 interface ModalsStateI {
   [ModalName.MY_SETUP]: ModalI;
@@ -21,25 +21,23 @@ const initialState: ModalsStateI = {
 };
 
 const ModalsSlice = createSlice({
-  name: 'modals',
+  name: "modals",
   initialState,
   reducers: {
     setMySetupModal: (state, action: PayloadAction<ModalI>) => {
-			state[ModalName.MY_SETUP] = action.payload;
-		},
+      state[ModalName.MY_SETUP] = action.payload;
+    },
     setInfoItemModal: (state, action: PayloadAction<ModalI>) => {
+  
       state[ModalName.INFO_ITEM] = action.payload;
     },
     setSelectProductModal: (state, action: PayloadAction<ModalI>) => {
       state[ModalName.SELECT_PRODUCT] = action.payload;
-    }
+    },
   },
 });
 
-export const {
-  setMySetupModal,
-  setInfoItemModal,
-  setSelectProductModal,
-} = ModalsSlice.actions;
+export const { setMySetupModal, setInfoItemModal, setSelectProductModal } =
+  ModalsSlice.actions;
 
 export default ModalsSlice.reducer;

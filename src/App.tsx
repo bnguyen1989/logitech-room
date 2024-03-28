@@ -9,6 +9,7 @@ import { ServerApi } from "./services/api/Server/ServerApi";
 import { useDispatch } from "react-redux";
 import { setLangText } from "./store/slices/ui/Ui.slice";
 import dataLang from "./dataLang/products/en-us.json";
+import type { ProductsObj } from "./types/textTypeProduct";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function App() {
     new ServerApi()
       .getProductsLang("en-us")
       .then((res) => {
-        let objData: any = {};
+        const objData: ProductsObj = {};
 
         Object.keys(res.data.products).forEach((product) => {
           const newKey = product.toUpperCase();
@@ -26,8 +27,15 @@ function App() {
         dispatch(setLangText(objData));
       })
       .catch(() => {
-        dispatch(setLangText(dataLang));
-        console.log("dataLang", dataLang);
+        const objData: ProductsObj = {};
+
+        Object.keys(dataLang).forEach((productKey) => {
+          const newKey = productKey.toUpperCase();
+          // @ts-ignore
+          objData[newKey] = dataLang[productKey];
+        });
+
+        dispatch(setLangText(objData));
       });
   }, []);
   return (
