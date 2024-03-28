@@ -1,7 +1,7 @@
-import { ItemElement } from "../elements/ItemElement";
-import { CountableMountElement } from "../elements/mounts/CountableMountElement";
-import { Step } from "../step/Step";
-import { Handler } from "./Handler";
+import { ItemElement } from "../../elements/ItemElement";
+import { CountableMountElement } from "../../elements/mounts/CountableMountElement";
+import { Step } from "../../step/Step";
+import { Handler } from "../Handler";
 
 export class ReservationMountHandler extends Handler {
   public handle(step: Step): boolean {

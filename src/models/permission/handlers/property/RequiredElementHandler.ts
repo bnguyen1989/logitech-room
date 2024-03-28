@@ -1,15 +1,15 @@
-import { Step } from "../step/Step";
+import { Step } from "../../step/Step";
 import { PropertyElementHandler } from "./PropertyElementHandler";
 
-export class RecommendationElementHandler extends PropertyElementHandler {
+export class RequiredElementHandler extends PropertyElementHandler {
   public handle(step: Step): boolean {
     PropertyElementHandler.setValuePropertyElement(
       step,
       (element) => {
-        return element.getRecommendationDependence();
+        return element.getRequiredDependence();
       },
       (element, value) => {
-        element.setRecommended(value);
+        element.setRequired(value);
       }
     );
     return true;

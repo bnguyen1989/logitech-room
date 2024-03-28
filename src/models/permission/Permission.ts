@@ -21,9 +21,9 @@ import { RemoveActiveElementHandler } from "./handlers/RemoveActiveElementHandle
 import { ChangeStepHandler } from "./handlers/ChangeStepHandler";
 import { CountableMountElement } from "./elements/mounts/CountableMountElement";
 import { ReferenceMountElement } from "./elements/mounts/ReferenceMountElement";
-import { RecommendationElementHandler } from "./handlers/RecommendationElementHandler";
-import { RequiredElementHandler } from "./handlers/RequiredElementHandler";
-import { ReservationMountHandler } from "./handlers/ReservationMountHandler";
+import { RecommendationElementHandler } from "./handlers/property/RecommendationElementHandler";
+import { RequiredElementHandler } from "./handlers/property/RequiredElementHandler";
+import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
