@@ -1,33 +1,57 @@
 import { RootState } from "../../..";
 import { StepName } from "../../../../models/permission/type";
 import { ConfigData } from "../../../../utils/threekitUtils";
+import { CardI } from "../type";
 import {
   getDescriptionRoomBySize,
   getTitleFromDataByKeyPermission,
 } from "../utils";
+import { getLangProductImage } from "./selectoreLangProduct";
 import {
   getAssetFromCard,
+  getMetadataProductNameAssetFromCard,
   getPriceFromMetadataByKeyPermission,
   getSelectedConfiguratorCards,
   getSelectedDataByKeyPermission,
   getSelectedPrepareCards,
+  getTitleCardByKeyPermission,
 } from "./selectors";
 
 export const getOrderData = (state: RootState) => {
   const selectedCards = getSelectedConfiguratorCards(state);
   const cardData = selectedCards.map((card) => {
-    const cardAsset = getAssetFromCard(card)(state);
-    const selectData = getSelectedDataByKeyPermission(card.key, card.keyPermission)(state);
-    const price = getPriceFromMetadataByKeyPermission(card.key, card.keyPermission)(state);
-    const title = getTitleFromDataByKeyPermission(card.keyPermission);
+    const copyCard = JSON.parse(JSON.stringify(card)) as CardI;
+    const cardAsset = getAssetFromCard(copyCard)(state);
+    const selectData = getSelectedDataByKeyPermission(
+      copyCard.key,
+      copyCard.keyPermission
+    )(state);
+    const price = getPriceFromMetadataByKeyPermission(
+      copyCard.key,
+      copyCard.keyPermission
+    )(state);
+    const title = getTitleCardByKeyPermission(
+      copyCard.key,
+      copyCard.keyPermission
+    )(state);
+    const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
+
+    const langProductImage = getLangProductImage(
+      productName,
+      copyCard.keyPermission
+    )(state);
+
+    if (langProductImage) {
+      copyCard.image = langProductImage;
+    } 
 
     return {
       metadata: {
-        data: JSON.stringify(card),
+        data: JSON.stringify(copyCard),
         title: title,
         color: selectData?.property?.color ?? "Graphite",
         count: selectData?.property?.count ?? 1,
-        price: price
+        price: price,
       },
       configurationId: cardAsset?.id ?? "",
       count: 1,

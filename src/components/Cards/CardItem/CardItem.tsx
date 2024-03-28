@@ -32,7 +32,6 @@ export const CardItem: React.FC<PropsI> = (props) => {
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
   const productName = useAppSelector(getMetadataProductNameAssetFromCard(card));
-  console.log("card", card);
 
   const langProduct = useAppSelector(getLangProductBlade1(productName));
   const langProductImage = useAppSelector(

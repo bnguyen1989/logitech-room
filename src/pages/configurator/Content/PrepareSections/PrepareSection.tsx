@@ -31,9 +31,11 @@ export const PrepareSection: React.FC = () => {
   };
   return (
     <div className={s.container}>
-      {Object.values(activeStepData.cards).map((card, index) =>
-        getCardComponent(card, index)
-      )}
+      <div className={s.wrapperCards}>
+        {Object.values(activeStepData.cards).map((card, index) =>
+          getCardComponent(card, index)
+        )}
+      </div>
     </div>
   );
 };

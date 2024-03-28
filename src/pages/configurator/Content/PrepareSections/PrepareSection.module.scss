@@ -1,20 +1,27 @@
 .container {
-	display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-	gap: 28px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  background-color: #f4f4f4;
 
-	position: absolute;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 60;
-	background-color: #F4F4F4;
+  .wrapperCards {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 28px;
+  }
 }
 
 @media (max-width: 1500px) {
-	.container {
-		gap: 15px;
-	}
+  .container {
+    .wrapperCards {
+      gap: 15px;
+    }
+  }
 }

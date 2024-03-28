@@ -71,7 +71,7 @@ export const getSelectedConfiguratorCards = (state: RootState) => {
     StepName.ConferenceCamera,
     StepName.AudioExtensions,
     StepName.MeetingController,
-    StepName.AudioExtensions,
+    StepName.VideoAccessories,
     StepName.SoftwareServices,
   ];
 
@@ -163,7 +163,7 @@ export const getMetadataProductNameAssetFromCard =
   (card: CardI) => (state: RootState) => {
     const threekitAsset = getMetadataAssetFromCard(card)(state);
 
-    return threekitAsset["Product Name"].trim();
+    return threekitAsset["Product Name"]?.trim();
   };
 
 export const getTitleCardByKeyPermission =
