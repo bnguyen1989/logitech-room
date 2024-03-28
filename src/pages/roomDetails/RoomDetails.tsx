@@ -4,7 +4,6 @@ import { Header } from "./Header/Header";
 import { Footer } from "./Footer/Footer";
 import { Content } from "./Content/Content";
 import { useParams } from "react-router-dom";
-import ImageItem from "../../assets/images/pages/details/item.png";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { SectionI } from "./type";
 import { StepName } from "../../models/permission/type";
@@ -58,7 +57,7 @@ export const RoomDetails: React.FC = () => {
               {
                 title: title,
                 subtitle: card.description || card.subtitle || "",
-                image: ImageItem,
+                image: card.image,
               },
             ],
           };
