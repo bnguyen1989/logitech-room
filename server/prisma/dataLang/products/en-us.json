@@ -778,7 +778,9 @@
       "ProductName": "Active USB Cable",
       "ShortDescription": "Enables single-cable BYOD connection for MeetUp 2.",
       "LongDescription": "Logitech Active USB Cable allows a single-cable connection between MeetUp 2 and laptops for BYOD meetings.",
-      "Colors": {}
+      "Colors": {
+        "Off white": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/mic-pod-extension-cable/gallery-1.png?v=1"
+      }
     },
     "Blade_2": {
       "Headline": "Join your meeting with the ease of a single cable connection",
@@ -792,7 +794,7 @@
       "ShortDescription": "Whiteboard camera for video conferencing rooms",
       "LongDescription": "Effortlessly share whiteboards into video meetings with Logitech Scribe, an AI-powered whiteboard camera for Microsoft Teams Rooms, Zoom Rooms, Google Meet and other leading video conferencing services.",
       "Colors": {
-        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/scribe/scribe-gallery-family.png?v=1"
+        "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/scribe/scribe-gallery-family.png?v=1"
       }
     },
     "Blade_3A": {
@@ -849,7 +851,9 @@
       "ProductName": "Logitech USB-A to HDMI Adapter",
       "ShortDescription": "",
       "LongDescription": "Add another display to meeting rooms with simple setup and maintenance",
-      "Colors": {}
+      "Colors": {
+        "Graphite": ""
+      }
     },
     "Blade_2": {
       "Headline": "Easily Connect Another Display",
@@ -1011,9 +1015,9 @@
       ]
     }
   },
-  "MIC POD PENDANT MOUNT": {
+  "Pendant Mount": {
     "Blade_1": {
-      "ProductName": "MIC POD PENDANT MOUNT",
+      "ProductName": "Pendant Mount",
       "ShortDescription": "Ceiling pendant mount for Rally Mic Pods.",
       "Colors": {
         "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/mic-pod-pendant/mic-pod-pendant-mount-white-1.png?v=1"
@@ -1079,9 +1083,9 @@
       }
     }
   },
-  "RALLY MIC POD EXTENSION CABLE": {
+  "Mic Pod Extension Cable": {
     "Blade_1": {
-      "ProductName": "RALLY MIC POD EXTENSION CABLE",
+      "ProductName": "Mic Pod Extension Cable",
       "ShortDescription": "10 meter extension cable",
       "LongDescription": "Extend connections of multiple Rally Mic Pods using plenum-rated cabling",
       "Colors": {
@@ -1461,7 +1465,7 @@
       "ShortDescription": "Choose a mini PC from a variety of partners.",
       "LongDescription": "Run the videoconferencing directly from the in-room PC, alongside Logitech’s conferencing cameras and extensions. Contact your reseller for more info.",
       "Colors": {
-        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/generic-pc-compute-gallery.png?v=1"
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/generic-pc-compute-gallery.png?v=1"
       }
     }
   }
