@@ -8,20 +8,27 @@ import { useEffect } from "react";
 import { ServerApi } from "./services/api/Server/ServerApi";
 import { useDispatch } from "react-redux";
 import { setLangText } from "./store/slices/ui/Ui.slice";
+import dataLang from "./dataLang/products/en-us.json";
 
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    new ServerApi().getProductsLang("en-us").then((res) => {
-      let objData: any = {};
-      
-      Object.keys(res.data.products).forEach((product) => {
-        const newKey = product.toUpperCase();
-        objData[newKey] = res.data.products[product];
-      });
+    new ServerApi()
+      .getProductsLang("en-us")
+      .then((res) => {
+        let objData: any = {};
 
-      dispatch(setLangText(objData));
-    });
+        Object.keys(res.data.products).forEach((product) => {
+          const newKey = product.toUpperCase();
+          objData[newKey] = res.data.products[product];
+        });
+
+        dispatch(setLangText(objData));
+      })
+      .catch(() => {
+        dispatch(setLangText(dataLang));
+        console.log("dataLang", dataLang);
+      });
   }, []);
   return (
     <div className={"app"}>
