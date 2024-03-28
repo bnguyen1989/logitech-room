@@ -13,6 +13,9 @@ import {
   getSelectedPrepareCards,
 } from "./selectors";
 
+
+
+
 export const getOrderData = (state: RootState) => {
   const selectedCards = getSelectedConfiguratorCards(state);
   const cardData = selectedCards.map((card) => {
