@@ -21,6 +21,9 @@ import { RemoveActiveElementHandler } from "./handlers/RemoveActiveElementHandle
 import { ChangeStepHandler } from "./handlers/ChangeStepHandler";
 import { CountableMountElement } from "./elements/mounts/CountableMountElement";
 import { ReferenceMountElement } from "./elements/mounts/ReferenceMountElement";
+import { RecommendationElementHandler } from "./handlers/property/RecommendationElementHandler";
+import { RequiredElementHandler } from "./handlers/property/RequiredElementHandler";
+import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
@@ -40,6 +43,7 @@ export class Permission {
     const currentStep = this.getCurrentStep();
     if (currentStep) {
       new ChangeStepHandler().handle(currentStep);
+      this.executeBasicHandlers(currentStep);
     }
   }
 
@@ -96,6 +100,12 @@ export class Permission {
     });
   }
 
+  public executeBasicHandlers(step: Step): void {
+    new ReservationMountHandler().handle(step);
+    new RecommendationElementHandler().handle(step);
+    new RequiredElementHandler().handle(step);
+  }
+
   public addStep(step: Step): Permission {
     if (this.steps.length) {
       const lastStep = this.steps[this.steps.length - 1];
@@ -130,7 +140,7 @@ export class Permission {
   }
 
   public processChangeColorElementByName(itemName: string): void {
-    this.canAddActiveElementByName(itemName);
+    this.processAddActiveElementByName(itemName);
   }
 
   public processAddActiveElementByName(itemName: string): void {
@@ -143,6 +153,7 @@ export class Permission {
       return;
     }
     new AddActiveElementHandler(element).handle(currentStep);
+    this.executeBasicHandlers(currentStep);
   }
 
   public canRemoveActiveElementByName(itemName: string): boolean {
@@ -168,6 +179,7 @@ export class Permission {
       return;
     }
     new RemoveActiveElementHandler(element).handle(currentStep);
+    this.executeBasicHandlers(currentStep);
   }
 
   public getElements(): Array<ItemElement | MountElement> {

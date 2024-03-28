@@ -32,10 +32,7 @@ export class RemoveActiveElementHandler extends Handler {
       step.removeValidElement(element);
       step.removeActiveElement(element);
     });
-
-    console.log("RemoveActiveElementHandler", step.getActiveElements());
     
-
     return true;
   }
 }
