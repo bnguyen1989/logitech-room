@@ -1,6 +1,7 @@
 import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
+  getActiveStep,
   getActiveStepData,
   getIsConfiguratorStep,
 } from "../../../../../store/slices/ui/selectors/selectors";
@@ -8,10 +9,18 @@ import { CardI, StepI } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
 import { StepName } from "../../../../../models/permission/type";
 import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
+import { useEffect, useRef } from "react";
 
 export const ConfigurationFormForStep = () => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const activeStepName = useAppSelector(getActiveStep);
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    contentRef.current.scrollTop = 0;
+  }, [activeStepName]);
 
   const getCardComponent = (card: CardI, index: number) => {
     if (!isConfiguratorStep) return null;
@@ -25,7 +34,7 @@ export const ConfigurationFormForStep = () => {
   }
 
   return (
-    <div className={s.form}>
+    <div ref={contentRef} className={s.form}>
       {Object.values(activeStepData.cards).map((card, index) =>
         getCardComponent(card, index)
       )}
