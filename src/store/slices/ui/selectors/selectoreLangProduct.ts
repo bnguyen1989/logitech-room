@@ -107,10 +107,21 @@ export const getLangProductImage =
     return Blade_1["Colors"][keyImg];
   };
 
-type AnottationInfoProdunct = {
-  name: string;
-  img: string;
-};
+export const getLangSimpleColorProduct =
+  (keyProduct: string | undefined) => (state: RootState) => {
+    if (!keyProduct) return undefined;
+
+    const Blade_1 = getLangProductBlade1(keyProduct)(state);
+    if (!Blade_1) return undefined;
+
+    if (!Blade_1["Colors"]) return undefined;
+
+    if (Object.keys(Blade_1["Colors"]).length === 1)
+      return Object.keys(Blade_1["Colors"])[0];
+
+    return "";
+  };
+
 export const getLangForModalProduct =
   (keyProduct: string | undefined) => (state: RootState) => {
     if (!keyProduct) return undefined;

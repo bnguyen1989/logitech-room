@@ -6,7 +6,10 @@ import {
   getDescriptionRoomBySize,
   getTitleFromDataByKeyPermission,
 } from "../utils";
-import { getLangProductImage } from "./selectoreLangProduct";
+import {
+  getLangProductImage,
+  getLangSimpleColorProduct,
+} from "./selectoreLangProduct";
 import {
   getAssetFromCard,
   getMetadataProductNameAssetFromCard,
@@ -16,6 +19,15 @@ import {
   getSelectedPrepareCards,
   getTitleCardByKeyPermission,
 } from "./selectors";
+
+export const getPropertyColorCardByKeyPermissionForOrder =
+  (selectData: any, keyProduct: string) => (state: RootState) => {
+    if (selectData?.property?.color) return selectData?.property?.color;
+    const simpleColorProduct = getLangSimpleColorProduct(keyProduct)(state);
+    if (simpleColorProduct) return simpleColorProduct;
+
+    return "";
+  };
 
 export const getOrderData = (state: RootState) => {
   const selectedCards = getSelectedConfiguratorCards(state);
@@ -40,16 +52,20 @@ export const getOrderData = (state: RootState) => {
       productName,
       copyCard.keyPermission
     )(state);
+    const colorCard = getPropertyColorCardByKeyPermissionForOrder(
+      selectData,
+      productName
+    )(state);
 
     if (langProductImage) {
       copyCard.image = langProductImage;
-    } 
-
+    }
+    
     return {
       metadata: {
         data: JSON.stringify(copyCard),
         title: title,
-        color: selectData?.property?.color ?? "Graphite",
+        color: colorCard,
         count: selectData?.property?.count ?? 1,
         price: price,
       },
@@ -73,7 +89,7 @@ export const getOrderData = (state: RootState) => {
       assetId: app.currentConfigurator.assetId,
       configuration: JSON.stringify(app.currentConfigurator.getConfiguration()),
       description: description,
-      name: nameOrder,
+      name: `${nameOrder} New Test`,
     },
   };
 };
