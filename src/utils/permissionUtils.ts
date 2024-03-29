@@ -339,13 +339,8 @@ export function createStepMeetingController() {
       )
       .setDefaultMount(
         new MountElement(
-          MeetingControllerName.TapTableMount,
+          item.name,
           Configurator.getNameNodeForTap("Table", 1)
-        ).setDependentMount(
-          new MountElement(
-            MeetingControllerName.TapTableMount,
-            Configurator.getNameNodeTapTableMount()
-          )
         )
       );
   };

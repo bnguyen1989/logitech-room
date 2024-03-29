@@ -21,13 +21,6 @@ export class AddActiveElementHandler extends Handler {
         const dependenceMount = itemElement
           .getDependenceMount()
           .filter((mount: MountElement) => mount.name !== this.element.name);
-        const defaultMount = itemElement.getDefaultMount();
-        if(defaultMount && defaultMount.name !== this.element.name) {
-          const isExistDefaultMount = dependenceMount.some((mount) => mount.name === defaultMount.name);
-          if(!isExistDefaultMount) {
-            dependenceMount.push(defaultMount);
-          }
-        }
         dependenceMount.forEach((mount) => {
           step.removeActiveElement(mount);
         });

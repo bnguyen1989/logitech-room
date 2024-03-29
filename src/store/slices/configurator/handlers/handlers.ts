@@ -473,6 +473,12 @@ export function changeCountElement(
     const cardAsset = getAssetFromCard(card)(state);
 
     const element = step.getElementByName(card.keyPermission);
+
+    if (element instanceof MountElement && value === 0) {
+      const nameProperty = card.dataThreekit.attributeName;
+      app.removeItem(nameProperty, card.keyPermission);
+    }
+
     if (!element || !(element instanceof ItemElement)) return;
 
     const mountElement = element.getDefaultMount();
