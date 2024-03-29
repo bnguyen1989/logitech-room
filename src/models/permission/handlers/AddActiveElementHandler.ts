@@ -39,8 +39,11 @@ export class AddActiveElementHandler extends Handler {
       const isAddMountElementInActive = mountElements.some((mount) =>
         activeElements.some((elem) => elem.name === mount.name)
       );
+      const isExistDefaultMount = mountElements.some((mount) => {
+        return defaultMountElement.name === mount.name;
+      });
 
-      if (!isAddMountElementInActive) {
+      if (!isAddMountElementInActive && isExistDefaultMount) {
         step.addActiveElement(defaultMountElement);
       }
     }

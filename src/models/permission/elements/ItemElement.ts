@@ -83,7 +83,7 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   }
 
   public getDependenceMount(): Array<MountElement> {
-    return this.dependenceMount;
+    return [...this.dependenceMount];
   }
 
   /**

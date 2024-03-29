@@ -2,6 +2,8 @@ import { GroupElement } from "../elements/GroupElement";
 import { ItemElement } from "../elements/ItemElement";
 import { MountElement } from "../elements/mounts/MountElement";
 import { StepName } from "../type";
+import { CountableMountElement } from "../elements/mounts/CountableMountElement";
+import { ReferenceMountElement } from "../elements/mounts/ReferenceMountElement";
 
 export class Step {
   public name: StepName;
@@ -41,10 +43,27 @@ export class Step {
       return res;
     }
 
-    return elements
-      .map((element) => element.getDependenceMount())
-      .flat()
-      .find((element) => element.name === name);
+    const elementsMount = elements
+      .map((element) => {
+        const dependenceMounts = element.getDependenceMount();
+        const defaultMount = element.getDefaultMount();
+        if (!defaultMount) return dependenceMounts;
+        if (defaultMount instanceof CountableMountElement)
+          return dependenceMounts;
+        if (defaultMount instanceof ReferenceMountElement)
+          return dependenceMounts;
+
+        const isExistDefaultMount = dependenceMounts.some(
+          (mount) => mount.name === defaultMount.name
+        );
+        if (isExistDefaultMount) return dependenceMounts;
+
+        dependenceMounts.push(defaultMount);
+        return dependenceMounts;
+      })
+      .flat();
+
+    return elementsMount.find((element) => element.name === name);
   }
 
   public addActiveElementByName(itemName: string): void {

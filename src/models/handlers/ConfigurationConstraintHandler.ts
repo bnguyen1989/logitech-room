@@ -527,7 +527,7 @@ export class ConfigurationConstraintHandler extends Handler {
     );
     if (
       typeof selectedMeetingController === "object" &&
-      selectedMeetingController.name === "Logitech Tap IP"
+      selectedMeetingController.name.includes("Logitech Tap IP")
     ) {
       const attribute = this.getAttribute(meetingControllerQtyAttr_str);
       const attrState = this.configurator.getAttributeState();

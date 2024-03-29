@@ -43,11 +43,11 @@ export function updateNodesByConfiguration(
           Object.values(step.cards)
         );
         if (!card) return;
-        
+
         const nodes = getNodes(state);
         const keys = Object.keys(nodes);
         const key = keys.find((key) => nodes[key] === value.assetId);
-        if(key) return;
+        if (key) return;
         addElement(card, stepName)(store);
       }
     });
@@ -198,7 +198,6 @@ export function removeElement(card: CardI) {
   return (store: Store) => {
     const state = store.getState();
     const activeStep = getActiveStep(state);
-    const stepData = getDataStepByName(activeStep)(state);
     const permission = getPermission(activeStep)(state);
     const step = permission.getCurrentStep();
 
@@ -284,6 +283,8 @@ export function removeElement(card: CardI) {
 
           setAssetIdNodeNames(notActiveNameNodes, cardAssetReference.id)(store);
         }
+      } else if (mountElement instanceof MountElement) {
+        store.dispatch(removeNodeByKeys([mountElement.getNameNode()]));
       }
     }
     if (element instanceof MountElement) {
@@ -292,15 +293,22 @@ export function removeElement(card: CardI) {
         ?.getActiveItemElementByMountName(element.name);
       if (itemElement instanceof ItemElement) {
         const defaultMount = itemElement.getDefaultMount();
-        const cardItemElement = stepData.cards[itemElement.name];
+        const cardItemElement = getCardByKeyPermission(
+          activeStep,
+          itemElement.name
+        )(state);
         const cardItemElementAsset = getAssetFromCard(cardItemElement)(state);
         if (defaultMount && cardItemElement) {
           const dependentMount = defaultMount.getDependentMount();
           if (dependentMount) {
             store.dispatch(changeStatusProcessing(true));
-            const dependentCard = stepData.cards[dependentMount.name];
+            const dependentCard = getCardByKeyPermission(
+              activeStep,
+              dependentMount.name
+            )(state);
             const dependentCardAsset = getAssetFromCard(dependentCard)(state);
             if (dependentCard) {
+              store.dispatch(removeNodes(cardItemElementAsset.id));
               setElementByNameNode(
                 dependentCardAsset.id,
                 defaultMount.getNameNode()
@@ -392,6 +400,55 @@ export function changeColorElement(
           setElementByNameNode(cardAsset.id, defaultMount.getNameNode())(store);
         });
         return;
+      } else {
+        if (!(defaultMount instanceof MountElement)) return;
+        if (Object.keys(autoChangeItems).length) {
+          Object.entries(autoChangeItems).forEach(([key, arr]) => {
+            if (!arr.includes("color") || key === defaultMount.name) return;
+
+            const isSelectElement = getIsSelectedCardByKeyPermission(
+              stepName,
+              key
+            )(state);
+            if (!isSelectElement) {
+              const dependentDefaultMount = defaultMount.getDependentMount();
+              if (!(dependentDefaultMount instanceof MountElement)) return;
+
+              const cardDefaultElement = getCardByKeyPermission(
+                stepName,
+                defaultMount.name
+              )(state);
+              const cardDefaultAssetElement =
+                getAssetFromCard(cardDefaultElement)(state);
+              setElementByNameNode(
+                cardDefaultAssetElement.id,
+                defaultMount.getNameNode()
+              )(store);
+              setElementByNameNode(
+                cardAsset.id,
+                dependentDefaultMount.getNameNode()
+              )(store);
+              return;
+            }
+            const elementMount = step.getElementByName(key);
+            if (!(elementMount instanceof MountElement)) return;
+            const elementDependentMount = elementMount.getDependentMount();
+            if (!(elementDependentMount instanceof MountElement)) return;
+
+            const cardElement = getCardByKeyPermission(stepName, key)(state);
+            const cardAssetElement = getAssetFromCard(cardElement)(state);
+
+            setElementByNameNode(
+              cardAssetElement.id,
+              elementMount.getNameNode()
+            )(store);
+            setElementByNameNode(
+              cardAsset.id,
+              elementDependentMount.getNameNode()
+            )(store);
+          });
+          return;
+        }
       }
     }
     addElement(card, stepName)(store);
@@ -416,6 +473,12 @@ export function changeCountElement(
     const cardAsset = getAssetFromCard(card)(state);
 
     const element = step.getElementByName(card.keyPermission);
+
+    if (element instanceof MountElement && value === 0) {
+      const nameProperty = card.dataThreekit.attributeName;
+      app.removeItem(nameProperty, card.keyPermission);
+    }
+
     if (!element || !(element instanceof ItemElement)) return;
 
     const mountElement = element.getDefaultMount();

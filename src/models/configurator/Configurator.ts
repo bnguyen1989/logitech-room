@@ -20,7 +20,11 @@ export class Configurator {
   public static NameAttrWithMountNames: Record<string, Array<string>> = {
     "Room Camera": ["Room Camera Mount"],
     "Room Mic": ["Room Mic Mount", "Room Mic Pod Pendant Mount"],
-    "Room Meeting Controller": ["Room Tap Mount"]
+    "Room Meeting Controller": ["Room Tap Mount"],
+    "Room Tap Scheduler": [
+      "Room Tap Scheduler Angle Mount",
+      "Room Tap Scheduler Side Mount#not-ui",
+    ],
   };
 
   public static PlatformName = [["Room Service"]];
@@ -50,6 +54,8 @@ export class Configurator {
 
   public static VideoAccessoriesName = [
     ["Room Tap Scheduler"],
+    ["Room Tap Scheduler Angle Mount"],
+    ["Room Tap Scheduler Side Mount#not-ui"],
     ["Room Scribe"],
     ["Room Swytch"],
   ];
@@ -96,7 +102,7 @@ export class Configurator {
   }
 
   public static getNameNodeForMic(id?: number): string {
-    if(!id) return `Mic_Placement`;
+    if (!id) return `Mic_Placement`;
     return `Mic_Placement_${id}`;
   }
 
@@ -141,12 +147,20 @@ export class Configurator {
   }
 
   public static getNameNodePendantMount(id?: number): string {
-    if(!id) return `Mic_Placement_pedant`;
+    if (!id) return `Mic_Placement_pedant`;
     return `Mic_Placement_pedant_${id}`;
   }
 
   public static getNameNodePodPendantMount(): string {
-    return "Pod_Pendant_Mount_Point"
+    return "Pod_Pendant_Mount_Point";
+  }
+
+  public static getNameNodeAngleMountScheduler(): string {
+    return "Angle_Mount_scheduler_point";
+  }
+
+  public static getNameNodeSideMountScheduler(): string {
+    return "Side_Mount_scheduler_point";
   }
 
   public static getAllPlacement(): string[] {
@@ -163,6 +177,8 @@ export class Configurator {
     const getNameNodeCameraTVMount = this.getNameNodeCameraTVMount;
     const getNameNodePendantMount = this.getNameNodePendantMount;
     const getNameNodePodPendantMount = this.getNameNodePodPendantMount;
+    const getNameNodeAngleMountScheduler = this.getNameNodeAngleMountScheduler;
+    const getNameNodeSideMountScheduler = this.getNameNodeSideMountScheduler;
 
     return [
       getNameNodeForMic(1),
@@ -185,6 +201,8 @@ export class Configurator {
       getNameNodePendantMount(1),
       getNameNodePendantMount(2),
       getNameNodePodPendantMount(),
+      getNameNodeAngleMountScheduler(),
+      getNameNodeSideMountScheduler(),
     ];
   }
 
