@@ -71,6 +71,8 @@ export enum MeetingControllerName {
 
 export enum VideoAccessoryName {
   LogitechTapScheduler = "Logitech Tap Scheduler",
+  LogitechTapSchedulerAngleMount = "Logitech Tap Scheduler Angle Mount",
+  LogitechTapSchedulerSideMount = "Logitech Tap Scheduler Side Mount",
   LogitechScribe = "Logitech Scribe",
   LogitechSwytch = "Logitech Swytch",
 }
@@ -365,12 +367,33 @@ export function createStepVideoAccessories() {
 
   const group = new GroupElement()
     .addElement(
-      new ItemElement(VideoAccessoryName.LogitechTapScheduler).setDefaultMount(
-        new MountElement(
-          VideoAccessoryName.LogitechTapScheduler,
-          Configurator.getNameNodeScheduler()
+      new ItemElement(VideoAccessoryName.LogitechTapScheduler)
+        .setDefaultMount(
+          new MountElement(
+            VideoAccessoryName.LogitechTapSchedulerSideMount,
+            Configurator.getNameNodeScheduler()
+          ).setDependentMount(
+            new MountElement(
+              VideoAccessoryName.LogitechTapSchedulerSideMount,
+              Configurator.getNameNodeSideMountScheduler()
+            )
+          )
         )
-      )
+        .addDependenceMount(
+          new MountElement(
+            VideoAccessoryName.LogitechTapSchedulerAngleMount,
+            Configurator.getNameNodeScheduler()
+          ).setDependentMount(
+            new MountElement(
+              VideoAccessoryName.LogitechTapSchedulerAngleMount,
+              Configurator.getNameNodeAngleMountScheduler()
+            )
+          ).setActionDisabled(true)
+        )
+        .addAutoChangeItems({
+          [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],
+          [VideoAccessoryName.LogitechTapSchedulerSideMount]: ["color"],
+        })
     )
     .addElement(
       new ItemElement(VideoAccessoryName.LogitechSwytch).setDefaultMount(

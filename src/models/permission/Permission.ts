@@ -65,16 +65,10 @@ export class Permission {
       Object.entries(arrayActiveData).forEach(([key, value]) => {
         const element = step.getElementByName(key);
         if (!element) return;
-        if (!(element instanceof ItemElement)) {
-          if (this.activeKeyItems.includes(key)) {
-            step.addActiveElementByName(key);
-          }
-          return;
-        }
         if (value?.color) {
           element.setProperty({ color: value.color });
         }
-        if (value?.count) {
+        if (value?.count && element instanceof ItemElement) {
           const setDataCountableMount = (element: CountableMountElement) => {
             element.setActiveIndex(value.count);
             element.setMin(value.counterMin);

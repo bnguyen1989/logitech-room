@@ -31,7 +31,11 @@ export class ChangeStepHandler extends Handler {
           });
         });
         const defaultMount = element.getDefaultMount();
-        if (mountElements.length && !isSomeMountActive && defaultMount) {
+        if (!defaultMount) return;
+        const isExistDefaultMount = mountElements.some((mount) => {
+          return defaultMount.name === mount.name;
+        });
+        if (mountElements.length && !isSomeMountActive && isExistDefaultMount) {
           step.addActiveElement(defaultMount);
         }
       }

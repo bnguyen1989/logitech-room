@@ -76,6 +76,9 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processAddActiveElementByName(key);
 
+        console.log("permission.getAddKeys()", permission.getAddKeys());
+        
+
         store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
         store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
 
