@@ -40,7 +40,7 @@ export const middleware: Middleware =
         if (!permission.canAddActiveElementByName(key)) return;
 
         const card = getCardByKeyPermission(activeStep, key)(state);
-        if(card?.counter && card.counter.max === 0) return;
+        if (card?.counter && card.counter.max === 0) return;
 
         updateDataCardByStepName(activeStep)(store, currentConfigurator);
         break;
@@ -74,7 +74,7 @@ export const middleware: Middleware =
         const activeStep = getActiveStep(state);
 
         const permission = getPermission(activeStep)(state);
-        
+
         permission.processAddActiveElementByName(key);
 
         store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
@@ -97,14 +97,13 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processRemoveActiveElementByName(key);
 
-
         permission.getAddKeys().forEach((key) => {
           store.dispatch(addActiveCard({ key }));
-        })
+        });
 
         permission.getRemoveKeys().forEach((key) => {
           store.dispatch(removeActiveCard({ key }));
-        })
+        });
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card)(store);
@@ -138,21 +137,11 @@ export const middleware: Middleware =
         )(state);
         if (prevCount === undefined) return;
 
-        store.dispatch(
-          setPropertyItem({
-            step: activeStep,
-            keyItemPermission: key,
-            property: {
-              count: value,
-            },
-          })
-        );
-
         const permission = getPermission(activeStep)(state);
         Object.entries(permission.getItemsNeedChange(key)).forEach(
           ([key, arr]) => {
             const count = arr.includes("count");
-            if(!count) return;
+            if (!count) return;
             store.dispatch(
               setPropertyItem({
                 step: activeStep,
@@ -166,6 +155,17 @@ export const middleware: Middleware =
         );
 
         updateDataCardByStepName(activeStep)(store, currentConfigurator);
+
+        store.dispatch(
+          setPropertyItem({
+            step: activeStep,
+            keyItemPermission: key,
+            property: {
+              count: value,
+            },
+          })
+        );
+
         changeCountElement(key, activeStep, value, prevCount)(store);
         break;
       }
@@ -187,11 +187,10 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processChangeColorElementByName(key);
 
-
         Object.entries(permission.getItemsNeedChange(key)).forEach(
           ([key, arr]) => {
             const color = arr.includes("color");
-            if(!color) return;
+            if (!color) return;
             store.dispatch(
               setPropertyItem({
                 step: activeStep,
