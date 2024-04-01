@@ -98,12 +98,12 @@ const uiSlice = createSlice({
     addActiveCards: (
       state,
       action: PayloadAction<{
+        step: StepName;
         keys: string[];
       }>
     ) => {
-      const { keys } = action.payload;
-      const { activeStep } = state;
-      const stepData = state.selectedData[activeStep] ?? {};
+      const { keys, step } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
       keys.forEach((key) => {
         const cardData = stepData[key] ?? {
           selected: [],
@@ -112,7 +112,7 @@ const uiSlice = createSlice({
         cardData.selected = [key];
         stepData[key] = cardData;
       });
-      state.selectedData[activeStep] = stepData;
+      state.selectedData[step] = stepData;
     },
     removeActiveCard: (state, action: PayloadAction<{ key: string }>) => {
       const { activeStep } = state;
@@ -127,18 +127,18 @@ const uiSlice = createSlice({
     removeActiveCards: (
       state,
       action: PayloadAction<{
+        step: StepName;
         keys: string[];
       }>
     ) => {
-      const { keys } = action.payload;
-      const { activeStep } = state;
-      const stepData = state.selectedData[activeStep] ?? {};
+      const { keys, step } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
       keys.forEach((key) => {
         const card = stepData[key];
         card.selected = [];
         stepData[key] = card;
       });
-      state.selectedData[activeStep] = stepData;
+      state.selectedData[step] = stepData;
     },
     setActiveCardsForStep: (
       state,
