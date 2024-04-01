@@ -24,6 +24,7 @@ import { ReferenceMountElement } from "./elements/mounts/ReferenceMountElement";
 import { RecommendationElementHandler } from "./handlers/property/RecommendationElementHandler";
 import { RequiredElementHandler } from "./handlers/property/RequiredElementHandler";
 import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
+import { DependentMountHandler } from "./handlers/mounts/DependentMountHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
@@ -95,6 +96,7 @@ export class Permission {
   }
 
   public executeBasicHandlers(step: Step): void {
+    new DependentMountHandler().handle(step);
     new ReservationMountHandler().handle(step);
     new RecommendationElementHandler().handle(step);
     new RequiredElementHandler().handle(step);
