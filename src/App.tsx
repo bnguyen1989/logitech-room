@@ -29,10 +29,10 @@ function App() {
       .catch(() => {
         const objData: ProductsObj = {};
 
-        Object.keys(dataLang).forEach((productKey) => {
+        const data: any = dataLang;
+        Object.keys(data).forEach((productKey) => {
           const newKey = productKey.toUpperCase();
-          // @ts-ignore
-          objData[newKey] = dataLang[productKey];
+          objData[newKey] = data[productKey];
         });
 
         dispatch(setLangText(objData));
