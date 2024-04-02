@@ -312,6 +312,19 @@ export const getAllKeyActiveCards = (state: RootState) => {
   }, [] as string[]);
 };
 
+export const getPositionStepNameBasedOnActiveStep =
+  (stepName: StepName) =>
+  (state: RootState): "prev" | "next" | "current" => {
+    const activeStep = getActiveStep(state);
+    const stepData = getStepData(state);
+    const steps = Object.keys(stepData);
+    const positionActiveStep = steps.indexOf(activeStep);
+    const positionStep = steps.indexOf(stepName);
+    if (positionStep < positionActiveStep) return "prev";
+    if (positionStep > positionActiveStep) return "next";
+    return "current";
+  };
+
 const getInitDataCardsForPermission = (state: RootState) => {
   const res: Record<string, Record<string, any>> = {};
   const selectedData = getSelectData(state);

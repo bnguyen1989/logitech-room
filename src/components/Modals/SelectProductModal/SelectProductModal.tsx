@@ -14,7 +14,6 @@ export const SelectProductModal: React.FC = () => {
   const dispatch = useDispatch();
   const selectedCards = useAppSelector(getSelectedConfiguratorCards);
   const { isOpen } = useAppSelector(getSelectProductModalData);
-  console.log("selectedCards", selectedCards);
 
   const handleClose = () => {
     dispatch(setSelectProductModal({ isOpen: false }));

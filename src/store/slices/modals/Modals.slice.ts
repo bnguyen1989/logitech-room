@@ -28,7 +28,6 @@ const ModalsSlice = createSlice({
       state[ModalName.MY_SETUP] = action.payload;
     },
     setInfoItemModal: (state, action: PayloadAction<ModalI>) => {
-  
       state[ModalName.INFO_ITEM] = action.payload;
     },
     setSelectProductModal: (state, action: PayloadAction<ModalI>) => {

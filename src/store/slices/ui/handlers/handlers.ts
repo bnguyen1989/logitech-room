@@ -49,6 +49,7 @@ import {
   getActiveStep,
   getAssetFromCard,
   getDataStepByName,
+  getPositionStepNameBasedOnActiveStep,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -119,12 +120,21 @@ export const getUiHandlers = (store: Store) => {
 
 export function updateActiveCardsByPermissionData(permission: Permission) {
   return (store: Store) => {
+    const state = store.getState();
     const dataForAdd = permission.getDataForAdd();
     const dataForRemove = permission.getDataForRemove();
     Object.entries(dataForAdd).forEach(([key, arr]) => {
+      const position = getPositionStepNameBasedOnActiveStep(key as StepName)(
+        state
+      );
+      if (position === "next") return;
       store.dispatch(addActiveCards({ step: key as StepName, keys: arr }));
     });
     Object.entries(dataForRemove).forEach(([key, arr]) => {
+      const position = getPositionStepNameBasedOnActiveStep(key as StepName)(
+        state
+      );
+      if (position === "next") return;
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
     });
   };

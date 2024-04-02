@@ -267,17 +267,7 @@ export class Permission {
 
   private getStepNameByElementName(elementName: string): StepName | undefined {
     return this.steps.find((step) => {
-      const allElements = step.getSimpleElements();
-      const isExist = allElements.some(
-        (element) => element.name === elementName
-      );
-      if (!isExist) {
-        return allElements.some((element) => {
-          if (!(element instanceof ItemElement)) return false;
-          const dependentMounts = element.getDependenceMount();
-          return dependentMounts.some((mount) => mount.name === elementName);
-        });
-      }
+      return !!step.getElementByName(elementName);
     })?.name;
   }
 }
