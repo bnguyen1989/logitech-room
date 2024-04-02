@@ -166,6 +166,15 @@ export const getMetadataProductNameAssetFromCard =
     return threekitAsset["Product Name"]?.trim();
   };
 
+export const getSubTitleCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const card = getCardByKeyPermission(stepName, keyPermission)(state);
+    if (!card.counter) return;
+    const { min } = card.counter;
+    if (min > 0) return `Minimum (${min})`;
+    return card.subtitle;
+  };
+
 export const getTitleCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const title = getTitleFromMetadataByKeyPermission(
@@ -302,6 +311,19 @@ export const getAllKeyActiveCards = (state: RootState) => {
     return acc;
   }, [] as string[]);
 };
+
+export const getPositionStepNameBasedOnActiveStep =
+  (stepName: StepName) =>
+  (state: RootState): "prev" | "next" | "current" => {
+    const activeStep = getActiveStep(state);
+    const stepData = getStepData(state);
+    const steps = Object.keys(stepData);
+    const positionActiveStep = steps.indexOf(activeStep);
+    const positionStep = steps.indexOf(stepName);
+    if (positionStep < positionActiveStep) return "prev";
+    if (positionStep > positionActiveStep) return "next";
+    return "current";
+  };
 
 const getInitDataCardsForPermission = (state: RootState) => {
   const res: Record<string, Record<string, any>> = {};

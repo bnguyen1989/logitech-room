@@ -1,4 +1,4 @@
-import { CardI, StepDataI, StepName } from "./type";
+import { CardI, QuestionFormI, StepDataI, StepName } from "./type";
 import LogoMS from "../../../assets/images/platform/microsoft.jpg";
 import LogoGoogle from "../../../assets/images/platform/google.jpg";
 import LogoZoom from "../../../assets/images/platform/zoom.jpg";
@@ -293,4 +293,87 @@ export const getDescriptionRoomBySize = (size: string) => {
     default:
       return "";
   }
+};
+
+export const getDataQuestionForm = (): Array<QuestionFormI> => {
+  return [
+    {
+      title: "Label",
+      question: " What are your hours of support?",
+      options: [
+        { value: false, text: "Business Hours" },
+        { value: false, text: "24/7" },
+      ],
+      active: true,
+      done: false,
+      disabled: false,
+    },
+    {
+      title: "Label",
+      question: "What’s your repair time for meeting rooms?",
+      options: [
+        { value: false, text: "Within 1 week" },
+        { value: false, text: "Within 1 hour" },
+      ],
+      active: false,
+      done: false,
+      disabled: true,
+    },
+    {
+      title: "Label",
+      question: "What’s the typical lifecycle for meeting room hardware?",
+      options: [
+        { value: false, text: "Less than 2 years" },
+        { value: false, text: "2-4 years" },
+        { value: false, text: "5 years or more" },
+      ],
+      active: false,
+      done: false,
+      disabled: true,
+    },
+    {
+      title: "Label",
+      question:
+        "What support service is needed for you to ensure your meeting rooms are always up and running?",
+      options: [
+        { value: false, text: "Tech support when I need it" },
+        { value: false, text: "Dedicated, additional service and support" },
+        { value: false, text: "Option one" },
+      ],
+      active: false,
+      done: false,
+      disabled: true,
+    },
+  ];
+};
+
+export const getExpressionArrayForQuestionForm = () => {
+  const expressionArraySelect = [
+    [
+      { questionIndex: 1, optionIndex: 2 },
+      { questionIndex: 2, optionIndex: 2 },
+      { questionIndex: 3, optionIndex: 3 },
+      { questionIndex: 4, optionIndex: 2 },
+    ],
+  ];
+
+  const baseExpressionArray = [
+    [{ questionIndex: 1, optionIndex: 1 }],
+    [{ questionIndex: 2, optionIndex: 1 }],
+    [{ questionIndex: 4, optionIndex: 1 }],
+  ];
+  const expressionArrayBasic = [
+    ...baseExpressionArray,
+    [{ questionIndex: 3, optionIndex: 1 }],
+  ];
+  const expressionArrayExtendedWarranty = [
+    ...baseExpressionArray,
+    [{ questionIndex: 3, optionIndex: 2 }],
+  ];
+
+  return {
+    select: expressionArraySelect,
+    basic: expressionArrayBasic,
+    extendedWarranty: expressionArrayExtendedWarranty,
+  };
 };

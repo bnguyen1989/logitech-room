@@ -1,5 +1,8 @@
 import { Middleware } from "@reduxjs/toolkit";
-import { updateDataCardByStepName } from "../slices/ui/handlers/handlers";
+import {
+  updateActiveCardsByPermissionData,
+  updateDataCardByStepName,
+} from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
   changeColorElement,
@@ -14,14 +17,10 @@ import {
   getPropertyCounterCardByKeyPermission,
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
-import {
-  addActiveCard,
-  addActiveCards,
-  removeActiveCard,
-  removeActiveCards,
-  setPropertyItem,
-} from "../slices/ui/Ui.slice";
+import { addActiveCard, setPropertyItem } from "../slices/ui/Ui.slice";
 import { CUSTOM_UI_ACTION_NAME, UI_ACTION_NAME } from "../slices/ui/utils";
+import { getIsShowProductModal } from "../slices/modals/selectors/selectors";
+import { setSelectProductModal } from "../slices/modals/Modals.slice";
 
 declare const app: Application;
 
@@ -38,6 +37,11 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
 
         if (!permission.canAddActiveElementByName(key)) return;
+
+        const isShowProductModal = getIsShowProductModal(state);
+        if (isShowProductModal) {
+          store.dispatch(setSelectProductModal({ isOpen: true }));
+        }
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         if (card?.counter && card.counter.max === 0) return;
@@ -77,8 +81,7 @@ export const middleware: Middleware =
 
         permission.processAddActiveElementByName(key);
 
-        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
-        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+        updateActiveCardsByPermissionData(permission)(store);
 
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
@@ -97,13 +100,7 @@ export const middleware: Middleware =
         const permission = getPermission(activeStep)(state);
         permission.processRemoveActiveElementByName(key);
 
-        permission.getAddKeys().forEach((key) => {
-          store.dispatch(addActiveCard({ key }));
-        });
-
-        permission.getRemoveKeys().forEach((key) => {
-          store.dispatch(removeActiveCard({ key }));
-        });
+        updateActiveCardsByPermissionData(permission)(store);
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card)(store);
@@ -115,8 +112,7 @@ export const middleware: Middleware =
 
         const permission = getPermission(stepName)(state);
 
-        store.dispatch(addActiveCards({ keys: permission.getAddKeys() }));
-        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+        updateActiveCardsByPermissionData(permission)(store);
 
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
@@ -203,10 +199,8 @@ export const middleware: Middleware =
           }
         );
 
-        store.dispatch(
-          addActiveCards({ keys: [...permission.getAddKeys(), key] })
-        );
-        store.dispatch(removeActiveCards({ keys: permission.getRemoveKeys() }));
+        updateActiveCardsByPermissionData(permission)(store);
+        store.dispatch(addActiveCard({ key }));
 
         changeColorElement(key, activeStep)(store);
         break;

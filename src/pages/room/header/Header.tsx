@@ -1,16 +1,9 @@
-import { useDispatch } from "react-redux";
 import { Button } from "../../../components/Buttons/Button/Button";
 import s from "./Header.module.scss";
-import { setSelectProductModal } from "../../../store/slices/modals/Modals.slice";
 import { useNavigate } from "react-router-dom";
 
 export const Header: React.FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const handleShowModalProducts = () => {
-    dispatch(setSelectProductModal({ isOpen: true }));
-  };
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
@@ -34,11 +27,6 @@ export const Header: React.FC = () => {
         <Button
           onClick={() => {}}
           text={"Contact Sales"}
-          variant={"contained"}
-        />
-        <Button
-          onClick={handleShowModalProducts}
-          text={"Show Products"}
           variant={"contained"}
         />
       </div>

@@ -28,26 +28,6 @@ export class AddActiveElementHandler extends Handler {
       return true;
     }
 
-    const mountElements = this.element.getDependenceMount();
-    mountElements.forEach((mount) => {
-      step.addValidElement(mount);
-    });
-
-    const defaultMountElement = this.element.getDefaultMount();
-    if (defaultMountElement instanceof MountElement) {
-      const activeElements = step.getActiveElements();
-      const isAddMountElementInActive = mountElements.some((mount) =>
-        activeElements.some((elem) => elem.name === mount.name)
-      );
-      const isExistDefaultMount = mountElements.some((mount) => {
-        return defaultMountElement.name === mount.name;
-      });
-
-      if (!isAddMountElementInActive && isExistDefaultMount) {
-        step.addActiveElement(defaultMountElement);
-      }
-    }
-
     const groups = step.allElements.filter(
       (elem) => elem instanceof GroupElement && elem.isRequiredOne()
     );

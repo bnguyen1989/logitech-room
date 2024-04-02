@@ -24,6 +24,7 @@ import { ReferenceMountElement } from "./elements/mounts/ReferenceMountElement";
 import { RecommendationElementHandler } from "./handlers/property/RecommendationElementHandler";
 import { RequiredElementHandler } from "./handlers/property/RequiredElementHandler";
 import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
+import { DependentMountHandler } from "./handlers/mounts/DependentMountHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
@@ -95,6 +96,7 @@ export class Permission {
   }
 
   public executeBasicHandlers(step: Step): void {
+    new DependentMountHandler().handle(step);
     new ReservationMountHandler().handle(step);
     new RecommendationElementHandler().handle(step);
     new RequiredElementHandler().handle(step);
@@ -192,24 +194,35 @@ export class Permission {
     return [];
   }
 
-  public getRemoveKeys(): Array<string> {
+  public getDataForRemove(): Record<string, Array<string>> {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) return [];
+    if (!currentStep) return {};
 
     const arrayActiveKeys = this.activeKeyItems;
     const chainActiveElements = currentStep.getChainActiveElements();
-    const keys = chainActiveElements.flat().map((element) => element.name);
-    return arrayActiveKeys.filter((key) => !keys.includes(key));
+    const activeKeys = chainActiveElements
+      .flat()
+      .map((element) => element.name);
+    const keysNeedRemove = arrayActiveKeys.filter(
+      (key) => !activeKeys.includes(key)
+    );
+    return this.groupKeyElementsByStepName(keysNeedRemove);
   }
 
-  public getAddKeys(): Array<string> {
+  public getDataForAdd(): Record<string, Array<string>> {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) return [];
+    if (!currentStep) return {};
 
     const arrayActiveKeys = this.activeKeyItems;
     const chainActiveElements = currentStep.getChainActiveElements();
-    const keys = chainActiveElements.flat().map((element) => element.name);
-    return keys.filter((key) => !arrayActiveKeys.includes(key));
+    const activeKeys = chainActiveElements
+      .flat()
+      .map((element) => element.name);
+    const keysNeedAdd = activeKeys.filter(
+      (key) => !arrayActiveKeys.includes(key)
+    );
+
+    return this.groupKeyElementsByStepName(keysNeedAdd);
   }
 
   public getItemsNeedChange(name: string): Record<string, Array<string>> {
@@ -232,5 +245,29 @@ export class Permission {
     return (
       this.steps.find((step) => step.name === this.currentStepName) || null
     );
+  }
+
+  private groupKeyElementsByStepName(
+    keys: string[]
+  ): Record<string, Array<string>> {
+    const result: Record<string, Array<string>> = {};
+
+    keys.forEach((key) => {
+      const stepName = this.getStepNameByElementName(key);
+      if (stepName) {
+        if (!result[stepName]) {
+          result[stepName] = [];
+        }
+        result[stepName].push(key);
+      }
+    });
+
+    return result;
+  }
+
+  private getStepNameByElementName(elementName: string): StepName | undefined {
+    return this.steps.find((step) => {
+      return !!step.getElementByName(elementName);
+    })?.name;
   }
 }

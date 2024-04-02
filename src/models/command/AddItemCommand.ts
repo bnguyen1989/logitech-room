@@ -1,5 +1,5 @@
 import { Configurator } from "../configurator/Configurator";
-import { ItemCommand } from './ItemCommand'
+import { ItemCommand } from "./ItemCommand";
 
 export class AddItemCommand extends ItemCommand {
   public name: string = "AddItemCommand";

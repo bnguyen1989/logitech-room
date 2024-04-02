@@ -134,4 +134,45 @@ describe("Permission", () => {
       });
     });
   });
+
+  describe("getDataForAdd", () => {
+    test("Adding Active Element by Name with Single Camera", () => {
+      const permission = new Permission(
+        [CameraName.RallyBar],
+        {
+          [CameraName.RallyBar]: {
+            color: "White",
+          },
+          [CameraName.WallMountForVideoBars]: {},
+        },
+        StepName.ConferenceCamera
+      );
+      permission.processAddActiveElementByName(CameraName.RallyBar);
+      const dataForAdd = permission.getDataForAdd();
+
+      expect(dataForAdd).toEqual({
+        [StepName.ConferenceCamera]: [CameraName.WallMountForVideoBars],
+      });
+    });
+  });
+
+  describe("getDataForRemove", () => {
+    test("Removing Active Element by Name with Single Cameras", () => {
+      const permission = new Permission(
+        [CameraName.WallMountForVideoBars],
+        {
+          [CameraName.RallyBar]: {
+            color: "White",
+          },
+          [CameraName.WallMountForVideoBars]: {},
+        },
+        StepName.ConferenceCamera
+      );
+      permission.processRemoveActiveElementByName(CameraName.RallyBar);
+      const dataForRemove = permission.getDataForRemove();
+      expect(dataForRemove).toEqual({
+        [StepName.ConferenceCamera]: [CameraName.WallMountForVideoBars],
+      });
+    });
+  });
 });

@@ -91,3 +91,15 @@ export interface SelectI {
   data: Array<SelectDataI>;
 }
 
+export interface QuestionFormI {
+  title: string;
+  question: string;
+  options: Array<{
+    value: boolean;
+    text: string;
+  }>;
+  active: boolean;
+  done: boolean;
+  disabled: boolean;
+}
+

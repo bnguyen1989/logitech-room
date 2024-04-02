@@ -19,10 +19,12 @@ import ControllerImg from "../../../../assets/images/items/controller.jpg";
 import AccessImg from "../../../../assets/images/items/access.jpg";
 import {
   addActiveCard,
+  addActiveCards,
   changeActiveStep,
   changeProcessInitData,
   createItem,
   removeActiveCard,
+  removeActiveCards,
   setActiveCardsForStep,
   setDataCardsStep,
   setPropertyItem,
@@ -46,10 +48,12 @@ import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelect
 import {
   getActiveStep,
   getAssetFromCard,
-  getDataStepByName
+  getDataStepByName,
+  getPositionStepNameBasedOnActiveStep,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
+import { Permission } from "../../../../models/permission/Permission";
 
 declare const app: Application;
 
@@ -113,6 +117,28 @@ export const getUiHandlers = (store: Store) => {
     }
   );
 };
+
+export function updateActiveCardsByPermissionData(permission: Permission) {
+  return (store: Store) => {
+    const state = store.getState();
+    const dataForAdd = permission.getDataForAdd();
+    const dataForRemove = permission.getDataForRemove();
+    Object.entries(dataForAdd).forEach(([key, arr]) => {
+      const position = getPositionStepNameBasedOnActiveStep(key as StepName)(
+        state
+      );
+      if (position === "next") return;
+      store.dispatch(addActiveCards({ step: key as StepName, keys: arr }));
+    });
+    Object.entries(dataForRemove).forEach(([key, arr]) => {
+      const position = getPositionStepNameBasedOnActiveStep(key as StepName)(
+        state
+      );
+      if (position === "next") return;
+      store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
+    });
+  };
+}
 
 export function updateDataCardByStepName(stepName: StepName) {
   return (store: Store, configurator: Configurator) => {
@@ -251,8 +277,8 @@ function setStepData(
         );
         let min = 0;
         let max = 0;
-        if(values.length) {
-          min = parseInt(values[0].value)
+        if (values.length) {
+          min = parseInt(values[0].value);
           max = parseInt(values[values.length - 1].value);
         }
 
