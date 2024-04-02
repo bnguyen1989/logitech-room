@@ -11,6 +11,7 @@ import { ThreekitService } from "../../../services/Threekit/ThreekitService";
 import { useEffect } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
+import { getParentURL } from "../../../utils/browserUtils";
 
 declare const MktoForms2: any;
 
@@ -29,11 +30,17 @@ export const SetupModal: React.FC = () => {
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
 
     MktoForms2.whenReady((form: any) => {
-      form.onSubmit(() => {
-        new ThreekitService().createOrder(orderData).then(() => {
-          dispatch(setMySetupModal({ isOpen: false }));
-          navigate("/room", { replace: true });
+      new ThreekitService().createOrder(orderData).then((order) => {
+        const baseUrl = getParentURL();
+        const link = `${baseUrl}/room/${order.shortId}`;
+        form.setValues({
+          honeypot: link,
         });
+      });
+
+      form.onSubmit(() => {
+        dispatch(setMySetupModal({ isOpen: false }));
+        navigate("/room", { replace: true });
         return false;
       });
       const button = document.querySelector(".mktoButton");
