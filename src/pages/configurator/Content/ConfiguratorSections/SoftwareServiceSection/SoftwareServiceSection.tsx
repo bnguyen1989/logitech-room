@@ -1,40 +1,115 @@
+import { useState } from "react";
 import { ArrowSelectDownSVG } from "../../../../../assets";
 import { IconButton } from "../../../../../components/Buttons/IconButton/IconButton";
 import { CardSoftware } from "../../../../../components/Cards/CardSoftware/CardSoftware";
 import { QuestionForm } from "../../../../../components/QuestionForm/QuestionForm";
-import { CardI, StepName } from "../../../../../store/slices/ui/type";
+import {
+  CardI,
+  QuestionFormI,
+  StepName,
+} from "../../../../../store/slices/ui/type";
 import s from "./SoftwareServiceSection.module.scss";
+import {
+  getDataQuestionForm,
+  getExpressionArrayForQuestionForm,
+} from "../../../../../store/slices/ui/utils";
+import { SoftwareServicesName } from "../../../../../utils/permissionUtils";
+
+interface ExpressionI {
+  questionIndex: number;
+  optionIndex: number;
+}
 
 interface PropsI {
   cards: CardI[];
 }
 export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   const { cards } = props;
+  const [isSubmitForm, setIsSubmitForm] = useState<boolean>(false);
+  const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
+    []
+  );
+
+  const submitFormData = (data: Array<QuestionFormI>) => {
+    const { select, basic, extendedWarranty } =
+      getExpressionArrayForQuestionForm();
+    setIsSubmitForm(true);
+    const dataKeys = [
+      SoftwareServicesName.LogitechSync,
+      SoftwareServicesName.SupportService,
+    ];
+    const isSelect = getResultExpression(data, select);
+    if (isSelect) {
+      const index = dataKeys.indexOf(SoftwareServicesName.SupportService);
+      if (index !== -1) {
+        dataKeys.splice(index, 1);
+      }
+      setKeysNotVisibleCards(dataKeys);
+      return;
+    }
+    const isBasic = getResultExpression(data, basic);
+    if (isBasic) {
+      const index = dataKeys.indexOf(SoftwareServicesName.LogitechSync);
+      if (index !== -1) {
+        dataKeys.splice(index, 1);
+      }
+      setKeysNotVisibleCards(dataKeys);
+      return;
+    }
+    const isExtendedWarranty = getResultExpression(data, extendedWarranty);
+    if (isExtendedWarranty) {
+      //need added logic for extended warranty
+      setKeysNotVisibleCards(dataKeys);
+      return;
+    }
+  };
+
+  const getResultExpression = (
+    data: Array<QuestionFormI>,
+    expression: Array<Array<ExpressionI>>
+  ) => {
+    const result = expression.map((item) => {
+      return item.some((expressionItem) => {
+        const { questionIndex, optionIndex } = expressionItem;
+        const question = data[questionIndex - 1];
+        return question.options[optionIndex - 1].value;
+      });
+    });
+    return result.every((item) => item);
+  };
 
   const getCardComponent = (card: CardI, index: number) => {
     const isSoftwareServicesCard = card.key === StepName.SoftwareServices;
     if (!isSoftwareServicesCard) return null;
+    if (keysNotVisibleCards.includes(card.keyPermission)) return null;
     return <CardSoftware key={index} keyItemPermission={card.keyPermission} />;
   };
   return (
     <div className={s.container}>
       <div className={s.button_link}>
-        <div className={s.actions}>
-          <IconButton
-            text={"Need help? Anchor link"}
-            onClick={() => {}}
-            variant={"outlined"}
-          >
-            <ArrowSelectDownSVG />
-          </IconButton>
-        </div>
+        {!isSubmitForm ? (
+          <div className={s.actions}>
+            <IconButton
+              text={"Need help? Anchor link"}
+              onClick={() => {}}
+              variant={"outlined"}
+            >
+              <ArrowSelectDownSVG />
+            </IconButton>
+          </div>
+        ) : null}
       </div>
       <div className={s.cards}>
         {cards.map((card, index) => getCardComponent(card, index))}
       </div>
-      <div className={s.form}>
-        <QuestionForm />
-      </div>
+      {!isSubmitForm ? (
+        <div className={s.form}>
+          <QuestionForm
+            baseData={getDataQuestionForm()}
+            submitData={submitFormData}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };

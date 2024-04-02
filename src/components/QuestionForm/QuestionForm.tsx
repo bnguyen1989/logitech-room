@@ -1,60 +1,18 @@
 import { EditSVG } from "../../assets";
+import { QuestionFormI } from "../../store/slices/ui/type";
 import { IconButton } from "../Buttons/IconButton/IconButton";
 import { RadioButton } from "../RadioButton/RadioButton";
 import s from "./QuestionForm.module.scss";
-import React from "react";
+import React, { useState } from "react";
 
-interface PropsI {}
-export const QuestionForm: React.FC<PropsI> = () => {
-  const listQuestion = [
-    {
-      title: "Label",
-      question:
-        " What are your hours of support?",
-      options: [
-        { value: false, text: "Business Hours" },
-        { value: true, text: "24/7" },
-      ],
-      active: false,
-      done: true,
-    },
-    {
-      title: "Label",
-      question:
-        "What’s your repair time for meeting rooms?",
-      options: [
-        { value: false, text: "Within 1 week" },
-        { value: false, text: "Within 1 hour" },
-      ],
-      active: true,
-      done: false,
-    },
-    {
-      title: "Label",
-      question:
-        "What’s the typical lifecycle for meeting room hardware?",
-      options: [
-        { value: false, text: "Less than 2 years" },
-        { value: false, text: "2-4 years" },
-        { value: false, text: "5 years or more" },
-      ],
-      active: false,
-      done: false,
-    },
-    {
-      title: "Label",
-      question:
-        "What support service is needed for you to ensure your meeting rooms are always up and running?",
-      options: [
-        { value: false, text: "Tech support when I need it" },
-        { value: false, text: "Dedicated, additional service and support" },
-        { value: false, text: "Option one" },
-      ],
-      active: false,
-      done: false,
-    },
-  ];
-  const [data, setData] = React.useState(listQuestion);
+interface PropsI {
+  baseData: Array<QuestionFormI>;
+  submitData: (data: Array<QuestionFormI>) => void;
+}
+export const QuestionForm: React.FC<PropsI> = (props) => {
+  const { baseData, submitData } = props;
+  const [data, setData] = useState<Array<QuestionFormI>>(baseData);
+
   const handleClickEdit = (index: number) => {
     const currentData = data.map((item, i) => {
       if (i < index) {
@@ -63,9 +21,14 @@ export const QuestionForm: React.FC<PropsI> = () => {
       if (i === index) {
         item.active = true;
         item.done = false;
+        item.disabled = false;
       } else {
         item.active = false;
         item.done = false;
+        item.disabled = true;
+        if (index === i - 1) {
+          item.disabled = false;
+        }
         item.options = item.options.map((option) => {
           option.value = false;
           return option;
@@ -76,21 +39,23 @@ export const QuestionForm: React.FC<PropsI> = () => {
     setData(currentData);
   };
 
-  //temp create function for demo work this form
   const handleClick = (index: number) => {
+    let isClick = false;
     const currentData = data.map((item, i) => {
+      if (item.disabled || item.done) return item;
       if (i === index) {
         item.active = true;
-        item.done = false;
-      } else {
-        item.active = false;
-        item.done = false;
+        isClick = true;
       }
       return item;
     });
+    if (index > 0 && isClick) {
+      currentData[index - 1].active = false;
+      currentData[index - 1].done = true;
+    }
     setData(currentData);
   };
-  
+
   const handleChangeValue = (indexData: number, indexOption: number) => {
     return (value: boolean) => {
       const currentData = data.map((item, i) => {
@@ -103,7 +68,17 @@ export const QuestionForm: React.FC<PropsI> = () => {
         }
         return item;
       });
+      const isLastIndex = indexData == data.length - 1;
+      if (value && !isLastIndex) {
+        currentData[indexData + 1].disabled = false;
+      }
+      if (!value && !isLastIndex) {
+        currentData[indexData + 1].disabled = true;
+      }
       setData(currentData);
+      if (value && isLastIndex) {
+        submitData(currentData);
+      }
     };
   };
   return (
@@ -114,7 +89,9 @@ export const QuestionForm: React.FC<PropsI> = () => {
             key={index}
             className={`${s.wrapper} ${
               question.active ? s.wrapper_active : ""
-            } ${question.done ? s.wrapper_done : ""}`}
+            } ${question.done ? s.wrapper_done : ""} ${
+              !question.disabled && !question.done ? s.wrapper_not_disabled : ""
+            }`}
           >
             <div className={s.mark_item}>
               <div
@@ -125,9 +102,7 @@ export const QuestionForm: React.FC<PropsI> = () => {
                     : ""
                 }`}
               ></div>
-              <div
-                className={`${s.mark}`}
-              >
+              <div className={`${s.mark}`}>
                 {question.done ? <DoneSVG /> : null}
                 {question.active ? <ActiveSVG /> : null}
                 {!question.done && !question.active ? <DisableSVG /> : null}
@@ -139,28 +114,20 @@ export const QuestionForm: React.FC<PropsI> = () => {
                 }`}
               ></div>
             </div>
-            <div
-              className={`${s.item}`}
-            >
-              <div
-                className={`${s.triangle}`}
-              ></div>
+            <div className={`${s.item}`}>
+              <div className={`${s.triangle}`}></div>
               <div className={s.header_item}>
                 <div className={s.item_text} onClick={() => handleClick(index)}>
                   <div className={s.title}>{question.title}</div>
                   <div className={s.text}>{question.question}</div>
                 </div>
-                <div
-                  className={`${s.edit_button}`}
-                >
+                <div className={`${s.edit_button}`}>
                   <IconButton onClick={() => handleClickEdit(index)}>
                     <EditSVG />
                   </IconButton>
                 </div>
               </div>
-              <div
-                className={`${s.actions}`}
-              >
+              <div className={`${s.actions}`}>
                 {question.options.map((option, indexOption) => (
                   <RadioButton
                     key={indexOption}
