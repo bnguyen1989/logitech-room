@@ -166,6 +166,15 @@ export const getMetadataProductNameAssetFromCard =
     return threekitAsset["Product Name"]?.trim();
   };
 
+export const getSubTitleCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const card = getCardByKeyPermission(stepName, keyPermission)(state);
+    if (!card.counter) return;
+    const { min } = card.counter;
+    if (min > 0) return `Minimum (${min})`;
+    return card.subtitle;
+  };
+
 export const getTitleCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const title = getTitleFromMetadataByKeyPermission(

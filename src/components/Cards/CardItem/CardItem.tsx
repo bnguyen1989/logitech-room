@@ -16,6 +16,7 @@ import {
   getIsRecommendedCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
+  getSubTitleCardByKeyPermission,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
 import {
@@ -48,6 +49,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   );
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const subTitle = useAppSelector(
+    getSubTitleCardByKeyPermission(activeStep, keyItemPermission)
   );
   const isDisabledActions = useAppSelector(
     getIsDisabledActionByKeyPermission(activeStep, keyItemPermission)
@@ -95,11 +99,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
         </div>
         <div className={s.right_content}>
           <div className={s.header} onClick={handleClick}>
-            {/* <div className={s.header_title}>{card.header_title}</div> */}
-            <div className={s.title}>{title}</div>
+            <div className={s.header_title}>{title}</div>
             {langProduct && !!langProduct.ShortDescription && (
-              <div className={s.subtitle}>{langProduct.ShortDescription}</div>
+              <div className={s.title}>{langProduct.ShortDescription}</div>
             )}
+            <div className={s.subtitle}>{subTitle}</div>
           </div>
           <div
             className={s.content}
