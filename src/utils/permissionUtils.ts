@@ -80,6 +80,7 @@ export enum VideoAccessoryName {
 export enum SoftwareServicesName {
   LogitechSync = "Logitech Sync",
   SupportService = "Support Service",
+  ExtendedWarranty = "Logitech Extended Warranty",
 }
 
 export function createStepRoomSize() {
@@ -338,10 +339,7 @@ export function createStepMeetingController() {
         )
       )
       .setDefaultMount(
-        new MountElement(
-          item.name,
-          Configurator.getNameNodeForTap("Table", 1)
-        )
+        new MountElement(item.name, Configurator.getNameNodeForTap("Table", 1))
       );
   };
   const group1 = new GroupElement()
@@ -378,12 +376,14 @@ export function createStepVideoAccessories() {
           new MountElement(
             VideoAccessoryName.LogitechTapSchedulerAngleMount,
             Configurator.getNameNodeScheduler()
-          ).setDependentMount(
-            new MountElement(
-              VideoAccessoryName.LogitechTapSchedulerAngleMount,
-              Configurator.getNameNodeAngleMountScheduler()
+          )
+            .setDependentMount(
+              new MountElement(
+                VideoAccessoryName.LogitechTapSchedulerAngleMount,
+                Configurator.getNameNodeAngleMountScheduler()
+              )
             )
-          ).setActionDisabled(true)
+            .setActionDisabled(true)
         )
         .addAutoChangeItems({
           [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],
@@ -415,7 +415,8 @@ export function createStepSoftwareServices() {
   const stepSoftwareServices = new Step(StepName.SoftwareServices);
   const group = new GroupElement()
     .addElement(new ItemElement(SoftwareServicesName.LogitechSync))
-    .addElement(new ItemElement(SoftwareServicesName.SupportService));
+    .addElement(new ItemElement(SoftwareServicesName.SupportService))
+    .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty));
   group.setRequiredOne(true);
   stepSoftwareServices.allElements = [group];
   return stepSoftwareServices;
