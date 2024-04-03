@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowSelectDownSVG } from "../../../../../assets";
 import { IconButton } from "../../../../../components/Buttons/IconButton/IconButton";
 import { CardSoftware } from "../../../../../components/Cards/CardSoftware/CardSoftware";
@@ -25,6 +25,7 @@ interface PropsI {
 }
 export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   const { cards } = props;
+  const formAnchorRef = useRef<HTMLDivElement>(null);
   const [isSubmitForm, setIsSubmitForm] = useState<boolean>(false);
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
@@ -76,6 +77,12 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
     return result.every((item) => item);
   };
 
+  const handleClick = () => {
+    if (formAnchorRef.current) {
+      formAnchorRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const getCardComponent = (card: CardI, index: number) => {
     const isSoftwareServicesCard = card.key === StepName.SoftwareServices;
     if (!isSoftwareServicesCard) return null;
@@ -89,7 +96,7 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
           <div className={s.actions}>
             <IconButton
               text={"Need help? Anchor link"}
-              onClick={() => {}}
+              onClick={handleClick}
               variant={"outlined"}
             >
               <ArrowSelectDownSVG />
@@ -101,7 +108,7 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
         {cards.map((card, index) => getCardComponent(card, index))}
       </div>
       {!isSubmitForm ? (
-        <div className={s.form}>
+        <div className={s.form} ref={formAnchorRef}>
           <QuestionForm
             baseData={getDataQuestionForm()}
             submitData={submitFormData}
