@@ -33,6 +33,7 @@ import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import {
+  SoftwareServicesName,
   getPermissionNameByItemName,
   isSupportService,
 } from "../../../../utils/permissionUtils";
@@ -562,7 +563,21 @@ function setSoftwareServicesData(configurator: Configurator) {
       );
     });
 
-    setDataCard(softwareServicesCardData, StepName.SoftwareServices)(store);
+    const sortedTemplateArr = [
+      SoftwareServicesName.LogitechSync,
+      SoftwareServicesName.SupportService,
+      SoftwareServicesName.ExtendedWarranty,
+    ];
+    const sortedArr = sortedTemplateArr
+      .map((item) => {
+        const card = softwareServicesCardData.find(
+          (card) => card.keyPermission === item
+        );
+        return card;
+      })
+      .filter(Boolean) as Array<CardI>;
+
+    setDataCard(sortedArr, StepName.SoftwareServices)(store);
   };
 }
 
