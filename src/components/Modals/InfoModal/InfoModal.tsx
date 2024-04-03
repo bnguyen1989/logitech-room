@@ -14,23 +14,17 @@ import { setInfoItemModal } from "../../../store/slices/modals/Modals.slice";
 import { ColorSwitcher } from "../../ColorSwitchers/ColorSwitcher/ColorSwitcher";
 import {
   getLangForModalProduct,
-  getLangProduct,
-  getLangProductBlade1,
-  getLangProductImage,
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 
 export const InfoModal: React.FC = () => {
   const dispatch = useDispatch();
-  const { isOpen, product, keyItemPermission } =
+  const { isOpen, product } =
     useAppSelector(getInfoItemModalData);
   const [selectedColor, setSelectedColor] = useState<string>("Graphite");
   console.log("product", product);
 
-  const dataProduct = useAppSelector(getLangForModalProduct(product));
+  const dataProduct: any = useAppSelector(getLangForModalProduct(product));
   console.log("dataProduct", dataProduct);
-  const langProductImage = useAppSelector(
-    getLangProductImage(product, keyItemPermission)
-  );
 
   if (!dataProduct) return <></>;
   const cards = [
