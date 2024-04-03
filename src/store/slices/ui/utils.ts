@@ -246,7 +246,7 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
       // header_title: "LOGITECH Basic",
       // title: "Device Management Software",
       description:
-        "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
+        "Add up to 3 years of warranty to extend coverage and support for your devices.",
       keyPermission: SoftwareServicesName.ExtendedWarranty,
     },
   };
@@ -315,7 +315,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       ],
       active: true,
       done: false,
-      disabled: false,
     },
     {
       title: "Label",
@@ -326,7 +325,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       ],
       active: false,
       done: false,
-      disabled: true,
     },
     {
       title: "Label",
@@ -338,7 +336,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       ],
       active: false,
       done: false,
-      disabled: true,
     },
     {
       title: "Label",
@@ -351,7 +348,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       ],
       active: false,
       done: false,
-      disabled: true,
     },
   ];
 };

@@ -100,6 +100,5 @@ export interface QuestionFormI {
   }>;
   active: boolean;
   done: boolean;
-  disabled: boolean;
 }
 

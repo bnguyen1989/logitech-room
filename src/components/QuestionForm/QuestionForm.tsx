@@ -15,49 +15,18 @@ export const QuestionForm: React.FC<PropsI> = (props) => {
 
   const handleClickEdit = (index: number) => {
     const currentData = data.map((item, i) => {
-      if (i < index) {
-        return item;
-      }
       if (i === index) {
         item.active = true;
-        item.done = false;
-        item.disabled = false;
-      } else {
-        item.active = false;
-        item.done = false;
-        item.disabled = true;
-        if (index === i - 1) {
-          item.disabled = false;
-        }
-        item.options = item.options.map((option) => {
-          option.value = false;
-          return option;
-        });
+        item.done = true;
       }
       return item;
     });
-    setData(currentData);
-  };
-
-  const handleClick = (index: number) => {
-    let isClick = false;
-    const currentData = data.map((item, i) => {
-      if (item.disabled || item.done) return item;
-      if (i === index) {
-        item.active = true;
-        isClick = true;
-      }
-      return item;
-    });
-    if (index > 0 && isClick) {
-      currentData[index - 1].active = false;
-      currentData[index - 1].done = true;
-    }
     setData(currentData);
   };
 
   const handleChangeValue = (indexData: number, indexOption: number) => {
     return (value: boolean) => {
+      if (!value) return;
       const currentData = data.map((item, i) => {
         if (i === indexData) {
           item.options = item.options.map((option) => {
@@ -68,15 +37,20 @@ export const QuestionForm: React.FC<PropsI> = (props) => {
         }
         return item;
       });
-      const isLastIndex = indexData == data.length - 1;
-      if (value && !isLastIndex) {
-        currentData[indexData + 1].disabled = false;
+      const currentQuestionDone = currentData[indexData].done;
+      if (currentQuestionDone) {
+        currentData[indexData].active = false;
       }
-      if (!value && !isLastIndex) {
-        currentData[indexData + 1].disabled = true;
+      if (!currentQuestionDone) {
+        currentData[indexData].done = true;
+        currentData[indexData].active = false;
+      }
+      const isLastIndex = indexData == data.length - 1;
+      if (!isLastIndex && !currentQuestionDone) {
+        currentData[indexData + 1].active = true;
       }
       setData(currentData);
-      if (value && isLastIndex) {
+      if (isLastIndex) {
         submitData(currentData);
       }
     };
@@ -89,9 +63,7 @@ export const QuestionForm: React.FC<PropsI> = (props) => {
             key={index}
             className={`${s.wrapper} ${
               question.active ? s.wrapper_active : ""
-            } ${question.done ? s.wrapper_done : ""} ${
-              !question.disabled && !question.done ? s.wrapper_not_disabled : ""
-            }`}
+            } ${question.done && !question.active ? s.wrapper_done : ""}`}
           >
             <div className={s.mark_item}>
               <div
@@ -103,7 +75,7 @@ export const QuestionForm: React.FC<PropsI> = (props) => {
                 }`}
               ></div>
               <div className={`${s.mark}`}>
-                {question.done ? <DoneSVG /> : null}
+                {question.done && !question.active ? <DoneSVG /> : null}
                 {question.active ? <ActiveSVG /> : null}
                 {!question.done && !question.active ? <DisableSVG /> : null}
               </div>
@@ -117,7 +89,7 @@ export const QuestionForm: React.FC<PropsI> = (props) => {
             <div className={`${s.item}`}>
               <div className={`${s.triangle}`}></div>
               <div className={s.header_item}>
-                <div className={s.item_text} onClick={() => handleClick(index)}>
+                <div className={s.item_text}>
                   <div className={s.title}>{question.title}</div>
                   <div className={s.text}>{question.question}</div>
                 </div>
