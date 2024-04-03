@@ -240,6 +240,15 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
         "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,
     },
+    [SoftwareServicesName.ExtendedWarranty]: {
+      key: StepName.SoftwareServices,
+      image: ServiceImg,
+      // header_title: "LOGITECH Basic",
+      // title: "Device Management Software",
+      description:
+        "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
+      keyPermission: SoftwareServicesName.ExtendedWarranty,
+    },
   };
 }
 

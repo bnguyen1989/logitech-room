@@ -37,31 +37,29 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
     const dataKeys = [
       SoftwareServicesName.LogitechSync,
       SoftwareServicesName.SupportService,
+      SoftwareServicesName.ExtendedWarranty,
     ];
+    const visibleKeys = [];
     const isSelect = getResultExpression(data, select);
     if (isSelect) {
-      const index = dataKeys.indexOf(SoftwareServicesName.SupportService);
-      if (index !== -1) {
-        dataKeys.splice(index, 1);
-      }
-      setKeysNotVisibleCards(dataKeys);
-      return;
+      visibleKeys.push(SoftwareServicesName.SupportService);
     }
     const isBasic = getResultExpression(data, basic);
     if (isBasic) {
-      const index = dataKeys.indexOf(SoftwareServicesName.LogitechSync);
-      if (index !== -1) {
-        dataKeys.splice(index, 1);
-      }
-      setKeysNotVisibleCards(dataKeys);
-      return;
+      visibleKeys.push(SoftwareServicesName.LogitechSync);
     }
     const isExtendedWarranty = getResultExpression(data, extendedWarranty);
     if (isExtendedWarranty) {
-      //need added logic for extended warranty
-      setKeysNotVisibleCards(dataKeys);
-      return;
+      visibleKeys.push(SoftwareServicesName.ExtendedWarranty);
     }
+
+    visibleKeys.forEach((key) => {
+      const index = dataKeys.indexOf(key);
+      if (index !== -1) {
+        dataKeys.splice(index, 1);
+      }
+    });
+    setKeysNotVisibleCards(dataKeys);
   };
 
   const getResultExpression = (
