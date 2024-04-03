@@ -209,6 +209,11 @@ export const getMetadataByKeyPermission =
 
 export const getIsRecommendedCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
+    const isRecommended = metadata["isRecommended"];
+    if (isRecommended !== undefined) {
+      return isRecommended === "true";
+    }
     const permission = getPermission(stepName)(state);
     return permission.isRecommendedElementByName(keyPermission);
   };

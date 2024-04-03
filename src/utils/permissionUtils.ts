@@ -240,31 +240,12 @@ export function createStepAudioExtensions() {
           color: "White",
         }) as ItemElement
       )
-      .addRecommendationDependence({
-        [AudioExtensionName.RallyMicPod]: {
-          active: true,
-          property: {
-            color: "White",
-          },
-        },
-      })
   );
   const group4 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallySpeaker)
   );
   const group5 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodHub)
-      .addRecommendationDependence({
-        [AudioExtensionName.RallyMicPod]: {
-          active: true,
-          property: {
-            count: 2,
-          },
-        },
-        [AudioExtensionName.RallyMicPodMount]: {
-          active: false,
-        },
-      })
       .addRequiredDependence({
         [AudioExtensionName.RallyMicPod]: {
           active: true,

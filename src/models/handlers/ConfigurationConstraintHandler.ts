@@ -4,6 +4,7 @@ import {
   AttributeI,
   ConfigurationI,
   ValueAssetStateI,
+  ValueAttributeStateI,
   ValueStringStateI,
 } from "../configurator/type";
 import { DataTable } from "../dataTable/DataTable";
@@ -207,6 +208,9 @@ export class ConfigurationConstraintHandler extends Handler {
       this.rule_micPod_micPodHub_required();
     }
 
+    this.reco_micPod_micPodHub();
+    this.reco_micPendantMount_inWhite();
+
     this.rule_Mic_Mount_Mic();
     this.rule_Pendant_Mic();
     this.rule_Pendant_Mount_Mic();
@@ -226,6 +230,69 @@ export class ConfigurationConstraintHandler extends Handler {
         false
       );
     }
+  }
+
+  private reco_micPendantMount_inWhite() {
+    const micAttrName_str = "Room Mic";
+
+    const pendantQtyAttrName_str = "Room Mic Pod Pendant Mount";
+
+    const selectedMic = this.getSelectedValue(micAttrName_str);
+    const attribute = this.getAttribute(pendantQtyAttrName_str);
+    if (!attribute) return;
+    const attrState = this.configurator.getAttributeState();
+    const attributeValuesArr = attrState[attribute.id].values;
+    if (!attributeValuesArr) return;
+    if (
+      typeof selectedMic === "object" &&
+      this.getColorFromAssetName(selectedMic.name) === "White"
+    ) {
+      attributeValuesArr.forEach((option) => {
+        this.setRecommendedInMetadata(option, true);
+      });
+    } else {
+      attributeValuesArr.forEach((option) => {
+        this.setRecommendedInMetadata(option, false);
+      });
+    }
+
+    this.configurator.setAttributeState(attribute.id, {
+      values: attributeValuesArr,
+    });
+  }
+
+  private reco_micPod_micPodHub() {
+    const micAttrName_str = "Room Mic";
+    const micQtyAttrName_str = "Qty - Micpod/Expansion";
+
+    const micMountAttrName_str = "Room Mic Mount";
+
+    const micPodHubAttrName_str = "Room Mic Pod Hub";
+
+    const selectedMic = this.getSelectedValue(micAttrName_str);
+    const selectedMicQty = this.getSelectedValue(micQtyAttrName_str);
+    const selectedMicMount = this.getSelectedValue(micMountAttrName_str);
+    const attribute = this.getAttribute(micPodHubAttrName_str);
+    if (!attribute) return;
+    const attrState = this.configurator.getAttributeState();
+    const attributeValuesArr = attrState[attribute.id].values;
+    if (!attributeValuesArr) return;
+    if (
+      typeof selectedMic === "object" &&
+      selectedMicQty === "2" &&
+      typeof selectedMicMount !== "object"
+    ) {
+      attributeValuesArr.forEach((option) => {
+        this.setRecommendedInMetadata(option, true);
+      });
+    } else {
+      attributeValuesArr.forEach((option) => {
+        this.setRecommendedInMetadata(option, false);
+      });
+    }
+    this.configurator.setAttributeState(attribute.id, {
+      values: attributeValuesArr,
+    });
   }
 
   private rule_Mic_Mount_Mic() {
@@ -911,5 +978,13 @@ export class ConfigurationConstraintHandler extends Handler {
     const colorSeparator = getSeparatorItemColor();
     const name = names.find((n) => n.includes(colorSeparator + color));
     return name;
+  }
+
+  private setRecommendedInMetadata(
+    value: ValueAttributeStateI,
+    isRecommended: boolean
+  ) {
+    if ("value" in value) return;
+    value.metadata["isRecommended"] = isRecommended ? "true" : "false";
   }
 }
