@@ -44,6 +44,7 @@ export const Player: React.FC = () => {
             },
           },
         })}
+        ui={false}
       >
         <>
           <CameraControls ref={cameraControlsRef} />
