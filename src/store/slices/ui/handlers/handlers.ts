@@ -25,6 +25,7 @@ import {
   createItem,
   removeActiveCard,
   removeActiveCards,
+  removeItem,
   setActiveCardsForStep,
   setDataCardsStep,
   setPropertyItem,
@@ -51,6 +52,7 @@ import {
   getAssetFromCard,
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
+  getSelectedDataByStepName,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -313,13 +315,15 @@ function setStepData(
     stepCardData.push(...temp);
   });
 
+  const state = store.getState();
+
   stepCardData.forEach((tempCard) => {
     const { threekitItems } = tempCard.dataThreekit;
 
     const color = getPropertyColorCardByKeyPermission(
       stepName,
       tempCard.keyPermission
-    )(store.getState());
+    )(state);
 
     //temp solution, but need to be refactored, because threekitItems can include isn't color items (Object.keys(threekitItems).length === 2)
     const isSetColors = Object.keys(threekitItems).length === 2 && !color;
@@ -338,6 +342,20 @@ function setStepData(
         createItem({
           step: stepName,
           keyItemPermission: tempCard.keyPermission,
+        })
+      );
+    }
+  });
+
+  const selectDataCards = getSelectedDataByStepName(stepName)(state);
+  const keysCardsFromSelectData = Object.keys(selectDataCards);
+  keysCardsFromSelectData.forEach((key) => {
+    const card = stepCardData.find((item) => item.keyPermission === key);
+    if (!card) {
+      store.dispatch(
+        removeItem({
+          step: stepName,
+          keyItemPermission: key,
         })
       );
     }

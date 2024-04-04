@@ -49,6 +49,18 @@ const uiSlice = createSlice({
         [keyItemPermission]: cardData,
       };
     },
+    removeItem: (
+      state,
+      action: PayloadAction<{
+        step: string;
+        keyItemPermission: string;
+      }>
+    ) => {
+      const { step, keyItemPermission } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
+      delete stepData[keyItemPermission];
+      state.selectedData[step] = stepData;
+    },
     setPropertyItem: (
       state,
       action: PayloadAction<{
@@ -189,6 +201,7 @@ export const {
   changeProcessInitData,
   setPropertyItem,
   createItem,
+  removeItem,
   setDataCardsStep,
   removeActiveCards,
   addActiveCards,

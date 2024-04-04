@@ -81,7 +81,7 @@ export class ConfigurationConstraintHandler extends Handler {
       ConfigurationConstraintHandler.getTriggeredAttribute(this.configurator);
     const localeTagStr = "locale_US";
     const leadingSpecCharForDefault = "*";
-    const skipColumns = ["level2datatableId", "attrRules"];
+    const skipColumns = ["level2datatableId", "attrRules", "recoRules"];
     const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
     const currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
       triggeredByAttr[0]
@@ -115,6 +115,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
     const level2datatableId = level2row.value[skipColumns[0]];
     const attrRulesStr = level2row.value[skipColumns[1]];
+    const recoRulesStr = level2row.value[skipColumns[2]];
 
     let setLevel2Default_flag = false;
     const cache = CACHE_DATA;
@@ -144,7 +145,8 @@ export class ConfigurationConstraintHandler extends Handler {
             localeTagStr,
             leadingSpecCharForDefault,
             setLevel2Default_flag,
-            attrRulesStr
+            attrRulesStr,
+            recoRulesStr
           );
           app.eventEmitter.emit("processInitThreekitData", false);
         });
@@ -154,7 +156,8 @@ export class ConfigurationConstraintHandler extends Handler {
         localeTagStr,
         leadingSpecCharForDefault,
         setLevel2Default_flag,
-        attrRulesStr
+        attrRulesStr,
+        recoRulesStr
       );
     }
     return true;
@@ -164,7 +167,8 @@ export class ConfigurationConstraintHandler extends Handler {
     localeTagStr: string,
     leadingSpecCharForDefault: string,
     setLevel2Default_flag: boolean,
-    attrRulesStr: string
+    attrRulesStr: string,
+    recoRulesStr: string
   ) {
     const setConfig_obj = this.validateAttributesWithDatatable(
       localeTagStr,
@@ -184,32 +188,8 @@ export class ConfigurationConstraintHandler extends Handler {
     }
 
     ////*3rd call the rule(s) based on what's selected in the level1 datatable
-    const attrRulesArr = attrRulesStr
-      ? attrRulesStr.split(";").map((aStr: any) => aStr.trim())
-      : [];
-
-    if (attrRulesArr.indexOf(RuleName.tapQty_tapIp) > -1) {
-      this.rule_tapQty10_tapIp();
-    }
-
-    if (attrRulesArr.indexOf(RuleName.micPodQty_sight) > -1) {
-      this.rule_micPodQty_sight();
-    }
-
-    if (attrRulesArr.indexOf(RuleName.micPod_micMount_optional) > -1) {
-      this.rule_micPod_micMount_optional();
-    }
-
-    if (attrRulesArr.indexOf(RuleName.micPod_micPodExt_optional) > -1) {
-      this.rule_micPod_micPodExt_optional();
-    }
-
-    if (attrRulesArr.indexOf(RuleName.micPod_micPodHub_required) > -1) {
-      this.rule_micPod_micPodHub_required();
-    }
-
-    this.rule_reco_micPod_micPodHub();
-    this.rule_reco_micPendantMount_inWhite();
+    this.handleAttrRules(attrRulesStr);
+    this.handleRecoRules(recoRulesStr);
 
     this.rule_Mic_Mount_Mic();
     this.rule_Pendant_Mic();
@@ -217,19 +197,135 @@ export class ConfigurationConstraintHandler extends Handler {
     this.clearRuleCache();
   }
 
-  private clearRuleCache() {
-    const micAttrName_str = "Room Mic";
-    const selectedMic = this.getSelectedValue(micAttrName_str);
-    if (typeof selectedMic !== "object") {
-      ConfigurationConstraintHandler.addCacheData(
-        RuleName.micPod_micPodExt_optional,
-        false
-      );
-      ConfigurationConstraintHandler.addCacheData(
-        RuleName.micPod_micMount_optional,
-        false
-      );
+  private clearRuleCache() {}
+
+  private handleAttrRules(attrRulesStr: string) {
+    const attrRulesArr = attrRulesStr
+      ? attrRulesStr.split(";").map((aStr: any) => aStr.trim())
+      : [];
+
+    if (attrRulesArr.includes(RuleName.tapQty_tapIp)) {
+      this.rule_tapQty10_tapIp();
     }
+
+    if (attrRulesArr.includes(RuleName.micPodQty_sight)) {
+      this.rule_micPodQty_sight();
+    }
+
+    if (attrRulesArr.includes(RuleName.micPod_micMount_inNoneWhite)) {
+      this.rule_micPod_micMount_inNoneWhite();
+    }
+
+    if (attrRulesArr.includes(RuleName.micPod_micMount_inWhite)) {
+      // this.rule_micPod_micMount_inWhite();
+    }
+
+    if (attrRulesArr.includes(RuleName.micPod_micPodExt)) {
+      this.rule_micPod_micPodExt();
+    }
+  }
+
+  private handleRecoRules(recoRulesStr: string) {
+    const recoRulesArr = recoRulesStr
+      ? recoRulesStr.split(";").map((aStr: any) => aStr.trim())
+      : [];
+
+    if (recoRulesArr.includes(RuleName.reco_micPod_micPodHub)) {
+      this.rule_reco_micPod_micPodHub();
+    }
+
+    if (recoRulesArr.includes(RuleName.reco_micPendantMount_inWhite)) {
+      this.rule_reco_micPendantMount_inWhite();
+    }
+  }
+
+  private rule_micPod_micMount_inNoneWhite() {
+    const micAttrName_str = "Room Mic";
+    const micQtyAttrName_str = "Qty - Micpod/Expansion";
+
+    const micMountAttrName_str = "Room Mic Mount";
+    const mountMicQtyAttrName_str = "Qty - Mic Mount";
+
+    const selectedMic = this.getSelectedValue(micAttrName_str);
+    if (typeof selectedMic !== "object") return;
+    const colorMic = this.getColorFromAssetName(selectedMic.name);
+    if (colorMic === "White") return;
+    const selectedMicMount = this.getSelectedValue(micMountAttrName_str);
+    const isSelectMicMount = typeof selectedMicMount === "object";
+    const cache = ConfigurationConstraintHandler.getCacheData(
+      RuleName.micPod_micMount_inNoneWhite
+    );
+    if (!isSelectMicMount && cache) return;
+
+    if (!isSelectMicMount && !cache) {
+      const attributeMicMount = this.getAttribute(micMountAttrName_str);
+      if (!attributeMicMount) return;
+      const namesAssetMount = attributeMicMount.values.map(
+        (value) => (value as ValueAssetStateI).name
+      );
+      const micMountAssetName = this.getNameAssetByColor(
+        colorMic,
+        namesAssetMount
+      );
+      const micMountAsset = attributeMicMount.values.find(
+        (value) => (value as ValueAssetStateI).name === micMountAssetName
+      ) as ValueAssetStateI;
+      if (!micMountAsset) return;
+      this.configurator.setConfiguration({
+        [micMountAttrName_str]: {
+          assetId: micMountAsset.id,
+        },
+      });
+      ConfigurationConstraintHandler.addCacheData(
+        RuleName.micPod_micMount_inNoneWhite,
+        true
+      );
+      return;
+    }
+
+    const qtyMicPod = this.getSelectedValue(micQtyAttrName_str);
+    if (typeof qtyMicPod !== "string") return;
+
+    this.configurator.setConfiguration({
+      [mountMicQtyAttrName_str]: qtyMicPod,
+    });
+  }
+
+  private rule_micPod_micPodExt() {
+    const micAttrName_str = "Room Mic";
+
+    const micExtCableAttrName_str = "Room Mic Pod Extension Cable";
+    const micExtCableQtyAttrName_str = "Qty - Mic Pod Extension Cable";
+
+    const selectedMic = this.getSelectedValue(micAttrName_str);
+
+    const attribute = this.getAttribute(micExtCableAttrName_str);
+    if (!attribute) return;
+    const attrState = this.configurator.getAttributeState();
+    const attributeValuesArr = attrState[attribute.id].values;
+    if (!attributeValuesArr) return;
+
+    const isSelectMic = typeof selectedMic === "object";
+    if (!isSelectMic) {
+      this.configurator.setConfiguration({
+        [micExtCableAttrName_str]: {
+          assetId: "",
+        },
+        [micExtCableQtyAttrName_str]: "0",
+      });
+
+      attributeValuesArr.forEach((option) => {
+        option.visible = false;
+      });
+    } else {
+      attributeValuesArr.forEach((option) => {
+        option.visible = true;
+      });
+    }
+
+    this.configurator.setAttributeState(attribute.id, {
+      values: attributeValuesArr,
+    });
   }
 
   private rule_reco_micPendantMount_inWhite() {
@@ -268,6 +364,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const micMountAttrName_str = "Room Mic Mount";
 
     const micPodHubAttrName_str = "Room Mic Pod Hub";
+    const micPodHubQtyAttrName_str = "Qty - Mic Pod Hub";
 
     const selectedMic = this.getSelectedValue(micAttrName_str);
     const selectedMicQty = this.getSelectedValue(micQtyAttrName_str);
@@ -277,11 +374,11 @@ export class ConfigurationConstraintHandler extends Handler {
     const attrState = this.configurator.getAttributeState();
     const attributeValuesArr = attrState[attribute.id].values;
     if (!attributeValuesArr) return;
-    if (
+    const isNeedSetRecommended =
       typeof selectedMic === "object" &&
       selectedMicQty === "2" &&
-      typeof selectedMicMount !== "object"
-    ) {
+      typeof selectedMicMount !== "object";
+    if (isNeedSetRecommended) {
       attributeValuesArr.forEach((option) => {
         this.setRecommendedInMetadata(option, true);
       });
@@ -293,6 +390,26 @@ export class ConfigurationConstraintHandler extends Handler {
     this.configurator.setAttributeState(attribute.id, {
       values: attributeValuesArr,
     });
+
+    const cache = ConfigurationConstraintHandler.getCacheData(
+      RuleName.reco_micPod_micPodHub
+    );
+    if (!isNeedSetRecommended || cache) return;
+
+    const visibleValue = attributeValuesArr.find(
+      (option) => option.visible
+    ) as ValueAssetStateI;
+    if (!visibleValue) return;
+    this.configurator.setConfiguration({
+      [micPodHubAttrName_str]: {
+        assetId: visibleValue.id,
+      },
+      [micPodHubQtyAttrName_str]: "1",
+    });
+    ConfigurationConstraintHandler.addCacheData(
+      RuleName.reco_micPod_micPodHub,
+      true
+    );
   }
 
   private rule_Mic_Mount_Mic() {
@@ -400,157 +517,6 @@ export class ConfigurationConstraintHandler extends Handler {
         });
       }
     }
-  }
-
-  private rule_micPod_micPodHub_required() {
-    const micAttrName_str = "Room Mic";
-    const micQtyAttrName_str = "Qty - Micpod/Expansion";
-
-    const micMountAttrName_str = "Room Mic Mount";
-
-    const micPodHubAttrName_str = "Room Mic Pod Hub";
-    const micPodHubQtyAttrName_str = "Qty - Mic Pod Hub";
-
-    const selectedMic = this.getSelectedValue(micAttrName_str);
-    if (typeof selectedMic !== "object") return;
-
-    const selectedMicQty = this.getSelectedValue(micQtyAttrName_str);
-    if (typeof selectedMicQty !== "string" || selectedMicQty !== "2") return;
-
-    const selectedMicMount = this.getSelectedValue(micMountAttrName_str);
-    if (typeof selectedMicMount === "object") return;
-
-    const selectedMicPodHub = this.getSelectedValue(micPodHubAttrName_str);
-    if (typeof selectedMicPodHub === "object") return;
-
-    const attribute = this.getAttribute(micPodHubAttrName_str);
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attribute
-      ? attrState[attribute.id].values
-      : undefined;
-
-    if (attribute && attributeValuesArr) {
-      const visibleValue = attributeValuesArr.find(
-        (option) => option.visible
-      ) as ValueAssetStateI;
-      if (visibleValue) {
-        this.configurator.setConfiguration({
-          [micPodHubAttrName_str]: {
-            assetId: visibleValue.id,
-          },
-          [micPodHubQtyAttrName_str]: "1",
-        });
-      }
-    }
-  }
-
-  private rule_micPod_micPodExt_optional() {
-    const micAttrName_str = "Room Mic";
-
-    const micExtCableAttrName_str = "Room Mic Pod Extension Cable";
-    const micExtCableQtyAttrName_str = "Qty - Mic Pod Extension Cable";
-
-    const selectedMic = this.getSelectedValue(micAttrName_str);
-    const objConfiguration: ConfigurationI = {
-      [micExtCableAttrName_str]: {
-        assetId: "",
-      },
-      [micExtCableQtyAttrName_str]: "0",
-    };
-
-    if (typeof selectedMic !== "object") {
-      this.configurator.setConfiguration({
-        ...objConfiguration,
-      });
-      return;
-    }
-
-    const isCacheData = ConfigurationConstraintHandler.getCacheData(
-      RuleName.micPod_micPodExt_optional
-    );
-    if (isCacheData) return;
-
-    const selectedExtCable = this.getSelectedValue(micExtCableAttrName_str);
-    if (typeof selectedExtCable === "object") return;
-
-    const attribute = this.getAttribute(micExtCableAttrName_str);
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attribute
-      ? attrState[attribute.id].values
-      : undefined;
-    if (attribute && attributeValuesArr) {
-      const visibleValue = attributeValuesArr.find(
-        (option) => option.visible
-      ) as ValueAssetStateI;
-      if (visibleValue) {
-        objConfiguration[micExtCableAttrName_str] = {
-          assetId: visibleValue.id,
-        };
-        objConfiguration[micExtCableQtyAttrName_str] = "1";
-      }
-    }
-
-    this.configurator.setConfiguration({
-      ...objConfiguration,
-    });
-
-    ConfigurationConstraintHandler.addCacheData(
-      RuleName.micPod_micPodExt_optional,
-      true
-    );
-  }
-
-  private rule_micPod_micMount_optional() {
-    const isCacheData = ConfigurationConstraintHandler.getCacheData(
-      RuleName.micPod_micMount_optional
-    );
-    if (isCacheData) return;
-    const micAttrName_str = "Room Mic";
-    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
-
-    const micMountAttrName_str = "Room Mic Mount";
-    const micMountQtyAttrName_str = "Qty - Mic Mount";
-
-    const selectedMic = this.getSelectedValue(micAttrName_str);
-    if (typeof selectedMic !== "object") return;
-
-    const selectedMicMount = this.getSelectedValue(micMountAttrName_str);
-    if (typeof selectedMicMount === "object") return;
-
-    const qtyMicPod = this.getSelectedValue(micPodQtyAttrName_str);
-    if (typeof qtyMicPod !== "string") return;
-
-    const attributeMicMount = this.getAttribute(micMountAttrName_str);
-    if (!attributeMicMount) return;
-
-    const micAsset = this.findAssetByAssetId(
-      selectedMic.id,
-      micAttrName_str
-    ) as ValueAssetStateI;
-    if (!micAsset) return;
-
-    const namesAssetMount = attributeMicMount.values.map(
-      (value) => (value as ValueAssetStateI).name
-    );
-    const color = this.getColorFromAssetName(micAsset.name);
-    const micMountAssetName = this.getNameAssetByColor(color, namesAssetMount);
-
-    const micMountAsset = attributeMicMount.values.find(
-      (value) => (value as ValueAssetStateI).name === micMountAssetName
-    ) as ValueAssetStateI;
-    if (!micMountAsset) return;
-
-    this.configurator.setConfiguration({
-      [micMountAttrName_str]: {
-        assetId: micMountAsset.id,
-      },
-      [micMountQtyAttrName_str]: qtyMicPod,
-    });
-
-    ConfigurationConstraintHandler.addCacheData(
-      RuleName.micPod_micMount_optional,
-      true
-    );
   }
 
   private rule_micPodQty_sight() {
