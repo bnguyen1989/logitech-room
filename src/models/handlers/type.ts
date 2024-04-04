@@ -15,4 +15,6 @@ export enum RuleName {
   micPod_micMount_optional = "micPod_micMount_optional",
   micPod_micPodExt_optional = "micPod_micPodExt_optional",
   micPod_micPodHub_required = "micPod_micPodHub_required",
+  reco_micPendantMount_inWhite = "reco_micPendantMount_inWhite",
+  reco_micPod_micPodHub = "reco_micPod_micPodHub",
 }

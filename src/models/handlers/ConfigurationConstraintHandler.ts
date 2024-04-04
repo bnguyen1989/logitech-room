@@ -208,8 +208,8 @@ export class ConfigurationConstraintHandler extends Handler {
       this.rule_micPod_micPodHub_required();
     }
 
-    this.reco_micPod_micPodHub();
-    this.reco_micPendantMount_inWhite();
+    this.rule_reco_micPod_micPodHub();
+    this.rule_reco_micPendantMount_inWhite();
 
     this.rule_Mic_Mount_Mic();
     this.rule_Pendant_Mic();
@@ -232,7 +232,7 @@ export class ConfigurationConstraintHandler extends Handler {
     }
   }
 
-  private reco_micPendantMount_inWhite() {
+  private rule_reco_micPendantMount_inWhite() {
     const micAttrName_str = "Room Mic";
 
     const pendantQtyAttrName_str = "Room Mic Pod Pendant Mount";
@@ -261,7 +261,7 @@ export class ConfigurationConstraintHandler extends Handler {
     });
   }
 
-  private reco_micPod_micPodHub() {
+  private rule_reco_micPod_micPodHub() {
     const micAttrName_str = "Room Mic";
     const micQtyAttrName_str = "Qty - Micpod/Expansion";
 
