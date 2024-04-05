@@ -2,6 +2,7 @@ import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
 import {
   AttributeI,
+  AttributeName,
   ConfigurationI,
   ValueAssetStateI,
   ValueAttributeStateI,
@@ -247,8 +248,8 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_micPod_micMount_inNoneWhite() {
-    const micAttrName_str = "Room Mic";
-    const micQtyAttrName_str = "Qty - Micpod/Expansion";
+    const micAttrName_str = AttributeName.RoomMic;
+    const micQtyAttrName_str = AttributeName.QtyMic;
 
     const micMountAttrName_str = "Room Mic Mount";
     const mountMicQtyAttrName_str = "Qty - Mic Mount";
@@ -365,8 +366,8 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_reco_micPod_micPodHub() {
-    const micAttrName_str = "Room Mic";
-    const micQtyAttrName_str = "Qty - Micpod";
+    const micAttrName_str = AttributeName.RoomMic;
+    const micQtyAttrName_str = AttributeName.QtyMic;
 
     const micMountAttrName_str = "Room Mic Mount";
 
@@ -420,8 +421,8 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_Mic_Mount_Mic() {
-    const micAttrName_str = "Room Mic";
-    const micPodQtyAttrName_str = "Qty - Micpod";
+    const micAttrName_str = AttributeName.RoomMic;
+    const micPodQtyAttrName_str = AttributeName.QtyMic;
 
     const mountMicQtyAttrName_str = "Qty - Mic Mount";
 
@@ -454,8 +455,8 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_Pendant_Mic() {
-    const micAttrName_str = "Room Mic";
-    const micPodQtyAttrName_str = "Qty - Micpod";
+    const micAttrName_str = AttributeName.RoomMic;
+    const micPodQtyAttrName_str = AttributeName.QtyMic;
 
     const pendantQtyAttrName_str = "Qty - Mic Pendant Mount";
 
@@ -528,7 +529,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_micPodQty_sight() {
     const sightAttrName_str = "Room Sight";
-    const micPodQtyAttrName_str = "Qty - Micpod";
+    const micPodQtyAttrName_str = AttributeName.QtyMic;
 
     const selectedSight = this.getSelectedValue(sightAttrName_str);
 
