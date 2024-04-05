@@ -41,7 +41,38 @@ export interface ValueStringStateI {
   enabled: boolean;
   visible: boolean;
 }
-export interface ValueAssetStateI extends AssetI{
+export interface ValueAssetStateI extends AssetI {
   enabled: boolean;
   visible: boolean;
+}
+
+export enum AttributeName {
+  RoomService = "Room Service",
+  RoomDeployment = "Room Deployment Mode",
+  RoomCamera = "Room Camera",
+  RoomCameraMount = "Room Camera Mount",
+  RoomCompute = "Room Compute",
+  RoomComputeMount = "Room Compute Mount",
+  RoomSight = "Room Sight",
+  RoomMic = "Room Mic",
+  QtyMic = "Qty - Micpod",
+  RoomMicMount = "Room Mic Mount",
+  QtyMicMount = "Qty - Mic Mount",
+  RoomMicPendantMount = "Room Mic Pod Pendant Mount",
+  QtyMicPendantMount = "Qty - Mic Pendant Mount",
+  RoomMicHub = "Room Mic Pod Hub",
+  QtyMicHub = "Qty - Mic Pod Hub",
+  RoomMicExtensionCable = "Room Mic Pod Extension Cable",
+  QtyMicExtensionCable = "Qty - Mic Pod Extension Cable",
+  RoomMeetingController = "Room Meeting Controller",
+  QtyMeetingController = "Qty - Meeting Controller",
+  RoomTapMount = "Room Tap Mount",
+  QtyTapMount = "Qty - Tap Mount",
+  RoomTapScheduler = "Room Tap Scheduler",
+  RoomTapSchedulerAngleMount = "Room Tap Scheduler Angle Mount",
+  RoomTapSchedulerSideMount = "Room Tap Scheduler Side Mount#not-ui",
+  RoomScribe = "Room Scribe",
+  RoomSwytch = "Room Swytch",
+  RoomDeviceManagementSoftware = "Room Device Management Software",
+  RoomSupportService = "Room Support Service",
 }
