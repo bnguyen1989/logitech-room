@@ -366,26 +366,18 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_reco_micPod_micPodHub() {
-    const micAttrName_str = AttributeName.RoomMic;
-    const micQtyAttrName_str = AttributeName.QtyMic;
-
-    const micMountAttrName_str = "Room Mic Mount";
-
-    const micPodHubAttrName_str = "Room Mic Pod Hub";
-    const micPodHubQtyAttrName_str = "Qty - Mic Pod Hub";
-
-    const selectedMic = this.getSelectedValue(micAttrName_str);
-    const selectedMicQty = this.getSelectedValue(micQtyAttrName_str);
-    const selectedMicMount = this.getSelectedValue(micMountAttrName_str);
-    const attribute = this.getAttribute(micPodHubAttrName_str);
+    const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
+    const selectedMicQty = this.getSelectedValue(AttributeName.QtyMic);
+    const selectedMicMount = this.getSelectedValue(AttributeName.RoomMicMount);
+    const attribute = this.getAttribute(AttributeName.RoomMicHub);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
     const attributeValuesArr = attrState[attribute.id].values;
     if (!attributeValuesArr) return;
+    const isSelectMic = typeof selectedMic === "object";
+    const isSelectMicMount = typeof selectedMicMount === "object";
     const isNeedSetRecommended =
-      typeof selectedMic === "object" &&
-      selectedMicQty === "2" &&
-      typeof selectedMicMount !== "object";
+      isSelectMic && selectedMicQty === "2" && !isSelectMicMount;
     if (isNeedSetRecommended) {
       attributeValuesArr.forEach((option) => {
         this.setRecommendedInMetadata(option, true);
@@ -409,10 +401,10 @@ export class ConfigurationConstraintHandler extends Handler {
     ) as ValueAssetStateI;
     if (!visibleValue) return;
     this.configurator.setConfiguration({
-      [micPodHubAttrName_str]: {
+      [AttributeName.RoomMicHub]: {
         assetId: visibleValue.id,
       },
-      [micPodHubQtyAttrName_str]: "1",
+      [AttributeName.QtyMicHub]: "1",
     });
     ConfigurationConstraintHandler.addCacheData(
       RuleName.reco_micPod_micPodHub,
