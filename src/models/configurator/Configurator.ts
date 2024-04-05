@@ -4,6 +4,7 @@ import { IdGenerator } from "../IdGenerator";
 import { StepName } from "../permission/type";
 import {
   AttributeI,
+  AttributeName,
   AttributeStateI,
   AttributesStateI,
   ConfigurationI,
@@ -18,51 +19,54 @@ export class Configurator {
   private attributeState: AttributesStateI = {};
 
   public static NameAttrWithMountNames: Record<string, Array<string>> = {
-    "Room Camera": ["Room Camera Mount"],
-    "Room Mic": ["Room Mic Mount", "Room Mic Pod Pendant Mount"],
-    "Room Meeting Controller": ["Room Tap Mount"],
-    "Room Tap Scheduler": [
-      "Room Tap Scheduler Angle Mount",
-      "Room Tap Scheduler Side Mount#not-ui",
+    [AttributeName.RoomCamera]: [AttributeName.RoomCameraMount],
+    [AttributeName.RoomMic]: [
+      AttributeName.RoomMicMount,
+      AttributeName.RoomMicPendantMount,
+    ],
+    [AttributeName.RoomMeetingController]: [AttributeName.RoomTapMount],
+    [AttributeName.RoomTapScheduler]: [
+      AttributeName.RoomTapSchedulerAngleMount,
+      AttributeName.RoomTapSchedulerSideMount,
     ],
   };
 
-  public static PlatformName = [["Room Service"]];
+  public static PlatformName = [[AttributeName.RoomService]];
 
-  public static ServicesName = [["Room Deployment Mode"]];
+  public static ServicesName = [[AttributeName.RoomDeployment]];
 
   public static CameraName = [
-    ["Room Camera"],
-    ["Room Camera Mount"],
-    ["Room Compute"],
-    ["Room Compute Mount"],
-    ["Room Sight"],
+    [AttributeName.RoomCamera],
+    [AttributeName.RoomCameraMount],
+    [AttributeName.RoomCompute],
+    [AttributeName.RoomComputeMount],
+    [AttributeName.RoomSight],
   ];
 
   public static AudioExtensionName = [
-    ["Room Mic", "Qty - Micpod/Expansion"],
-    ["Room Mic Mount", "Qty - Mic Mount"],
-    ["Room Mic Pod Pendant Mount", "Qty - Mic Pendant Mount"],
-    ["Room Mic Pod Hub", "Qty - Mic Pod Hub"],
-    ["Room Mic Pod Extension Cable", "Qty - Mic Pod Extension Cable"],
+    [AttributeName.RoomMic, AttributeName.QtyMic],
+    [AttributeName.RoomMicMount, AttributeName.QtyMicMount],
+    [AttributeName.RoomMicPendantMount, AttributeName.QtyMicPendantMount],
+    [AttributeName.RoomMicHub, AttributeName.QtyMicHub],
+    [AttributeName.RoomMicExtensionCable, AttributeName.QtyMicExtensionCable],
   ];
 
   public static MeetingControllerName = [
-    ["Room Meeting Controller", "Qty - Meeting Controller"],
-    ["Room Tap Mount", "Qty - Tap Mount"],
+    [AttributeName.RoomMeetingController, AttributeName.QtyMeetingController],
+    [AttributeName.RoomTapMount, AttributeName.QtyTapMount],
   ];
 
   public static VideoAccessoriesName = [
-    ["Room Tap Scheduler"],
-    ["Room Tap Scheduler Angle Mount"],
-    ["Room Tap Scheduler Side Mount#not-ui"],
-    ["Room Scribe"],
-    ["Room Swytch"],
+    [AttributeName.RoomTapScheduler],
+    [AttributeName.RoomTapSchedulerAngleMount],
+    [AttributeName.RoomTapSchedulerSideMount],
+    [AttributeName.RoomScribe],
+    [AttributeName.RoomSwytch],
   ];
 
   public static SoftwareServicesName = [
-    ["Room Device Management Software"],
-    ["Room Support Service"],
+    [AttributeName.RoomDeviceManagementSoftware],
+    [AttributeName.RoomSupportService],
   ];
 
   public static getNamesAttrByStepName(stepName: string): Array<Array<string>> {
