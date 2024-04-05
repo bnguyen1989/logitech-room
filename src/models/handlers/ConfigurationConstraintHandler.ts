@@ -229,7 +229,7 @@ export class ConfigurationConstraintHandler extends Handler {
     }
 
     if (attrRulesArr.includes(RuleName.micPod_micPodExt)) {
-      this.rule_micPod_micPodExt();
+      this.rule_micPod_micPodExtCAT();
     }
   }
 
@@ -248,66 +248,44 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_micPod_micMount_inNoneWhite() {
-    const micAttrName_str = AttributeName.RoomMic;
-    const micQtyAttrName_str = AttributeName.QtyMic;
-
-    const micMountAttrName_str = "Room Mic Mount";
-    const mountMicQtyAttrName_str = "Qty - Mic Mount";
-
-    const selectedMic = this.getSelectedValue(micAttrName_str);
+    const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
     if (typeof selectedMic !== "object") return;
     const colorMic = this.getColorFromAssetName(selectedMic.name);
     if (colorMic === "White") return;
-    const selectedMicMount = this.getSelectedValue(micMountAttrName_str);
-    const isSelectMicMount = typeof selectedMicMount === "object";
-    const cache = ConfigurationConstraintHandler.getCacheData(
-      RuleName.micPod_micMount_inNoneWhite
-    );
-    if (!isSelectMicMount && cache) return;
 
-    if (!isSelectMicMount && !cache) {
-      const attributeMicMount = this.getAttribute(micMountAttrName_str);
-      if (!attributeMicMount) return;
-      const namesAssetMount = attributeMicMount.values.map(
-        (value) => (value as ValueAssetStateI).name
-      );
-      const micMountAssetName = this.getNameAssetByColor(
-        colorMic,
-        namesAssetMount
-      );
-      const micMountAsset = attributeMicMount.values.find(
-        (value) => (value as ValueAssetStateI).name === micMountAssetName
-      ) as ValueAssetStateI;
-      if (!micMountAsset) return;
+    const selectedPendant = this.getSelectedValue(
+      AttributeName.RoomMicPendantMount
+    );
+    const isSelectPendant = typeof selectedPendant === "object";
+    if (isSelectPendant) {
       this.configurator.setConfiguration({
-        [micMountAttrName_str]: {
-          assetId: micMountAsset.id,
+        [AttributeName.RoomMicPendantMount]: {
+          assetId: "",
         },
+        [AttributeName.QtyMicPendantMount]: "0",
       });
-      ConfigurationConstraintHandler.addCacheData(
-        RuleName.micPod_micMount_inNoneWhite,
-        true
-      );
-      return;
     }
 
-    const qtyMicPod = this.getSelectedValue(micQtyAttrName_str);
+    const selectedMicMount = this.getSelectedValue(AttributeName.RoomMicMount);
+    const isSelectMicMount = typeof selectedMicMount === "object";
+    if (!isSelectMicMount) return;
+
+    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
     if (typeof qtyMicPod !== "string") return;
 
     this.configurator.setConfiguration({
-      [mountMicQtyAttrName_str]: qtyMicPod,
+      [AttributeName.QtyMicMount]: qtyMicPod,
     });
   }
 
+  private rule_micPod_micPodExtCAT() {
+    this.rule_micPod_micPodExt();
+    this.rule_micPod_micPodCAT();
+  }
+
   private rule_micPod_micPodExt() {
-    const micAttrName_str = "Room Mic";
-
-    const micExtCableAttrName_str = "Room Mic Pod Extension Cable";
-    const micExtCableQtyAttrName_str = "Qty - Mic Pod Extension Cable";
-
-    const selectedMic = this.getSelectedValue(micAttrName_str);
-
-    const attribute = this.getAttribute(micExtCableAttrName_str);
+    const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
+    const attribute = this.getAttribute(AttributeName.RoomMicExtensionCable);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
     const attributeValuesArr = attrState[attribute.id].values;
@@ -316,10 +294,40 @@ export class ConfigurationConstraintHandler extends Handler {
     const isSelectMic = typeof selectedMic === "object";
     if (!isSelectMic) {
       this.configurator.setConfiguration({
-        [micExtCableAttrName_str]: {
+        [AttributeName.RoomMicExtensionCable]: {
           assetId: "",
         },
-        [micExtCableQtyAttrName_str]: "0",
+        [AttributeName.QtyMicExtensionCable]: "0",
+      });
+
+      attributeValuesArr.forEach((option) => {
+        option.visible = false;
+      });
+    } else {
+      attributeValuesArr.forEach((option) => {
+        option.visible = true;
+      });
+    }
+
+    this.configurator.setAttributeState(attribute.id, {
+      values: attributeValuesArr,
+    });
+  }
+
+  private rule_micPod_micPodCAT() {
+    const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
+    const attribute = this.getAttribute(AttributeName.RoomMicCATCoupler);
+    if (!attribute) return;
+    const attrState = this.configurator.getAttributeState();
+    const attributeValuesArr = attrState[attribute.id].values;
+    if (!attributeValuesArr) return;
+
+    const isSelectMic = typeof selectedMic === "object";
+    if (!isSelectMic) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicCATCoupler]: {
+          assetId: "",
+        },
       });
 
       attributeValuesArr.forEach((option) => {
@@ -385,6 +393,13 @@ export class ConfigurationConstraintHandler extends Handler {
     } else {
       attributeValuesArr.forEach((option) => {
         this.setRecommendedInMetadata(option, false);
+      });
+
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicHub]: {
+          assetId: "",
+        },
+        [AttributeName.QtyMicHub]: "0",
       });
     }
     this.configurator.setAttributeState(attribute.id, {

@@ -56,7 +56,7 @@ export enum AudioExtensionName {
   RallyMicPodPendantMount = "Logitech Rally Mic Pod Pendant Mount",
   RallySpeaker = "Rally Speaker",
   RallyMicPodHub = "Rally Mic Pod Hub",
-  CATCoupler = "CAT Coupler",
+  CATCoupler = "Logitech Rally Mic Pod CAT Coupler",
   MicPodExtensionCable = "Mic Pod Extension Cable",
 }
 

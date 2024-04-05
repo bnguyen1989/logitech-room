@@ -25,7 +25,6 @@ import {
   createItem,
   removeActiveCard,
   removeActiveCards,
-  removeItem,
   setActiveCardsForStep,
   setDataCardsStep,
   setPropertyItem,
@@ -52,7 +51,6 @@ import {
   getAssetFromCard,
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
-  getSelectedDataByStepName,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -342,20 +340,6 @@ function setStepData(
         createItem({
           step: stepName,
           keyItemPermission: tempCard.keyPermission,
-        })
-      );
-    }
-  });
-
-  const selectDataCards = getSelectedDataByStepName(stepName)(state);
-  const keysCardsFromSelectData = Object.keys(selectDataCards);
-  keysCardsFromSelectData.forEach((key) => {
-    const card = stepCardData.find((item) => item.keyPermission === key);
-    if (!card) {
-      store.dispatch(
-        removeItem({
-          step: stepName,
-          keyItemPermission: key,
         })
       );
     }

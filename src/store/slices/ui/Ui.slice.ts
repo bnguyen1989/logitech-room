@@ -162,6 +162,9 @@ const uiSlice = createSlice({
       const { selectedData } = state;
       const { step, keyCards } = action.payload;
       const stepData = selectedData[step] ?? {};
+      Object.keys(stepData).forEach((key) => {
+        stepData[key].selected = [];
+      });
       keyCards.forEach((key) => {
         const cardData = stepData[key] ?? {
           selected: [],
