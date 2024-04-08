@@ -23,31 +23,51 @@ export class ChangeColorItemCommand extends ItemCommand {
     const configuration = this.configurator.getConfiguration();
     const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
     const item = configuration[this.nameProperty];
-    if (typeof item === "object" && !item?.assetId?.length) {
+    if (qtyName && typeof item === "object" && !item?.assetId?.length) {
       this.configurator.setConfiguration({
         [qtyName]: "1",
       });
       this.changeProperties.push(qtyName);
-      const assetId = this.getAssetIdByValue(this.value);
+    }
+
+    const assetId = this.getAssetIdByValue(this.nameProperty, this.value);
+    this.configurator.setConfiguration({
+      [this.nameProperty]: {
+        assetId,
+      },
+    });
+    this.changeProperties.push(this.nameProperty);
+    const mounts = Configurator.NameAttrWithMountNames[this.nameProperty];
+    mounts?.forEach((mount) => {
+      const isSelected = this.isSelectedAttr(mount);
+      if (!isSelected) return;
+      const assetId = this.getAssetIdByValue(mount, this.value);
+      if (!assetId.length) return;
       this.configurator.setConfiguration({
-        [this.nameProperty]: {
+        [mount]: {
           assetId,
         },
       });
-      this.changeProperties.push(this.nameProperty);
-    }
+      this.changeProperties.push(mount);
+    });
     return true;
   }
 
-  private getAssetIdByValue(value: string): string {
+  private getAssetIdByValue(attrName: string, value: string): string {
     const attributes = this.configurator.getAttributes();
     const attribute = attributes.find(
-      (attr) => attr.name === this.nameProperty && isAssetType(attr.type)
+      (attr) => attr.name === attrName && isAssetType(attr.type)
     );
     if (!attribute) return "";
     const option = attribute.values.find(
       (opt) => typeof opt === "object" && opt.name.includes(value)
     ) as AssetI;
     return option?.id || "";
+  }
+
+  private isSelectedAttr(attrName: string): boolean {
+    const configuration = this.configurator.getConfiguration();
+    const value = configuration[attrName];
+    return typeof value === "object" && !!value?.assetId?.length;
   }
 }

@@ -133,25 +133,6 @@ export const middleware: Middleware =
         )(state);
         if (prevCount === undefined) return;
 
-        const permission = getPermission(activeStep)(state);
-        Object.entries(permission.getItemsNeedChange(key)).forEach(
-          ([key, arr]) => {
-            const count = arr.includes("count");
-            if (!count) return;
-            store.dispatch(
-              setPropertyItem({
-                step: activeStep,
-                keyItemPermission: key,
-                property: {
-                  count: value,
-                },
-              })
-            );
-          }
-        );
-
-        updateDataCardByStepName(activeStep)(store, currentConfigurator);
-
         store.dispatch(
           setPropertyItem({
             step: activeStep,
@@ -161,6 +142,8 @@ export const middleware: Middleware =
             },
           })
         );
+
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
 
         changeCountElement(key, activeStep, value, prevCount)(store);
         break;
@@ -202,7 +185,17 @@ export const middleware: Middleware =
         updateActiveCardsByPermissionData(permission)(store);
         store.dispatch(addActiveCard({ key }));
 
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
+
         changeColorElement(key, activeStep)(store);
+
+        const updateNodes = updateNodesByConfiguration(
+          currentConfigurator,
+          activeStep
+        );
+
+        const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
+        updateNodes(store, attributeNames);
         break;
       }
       default:

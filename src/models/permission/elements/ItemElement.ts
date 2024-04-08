@@ -1,4 +1,4 @@
-import { PropertyDependentElement } from '../type'
+import { PropertyDependentElement } from "../type";
 import { BaseElement } from "./BaseElement";
 import { Element } from "./Element";
 import { MountElement } from "./mounts/MountElement";
@@ -11,14 +11,13 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private reservationMount: Record<string, Array<string | number>> = {};
   private recommendationDependence: PropertyDependentElement = {};
   private requiredDependence: PropertyDependentElement = {};
+  private disabledCounterDependence: PropertyDependentElement = {};
 
   constructor(name: string) {
     super(name);
   }
 
-  public addRequiredDependence(
-    value: PropertyDependentElement
-  ): ItemElement {
+  public addRequiredDependence(value: PropertyDependentElement): ItemElement {
     this.requiredDependence = {
       ...this.requiredDependence,
       ...value,
@@ -28,6 +27,20 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   public getRequiredDependence(): PropertyDependentElement {
     return this.requiredDependence;
+  }
+
+  public addDisabledCounterDependence(
+    value: PropertyDependentElement
+  ): ItemElement {
+    this.disabledCounterDependence = {
+      ...this.disabledCounterDependence,
+      ...value,
+    };
+    return this;
+  }
+
+  public getDisabledCounterDependence(): PropertyDependentElement {
+    return this.disabledCounterDependence;
   }
 
   public addRecommendationDependence(
@@ -64,7 +77,7 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   }
 
   /**
-   * 
+   *
    * @description
    * add dependent elements and element properties that will affect the display condition of the current element
    */

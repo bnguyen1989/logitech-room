@@ -290,14 +290,20 @@ export const getFormattingSubtitleByState =
       .replace("{2}", getName(serviceTile));
   };
 
-export const getIsDisabledActionByKeyPermission =
+export const getDisabledActionByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const res = {
+      counter: false,
+      color: false,
+    };
     const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
-    if (!step) return false;
+    if (!step) return res;
     const element = step.getElementByName(keyPermission);
-    if (!element) return false;
-    return element.getActionDisabled();
+    if (!element) return res;
+    res.counter = element.getDisabledCounter();
+    res.color = element.getDisabledColor();
+    return res;
   };
 
 export const getAllKeyActiveCards = (state: RootState) => {

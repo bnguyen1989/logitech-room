@@ -205,6 +205,7 @@ export function createStepAudioExtensions() {
       )
       .addAutoChangeItems({
         [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
+        [AudioExtensionName.RallyMicPodPendantMount]: ["count"],
       })
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
@@ -213,32 +214,50 @@ export function createStepAudioExtensions() {
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)
       .setDefaultMount(
-        new ReferenceMountElement(
-          AudioExtensionName.RallyMicPod,
-          Configurator.getNameNodeMicPodMount()
+        new CountableMountElement(
+          AudioExtensionName.RallyMicPodMount,
+          Configurator.getNameNodeForMic()
+        ).setDependentMount(
+          new ReferenceMountElement(
+            AudioExtensionName.RallyMicPod,
+            Configurator.getNameNodeMicPodMount()
+          )
         )
       )
-      .addDependence(new ItemElement(AudioExtensionName.RallyMicPod))
-      .setActionDisabled(true)
+      .setDisabledColor(true)
+      .addDisabledCounterDependence({
+        [AudioExtensionName.RallyMicPodPendantMount]: {
+          active: false,
+        },
+      })
+      .addAutoChangeItems({
+        [AudioExtensionName.RallyMicPodPendantMount]: ["count"],
+      })
+      .addReservationMount({
+        [CameraName.LogitechSight]: [3],
+      })
   );
   const group3 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodPendantMount)
       .setDefaultMount(
-        new ReferenceMountElement(
-          AudioExtensionName.RallyMicPod,
-          Configurator.getNameNodePodPendantMount()
+        new CountableMountElement(
+          AudioExtensionName.RallyMicPodPendantMount,
+          Configurator.getNameNodePendantMount()
         ).setDependentMount(
-          new CountableMountElement(
-            AudioExtensionName.RallyMicPodPendantMount,
-            Configurator.getNameNodePendantMount()
+          new ReferenceMountElement(
+            AudioExtensionName.RallyMicPod,
+            Configurator.getNameNodePodPendantMount()
           )
         )
       )
-      .addDependence(
-        new ItemElement(AudioExtensionName.RallyMicPod).setProperty({
-          color: "White",
-        }) as ItemElement
-      )
+      .addDisabledCounterDependence({
+        [AudioExtensionName.RallyMicPodMount]: {
+          active: false,
+        },
+      })
+      .addAutoChangeItems({
+        [AudioExtensionName.RallyMicPodMount]: ["count"],
+      })
   );
   const group4 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallySpeaker)
@@ -360,7 +379,7 @@ export function createStepVideoAccessories() {
                 Configurator.getNameNodeAngleMountScheduler()
               )
             )
-            .setActionDisabled(true)
+            .setDisabledColor(true)
         )
         .addAutoChangeItems({
           [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],

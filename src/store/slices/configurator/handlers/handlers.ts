@@ -80,37 +80,54 @@ export function addElement(card: CardI, stepName: StepName) {
 
       if (defaultMount instanceof CountableMountElement) {
         if (!card.counter) return;
-        defaultMount.setActiveIndex(0);
-        const nodeName = defaultMount.next().getNameNode();
-        setElementByNameNode(cardAsset.id, nodeName)(store);
-      } else if (defaultMount instanceof ReferenceMountElement) {
-        const elementReference = step.getElementByName(defaultMount.name);
-        if (!(elementReference instanceof ItemElement)) return;
-        const mountElement = elementReference.getDefaultMount();
-        if (!(mountElement instanceof CountableMountElement)) return;
-        if (!card.counter) return;
-        const nameNodes = mountElement.getRangeNameNode();
         const dependentMount = defaultMount.getDependentMount();
         if (!dependentMount) {
-          updateAssetIdNodeNames(nameNodes, cardAsset.id)(store);
-        }
-
-        if (dependentMount instanceof CountableMountElement) {
-          const nameNodeForRemove = mountElement.getNameNode();
-          store.dispatch(removeNodeByKeys([nameNodeForRemove]));
-          dependentMount.setActiveIndex(0);
-          const nodeName = dependentMount.next().getNameNode();
+          defaultMount.setActiveIndex(0);
+          const nodeName = defaultMount.next().getNameNode();
           setElementByNameNode(cardAsset.id, nodeName)(store);
+          return;
         }
 
+        if (!(dependentMount instanceof ReferenceMountElement)) return;
+
+        const referenceElement = step.getElementByName(dependentMount.name);
+        if (!(referenceElement instanceof ItemElement)) return;
+        const referenceMount = referenceElement.getDefaultMount();
+        if (!(referenceMount instanceof CountableMountElement)) return;
+
+        const autoChangeItems = element.getAutoChangeItems();
+        const keyAutoChange = Object.keys(autoChangeItems)[0];
+        const selectAutoChange = getIsSelectedCardByKeyPermission(
+          stepName,
+          keyAutoChange
+        )(state);
+
+        const autoChangeElement = step.getElementByName(keyAutoChange);
+        if (!(autoChangeElement instanceof ItemElement)) return;
+        const autoChangeMount = autoChangeElement.getDefaultMount();
+        if (!(autoChangeMount instanceof CountableMountElement)) return;
+
+        if (selectAutoChange) {
+          autoChangeMount.next();
+          store.dispatch(removeNodeByKeys([autoChangeMount.getNameNode()]));
+        } else {
+          const availableReferenceNameNodes =
+            referenceMount.getAvailableNameNode();
+          store.dispatch(removeNodeByKeys(availableReferenceNameNodes));
+          const autoChangeElementNameNodes = autoChangeMount.getRangeNameNode();
+          store.dispatch(removeNodeByKeys(autoChangeElementNameNodes));
+        }
+
+        const availableCurrentNameNodes = defaultMount.getAvailableNameNode();
+        setAssetIdNodeNames(availableCurrentNameNodes, cardAsset.id)(store);
         const cardReference = getCardByKeyPermission(
           stepName,
-          defaultMount.name
+          dependentMount.name
         )(state);
         const cardAssetReference = getAssetFromCard(cardReference)(state);
         setElementByNameNode(
           cardAssetReference.id,
-          defaultMount.getNameNode()
+          dependentMount.getNameNode()
         )(store);
       } else if (defaultMount instanceof MountElement) {
         const dependentMount = defaultMount.getDependentMount();
@@ -211,78 +228,67 @@ export function removeElement(card: CardI) {
       const mountElement = element.getDefaultMount();
       if (mountElement instanceof CountableMountElement) {
         if (!card.counter) return;
-        mountElement.setMin(card.counter.min);
-        mountElement.setMax(card.counter.max);
-        store.dispatch(removeNodes(cardAsset.id));
-        const names = mountElement.getRangeNameNode();
-        store.dispatch(removeNodeByKeys(names));
-      } else if (mountElement instanceof ReferenceMountElement) {
-        const elementReference = step.getElementByName(mountElement.name);
-        if (!(elementReference instanceof ItemElement)) return;
-        const mountElementReference = elementReference.getDefaultMount();
-        if (!(mountElementReference instanceof CountableMountElement)) return;
-        if (!card.counter) return;
-        const namesNode = mountElementReference.getRangeNameNode();
-        const cardReference = getCardByKeyPermission(
-          activeStep,
-          mountElement.name
-        )(state);
-        const cardAssetReference = getAssetFromCard(cardReference)(state);
+
         const dependentMount = mountElement.getDependentMount();
         if (!dependentMount) {
-          const activeNameNodes = getActiveNameNodes(namesNode)(store);
-          setAssetIdNodeNames(activeNameNodes, cardAssetReference.id)(store);
-          store.dispatch(removeNodeByKeys([mountElement.getNameNode()]));
+          mountElement.setMin(card.counter.min);
+          mountElement.setMax(card.counter.max);
+          store.dispatch(removeNodes(cardAsset.id));
+          const names = mountElement.getRangeNameNode();
+          store.dispatch(removeNodeByKeys(names));
         }
 
-        if (dependentMount instanceof CountableMountElement) {
-          dependentMount.setMin(mountElementReference.min);
-          dependentMount.setMax(mountElementReference.max);
-          const namesNodeDependent = dependentMount.getRangeNameNode();
-          store.dispatch(removeNodeByKeys(namesNodeDependent));
-          const availableNodeNames =
-            mountElementReference.getAvailableNameNode();
+        if (!(dependentMount instanceof ReferenceMountElement)) return;
 
-          const notActiveNameNodes =
-            getNotActiveNodes(availableNodeNames)(store);
+        const referenceElement = step.getElementByName(dependentMount.name);
+        if (!(referenceElement instanceof ItemElement)) return;
+        const referenceMount = referenceElement.getDefaultMount();
+        if (!(referenceMount instanceof CountableMountElement)) return;
 
-          const keysActiveChange = Object.keys(
-            elementReference.getAutoChangeItems()
-          );
-          const keyAutoChangeItem = keysActiveChange[0];
-          if (keyAutoChangeItem) {
-            const isSelectElement = getIsSelectedCardByKeyPermission(
-              activeStep,
-              keyAutoChangeItem
-            )(state);
-            if (isSelectElement) {
-              const elementActiveChange =
-                step.getElementByName(keyAutoChangeItem);
-              if (!(elementActiveChange instanceof ItemElement)) return;
-              const mountElementActiveChange =
-                elementActiveChange.getDefaultMount();
-              if (!(mountElementActiveChange instanceof ReferenceMountElement))
-                return;
-              const cardActiveChange = getCardByKeyPermission(
-                activeStep,
-                keyAutoChangeItem
-              )(state);
-              const cardAssetActiveChange =
-                getAssetFromCard(cardActiveChange)(state);
-              setAssetIdNodeNames(
-                notActiveNameNodes,
-                cardAssetActiveChange.id
-              )(store);
-              setElementByNameNode(
-                cardAssetReference.id,
-                mountElementActiveChange.getNameNode()
-              )(store);
-              return;
-            }
-          }
+        const cardReference = getCardByKeyPermission(
+          activeStep,
+          dependentMount.name
+        )(state);
+        const cardAssetReference = getAssetFromCard(cardReference)(state);
 
-          setAssetIdNodeNames(notActiveNameNodes, cardAssetReference.id)(store);
+        const autoChangeItems = element.getAutoChangeItems();
+        const keyAutoChange = Object.keys(autoChangeItems)[0];
+        const selectAutoChange = getIsSelectedCardByKeyPermission(
+          activeStep,
+          keyAutoChange
+        )(state);
+
+        const currentNameNodes = mountElement.getAvailableNameNode();
+        store.dispatch(
+          removeNodeByKeys([...currentNameNodes, dependentMount.getNameNode()])
+        );
+
+        if (selectAutoChange) {
+          const autoChangeElement = step.getElementByName(keyAutoChange);
+          if (!(autoChangeElement instanceof ItemElement)) return;
+          const autoChangeMount = autoChangeElement.getDefaultMount();
+          if (!(autoChangeMount instanceof CountableMountElement)) return;
+          const autoChangeDependentMount = autoChangeMount.getDependentMount();
+          if (!(autoChangeDependentMount instanceof CountableMountElement))
+            return;
+          const autoChangeNameNodes = autoChangeMount.getAvailableNameNode();
+          const cardAutoChange = getCardByKeyPermission(
+            activeStep,
+            keyAutoChange
+          )(state);
+          const cardAssetAutoChange = getAssetFromCard(cardAutoChange)(state);
+          setAssetIdNodeNames(
+            autoChangeNameNodes,
+            cardAssetAutoChange.id
+          )(store);
+          setElementByNameNode(
+            cardAssetReference.id,
+            autoChangeDependentMount.getNameNode()
+          )(store);
+          return;
         }
+        const availableNameNodes = referenceMount.getAvailableNameNode();
+        setAssetIdNodeNames(availableNameNodes, cardAssetReference.id)(store);
       } else if (mountElement instanceof MountElement) {
         store.dispatch(removeNodeByKeys([mountElement.getNameNode()]));
       }
@@ -491,81 +497,6 @@ export function changeCountElement(
       app.removeItem(nameProperty, card.keyPermission);
     };
 
-    if (mountElement instanceof ReferenceMountElement) {
-      const element = step.getElementByName(mountElement.name);
-      if (!(element instanceof ItemElement)) return;
-      const defaultMountElement = element.getDefaultMount();
-      if (!(defaultMountElement instanceof CountableMountElement)) return;
-      const namesNodeElement = defaultMountElement.getRangeNameNode();
-      const activeNameNodes = getActiveNameNodes(namesNodeElement)(store);
-      const cardElement = getCardByKeyPermission(
-        stepName,
-        mountElement.name
-      )(state);
-      const cardAssetElement = getAssetFromCard(cardElement)(state);
-      const dependentMount = mountElement.getDependentMount();
-      if (!(dependentMount instanceof CountableMountElement)) return;
-      dependentMount.setActiveIndex(prevValue);
-      if (isIncrease) {
-        const lastNameNode = activeNameNodes[activeNameNodes.length - 1];
-        const nodeName = dependentMount.next().getNameNode();
-        setElementByNameNode(cardAsset.id, nodeName)(store);
-        setElementByNameNode(
-          cardAssetElement.id,
-          mountElement.getNameNode()
-        )(store);
-        store.dispatch(removeNodeByKeys([lastNameNode]));
-      } else {
-        const nodeName = dependentMount.getNameNode();
-        const availableNameNodes = defaultMountElement.getAvailableNameNode();
-        const notActiveNameNodes = getNotActiveNodes(availableNameNodes)(store);
-        const lastNotActiveNameNode =
-          notActiveNameNodes[notActiveNameNodes.length - 1];
-        if (notActiveNameNodes.length) {
-          const keysActiveChange = Object.keys(element.getAutoChangeItems());
-          const keyAutoChangeItem = keysActiveChange[0];
-          if (keyAutoChangeItem) {
-            const isSelectElement = getIsSelectedCardByKeyPermission(
-              stepName,
-              keyAutoChangeItem
-            )(state);
-            if (isSelectElement) {
-              const elementActiveChange =
-                step.getElementByName(keyAutoChangeItem);
-              if (!(elementActiveChange instanceof ItemElement)) return;
-              const mountElementActiveChange =
-                elementActiveChange.getDefaultMount();
-              if (!(mountElementActiveChange instanceof ReferenceMountElement))
-                return;
-              const cardActiveChange = getCardByKeyPermission(
-                stepName,
-                keyAutoChangeItem
-              )(state);
-              const cardAssetActiveChange =
-                getAssetFromCard(cardActiveChange)(state);
-              setElementByNameNode(
-                cardAssetActiveChange.id,
-                lastNotActiveNameNode
-              )(store);
-              setElementByNameNode(
-                cardAssetElement.id,
-                mountElementActiveChange.getNameNode()
-              )(store);
-              store.dispatch(removeNodeByKeys([nodeName]));
-              if (value === 0) {
-                removeElement();
-              }
-              return;
-            }
-          }
-        }
-        setElementByNameNode(cardAssetElement.id, lastNotActiveNameNode)(store);
-        store.dispatch(removeNodeByKeys([nodeName]));
-        if (value === 0) {
-          removeElement();
-        }
-      }
-    }
     if (!(mountElement instanceof CountableMountElement)) return;
 
     mountElement.setActiveIndex(prevValue);
@@ -575,39 +506,169 @@ export function changeCountElement(
     if (isIncrease) {
       const nodeName = mountElement.next().getNameNode();
       if (isChangeAutoItems) {
-        Object.entries(autoChangeItems).forEach(([key, arr]) => {
-          if (!arr.includes("count")) return;
-          const isSelectElement = getIsSelectedCardByKeyPermission(
-            stepName,
-            key
-          )(state);
-          if (!isSelectElement) {
-            setElementByNameNode(cardAsset.id, nodeName)(store);
-            return;
-          }
-          const element = step.getElementByName(key);
-          if (!(element instanceof ItemElement)) return;
-          const defaultMount = element.getDefaultMount();
-          if (!(defaultMount instanceof ReferenceMountElement)) return;
+        const activeAutoItemArr = Object.entries(autoChangeItems)
+          .filter(([key, arr]) => {
+            if (!arr.includes("count")) return false;
+            return getIsSelectedCardByKeyPermission(stepName, key)(state);
+          })
+          .map(([key]) => key);
+        const allActive =
+          activeAutoItemArr.length === Object.keys(autoChangeItems).length;
+        const dependentMount = mountElement.getDependentMount();
+        if (!dependentMount) {
+          const isOneActive = !allActive && activeAutoItemArr.length === 1;
+          if (isOneActive) {
+            const [key] = activeAutoItemArr;
+            const element = step.getElementByName(key);
+            if (!(element instanceof ItemElement)) return;
+            const defaultMount = element.getDefaultMount();
+            if (!(defaultMount instanceof CountableMountElement)) return;
+            const dependentMount = defaultMount.getDependentMount();
+            if (!(dependentMount instanceof ReferenceMountElement)) return;
 
-          const cardElement = getCardByKeyPermission(stepName, key)(state);
-          const cardAssetElement = getAssetFromCard(cardElement)(state);
-
-          const dependentMount = defaultMount.getDependentMount();
-          if (!dependentMount) {
-            setElementByNameNode(cardAssetElement.id, nodeName)(store);
+            const availableNameNodes = defaultMount.getAvailableNameNode();
+            const lastNode = availableNameNodes[availableNameNodes.length - 1];
+            const cardElement = getCardByKeyPermission(stepName, key)(state);
+            const cardAssetElement = getAssetFromCard(cardElement)(state);
+            setElementByNameNode(cardAssetElement.id, lastNode)(store);
             setElementByNameNode(
               cardAsset.id,
-              defaultMount.getNameNode()
+              dependentMount.getNameNode()
             )(store);
+          } else if (allActive) {
+            activeAutoItemArr.forEach((key) => {
+              const element = step.getElementByName(key);
+              if (!(element instanceof ItemElement)) return;
+              const defaultMount = element.getDefaultMount();
+              if (!(defaultMount instanceof CountableMountElement)) return;
+              const dependentMount = defaultMount.getDependentMount();
+              if (!(dependentMount instanceof ReferenceMountElement)) return;
+              const notActiveNodes = getNotActiveNodes([
+                ...defaultMount.getAvailableNameNode(),
+              ])(store);
+              if (!notActiveNodes.length) return;
+              const [nameNode] = notActiveNodes;
+              const cardElement = getCardByKeyPermission(stepName, key)(state);
+              const cardAssetElement = getAssetFromCard(cardElement)(state);
+              setElementByNameNode(cardAssetElement.id, nameNode)(store);
+              setElementByNameNode(
+                cardAsset.id,
+                dependentMount.getNameNode()
+              )(store);
+            });
+          } else {
+            setElementByNameNode(cardAsset.id, nodeName)(store);
           }
-        });
+        } else {
+          if (!(dependentMount instanceof ReferenceMountElement)) return;
+
+          Object.entries(autoChangeItems).forEach(([key, arr]) => {
+            if (!arr.includes("count")) return;
+            const element = step.getElementByName(key);
+            if (!(element instanceof ItemElement)) return;
+            const defaultMount = element.getDefaultMount();
+            if (!(defaultMount instanceof CountableMountElement)) return;
+            defaultMount.next();
+            const nameNode = defaultMount.getNameNode();
+            store.dispatch(removeNodeByKeys([nameNode]));
+          });
+
+          const availableNameNodes = mountElement.getAvailableNameNode();
+          setAssetIdNodeNames(availableNameNodes, cardAsset.id)(store);
+
+          const cardReference = getCardByKeyPermission(
+            stepName,
+            dependentMount.name
+          )(state);
+          const cardAssetReference = getAssetFromCard(cardReference)(state);
+          setElementByNameNode(
+            cardAssetReference.id,
+            dependentMount.getNameNode()
+          )(store);
+        }
       } else {
         setElementByNameNode(cardAsset.id, nodeName)(store);
       }
     } else {
-      const nodeName = mountElement.getNameNode();
-      store.dispatch(removeNodeByKeys([nodeName]));
+      if (isChangeAutoItems) {
+        const activeAutoItemArr = Object.entries(autoChangeItems)
+          .filter(([key, arr]) => {
+            if (!arr.includes("count")) return false;
+            return getIsSelectedCardByKeyPermission(stepName, key)(state);
+          })
+          .map(([key]) => key);
+        const allActive =
+          activeAutoItemArr.length === Object.keys(autoChangeItems).length;
+        const dependentMount = mountElement.getDependentMount();
+        if (!dependentMount) {
+          const isOneActive = !allActive && activeAutoItemArr.length === 1;
+          if (isOneActive) {
+            const [key] = activeAutoItemArr;
+            const element = step.getElementByName(key);
+            if (!(element instanceof ItemElement)) return;
+            const defaultMount = element.getDefaultMount();
+            if (!(defaultMount instanceof CountableMountElement)) return;
+            const dependentMount = defaultMount.getDependentMount();
+            if (!(dependentMount instanceof ReferenceMountElement)) return;
+
+            defaultMount.next();
+            const nodeName = defaultMount.getNameNode();
+            store.dispatch(removeNodeByKeys([nodeName]));
+          } else if (allActive) {
+            activeAutoItemArr.forEach((key) => {
+              const element = step.getElementByName(key);
+              if (!(element instanceof ItemElement)) return;
+              const defaultMount = element.getDefaultMount();
+              if (!(defaultMount instanceof CountableMountElement)) return;
+              const dependentMount = defaultMount.getDependentMount();
+              if (!(dependentMount instanceof ReferenceMountElement)) return;
+              const activeNodes = getActiveNameNodes([
+                ...defaultMount.getRangeNameNode(),
+              ])(store);
+              const availableNameNodes = defaultMount.getAvailableNameNode();
+              const notActiveNodes = activeNodes.filter(
+                (name) => !availableNameNodes.includes(name)
+              );
+              if (!notActiveNodes.length) return;
+              notActiveNodes.forEach((nameNode) => {
+                store.dispatch(removeNodeByKeys([nameNode]));
+              });
+            });
+          } else {
+            const nodeName = mountElement.getNameNode();
+            store.dispatch(removeNodeByKeys([nodeName]));
+          }
+        } else {
+          if (!(dependentMount instanceof ReferenceMountElement)) return;
+
+          Object.entries(autoChangeItems).forEach(([key, arr]) => {
+            if (!arr.includes("count")) return;
+            const element = step.getElementByName(key);
+            if (!(element instanceof ItemElement)) return;
+            const defaultMount = element.getDefaultMount();
+            if (!(defaultMount instanceof CountableMountElement)) return;
+            const dependentMount = defaultMount.getDependentMount();
+            if (!(dependentMount instanceof ReferenceMountElement)) return;
+            const availableNameNodes = defaultMount.getAvailableNameNode();
+            setAssetIdNodeNames(availableNameNodes, cardAsset.id)(store);
+            const cardReference = getCardByKeyPermission(
+              stepName,
+              dependentMount.name
+            )(state);
+            const cardAssetReference = getAssetFromCard(cardReference)(state);
+            setElementByNameNode(
+              cardAssetReference.id,
+              dependentMount.getNameNode()
+            )(store);
+          });
+
+          const nodeName = mountElement.getNameNode();
+          store.dispatch(removeNodeByKeys([nodeName]));
+        }
+      } else {
+        const nodeName = mountElement.getNameNode();
+        store.dispatch(removeNodeByKeys([nodeName]));
+      }
     }
 
     if (value === 0) {

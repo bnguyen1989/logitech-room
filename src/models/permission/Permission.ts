@@ -25,6 +25,7 @@ import { RecommendationElementHandler } from "./handlers/property/Recommendation
 import { RequiredElementHandler } from "./handlers/property/RequiredElementHandler";
 import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
 import { DependentMountHandler } from "./handlers/mounts/DependentMountHandler";
+import { DisabledCounterElementHandler } from "./handlers/property/DisabledCounterElementHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
@@ -69,7 +70,7 @@ export class Permission {
         if (value?.color) {
           element.setProperty({ color: value.color });
         }
-        if (value?.count && element instanceof ItemElement) {
+        if (value?.count !== undefined && element instanceof ItemElement) {
           const setDataCountableMount = (element: CountableMountElement) => {
             element.setActiveIndex(value.count);
             element.setMin(value.counterMin);
@@ -100,6 +101,7 @@ export class Permission {
     new ReservationMountHandler().handle(step);
     new RecommendationElementHandler().handle(step);
     new RequiredElementHandler().handle(step);
+    new DisabledCounterElementHandler().handle(step);
   }
 
   public addStep(step: Step): Permission {
