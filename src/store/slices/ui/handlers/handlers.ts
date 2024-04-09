@@ -224,7 +224,11 @@ function updateDataByConfiguration(
       }
     });
     store.dispatch(
-      setActiveCardsForStep({ step: stepName, keyCards: activeKeys })
+      setActiveCardsForStep({
+        step: stepName,
+        keyCards: activeKeys,
+        clear: stepName !== StepName.ConferenceCamera,
+      })
     );
   };
 }

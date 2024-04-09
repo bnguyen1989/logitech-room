@@ -11,7 +11,6 @@ import { StepName } from "../../../../models/permission/type";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { CountableMountElement } from "../../../../models/permission/elements/mounts/CountableMountElement";
-import { setPropertyItem } from "../../ui/Ui.slice";
 import {
   getActiveStep,
   getAssetFromCard,
@@ -236,6 +235,23 @@ export function removeElement(card: CardI) {
           store.dispatch(removeNodes(cardAsset.id));
           const names = mountElement.getRangeNameNode();
           store.dispatch(removeNodeByKeys(names));
+          const autoChangeItems = element.getAutoChangeItems();
+          Object.entries(autoChangeItems).forEach(([key, arr]) => {
+            if (!arr.includes("count")) return;
+            const element = step.getElementByName(key);
+            if (!(element instanceof ItemElement)) return;
+            const defaultMount = element.getDefaultMount();
+            if (!(defaultMount instanceof CountableMountElement)) return;
+            if (!card.counter) return;
+            defaultMount.setMin(card.counter.min);
+            defaultMount.setMax(card.counter.max);
+            const dependentMount = defaultMount.getDependentMount();
+            if (!(dependentMount instanceof ReferenceMountElement)) return;
+            const nameNodes = defaultMount.getRangeNameNode();
+            store.dispatch(
+              removeNodeByKeys([...nameNodes, dependentMount.getNameNode()])
+            );
+          });
         }
 
         if (!(dependentMount instanceof ReferenceMountElement)) return;
@@ -258,7 +274,7 @@ export function removeElement(card: CardI) {
           keyAutoChange
         )(state);
 
-        const currentNameNodes = mountElement.getAvailableNameNode();
+        const currentNameNodes = mountElement.getRangeNameNode();
         store.dispatch(
           removeNodeByKeys([...currentNameNodes, dependentMount.getNameNode()])
         );
@@ -269,7 +285,7 @@ export function removeElement(card: CardI) {
           const autoChangeMount = autoChangeElement.getDefaultMount();
           if (!(autoChangeMount instanceof CountableMountElement)) return;
           const autoChangeDependentMount = autoChangeMount.getDependentMount();
-          if (!(autoChangeDependentMount instanceof CountableMountElement))
+          if (!(autoChangeDependentMount instanceof ReferenceMountElement))
             return;
           const autoChangeNameNodes = autoChangeMount.getAvailableNameNode();
           const cardAutoChange = getCardByKeyPermission(
@@ -362,49 +378,47 @@ export function changeColorElement(
       if (defaultMount instanceof CountableMountElement) {
         if (!card.counter) return;
 
-        const names = defaultMount.getRangeNameNode();
+        const names = defaultMount.getAvailableNameNode();
 
         if (!names.length) return;
-        const prevAssetId = getAssetIdByNameNode(names[0])(state);
-        if (!prevAssetId) {
-          store.dispatch(
-            setPropertyItem({
-              step: stepName,
-              keyItemPermission,
-              property: {
-                count: 1,
-              },
-            })
-          );
-          addElement(card, stepName)(store);
-          return;
-        }
-
-        if (!Object.keys(autoChangeItems).length) {
-          updateAssetIdNodeNames(names, cardAsset.id)(store);
-          return;
-        }
 
         Object.entries(autoChangeItems).forEach(([key, arr]) => {
-          if (!arr.includes("color")) return;
+          if (!arr.includes("count")) return;
           const isSelectElement = getIsSelectedCardByKeyPermission(
             stepName,
             key
           )(state);
-          if (!isSelectElement) {
-            updateAssetIdNodeNames(names, cardAsset.id)(store);
-            return;
-          }
+          if (isSelectElement) return;
           const element = step.getElementByName(key);
           if (!(element instanceof ItemElement)) return;
           const defaultMount = element.getDefaultMount();
-          if (!(defaultMount instanceof ReferenceMountElement)) return;
-          const cardElement = getCardByKeyPermission(stepName, key)(state);
-          const cardAssetElement = getAssetFromCard(cardElement)(state);
-
-          updateAssetIdNodeNames(names, cardAssetElement.id)(store);
-          setElementByNameNode(cardAsset.id, defaultMount.getNameNode())(store);
+          if (!(defaultMount instanceof CountableMountElement)) return;
+          if (!card.counter) return;
+          defaultMount.setMin(card.counter.min);
+          defaultMount.setMax(card.counter.max);
+          const dependentMount = defaultMount.getDependentMount();
+          if (!(dependentMount instanceof ReferenceMountElement)) return;
+          store.dispatch(
+            removeNodeByKeys([
+              ...defaultMount.getRangeNameNode(),
+              dependentMount.getNameNode(),
+            ])
+          );
         });
+        const notActiveAutoItems = Object.entries(autoChangeItems).filter(
+          ([key, arr]) => {
+            if (!arr.includes("count")) return false;
+            return !getIsSelectedCardByKeyPermission(stepName, key)(state);
+          }
+        );
+
+        if (
+          !Object.keys(autoChangeItems).length ||
+          notActiveAutoItems.length === Object.keys(autoChangeItems).length
+        ) {
+          setAssetIdNodeNames(names, cardAsset.id)(store);
+          return;
+        }
         return;
       } else {
         if (!(defaultMount instanceof MountElement)) return;
@@ -536,26 +550,26 @@ export function changeCountElement(
               dependentMount.getNameNode()
             )(store);
           } else if (allActive) {
-            activeAutoItemArr.forEach((key) => {
-              const element = step.getElementByName(key);
-              if (!(element instanceof ItemElement)) return;
-              const defaultMount = element.getDefaultMount();
-              if (!(defaultMount instanceof CountableMountElement)) return;
-              const dependentMount = defaultMount.getDependentMount();
-              if (!(dependentMount instanceof ReferenceMountElement)) return;
-              const notActiveNodes = getNotActiveNodes([
-                ...defaultMount.getAvailableNameNode(),
-              ])(store);
-              if (!notActiveNodes.length) return;
-              const [nameNode] = notActiveNodes;
-              const cardElement = getCardByKeyPermission(stepName, key)(state);
-              const cardAssetElement = getAssetFromCard(cardElement)(state);
-              setElementByNameNode(cardAssetElement.id, nameNode)(store);
-              setElementByNameNode(
-                cardAsset.id,
-                dependentMount.getNameNode()
-              )(store);
-            });
+            // activeAutoItemArr.forEach((key) => {
+            //   const element = step.getElementByName(key);
+            //   if (!(element instanceof ItemElement)) return;
+            //   const defaultMount = element.getDefaultMount();
+            //   if (!(defaultMount instanceof CountableMountElement)) return;
+            //   const dependentMount = defaultMount.getDependentMount();
+            //   if (!(dependentMount instanceof ReferenceMountElement)) return;
+            //   const notActiveNodes = getNotActiveNodes([
+            //     ...defaultMount.getAvailableNameNode(),
+            //   ])(store);
+            //   if (!notActiveNodes.length) return;
+            //   const [nameNode] = notActiveNodes;
+            //   const cardElement = getCardByKeyPermission(stepName, key)(state);
+            //   const cardAssetElement = getAssetFromCard(cardElement)(state);
+            //   setElementByNameNode(cardAssetElement.id, nameNode)(store);
+            //   setElementByNameNode(
+            //     cardAsset.id,
+            //     dependentMount.getNameNode()
+            //   )(store);
+            // });
           } else {
             setElementByNameNode(cardAsset.id, nodeName)(store);
           }
@@ -615,25 +629,25 @@ export function changeCountElement(
             const nodeName = defaultMount.getNameNode();
             store.dispatch(removeNodeByKeys([nodeName]));
           } else if (allActive) {
-            activeAutoItemArr.forEach((key) => {
-              const element = step.getElementByName(key);
-              if (!(element instanceof ItemElement)) return;
-              const defaultMount = element.getDefaultMount();
-              if (!(defaultMount instanceof CountableMountElement)) return;
-              const dependentMount = defaultMount.getDependentMount();
-              if (!(dependentMount instanceof ReferenceMountElement)) return;
-              const activeNodes = getActiveNameNodes([
-                ...defaultMount.getRangeNameNode(),
-              ])(store);
-              const availableNameNodes = defaultMount.getAvailableNameNode();
-              const notActiveNodes = activeNodes.filter(
-                (name) => !availableNameNodes.includes(name)
-              );
-              if (!notActiveNodes.length) return;
-              notActiveNodes.forEach((nameNode) => {
-                store.dispatch(removeNodeByKeys([nameNode]));
-              });
-            });
+            // activeAutoItemArr.forEach((key) => {
+            //   const element = step.getElementByName(key);
+            //   if (!(element instanceof ItemElement)) return;
+            //   const defaultMount = element.getDefaultMount();
+            //   if (!(defaultMount instanceof CountableMountElement)) return;
+            //   const dependentMount = defaultMount.getDependentMount();
+            //   if (!(dependentMount instanceof ReferenceMountElement)) return;
+            //   const activeNodes = getActiveNameNodes([
+            //     ...defaultMount.getRangeNameNode(),
+            //   ])(store);
+            //   const availableNameNodes = defaultMount.getAvailableNameNode();
+            //   const notActiveNodes = activeNodes.filter(
+            //     (name) => !availableNameNodes.includes(name)
+            //   );
+            //   if (!notActiveNodes.length) return;
+            //   notActiveNodes.forEach((nameNode) => {
+            //     store.dispatch(removeNodeByKeys([nameNode]));
+            //   });
+            // });
           } else {
             const nodeName = mountElement.getNameNode();
             store.dispatch(removeNodeByKeys([nodeName]));
@@ -650,7 +664,9 @@ export function changeCountElement(
             const dependentMount = defaultMount.getDependentMount();
             if (!(dependentMount instanceof ReferenceMountElement)) return;
             const availableNameNodes = defaultMount.getAvailableNameNode();
-            setAssetIdNodeNames(availableNameNodes, cardAsset.id)(store);
+            const autoChangeCard = getCardByKeyPermission(stepName, key)(state);
+            const autoChangeAsset = getAssetFromCard(autoChangeCard)(state);
+            setAssetIdNodeNames(availableNameNodes, autoChangeAsset.id)(store);
             const cardReference = getCardByKeyPermission(
               stepName,
               dependentMount.name

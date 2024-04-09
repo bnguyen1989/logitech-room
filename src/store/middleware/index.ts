@@ -182,10 +182,9 @@ export const middleware: Middleware =
           }
         );
 
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
         updateActiveCardsByPermissionData(permission)(store);
         store.dispatch(addActiveCard({ key }));
-
-        updateDataCardByStepName(activeStep)(store, currentConfigurator);
 
         changeColorElement(key, activeStep)(store);
 

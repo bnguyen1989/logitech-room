@@ -157,14 +157,17 @@ const uiSlice = createSlice({
       action: PayloadAction<{
         step: StepName;
         keyCards: string[];
+        clear?: boolean;
       }>
     ) => {
       const { selectedData } = state;
-      const { step, keyCards } = action.payload;
+      const { step, keyCards, clear } = action.payload;
       const stepData = selectedData[step] ?? {};
-      Object.keys(stepData).forEach((key) => {
-        stepData[key].selected = [];
-      });
+      if (clear) {
+        Object.keys(stepData).forEach((key) => {
+          stepData[key].selected = [];
+        });
+      }
       keyCards.forEach((key) => {
         const cardData = stepData[key] ?? {
           selected: [],
