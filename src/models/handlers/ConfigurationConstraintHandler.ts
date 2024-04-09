@@ -649,6 +649,20 @@ export class ConfigurationConstraintHandler extends Handler {
       values: attributeValuesArr,
     });
 
+    const selectedHub = this.getSelectedValue(AttributeName.RoomMicHub);
+    const isSelectHub = typeof selectedHub === "object";
+
+    const isChangeHub = this.triggeredByAttr.includes(
+      AttributeName.RoomMicHub
+    );
+
+    if(!isSelectHub && isChangeHub) {
+      ConfigurationConstraintHandler.addCacheData(
+        RuleName.reco_micPod_micPodHub,
+        true
+      );
+    }
+
     const cache = ConfigurationConstraintHandler.getCacheData(
       RuleName.reco_micPod_micPodHub
     );
@@ -664,49 +678,6 @@ export class ConfigurationConstraintHandler extends Handler {
       },
       [AttributeName.QtyMicHub]: "1",
     });
-    ConfigurationConstraintHandler.addCacheData(
-      RuleName.reco_micPod_micPodHub,
-      true
-    );
-  }
-
-  private rule_Pendant_Mount_Mic() {
-    const pendantAttrName_str = "Room Mic Pod Pendant Mount";
-    const pendantQtyAttrName_str = "Qty - Mic Pendant Mount";
-
-    const micMountQtyAttrName_str = "Qty - Mic Mount";
-
-    const selectedPendant = this.getSelectedValue(pendantAttrName_str);
-    const selectedQtyPendant = this.getSelectedValue(pendantQtyAttrName_str);
-
-    if (
-      typeof selectedPendant === "object" &&
-      typeof selectedQtyPendant === "string"
-    ) {
-      const count = parseInt(selectedQtyPendant);
-      const attribute = this.getAttribute(micMountQtyAttrName_str);
-      const attrState = this.configurator.getAttributeState();
-      const attributeValuesArr = attribute
-        ? attrState[attribute.id].values
-        : undefined;
-      if (attribute && attributeValuesArr) {
-        const countVisible = attributeValuesArr.filter(
-          (option) => option.visible
-        ).length;
-        let tempCount = countVisible;
-        attributeValuesArr.forEach((option) => {
-          if (option.visible) {
-            tempCount--;
-          }
-          if (tempCount < count) {
-            option.visible = false;
-          }
-        });
-        this.configurator.setAttributeState(attribute.id, {
-          values: attributeValuesArr,
-        });
-      }
-    }
   }
 
   private rule_micPodQty_sight() {

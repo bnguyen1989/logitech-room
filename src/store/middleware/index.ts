@@ -21,6 +21,7 @@ import { addActiveCard, setPropertyItem } from "../slices/ui/Ui.slice";
 import { CUSTOM_UI_ACTION_NAME, UI_ACTION_NAME } from "../slices/ui/utils";
 import { getIsShowProductModal } from "../slices/modals/selectors/selectors";
 import { setSelectProductModal } from "../slices/modals/Modals.slice";
+import { getAutoChangeDataByKeyPermission } from "../slices/ui/selectors/selectorsPermission";
 
 declare const app: Application;
 
@@ -127,11 +128,28 @@ export const middleware: Middleware =
       case CUSTOM_UI_ACTION_NAME.CHANGE_COUNT_ITEM: {
         const { key, value } = action.payload;
         const activeStep = getActiveStep(state);
-        const prevCount = getPropertyCounterCardByKeyPermission(
+
+        const autoChangeItems = getAutoChangeDataByKeyPermission(
           activeStep,
           key
         )(state);
-        if (prevCount === undefined) return;
+        const keysItems = Object.entries(autoChangeItems)
+          .filter((item) => item[1].includes("count"))
+          .map(([key]) => key);
+
+        keysItems.push(key);
+
+        const prevValues: Record<string, number> = {};
+        keysItems.forEach((key) => {
+          const prevCount = getPropertyCounterCardByKeyPermission(
+            activeStep,
+            key
+          )(state);
+          if (prevCount === undefined) return;
+          prevValues[key] = prevCount;
+        });
+
+        if (!Object.keys(prevValues).length) return;
 
         store.dispatch(
           setPropertyItem({
@@ -145,7 +163,7 @@ export const middleware: Middleware =
 
         updateDataCardByStepName(activeStep)(store, currentConfigurator);
 
-        changeCountElement(key, activeStep, value, prevCount)(store);
+        changeCountElement(key, activeStep, value, prevValues)(store);
         break;
       }
 
