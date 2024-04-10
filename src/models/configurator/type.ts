@@ -74,6 +74,8 @@ export enum AttributeName {
   RoomTapSchedulerSideMount = "Room Tap Scheduler Side Mount#not-ui",
   RoomScribe = "Room Scribe",
   RoomSwytch = "Room Swytch",
+  RoomExtend = "Room Extend",
+  RoomUSBAtoHDMICable = "Room USB-A to HDMI Cable",
   RoomDeviceManagementSoftware = "Room Device Management Software",
   RoomSupportService = "Room Support Service",
 }

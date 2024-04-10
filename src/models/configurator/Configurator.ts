@@ -49,7 +49,7 @@ export class Configurator {
     [AttributeName.RoomMicPendantMount, AttributeName.QtyMicPendantMount],
     [AttributeName.RoomMicHub, AttributeName.QtyMicHub],
     [AttributeName.RoomMicExtensionCable, AttributeName.QtyMicExtensionCable],
-    [AttributeName.RoomMicCATCoupler]
+    [AttributeName.RoomMicCATCoupler],
   ];
 
   public static MeetingControllerName = [
@@ -63,6 +63,8 @@ export class Configurator {
     [AttributeName.RoomTapSchedulerSideMount],
     [AttributeName.RoomScribe],
     [AttributeName.RoomSwytch],
+    [AttributeName.RoomExtend],
+    [AttributeName.RoomUSBAtoHDMICable],
   ];
 
   public static SoftwareServicesName = [

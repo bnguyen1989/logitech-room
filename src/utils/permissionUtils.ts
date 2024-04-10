@@ -75,6 +75,8 @@ export enum VideoAccessoryName {
   LogitechTapSchedulerSideMount = "Logitech Tap Scheduler Side Mount",
   LogitechScribe = "Logitech Scribe",
   LogitechSwytch = "Logitech Swytch",
+  LogitechExtend = "Logitech Extend",
+  LogitechUSBaToHDMIAdapter = "Logitech USB-A to HDMI Adapter (NITRO)",
 }
 
 export enum SoftwareServicesName {
@@ -168,17 +170,19 @@ export function createStepConferenceCamera() {
   const group = new GroupElement()
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBarMini)))
+    .setRequiredOne(true);
+
+  const groupCompute = new GroupElement()
     .addElement(
       new ItemElement(CameraName.PreConfiguredMiniPC)
         .setVisible(false)
         .setRequired(true)
     )
     .addElement(
-      new ItemElement(CameraName.ComputeMount)
-        .setVisible(false)
-        .setRequired(true)
-    )
-    .setRequiredOne(true);
+      new ItemElement(CameraName.ComputeMount).addDependence(
+        new ItemElement(ServiceName.PC)
+      )
+    );
 
   const groupSight = new GroupElement().addElement(
     new ItemElement(CameraName.LogitechSight).setDefaultMount(
@@ -189,7 +193,7 @@ export function createStepConferenceCamera() {
     )
   );
 
-  stepConferenceCamera.allElements = [group, groupSight];
+  stepConferenceCamera.allElements = [group, groupCompute, groupSight];
   return stepConferenceCamera;
 }
 
@@ -354,38 +358,39 @@ export function createStepMeetingController() {
 export function createStepVideoAccessories() {
   const stepVideoAccessories = new Step(StepName.VideoAccessories);
 
-  const group = new GroupElement()
-    .addElement(
-      new ItemElement(VideoAccessoryName.LogitechTapScheduler)
-        .setDefaultMount(
+  const groupScheduler = new GroupElement().addElement(
+    new ItemElement(VideoAccessoryName.LogitechTapScheduler)
+      .setDefaultMount(
+        new MountElement(
+          VideoAccessoryName.LogitechTapSchedulerSideMount,
+          Configurator.getNameNodeScheduler()
+        ).setDependentMount(
           new MountElement(
             VideoAccessoryName.LogitechTapSchedulerSideMount,
-            Configurator.getNameNodeScheduler()
-          ).setDependentMount(
+            Configurator.getNameNodeSideMountScheduler()
+          )
+        )
+      )
+      .addDependenceMount(
+        new MountElement(
+          VideoAccessoryName.LogitechTapSchedulerAngleMount,
+          Configurator.getNameNodeScheduler()
+        )
+          .setDependentMount(
             new MountElement(
-              VideoAccessoryName.LogitechTapSchedulerSideMount,
-              Configurator.getNameNodeSideMountScheduler()
+              VideoAccessoryName.LogitechTapSchedulerAngleMount,
+              Configurator.getNameNodeAngleMountScheduler()
             )
           )
-        )
-        .addDependenceMount(
-          new MountElement(
-            VideoAccessoryName.LogitechTapSchedulerAngleMount,
-            Configurator.getNameNodeScheduler()
-          )
-            .setDependentMount(
-              new MountElement(
-                VideoAccessoryName.LogitechTapSchedulerAngleMount,
-                Configurator.getNameNodeAngleMountScheduler()
-              )
-            )
-            .setDisabledColor(true)
-        )
-        .addAutoChangeItems({
-          [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],
-          [VideoAccessoryName.LogitechTapSchedulerSideMount]: ["color"],
-        })
-    )
+          .setDisabledColor(true)
+      )
+      .addAutoChangeItems({
+        [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],
+        [VideoAccessoryName.LogitechTapSchedulerSideMount]: ["color"],
+      })
+  );
+
+  const group = new GroupElement()
     .addElement(
       new ItemElement(VideoAccessoryName.LogitechSwytch).setDefaultMount(
         new MountElement(
@@ -401,9 +406,11 @@ export function createStepVideoAccessories() {
           Configurator.getNameNodeForScribe()
         )
       )
-    );
+    )
+    .addElement(new ItemElement(VideoAccessoryName.LogitechExtend))
+    .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter));
 
-  stepVideoAccessories.allElements = [group];
+  stepVideoAccessories.allElements = [groupScheduler, group];
   return stepVideoAccessories;
 }
 
