@@ -1,6 +1,7 @@
 import { Middleware } from "@reduxjs/toolkit";
 import {
   updateActiveCardsByPermissionData,
+  updateAssetIdByKeyPermission,
   updateDataCardByStepName,
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
@@ -21,6 +22,7 @@ import { addActiveCard, setPropertyItem } from "../slices/ui/Ui.slice";
 import { CUSTOM_UI_ACTION_NAME, UI_ACTION_NAME } from "../slices/ui/utils";
 import { getIsShowProductModal } from "../slices/modals/selectors/selectors";
 import { setSelectProductModal } from "../slices/modals/Modals.slice";
+import { getAutoChangeDataByKeyPermission } from "../slices/ui/selectors/selectorsPermission";
 
 declare const app: Application;
 
@@ -90,6 +92,8 @@ export const middleware: Middleware =
 
         const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
         updateNodes(store, attributeNames);
+
+        updateAssetIdByKeyPermission(key)(store);
         break;
       }
 
@@ -127,30 +131,28 @@ export const middleware: Middleware =
       case CUSTOM_UI_ACTION_NAME.CHANGE_COUNT_ITEM: {
         const { key, value } = action.payload;
         const activeStep = getActiveStep(state);
-        const prevCount = getPropertyCounterCardByKeyPermission(
+
+        const autoChangeItems = getAutoChangeDataByKeyPermission(
           activeStep,
           key
         )(state);
-        if (prevCount === undefined) return;
+        const keysItems = Object.entries(autoChangeItems)
+          .filter((item) => item[1].includes("count"))
+          .map(([key]) => key);
 
-        const permission = getPermission(activeStep)(state);
-        Object.entries(permission.getItemsNeedChange(key)).forEach(
-          ([key, arr]) => {
-            const count = arr.includes("count");
-            if (!count) return;
-            store.dispatch(
-              setPropertyItem({
-                step: activeStep,
-                keyItemPermission: key,
-                property: {
-                  count: value,
-                },
-              })
-            );
-          }
-        );
+        keysItems.push(key);
 
-        updateDataCardByStepName(activeStep)(store, currentConfigurator);
+        const prevValues: Record<string, number> = {};
+        keysItems.forEach((key) => {
+          const prevCount = getPropertyCounterCardByKeyPermission(
+            activeStep,
+            key
+          )(state);
+          if (prevCount === undefined) return;
+          prevValues[key] = prevCount;
+        });
+
+        if (!Object.keys(prevValues).length) return;
 
         store.dispatch(
           setPropertyItem({
@@ -162,7 +164,9 @@ export const middleware: Middleware =
           })
         );
 
-        changeCountElement(key, activeStep, value, prevCount)(store);
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
+
+        changeCountElement(key, activeStep, value, prevValues)(store);
         break;
       }
 
@@ -199,10 +203,19 @@ export const middleware: Middleware =
           }
         );
 
+        updateDataCardByStepName(activeStep)(store, currentConfigurator);
         updateActiveCardsByPermissionData(permission)(store);
         store.dispatch(addActiveCard({ key }));
 
         changeColorElement(key, activeStep)(store);
+
+        const updateNodes = updateNodesByConfiguration(
+          currentConfigurator,
+          activeStep
+        );
+
+        const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
+        updateNodes(store, attributeNames);
         break;
       }
       default:

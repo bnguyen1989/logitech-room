@@ -39,6 +39,7 @@ import {
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
+  getColorsData,
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
@@ -49,12 +50,14 @@ import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelect
 import {
   getActiveStep,
   getAssetFromCard,
+  getCardByKeyPermission,
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
+import { getRoomAssetId } from "../../../../utils/threekitUtils";
 
 declare const app: Application;
 
@@ -117,6 +120,18 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(changeAssetId(configurator.assetId));
     }
   );
+};
+
+export const updateAssetIdByKeyPermission = (keyPermission: string) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const activeStep = getActiveStep(state);
+    if (activeStep !== StepName.RoomSize) return;
+    const card = getCardByKeyPermission(activeStep, keyPermission)(state);
+    if (!card) return;
+    const roomAssetId = getRoomAssetId(keyPermission);
+    app.currentConfigurator.assetId = roomAssetId;
+  };
 };
 
 export function updateActiveCardsByPermissionData(permission: Permission) {
@@ -224,7 +239,11 @@ function updateDataByConfiguration(
       }
     });
     store.dispatch(
-      setActiveCardsForStep({ step: stepName, keyCards: activeKeys })
+      setActiveCardsForStep({
+        step: stepName,
+        keyCards: activeKeys,
+        clear: stepName !== StepName.ConferenceCamera,
+      })
     );
   };
 }
@@ -239,8 +258,7 @@ function setStepData(
     | StepName.VideoAccessories
     | StepName.SoftwareServices,
   itemNameList: Array<Array<string>>,
-  image: string,
-  subtitle?: string
+  image: string
 ) {
   const stepCardData: Array<CardI> = [];
 
@@ -260,7 +278,6 @@ function setStepData(
       temp.push({
         key: stepName,
         image: image,
-        subtitle: subtitle,
         keyPermission: keyPermission,
         dataThreekit: {
           attributeName: name,
@@ -313,23 +330,29 @@ function setStepData(
     stepCardData.push(...temp);
   });
 
+  const state = store.getState();
+
   stepCardData.forEach((tempCard) => {
     const { threekitItems } = tempCard.dataThreekit;
 
     const color = getPropertyColorCardByKeyPermission(
       stepName,
       tempCard.keyPermission
-    )(store.getState());
+    )(state);
 
-    //temp solution, but need to be refactored, because threekitItems can include isn't color items (Object.keys(threekitItems).length === 2)
-    const isSetColors = Object.keys(threekitItems).length === 2 && !color;
+    const colorsName = getColorsData().map((item) => item.name);
+    const nameItems = Object.keys(threekitItems);
+    const includeColors = colorsName.every((item) =>
+      nameItems.some((name) => name.includes(item))
+    );
+    const isSetColors = includeColors && !color;
     if (isSetColors) {
       store.dispatch(
         setPropertyItem({
           step: stepName,
           keyItemPermission: tempCard.keyPermission,
           property: {
-            color: "Graphite",
+            color: colorsName[0],
           },
         })
       );
@@ -353,8 +376,7 @@ function setAudioExtensionsData(configurator: Configurator) {
       store,
       StepName.AudioExtensions,
       Configurator.AudioExtensionName,
-      MicImg,
-      undefined
+      MicImg
     );
   };
 }
@@ -366,8 +388,7 @@ function setCameraData(configurator: Configurator) {
       store,
       StepName.ConferenceCamera,
       Configurator.CameraName,
-      CameraImg,
-      undefined
+      CameraImg
     );
   };
 }
@@ -379,8 +400,7 @@ function setMeetingControllerData(configurator: Configurator) {
       store,
       StepName.MeetingController,
       Configurator.MeetingControllerName,
-      ControllerImg,
-      "Minimum (1)"
+      ControllerImg
     );
   };
 }

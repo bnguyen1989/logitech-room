@@ -64,6 +64,7 @@ export enum AttributeName {
   QtyMicHub = "Qty - Mic Pod Hub",
   RoomMicExtensionCable = "Room Mic Pod Extension Cable",
   QtyMicExtensionCable = "Qty - Mic Pod Extension Cable",
+  RoomMicCATCoupler = "Room Mic Pod CAT Coupler",
   RoomMeetingController = "Room Meeting Controller",
   QtyMeetingController = "Qty - Meeting Controller",
   RoomTapMount = "Room Tap Mount",
@@ -73,6 +74,8 @@ export enum AttributeName {
   RoomTapSchedulerSideMount = "Room Tap Scheduler Side Mount#not-ui",
   RoomScribe = "Room Scribe",
   RoomSwytch = "Room Swytch",
+  RoomExtend = "Room Extend",
+  RoomUSBAtoHDMICable = "Room USB-A to HDMI Cable",
   RoomDeviceManagementSoftware = "Room Device Management Software",
   RoomSupportService = "Room Support Service",
 }

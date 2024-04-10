@@ -12,7 +12,7 @@ import {
   getActiveStep,
   getAssetFromCard,
   getCardByKeyPermission,
-  getIsDisabledActionByKeyPermission,
+  getDisabledActionByKeyPermission,
   getIsRecommendedCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
@@ -53,8 +53,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const subTitle = useAppSelector(
     getSubTitleCardByKeyPermission(activeStep, keyItemPermission)
   );
-  const isDisabledActions = useAppSelector(
-    getIsDisabledActionByKeyPermission(activeStep, keyItemPermission)
+  const disabledActions = useAppSelector(
+    getDisabledActionByKeyPermission(activeStep, keyItemPermission)
   );
   const recommended: boolean = useAppSelector(
     getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
@@ -115,15 +115,15 @@ export const CardItem: React.FC<PropsI> = (props) => {
             >
               <ColorSwitcherItem
                 keyItemPermission={card.keyPermission}
-                disabled={isDisabledActions}
+                disabled={disabledActions.color}
               />
               <CounterItem
                 keyItemPermission={card.keyPermission}
-                disabled={isDisabledActions}
+                disabled={disabledActions.counter}
               />
               <SelectItem
                 keyItemPermission={card.keyPermission}
-                disabled={!isActiveCard || isDisabledActions}
+                disabled={!isActiveCard}
               />
             </div>
             <div className={s.info}>
