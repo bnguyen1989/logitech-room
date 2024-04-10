@@ -22,10 +22,12 @@ export const Player: React.FC = () => {
 
   const assetId = useAppSelector(getAssetId);
 
-  const focalLengthMm = 95; // Фокусна відстань в мм
-  const sensorSizeMm = 36; // Горизонтальний розмір сенсора 35мм камери в мм
+  const focalLengthMm = 65; // Focal length in mm
+  const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
+
   const fovRad = 2 * Math.atan(sensorSizeMm / (2 * focalLengthMm));
-  const fovDeg = fovRad * (180 / Math.PI); // Перетворення радіанів в градуси
+  const fovDeg = fovRad * (180 / Math.PI);  // Conversion of radians to degrees
+
 
   const canvasProps = {
     camera: {
