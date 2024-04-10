@@ -49,12 +49,14 @@ import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelect
 import {
   getActiveStep,
   getAssetFromCard,
+  getCardByKeyPermission,
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
+import { getRoomAssetId } from "../../../../utils/threekitUtils";
 
 declare const app: Application;
 
@@ -117,6 +119,18 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(changeAssetId(configurator.assetId));
     }
   );
+};
+
+export const updateAssetIdByKeyPermission = (keyPermission: string) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const activeStep = getActiveStep(state);
+    if (activeStep !== StepName.RoomSize) return;
+    const card = getCardByKeyPermission(activeStep, keyPermission)(state);
+    if (!card) return;
+    const roomAssetId = getRoomAssetId(keyPermission);
+    app.currentConfigurator.assetId = roomAssetId;
+  };
 };
 
 export function updateActiveCardsByPermissionData(permission: Permission) {

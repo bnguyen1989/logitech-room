@@ -1,6 +1,7 @@
 import { Middleware } from "@reduxjs/toolkit";
 import {
   updateActiveCardsByPermissionData,
+  updateAssetIdByKeyPermission,
   updateDataCardByStepName,
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
@@ -91,6 +92,8 @@ export const middleware: Middleware =
 
         const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
         updateNodes(store, attributeNames);
+
+        updateAssetIdByKeyPermission(key)(store);
         break;
       }
 

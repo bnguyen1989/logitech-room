@@ -1,5 +1,4 @@
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { getRoomAssetId } from "../../../utils/threekitUtils";
 import { Application } from "../../Application";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
@@ -13,10 +12,8 @@ declare const app: Application;
 export class ChangeStepBehavior extends Behavior {
   public async execute(command: ChangeStepCommand): Promise<boolean> {
     return new Promise((resolve) => {
-      const keyItemPermission = "";
       if (command.stepName === StepName.Platform) {
-        const roomAssetId = getRoomAssetId(keyItemPermission);
-        app.currentConfigurator.assetId = roomAssetId;
+        const roomAssetId = app.currentConfigurator.assetId;
         app.eventEmitter.emit("processInitThreekitData", true);
         return new ThreekitService()
           .getInitDataAssetById(roomAssetId)
