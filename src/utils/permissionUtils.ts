@@ -267,20 +267,7 @@ export function createStepAudioExtensions() {
     new ItemElement(AudioExtensionName.RallySpeaker)
   );
   const group5 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.RallyMicPodHub).addRequiredDependence({
-      [AudioExtensionName.RallyMicPod]: {
-        active: true,
-        property: {
-          count: 2,
-        },
-      },
-      [AudioExtensionName.RallyMicPodMount]: {
-        active: false,
-      },
-      [CameraName.RallyBarMini]: {
-        active: true,
-      },
-    })
+    new ItemElement(AudioExtensionName.RallyMicPodHub)
   );
   const group6 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.CATCoupler)

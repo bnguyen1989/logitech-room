@@ -1,6 +1,7 @@
 import { RootState } from "../../..";
 import { getSeparatorItemColor } from "../../../../utils/baseUtils";
 import { StepName } from "../type";
+import { getColorsData } from "../utils";
 import {
   getAllAssetFromCard,
   getSelectedDataByKeyPermission,
@@ -17,16 +18,7 @@ export const getColorsFromCard =
   (keyItemPermission: string) => (state: RootState) => {
     const assetCard = getAllAssetFromCard(keyItemPermission)(state);
 
-    const colorsData = [
-      {
-        name: "Graphite",
-        value: "#434446",
-      },
-      {
-        name: "White",
-        value: "#FBFBFB",
-      },
-    ];
+    const colorsData = getColorsData();
 
     function getColors(items: string[]) {
       const colors: string[] = [];

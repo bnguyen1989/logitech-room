@@ -39,6 +39,7 @@ import {
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
+  getColorsData,
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
@@ -257,8 +258,7 @@ function setStepData(
     | StepName.VideoAccessories
     | StepName.SoftwareServices,
   itemNameList: Array<Array<string>>,
-  image: string,
-  subtitle?: string
+  image: string
 ) {
   const stepCardData: Array<CardI> = [];
 
@@ -278,7 +278,6 @@ function setStepData(
       temp.push({
         key: stepName,
         image: image,
-        subtitle: subtitle,
         keyPermission: keyPermission,
         dataThreekit: {
           attributeName: name,
@@ -341,15 +340,19 @@ function setStepData(
       tempCard.keyPermission
     )(state);
 
-    //temp solution, but need to be refactored, because threekitItems can include isn't color items (Object.keys(threekitItems).length === 2)
-    const isSetColors = Object.keys(threekitItems).length === 2 && !color;
+    const colorsName = getColorsData().map((item) => item.name);
+    const nameItems = Object.keys(threekitItems);
+    const includeColors = colorsName.every((item) =>
+      nameItems.some((name) => name.includes(item))
+    );
+    const isSetColors = includeColors && !color;
     if (isSetColors) {
       store.dispatch(
         setPropertyItem({
           step: stepName,
           keyItemPermission: tempCard.keyPermission,
           property: {
-            color: "Graphite",
+            color: colorsName[0],
           },
         })
       );
@@ -373,8 +376,7 @@ function setAudioExtensionsData(configurator: Configurator) {
       store,
       StepName.AudioExtensions,
       Configurator.AudioExtensionName,
-      MicImg,
-      undefined
+      MicImg
     );
   };
 }
@@ -386,8 +388,7 @@ function setCameraData(configurator: Configurator) {
       store,
       StepName.ConferenceCamera,
       Configurator.CameraName,
-      CameraImg,
-      undefined
+      CameraImg
     );
   };
 }
@@ -399,8 +400,7 @@ function setMeetingControllerData(configurator: Configurator) {
       store,
       StepName.MeetingController,
       Configurator.MeetingControllerName,
-      ControllerImg,
-      "Minimum (1)"
+      ControllerImg
     );
   };
 }

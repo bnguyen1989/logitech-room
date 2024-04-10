@@ -382,3 +382,16 @@ export const getExpressionArrayForQuestionForm = () => {
     extendedWarranty: expressionArrayExtendedWarranty,
   };
 };
+
+export const getColorsData = () => {
+  return [
+    {
+      name: "Graphite",
+      value: "#434446",
+    },
+    {
+      name: "White",
+      value: "#FBFBFB",
+    },
+  ];
+}

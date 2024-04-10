@@ -1116,29 +1116,10 @@ export class ConfigurationConstraintHandler extends Handler {
     return undefined;
   }
 
-  private findAssetByAssetId(assetId: string, attrName: string) {
-    const attr = this.getAttribute(attrName);
-    if (!attr) return undefined;
-    const attrState = this.configurator.getAttributeState();
-    const attrValuesArr = attrState[attr.id].values;
-    if (!attrValuesArr) return undefined;
-    return attrValuesArr.find(
-      (option) =>
-        typeof option === "object" &&
-        (option as ValueAssetStateI).id === assetId
-    ) as ValueAssetStateI;
-  }
-
   private getColorFromAssetName(name: string) {
     const colorSeparator = getSeparatorItemColor();
     const color = name.split(colorSeparator)[1];
     return color;
-  }
-
-  private getNameAssetByColor(color: string, names: Array<string>) {
-    const colorSeparator = getSeparatorItemColor();
-    const name = names.find((n) => n.includes(colorSeparator + color));
-    return name;
   }
 
   private setRecommendedInMetadata(
