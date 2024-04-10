@@ -10,6 +10,7 @@ import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
 import { useRef } from "react";
+import { Canvas } from "@react-three/fiber";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -26,15 +27,15 @@ export const Player: React.FC = () => {
   const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
 
   const fovRad = 2 * Math.atan(sensorSizeMm / (2 * focalLengthMm));
-  const fovDeg = fovRad * (180 / Math.PI);  // Conversion of radians to degrees
+  const fovDeg = fovRad * (180 / Math.PI); // Conversion of radians to degrees
 
-
-  const canvasProps = {
+  const canvasProps: Omit<React.ComponentProps<typeof Canvas>, "children"> = {
     camera: {
       position: [155.8439, 79.0929, 106.9646],
       fov: fovDeg,
     },
   };
+  
   // console.log("fovDeg", fovDeg);
   if (!assetId) return null;
   return (
@@ -55,11 +56,8 @@ export const Player: React.FC = () => {
             },
           },
         })}
- 
         canvasProps={canvasProps}
- 
         ui={false}
- 
       >
         <>
           <CameraControls ref={cameraControlsRef} />
