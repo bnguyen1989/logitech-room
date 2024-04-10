@@ -20,12 +20,21 @@ export const bhoustonAuth = {
 export const Player: React.FC = () => {
   const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
 
-  // const configuration = useAppSelector(getConfiguration);
-
   const assetId = useAppSelector(getAssetId);
 
-  if (!assetId) return null;
+  const focalLengthMm = 95; // Фокусна відстань в мм
+  const sensorSizeMm = 36; // Горизонтальний розмір сенсора 35мм камери в мм
+  const fovRad = 2 * Math.atan(sensorSizeMm / (2 * focalLengthMm));
+  const fovDeg = fovRad * (180 / Math.PI); // Перетворення радіанів в градуси
 
+  const canvasProps = {
+    camera: {
+      position: [155.8439, 79.0929, 106.9646],
+      fov: fovDeg,
+    },
+  };
+  // console.log("fovDeg", fovDeg);
+  if (!assetId) return null;
   return (
     <div className={s.container}>
       <Head>
@@ -44,6 +53,7 @@ export const Player: React.FC = () => {
             },
           },
         })}
+        canvasProps={canvasProps}
       >
         <>
           <CameraControls ref={cameraControlsRef} />
@@ -51,19 +61,14 @@ export const Player: React.FC = () => {
             <Room roomAssetId={assetId} />
           </Geoff2Stage>
           <OrbitControls
-            autoRotate={false}
-            autoRotateSpeed={0.15}
             enableDamping={true}
             enableZoom={false}
             maxDistance={3}
             minDistance={1}
-            panSpeed={0}
             minZoom={1}
             maxZoom={3}
             minPolarAngle={Math.PI / 6}
             maxPolarAngle={Math.PI / 2}
-            makeDefault
-            enabled={true}
           />
         </>
       </Viewer>
