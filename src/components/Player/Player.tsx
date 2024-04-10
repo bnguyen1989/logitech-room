@@ -9,8 +9,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { useRef } from "react"; 
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -29,13 +28,13 @@ export const Player: React.FC = () => {
   const fovRad = 2 * Math.atan(sensorSizeMm / (2 * focalLengthMm));
   const fovDeg = fovRad * (180 / Math.PI); // Conversion of radians to degrees
 
-  const canvasProps: Omit<React.ComponentProps<typeof Canvas>, "children"> = {
+  const canvasProps: any = {
     camera: {
       position: [155.8439, 79.0929, 106.9646],
       fov: fovDeg,
     },
   };
-  
+
   // console.log("fovDeg", fovDeg);
   if (!assetId) return null;
   return (
@@ -73,6 +72,7 @@ export const Player: React.FC = () => {
             maxZoom={3}
             minPolarAngle={Math.PI / 6}
             maxPolarAngle={Math.PI / 2}
+     
           />
         </>
       </Viewer>
