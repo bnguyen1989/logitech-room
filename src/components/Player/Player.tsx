@@ -53,7 +53,11 @@ export const Player: React.FC = () => {
             },
           },
         })}
+ 
         canvasProps={canvasProps}
+ 
+        ui={false}
+ 
       >
         <>
           <CameraControls ref={cameraControlsRef} />

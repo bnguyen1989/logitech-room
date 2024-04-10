@@ -81,6 +81,7 @@ export class ConfigurationConstraintHandler extends Handler {
       ConfigurationConstraintHandler.getTriggeredAttribute(this.configurator);
     const localeTagStr = "locale_US";
     const leadingSpecCharForDefault = "*";
+    const leadingSpecCharForRecommended = "r";
     const skipColumns = ["level2datatableId", "attrRules"];
     const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
     const currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
@@ -98,6 +99,7 @@ export class ConfigurationConstraintHandler extends Handler {
         localeTagStr,
         this.dataTableLevel1,
         leadingSpecCharForDefault,
+        leadingSpecCharForRecommended,
         skipColumns,
         level1AttrSequenceArr,
         currentIndexInLevel1Sequence
@@ -108,7 +110,8 @@ export class ConfigurationConstraintHandler extends Handler {
     const level2row = this.findLevel2Row(
       this.dataTableLevel1,
       level1AttrSequenceArr,
-      leadingSpecCharForDefault
+      leadingSpecCharForDefault,
+      leadingSpecCharForRecommended
     );
 
     if (!level2row || !level2row.value) return true; //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
@@ -143,6 +146,7 @@ export class ConfigurationConstraintHandler extends Handler {
           this.proccesDataTableLavel2(
             localeTagStr,
             leadingSpecCharForDefault,
+            leadingSpecCharForRecommended,
             setLevel2Default_flag,
             attrRulesStr
           );
@@ -153,6 +157,7 @@ export class ConfigurationConstraintHandler extends Handler {
       this.proccesDataTableLavel2(
         localeTagStr,
         leadingSpecCharForDefault,
+        leadingSpecCharForRecommended,
         setLevel2Default_flag,
         attrRulesStr
       );
@@ -163,13 +168,15 @@ export class ConfigurationConstraintHandler extends Handler {
   public proccesDataTableLavel2(
     localeTagStr: string,
     leadingSpecCharForDefault: string,
+    leadingSpecCharForRecommended: string,
     setLevel2Default_flag: boolean,
     attrRulesStr: string
   ) {
     const setConfig_obj = this.validateAttributesWithDatatable(
       localeTagStr,
       this.dataTableLevel2,
-      leadingSpecCharForDefault
+      leadingSpecCharForDefault,
+      leadingSpecCharForRecommended
     );
     if (!setConfig_obj) return true;
     const forceSetConfig_obj = this.forceSetOption(
@@ -263,7 +270,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_reco_micPod_micPodHub() {
     const micAttrName_str = "Room Mic";
-    const micQtyAttrName_str = "Qty - Micpod/Expansion";
+    const micQtyAttrName_str = "Qty - Micpod";
 
     const micMountAttrName_str = "Room Mic Mount";
 
@@ -297,7 +304,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_Mic_Mount_Mic() {
     const micAttrName_str = "Room Mic";
-    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+    const micPodQtyAttrName_str = "Qty - Micpod";
 
     const mountMicQtyAttrName_str = "Qty - Mic Mount";
 
@@ -331,7 +338,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_Pendant_Mic() {
     const micAttrName_str = "Room Mic";
-    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+    const micPodQtyAttrName_str = "Qty - Micpod";
 
     const pendantQtyAttrName_str = "Qty - Mic Pendant Mount";
 
@@ -404,7 +411,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_micPod_micPodHub_required() {
     const micAttrName_str = "Room Mic";
-    const micQtyAttrName_str = "Qty - Micpod/Expansion";
+    const micQtyAttrName_str = "Qty - Micpod";
 
     const micMountAttrName_str = "Room Mic Mount";
 
@@ -506,7 +513,7 @@ export class ConfigurationConstraintHandler extends Handler {
     );
     if (isCacheData) return;
     const micAttrName_str = "Room Mic";
-    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+    const micPodQtyAttrName_str = "Qty - Micpod";
 
     const micMountAttrName_str = "Room Mic Mount";
     const micMountQtyAttrName_str = "Qty - Mic Mount";
@@ -555,7 +562,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_micPodQty_sight() {
     const sightAttrName_str = "Room Sight";
-    const micPodQtyAttrName_str = "Qty - Micpod/Expansion";
+    const micPodQtyAttrName_str = "Qty - Micpod";
 
     const selectedSight = this.getSelectedValue(sightAttrName_str);
 
@@ -654,9 +661,11 @@ export class ConfigurationConstraintHandler extends Handler {
     tableColName: string,
     theAttrId: string,
     theAttrValuesArr?: Array<ValueStringStateI | ValueAssetStateI>,
-    leadingSpecCharForDefault = "*" // - Symbol of the default value
+    leadingSpecCharForDefault = "*", // - Symbol of the default value
+    leadingSpecCharForRecommended = "r" // - Symbol of the recommended value
   ) {
     const rows = dataTable.data;
+    const optionRecommendation: Array<string> = [];
     const optionNames: Array<string> = [],
       attrSpec = {
         attrType: "Asset",
@@ -669,12 +678,25 @@ export class ConfigurationConstraintHandler extends Handler {
     for (let i = 0; i < rows.length; i++) {
       const rowValue = rows[i].value[tableColName].trim();
       if (rowValue) {
-        if (rowValue.indexOf(leadingSpecCharForDefault) == 0) {
-          const dfOption = rowValue.substring(1);
+        const isDefault = rowValue.indexOf(leadingSpecCharForDefault) === 0;
+        const isRecommendedDefault =
+          rowValue.indexOf(
+            leadingSpecCharForRecommended + leadingSpecCharForDefault
+          ) === 0;
+        if (isDefault || isRecommendedDefault) {
+          const dfOption = isDefault
+            ? rowValue.substring(1)
+            : rowValue.substring(2);
           if (dfOption) {
             if (optionNames.indexOf(dfOption) < 0) optionNames.push(dfOption);
             attrSpec.defaultValue = dfOption;
             if (dfOption === "None") attrSpec.allowBlank = true;
+            if (
+              isRecommendedDefault &&
+              !optionRecommendation.includes(dfOption)
+            ) {
+              optionRecommendation.push(dfOption);
+            }
           }
         } else {
           if (i === 0) attrSpec.defaultValue = rowValue;
@@ -749,6 +771,10 @@ export class ConfigurationConstraintHandler extends Handler {
         ) {
           attrSpec.defaultValue = option.id;
         }
+
+        if (isContainName && optionRecommendation.includes(option.name)) {
+          this.setRecommendedInMetadata(option, true);
+        }
       });
       console.log("copyAttrValuesArr", copyAttrValuesArr);
 
@@ -764,6 +790,7 @@ export class ConfigurationConstraintHandler extends Handler {
     localeTagStr: string,
     dataTable: DataTable,
     leadingSpecCharForDefault = "*",
+    leadingSpecCharForRecommended = "r",
     skipColumns: Array<string> = [],
     attrSequenceArr: Array<string> = [],
     currentIndexInSequence = -1
@@ -790,7 +817,11 @@ export class ConfigurationConstraintHandler extends Handler {
           (row) =>
             row.value[attrSequenceArr[i]] === selectedValue_str ||
             row.value[attrSequenceArr[i]] ===
-              leadingSpecCharForDefault + selectedValue_str
+              leadingSpecCharForDefault + selectedValue_str ||
+            row.value[attrSequenceArr[i]] ===
+              leadingSpecCharForRecommended +
+                leadingSpecCharForDefault +
+                selectedValue_str
         );
       }
       attributeName_arr = attrSequenceArr.slice(currentIndexInSequence + 1);
@@ -814,7 +845,8 @@ export class ConfigurationConstraintHandler extends Handler {
         attrName,
         attribute.id,
         attributeValuesArr,
-        leadingSpecCharForDefault
+        leadingSpecCharForDefault,
+        leadingSpecCharForRecommended
       );
       attrSpec_obj[attrName] = attrSpec;
     });
@@ -875,6 +907,7 @@ export class ConfigurationConstraintHandler extends Handler {
     localeTagStr: string,
     dataTable: DataTable,
     leadingSpecCharForDefault = "*",
+    leadingSpecCharForRecommended = "r",
     skipColumns: Array<string> = [],
     level1AttrSequenceArr: Array<string> = [],
     currentIndexInLevel1Sequence: number
@@ -883,6 +916,7 @@ export class ConfigurationConstraintHandler extends Handler {
       localeTagStr,
       dataTable,
       leadingSpecCharForDefault,
+      leadingSpecCharForRecommended,
       skipColumns,
       level1AttrSequenceArr,
       currentIndexInLevel1Sequence
@@ -908,6 +942,7 @@ export class ConfigurationConstraintHandler extends Handler {
             localeTagStr,
             dataTable,
             leadingSpecCharForDefault,
+            leadingSpecCharForRecommended,
             skipColumns,
             level1AttrSequenceArr,
             currentIndexInLevel1Sequence + 1
@@ -920,7 +955,8 @@ export class ConfigurationConstraintHandler extends Handler {
   private findLevel2Row(
     dataTableLevel1: DataTable,
     attrSequenceArr: Array<string>,
-    leadingSpecCharForDefault = "*"
+    leadingSpecCharForDefault = "*",
+    leadingSpecCharForRecommended = "r"
   ) {
     if (attrSequenceArr.length < 1) return undefined;
 
@@ -944,7 +980,12 @@ export class ConfigurationConstraintHandler extends Handler {
           const rowValue = row.value[attrName].trim();
           if (
             rowValue === selectedValueArr[attrIndex] ||
-            rowValue === leadingSpecCharForDefault + selectedValueArr[attrIndex]
+            rowValue ===
+              leadingSpecCharForDefault + selectedValueArr[attrIndex] ||
+            rowValue ===
+              leadingSpecCharForRecommended +
+                leadingSpecCharForDefault +
+                selectedValueArr[attrIndex]
           )
             found_counter++;
         }
