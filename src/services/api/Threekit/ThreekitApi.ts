@@ -12,7 +12,7 @@ export class ThreekitApi extends BaseApi {
     //this.PUBLIC_TOKEN = ConfigData.publicToken;
    // this.ORG_ID = ConfigData.orgId;
     this.PUBLIC_TOKEN = "7e11f965-c7e3-4642-b721-c5d201b482ed";
-    this.ORG_ID = "7e11f965-c7e3-4642-b721-c5d201b482ed";
+    this.ORG_ID = "04015bb6-401d-47f8-97c0-dd6fa759c441";
   }
 
   public async getAssetById(assetId: string) {
