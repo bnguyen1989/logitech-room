@@ -1,3 +1,4 @@
+import { StepName } from '../../../../../utils/baseUtils'
 import {
   AudioExtensionName,
   CameraName,
@@ -5,7 +6,6 @@ import {
 import { ItemElement } from "../../../elements/ItemElement";
 import { CountableMountElement } from "../../../elements/mounts/CountableMountElement";
 import { Step } from "../../../step/Step";
-import { StepName } from "../../../type";
 import { ReservationMountHandler } from "../ReservationMountHandler";
 
 describe("ReservationMountHandler", () => {

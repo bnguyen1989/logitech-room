@@ -6,9 +6,9 @@ import { Content } from "./Content/Content";
 import { useParams } from "react-router-dom";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { SectionI } from "./type";
-import { StepName } from "../../models/permission/type";
 import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
+import { StepName } from "../../utils/baseUtils";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();

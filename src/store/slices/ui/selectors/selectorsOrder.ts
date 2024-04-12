@@ -1,5 +1,5 @@
 import { RootState } from "../../..";
-import { StepName } from "../../../../models/permission/type";
+import { StepName } from "../../../../utils/baseUtils";
 import { ConfigData } from "../../../../utils/threekitUtils";
 import { CardI } from "../type";
 import {

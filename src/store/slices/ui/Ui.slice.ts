@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { CardI, SelectedDataI, StepDataI, StepName } from "./type";
+import { CardI, SelectedDataI, StepDataI } from "./type";
 import { getInitStepData } from "./utils";
+import { StepName } from "../../../utils/baseUtils";
 
 interface UIStateI {
   processInitData: boolean;

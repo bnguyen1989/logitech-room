@@ -1,6 +1,5 @@
 import { IdGenerator } from "../IdGenerator";
 import { ItemElement } from "./elements/ItemElement";
-import { StepName } from "./type";
 import { Step } from "./step/Step";
 import { ChangeStepRule } from "./rules/ChangeStepRule";
 import { RemoveActiveElementRule } from "./rules/RemoveActiveElementRule";
@@ -26,6 +25,7 @@ import { RequiredElementHandler } from "./handlers/property/RequiredElementHandl
 import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
 import { DependentMountHandler } from "./handlers/mounts/DependentMountHandler";
 import { DisabledCounterElementHandler } from "./handlers/property/DisabledCounterElementHandler";
+import { DirectionStep, StepName } from "../../utils/baseUtils";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName | null = null;
@@ -120,7 +120,7 @@ export class Permission {
   public canNextStep(): boolean {
     const currentStep = this.getCurrentStep();
     if (currentStep) {
-      return new ChangeStepRule("next").validate(currentStep);
+      return new ChangeStepRule(DirectionStep.Next).validate(currentStep);
     }
     return true;
   }

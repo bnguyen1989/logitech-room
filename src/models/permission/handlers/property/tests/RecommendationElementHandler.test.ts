@@ -1,8 +1,8 @@
+import { StepName } from '../../../../../utils/baseUtils'
 import { AudioExtensionName } from "../../../../../utils/permissionUtils";
 import { ItemElement } from "../../../elements/ItemElement";
 import { CountableMountElement } from "../../../elements/mounts/CountableMountElement";
 import { Step } from "../../../step/Step";
-import { StepName } from "../../../type";
 import { RecommendationElementHandler } from "../RecommendationElementHandler";
 
 describe("RecommendationElementHandler", () => {

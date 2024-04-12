@@ -7,7 +7,6 @@ import {
   removeNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
-import { StepName } from "../../../../models/permission/type";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { CountableMountElement } from "../../../../models/permission/elements/mounts/CountableMountElement";
@@ -22,6 +21,7 @@ import {
 } from "../../ui/selectors/selectors";
 import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
+import { StepName } from '../../../../utils/baseUtils'
 
 export function updateNodesByConfiguration(
   configurator: Configurator,

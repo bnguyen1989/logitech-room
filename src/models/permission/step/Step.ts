@@ -1,9 +1,9 @@
 import { GroupElement } from "../elements/GroupElement";
 import { ItemElement } from "../elements/ItemElement";
 import { MountElement } from "../elements/mounts/MountElement";
-import { StepName } from "../type";
 import { CountableMountElement } from "../elements/mounts/CountableMountElement";
 import { ReferenceMountElement } from "../elements/mounts/ReferenceMountElement";
+import { StepName } from "../../../utils/baseUtils";
 
 export class Step {
   public name: StepName;
