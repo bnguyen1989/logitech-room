@@ -1,5 +1,4 @@
 import { describe } from "node:test";
-import { StepName } from "../type";
 import { Permission } from "../Permission";
 import {
   AudioExtensionName,
@@ -11,6 +10,7 @@ import {
 } from "../../../utils/permissionUtils";
 import { ItemElement } from "../elements/ItemElement";
 import { CountableMountElement } from "../elements/mounts/CountableMountElement";
+import { StepName } from '../../../utils/baseUtils'
 
 describe("Permission", () => {
   const compareProperty = (

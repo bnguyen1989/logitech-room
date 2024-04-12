@@ -1,9 +1,9 @@
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
+import { DirectionStep, StepName } from "../../../utils/baseUtils";
 import { Application } from "../../Application";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
 import { ConfigurationConstraintHandler } from "../../handlers/ConfigurationConstraintHandler";
-import { StepName } from "../../permission/type";
 import { ChangeStepCommand } from "../ChangeStepCommand";
 import Behavior from "./Behavior";
 
@@ -12,13 +12,22 @@ declare const app: Application;
 export class ChangeStepBehavior extends Behavior {
   public async execute(command: ChangeStepCommand): Promise<boolean> {
     return new Promise((resolve) => {
-      if (command.stepName === StepName.Platform) {
+      const dataTableAssetId = app.dataTableLevel1.assetId;
+      const roomAssetId = app.currentConfigurator.assetId;
+      const isLoadThreekitData =
+        command.stepName === StepName.Platform &&
+        command.direction === DirectionStep.Next &&
+        dataTableAssetId !== roomAssetId;
+
+      if (isLoadThreekitData) {
         const roomAssetId = app.currentConfigurator.assetId;
         app.eventEmitter.emit("processInitThreekitData", true);
         return new ThreekitService()
           .getInitDataAssetById(roomAssetId)
           .then(({ attributes, dataTables, attributesSequenceLevel1 }) => {
-            app.dataTableLevel1 = new DataTable(dataTables);
+            app.dataTableLevel1 = new DataTable(dataTables).setAssetId(
+              roomAssetId
+            );
             app.currentConfigurator.attributesSequenceLevel1 =
               attributesSequenceLevel1;
 

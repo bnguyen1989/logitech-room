@@ -1,7 +1,7 @@
+import { StepName } from '../../../../../utils/baseUtils'
 import { AudioExtensionName } from "../../../../../utils/permissionUtils";
 import { ItemElement } from "../../../elements/ItemElement";
 import { Step } from "../../../step/Step";
-import { StepName } from "../../../type";
 import { RequiredElementHandler } from "../RequiredElementHandler";
 
 describe("RequiredElementHandler", () => {

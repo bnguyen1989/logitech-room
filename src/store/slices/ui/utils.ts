@@ -1,4 +1,4 @@
-import { CardI, QuestionFormI, StepDataI, StepName } from "./type";
+import { CardI, QuestionFormI, StepDataI } from "./type";
 import LogoMS from "../../../assets/images/platform/microsoft.jpg";
 import LogoGoogle from "../../../assets/images/platform/google.jpg";
 import LogoZoom from "../../../assets/images/platform/zoom.jpg";
@@ -20,6 +20,7 @@ import {
   ServiceName,
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
+import { StepName } from "../../../utils/baseUtils";
 
 export enum UI_ACTION_NAME {
   ADD_ACTIVE_CARD = "ui/addActiveCard",
@@ -394,4 +395,4 @@ export const getColorsData = () => {
       value: "#FBFBFB",
     },
   ];
-}
+};

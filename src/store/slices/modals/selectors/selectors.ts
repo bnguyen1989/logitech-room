@@ -1,5 +1,5 @@
 import { RootState } from "../../../";
-import { StepName } from "../../../../models/permission/type";
+import { StepName } from "../../../../utils/baseUtils";
 import { getActiveStep, getSelectData } from "../../ui/selectors/selectors";
 import { ModalName } from "../type";
 

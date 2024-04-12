@@ -1,7 +1,7 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
-import { getSeparatorItemColor } from "../../../../utils/baseUtils";
-import { CardI, StepI, StepName } from "../type";
+import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { CardI, StepI } from "../type";
 import { getTitleFromDataByKeyPermission } from "../utils";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
@@ -92,7 +92,9 @@ export const getSelectedCardsByStep =
     const selectedDataItem = selectedData[stepName] || {};
 
     return Object.entries(selectedDataItem).reduce((acc, [key, value]) => {
-      if (value.selected.length) {
+      const isSelected = value.selected.length > 0;
+      const isExist = cards[key];
+      if (isSelected && isExist) {
         acc.push(cards[key]);
       }
       return acc;

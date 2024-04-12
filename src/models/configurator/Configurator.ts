@@ -1,7 +1,7 @@
 import { AssetI } from "../../services/Threekit/type";
+import { StepName } from '../../utils/baseUtils'
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
-import { StepName } from "../permission/type";
 import {
   AttributeI,
   AttributeName,

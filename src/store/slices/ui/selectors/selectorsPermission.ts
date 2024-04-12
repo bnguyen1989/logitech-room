@@ -1,6 +1,6 @@
 import { RootState } from "../../..";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
-import { StepName } from "../../../../models/permission/type";
+import { StepName } from "../../../../utils/baseUtils";
 import { getPermission } from "./selectors";
 
 export const getAutoChangeDataByKeyPermission =

@@ -7,10 +7,10 @@ import { ChangeCountItemCommand } from "./command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "./command/ChangeColorItemCommand";
 import { RemoveItemCommand } from "./command/RemoveItemCommand";
 import { ChangeStepCommand } from "./command/ChangeStepCommand";
-import { StepName } from "./permission/type";
 import { DataTable } from "./dataTable/DataTable";
 import { ChangeSelectItemCommand } from "./command/ChangeSelectItemCommand";
 import { ConfigurationConstraintHandler } from "./handlers/ConfigurationConstraintHandler";
+import { DirectionStep, StepName } from "../utils/baseUtils";
 
 declare const logger: Logger;
 
@@ -86,9 +86,12 @@ export class Application {
     );
   }
 
-  public changeStep(stepName: StepName): Promise<boolean> {
+  public changeStep(
+    stepName: StepName,
+    direction: DirectionStep
+  ): Promise<boolean> {
     return this.executeCommand(
-      new ChangeStepCommand(this.currentConfigurator, stepName)
+      new ChangeStepCommand(this.currentConfigurator, stepName, direction)
     );
   }
 

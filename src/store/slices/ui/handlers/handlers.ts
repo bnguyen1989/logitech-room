@@ -10,7 +10,6 @@ import {
 import {
   CardI,
   SelectDataI,
-  StepName,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
@@ -58,6 +57,7 @@ import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColor
 import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
 import { getRoomAssetId } from "../../../../utils/threekitUtils";
+import { StepName } from "../../../../utils/baseUtils";
 
 declare const app: Application;
 

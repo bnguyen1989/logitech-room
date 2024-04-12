@@ -1,8 +1,8 @@
+import { StepName } from '../../../../../utils/baseUtils'
 import { CameraName } from "../../../../../utils/permissionUtils";
 import { ItemElement } from "../../../elements/ItemElement";
 import { MountElement } from "../../../elements/mounts/MountElement";
 import { Step } from "../../../step/Step";
-import { StepName } from "../../../type";
 import { DependentMountHandler } from "../DependentMountHandler";
 
 describe("DependentMountHandler", () => {
