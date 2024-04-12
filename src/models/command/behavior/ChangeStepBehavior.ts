@@ -1,5 +1,5 @@
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { DirectionStep, StepName } from "../../../utils/baseUtils";
+import { StepName } from "../../../utils/baseUtils";
 import { Application } from "../../Application";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
@@ -16,7 +16,6 @@ export class ChangeStepBehavior extends Behavior {
       const roomAssetId = app.currentConfigurator.assetId;
       const isLoadThreekitData =
         command.stepName === StepName.Platform &&
-        command.direction === DirectionStep.Next &&
         dataTableAssetId !== roomAssetId;
 
       if (isLoadThreekitData) {

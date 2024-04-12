@@ -12,7 +12,6 @@ import {
   getNavigationStepData,
 } from "../../../../store/slices/ui/selectors/selectors";
 import { Application } from "../../../../models/Application";
-import { DirectionStep } from "../../../../utils/baseUtils";
 
 declare const app: Application;
 
@@ -28,7 +27,7 @@ export const ActionsContent = () => {
       return;
     }
 
-    app.changeStep(nextStep.key, DirectionStep.Next);
+    app.changeStep(nextStep.key);
   };
 
   const handleBack = () => {
@@ -37,7 +36,7 @@ export const ActionsContent = () => {
       return;
     }
 
-    app.changeStep(prevStep.key, DirectionStep.Prev);
+    app.changeStep(prevStep.key);
   };
 
   const handleRevert = () => {
