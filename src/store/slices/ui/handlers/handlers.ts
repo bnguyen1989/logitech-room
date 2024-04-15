@@ -21,6 +21,7 @@ import {
   addActiveCards,
   changeActiveStep,
   changeProcessInitData,
+  clearAllActiveCardsSteps,
   createItem,
   removeActiveCard,
   removeActiveCards,
@@ -110,6 +111,11 @@ export const getUiHandlers = (store: Store) => {
   app.eventEmitter.on(
     "threekitDataInitialized",
     (configurator: Configurator) => {
+      store.dispatch(
+        clearAllActiveCardsSteps({
+          ignoreSteps: [StepName.RoomSize],
+        })
+      );
       setAudioExtensionsData(configurator)(store);
       setCameraData(configurator)(store);
       setMeetingControllerData(configurator)(store);

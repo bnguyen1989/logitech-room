@@ -18,7 +18,11 @@ import {
   getPropertyCounterCardByKeyPermission,
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
-import { addActiveCard, setPropertyItem } from "../slices/ui/Ui.slice";
+import {
+  addActiveCard,
+  clearAllActiveCardsSteps,
+  setPropertyItem,
+} from "../slices/ui/Ui.slice";
 import { CUSTOM_UI_ACTION_NAME, UI_ACTION_NAME } from "../slices/ui/utils";
 import { getIsShowProductModal } from "../slices/modals/selectors/selectors";
 import { setSelectProductModal } from "../slices/modals/Modals.slice";
@@ -65,6 +69,11 @@ export const middleware: Middleware =
       case UI_ACTION_NAME.CHANGE_ACTIVE_STEP: {
         const stepName = action.payload;
         updateDataCardByStepName(stepName)(store, currentConfigurator);
+        break;
+      }
+      case UI_ACTION_NAME.MOVE_TO_START_STEP: {
+        app.resetApplication();
+        store.dispatch(clearAllActiveCardsSteps({}));
         break;
       }
       default:
