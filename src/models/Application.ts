@@ -20,6 +20,13 @@ export class Application {
   public dataTableLevel1: DataTable = new DataTable([]);
   public dataTableLevel2: DataTable = new DataTable([]);
 
+
+  public resetApplication(): void {
+    this.currentConfigurator = new Configurator();
+    this.dataTableLevel1 = new DataTable([]);
+    this.dataTableLevel2 = new DataTable([]);
+  }
+
   public get currentConfigurator(): Configurator {
     return this._currentConfigurator;
   }

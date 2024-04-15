@@ -26,6 +26,7 @@ export enum UI_ACTION_NAME {
   ADD_ACTIVE_CARD = "ui/addActiveCard",
   REMOVE_ACTIVE_CARD = "ui/removeActiveCard",
   CHANGE_ACTIVE_STEP = "ui/changeActiveStep",
+  MOVE_TO_START_STEP = "ui/moveToStartStep"
 }
 
 export enum CUSTOM_UI_ACTION_NAME {
