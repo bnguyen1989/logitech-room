@@ -33,6 +33,7 @@ export class ChangeStepBehavior extends Behavior {
             const configurator = app.currentConfigurator.getSnapshot();
             configurator.setAttributes(attributes as Array<AttributeI>);
             app.currentConfigurator = configurator;
+            ConfigurationConstraintHandler.clearCacheData();
             return new ConfigurationConstraintHandler(
               configurator,
               app.dataTableLevel1,

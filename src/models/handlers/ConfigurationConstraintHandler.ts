@@ -44,6 +44,12 @@ export class ConfigurationConstraintHandler extends Handler {
     this.configurator = configurator;
   }
 
+  public static clearCacheData() {
+    Object.keys(CACHE_DATA).forEach((key) => {
+      delete CACHE_DATA[key];
+    });
+  }
+
   public static addCacheData(key: string, value: any) {
     CACHE_DATA[key] = value;
   }
@@ -652,11 +658,9 @@ export class ConfigurationConstraintHandler extends Handler {
     const selectedHub = this.getSelectedValue(AttributeName.RoomMicHub);
     const isSelectHub = typeof selectedHub === "object";
 
-    const isChangeHub = this.triggeredByAttr.includes(
-      AttributeName.RoomMicHub
-    );
+    const isChangeHub = this.triggeredByAttr.includes(AttributeName.RoomMicHub);
 
-    if(!isSelectHub && isChangeHub) {
+    if (!isSelectHub && isChangeHub) {
       ConfigurationConstraintHandler.addCacheData(
         RuleName.reco_micPod_micPodHub,
         true
