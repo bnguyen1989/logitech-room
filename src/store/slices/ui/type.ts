@@ -85,7 +85,6 @@ export interface SelectI {
 }
 
 export interface QuestionFormI {
-  title: string;
   question: string;
   options: Array<{
     value: boolean;

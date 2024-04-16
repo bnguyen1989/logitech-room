@@ -310,7 +310,6 @@ export const getDescriptionRoomBySize = (size: string) => {
 export const getDataQuestionForm = (): Array<QuestionFormI> => {
   return [
     {
-      title: "Label",
       question: " What are your hours of support?",
       options: [
         { value: false, text: "Business Hours" },
@@ -320,7 +319,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question: "What’s your repair time for meeting rooms?",
       options: [
         { value: false, text: "Within 1 week" },
@@ -330,7 +328,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question: "What’s the typical lifecycle for meeting room hardware?",
       options: [
         { value: false, text: "Less than 2 years" },
@@ -341,7 +338,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question:
         "What support service is needed for you to ensure your meeting rooms are always up and running?",
       options: [

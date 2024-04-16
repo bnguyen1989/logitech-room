@@ -90,7 +90,6 @@ export const QuestionForm: React.FC<PropsI> = (props) => {
               <div className={`${s.triangle}`}></div>
               <div className={s.header_item}>
                 <div className={s.item_text}>
-                  <div className={s.title}>{question.title}</div>
                   <div className={s.text}>{question.question}</div>
                 </div>
                 <div className={`${s.edit_button}`}>
