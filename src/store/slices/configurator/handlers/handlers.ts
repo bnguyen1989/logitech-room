@@ -11,7 +11,6 @@ import { ItemElement } from "../../../../models/permission/elements/ItemElement"
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { CountableMountElement } from "../../../../models/permission/elements/mounts/CountableMountElement";
 import {
-  getActiveStep,
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
@@ -21,7 +20,24 @@ import {
 } from "../../ui/selectors/selectors";
 import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
-import { StepName } from '../../../../utils/baseUtils'
+import { StepName } from "../../../../utils/baseUtils";
+
+export function deleteNodesByCards(cards: Array<CardI>) {
+  return (store: Store) => {
+    const assetIds = cards.reduce<string[]>((acc, curr) => {
+      const dataThreekit = curr.dataThreekit;
+      const threekitItems = Object.values(dataThreekit.threekitItems);
+      const assetIds = threekitItems.map((item) => item.id);
+
+      return acc.concat(assetIds);
+    }, []);
+    const state = store.getState();
+    const nodes = getNodes(state);
+    const keys = Object.keys(nodes);
+    const keysForRemove = keys.filter((key) => assetIds.includes(nodes[key]));
+    store.dispatch(removeNodeByKeys(keysForRemove));
+  };
+}
 
 export function updateNodesByConfiguration(
   configurator: Configurator,
@@ -200,11 +216,10 @@ export function addElement(card: CardI, stepName: StepName) {
   };
 }
 
-export function removeElement(card: CardI) {
+export function removeElement(card: CardI, stepName: StepName) {
   return (store: Store) => {
     const state = store.getState();
-    const activeStep = getActiveStep(state);
-    const permission = getPermission(activeStep)(state);
+    const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
 
     if (!card || !step) return;
@@ -252,7 +267,7 @@ export function removeElement(card: CardI) {
         if (!(referenceMount instanceof CountableMountElement)) return;
 
         const cardReference = getCardByKeyPermission(
-          activeStep,
+          stepName,
           dependentMount.name
         )(state);
         const cardAssetReference = getAssetFromCard(cardReference)(state);
@@ -260,7 +275,7 @@ export function removeElement(card: CardI) {
         const autoChangeItems = element.getAutoChangeItems();
         const keyAutoChange = Object.keys(autoChangeItems)[0];
         const selectAutoChange = getIsSelectedCardByKeyPermission(
-          activeStep,
+          stepName,
           keyAutoChange
         )(state);
 
@@ -279,7 +294,7 @@ export function removeElement(card: CardI) {
             return;
           const autoChangeNameNodes = autoChangeMount.getAvailableNameNode();
           const cardAutoChange = getCardByKeyPermission(
-            activeStep,
+            stepName,
             keyAutoChange
           )(state);
           const cardAssetAutoChange = getAssetFromCard(cardAutoChange)(state);
@@ -311,7 +326,7 @@ export function removeElement(card: CardI) {
       const defaultMount = itemElement.getDefaultMount();
       if (!defaultMount) return;
       const cardItemElement = getCardByKeyPermission(
-        activeStep,
+        stepName,
         itemElement.name
       )(state);
       const cardItemElementAsset = getAssetFromCard(cardItemElement)(state);
@@ -327,7 +342,7 @@ export function removeElement(card: CardI) {
       }
       store.dispatch(changeStatusProcessing(true));
       const dependentCard = getCardByKeyPermission(
-        activeStep,
+        stepName,
         dependentMount.name
       )(state);
       const dependentCardAsset = getAssetFromCard(dependentCard)(state);

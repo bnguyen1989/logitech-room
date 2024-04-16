@@ -13,9 +13,10 @@ import s from "./SelectProductCard.module.scss";
 
 interface PropsI {
   keyItemPermission: string;
+  callbackEdit?: () => void;
 }
 export const SelectProductCard: React.FC<PropsI> = (props) => {
-  const { keyItemPermission } = props;
+  const { keyItemPermission, callbackEdit } = props;
   const stepName = useAppSelector(
     getStepNameByKeyPermission(keyItemPermission)
   );
@@ -49,11 +50,13 @@ export const SelectProductCard: React.FC<PropsI> = (props) => {
             <div className={s.title_text}>{title}</div>
             <div className={s.subtitle}>{subTitle}</div>
           </div>
-          <div className={s.button_edit}>
-            <IconButton onClick={() => {}}>
-              <EditSVG />
-            </IconButton>
-          </div>
+          {callbackEdit && (
+            <div className={s.button_edit}>
+              <IconButton onClick={callbackEdit}>
+                <EditSVG />
+              </IconButton>
+            </div>
+          )}
         </div>
       </div>
     </div>
