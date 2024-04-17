@@ -11,6 +11,8 @@ import { DataTable } from "./dataTable/DataTable";
 import { ChangeSelectItemCommand } from "./command/ChangeSelectItemCommand";
 import { ConfigurationConstraintHandler } from "./handlers/ConfigurationConstraintHandler";
 import { StepName } from "../utils/baseUtils";
+import fileDownload from "js-file-download";
+import { RoomService } from "../services/RoomService/RoomService";
 
 declare const logger: Logger;
 
@@ -19,7 +21,6 @@ export class Application {
   public eventEmitter: EventEmitter = new EventEmitter();
   public dataTableLevel1: DataTable = new DataTable([]);
   public dataTableLevel2: DataTable = new DataTable([]);
-
 
   public resetApplication(): void {
     this.currentConfigurator = new Configurator();
@@ -33,6 +34,19 @@ export class Application {
 
   public set currentConfigurator(configurator: Configurator) {
     this._currentConfigurator = configurator;
+  }
+
+  public downloadRoomCSV(shortId: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      return new RoomService().generateRoomCSV(shortId).then((res: any) => {
+        if (!res) {
+          return resolve(false);
+        }
+        fileDownload(res, `order-room-${shortId}.csv`);
+        logger.log("Download Room CSV", { shortId });
+        return resolve(true);
+      });
+    });
   }
 
   public addItemConfiguration(

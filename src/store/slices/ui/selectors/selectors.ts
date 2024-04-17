@@ -172,11 +172,18 @@ export const getMetadataAssetFromCard = (card: CardI) => (state: RootState) => {
 };
 export const getMetadataProductNameAssetFromCard =
   (card: CardI) => (state: RootState) => {
-    const threekitAsset = getMetadataAssetFromCard(card)(state);
-    if (!threekitAsset) return "";
+    const metadata = getMetadataAssetFromCard(card)(state);
+    if (!metadata) return "";
 
-    return threekitAsset["Product Name"]?.trim();
+    return metadata["Product Name"]?.trim();
   };
+
+export const getSkuFromMetadataByCard = (card: CardI) => (state: RootState) => {
+  const metadata = getMetadataAssetFromCard(card)(state);
+  if (!metadata) return "";
+
+  return metadata["SKU"]?.trim();
+};
 
 export const getSubTitleCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
