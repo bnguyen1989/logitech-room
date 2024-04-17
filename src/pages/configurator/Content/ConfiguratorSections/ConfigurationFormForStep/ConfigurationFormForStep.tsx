@@ -7,9 +7,9 @@ import {
 } from "../../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
-import { StepName } from "../../../../../models/permission/type";
 import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
 import { useEffect, useRef } from "react";
+import { StepName } from "../../../../../utils/baseUtils";
 
 export const ConfigurationFormForStep = () => {
   const contentRef = useRef<HTMLDivElement>(null);

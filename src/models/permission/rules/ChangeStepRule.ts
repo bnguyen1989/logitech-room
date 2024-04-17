@@ -1,21 +1,21 @@
+import { DirectionStep } from "../../../utils/baseUtils";
 import { GroupElement } from "../elements/GroupElement";
 import { Step } from "../step/Step";
 import { Rule } from "./Rule";
 
 export class ChangeStepRule extends Rule {
   public name: string = "ChangeStepRule";
-  public direction: "next" | "prev";
+  public direction: DirectionStep;
 
-  constructor(direction: "next" | "prev") {
+  constructor(direction: DirectionStep) {
     super();
     this.direction = direction;
   }
 
   public validate(step: Step): boolean {
-    if (this.direction === "prev") {
+    if (this.direction === DirectionStep.Prev) {
       return true;
     }
-    
 
     const groups = step.allElements.filter(
       (element) => element instanceof GroupElement && element.isRequiredOne()

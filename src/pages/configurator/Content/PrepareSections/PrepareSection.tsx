@@ -6,7 +6,8 @@ import {
   getActiveStepData,
   getIsConfiguratorStep,
 } from "../../../../store/slices/ui/selectors/selectors";
-import { CardI, StepI, StepName } from "../../../../store/slices/ui/type";
+import { CardI, StepI } from "../../../../store/slices/ui/type";
+import { StepName } from "../../../../utils/baseUtils";
 import s from "./PrepareSection.module.scss";
 
 export const PrepareSection: React.FC = () => {

@@ -10,7 +10,6 @@ import {
 import {
   CardI,
   SelectDataI,
-  StepName,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
 import MicImg from "../../../../assets/images/items/mic.jpg";
@@ -22,6 +21,7 @@ import {
   addActiveCards,
   changeActiveStep,
   changeProcessInitData,
+  clearAllActiveCardsSteps,
   createItem,
   removeActiveCard,
   removeActiveCards,
@@ -58,6 +58,7 @@ import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColor
 import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
 import { getRoomAssetId } from "../../../../utils/threekitUtils";
+import { StepName } from "../../../../utils/baseUtils";
 
 declare const app: Application;
 
@@ -110,6 +111,11 @@ export const getUiHandlers = (store: Store) => {
   app.eventEmitter.on(
     "threekitDataInitialized",
     (configurator: Configurator) => {
+      store.dispatch(
+        clearAllActiveCardsSteps({
+          ignoreSteps: [StepName.RoomSize],
+        })
+      );
       setAudioExtensionsData(configurator)(store);
       setCameraData(configurator)(store);
       setMeetingControllerData(configurator)(store);

@@ -1,5 +1,6 @@
 import { Configurator } from "../configurator/Configurator";
 import { ItemCommand } from "./ItemCommand";
+import { AddItemBehavior } from "./behavior/AddItemBehavior";
 
 export class AddItemCommand extends ItemCommand {
   public name: string = "AddItemCommand";
@@ -15,6 +16,7 @@ export class AddItemCommand extends ItemCommand {
     super(configurator, keyItemPermission);
     this.assetId = assetId;
     this.nameProperty = nameProperty;
+    this.behaviors.push(new AddItemBehavior());
   }
 
   public executeCommand(): boolean {

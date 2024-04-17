@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { CardI, SelectedDataI, StepDataI, StepName } from "./type";
+import { CardI, SelectedDataI, StepDataI } from "./type";
 import { getInitStepData } from "./utils";
+import { StepName } from "../../../utils/baseUtils";
 
 interface UIStateI {
   processInitData: boolean;
@@ -178,6 +179,20 @@ const uiSlice = createSlice({
       });
       state.selectedData[step] = stepData;
     },
+    clearAllActiveCardsSteps: (
+      state,
+      action: PayloadAction<{
+        ignoreSteps?: StepName[];
+      }>
+    ) => {
+      const { ignoreSteps=[] } = action.payload;
+      const selectedData = state.selectedData;
+      Object.keys(selectedData).forEach((step) => {
+        if (ignoreSteps.includes(step as StepName)) return;
+        selectedData[step] = {};
+      });
+      state.selectedData = selectedData;
+    },
     setDataCardsStep: (
       state,
       action: PayloadAction<{
@@ -211,5 +226,6 @@ export const {
   setDataCardsStep,
   removeActiveCards,
   addActiveCards,
+  clearAllActiveCardsSteps,
 } = uiSlice.actions;
 export default uiSlice.reducer;

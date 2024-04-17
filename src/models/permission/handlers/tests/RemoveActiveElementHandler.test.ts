@@ -1,6 +1,6 @@
+import { StepName } from "../../../../utils/baseUtils";
 import { CameraName } from "../../../../utils/permissionUtils";
 import { Permission } from "../../Permission";
-import { StepName } from "../../type";
 import { RemoveActiveElementHandler } from "../RemoveActiveElementHandler";
 
 describe("RemoveActiveElementHandler", () => {

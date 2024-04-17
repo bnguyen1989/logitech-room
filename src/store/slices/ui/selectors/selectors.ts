@@ -1,7 +1,7 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
-import { getSeparatorItemColor } from "../../../../utils/baseUtils";
-import { CardI, StepI, StepName } from "../type";
+import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { CardI, StepI } from "../type";
 import { getTitleFromDataByKeyPermission } from "../utils";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
@@ -87,17 +87,23 @@ export const getSelectedConfiguratorCards = (state: RootState) => {
 export const getSelectedCardsByStep =
   (stepName: StepName) => (state: RootState) => {
     const selectedData = getSelectData(state);
-    const stepData = getStepData(state);
-    const cards = stepData[stepName].cards;
+    const cards = getCardsByStep(stepName)(state);
     const selectedDataItem = selectedData[stepName] || {};
 
     return Object.entries(selectedDataItem).reduce((acc, [key, value]) => {
-      if (value.selected.length) {
+      const isSelected = value.selected.length > 0;
+      const isExist = cards[key];
+      if (isSelected && isExist) {
         acc.push(cards[key]);
       }
       return acc;
     }, [] as CardI[]);
   };
+
+export const getCardsByStep = (stepName: StepName) => (state: RootState) => {
+  const stepData = getStepData(state);
+  return stepData[stepName].cards;
+};
 
 export const getCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
@@ -166,11 +172,18 @@ export const getMetadataAssetFromCard = (card: CardI) => (state: RootState) => {
 };
 export const getMetadataProductNameAssetFromCard =
   (card: CardI) => (state: RootState) => {
-    const threekitAsset = getMetadataAssetFromCard(card)(state);
-    if (!threekitAsset) return "";
+    const metadata = getMetadataAssetFromCard(card)(state);
+    if (!metadata) return "";
 
-    return threekitAsset["Product Name"]?.trim();
+    return metadata["Product Name"]?.trim();
   };
+
+export const getSkuFromMetadataByCard = (card: CardI) => (state: RootState) => {
+  const metadata = getMetadataAssetFromCard(card)(state);
+  if (!metadata) return "";
+
+  return metadata["SKU"]?.trim();
+};
 
 export const getSubTitleCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {

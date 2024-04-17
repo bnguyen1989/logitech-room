@@ -5,8 +5,7 @@ import { ItemElement } from "../models/permission/elements/ItemElement";
 import { MountElement } from "../models/permission/elements/mounts/MountElement";
 import { ReferenceMountElement } from "../models/permission/elements/mounts/ReferenceMountElement";
 import { Step } from "../models/permission/step/Step";
-import { StepName } from "../models/permission/type";
-import { getSeparatorItemColor } from "./baseUtils";
+import { StepName, getSeparatorItemColor } from "./baseUtils";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -57,7 +56,6 @@ export enum AudioExtensionName {
   RallySpeaker = "Rally Speaker",
   RallyMicPodHub = "Rally Mic Pod Hub",
   CATCoupler = "Logitech Rally Mic Pod CAT Coupler",
-  MicPodExtensionCable = "Mic Pod Extension Cable",
 }
 
 export enum MeetingControllerName {
@@ -272,9 +270,6 @@ export function createStepAudioExtensions() {
   const group6 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.CATCoupler)
   );
-  const group7 = new GroupElement().addElement(
-    new ItemElement(AudioExtensionName.MicPodExtensionCable)
-  );
 
   stepAudioExtensions.allElements = [
     group,
@@ -283,7 +278,6 @@ export function createStepAudioExtensions() {
     group4,
     group5,
     group6,
-    group7,
   ];
   return stepAudioExtensions;
 }

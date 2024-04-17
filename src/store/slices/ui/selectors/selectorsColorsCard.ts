@@ -1,6 +1,5 @@
 import { RootState } from "../../..";
-import { getSeparatorItemColor } from "../../../../utils/baseUtils";
-import { StepName } from "../type";
+import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
 import { getColorsData } from "../utils";
 import {
   getAllAssetFromCard,

@@ -1,7 +1,7 @@
 import { AssetI } from "../../services/Threekit/type";
+import { StepName } from '../../utils/baseUtils'
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
-import { StepName } from "../permission/type";
 import {
   AttributeI,
   AttributeName,
@@ -48,7 +48,6 @@ export class Configurator {
     [AttributeName.RoomMicMount, AttributeName.QtyMicMount],
     [AttributeName.RoomMicPendantMount, AttributeName.QtyMicPendantMount],
     [AttributeName.RoomMicHub, AttributeName.QtyMicHub],
-    [AttributeName.RoomMicExtensionCable, AttributeName.QtyMicExtensionCable],
     [AttributeName.RoomMicCATCoupler],
   ];
 

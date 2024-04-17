@@ -9,14 +9,46 @@ import { getSelectProductModalData } from "../../../store/slices/modals/selector
 import { useDispatch } from "react-redux";
 import { setSelectProductModal } from "../../../store/slices/modals/Modals.slice";
 import { SelectProductCard } from "./card/SelectProductCard";
+import { clearAllActiveCardsSteps } from "../../../store/slices/ui/Ui.slice";
+import { StepName } from "../../../utils/baseUtils";
+import { Application } from "../../../models/Application";
+
+declare const app: Application;
 
 export const SelectProductModal: React.FC = () => {
   const dispatch = useDispatch();
   const selectedCards = useAppSelector(getSelectedConfiguratorCards);
-  const { isOpen } = useAppSelector(getSelectProductModalData);
+  const { isOpen, dataModal } = useAppSelector(getSelectProductModalData);
 
   const handleClose = () => {
-    dispatch(setSelectProductModal({ isOpen: false }));
+    dispatch(setSelectProductModal({ isOpen: false, dataModal: undefined }));
+    if (dataModal) {
+      app.eventEmitter.emit(dataModal.closeHandlerName);
+    }
+  };
+
+  const handleEdit = () => {
+    if (dataModal) {
+      app.eventEmitter.emit(dataModal.editHandlerName);
+    }
+
+    dispatch(
+      clearAllActiveCardsSteps({
+        ignoreSteps: [
+          StepName.RoomSize,
+          StepName.Platform,
+          StepName.Services,
+          StepName.ConferenceCamera,
+        ],
+      })
+    );
+    dispatch(setSelectProductModal({ isOpen: false, dataModal: undefined }));
+  };
+
+  const getEditCallback = (attributeName: string) => {
+    if (!dataModal) return;
+    if (attributeName !== dataModal.attributeName) return;
+    return handleEdit;
   };
 
   if (!isOpen) return null;
@@ -44,6 +76,7 @@ export const SelectProductModal: React.FC = () => {
             <SelectProductCard
               key={index}
               keyItemPermission={card.keyPermission}
+              callbackEdit={getEditCallback(card.dataThreekit.attributeName)}
             />
           ))}
         </div>

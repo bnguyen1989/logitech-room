@@ -7,10 +7,12 @@ import { ChangeCountItemCommand } from "./command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "./command/ChangeColorItemCommand";
 import { RemoveItemCommand } from "./command/RemoveItemCommand";
 import { ChangeStepCommand } from "./command/ChangeStepCommand";
-import { StepName } from "./permission/type";
 import { DataTable } from "./dataTable/DataTable";
 import { ChangeSelectItemCommand } from "./command/ChangeSelectItemCommand";
 import { ConfigurationConstraintHandler } from "./handlers/ConfigurationConstraintHandler";
+import { StepName } from "../utils/baseUtils";
+import fileDownload from "js-file-download";
+import { RoomService } from "../services/RoomService/RoomService";
 
 declare const logger: Logger;
 
@@ -20,12 +22,31 @@ export class Application {
   public dataTableLevel1: DataTable = new DataTable([]);
   public dataTableLevel2: DataTable = new DataTable([]);
 
+  public resetApplication(): void {
+    this.currentConfigurator = new Configurator();
+    this.dataTableLevel1 = new DataTable([]);
+    this.dataTableLevel2 = new DataTable([]);
+  }
+
   public get currentConfigurator(): Configurator {
     return this._currentConfigurator;
   }
 
   public set currentConfigurator(configurator: Configurator) {
     this._currentConfigurator = configurator;
+  }
+
+  public downloadRoomCSV(shortId: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      return new RoomService().generateRoomCSV(shortId).then((res: any) => {
+        if (!res) {
+          return resolve(false);
+        }
+        fileDownload(res, `order-room-${shortId}.csv`);
+        logger.log("Download Room CSV", { shortId });
+        return resolve(true);
+      });
+    });
   }
 
   public addItemConfiguration(
