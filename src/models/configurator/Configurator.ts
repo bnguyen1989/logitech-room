@@ -48,7 +48,6 @@ export class Configurator {
     [AttributeName.RoomMicMount, AttributeName.QtyMicMount],
     [AttributeName.RoomMicPendantMount, AttributeName.QtyMicPendantMount],
     [AttributeName.RoomMicHub, AttributeName.QtyMicHub],
-    [AttributeName.RoomMicExtensionCable, AttributeName.QtyMicExtensionCable],
     [AttributeName.RoomMicCATCoupler],
   ];
 

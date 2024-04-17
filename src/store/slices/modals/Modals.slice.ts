@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ModalI, ModalName } from "./type";
+import { ModalI, ModalName, SelectProductModalI } from "./type";
 
 interface ModalsStateI {
   [ModalName.MY_SETUP]: ModalI;
   [ModalName.INFO_ITEM]: ModalI;
-  [ModalName.SELECT_PRODUCT]: ModalI;
+  [ModalName.SELECT_PRODUCT]: SelectProductModalI;
 }
 
 const initialState: ModalsStateI = {
@@ -30,7 +30,10 @@ const ModalsSlice = createSlice({
     setInfoItemModal: (state, action: PayloadAction<ModalI>) => {
       state[ModalName.INFO_ITEM] = action.payload;
     },
-    setSelectProductModal: (state, action: PayloadAction<ModalI>) => {
+    setSelectProductModal: (
+      state,
+      action: PayloadAction<SelectProductModalI>
+    ) => {
       state[ModalName.SELECT_PRODUCT] = action.payload;
     },
   },

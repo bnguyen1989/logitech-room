@@ -87,8 +87,7 @@ export const getSelectedConfiguratorCards = (state: RootState) => {
 export const getSelectedCardsByStep =
   (stepName: StepName) => (state: RootState) => {
     const selectedData = getSelectData(state);
-    const stepData = getStepData(state);
-    const cards = stepData[stepName].cards;
+    const cards = getCardsByStep(stepName)(state);
     const selectedDataItem = selectedData[stepName] || {};
 
     return Object.entries(selectedDataItem).reduce((acc, [key, value]) => {
@@ -100,6 +99,11 @@ export const getSelectedCardsByStep =
       return acc;
     }, [] as CardI[]);
   };
+
+export const getCardsByStep = (stepName: StepName) => (state: RootState) => {
+  const stepData = getStepData(state);
+  return stepData[stepName].cards;
+};
 
 export const getCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {

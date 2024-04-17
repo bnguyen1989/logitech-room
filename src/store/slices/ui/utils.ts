@@ -26,7 +26,8 @@ export enum UI_ACTION_NAME {
   ADD_ACTIVE_CARD = "ui/addActiveCard",
   REMOVE_ACTIVE_CARD = "ui/removeActiveCard",
   CHANGE_ACTIVE_STEP = "ui/changeActiveStep",
-  MOVE_TO_START_STEP = "ui/moveToStartStep"
+  MOVE_TO_START_STEP = "ui/moveToStartStep",
+  CLEAR_ALL_ACTIVE_CARDS_STEPS = "ui/clearAllActiveCardsSteps",
 }
 
 export enum CUSTOM_UI_ACTION_NAME {
@@ -309,7 +310,6 @@ export const getDescriptionRoomBySize = (size: string) => {
 export const getDataQuestionForm = (): Array<QuestionFormI> => {
   return [
     {
-      title: "Label",
       question: " What are your hours of support?",
       options: [
         { value: false, text: "Business Hours" },
@@ -319,7 +319,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question: "What’s your repair time for meeting rooms?",
       options: [
         { value: false, text: "Within 1 week" },
@@ -329,7 +328,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question: "What’s the typical lifecycle for meeting room hardware?",
       options: [
         { value: false, text: "Less than 2 years" },
@@ -340,7 +338,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question:
         "What support service is needed for you to ensure your meeting rooms are always up and running?",
       options: [

@@ -9,3 +9,11 @@ export interface ModalI {
   product?: string;
   keyItemPermission?: string;
 }
+
+export interface SelectProductModalI extends ModalI {
+  dataModal?: {
+    attributeName: string;
+    editHandlerName: string;
+    closeHandlerName: string;
+  };
+}
