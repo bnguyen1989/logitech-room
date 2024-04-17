@@ -1,0 +1,239 @@
+{
+    "en-us": {
+        "Rally Bar": {
+            "Blade_1": {
+                "ProductName": "Rally Bar",
+                "ShortDescription": "All-in-one video bar for medium to large rooms",
+                "LongDescription": "The premier video bar for medium to large meeting rooms. Discover remarkably simple, all-in-one video conferencing with built-in AI technology, brilliant optics, and powerful audio, with Rally Bar."
+            },
+            "Blade_2": {
+                "Headline": "ALL-IN-ONE VIDEO BAR FOR MEDIUM AND LARGE ROOMS",
+                "Description": "Discover a remarkably simple all-in-one video conferencing setup with brilliant optics, AI-based audio, remote management with Logitech Sync, and more."
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "ENSURE EVERYONE IS SEEN AND HEARD",
+                        "KeyFeature": "AI video intelligence, advanced sound pickup, noise suppression, and continuous software improvements provide a clear and natural meeting experience for remote workers."
+                    },
+                    {
+                        "HeaderFeature": "EXTEND THE CONVERSATION",
+                        "KeyFeature": "Add a Sight tabletop companion camera or Rally Mic Pods to extend the audio pick up range and provide convenient access to mute controls."
+                    },
+                    {
+                        "HeaderFeature": "SIMPLE DEPLOYMENT",
+                        "KeyFeature": "Designed to deliver video meetings with ease, Rally Bar is quick to set up, simple to manage, and easy to integrate with meeting controllers such as Tap IP."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "EASY TO MANAGE",
+                        "KeyFeature": "Easily manage all your spaces, from rooms to personal workspaces at scale, with Logitech Sync. Monitor room health, deploy updates, and modify settings all from a single cloud-based platform. And with Sync Insights, you can see how meeting spaces are utilized over time."
+                    },
+                    {
+                        "HeaderFeature": "MADE WITH NEXT LIFE PLASTICS",
+                        "KeyFeature": "The plastic parts in the graphite version of Rally Bar include 40% certified post-consumer recycled plastic. We’re giving a second life to plastic from consumer electronics to help reduce our carbon footprint."
+                    }
+                ]
+            },
+            "END_CTA": {
+                "end": "Add to Room"
+            }
+        },
+        "Rally Bar Mini": {
+            "Blade_1": {
+                "ProductName": "Rally Bar Mini",
+                "ShortDescription": "All-in-one video bar for small to medium rooms",
+                "LongDescription": "An all-in-one video bar for small to medium meeting rooms. Discover remarkably simple, all-in-one video conferencing with built-in AI technology, brilliant optics, and powerful audio."
+            },
+            "Blade_2": {
+                "Headline": "ALL-IN-ONE VIDEO BAR FOR SMALL AND MEDIUM ROOMS",
+                "Description": "Discover an exceptionally straightforward video conferencing solution featuring outstanding optics, AI-driven audio enhancements, seamless remote management through Logitech Sync, and additional advanced features."
+            },
+            "Blade_3A": {
+                "Features": [
+                    null,
+                    {
+                        "KeyFeature": "Add up to three Rally Mic Pods to extend the audio pick up range and provide convenient access to mute controls."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    null,
+                    {
+                        "KeyFeature": "The plastic parts in the Graphite version of Rally Bar Mini include 36% certified post-consumer recycled plastic. We’re giving a second life to plastic from consumer electronics to help reduce our carbon footprint."
+                    }
+                ]
+            }
+        },
+        "Rally Bar Huddle": {
+            "Blade_1": {
+                "ProductName": "Rally Bar Huddle",
+                "ShortDescription": "All-in-one video bar for huddle and small rooms.",
+                "LongDescription": "Featuring a sleek design and robust technology - Rally Bar Huddle is a straightforward and powerful solution for small spaces."
+            },
+            "Blade_2": {
+                "Headline": "ALLURINGLY SIMPLE"
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "ENABLE EQUITABLE MEETINGS",
+                        "KeyFeature": "Ensure everyone can be seen and heard clearly during hybrid meetings. AI video intelligence, advanced sound pickup, noise suppression, and ongoing software improvements provide a clear and natural meeting experience for remote workers."
+                    },
+                    {
+                        "HeaderFeature": "3 WAYS TO DEPLOY",
+                        "KeyFeature": "Use Rally Bar Huddle as a meeting room appliance, in USB mode connected to a meeting room PC, or connect via laptop."
+                    },
+                    {
+                        "HeaderFeature": "SET UP IN MINUTES",
+                        "KeyFeature": "Designed to deliver video meetings with ease, Rally Bar Huddle is quick to set up, simple to manage, and easy to integrate with Tap IP through CollabOS. Plus, use the included Multi Mount to mount Rally Bar Huddle one of three ways; on a wall, table, or above a display."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    null,
+                    {
+                        "HeaderFeature": "MADE WITH RECYCLED PLASTIC",
+                        "KeyFeature": "The plastic parts in Rally Bar Huddle are made with 42% post-consumer recycled plastic. We’re giving a second life to plastic from consumer electronics to help reduce our carbon footprint."
+                    }
+                ]
+            }
+        },
+        "LOGITECH TAP": {
+            "Blade_1": {
+                "ProductName": "LOGITECH TAP",
+                "ShortDescription": "Make video meetings simple to join with a touch controller with wireless and HDMI content-sharing.",
+                "LongDescription": "Transform your space into a Google Meet meeting place or a Microsoft Teams Rooms on Windows with Logitech Tap. Deliver one-touch join, calendar integration, easy content-sharing, and a consistent experience across all rooms."
+            },
+            "Blade_2": {
+                "Headline": "DEPLOY ROOM SOLUTIONS WITH EASE"
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "JUST THE RIGHT PRESENCE",
+                        "KeyFeature": "With a spacious 10.1” display, low profile, and motion sensor for always-on readiness, Tap has a sleek and unobtrusive presence in the room."
+                    },
+                    {
+                        "HeaderFeature": "SIMPLE AND SECURE CABLING"
+                    },
+                    {
+                        "HeaderFeature": "MULTIPLE MOUNTING OPTIONS"
+                    }
+                ]
+            }
+        },
+        "LOGITECH TAP IP": {
+            "Blade_3A": {
+                "Features": [
+                    null,
+                    {
+                        "KeyFeature": "Streamline setup with a single cable that can be routed through the back or below the device. Keep connections tight with built-in strain relief and retention mechanisms."
+                    },
+                    {
+                        "KeyFeature": "Install Tap IP almost anywhere in the room with Table and Riser Mounts that fit standard table grommets and rotate 180° for visibility and convenience. Or save table space in small rooms with the Wall Mount."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "SINGLE CABLE SIMPLICITY",
+                        "KeyFeature": "With a single Power over Ethernet cable, place Tap IP conveniently near room participants for a tidy and professional install."
+                    },
+                    {
+                        "HeaderFeature": "DESIGNED FOR ANY ROOM",
+                        "KeyFeature": "Provide a consistent one-touch join experience in rooms of virtually any size or shape"
+                    },
+                    {
+                        "HeaderFeature": "SIMPLE TO MANAGE WITH LOGITECH SYNC",
+                        "KeyFeature": "With Logitech Sync, you can monitor and manage Tap IP along with your other meeting room devices from one single platform."
+                    }
+                ]
+            }
+        },
+        "LOGITECH SIGHT": {
+            "Blade_1": {
+                "ProductName": "LOGITECH SIGHT",
+                "ShortDescription": "Tabletop companion camera",
+                "LongDescription": "Get the best perspective with Logitech Sight, which works as a companion with the front-of-room camera to deliver intelligent multi-participant framing."
+            },
+            "Blade_2": {
+                "Headline": "TAKE A SEAT AT THE TABLE",
+                "Description": "AI-powered meeting room camera that helps remote attendees feel like they’re actually seated at the table."
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "FRONT AND CENTER",
+                        "KeyFeature": "Add a tabletop perspective to your front-of-room camera to deliver a better, more inclusive hybrid meeting experience."
+                    },
+                    {
+                        "HeaderFeature": "TRACK CONVERSATIONS NATURALLY",
+                        "KeyFeature": "Sight seamlessly tracks, frames, and presents multiple active speakers in real-time, dynamically replacing and displaying individuals as they contribute to the conversation around the table. Meanwhile, the front-of-room camera overlays the front-of-room view of all in-room participants, providing a comprehensive and engaging view of the entire meeting"
+                    },
+                    {
+                        "HeaderFeature": "SEE AND HEAR CLEARLY IN LARGER ROOMS",
+                        "KeyFeature": "Sight is designed for medium to large rooms with 2.3m or 7.5 ft pickup range. It detects active speakers using 7 mics and uses 4K cameras and AI to clearly capture conversation and nonverbals."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "DESIGNED FOR DIFFERENT SPACES",
+                        "KeyFeature": "Created for medium to large collaboration spaces, Sight extends the capabilities of the front-of-room camera to pick up on conversations and nonverbals around the room."
+                    },
+                    {
+                        "HeaderFeature": "CLEAR AUDIO. CLEAR VIDEO. CLEAR CONTROLS",
+                        "KeyFeature": "With 4K cameras and 7 beamforming mics, Sight captures conversation and nonverbals clearly. Indicator lights and privacy shade allow for clear signaling and status control."
+                    },
+                    {
+                        "HeaderFeature": "CLEAN AND SECURE INSTALL",
+                        "KeyFeature": "Easily install and secure Sight with the included mounts. Keep tables clean and cables plugged in with integrated cable management."
+                    }
+                ]
+            }
+        },
+        "LOGITECH TAP SCHEDULER": {
+            "Blade_1": {
+                "ProductName": "LOGITECH TAP SCHEDULER",
+                "ShortDescription": "Purpose-built scheduling panel for meeting rooms",
+                "LongDescription": "Make it easy to find and claim the right meeting space with Tap Scheduler, a purpose-built scheduling panel that’s designed for deployment at scale."
+            },
+            "Blade_2": {
+                "Headline": "RIGHT PLACE, RIGHT TIME",
+                "Description": "Tap Scheduler makes it easy to see meeting details and reserve a room for ad hoc or future meetings. Easily deploy as a purpose-built scheduling panel for leading room scheduling solutions to help workers find and claim the right space."
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "PICK YOUR PLATFORM",
+                        "KeyFeature": "Enable a seamless meeting experience through Tap Scheduler and Logitech’s suite of room solutions, which integrate with Microsoft Teams®, Zoom Rooms™, Logitech’s own booking service, and other service providers to raise the bar on collaboration."
+                    },
+                    {
+                        "HeaderFeature": "GREEN MEANS GO",
+                        "KeyFeature": "Quickly find an open room through colored LED lights that show availability at a distance."
+                    },
+                    {
+                        "HeaderFeature": "CLEAN AND CONVENIENT SETUP",
+                        "KeyFeature": "Included mounts and clean cabling help ensure a tidy and professional setup. Add an angle mount for better viewing at a lower height."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "DETAILS UP CLOSE",
+                        "KeyFeature": "See meeting details, claim rooms, and book meetings up close on the spacious 10.1” screen. Availability lighting signals room status from afar."
+                    }
+                ]
+            }
+        }
+    }
+}
