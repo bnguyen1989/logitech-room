@@ -13,7 +13,7 @@ export enum RuleName {
   // Attribute Rules
   tapQty_tapIp = "tapQty_tapIp",
   micPodQty_sight = "micPodQty_sight",
-  micPod_micPodExt = "micPod_micPodExt",
+  micPod_CATCoupler = "micPod_CATCoupler",
   micPod_micMount_inNoneWhite = "micPod_micMount_inNoneWhite",
   micPod_micMount_inWhite = "micPod_micMount_inWhite",
 

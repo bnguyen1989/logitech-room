@@ -238,8 +238,8 @@ export class ConfigurationConstraintHandler extends Handler {
       this.rule_micPod_micMount_inWhite();
     }
 
-    if (attrRulesArr.includes(RuleName.micPod_micPodExt)) {
-      this.rule_micPod_micPodExtCAT();
+    if (attrRulesArr.includes(RuleName.micPod_CATCoupler)) {
+      this.rule_micPod_CATCoupler();
     }
   }
 
@@ -492,43 +492,7 @@ export class ConfigurationConstraintHandler extends Handler {
     });
   }
 
-  private rule_micPod_micPodExtCAT() {
-    this.rule_micPod_micPodExt();
-    this.rule_micPod_micPodCAT();
-  }
-
-  private rule_micPod_micPodExt() {
-    const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
-    const attribute = this.getAttribute(AttributeName.RoomMicExtensionCable);
-    if (!attribute) return;
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attrState[attribute.id].values;
-    if (!attributeValuesArr) return;
-
-    const isSelectMic = typeof selectedMic === "object";
-    if (!isSelectMic) {
-      this.configurator.setConfiguration({
-        [AttributeName.RoomMicExtensionCable]: {
-          assetId: "",
-        },
-        [AttributeName.QtyMicExtensionCable]: "0",
-      });
-
-      attributeValuesArr.forEach((option) => {
-        option.visible = false;
-      });
-    } else {
-      attributeValuesArr.forEach((option) => {
-        option.visible = true;
-      });
-    }
-
-    this.configurator.setAttributeState(attribute.id, {
-      values: attributeValuesArr,
-    });
-  }
-
-  private rule_micPod_micPodCAT() {
+  private rule_micPod_CATCoupler() {
     const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
     const attribute = this.getAttribute(AttributeName.RoomMicCATCoupler);
     if (!attribute) return;
