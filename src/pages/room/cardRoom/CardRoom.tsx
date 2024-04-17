@@ -3,6 +3,9 @@ import { DownloadSVG, EditSVG } from "../../../assets";
 import { Button } from "../../../components/Buttons/Button/Button";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import s from "./CardRoom.module.scss";
+import { Application } from "../../../models/Application";
+
+declare const app: Application;
 
 interface PropsI {
   image: string;
@@ -13,6 +16,10 @@ interface PropsI {
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId } = props;
   const navigate = useNavigate();
+
+  const handleDownload = () => {
+    app.downloadRoomCSV(shortId);
+  };
 
   const handleView = () => {
     navigate(`/room/${shortId}`, { replace: true });
@@ -36,7 +43,11 @@ export const CardRoom: React.FC<PropsI> = (props) => {
         <div className={s.desc}>{desc}</div>
         <div className={s.buttons}>
           <Button onClick={handleView} text={"View"} variant={"contained"} />
-          <IconButton onClick={() => {}} text={"Download"} variant={"outlined"}>
+          <IconButton
+            onClick={handleDownload}
+            text={"Download"}
+            variant={"outlined"}
+          >
             <DownloadSVG />
           </IconButton>
         </div>

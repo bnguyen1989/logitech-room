@@ -62,7 +62,7 @@ export async function updateLanguage(req: Request, res: Response) {
         console.error("Error updating language:", error);
         res.status(500).json({ message: 'Error updating language' });
     }
-};
+}
 export async function deleteLanguage(req: Request, res: Response) {
     const { languageCode } = req.params;
 
@@ -75,4 +75,4 @@ export async function deleteLanguage(req: Request, res: Response) {
         console.error("Error deleting language:", error);
         res.status(500).json({ message: 'Error deleting language' });
     }
-};
+}

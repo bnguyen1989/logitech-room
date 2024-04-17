@@ -7,6 +7,7 @@ import {
   getTitleFromDataByKeyPermission,
 } from "../utils";
 import {
+  getLangProductBlade1,
   getLangProductImage,
   getLangSimpleColorProduct,
 } from "./selectoreLangProduct";
@@ -17,6 +18,7 @@ import {
   getSelectedConfiguratorCards,
   getSelectedDataByKeyPermission,
   getSelectedPrepareCards,
+  getSkuFromMetadataByCard,
   getTitleCardByKeyPermission,
 } from "./selectors";
 
@@ -47,6 +49,8 @@ export const getOrderData = (state: RootState) => {
       copyCard.keyPermission
     )(state);
     const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
+    const langProduct = getLangProductBlade1(productName)(state);
+    const sku = getSkuFromMetadataByCard(copyCard)(state);
 
     const langProductImage = getLangProductImage(
       productName,
@@ -60,11 +64,13 @@ export const getOrderData = (state: RootState) => {
     if (langProductImage) {
       copyCard.image = langProductImage;
     }
-    
+
     return {
       metadata: {
         data: JSON.stringify(copyCard),
         title: title,
+        description: langProduct?.ShortDescription,
+        sku: sku,
         color: colorCard,
         count: selectData?.property?.count ?? 1,
         price: price,
