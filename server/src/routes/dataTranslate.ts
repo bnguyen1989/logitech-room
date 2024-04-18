@@ -2,8 +2,9 @@ import { Request, Response, Router } from "express";
 import { createReadStream } from "fs";
 import { writeFile } from "fs/promises";
 import path from "path";
-import csvParser from "csv-parser";
-import dataLang from "./../../prisma/dataLang/products/en-us.json";
+import data from './../../../dataLang/pageData.json'
+// import csvParser from "csv-parser";
+// import dataLang from "./../../prisma/dataLang/products/en-us.json";
 // import { log } from "console";
 
 // class LanguageFileProcessor {
@@ -206,41 +207,47 @@ class LanguageFileProcessor {
   }
 
   public async processFile(filePath: string): Promise<void> {
-    const readStream = createReadStream(filePath);
-    readStream
-      .pipe(csvParser({ separator: "\t" }))
-      .on("data", (data: any) => {
-        this.lineNumber++;
-        if (this.lineNumber <= 116) {
-          data["key"] = "";
-          this.pageJson.push(data);
-        } else {
-          if (data["en-us"]) {
-            const resultPath = this.findKeyPath(dataLang, data["en-us"]);
+    console.log('data');
+    
+    // const readStream = createReadStream(filePath);
+    // readStream.on("data", (data: any) => {
+    //   console.log('data', data);
 
-            data["key"] = resultPath;
-            this.productJson.push(data);
-          } else {
-            data["key"] = "";
-            this.productJson.push(data);
-          }
-        }
-      })
-      .on("end", async () => {
-        await this.saveFiles();
-      })
-      .on("error", (error: any) => {
-        console.error("Error reading file:", error);
-      });
+    // })
+    // readStream
+    //   .pipe(csvParser({ separator: "\t" }))
+    //   .on("data", (data: any) => {
+    //     this.lineNumber++;
+    //     if (this.lineNumber <= 116) {
+    //       data["key"] = "";
+    //       this.pageJson.push(data);
+    //     } else {
+    //       if (data["en-us"]) {
+    //         const resultPath = this.findKeyPath(dataLang, data["en-us"]);
+
+    //         data["key"] = resultPath;
+    //         this.productJson.push(data);
+    //       } else {
+    //         data["key"] = "";
+    //         this.productJson.push(data);
+    //       }
+    //     }
+    //   })
+    //   .on("end", async () => {
+    //     await this.saveFiles();
+    //   })
+    //   .on("error", (error: any) => {
+    //     console.error("Error reading file:", error);
+    //   });
   }
 
   private async saveFiles(): Promise<void> {
     // console.log("path ,", path.join(this.outputFilePath, "PageJson.json"));
-    await writeFile(
-      path.join(this.outputFilePath, "PageJson.json"),
-      JSON.stringify(this.pageJson, null, 2)
-    );
-    
+    // await writeFile(
+    //   path.join(this.outputFilePath, "PageJson.json"),
+    //   JSON.stringify(this.pageJson, null, 2)
+    // );
+
     // await writeFile(
     //   path.join(this.outputFilePath, "ProductJson.json"),
     //   JSON.stringify(this.productJson, null, 2)
@@ -250,25 +257,25 @@ class LanguageFileProcessor {
       path.join(this.outputFilePath, "ProductJson.json"),
       JSON.stringify(languageJSON, null, 2)
     );
-    console.log('path',path.join(this.outputFilePath, "ProductJson.json"));
-    for (const langCode in languageJSON) {
-      const content = JSON.stringify(
-        { [langCode]: languageJSON[langCode] },
-        null,
-        4
-      );
-      await writeFile(
-        path.join(this.outputFilePath, `${langCode}.json`),
-        content
-      );
-    }
+    // console.log('path',path.join(this.outputFilePath, "ProductJson.json"));
+    // for (const langCode in languageJSON) {
+    //   const content = JSON.stringify(
+    //     { [langCode]: languageJSON[langCode] },
+    //     null,
+    //     4
+    //   );
+    //   await writeFile(
+    //     path.join(this.outputFilePath, `${langCode}.json`),
+    //     content
+    //   );
+    // }
   }
 }
 
 const filePath = path.join(
   __dirname,
-  "./../../../public/",
-  "Translation_Sheet1.tsv"
+  "./../../../dataLang/",
+  "pageData.json"
 );
 const processor = new LanguageFileProcessor();
 
@@ -281,6 +288,6 @@ processor
 
 const router = Router();
 //
-router.get("/", (req: Request, res: Response) => {});
+router.get("/", (req: Request, res: Response) => { });
 
 export default router;
