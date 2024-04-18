@@ -1,9 +1,9 @@
 import { Step } from "../../step/Step";
-import { PropertyElementHandler } from "./PropertyElementHandler";
+import { PropertyHandler } from "./PropertyHandler";
 
-export class DisabledCounterElementHandler extends PropertyElementHandler {
+export class DisabledCounterElementHandler extends PropertyHandler {
   public handle(step: Step): boolean {
-    PropertyElementHandler.setValuePropertyElement(
+    PropertyHandler.setValuePropertyElement(
       step,
       (element) => {
         return element.getDisabledCounterDependence();

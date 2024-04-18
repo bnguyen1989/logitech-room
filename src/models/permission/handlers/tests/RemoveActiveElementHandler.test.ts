@@ -16,7 +16,6 @@ describe("RemoveActiveElementHandler", () => {
       StepName.ConferenceCamera
     );
     const currentStep = permission.getCurrentStep();
-    if (!currentStep) return;
     const elementRallyBar = currentStep.getElementByName(CameraName.RallyBar);
     if (!elementRallyBar) return;
     new RemoveActiveElementHandler(elementRallyBar).handle(currentStep);

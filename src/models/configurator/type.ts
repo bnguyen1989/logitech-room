@@ -76,4 +76,5 @@ export enum AttributeName {
   RoomUSBAtoHDMICable = "Room USB-A to HDMI Cable",
   RoomDeviceManagementSoftware = "Room Device Management Software",
   RoomSupportService = "Room Support Service",
+  RoomMeetUp2ActiveCable = "Room MeetUp 2 Active Cable",
 }

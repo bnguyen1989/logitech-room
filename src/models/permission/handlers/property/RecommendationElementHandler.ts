@@ -1,9 +1,9 @@
 import { Step } from "../../step/Step";
-import { PropertyElementHandler } from "./PropertyElementHandler";
+import { PropertyHandler } from "./PropertyHandler";
 
-export class RecommendationElementHandler extends PropertyElementHandler {
+export class RecommendationElementHandler extends PropertyHandler {
   public handle(step: Step): boolean {
-    PropertyElementHandler.setValuePropertyElement(
+    PropertyHandler.setValuePropertyElement(
       step,
       (element) => {
         return element.getRecommendationDependence();

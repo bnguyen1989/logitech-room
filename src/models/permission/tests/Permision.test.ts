@@ -44,7 +44,6 @@ describe("Permission", () => {
           StepName.ConferenceCamera
         );
         const currentStep = permission.getCurrentStep();
-        if (!currentStep) return;
         const logitechSight = currentStep.getElementByName(
           CameraName.LogitechSight
         );
@@ -82,7 +81,6 @@ describe("Permission", () => {
           StepName.VideoAccessories
         );
         const currentStep = permission.getCurrentStep();
-        if (!currentStep) return;
         const logitechTapScheduler = currentStep.getElementByName(
           VideoAccessoryName.LogitechTapScheduler
         );
@@ -120,7 +118,6 @@ describe("Permission", () => {
           StepName.AudioExtensions
         );
         const currentStep = permission.getCurrentStep();
-        if (!currentStep) return;
         const micPod = currentStep.getElementByName(
           AudioExtensionName.RallyMicPod
         );

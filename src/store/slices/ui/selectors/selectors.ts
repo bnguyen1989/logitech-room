@@ -33,9 +33,38 @@ export const getNavigationStepData = (state: RootState) => {
     (step) => step.key === activeStep
   );
 
+  let prevStep;
+  let nextStep;
+
+  if (currentStepIndex !== -1) {
+    const permission = getPermission(activeStep)(state);
+    let prevStepIndex = currentStepIndex - 1;
+    let nextStepIndex = currentStepIndex + 1;
+
+    while (prevStepIndex >= 0) {
+      const step = listStepData[prevStepIndex];
+      const permissionStep = permission.getStepByName(step.key);
+      if (permissionStep.getAvailable()) {
+        prevStep = step;
+        break;
+      }
+      prevStepIndex--;
+    }
+
+    while (nextStepIndex < listStepData.length) {
+      const step = listStepData[nextStepIndex];
+      const permissionStep = permission.getStepByName(step.key);
+      if (permissionStep.getAvailable()) {
+        nextStep = step;
+        break;
+      }
+      nextStepIndex++;
+    }
+  }
+
   return {
-    prevStep: listStepData[currentStepIndex - 1],
-    nextStep: listStepData[currentStepIndex + 1],
+    prevStep,
+    nextStep,
   };
 };
 

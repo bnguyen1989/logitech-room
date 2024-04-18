@@ -1,5 +1,5 @@
 import { AssetI } from "../../services/Threekit/type";
-import { StepName } from '../../utils/baseUtils'
+import { StepName } from "../../utils/baseUtils";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
 import {
@@ -41,6 +41,7 @@ export class Configurator {
     [AttributeName.RoomCompute],
     [AttributeName.RoomComputeMount],
     [AttributeName.RoomSight],
+    [AttributeName.RoomMeetUp2ActiveCable],
   ];
 
   public static AudioExtensionName = [
@@ -129,7 +130,7 @@ export class Configurator {
   }
 
   public static getNameNodeScheduler(): string {
-    return "Scheduler_placement";
+    return "Scheduler_Placement";
   }
 
   public static getNameNodeMicPodMount(): string {
