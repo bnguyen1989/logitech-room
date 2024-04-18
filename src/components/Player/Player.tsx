@@ -46,7 +46,7 @@ export const Player: React.FC = () => {
         auth={bhoustonAuth}
         resolver={ExporterResolver({
           cache: true,
-          cacheScope: "v013",
+          cacheScope: "v017",
           mode: "experimental",
           settings: {
             prune: {

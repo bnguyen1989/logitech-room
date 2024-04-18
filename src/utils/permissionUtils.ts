@@ -29,6 +29,7 @@ export enum ServiceName {
 
 export enum CameraName {
   MeetUp = "MeetUp",
+  MeetUp2 = "Logitech MeetUp 2",
   RallyBarHuddle = "Logitech Rally Bar Huddle",
   RallyBarMini = "Logitech Rally Bar Mini",
   RallyBar = "Logitech Rally Bar",
@@ -47,6 +48,8 @@ export enum CameraName {
   ComputeMount = "Compute Mount",
 
   LogitechSight = "Logitech Sight",
+
+  MeetUp2ActiveCable = "Logitech MeetUp 2 Active Cable",
 }
 
 export enum AudioExtensionName {
@@ -168,7 +171,27 @@ export function createStepConferenceCamera() {
   const group = new GroupElement()
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBarMini)))
+    .addElement(
+      new ItemElement(CameraName.MeetUp2).setDefaultMount(
+        new MountElement(
+          CameraName.MeetUp2,
+          Configurator.getNameNodeForCamera("TV", 2)
+        )
+      )
+    )
+    .addElement(
+      new ItemElement(CameraName.RallyBarHuddle).setDefaultMount(
+        new MountElement(
+          CameraName.RallyBarHuddle,
+          Configurator.getNameNodeForCamera("TV", 2)
+        )
+      )
+    )
     .setRequiredOne(true);
+
+  const tempGroupMount = new GroupElement()
+    .addElement(new ItemElement(CameraName.TVMountForMeetUP))
+    .addElement(new ItemElement(CameraName.RallyMountingKit));
 
   const groupCompute = new GroupElement()
     .addElement(
@@ -191,12 +214,31 @@ export function createStepConferenceCamera() {
     )
   );
 
-  stepConferenceCamera.allElements = [group, groupCompute, groupSight];
+  const groupMeetUp2ActiveCable = new GroupElement().addElement(
+    new ItemElement(CameraName.MeetUp2ActiveCable)
+  );
+
+  stepConferenceCamera.allElements = [
+    group,
+    groupCompute,
+    tempGroupMount,
+    groupSight,
+    groupMeetUp2ActiveCable,
+  ];
   return stepConferenceCamera;
 }
 
 export function createStepAudioExtensions() {
-  const stepAudioExtensions = new Step(StepName.AudioExtensions);
+  const stepAudioExtensions = new Step(
+    StepName.AudioExtensions
+  ).addAvailableDependence({
+    [RoomSizeName.Phonebooth]: {
+      active: false,
+    },
+    [RoomSizeName.Huddle]: {
+      active: false,
+    },
+  });
   const group = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPod)
       .setDefaultMount(
