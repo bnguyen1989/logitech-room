@@ -5,8 +5,7 @@ import { Button } from "../../Buttons/Button/Button";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 
 import { ModalContainer } from "../ModalContainer/ModalContainer";
-import s from "./InfoModal.module.scss";
-import ItemImg from "../../../assets/images/items/RallyBar.png";
+import s from "./InfoModal.module.scss"; 
 import { VideoPlayer } from "../../VideoPlayer/VideoPlayer";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -110,13 +109,14 @@ export const InfoModal: React.FC = () => {
   const { isOpen, product, keyItemPermission } =
     useAppSelector(getInfoItemModalData);
   const [selectedColor, setSelectedColor] = useState<string>("Graphite");
-
   const dataProduct: any = useAppSelector(getLangForModalProduct(product));
-  console.log("dataProduct", dataProduct);
+  console.log("dataProduct",dataProduct);
 
   const langProductImage = useAppSelector(
     getLangProductImage(product, keyItemPermission)
   );
+
+ 
 
   if (!dataProduct) return <></>;
 
@@ -125,17 +125,13 @@ export const InfoModal: React.FC = () => {
   const featureList2A = annotation.getFeatures('fetures2A')
 
   const featureList3A = annotation.getFeatures('fetures3A')
-
-
+ 
   const handleClose = () => {
     dispatch(setInfoItemModal({ isOpen: false }));
   };
 
   if (!isOpen) return null;
-
-
-
-
+ 
   const style2A = annotation.hasGap2(featureList2A) ? s.gap_2_box : s.cards;
   const style3A = annotation.hasGap2(featureList3A) ? s.gap_2_box : s.cards;
 
