@@ -6,9 +6,12 @@ export enum ModalName {
 
 export interface ModalI {
   isOpen: boolean;
+}
+
+export interface AnnotationItemModalI extends ModalI {
   product?: string;  
-  card: any, 
-  keyPermission: any, 
+  card?: any, 
+  keyPermission?: any, 
 }
 
 export interface SelectProductModalI extends ModalI {
