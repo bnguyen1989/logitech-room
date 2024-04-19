@@ -58,7 +58,7 @@ export const getInitStepData = (): StepDataI => {
       name: "Deployment Type",
       title:
         "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
-      subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      subtitle: "",
       cards: {},
     },
     [StepName.ConferenceCamera]: {
@@ -393,4 +393,19 @@ export const getColorsData = () => {
       value: "#FBFBFB",
     },
   ];
+};
+
+export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
+  switch (stepName) {
+    case StepName.Services:
+      return [ServiceName.Android, ServiceName.PC];
+    case StepName.SoftwareServices:
+      return [
+        SoftwareServicesName.LogitechSync,
+        SoftwareServicesName.SupportService,
+        SoftwareServicesName.ExtendedWarranty,
+      ];
+    default:
+      return [];
+  }
 };
