@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ModalI, ModalName, SelectProductModalI } from "./type";
+import {
+  AnnotationItemModalI,
+  ModalI,
+  ModalName,
+  SelectProductModalI,
+} from "./type";
 
 interface ModalsStateI {
   [ModalName.MY_SETUP]: ModalI;
-  [ModalName.ANNOTATION_ITEM]: ModalI;
+  [ModalName.ANNOTATION_ITEM]: AnnotationItemModalI;
   [ModalName.SELECT_PRODUCT]: SelectProductModalI;
 }
 
@@ -27,7 +32,10 @@ const ModalsSlice = createSlice({
     setMySetupModal: (state, action: PayloadAction<ModalI>) => {
       state[ModalName.MY_SETUP] = action.payload;
     },
-    setAnnotationItemModal: (state, action: PayloadAction<ModalI>) => {
+    setAnnotationItemModal: (
+      state,
+      action: PayloadAction<AnnotationItemModalI>
+    ) => {
       state[ModalName.ANNOTATION_ITEM] = action.payload;
     },
     setSelectProductModal: (
@@ -39,7 +47,10 @@ const ModalsSlice = createSlice({
   },
 });
 
-export const { setMySetupModal, setAnnotationItemModal, setSelectProductModal } =
-  ModalsSlice.actions;
+export const {
+  setMySetupModal,
+  setAnnotationItemModal,
+  setSelectProductModal,
+} = ModalsSlice.actions;
 
 export default ModalsSlice.reducer;

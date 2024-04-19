@@ -9,6 +9,7 @@ import {
   getNavigationStepData,
   getSelectData,
 } from "../../ui/selectors/selectors";
+import { CardI } from '../../ui/type'
 import { ModalName } from "../type";
 
 export const getSetupModalData = (state: RootState) => {
@@ -43,13 +44,12 @@ export const getIsShowProductModal =
   };
 
 
-export const getDataForAnnotationModal = (keyPermission: any, card: any) =>
+export const getDataForAnnotationModal = (keyPermission: string, card: CardI) =>
   (state: RootState) => {
-    if (!keyPermission) return { isActiveCard: undefined, disabledActions: undefined, threekitAsset: undefined }
-    if (!card) return { isActiveCard: undefined, disabledActions: undefined, threekitAsset: undefined }
+    if (!keyPermission || !card) return {};
 
     const activeStep = getActiveStep(state);
-    if (!activeStep) return { isActiveCard: undefined, disabledActions: undefined, threekitAsset: undefined }
+    if (!activeStep) return {};
     const isActiveCard = getIsSelectedCardByKeyPermission(activeStep, keyPermission)(state)
 
     const disabledActions = getDisabledActionByKeyPermission(activeStep, keyPermission)(state)

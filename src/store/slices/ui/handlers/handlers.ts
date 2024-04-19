@@ -33,7 +33,6 @@ import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import {
-  SoftwareServicesName,
   getPermissionNameByItemName,
   isSupportService,
 } from "../../../../utils/permissionUtils";
@@ -43,6 +42,7 @@ import {
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
+  getSortedKeyPermissionsByStep,
 } from "../utils";
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
@@ -468,7 +468,10 @@ function setStepDataPrepareCard(
     );
   });
 
-  setDataCard(cardData, stepName)(store);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedCards = sortedCardsByArrTemplate(cardData, sortedKeyPermissions);
+
+  setDataCard(sortedCards, stepName)(store);
 }
 
 function setPlatformData(configurator: Configurator) {
@@ -589,21 +592,15 @@ function setSoftwareServicesData(configurator: Configurator) {
       );
     });
 
-    const sortedTemplateArr = [
-      SoftwareServicesName.LogitechSync,
-      SoftwareServicesName.SupportService,
-      SoftwareServicesName.ExtendedWarranty,
-    ];
-    const sortedArr = sortedTemplateArr
-      .map((item) => {
-        const card = softwareServicesCardData.find(
-          (card) => card.keyPermission === item
-        );
-        return card;
-      })
-      .filter(Boolean) as Array<CardI>;
+    const sortedKeyPermissions = getSortedKeyPermissionsByStep(
+      StepName.SoftwareServices
+    );
+    const sortedCards = sortedCardsByArrTemplate(
+      softwareServicesCardData,
+      sortedKeyPermissions
+    );
 
-    setDataCard(sortedArr, StepName.SoftwareServices)(store);
+    setDataCard(sortedCards, StepName.SoftwareServices)(store);
   };
 }
 
@@ -640,4 +637,17 @@ function setDataCard(cards: Array<CardI>, stepName: StepName) {
       })
     );
   };
+}
+
+function sortedCardsByArrTemplate(
+  cards: Array<CardI>,
+  templateArr: Array<string>
+) {
+  if (templateArr.length === 0) return cards;
+  return templateArr
+    .map((item) => {
+      const card = cards.find((card) => card.keyPermission === item);
+      return card;
+    })
+    .filter(Boolean) as Array<CardI>;
 }

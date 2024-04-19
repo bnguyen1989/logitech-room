@@ -41,6 +41,8 @@ export const AnnotationModal: React.FC = () => {
       return;
     }
 
+    if(!threekitAsset) return;
+
     app.addItemConfiguration(
       attributeName,
       threekitAsset.id,
@@ -109,7 +111,7 @@ export const AnnotationModal: React.FC = () => {
                 <div className={s.colors}>
                   <ColorSwitcherItem
                     keyItemPermission={keyPermission}
-                    disabled={disabledActions.color}
+                    disabled={disabledActions?.color}
                   />
                 </div>
                 <div className={s.button}>

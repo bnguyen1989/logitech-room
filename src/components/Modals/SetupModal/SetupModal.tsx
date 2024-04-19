@@ -34,7 +34,7 @@ export const SetupModal: React.FC = () => {
         const baseUrl = getParentURL();
         const link = `${baseUrl}/room/${order.shortId}`;
         form.setValues({
-          honeypot: link,
+          editableField6: link,
         });
       });
 

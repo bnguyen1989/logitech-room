@@ -190,8 +190,18 @@ export function createStepConferenceCamera() {
     .setRequiredOne(true);
 
   const tempGroupMount = new GroupElement()
-    .addElement(new ItemElement(CameraName.TVMountForMeetUP))
-    .addElement(new ItemElement(CameraName.RallyMountingKit));
+    .addElement(
+      new ItemElement(CameraName.TVMountForMeetUP).addDependence([
+        new ItemElement(RoomSizeName.Phonebooth),
+        new ItemElement(RoomSizeName.Huddle),
+      ])
+    )
+    .addElement(
+      new ItemElement(CameraName.RallyMountingKit).addDependence([
+        new ItemElement(RoomSizeName.Phonebooth),
+        new ItemElement(RoomSizeName.Huddle),
+      ])
+    );
 
   const groupCompute = new GroupElement()
     .addElement(

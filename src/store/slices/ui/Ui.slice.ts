@@ -185,7 +185,7 @@ const uiSlice = createSlice({
         ignoreSteps?: StepName[];
       }>
     ) => {
-      const { ignoreSteps=[] } = action.payload;
+      const { ignoreSteps = [] } = action.payload;
       const selectedData = state.selectedData;
       Object.keys(selectedData).forEach((step) => {
         if (ignoreSteps.includes(step as StepName)) return;
