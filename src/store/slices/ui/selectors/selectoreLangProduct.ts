@@ -156,7 +156,7 @@ export const getLangForModalProduct =
     if (langsProductBlade3A) {
       objData = {
         ...objData,
-        fetures2A: { ...langsProductBlade3A["Features"] },
+        fetures3A: { ...langsProductBlade3A["Features"] },
       };
     }
 
