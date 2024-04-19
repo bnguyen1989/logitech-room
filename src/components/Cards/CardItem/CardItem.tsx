@@ -64,7 +64,13 @@ export const CardItem: React.FC<PropsI> = (props) => {
   if (!card) return null;
 
   const handleInfo = () => {
-    dispatch(setInfoItemModal({ isOpen: true, product: productName }));
+    dispatch(
+      setInfoItemModal({
+        isOpen: true,
+        product: productName,
+        keyItemPermission: keyItemPermission,
+      })
+    );
   };
 
   const handleClick = () => {
