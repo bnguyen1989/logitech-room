@@ -1,7 +1,8 @@
 .container {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  justify-content: space-between;
   
 	.logo {
     display: flex;
@@ -14,8 +15,11 @@
   .image {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100%;
     & img {
-      height: 100px;
+      height: 40%;
+      max-height: 100px;
     }
   }
 
