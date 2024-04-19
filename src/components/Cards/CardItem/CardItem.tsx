@@ -6,7 +6,7 @@ import { CounterItem } from "../../Counters/CounterItem/CounterItem";
 import { SelectItem } from "../../Fields/SelectItem/SelectItem";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { useDispatch } from "react-redux";
-import { setInfoItemModal } from "../../../store/slices/modals/Modals.slice";
+import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
 import { useAppSelector } from "../../../hooks/redux";
 import {
   getActiveStep,
@@ -65,10 +65,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
 
   const handleInfo = () => {
     dispatch(
-      setInfoItemModal({
+      setAnnotationItemModal({
         isOpen: true,
         product: productName,
-        keyItemPermission: keyItemPermission,
+        keyPermission: keyItemPermission,
+        card: card
       })
     );
   };

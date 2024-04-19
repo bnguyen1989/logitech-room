@@ -2,7 +2,10 @@ import { RootState } from "../../../";
 import { StepName } from "../../../../utils/baseUtils";
 import {
   getActiveStep,
+  getAssetFromCard,
   getCardsByStep,
+  getDisabledActionByKeyPermission,
+  getIsSelectedCardByKeyPermission,
   getNavigationStepData,
   getSelectData,
 } from "../../ui/selectors/selectors";
@@ -12,8 +15,8 @@ export const getSetupModalData = (state: RootState) => {
   return state.modals[ModalName.MY_SETUP];
 };
 
-export const getInfoItemModalData = (state: RootState) => {
-  return state.modals[ModalName.INFO_ITEM];
+export const getAnnotationModalData = (state: RootState) => {
+  return state.modals[ModalName.ANNOTATION_ITEM];
 };
 
 export const getSelectProductModalData = (state: RootState) => {
@@ -37,4 +40,21 @@ export const getIsShowProductModal =
       (item) => item.selected.length > 0
     );
     return isActiveElements;
+  };
+
+
+export const getDataForAnnotationModal = (keyPermission: any, card: any) =>
+  (state: RootState) => {
+    if (!keyPermission) return { isActiveCard: undefined, disabledActions: undefined, threekitAsset: undefined }
+    if (!card) return { isActiveCard: undefined, disabledActions: undefined, threekitAsset: undefined }
+
+    const activeStep = getActiveStep(state);
+    if (!activeStep) return { isActiveCard: undefined, disabledActions: undefined, threekitAsset: undefined }
+    const isActiveCard = getIsSelectedCardByKeyPermission(activeStep, keyPermission)(state)
+
+    const disabledActions = getDisabledActionByKeyPermission(activeStep, keyPermission)(state)
+
+    const threekitAsset = getAssetFromCard(card)(state);
+
+    return { isActiveCard, disabledActions, threekitAsset };
   };
