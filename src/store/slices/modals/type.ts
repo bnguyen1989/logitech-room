@@ -1,13 +1,14 @@
 export enum ModalName {
   MY_SETUP = "MY_SETUP",
-  INFO_ITEM = "INFO_ITEM",
+  ANNOTATION_ITEM = "ANNOTATION_ITEM",
   SELECT_PRODUCT = "SELECT_PRODUCT",
 }
 
 export interface ModalI {
   isOpen: boolean;
-  product?: string;
-  keyItemPermission?: string;
+  product?: string;  
+  card: any, 
+  keyPermission: any, 
 }
 
 export interface SelectProductModalI extends ModalI {
