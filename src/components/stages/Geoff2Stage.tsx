@@ -1,8 +1,4 @@
-import {
-  ContactShadows,
-  Environment,
-  Resize, 
-} from "@react-three/drei";
+import { ContactShadows, Environment, Resize } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Align } from "@threekit/react-three-fiber";
 import { Frame } from "@threekit/react-three-fiber/dist/alpha.js";
@@ -87,15 +83,7 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
         </directionalLight>
       </group>
       <group rotation={[0, (Math.PI / 180) * controls.productRotation, 0]}>
-        <Frame
-          fitMode="sphere"
-          cameraControlsRef={cameraControlsRef}
-          fitPaddingRatio={1}
-        >
-          <Align mode="min" axis={1} limit={0}>
-            <Resize>{children}</Resize>
-          </Align>
-        </Frame>
+        {children}
       </group>
       <ContactShadows
         resolution={1024}

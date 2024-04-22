@@ -1,5 +1,5 @@
 import s from "./Player.module.scss";
-import { CameraControls, OrbitControls } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { ExporterResolver, Viewer } from "@threekit/react-three-fiber";
 import CameraControlsImpl from "camera-controls";
 import type React from "react";
@@ -9,7 +9,8 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { useRef } from "react"; 
+import { useRef } from "react";
+import { Vector3 } from "three";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -18,8 +19,6 @@ export const bhoustonAuth = {
 };
 
 export const Player: React.FC = () => {
-  const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
-
   const assetId = useAppSelector(getAssetId);
 
   const focalLengthMm = 65; // Focal length in mm
@@ -59,20 +58,21 @@ export const Player: React.FC = () => {
         ui={false}
       >
         <>
-          <CameraControls ref={cameraControlsRef} />
-          <Geoff2Stage cameraControlsRef={cameraControlsRef}>
+          <Geoff2Stage>
             <Room roomAssetId={assetId} />
           </Geoff2Stage>
           <OrbitControls
             enableDamping={true}
             enableZoom={false}
-            maxDistance={3}
-            minDistance={1}
-            minZoom={1}
-            maxZoom={3}
+            target={
+              new Vector3(
+                -3.3342790694469784,
+                15.269443817758102,
+                -3.999528610518013
+              )
+            }
             minPolarAngle={Math.PI / 6}
             maxPolarAngle={Math.PI / 2}
-     
           />
         </>
       </Viewer>
