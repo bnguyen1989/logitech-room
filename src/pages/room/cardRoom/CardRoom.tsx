@@ -42,14 +42,14 @@ export const CardRoom: React.FC<PropsI> = (props) => {
         </div>
         <div className={s.desc}>{desc}</div>
         <div className={s.buttons}>
-          <Button onClick={handleView} text={"View"} variant={"contained"} />
           <IconButton
             onClick={handleDownload}
-            text={"Download"}
+            text={"Download Room Guide"}
             variant={"outlined"}
           >
             <DownloadSVG />
           </IconButton>
+          <Button onClick={handleView} text={"View Your Room"} variant={"contained"} />
         </div>
       </div>
     </div>
