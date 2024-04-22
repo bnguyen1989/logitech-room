@@ -1,7 +1,6 @@
 import s from "./Player.module.scss";
 import { OrbitControls } from "@react-three/drei";
 import { ExporterResolver, Viewer } from "@threekit/react-three-fiber";
-import CameraControlsImpl from "camera-controls";
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
 import Geoff2Stage from "../stages/Geoff2Stage.tsx";
@@ -9,7 +8,6 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { useRef } from "react";
 import { Vector3 } from "three";
 
 export const bhoustonAuth = {

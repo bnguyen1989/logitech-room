@@ -1,7 +1,5 @@
-import { ContactShadows, Environment, Resize } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
-import { Align } from "@threekit/react-three-fiber";
-import { Frame } from "@threekit/react-three-fiber/dist/alpha.js";
+import { ContactShadows, Environment } from "@react-three/drei";
+import { useThree } from "@react-three/fiber"; 
 import CameraControls from "camera-controls";
 import type React from "react";
 import { type ReactNode, useState, MutableRefObject } from "react";
