@@ -4,6 +4,7 @@ import { getInitStepData } from "./utils";
 import { StepName } from "../../../utils/baseUtils";
 
 interface UIStateI {
+  locale: string;
   processInitData: boolean;
   stepData: StepDataI;
   activeStep: StepName;
@@ -12,6 +13,7 @@ interface UIStateI {
 }
 
 const initialState: UIStateI = {
+  locale: "en-us",
   processInitData: false,
   langTextProduct: {},
   stepData: getInitStepData(),

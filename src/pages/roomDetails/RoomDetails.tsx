@@ -14,6 +14,7 @@ export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
+  const [totalAmount, setTotalAmount] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState(false);
 
   const getTitleSectionOrderByStepName = (stepName: StepName) => {
@@ -33,6 +34,13 @@ export const RoomDetails: React.FC = () => {
     }
   };
 
+  const formatPrice = (price: number) => {
+    return price.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+  };
+
   useEffect(() => {
     setIsLoaded(true);
     new ThreekitService()
@@ -41,9 +49,11 @@ export const RoomDetails: React.FC = () => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
+        let total = 0;
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
-          const { data, color, price, count, title } = item.metadata;
+          const { data, color, price, count, title, sku, description } =
+            item.metadata;
           const card = JSON.parse(data) as CardI;
 
           const sectionId = dataSections.findIndex(
@@ -56,20 +66,22 @@ export const RoomDetails: React.FC = () => {
             data: [
               {
                 title: title,
-                subtitle: card.description || card.subtitle || "",
+                subtitle: card.description || description || "",
                 image: card.image,
               },
             ],
           };
 
           if (card.key !== StepName.SoftwareServices) {
-            const amount = `$ ${parseFloat(price) * parseInt(count)}`;
+            const amountInt = parseFloat(price) * parseInt(count);
+            total += amountInt;
+            const amount = formatPrice(amountInt);
             itemSection = {
               ...itemSection,
               data: [
                 {
                   ...itemSection.data[0],
-                  partNumber: `${color} : 960-000000`,
+                  partNumber: `${color} : ${sku}`,
                   count: parseInt(count),
                   amount,
                 },
@@ -85,6 +97,7 @@ export const RoomDetails: React.FC = () => {
         });
 
         setSections(dataSections);
+        setTotalAmount(formatPrice(total));
       })
       .finally(() => {
         setIsLoaded(false);
@@ -96,7 +109,7 @@ export const RoomDetails: React.FC = () => {
       <div className={s.wrapper}>
         <Header title={nameRoom} />
         <Content sections={sections} />
-        <Footer />
+        <Footer totalAmount={totalAmount} />
       </div>
       {isLoaded && (
         <div className={s.loader}>

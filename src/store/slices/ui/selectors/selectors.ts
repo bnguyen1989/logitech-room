@@ -232,10 +232,14 @@ export const getTitleCardByKeyPermission =
     return getTitleFromDataByKeyPermission(keyPermission);
   };
 
+export const getLocale = (state: RootState) => state.ui.locale;
+
 export const getPriceFromMetadataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const locale = getLocale(state);
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
-    return metadata?.Price || "0.000";
+    const keyPrice = `Price_${locale}`;
+    return metadata?.[keyPrice] || "0.000";
   };
 
 export const getStepNameByKeyPermission =

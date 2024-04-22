@@ -103,4 +103,17 @@ export class ThreekitService {
     const dataOrder = response.data;
     return dataOrder;
   }
+
+  public async updateOrder(
+    id: string,
+    data: Partial<DataCreateOrderI>
+  ): Promise<OrderI> {
+    const response = await this.threekitApi.updateOrder(id, data);
+    const dataOrder = response.data;
+    return dataOrder;
+  }
+
+  public async deleteOrder(id: string) {
+    await this.updateOrder(id, { metadata: { status: "deleted" } });
+  }
 }

@@ -47,6 +47,7 @@ export interface ValueAssetStateI extends AssetI {
 }
 
 export enum AttributeName {
+  RoomLocale = "Room Locale",
   RoomService = "Room Service",
   RoomDeployment = "Room Deployment Mode",
   RoomCamera = "Room Camera",
