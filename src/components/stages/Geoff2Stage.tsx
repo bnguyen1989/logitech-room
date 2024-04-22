@@ -1,5 +1,5 @@
 import { ContactShadows, Environment } from "@react-three/drei";
-import { useThree } from "@react-three/fiber"; 
+import { useThree } from "@react-three/fiber";
 import CameraControls from "camera-controls";
 import type React from "react";
 import { type ReactNode, useState, MutableRefObject } from "react";
@@ -40,10 +40,7 @@ export type Geoff2StageProps = {
   children?: ReactNode;
 };
 
-const Geoff2Stage: React.FC<Geoff2StageProps> = ({
-  cameraControlsRef,
-  children,
-}) => {
+const Geoff2Stage: React.FC<Geoff2StageProps> = ({ children }) => {
   const [radius] = useState<number>(2.0);
 
   const { gl } = useThree();
