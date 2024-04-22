@@ -90,8 +90,7 @@ export class ConfigurationConstraintHandler extends Handler {
     this.triggeredByAttr = triggeredByAttr;
     console.log("triggeredByAttr", triggeredByAttr);
 
-    const locale = this.getSelectedValue(AttributeName.RoomLocale) as string;
-    const localeTagStr = `locale_${locale}`;
+    const localeTagStr = "locale_en-us";
     const leadingSpecCharForDefault = "*";
     const leadingSpecCharForRecommended = "r";
     const skipColumns = ["level2datatableId", "attrRules", "recoRules"];

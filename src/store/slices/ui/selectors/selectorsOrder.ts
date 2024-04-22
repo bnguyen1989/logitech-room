@@ -1,6 +1,7 @@
 import { RootState } from "../../..";
 import { StepName } from "../../../../utils/baseUtils";
 import { ConfigData } from "../../../../utils/threekitUtils";
+import { getAssetId, getNodes } from "../../configurator/selectors/selectors";
 import { CardI } from "../type";
 import {
   getDescriptionRoomBySize,
@@ -82,6 +83,12 @@ export const getOrderData = (state: RootState) => {
   const nameOrder = getNameOrder(state);
 
   const description = getDescriptionRoom(state);
+
+  const assetId = getAssetId(state);
+  const nodes = getNodes(state);
+  const configuration = JSON.stringify(
+    app.currentConfigurator.getConfiguration()
+  );
   return {
     customerId: ConfigData.userId,
     originOrgId: ConfigData.userId,
@@ -92,11 +99,15 @@ export const getOrderData = (state: RootState) => {
     },
     cart: cardData,
     metadata: {
-      assetId: app.currentConfigurator.assetId,
-      configuration: JSON.stringify(app.currentConfigurator.getConfiguration()),
+      name: nameOrder,
       description: description,
-      name: `${nameOrder} New Test`,
+      configurator: {
+        assetId,
+        nodes,
+        configuration,
+      },
     },
+    status: "List",
   };
 };
 

@@ -23,20 +23,28 @@ export const Room: React.FC = () => {
     new ThreekitService()
       .getOrders({ originOrgId: ConfigData.userId })
       .then((res) => {
-        const dataRooms = res.orders.map((order: OrderI) => {
-          return {
+        const dataRooms = res.orders.reduce<RoomI[]>((acc, order: OrderI) => {
+          const { name, description, status } = order.metadata;
+          if (status === "deleted") return acc;
+          return acc.concat({
             image: ImageRoom,
-            title: order.metadata.name,
-            desc: order.metadata.description,
+            title: name,
+            desc: description,
             shortId: order.shortId,
-          };
-        });
+          });
+        }, []);
         setRooms(dataRooms);
       })
       .finally(() => {
         setIsLoaded(false);
       });
   }, []);
+
+  const removeRoom = (shortId: string) => {
+    new ThreekitService().deleteOrder(shortId);
+    setRooms((prev) => prev.filter((room) => room.shortId !== shortId));
+  };
+
   return (
     <div className={s.container}>
       <Header />
@@ -45,7 +53,7 @@ export const Room: React.FC = () => {
         {rooms.map((room, index) => (
           <div className={s.wrapper_room} key={index}>
             <div className={s.divider}></div>
-            <CardRoom {...room} />
+            <CardRoom {...room} removeRoom={removeRoom} />
           </div>
         ))}
       </div>

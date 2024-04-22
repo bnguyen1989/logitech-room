@@ -26,6 +26,7 @@
 :root {
   --main-color-block: #814EFA;
   --main-color-text: #2f3132;
+  --font-family: "Poppins", sans-serif;
 }
 
 
@@ -33,7 +34,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #F4F4F4;
-  font-family: "Poppins", sans-serif;;
+  font-family: "Poppins", sans-serif;
 }
 
 .app {
