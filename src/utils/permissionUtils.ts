@@ -20,6 +20,7 @@ export enum PlatformName {
   GoogleMeet = "Google Meet",
   MicrosoftTeams = "Microsoft Teams",
   Zoom = "Zoom",
+  BYOD = "BYOD",
 }
 
 export enum ServiceName {
@@ -115,13 +116,18 @@ export function createStepPlatform() {
     )
     .addElement(new ItemElement(PlatformName.MicrosoftTeams))
     .addElement(new ItemElement(PlatformName.Zoom))
+    .addElement(new ItemElement(PlatformName.BYOD))
     .setRequiredOne(true);
   stepPlatform.allElements = [group];
   return stepPlatform;
 }
 
 export function createStepServices() {
-  const stepServices = new Step(StepName.Services);
+  const stepServices = new Step(StepName.Services).addAvailableDependence({
+    [PlatformName.BYOD]: {
+      active: false,
+    },
+  });
   const group = new GroupElement()
     .addElement(new ItemElement(ServiceName.Android))
     .addElement(new ItemElement(ServiceName.PC))
