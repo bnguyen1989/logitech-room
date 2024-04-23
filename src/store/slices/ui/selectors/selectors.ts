@@ -313,27 +313,31 @@ export const getFormattingSubtitleByState =
       (card: { key: string }) => card.key === StepName.Services
     );
 
-    if (!roomSizeCard || !platformCard || !serviceCard) return text;
+    if (roomSizeCard) {
+      const roomSizeTile = getTitleCardByKeyPermission(
+        StepName.RoomSize,
+        roomSizeCard.keyPermission
+      )(state);
+      text = text.replace("{0}", getName(roomSizeTile));
+    }
 
-    const roomSizeTile = getTitleCardByKeyPermission(
-      StepName.RoomSize,
-      roomSizeCard.keyPermission
-    )(state);
+    if (platformCard) {
+      const platformTile = getTitleCardByKeyPermission(
+        StepName.Platform,
+        platformCard.keyPermission
+      )(state);
+      text = text.replace("{1}", getName(platformTile));
+    }
 
-    const platformTile = getTitleCardByKeyPermission(
-      StepName.Platform,
-      platformCard.keyPermission
-    )(state);
+    if (serviceCard) {
+      const serviceTile = getTitleCardByKeyPermission(
+        StepName.Services,
+        serviceCard.keyPermission
+      )(state);
+      text = text.replace("{2}", getName(serviceTile));
+    }
 
-    const serviceTile = getTitleCardByKeyPermission(
-      StepName.Services,
-      serviceCard.keyPermission
-    )(state);
-
-    return text
-      .replace("{0}", getName(roomSizeTile))
-      .replace("{1}", getName(platformTile))
-      .replace("{2}", getName(serviceTile));
+    return text;
   };
 
 export const getDisabledActionByKeyPermission =

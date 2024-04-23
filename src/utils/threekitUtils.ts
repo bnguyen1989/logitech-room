@@ -4,7 +4,6 @@ export const ConfigData = {
   host: "preview.threekit.com",
   orgId: "04015bb6-401d-47f8-97c0-dd6fa759c441",
   publicToken: "69da68c5-a63b-4c58-9607-6beb1ef1cffa",
-  userId: "07c15cbe-80a2-431b-bf1c-6bdbc4c1797d",
 };
 
 export const getRoomAssetId = (roomSize: string) => {

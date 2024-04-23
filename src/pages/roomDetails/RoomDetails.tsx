@@ -52,8 +52,16 @@ export const RoomDetails: React.FC = () => {
         let total = 0;
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
-          const { data, color, price, count, title, sku, description } =
-            item.metadata;
+          const {
+            data,
+            color,
+            price,
+            count,
+            title,
+            sku,
+            description,
+            selectValue,
+          } = item.metadata;
           const card = JSON.parse(data) as CardI;
 
           const sectionId = dataSections.findIndex(
@@ -68,6 +76,7 @@ export const RoomDetails: React.FC = () => {
                 title: title,
                 subtitle: card.description || description || "",
                 image: card.image,
+                selectValue: selectValue,
               },
             ],
           };

@@ -8,10 +8,11 @@ interface PropsI {
   partNumber?: string;
   count?: number;
   amount?: string;
-  value?: string;
+  selectValue?: string;
 }
 export const Card: React.FC<PropsI> = (props) => {
-  const { image, title, subtitle, partNumber, count, amount, value } = props;
+  const { image, title, subtitle, partNumber, count, amount, selectValue } =
+    props;
   return (
     <div className={s.container}>
       <div className={s.left_content}>
@@ -35,14 +36,14 @@ export const Card: React.FC<PropsI> = (props) => {
             <div className={s.part_number_value}>{partNumber}</div>
           </div>
         )}
-        {!!count && <div className={s.count}>x{count}</div>}
+        {!!count && <div className={s.count}>x {count}</div>}
         {!!amount && (
           <div className={s.amount}>
             <div className={s.amount_value}>{amount}</div>
             <div className={s.amount_text}>MSRP</div>
           </div>
         )}
-        {!!value && <div className={s.value}>{value}</div>}
+        {!!selectValue && <div className={s.value}>{selectValue}</div>}
       </div>
     </div>
   );

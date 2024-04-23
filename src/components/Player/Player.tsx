@@ -9,6 +9,12 @@ import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
 import { Vector3 } from "three";
+import {
+  EffectComposer,
+  Selection,
+  Outline,
+  ToneMapping,
+} from "@react-three/postprocessing";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -56,24 +62,46 @@ export const Player: React.FC = () => {
         ui={false}
       >
         <>
-          <Geoff2Stage>
-            <Room roomAssetId={assetId} />
-          </Geoff2Stage>
-          <OrbitControls
-            enableDamping={true}
-            enableZoom={false}
-            target={
-              new Vector3(
-                -3.3342790694469784,
-                15.269443817758102,
-                -3.999528610518013
-              )
-            }
-            minPolarAngle={Math.PI / 6}
-            maxPolarAngle={Math.PI / 2}
-          />
+          <Selection>
+            <Effects />
+            <Geoff2Stage>
+              <Room roomAssetId={assetId} />
+            </Geoff2Stage>
+            <OrbitControls
+              enableDamping={true}
+              enableZoom={false}
+              target={
+                new Vector3(
+                  -3.3342790694469784,
+                  15.269443817758102,
+                  -3.999528610518013
+                )
+              }
+              minPolarAngle={Math.PI / 6}
+              maxPolarAngle={Math.PI / 2}
+            />
+          </Selection>
         </>
       </Viewer>
     </div>
   );
 };
+
+function Effects() {
+  return (
+    <EffectComposer
+    stencilBuffer
+    disableNormalPass
+    autoClear={false}
+    multisampling={4}
+    >
+      <Outline
+        visibleEdgeColor={0x47B63F}
+        hiddenEdgeColor={0x47B63F}
+        blur={false}
+        edgeStrength={10}
+      />
+      <ToneMapping />
+    </EffectComposer>
+  );
+}

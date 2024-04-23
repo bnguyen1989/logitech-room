@@ -109,22 +109,25 @@ export function getPlatformCardData(): Record<string, TypeDataCardI> {
       key: StepName.Platform,
       logo: LogoGoogle,
       image: DeviceGoogle,
-      // title: "Google Meet",
       keyPermission: PlatformName.GoogleMeet,
     },
     [PlatformName.MicrosoftTeams]: {
       key: StepName.Platform,
       logo: LogoMS,
       image: DeviceMS,
-      // title: "Microsoft Teams",
       keyPermission: PlatformName.MicrosoftTeams,
     },
     [PlatformName.Zoom]: {
       key: StepName.Platform,
       logo: LogoZoom,
       image: DeviceZoom,
-      // title: "Zoom",
       keyPermission: PlatformName.Zoom,
+    },
+    [PlatformName.BYOD]: {
+      key: StepName.Platform,
+      logo: "",
+      image: "",
+      keyPermission: PlatformName.BYOD,
     },
   };
 }
@@ -275,6 +278,8 @@ export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
       return "Microsoft Teams";
     case PlatformName.Zoom:
       return "Zoom";
+    case PlatformName.BYOD:
+      return "BYOD";
     case ServiceName.Android:
       return "Appliance-Based";
     case ServiceName.PC:

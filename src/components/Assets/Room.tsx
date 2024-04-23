@@ -33,7 +33,6 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
     camera.far = 1000;
     threeSet({ camera });
   }, [gltf]);
-  console.log("Room");
 
   return <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />;
 };

@@ -7,5 +7,6 @@ export interface SectionI {
     partNumber?: string;
     count?: number;
     amount?: string;
+    selectValue?: string;
   }>;
 }

@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
+import { useUser } from "../../../hooks/user";
 
 declare const MktoForms2: any;
 
@@ -19,7 +20,8 @@ export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getSetupModalData);
-  const orderData: any = useAppSelector(getOrderData);
+  const { userId } = useUser();
+  const orderData: any = useAppSelector(getOrderData(userId));
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
