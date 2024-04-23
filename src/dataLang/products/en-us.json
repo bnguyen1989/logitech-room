@@ -852,7 +852,7 @@
       "ShortDescription": "",
       "LongDescription": "Add another display to meeting rooms with simple setup and maintenance",
       "Colors": {
-        "Graphite": ""
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/gallery/usb-a-hdmi-adapter-01.png?v=1"
       }
     },
     "Blade_2": {
@@ -1022,6 +1022,26 @@
       "Colors": {
         "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/mic-pod-pendant/mic-pod-pendant-mount-white-1.png?v=1"
       }
+    },
+    "Blade_2A": {
+      "Features": [
+        {
+          "HeaderFeature": "CONVERSATIONS WITHIN REACH",
+          "sorting": "1",
+          "KeyFeature": "Mic Pod Pendant Mount allows you to hang Rally Mic Pods in rooms that have tall ceiling rooms and tables that can’t have mics attached or that have unique setups. Hanging mics from the ceiling helps ensure everyone can be heard equally even in your largest spaces.",
+          "LinkImgFeature": {
+            "Cable Retention 1": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/mic-pod-pendant-mount-hero-banner-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "FLEXIBLE MOUNTING OPTIONS",
+          "sorting": "2",
+          "KeyFeature": "Mic Pod Pendant Mount easily secures the mic pods to both drop ceilings and solid ceilings.",
+          "LinkImgFeature": {
+            "Cable Retention 1": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/mic-pod-pendant-mount-feature-room-config.png?v=1"
+          }
+        }
+      ]
     }
   },
   "Mic Pod Hub": {
