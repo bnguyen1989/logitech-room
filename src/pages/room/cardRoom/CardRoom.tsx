@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { DownloadSVG, RemoveSVG } from "../../../assets";
 import { Button } from "../../../components/Buttons/Button/Button";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import s from "./CardRoom.module.scss";
 import { Application } from "../../../models/Application";
+import { useUrl } from "../../../hooks/url";
 
 declare const app: Application;
 
@@ -16,14 +16,10 @@ interface PropsI {
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId, removeRoom } = props;
-  const navigate = useNavigate();
+  const { handleNavigate } = useUrl(`/room/${shortId}`);
 
   const handleDownload = () => {
     app.downloadRoomCSV(shortId);
-  };
-
-  const handleView = () => {
-    navigate(`/room/${shortId}`, { replace: true });
   };
 
   return (
@@ -52,7 +48,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
             <DownloadSVG />
           </IconButton>
           <Button
-            onClick={handleView}
+            onClick={handleNavigate}
             text={"View Your Room"}
             variant={"contained"}
           />

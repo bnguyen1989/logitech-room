@@ -11,6 +11,7 @@ interface PropsI {
     partNumber?: string;
     count?: number;
     amount?: string;
+    selectValue?: string;
   }>;
 }
 export const Section: React.FC<PropsI> = (props) => {

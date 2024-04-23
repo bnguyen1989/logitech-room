@@ -9,3 +9,5 @@ export { ShareSVG } from "./Share.tsx";
 export { ListSVG } from "./List.tsx";
 export { WarningSVG } from "./Warning.tsx";
 export { RemoveSVG } from "./Remove.tsx";
+export { ArrowRightSVG } from "./ArrowRight.tsx";
+export { ChainLinkSVG } from "./ChainLink.tsx";

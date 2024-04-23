@@ -4,9 +4,9 @@ import { Header } from "./header/Header";
 import ImageRoom from "../../assets/images/pages/room/room.png";
 import { CardRoom } from "./cardRoom/CardRoom";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
-import { ConfigData } from "../../utils/threekitUtils";
 import { OrderI } from "../../services/Threekit/type";
 import { Loader } from "../../components/Loader/Loader";
+import { useUser } from "../../hooks/user";
 
 interface RoomI {
   image: string;
@@ -17,11 +17,13 @@ interface RoomI {
 export const Room: React.FC = () => {
   const [rooms, setRooms] = useState<Array<RoomI>>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { userId } = useUser();
 
   useEffect(() => {
     setIsLoaded(true);
+    if(!userId) return;
     new ThreekitService()
-      .getOrders({ originOrgId: ConfigData.userId })
+      .getOrders({ originOrgId: userId })
       .then((res) => {
         const dataRooms = res.orders.reduce<RoomI[]>((acc, order: OrderI) => {
           const { name, description, status } = order.metadata;
@@ -38,7 +40,7 @@ export const Room: React.FC = () => {
       .finally(() => {
         setIsLoaded(false);
       });
-  }, []);
+  }, [userId]);
 
   const removeRoom = (shortId: string) => {
     new ThreekitService().deleteOrder(shortId);
@@ -52,7 +54,9 @@ export const Room: React.FC = () => {
       <div className={s.rooms}>
         {rooms.map((room, index) => (
           <div className={s.wrapper_room} key={index}>
-            <div className={s.divider}></div>
+            <div
+              className={index === 0 ? s.divider_solid : s.divider_dashes}
+            ></div>
             <CardRoom {...room} removeRoom={removeRoom} />
           </div>
         ))}
