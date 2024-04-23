@@ -34,5 +34,13 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
     threeSet({ camera });
   }, [gltf]);
 
-  return <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />;
+  if (!gltf) return <></>;
+  const { camera } = gltf.scene.userData;
+
+  return (
+    <>
+      {camera && <primitive object={camera}></primitive>}
+      <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
+    </>
+  );
 };
