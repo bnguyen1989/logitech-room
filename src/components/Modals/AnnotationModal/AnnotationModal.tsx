@@ -116,7 +116,7 @@ export const AnnotationModal: React.FC = () => {
                 </div>
                 <div className={s.button}>
                   <Button
-                    text={!isActiveCard ? "Add to Room" : "Remove to Room"}
+                    text={!isActiveCard ? "Add to Room" : "Add to Room"}
                     onClick={() => handleClick()}
                     variant={"contained"}
                   />
@@ -187,7 +187,7 @@ export const AnnotationModal: React.FC = () => {
 
           <div className={s.button_add_room}>
             <Button
-              text={!isActiveCard ? "Add to Room" : "Remove to Room"}
+              text={!isActiveCard ? "Add to Room" : "Add to Room"}
               onClick={() => handleClick()}
               variant={"contained"}
             />

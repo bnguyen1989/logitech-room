@@ -852,14 +852,14 @@
       "ShortDescription": "",
       "LongDescription": "Add another display to meeting rooms with simple setup and maintenance",
       "Colors": {
-        "Graphite": ""
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/gallery/usb-a-hdmi-adapter-01.png?v=1"
       }
     },
     "Blade_2": {
       "Headline": "Easily Connect Another Display",
       "Description": "Logitech USB-A to HDMI Adapter allows you to easily add another display to meeting rooms with Logitech conferencing cameras. Plug and play with DisplayLink technology for a reliable connection to common USB-A ports.",
       "Image|Video": {
-        "Logitech USB-A to HDMI Adapter - Interior.png": "https://drive.google.com/file/d/1HRI4fUW1VHIRREytZ_hFTRqMOz7nvWdO/view?usp=drive_link"
+        "Logitech USB-A to HDMI Adapter - Interior.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-overview.png?v=1"
       }
     },
     "Blade_3A": {
@@ -869,7 +869,7 @@
           "sorting": "1",
           "KeyFeature": "Enterprise-grade cable management and mounting options ensure an easy installation and minimize future problems.",
           "LinkImgFeature": {
-            "Logitech USB-A to HDMI Adapter - Secure Installs.png": "https://drive.google.com/file/d/1WGCh9ECgA5dfyG00DdV-08xWcBHxv4v1/view?usp=drive_link"
+            "Logitech USB-A to HDMI Adapter - Secure Installs.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-feature-secure-mounting.png?v=1"
           }
         },
         {
@@ -877,7 +877,7 @@
           "sorting": "2",
           "KeyFeature": "​​The Logitech USB-A to HDMI Adapter supports HDMI CEC communication for automated power control between device and display. This feature is configured and enabled in Logitech Sync and used to save energy and extend the lifespan of your displays.",
           "LinkImgFeature": {
-            "Logitech USB-A to HDMI Adapter - Automated Power.mp4": "https://drive.google.com/file/d/1LU4UL4kkYVHV9-yiDZRF2bnvPzYrVpxQ/view?usp=drive_link"
+            "Logitech USB-A to HDMI Adapter - Automated Power.mp4": "https://resource.logitech.com/w_900,ac_none,f_auto,dpr_1.0,q_auto:best/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-feature-automated-power.mp4"
           }
         },
         {
@@ -885,7 +885,7 @@
           "sorting": "3",
           "KeyFeature": "Manage all of your Logitech devices remotely with Logitech Sync, including USB-A  to HDMI Adapter. Know whether devices are connected and functional without physically inspecting every meeting room.",
           "LinkImgFeature": {
-            "logitech-sync-hero-laptop-dashboard-only-rooms.png": "https://drive.google.com/file/d/1T2KESE0rLPD6usQcx8JrWznYa1l_vdAF/view?usp=sharing"
+            "logitech-sync-hero-laptop-dashboard-only-rooms.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-feature-remote-management.png?v=1"
           }
         }
       ]
@@ -1022,6 +1022,26 @@
       "Colors": {
         "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/mic-pod-pendant/mic-pod-pendant-mount-white-1.png?v=1"
       }
+    },
+    "Blade_2A": {
+      "Features": [
+        {
+          "HeaderFeature": "CONVERSATIONS WITHIN REACH",
+          "sorting": "1",
+          "KeyFeature": "Mic Pod Pendant Mount allows you to hang Rally Mic Pods in rooms that have tall ceiling rooms and tables that can’t have mics attached or that have unique setups. Hanging mics from the ceiling helps ensure everyone can be heard equally even in your largest spaces.",
+          "LinkImgFeature": {
+            "Cable Retention 1": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/mic-pod-pendant-mount-hero-banner-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "FLEXIBLE MOUNTING OPTIONS",
+          "sorting": "2",
+          "KeyFeature": "Mic Pod Pendant Mount easily secures the mic pods to both drop ceilings and solid ceilings.",
+          "LinkImgFeature": {
+            "Cable Retention 1": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/mic-pod-pendant-mount-feature-room-config.png?v=1"
+          }
+        }
+      ]
     }
   },
   "Mic Pod Hub": {
