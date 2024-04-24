@@ -9,13 +9,15 @@ import { SectionI } from "./type";
 import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
 import { StepName } from "../../utils/baseUtils";
+import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
+import ImgBanner from "../../assets/images/pages/details/room_detail_banner.png";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
   const [totalAmount, setTotalAmount] = useState<string>("");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   const getTitleSectionOrderByStepName = (stepName: StepName) => {
     switch (stepName) {
@@ -113,8 +115,11 @@ export const RoomDetails: React.FC = () => {
       });
   }, [roomId]);
 
+  const images: string[] = [ImgBanner, ImgBanner, ImgBanner];
+
   return (
-    <div className={s.container}>
+    <div className={isLoaded ? s.container_load : s.container}>
+      <ImageGallery images={images} />
       <div className={s.wrapper}>
         <Header title={nameRoom} />
         <Content sections={sections} />

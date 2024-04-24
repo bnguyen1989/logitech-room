@@ -16,7 +16,8 @@ export const Header: React.FC<PropsI> = (props) => {
           Configurations are for exploratory purposes only. Room guides and the
           prices listed are based on local MSRP for the products and are not
           formal quotes. Prices may vary by location, channel or reseller.
-          Please <u>request a consultation</u> for more information and next steps.
+          Please <u>request a consultation</u> for more information and next
+          steps.
         </div>
       </div>
       <div className={s.buttons}>

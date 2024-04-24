@@ -1,12 +1,10 @@
 .container {
-  min-height: 100vh;
   max-height: fit-content;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   gap: 60px;
   padding-bottom: 60px;
-  position: relative;
 
   .rooms {
     height: 100%;
@@ -23,11 +21,16 @@
         height: 5px;
       }
       .divider_solid {
-        border-top: 1px solid #C3C6C8;
+        border-top: 1px solid #c3c6c8;
         height: 5px;
       }
     }
   }
+}
+
+.container_load {
+  height: 100vh;
+  background-color: #ffffff;
 
   .loader {
     position: absolute;

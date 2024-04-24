@@ -21,7 +21,7 @@ export const Room: React.FC = () => {
 
   useEffect(() => {
     setIsLoaded(true);
-    if(!userId) return;
+    if (!userId) return;
     new ThreekitService()
       .getOrders({ originOrgId: userId })
       .then((res) => {
@@ -48,7 +48,7 @@ export const Room: React.FC = () => {
   };
 
   return (
-    <div className={s.container}>
+    <div className={isLoaded ? s.container_load : s.container}>
       <Header />
 
       <div className={s.rooms}>
