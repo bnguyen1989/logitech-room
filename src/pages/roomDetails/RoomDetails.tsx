@@ -36,12 +36,24 @@ export const RoomDetails: React.FC = () => {
     }
   };
 
-  const formatPrice = (price: number) => {
-    return price.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-  };
+  const getFormatPrice =
+    (locale: string, currency: string) => (price: number) => {
+      const formattedCurrency = currency.toUpperCase();
+      const localeParts = locale.split("-");
+
+      if (localeParts.length !== 2) {
+        return price.toString();
+      }
+
+      const formattedLocale = `${
+        localeParts[0]
+      }-${localeParts[1].toUpperCase()}`;
+
+      return price.toLocaleString(formattedLocale, {
+        style: "currency",
+        currency: formattedCurrency,
+      });
+    };
 
   useEffect(() => {
     setIsLoaded(true);
@@ -51,6 +63,12 @@ export const RoomDetails: React.FC = () => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
+        const locale = room.metadata["locale"] as any;
+
+        const formatPrice = getFormatPrice(
+          locale.currencyLocale,
+          locale.currency
+        );
         let total = 0;
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
