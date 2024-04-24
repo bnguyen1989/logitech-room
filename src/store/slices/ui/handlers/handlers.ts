@@ -348,10 +348,10 @@ function setStepData(
 
     const colorsName = getColorsData().map((item) => item.name);
     const nameItems = Object.keys(threekitItems);
-    const includeColors = colorsName.every((item) =>
+    const includeColors = colorsName.filter((item) =>
       nameItems.some((name) => name.includes(item))
     );
-    const isSetColors = includeColors && !color;
+    const isSetColors = includeColors.length > 1 && !color;
     if (isSetColors) {
       store.dispatch(
         setPropertyItem({

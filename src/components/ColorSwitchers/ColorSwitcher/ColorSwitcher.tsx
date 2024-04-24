@@ -11,24 +11,23 @@ export const ColorSwitcher: React.FC<PropsI> = (props) => {
   const { onChange, value, listColors, disabled = false } = props;
 
   const handleChange = (value: ColorItemI) => {
-    if(disabled) return;
+    if (disabled) return;
     onChange(value);
   };
   return (
     <div className={`${s.container} ${disabled ? s.disabled : ""}`}>
       {listColors.map((color, index) => {
         let classItem = `${s.color}`;
-        if (color.value === value) classItem += ` ${s.active_color}`;
+        if (color.name === value) classItem += ` ${s.active_color}`;
 
         return (
           <div
             key={index}
             className={classItem}
-            style={{
-              backgroundColor: color.value,
-            }}
             onClick={() => handleChange(color)}
-          ></div>
+          >
+            <img src={color.value} alt={color.name} />
+          </div>
         );
       })}
       <div className={s.text}>{value}</div>
