@@ -9,13 +9,15 @@ import { SectionI } from "./type";
 import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
 import { StepName } from "../../utils/baseUtils";
+import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
+import ImgBanner from "../../assets/images/pages/details/room_detail_banner.png";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
   const [totalAmount, setTotalAmount] = useState<string>("");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   const getTitleSectionOrderByStepName = (stepName: StepName) => {
     switch (stepName) {
@@ -34,12 +36,24 @@ export const RoomDetails: React.FC = () => {
     }
   };
 
-  const formatPrice = (price: number) => {
-    return price.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-  };
+  const getFormatPrice =
+    (locale: string, currency: string) => (price: number) => {
+      const formattedCurrency = currency.toUpperCase();
+      const localeParts = locale.split("-");
+
+      if (localeParts.length !== 2) {
+        return price.toString();
+      }
+
+      const formattedLocale = `${
+        localeParts[0]
+      }-${localeParts[1].toUpperCase()}`;
+
+      return price.toLocaleString(formattedLocale, {
+        style: "currency",
+        currency: formattedCurrency,
+      });
+    };
 
   useEffect(() => {
     setIsLoaded(true);
@@ -49,6 +63,12 @@ export const RoomDetails: React.FC = () => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
+        const locale = room.metadata["locale"] as any;
+
+        const formatPrice = getFormatPrice(
+          locale.currencyLocale,
+          locale.currency
+        );
         let total = 0;
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
@@ -113,8 +133,11 @@ export const RoomDetails: React.FC = () => {
       });
   }, [roomId]);
 
+  const images: string[] = [ImgBanner, ImgBanner, ImgBanner];
+
   return (
-    <div className={s.container}>
+    <div className={isLoaded ? s.container_load : s.container}>
+      <ImageGallery images={images} />
       <div className={s.wrapper}>
         <Header title={nameRoom} />
         <Content sections={sections} />

@@ -11,6 +11,7 @@ interface ModalsStateI {
   [ModalName.MY_SETUP]: ModalI;
   [ModalName.ANNOTATION_ITEM]: AnnotationItemModalI;
   [ModalName.SELECT_PRODUCT]: SelectProductModalI;
+  [ModalName.SHARE_PROJECT]: ModalI;
 }
 
 const initialState: ModalsStateI = {
@@ -21,6 +22,9 @@ const initialState: ModalsStateI = {
     isOpen: false,
   },
   [ModalName.SELECT_PRODUCT]: {
+    isOpen: false,
+  },
+  [ModalName.SHARE_PROJECT]: {
     isOpen: false,
   },
 };
@@ -44,6 +48,9 @@ const ModalsSlice = createSlice({
     ) => {
       state[ModalName.SELECT_PRODUCT] = action.payload;
     },
+    setShareProjectModal: (state, action: PayloadAction<ModalI>) => {
+      state[ModalName.SHARE_PROJECT] = action.payload;
+    }
   },
 });
 
@@ -51,6 +58,7 @@ export const {
   setMySetupModal,
   setAnnotationItemModal,
   setSelectProductModal,
+  setShareProjectModal,
 } = ModalsSlice.actions;
 
 export default ModalsSlice.reducer;

@@ -24,6 +24,10 @@ export const getSelectProductModalData = (state: RootState) => {
   return state.modals[ModalName.SELECT_PRODUCT];
 };
 
+export const getShareProjectModalData = (state: RootState) => {
+  return state.modals[ModalName.SHARE_PROJECT];
+};
+
 export const getIsShowProductModal =
   (attrName: string) => (state: RootState) => {
     const activeStep = getActiveStep(state);

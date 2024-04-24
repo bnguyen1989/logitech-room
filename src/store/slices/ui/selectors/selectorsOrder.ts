@@ -13,6 +13,7 @@ import {
 } from "./selectoreLangProduct";
 import {
   getAssetFromCard,
+  getLocale,
   getMetadataProductNameAssetFromCard,
   getPriceFromMetadataByKeyPermission,
   getSelectedConfiguratorCards,
@@ -21,6 +22,7 @@ import {
   getSkuFromMetadataByCard,
   getTitleCardByKeyPermission,
 } from "./selectors";
+import lang from "../../../../dataLang/languages.json";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -91,6 +93,11 @@ export const getOrderData = (userId: string) => (state: RootState) => {
   const configuration = JSON.stringify(
     app.currentConfigurator.getConfiguration()
   );
+
+  const currentLocale = getLocale(state);
+  const localeObj = lang.find(
+    (item: any) => item.languageCode === currentLocale
+  );
   return {
     customerId: userId,
     originOrgId: userId,
@@ -107,6 +114,10 @@ export const getOrderData = (userId: string) => (state: RootState) => {
         assetId,
         nodes,
         configuration,
+      },
+      locale: {
+        currency: localeObj?.currencyCode ?? "USD",
+        currencyLocale: localeObj?.languageCode ?? "en-US",
       },
     },
     status: "List",
