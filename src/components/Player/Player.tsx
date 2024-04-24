@@ -15,6 +15,7 @@ import {
   Outline,
   ToneMapping,
 } from "@react-three/postprocessing";
+import { useCache } from "../../hooks/cache.ts";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -23,6 +24,8 @@ export const bhoustonAuth = {
 };
 
 export const Player: React.FC = () => {
+  const { cache, keyCache } = useCache();
+
   const assetId = useAppSelector(getAssetId);
 
   const focalLengthMm = 65; // Focal length in mm
@@ -48,8 +51,8 @@ export const Player: React.FC = () => {
       <Viewer
         auth={bhoustonAuth}
         resolver={ExporterResolver({
-          cache: true,
-          cacheScope: "v017",
+          cache: cache,
+          cacheScope: keyCache,
           mode: "experimental",
           settings: {
             prune: {
@@ -90,14 +93,14 @@ export const Player: React.FC = () => {
 function Effects() {
   return (
     <EffectComposer
-    stencilBuffer
-    disableNormalPass
-    autoClear={false}
-    multisampling={4}
+      stencilBuffer
+      disableNormalPass
+      autoClear={false}
+      multisampling={4}
     >
       <Outline
-        visibleEdgeColor={0x47B63F}
-        hiddenEdgeColor={0x47B63F}
+        visibleEdgeColor={0x47b63f}
+        hiddenEdgeColor={0x47b63f}
         blur={false}
         edgeStrength={10}
       />
