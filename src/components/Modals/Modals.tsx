@@ -1,6 +1,7 @@
 import { AnnotationModal } from "./AnnotationModal/AnnotationModal";
-import { SelectProductModal } from './SelectProductModal/SelectProductModal'
+import { SelectProductModal } from "./SelectProductModal/SelectProductModal";
 import { SetupModal } from "./SetupModal/SetupModal";
+import { ShareProjectModal } from "./ShareProjectModal/ShareProjectModal";
 
 export const Modals: React.FC = () => {
   return (
@@ -8,6 +9,7 @@ export const Modals: React.FC = () => {
       <SetupModal />
       <AnnotationModal />
       <SelectProductModal />
+      <ShareProjectModal />
     </>
   );
 };

@@ -7,10 +7,13 @@ import { useNavigate } from "react-router-dom";
 import ImgBanner from "../../../assets/images/pages/room/room_banner.png";
 import { useUser } from "../../../hooks/user";
 import { copyToClipboard, getParentURL } from "../../../utils/browserUtils";
+import { useDispatch } from 'react-redux'
+import { setShareProjectModal } from '../../../store/slices/modals/Modals.slice'
 
 declare const app: Application;
 
 export const Header: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userId } = useUser();
 
@@ -25,6 +28,12 @@ export const Header: React.FC = () => {
   const handleShareUserRooms = () => {
     const url = `${getParentURL()}/room?userId=${userId}`;
     copyToClipboard(url);
+  };
+
+  const handleRequestConsultation = () => {}
+
+  const handleShareProject = () => {
+    dispatch(setShareProjectModal({ isOpen: true }));
   };
 
   return (
@@ -55,7 +64,7 @@ export const Header: React.FC = () => {
               <ChainLinkSVG />
             </IconButton>
             <Button
-              onClick={() => {}}
+              onClick={handleRequestConsultation}
               text={"Request Consultation"}
               variant={"contained"}
             />
@@ -86,7 +95,7 @@ export const Header: React.FC = () => {
           <DownloadSVG />
         </IconButton>
         <IconButton
-          onClick={handleShareUserRooms}
+          onClick={handleShareProject}
           text={"Share Your Project"}
           variant={"outlined"}
         >
