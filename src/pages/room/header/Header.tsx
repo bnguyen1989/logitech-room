@@ -30,7 +30,9 @@ export const Header: React.FC = () => {
     copyToClipboard(url);
   };
 
-  const handleRequestConsultation = () => {}
+  const handleRequestConsultation = () => {
+    navigate("/request-consultation");
+  }
 
   const handleShareProject = () => {
     dispatch(setShareProjectModal({ isOpen: true }));
