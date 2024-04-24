@@ -3,7 +3,7 @@ import { OrbitControls } from "@react-three/drei";
 import { ExporterResolver, Viewer } from "@threekit/react-three-fiber";
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
-import LogitechStage from "../stages/Geoff2Stage.tsx";
+import LogitechStage from "../stages/LogitechStage.tsx";
 import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
