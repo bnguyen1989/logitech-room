@@ -32,7 +32,7 @@ const controls = {
   },
 };
 
-export type Geoff2StageProps = {
+export type LogitechStageProps = {
   cameraControlsRef?: MutableRefObject<CameraControls | null>;
   altitude?: number;
   azimuth?: number;
@@ -40,7 +40,7 @@ export type Geoff2StageProps = {
   children?: ReactNode;
 };
 
-const Geoff2Stage: React.FC<Geoff2StageProps> = ({ children }) => {
+const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
   const [radius] = useState<number>(2.0);
 
   const { gl } = useThree();
@@ -50,7 +50,7 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({ children }) => {
   const shadowBias = -0.002;
   return (
     <>
-      <Environment files={`/assets/ibl/Andrei_Beds_Env.hdr`} blur={0} />
+      <Environment files={`/assets/ibl/env.hdr`} blur={0} />
       {/* <SoftShadows
         size={controls.shadows.keySize}
         focus={controls.shadows.keyFocus}
@@ -100,4 +100,4 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({ children }) => {
   );
 };
 
-export default Geoff2Stage;
+export default LogitechStage;
