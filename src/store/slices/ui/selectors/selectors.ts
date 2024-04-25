@@ -211,7 +211,7 @@ export const getSkuFromMetadataByCard = (card: CardI) => (state: RootState) => {
   const metadata = getMetadataAssetFromCard(card)(state);
   if (!metadata) return "";
 
-  return metadata["SKU"]?.trim();
+  return metadata["SKU"]?.trim() ?? "";
 };
 
 export const getSubTitleCardByKeyPermission =

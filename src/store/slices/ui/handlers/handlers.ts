@@ -12,10 +12,6 @@ import {
   SelectDataI,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
-import MicImg from "../../../../assets/images/items/mic.jpg";
-import CameraImg from "../../../../assets/images/items/camera.jpg";
-import ControllerImg from "../../../../assets/images/items/controller.jpg";
-import AccessImg from "../../../../assets/images/items/access.jpg";
 import {
   addActiveCard,
   addActiveCards,
@@ -263,8 +259,7 @@ function setStepData(
     | StepName.MeetingController
     | StepName.VideoAccessories
     | StepName.SoftwareServices,
-  itemNameList: Array<Array<string>>,
-  image: string
+  itemNameList: Array<Array<string>>
 ) {
   const stepCardData: Array<CardI> = [];
 
@@ -283,7 +278,6 @@ function setStepData(
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       temp.push({
         key: stepName,
-        image: image,
         keyPermission: keyPermission,
         dataThreekit: {
           attributeName: name,
@@ -381,8 +375,7 @@ function setAudioExtensionsData(configurator: Configurator) {
       configurator,
       store,
       StepName.AudioExtensions,
-      Configurator.AudioExtensionName,
-      MicImg
+      Configurator.AudioExtensionName
     );
   };
 }
@@ -393,8 +386,7 @@ function setCameraData(configurator: Configurator) {
       configurator,
       store,
       StepName.ConferenceCamera,
-      Configurator.CameraName,
-      CameraImg
+      Configurator.CameraName
     );
   };
 }
@@ -405,8 +397,7 @@ function setMeetingControllerData(configurator: Configurator) {
       configurator,
       store,
       StepName.MeetingController,
-      Configurator.MeetingControllerName,
-      ControllerImg
+      Configurator.MeetingControllerName
     );
   };
 }
@@ -417,8 +408,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
       configurator,
       store,
       StepName.VideoAccessories,
-      Configurator.VideoAccessoriesName,
-      AccessImg
+      Configurator.VideoAccessoriesName
     );
   };
 }

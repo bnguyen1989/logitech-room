@@ -1,16 +1,8 @@
 import React from "react";
 import s from "./Card.module.scss";
+import { DataSectionI } from "../../../type";
 
-interface PropsI {
-  image: string;
-  title: string;
-  subtitle: string;
-  partNumber?: string;
-  count?: number;
-  amount?: string;
-  selectValue?: string;
-}
-export const Card: React.FC<PropsI> = (props) => {
+export const Card: React.FC<DataSectionI> = (props) => {
   const { image, title, subtitle, partNumber, count, amount, selectValue } =
     props;
   return (
