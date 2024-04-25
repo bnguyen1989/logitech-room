@@ -5,6 +5,7 @@ import {
   changeValueNodes,
   removeNodeByKeys,
   removeNodes,
+  setHighlightNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
@@ -18,9 +19,34 @@ import {
   getPermission,
   getPropertyCounterCardByKeyPermission,
 } from "../../ui/selectors/selectors";
-import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
+import {
+  getAssetIdByNameNode,
+  getNodes,
+} from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
 import { StepName } from "../../../../utils/baseUtils";
+
+export const updateHighlightNodes = (nodes: Record<string, string>) => {
+  return (store: Store) => {
+    const newHighlightNodes: Record<string, boolean> = {};
+    const nodeNames = Object.keys(nodes);
+    nodeNames.forEach((name) => {
+      const arrName = name.split("_");
+      const lastElement = arrName[arrName.length - 1];
+      const isLastElementNumber =
+        !isNaN(parseFloat(lastElement)) && isFinite(parseFloat(lastElement));
+
+      if (isLastElementNumber) {
+        arrName.pop();
+      }
+
+      const nodeName = arrName.join("_");
+      newHighlightNodes[nodeName] = true;
+    });
+
+    store.dispatch(setHighlightNodes(newHighlightNodes));
+  };
+};
 
 export function deleteNodesByCards(cards: Array<CardI>) {
   return (store: Store) => {
