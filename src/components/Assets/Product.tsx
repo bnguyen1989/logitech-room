@@ -5,27 +5,30 @@ import { changeStatusProcessing } from "../../store/slices/configurator/Configur
 import { ProductsNodes } from "./ProductsNodes.js";
 import { GLTFNode } from "./GLTFNode.js";
 import { Select } from "@react-three/postprocessing";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
   productAssetId: string;
+  highlight?: boolean;
+  callbackDisableHighlight: () => void;
 };
 
 export const Product: React.FC<ProductProps> = ({
   parentNode,
   productAssetId,
+  highlight = false,
+  callbackDisableHighlight = () => {},
 }) => {
   const dispatch = useDispatch();
   const productGltf = useAsset({ assetId: productAssetId });
-  const [highlight, setHighlight] = useState(true);
 
   dispatch(changeStatusProcessing(false));
 
   useEffect(() => {
     if (!productGltf) return;
     const id = setTimeout(() => {
-      setHighlight(false);
+      callbackDisableHighlight();
     }, 2000);
 
     return () => clearTimeout(id);

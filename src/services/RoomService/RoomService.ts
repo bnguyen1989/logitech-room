@@ -1,4 +1,5 @@
 import { CardI } from "../../store/slices/ui/type";
+import { getDisclaimerCSV } from "../../store/slices/ui/utils";
 import { ThreekitService } from "../Threekit/ThreekitService";
 import { OrdersI } from "../Threekit/type";
 import { RoomApi } from "../api/Server/RoomApi/RoomApi";
@@ -24,6 +25,7 @@ export class RoomService {
     const response = await this.roomApi.createCSV({
       header,
       data: formattedData.flat(),
+      disclaimer: getDisclaimerCSV(),
     });
     return response.data;
   }

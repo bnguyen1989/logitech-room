@@ -441,7 +441,7 @@
   },
   "Tap Scheduler": {
     "Blade_1": {
-      "ProductName": "Tap Scheduler",
+      "ProductName": "Logitech Tap Scheduler",
       "ShortDescription": "Purpose-built scheduling panel for meeting rooms",
       "LongDescription": "Make it easy to find and claim the right meeting space with Tap Scheduler, a purpose-built scheduling panel that’s designed for deployment at scale.",
       "Colors": {
@@ -642,7 +642,7 @@
   },
   "RoomMate": {
     "Blade_1": {
-      "ProductName": "RoomMate",
+      "ProductName": "Logitech RoomMate",
       "ShortDescription": "CollabOS appliance for supported conference cameras and room solution peripherals",
       "Colors": {
         "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/roommate/gallery-1-v2.png?v=1"
@@ -775,7 +775,7 @@
   },
   "Logitech Active USB Cable": {
     "Blade_1": {
-      "ProductName": "Logitech Active USB Cable",
+      "ProductName": "Active USB Cable",
       "ShortDescription": "Enables single-cable BYOD connection for MeetUp 2.",
       "LongDescription": "Logitech Active USB Cable allows a single-cable connection between MeetUp 2 and laptops for BYOD meetings.",
       "Colors": {
@@ -979,7 +979,7 @@
   },
   "Rally Mic Pod Mount": {
     "Blade_1": {
-      "ProductName": "Rally Mic Pod Mount",
+      "ProductName": "Mic Pod Mount",
       "LongDescription": "Anchor Rally Mic Pod to a table or ceiling, with cable management for a clean installation.",
       "Colors": {
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-mic-pod-mount/mic-pod-mount-gallery-1.png?v=1",
@@ -1017,7 +1017,7 @@
   },
   "Rally Mic Pod Pendant Mount": {
     "Blade_1": {
-      "ProductName": "Rally Mic Pod Pendant Mount",
+      "ProductName": "Mic Pod Pendant Mount",
       "ShortDescription": "Ceiling pendant mount for Rally Mic Pods.",
       "Colors": {
         "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/mic-pod-pendant/mic-pod-pendant-mount-white-1.png?v=1"
@@ -1046,7 +1046,7 @@
   },
   "Mic Pod Hub": {
     "Blade_1": {
-      "ProductName": "Mic Pod Hub",
+      "ProductName": "Rally Mic Pod Hub",
       "LongDescription": "Customize microphone placement for most any conference table configuration",
       "Colors": {
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-mic-pod-hub/gallery/rally-mic-pod-hub-gallery-1.png?v=1"
@@ -1090,7 +1090,7 @@
   },
   "Mic Pod CAT Coupler": {
     "Blade_1": {
-      "ProductName": "Mic Pod CAT Coupler",
+      "ProductName": "Rally Mic Pod CAT Coupler",
       "ShortDescription": "Extend Mic Pods with CAT Coupler",
       "LongDescription": "Extend the length of Rally Mic Pod cables by connecting Rally Mic Pod CAT Coupler to a standard CAT cable.",
       "Colors": {
@@ -1202,7 +1202,7 @@
   },
   "Tap Table Mount": {
     "Blade_1": {
-      "ProductName": "Tap Table Mount",
+      "ProductName": "Logitech Tap Table Mount",
       "ShortDescription": "Secure the Tap controller to the table for a tidy setup",
       "LongDescription": "Swiveling table mount with cable management for Logitech Tap and Tap IP meeting room controllers.",
       "Colors": {
@@ -1240,7 +1240,7 @@
   },
   "Tap Riser Mount": {
     "Blade_1": {
-      "ProductName": "Tap Riser Mount",
+      "ProductName": "Logitech Tap Riser Mount",
       "ShortDescription": "Raise the Tap controller for better visibility",
       "LongDescription": "Elevated table mount with swivel and cable management for Logitech Tap and Tap IP meeting room touch controllers.",
       "Colors": {
@@ -1279,7 +1279,7 @@
   },
   "Tap Wall Mount": {
     "Blade_1": {
-      "ProductName": "Tap Wall Mount",
+      "ProductName": "Logitech Tap Wall Mount",
       "ShortDescription": "Mount Tap controllers to the wall to save table space",
       "LongDescription": "Wall mount with cable management for Logitech Tap and Tap IP meeting room touch controllers.",
       "Colors": {
@@ -1325,7 +1325,7 @@
   },
   "Logitech TV Mount": {
     "Blade_1": {
-      "ProductName": "Logitech TV Mount",
+      "ProductName": "TV Mount for Video Bars",
       "ShortDescription": "For Logitech video bars",
       "LongDescription": "Attach Rally Bar, Rally Bar Mini, or Rally Camera to almost any display with VESA mounting points.",
       "Colors": {
@@ -1390,7 +1390,7 @@
   },
   "Logitech Wall Mount": {
     "Blade_1": {
-      "ProductName": "Logitech Wall Mount",
+      "ProductName": "Wall Mount for Video Bars",
       "ShortDescription": "VESA-compatible mounting kit for Rally Bar and Rally Bar Mini.",
       "Colors": {
         "Metallic": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/wall-mount/hero-tablet-mobile-v2.png?v=1"

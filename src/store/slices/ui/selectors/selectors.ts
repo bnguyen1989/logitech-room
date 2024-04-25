@@ -211,7 +211,7 @@ export const getSkuFromMetadataByCard = (card: CardI) => (state: RootState) => {
   const metadata = getMetadataAssetFromCard(card)(state);
   if (!metadata) return "";
 
-  return metadata["SKU"]?.trim();
+  return metadata["SKU"]?.trim() ?? "";
 };
 
 export const getSubTitleCardByKeyPermission =
@@ -273,6 +273,15 @@ export const getIsCanChangeStep = (state: RootState) => {
   const permission = getPermission()(state);
   return permission.canNextStep();
 };
+
+export const getSecondaryCardsFromStep =
+  (stepData: StepI) => (state: RootState) => {
+    const cards = Object.values(stepData.cards);
+    const permission = getPermission(stepData.key)(state);
+    return cards.filter((card) => {
+      return permission.isSecondaryElementByName(card.keyPermission);
+    });
+  };
 
 export const getPermission = (stepName?: StepName) => (state: RootState) => {
   const currentStep = stepName ?? getActiveStep(state);

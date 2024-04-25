@@ -219,6 +219,14 @@ export class Permission {
     return res;
   }
 
+  public isSecondaryElementByName(itemName: string): boolean {
+    const currentStep = this.getCurrentStep();
+    const element = currentStep.getElementByName(itemName);
+    let res = false;
+    if (element) res = element.getSecondary();
+    return res;
+  }
+
   public getCurrentStep(): Step {
     return this.getStepByName(this.currentStepName);
   }

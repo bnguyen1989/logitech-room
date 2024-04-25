@@ -95,7 +95,7 @@ export const RoomDetails: React.FC = () => {
               {
                 title: title,
                 subtitle: card.description || description || "",
-                image: card.image,
+                image: card.image ?? "",
                 selectValue: selectValue,
               },
             ],
@@ -105,13 +105,14 @@ export const RoomDetails: React.FC = () => {
             const amountInt = parseFloat(price) * parseInt(count);
             total += amountInt;
             const amount = formatPrice(amountInt);
+            const partNumber = `${color}${color ? " : " : ""}${sku}`;
             itemSection = {
               ...itemSection,
               data: [
                 {
                   ...itemSection.data[0],
-                  partNumber: `${color} : ${sku}`,
-                  count: parseInt(count),
+                  partNumber,
+                  count: count,
                   amount,
                 },
               ],

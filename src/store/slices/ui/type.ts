@@ -42,11 +42,9 @@ export type TypeCardPermissionWithDataThreekit = Record<
 
 export interface CardI {
   key: StepName;
-  // title: string;
-  image: string;
+  image?: string;
   logo?: string;
   subtitle?: string;
-  // header_title?: string;
   description?: string;
   counter?: CounterI;
   select?: SelectI;
