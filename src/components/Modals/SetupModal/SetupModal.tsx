@@ -8,7 +8,7 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
@@ -22,6 +22,7 @@ export const SetupModal: React.FC = () => {
   const { isOpen } = useAppSelector(getSetupModalData);
   const { userId } = useUser();
   const orderData: any = useAppSelector(getOrderData(userId));
+  const [isRequest, setIsRequest] = useState(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
@@ -32,17 +33,21 @@ export const SetupModal: React.FC = () => {
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
 
     MktoForms2.whenReady((form: any) => {
-      new ThreekitService().createOrder(orderData).then((order) => {
-        const baseUrl = getParentURL();
-        const link = `${baseUrl}/room/${order.shortId}`;
-        form.setValues({
-          editableField6: link,
-        });
+      const baseUrl = getParentURL();
+      const link = `${baseUrl}/room?userId=${userId}`;
+      form.setValues({
+        editableField6: link,
       });
 
       form.onSubmit(() => {
-        dispatch(setMySetupModal({ isOpen: false }));
-        navigate("/room", { replace: true });
+        if (!isRequest) {
+          setIsRequest(true);
+          new ThreekitService().createOrder(orderData).then(() => {
+            dispatch(setMySetupModal({ isOpen: false }));
+            navigate("/room", { replace: true });
+          });
+        }
+
         return false;
       });
       const button = document.querySelector(".mktoButton");
