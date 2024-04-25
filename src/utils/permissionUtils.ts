@@ -116,7 +116,7 @@ export function createStepPlatform() {
     )
     .addElement(new ItemElement(PlatformName.MicrosoftTeams))
     .addElement(new ItemElement(PlatformName.Zoom))
-    .addElement(new ItemElement(PlatformName.BYOD))
+    .addElement(new ItemElement(PlatformName.BYOD).setSecondary(true))
     .setRequiredOne(true);
   stepPlatform.allElements = [group];
   return stepPlatform;

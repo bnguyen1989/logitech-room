@@ -5,6 +5,7 @@ import LogoZoom from "../../../assets/images/platform/zoom.jpg";
 import DeviceMS from "../../../assets/images/platform/microsoft_device.jpg";
 import DeviceGoogle from "../../../assets/images/platform/google_device.jpg";
 import DeviceZoom from "../../../assets/images/platform/zoom_device.jpg";
+import DeviceBYOD from "../../../assets/images/platform/byod_device.jpg";
 import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.png";
 import ImageHundle from "../../../assets/images/rooms/huddle.png";
 import ImageSmall from "../../../assets/images/rooms/small.png";
@@ -125,8 +126,9 @@ export function getPlatformCardData(): Record<string, TypeDataCardI> {
     },
     [PlatformName.BYOD]: {
       key: StepName.Platform,
-      logo: "",
-      image: "",
+      image: DeviceBYOD,
+      subtitle:
+        "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
       keyPermission: PlatformName.BYOD,
     },
   };
@@ -279,7 +281,7 @@ export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
     case PlatformName.Zoom:
       return "Zoom";
     case PlatformName.BYOD:
-      return "BYOD";
+      return "Choose a Bring-Your-Own-Device setup";
     case ServiceName.Android:
       return "Appliance-Based";
     case ServiceName.PC:

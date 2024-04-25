@@ -9,10 +9,20 @@ export class BaseElement extends Element<BaseElement> {
   private isDisabledCounter: boolean = false;
   private isDisabledColor: boolean = false;
   private property: Record<string, any> = {};
+  private _isSecondary: boolean = false;
 
   constructor(name: string) {
     super();
     this.name = name;
+  }
+
+  public getSecondary(): boolean {
+    return this._isSecondary;
+  }
+
+  public setSecondary(value: boolean) {
+    this._isSecondary = value;
+    return this;
   }
 
   public setProperty(property: Record<string, any>): BaseElement {

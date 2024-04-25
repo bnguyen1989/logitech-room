@@ -2,6 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  width: 100%;
   position: absolute;
   left: 0;
   top: 0;
@@ -10,12 +12,52 @@
   z-index: 60;
   background-color: #f4f4f4;
 
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .wrapper_scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding: 30px 0;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+  }
+
   .wrapperCards {
     display: flex;
     justify-content: center;
+    align-items: center;
     align-items: stretch;
     gap: 28px;
+    min-height: 300px;
     height: 80%;
+  }
+
+  .secondaryWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    .titleSecond {
+      font-size: 26px;
+      line-height: 40px;
+      font-weight: 700;
+      color: #000000;
+    }
+
+    .secondaryWrapperCards {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+    }
   }
 }
 

@@ -274,6 +274,15 @@ export const getIsCanChangeStep = (state: RootState) => {
   return permission.canNextStep();
 };
 
+export const getSecondaryCardsFromStep =
+  (stepData: StepI) => (state: RootState) => {
+    const cards = Object.values(stepData.cards);
+    const permission = getPermission(stepData.key)(state);
+    return cards.filter((card) => {
+      return permission.isSecondaryElementByName(card.keyPermission);
+    });
+  };
+
 export const getPermission = (stepName?: StepName) => (state: RootState) => {
   const currentStep = stepName ?? getActiveStep(state);
   const activeKeys = getAllKeyActiveCards(state);
