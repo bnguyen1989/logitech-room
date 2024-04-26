@@ -15,7 +15,7 @@ export const Actions: React.FC = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const { handleNavigate } = useUrl("/room");
-  const { user } = useUser();
+  const user = useUser();
 
   const handlerDownload = () => {
     if (!roomId) return;

@@ -1,11 +1,8 @@
 import s from "./ActionsContent.module.scss";
-
-import { IconButton } from "../../../../components/Buttons/IconButton/IconButton";
-import { RevertSVG } from "../../../../assets";
 import { Button } from "../../../../components/Buttons/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setMySetupModal } from "../../../../store/slices/modals/Modals.slice";
+import { setFinishModal } from "../../../../store/slices/modals/Modals.slice";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
   getIsCanChangeStep,
@@ -23,7 +20,7 @@ export const ActionsContent = () => {
 
   const handleNext = () => {
     if (!nextStep) {
-      dispatch(setMySetupModal({ isOpen: true }));
+      dispatch(setFinishModal({ isOpen: true }));
       return;
     }
 
@@ -39,17 +36,8 @@ export const ActionsContent = () => {
     app.changeStep(prevStep.key);
   };
 
-  const handleRevert = () => {
-    navigate("/", { replace: true });
-  };
-
   return (
     <div className={s.actions}>
-      {!nextStep && (
-        <IconButton text={"Start over"} onClick={handleRevert}>
-          <RevertSVG />
-        </IconButton>
-      )}
       <Button onClick={handleBack} text="Back" />
       <Button
         onClick={handleNext}

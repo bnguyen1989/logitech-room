@@ -9,7 +9,7 @@ import {
   getNavigationStepData,
   getSelectData,
 } from "../../ui/selectors/selectors";
-import { CardI } from '../../ui/type'
+import { CardI } from "../../ui/type";
 import { ModalName } from "../type";
 
 export const getSetupModalData = (state: RootState) => {
@@ -26,6 +26,10 @@ export const getSelectProductModalData = (state: RootState) => {
 
 export const getShareProjectModalData = (state: RootState) => {
   return state.modals[ModalName.SHARE_PROJECT];
+};
+
+export const getFinishModalData = (state: RootState) => {
+  return state.modals[ModalName.FINISH];
 };
 
 export const getIsShowProductModal =
@@ -47,16 +51,21 @@ export const getIsShowProductModal =
     return isActiveElements;
   };
 
-
-export const getDataForAnnotationModal = (keyPermission: string, card: CardI) =>
-  (state: RootState) => {
+export const getDataForAnnotationModal =
+  (keyPermission: string, card: CardI) => (state: RootState) => {
     if (!keyPermission || !card) return {};
 
     const activeStep = getActiveStep(state);
     if (!activeStep) return {};
-    const isActiveCard = getIsSelectedCardByKeyPermission(activeStep, keyPermission)(state)
+    const isActiveCard = getIsSelectedCardByKeyPermission(
+      activeStep,
+      keyPermission
+    )(state);
 
-    const disabledActions = getDisabledActionByKeyPermission(activeStep, keyPermission)(state)
+    const disabledActions = getDisabledActionByKeyPermission(
+      activeStep,
+      keyPermission
+    )(state);
 
     const threekitAsset = getAssetFromCard(card)(state);
 

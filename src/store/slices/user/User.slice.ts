@@ -13,6 +13,7 @@ interface ModalsStateI {
     name: RoleUserName;
     permissions: PermissionUser[];
   };
+  data: Record<string, any>;
 }
 
 const initialState: ModalsStateI = {
@@ -21,6 +22,7 @@ const initialState: ModalsStateI = {
     name: RoleUserName.VIEWER,
     permissions: getRoleByName(RoleUserName.VIEWER).permissions,
   },
+  data: {},
 };
 
 const UserSlice = createSlice({
@@ -47,9 +49,17 @@ const UserSlice = createSlice({
         permissions: role.permissions,
       };
     },
+    setUserData: (
+      state,
+      action: PayloadAction<{
+        data: Record<string, any>;
+      }>
+    ) => {
+      state.data = action.payload.data;
+    },
   },
 });
 
-export const { setUserId, changeRoleUser } = UserSlice.actions;
+export const { setUserId, changeRoleUser, setUserData } = UserSlice.actions;
 
 export default UserSlice.reducer;
