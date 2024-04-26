@@ -17,13 +17,13 @@ interface RoomI {
 export const Room: React.FC = () => {
   const [rooms, setRooms] = useState<Array<RoomI>>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { userId } = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     setIsLoaded(true);
-    if (!userId) return;
+    if (!user.id) return;
     new ThreekitService()
-      .getOrders({ originOrgId: userId })
+      .getOrders({ originOrgId: user.id })
       .then((res) => {
         const dataRooms = res.orders.reduce<RoomI[]>((acc, order: OrderI) => {
           const { name, description, status } = order.metadata;
@@ -40,7 +40,7 @@ export const Room: React.FC = () => {
       .finally(() => {
         setIsLoaded(false);
       });
-  }, [userId]);
+  }, [user.id]);
 
   const removeRoom = (shortId: string) => {
     new ThreekitService().deleteOrder(shortId);

@@ -4,6 +4,8 @@ import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import s from "./CardRoom.module.scss";
 import { Application } from "../../../models/Application";
 import { useUrl } from "../../../hooks/url";
+import { useUser } from "../../../hooks/user";
+import { PermissionUser } from "../../../utils/userRoleUtils";
 
 declare const app: Application;
 
@@ -17,10 +19,13 @@ interface PropsI {
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId, removeRoom } = props;
   const { handleNavigate } = useUrl(`/room/${shortId}`);
+  const { user } = useUser();
 
   const handleDownload = () => {
     app.downloadRoomCSV(shortId);
   };
+
+  const userCanRemoveRoom = user.role.can(PermissionUser.REMOVE_ROOM);
 
   return (
     <div className={s.container}>
@@ -32,11 +37,13 @@ export const CardRoom: React.FC<PropsI> = (props) => {
       <div className={s.right_content}>
         <div className={s.header}>
           <div className={s.title}>{title}</div>
-          <div className={s.button_remove}>
-            <IconButton onClick={() => removeRoom(shortId)}>
-              <RemoveSVG />
-            </IconButton>
-          </div>
+          {userCanRemoveRoom && (
+            <div className={s.button_remove}>
+              <IconButton onClick={() => removeRoom(shortId)}>
+                <RemoveSVG />
+              </IconButton>
+            </div>
+          )}
         </div>
         <div className={s.desc}>{desc}</div>
         <div className={s.buttons}>

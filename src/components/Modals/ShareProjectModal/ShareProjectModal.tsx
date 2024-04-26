@@ -13,17 +13,17 @@ import { useUser } from "../../../hooks/user";
 export const ShareProjectModal: React.FC = () => {
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getShareProjectModalData);
-  const { userId } = useUser();
-  const [link, setLink] = useState("https://logitech.com");
+  const { user } = useUser();
+  const [link, setLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       setIsCopied(false);
     } else {
-      setLink(`${getParentURL()}/room?userId=${userId}`);
+      setLink(`${getParentURL()}/room?userId=${user.id}`);
     }
-  }, [isOpen, userId]);
+  }, [isOpen, user.id]);
 
   const handleClose = () => {
     dispatch(setShareProjectModal({ isOpen: false }));

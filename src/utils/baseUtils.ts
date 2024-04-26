@@ -1,6 +1,6 @@
 export const getSeparatorItemColor = () => {
-	return " - ";
-}
+  return " - ";
+};
 
 export enum StepName {
   Platform = "Platform",
@@ -14,6 +14,6 @@ export enum StepName {
 }
 
 export enum DirectionStep {
-	Next = "next",
-	Prev = "prev",
+  Next = "next",
+  Prev = "prev",
 }

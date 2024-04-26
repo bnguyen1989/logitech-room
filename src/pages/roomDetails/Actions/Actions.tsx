@@ -6,6 +6,8 @@ import { Button } from "../../../components/Buttons/Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { Application } from "../../../models/Application";
 import { useUrl } from "../../../hooks/url";
+import { useUser } from "../../../hooks/user";
+import { PermissionUser } from "../../../utils/userRoleUtils";
 
 declare const app: Application;
 
@@ -13,6 +15,7 @@ export const Actions: React.FC = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const { handleNavigate } = useUrl("/room");
+  const { user } = useUser();
 
   const handlerDownload = () => {
     if (!roomId) return;
@@ -22,6 +25,10 @@ export const Actions: React.FC = () => {
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
   };
+
+  const userCanReqConsultation = user.role.can(
+    PermissionUser.REQUEST_CONSULTATION
+  );
 
   return (
     <div className={s.container}>
@@ -35,14 +42,16 @@ export const Actions: React.FC = () => {
       >
         <DownloadSVG />
       </IconButton>
-      <Button
-        onClick={handleRequestConsultation}
-        text={"Request Consultation"}
-        variant={"contained"}
-        style={{
-          padding: "19px 40px",
-        }}
-      />
+      {userCanReqConsultation && (
+        <Button
+          onClick={handleRequestConsultation}
+          text={"Request Consultation"}
+          variant={"contained"}
+          style={{
+            padding: "19px 40px",
+          }}
+        />
+      )}
     </div>
   );
 };
