@@ -1,18 +1,21 @@
 .container {
-	.image {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .image {
     display: flex;
     justify-content: center;
-    align-items: center;
-    
+    height: 100%;
+    width: 100%;
+
     & img {
-      width: 160px;
-			height: 120px;
+      max-width: 160px;
+      max-height: 120px;
     }
   }
 
   .text {
-    padding-top: 95px;
-
     .subtitle {
       color: var(--main-color-text);
       text-align: center;

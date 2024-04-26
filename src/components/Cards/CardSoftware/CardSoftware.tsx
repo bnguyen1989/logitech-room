@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./CardSoftware.module.scss";
 import { CardContainer } from "../CardContainer/CardContainer";
 import { SelectItem } from "../../Fields/SelectItem/SelectItem";
@@ -15,9 +15,10 @@ import {
 
 interface PropsI {
   keyItemPermission: string;
+  autoActive?: boolean;
 }
 export const CardSoftware: React.FC<PropsI> = (props) => {
-  const { keyItemPermission } = props;
+  const { keyItemPermission, autoActive } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -43,6 +44,11 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
       card.keyPermission
     );
   };
+
+  useEffect(() => {
+    if (isActiveCard) return;
+    if (autoActive) handleClick();
+  }, [autoActive]);
 
   if (!card) return null;
 

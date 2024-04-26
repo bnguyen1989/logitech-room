@@ -9,12 +9,15 @@ import { SectionI } from "./type";
 import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
 import { StepName } from "../../utils/baseUtils";
+import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
+import ImgBanner from "../../assets/images/pages/details/room_detail_banner.png";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [totalAmount, setTotalAmount] = useState<string>("");
+  const [isLoaded, setIsLoaded] = useState(true);
 
   const getTitleSectionOrderByStepName = (stepName: StepName) => {
     switch (stepName) {
@@ -33,6 +36,25 @@ export const RoomDetails: React.FC = () => {
     }
   };
 
+  const getFormatPrice =
+    (locale: string, currency: string) => (price: number) => {
+      const formattedCurrency = currency.toUpperCase();
+      const localeParts = locale.split("-");
+
+      if (localeParts.length !== 2) {
+        return price.toString();
+      }
+
+      const formattedLocale = `${
+        localeParts[0]
+      }-${localeParts[1].toUpperCase()}`;
+
+      return price.toLocaleString(formattedLocale, {
+        style: "currency",
+        currency: formattedCurrency,
+      });
+    };
+
   useEffect(() => {
     setIsLoaded(true);
     new ThreekitService()
@@ -41,9 +63,25 @@ export const RoomDetails: React.FC = () => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
+        const locale = room.metadata["locale"] as any;
+
+        const formatPrice = getFormatPrice(
+          locale.currencyLocale,
+          locale.currency
+        );
+        let total = 0;
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
-          const { data, color, price, count, title } = item.metadata;
+          const {
+            data,
+            color,
+            price,
+            count,
+            title,
+            sku,
+            description,
+            selectValue,
+          } = item.metadata;
           const card = JSON.parse(data) as CardI;
 
           const sectionId = dataSections.findIndex(
@@ -56,21 +94,25 @@ export const RoomDetails: React.FC = () => {
             data: [
               {
                 title: title,
-                subtitle: card.description || card.subtitle || "",
-                image: card.image,
+                subtitle: card.description || description || "",
+                image: card.image ?? "",
+                selectValue: selectValue,
               },
             ],
           };
 
           if (card.key !== StepName.SoftwareServices) {
-            const amount = `$ ${parseFloat(price) * parseInt(count)}`;
+            const amountInt = parseFloat(price) * parseInt(count);
+            total += amountInt;
+            const amount = formatPrice(amountInt);
+            const partNumber = `${color}${color ? " : " : ""}${sku}`;
             itemSection = {
               ...itemSection,
               data: [
                 {
                   ...itemSection.data[0],
-                  partNumber: `${color} : 960-000000`,
-                  count: parseInt(count),
+                  partNumber,
+                  count: count,
                   amount,
                 },
               ],
@@ -85,18 +127,22 @@ export const RoomDetails: React.FC = () => {
         });
 
         setSections(dataSections);
+        setTotalAmount(formatPrice(total));
       })
       .finally(() => {
         setIsLoaded(false);
       });
   }, [roomId]);
 
+  const images: string[] = [ImgBanner, ImgBanner, ImgBanner];
+
   return (
-    <div className={s.container}>
+    <div className={isLoaded ? s.container_load : s.container}>
+      <ImageGallery images={images} />
       <div className={s.wrapper}>
         <Header title={nameRoom} />
         <Content sections={sections} />
-        <Footer />
+        <Footer totalAmount={totalAmount} />
       </div>
       {isLoaded && (
         <div className={s.loader}>

@@ -25,7 +25,9 @@ export const LoaderSection: React.FC = () => {
     return (
       <div className={s.loader}>
         <div className={s.container}>
-          <Loader text="Building Your Room" />
+          <div className={s.load}>
+            <Loader text="Building Your Room" />
+          </div>
 
           <div className={s.selected_cards}>
             <div className={s.text}>

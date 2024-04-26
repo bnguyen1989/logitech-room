@@ -47,6 +47,7 @@ export interface ValueAssetStateI extends AssetI {
 }
 
 export enum AttributeName {
+  RoomLocale = "Room Locale",
   RoomService = "Room Service",
   RoomDeployment = "Room Deployment Mode",
   RoomCamera = "Room Camera",
@@ -76,4 +77,5 @@ export enum AttributeName {
   RoomUSBAtoHDMICable = "Room USB-A to HDMI Cable",
   RoomDeviceManagementSoftware = "Room Device Management Software",
   RoomSupportService = "Room Support Service",
+  RoomMeetUp2ActiveCable = "Room MeetUp 2 Active Cable",
 }

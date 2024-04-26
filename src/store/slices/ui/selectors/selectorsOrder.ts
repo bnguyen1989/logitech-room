@@ -1,6 +1,6 @@
 import { RootState } from "../../..";
 import { StepName } from "../../../../utils/baseUtils";
-import { ConfigData } from "../../../../utils/threekitUtils";
+import { getAssetId, getNodes } from "../../configurator/selectors/selectors";
 import { CardI } from "../type";
 import {
   getDescriptionRoomBySize,
@@ -13,6 +13,7 @@ import {
 } from "./selectoreLangProduct";
 import {
   getAssetFromCard,
+  getLocale,
   getMetadataProductNameAssetFromCard,
   getPriceFromMetadataByKeyPermission,
   getSelectedConfiguratorCards,
@@ -21,6 +22,7 @@ import {
   getSkuFromMetadataByCard,
   getTitleCardByKeyPermission,
 } from "./selectors";
+import lang from "../../../../dataLang/languages.json";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -31,7 +33,7 @@ export const getPropertyColorCardByKeyPermissionForOrder =
     return "";
   };
 
-export const getOrderData = (state: RootState) => {
+export const getOrderData = (userId: string) => (state: RootState) => {
   const selectedCards = getSelectedConfiguratorCards(state);
   const cardData = selectedCards.map((card) => {
     const copyCard = JSON.parse(JSON.stringify(card)) as CardI;
@@ -51,6 +53,8 @@ export const getOrderData = (state: RootState) => {
     const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
     const langProduct = getLangProductBlade1(productName)(state);
     const sku = getSkuFromMetadataByCard(copyCard)(state);
+
+    const selectValue = getSelectValueBySelectData(selectData, copyCard);
 
     const langProductImage = getLangProductImage(
       productName,
@@ -74,6 +78,7 @@ export const getOrderData = (state: RootState) => {
         color: colorCard,
         count: selectData?.property?.count ?? 1,
         price: price,
+        selectValue: selectValue,
       },
       configurationId: cardAsset?.id ?? "",
       count: 1,
@@ -82,9 +87,20 @@ export const getOrderData = (state: RootState) => {
   const nameOrder = getNameOrder(state);
 
   const description = getDescriptionRoom(state);
+
+  const assetId = getAssetId(state);
+  const nodes = getNodes(state);
+  const configuration = JSON.stringify(
+    app.currentConfigurator.getConfiguration()
+  );
+
+  const currentLocale = getLocale(state);
+  const localeObj = lang.find(
+    (item: any) => item.languageCode === currentLocale
+  );
   return {
-    customerId: ConfigData.userId,
-    originOrgId: ConfigData.userId,
+    customerId: userId,
+    originOrgId: userId,
     platform: {
       id: "1",
       platform: "1",
@@ -92,12 +108,29 @@ export const getOrderData = (state: RootState) => {
     },
     cart: cardData,
     metadata: {
-      assetId: app.currentConfigurator.assetId,
-      configuration: JSON.stringify(app.currentConfigurator.getConfiguration()),
+      name: nameOrder,
       description: description,
-      name: `${nameOrder} New Test`,
+      configurator: {
+        assetId,
+        nodes,
+        configuration,
+      },
+      locale: {
+        currency: localeObj?.currencyCode ?? "USD",
+        currencyLocale: localeObj?.languageCode ?? "en-US",
+      },
     },
+    status: "List",
   };
+};
+
+const getSelectValueBySelectData = (data: any, card: CardI) => {
+  const select = card.select;
+  if (!select) return;
+  const value = data?.property.select;
+  if (!value) return;
+  const selectValue = select.data.find((item) => item.value === value);
+  return selectValue?.label;
 };
 
 const getNameOrder = (state: RootState) => {

@@ -33,9 +33,38 @@ export const getNavigationStepData = (state: RootState) => {
     (step) => step.key === activeStep
   );
 
+  let prevStep;
+  let nextStep;
+
+  if (currentStepIndex !== -1) {
+    const permission = getPermission(activeStep)(state);
+    let prevStepIndex = currentStepIndex - 1;
+    let nextStepIndex = currentStepIndex + 1;
+
+    while (prevStepIndex >= 0) {
+      const step = listStepData[prevStepIndex];
+      const permissionStep = permission.getStepByName(step.key);
+      if (permissionStep.getAvailable()) {
+        prevStep = step;
+        break;
+      }
+      prevStepIndex--;
+    }
+
+    while (nextStepIndex < listStepData.length) {
+      const step = listStepData[nextStepIndex];
+      const permissionStep = permission.getStepByName(step.key);
+      if (permissionStep.getAvailable()) {
+        nextStep = step;
+        break;
+      }
+      nextStepIndex++;
+    }
+  }
+
   return {
-    prevStep: listStepData[currentStepIndex - 1],
-    nextStep: listStepData[currentStepIndex + 1],
+    prevStep,
+    nextStep,
   };
 };
 
@@ -182,7 +211,7 @@ export const getSkuFromMetadataByCard = (card: CardI) => (state: RootState) => {
   const metadata = getMetadataAssetFromCard(card)(state);
   if (!metadata) return "";
 
-  return metadata["SKU"]?.trim();
+  return metadata["SKU"]?.trim() ?? "";
 };
 
 export const getSubTitleCardByKeyPermission =
@@ -203,10 +232,14 @@ export const getTitleCardByKeyPermission =
     return getTitleFromDataByKeyPermission(keyPermission);
   };
 
+export const getLocale = (state: RootState) => state.ui.locale;
+
 export const getPriceFromMetadataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const locale = getLocale(state);
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
-    return metadata?.Price || "0.000";
+    const keyPrice = `Price_${locale}`;
+    return metadata?.[keyPrice] || "0.000";
   };
 
 export const getStepNameByKeyPermission =
@@ -240,6 +273,15 @@ export const getIsCanChangeStep = (state: RootState) => {
   const permission = getPermission()(state);
   return permission.canNextStep();
 };
+
+export const getSecondaryCardsFromStep =
+  (stepData: StepI) => (state: RootState) => {
+    const cards = Object.values(stepData.cards);
+    const permission = getPermission(stepData.key)(state);
+    return cards.filter((card) => {
+      return permission.isSecondaryElementByName(card.keyPermission);
+    });
+  };
 
 export const getPermission = (stepName?: StepName) => (state: RootState) => {
   const currentStep = stepName ?? getActiveStep(state);
@@ -280,27 +322,31 @@ export const getFormattingSubtitleByState =
       (card: { key: string }) => card.key === StepName.Services
     );
 
-    if (!roomSizeCard || !platformCard || !serviceCard) return text;
+    if (roomSizeCard) {
+      const roomSizeTile = getTitleCardByKeyPermission(
+        StepName.RoomSize,
+        roomSizeCard.keyPermission
+      )(state);
+      text = text.replace("{0}", getName(roomSizeTile));
+    }
 
-    const roomSizeTile = getTitleCardByKeyPermission(
-      StepName.RoomSize,
-      roomSizeCard.keyPermission
-    )(state);
+    if (platformCard) {
+      const platformTile = getTitleCardByKeyPermission(
+        StepName.Platform,
+        platformCard.keyPermission
+      )(state);
+      text = text.replace("{1}", getName(platformTile));
+    }
 
-    const platformTile = getTitleCardByKeyPermission(
-      StepName.Platform,
-      platformCard.keyPermission
-    )(state);
+    if (serviceCard) {
+      const serviceTile = getTitleCardByKeyPermission(
+        StepName.Services,
+        serviceCard.keyPermission
+      )(state);
+      text = text.replace("{2}", getName(serviceTile));
+    }
 
-    const serviceTile = getTitleCardByKeyPermission(
-      StepName.Services,
-      serviceCard.keyPermission
-    )(state);
-
-    return text
-      .replace("{0}", getName(roomSizeTile))
-      .replace("{1}", getName(platformTile))
-      .replace("{2}", getName(serviceTile));
+    return text;
   };
 
 export const getDisabledActionByKeyPermission =

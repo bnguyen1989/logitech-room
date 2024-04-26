@@ -1,7 +1,7 @@
 .container {
-	display: flex;
-	align-items: center;
-	gap: 70px;
+  display: flex;
+  align-items: center;
+  gap: 70px;
 
   .left_content {
     .image {
@@ -17,11 +17,14 @@
   }
 
   .right_content {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
 
     .text {
+      flex: 2;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -38,52 +41,77 @@
         color: #000;
         font-size: 18px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: 300;
         line-height: 24px;
       }
     }
 
     .part_number {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
       color: #000;
-      font-size: 16px;
       font-style: normal;
-      line-height: 22px;
 
       .part_number_text {
+        font-size: 16px;
+        line-height: 22px;
         font-weight: 300;
       }
       .part_number_value {
-        font-weight: 700;
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: 400;
       }
     }
 
     .count {
+      flex: 0.5;
+      display: flex;
+      justify-content: center;
       color: #000;
-      font-size: 26px;
+      font-size: 30px;
       font-style: normal;
       font-weight: 300;
-      line-height: 24px;
+      line-height: 32px;
     }
 
     .amount {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-end;
-			color: #000;
-			font-size: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      color: #000;
+			font-style: normal;
 			font-style: normal;
 			line-height: 22px;
-			text-transform: uppercase;
+      font-style: normal;
+			line-height: 22px;
+      text-transform: uppercase;
 
       .amount_value {
-				font-size: 26px;
+        font-size: 30px;
+        line-height: 32px;
         font-weight: 300;
       }
 
       .amount_text {
-				font-size: 16px;
-        font-weight: 700;
+        font-size: 16px;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 400;
       }
+    }
+
+    .value {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      color: var(--main-color-text);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 22px;
     }
   }
 }

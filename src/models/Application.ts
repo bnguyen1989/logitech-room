@@ -38,7 +38,7 @@ export class Application {
 
   public downloadRoomCSV(shortId: string): Promise<boolean> {
     return new Promise((resolve) => {
-      return new RoomService().generateRoomCSV(shortId).then((res: any) => {
+      return new RoomService().generateRoomCSV({ shortId }).then((res: any) => {
         if (!res) {
           return resolve(false);
         }
@@ -46,6 +46,21 @@ export class Application {
         logger.log("Download Room CSV", { shortId });
         return resolve(true);
       });
+    });
+  }
+
+  public downloadRoomsCSV(originOrgId: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      return new RoomService()
+        .generateRoomCSV({ originOrgId })
+        .then((res: any) => {
+          if (!res) {
+            return resolve(false);
+          }
+          fileDownload(res, `order-rooms.csv`);
+          logger.log("Download Rooms CSV", { originOrgId });
+          return resolve(true);
+        });
     });
   }
 

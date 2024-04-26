@@ -1,11 +1,68 @@
 .container {
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  .header {
+    position: relative;
+    .banner {
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .header_content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      
+      .header_text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        color: #FFFFFF;
+        text-align: center;
+
+        .header_title {
+          font-size: 22px;
+          line-height: 20px;
+          font-weight: 700;
+
+        }
+        .header_subtitle {
+          font-size: 40px;
+          line-height: 40px;
+          font-weight: 700;
+
+        }
+        .desc {
+          max-width: 800px;
+          font-size: 18px;
+          line-height: 24px;
+          font-weight: 300;
+
+        }
+      }
+
+      .header_action {
+        display: flex;
+        gap: 20px;
+        padding-top: 30px;
+        justify-content: center;
+
+      }
+    }
+  }
 
   .text {
+    padding-top: 30px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
     .title {
       color: #000;
@@ -17,6 +74,7 @@
       letter-spacing: -0.36px;
     }
     .subtitle {
+      max-width: 1000px;
       color: var(--main-text-color);
       text-align: center;
       font-size: 16px;
@@ -26,10 +84,9 @@
     }
   }
 
-	.buttons {
-		display: flex;
-		justify-content: center;
-		gap: 40px;
-
-	}
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
 }

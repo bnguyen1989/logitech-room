@@ -84,7 +84,13 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
     const isSoftwareServicesCard = card.key === StepName.SoftwareServices;
     if (!isSoftwareServicesCard) return null;
     if (keysNotVisibleCards.includes(card.keyPermission)) return null;
-    return <CardSoftware key={index} keyItemPermission={card.keyPermission} />;
+    return (
+      <CardSoftware
+        key={index}
+        keyItemPermission={card.keyPermission}
+        autoActive={!!keysNotVisibleCards.length}
+      />
+    );
   };
   return (
     <div className={s.container}>

@@ -1,10 +1,11 @@
 import { ItemElement } from "../../elements/ItemElement";
 import { CountableMountElement } from "../../elements/mounts/CountableMountElement";
+import { MountElement } from "../../elements/mounts/MountElement";
 import { Step } from "../../step/Step";
 import { PropertyDependentElement } from "../../type";
 import { Handler } from "../Handler";
 
-export class PropertyElementHandler extends Handler {
+export class PropertyHandler extends Handler {
   public static setValuePropertyElement(
     step: Step,
     getDependentElement: (element: ItemElement) => PropertyDependentElement,
@@ -13,10 +14,48 @@ export class PropertyElementHandler extends Handler {
     const activeElements = step.getChainActiveElements().flat();
     const allValidElements = step.getChainElements().flat();
 
-    const validElements = step.getValidElements();
-    validElements.forEach((element) => {
-      if (!(element instanceof ItemElement)) return;
-      const data = getDependentElement(element);
+    const validItemElements: ItemElement[] = step
+      .getValidElements()
+      .filter((el): el is ItemElement => el instanceof ItemElement);
+    PropertyHandler.dependencyPropertyLogicItems<ItemElement>(
+      validItemElements,
+      activeElements,
+      allValidElements,
+      getDependentElement,
+      callback
+    );
+
+    return true;
+  }
+  public static setValuePropertyStep(
+    step: Step,
+    getDependentElement: (step: Step) => PropertyDependentElement,
+    callback: (step: Step, value: boolean) => void
+  ) {
+    const steps = step.getChainSteps();
+    const lastStep = steps[steps.length - 1];
+    const activeElements = lastStep.getChainActiveElements().flat();
+    const allValidElements = lastStep.getChainElements().flat();
+
+    PropertyHandler.dependencyPropertyLogicItems<Step>(
+      steps,
+      activeElements,
+      allValidElements,
+      getDependentElement,
+      callback
+    );
+    return true;
+  }
+
+  private static dependencyPropertyLogicItems<T>(
+    items: T[],
+    activeElements: (ItemElement | MountElement)[],
+    allValidElements: (ItemElement | MountElement)[],
+    getDependentItem: (item: T) => PropertyDependentElement,
+    callback: (item: T, value: boolean) => void
+  ) {
+    items.forEach((element) => {
+      const data = getDependentItem(element);
       if (!Object.keys(data).length) return;
       const arrayRes = Object.entries(data).map(([key, value]) => {
         const isActive = value["active"];
@@ -58,9 +97,8 @@ export class PropertyElementHandler extends Handler {
       const value = arrayRes.every((res) => res);
       callback(element, value);
     });
-
-    return true;
   }
+
   public handle(step: Step): boolean {
     if (!step) return false;
     return true;

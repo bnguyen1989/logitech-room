@@ -4,6 +4,7 @@ import { getInitStepData } from "./utils";
 import { StepName } from "../../../utils/baseUtils";
 
 interface UIStateI {
+  locale: string;
   processInitData: boolean;
   stepData: StepDataI;
   activeStep: StepName;
@@ -12,6 +13,7 @@ interface UIStateI {
 }
 
 const initialState: UIStateI = {
+  locale: "en-us",
   processInitData: false,
   langTextProduct: {},
   stepData: getInitStepData(),
@@ -185,7 +187,7 @@ const uiSlice = createSlice({
         ignoreSteps?: StepName[];
       }>
     ) => {
-      const { ignoreSteps=[] } = action.payload;
+      const { ignoreSteps = [] } = action.payload;
       const selectedData = state.selectedData;
       Object.keys(selectedData).forEach((step) => {
         if (ignoreSteps.includes(step as StepName)) return;

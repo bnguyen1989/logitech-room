@@ -3,10 +3,20 @@ import s from "./GetStarted.module.scss";
 import BannerImage from "../../assets/images/getStarted/banner.png";
 import { Button } from "../../components/Buttons/Button/Button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { changeRoleUser } from "../../store/slices/user/User.slice";
+import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
 
 export const GetStarted: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleClick = () => {
+
+  const handleCustomerClick = () => {
+    dispatch(changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER) }));
+    navigate("/configurator", { replace: true });
+  };
+  const handlePartnerClick = () => {
+    dispatch(changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER) }));
     navigate("/configurator", { replace: true });
   };
 
@@ -51,12 +61,12 @@ export const GetStarted: React.FC = () => {
             <Button
               text="I’m a customer"
               variant="contained"
-              onClick={handleClick}
+              onClick={handleCustomerClick}
             />
             <Button
               text="I’m a partner"
               variant="outlined"
-              onClick={handleClick}
+              onClick={handlePartnerClick}
             />
           </div>
         </div>

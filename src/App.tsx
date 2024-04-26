@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setLangText } from "./store/slices/ui/Ui.slice";
 import dataLang from "./dataLang/products/en-us.json";
 import type { ProductsObj } from "./types/textTypeProduct";
+import { RequestConsultation } from "./pages/requestConsultation/RequestConsultation";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
         <Route path="/configurator" element={<Configurator />} />
         <Route path="/room" element={<Room />} />
         <Route path="/room/:roomId" element={<RoomDetails />} />
+        <Route path="/request-consultation" element={<RequestConsultation />} />
         <Route path="*" element={<GetStarted />} />
       </Routes>
 

@@ -11,30 +11,8 @@
 		height: calc(100% - 180px);
  
 		z-index: 1;
- 
 		position: relative;
 	}
-
-	.loader {
-		height: 100%;
-		position: absolute;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 100;
-		background-color: #F4F4F4;
-	}
-
-	.actions {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 24px;
-		height: 180px;
-		z-index: 1;
-	}
-
 }
 
 @media (max-height: 1000px) {

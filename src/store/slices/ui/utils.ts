@@ -5,6 +5,7 @@ import LogoZoom from "../../../assets/images/platform/zoom.jpg";
 import DeviceMS from "../../../assets/images/platform/microsoft_device.jpg";
 import DeviceGoogle from "../../../assets/images/platform/google_device.jpg";
 import DeviceZoom from "../../../assets/images/platform/zoom_device.jpg";
+import DeviceBYOD from "../../../assets/images/platform/byod_device.jpg";
 import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.png";
 import ImageHundle from "../../../assets/images/rooms/huddle.png";
 import ImageSmall from "../../../assets/images/rooms/small.png";
@@ -58,7 +59,7 @@ export const getInitStepData = (): StepDataI => {
       name: "Deployment Type",
       title:
         "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
-      subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      subtitle: "",
       cards: {},
     },
     [StepName.ConferenceCamera]: {
@@ -109,22 +110,26 @@ export function getPlatformCardData(): Record<string, TypeDataCardI> {
       key: StepName.Platform,
       logo: LogoGoogle,
       image: DeviceGoogle,
-      // title: "Google Meet",
       keyPermission: PlatformName.GoogleMeet,
     },
     [PlatformName.MicrosoftTeams]: {
       key: StepName.Platform,
       logo: LogoMS,
       image: DeviceMS,
-      // title: "Microsoft Teams",
       keyPermission: PlatformName.MicrosoftTeams,
     },
     [PlatformName.Zoom]: {
       key: StepName.Platform,
       logo: LogoZoom,
       image: DeviceZoom,
-      // title: "Zoom",
       keyPermission: PlatformName.Zoom,
+    },
+    [PlatformName.BYOD]: {
+      key: StepName.Platform,
+      image: DeviceBYOD,
+      subtitle:
+        "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
+      keyPermission: PlatformName.BYOD,
     },
   };
 }
@@ -275,6 +280,8 @@ export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
       return "Microsoft Teams";
     case PlatformName.Zoom:
       return "Zoom";
+    case PlatformName.BYOD:
+      return "Choose a Bring-Your-Own-Device setup";
     case ServiceName.Android:
       return "Appliance-Based";
     case ServiceName.PC:
@@ -386,11 +393,37 @@ export const getColorsData = () => {
   return [
     {
       name: "Graphite",
-      value: "#434446",
+      value:
+        "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-graphite.svg",
     },
     {
       name: "White",
-      value: "#FBFBFB",
+      value:
+        "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-offwhite.svg",
+    },
+    {
+      name: "TAA",
+      value:
+        "https://resource.logitech.com/w_60,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-taa.png?v=1",
     },
   ];
+};
+
+export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
+  switch (stepName) {
+    case StepName.Services:
+      return [ServiceName.Android, ServiceName.PC];
+    case StepName.SoftwareServices:
+      return [
+        SoftwareServicesName.LogitechSync,
+        SoftwareServicesName.SupportService,
+        SoftwareServicesName.ExtendedWarranty,
+      ];
+    default:
+      return [];
+  }
+};
+
+export const getDisclaimerCSV = () => {
+  return "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.";
 };

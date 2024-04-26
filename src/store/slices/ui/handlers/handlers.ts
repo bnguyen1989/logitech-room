@@ -12,10 +12,6 @@ import {
   SelectDataI,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
-import MicImg from "../../../../assets/images/items/mic.jpg";
-import CameraImg from "../../../../assets/images/items/camera.jpg";
-import ControllerImg from "../../../../assets/images/items/controller.jpg";
-import AccessImg from "../../../../assets/images/items/access.jpg";
 import {
   addActiveCard,
   addActiveCards,
@@ -33,7 +29,6 @@ import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import {
-  SoftwareServicesName,
   getPermissionNameByItemName,
   isSupportService,
 } from "../../../../utils/permissionUtils";
@@ -43,6 +38,7 @@ import {
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
+  getSortedKeyPermissionsByStep,
 } from "../utils";
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
@@ -263,8 +259,7 @@ function setStepData(
     | StepName.MeetingController
     | StepName.VideoAccessories
     | StepName.SoftwareServices,
-  itemNameList: Array<Array<string>>,
-  image: string
+  itemNameList: Array<Array<string>>
 ) {
   const stepCardData: Array<CardI> = [];
 
@@ -283,7 +278,6 @@ function setStepData(
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       temp.push({
         key: stepName,
-        image: image,
         keyPermission: keyPermission,
         dataThreekit: {
           attributeName: name,
@@ -348,10 +342,10 @@ function setStepData(
 
     const colorsName = getColorsData().map((item) => item.name);
     const nameItems = Object.keys(threekitItems);
-    const includeColors = colorsName.every((item) =>
+    const includeColors = colorsName.filter((item) =>
       nameItems.some((name) => name.includes(item))
     );
-    const isSetColors = includeColors && !color;
+    const isSetColors = includeColors.length > 1 && !color;
     if (isSetColors) {
       store.dispatch(
         setPropertyItem({
@@ -381,8 +375,7 @@ function setAudioExtensionsData(configurator: Configurator) {
       configurator,
       store,
       StepName.AudioExtensions,
-      Configurator.AudioExtensionName,
-      MicImg
+      Configurator.AudioExtensionName
     );
   };
 }
@@ -393,8 +386,7 @@ function setCameraData(configurator: Configurator) {
       configurator,
       store,
       StepName.ConferenceCamera,
-      Configurator.CameraName,
-      CameraImg
+      Configurator.CameraName
     );
   };
 }
@@ -405,8 +397,7 @@ function setMeetingControllerData(configurator: Configurator) {
       configurator,
       store,
       StepName.MeetingController,
-      Configurator.MeetingControllerName,
-      ControllerImg
+      Configurator.MeetingControllerName
     );
   };
 }
@@ -417,8 +408,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
       configurator,
       store,
       StepName.VideoAccessories,
-      Configurator.VideoAccessoriesName,
-      AccessImg
+      Configurator.VideoAccessoriesName
     );
   };
 }
@@ -468,7 +458,10 @@ function setStepDataPrepareCard(
     );
   });
 
-  setDataCard(cardData, stepName)(store);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedCards = sortedCardsByArrTemplate(cardData, sortedKeyPermissions);
+
+  setDataCard(sortedCards, stepName)(store);
 }
 
 function setPlatformData(configurator: Configurator) {
@@ -589,21 +582,15 @@ function setSoftwareServicesData(configurator: Configurator) {
       );
     });
 
-    const sortedTemplateArr = [
-      SoftwareServicesName.LogitechSync,
-      SoftwareServicesName.SupportService,
-      SoftwareServicesName.ExtendedWarranty,
-    ];
-    const sortedArr = sortedTemplateArr
-      .map((item) => {
-        const card = softwareServicesCardData.find(
-          (card) => card.keyPermission === item
-        );
-        return card;
-      })
-      .filter(Boolean) as Array<CardI>;
+    const sortedKeyPermissions = getSortedKeyPermissionsByStep(
+      StepName.SoftwareServices
+    );
+    const sortedCards = sortedCardsByArrTemplate(
+      softwareServicesCardData,
+      sortedKeyPermissions
+    );
 
-    setDataCard(sortedArr, StepName.SoftwareServices)(store);
+    setDataCard(sortedCards, StepName.SoftwareServices)(store);
   };
 }
 
@@ -640,4 +627,17 @@ function setDataCard(cards: Array<CardI>, stepName: StepName) {
       })
     );
   };
+}
+
+function sortedCardsByArrTemplate(
+  cards: Array<CardI>,
+  templateArr: Array<string>
+) {
+  if (templateArr.length === 0) return cards;
+  return templateArr
+    .map((item) => {
+      const card = cards.find((card) => card.keyPermission === item);
+      return card;
+    })
+    .filter(Boolean) as Array<CardI>;
 }

@@ -1,11 +1,5 @@
-import {
-  ContactShadows,
-  Environment,
-  Resize, 
-} from "@react-three/drei";
+import { ContactShadows, Environment } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { Align } from "@threekit/react-three-fiber";
-import { Frame } from "@threekit/react-three-fiber/dist/alpha.js";
 import CameraControls from "camera-controls";
 import type React from "react";
 import { type ReactNode, useState, MutableRefObject } from "react";
@@ -38,7 +32,7 @@ const controls = {
   },
 };
 
-export type Geoff2StageProps = {
+export type LogitechStageProps = {
   cameraControlsRef?: MutableRefObject<CameraControls | null>;
   altitude?: number;
   azimuth?: number;
@@ -46,10 +40,7 @@ export type Geoff2StageProps = {
   children?: ReactNode;
 };
 
-const Geoff2Stage: React.FC<Geoff2StageProps> = ({
-  cameraControlsRef,
-  children,
-}) => {
+const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
   const [radius] = useState<number>(2.0);
 
   const { gl } = useThree();
@@ -59,7 +50,7 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
   const shadowBias = -0.002;
   return (
     <>
-      <Environment files={`/assets/ibl/Andrei_Beds_Env.hdr`} blur={0} />
+      <Environment files={`/assets/ibl/env.hdr`} blur={0} />
       {/* <SoftShadows
         size={controls.shadows.keySize}
         focus={controls.shadows.keyFocus}
@@ -87,15 +78,7 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
         </directionalLight>
       </group>
       <group rotation={[0, (Math.PI / 180) * controls.productRotation, 0]}>
-        <Frame
-          fitMode="sphere"
-          cameraControlsRef={cameraControlsRef}
-          fitPaddingRatio={1}
-        >
-          <Align mode="min" axis={1} limit={0}>
-            <Resize>{children}</Resize>
-          </Align>
-        </Frame>
+        {children}
       </group>
       <ContactShadows
         resolution={1024}
@@ -117,4 +100,4 @@ const Geoff2Stage: React.FC<Geoff2StageProps> = ({
   );
 };
 
-export default Geoff2Stage;
+export default LogitechStage;

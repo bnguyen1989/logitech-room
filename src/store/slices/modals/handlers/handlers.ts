@@ -8,13 +8,14 @@ export const getModalsHandlers = (store: Store) => {
   app.eventEmitter.on("showModal", (data: Modal) => {
     const state = store.getState();
     if (data instanceof SelectProductModal) {
-      const isShowProductModal = getIsShowProductModal(state);
+      const attributeName = data.attributeName;
+      const isShowProductModal = getIsShowProductModal(attributeName)(state);
       if (isShowProductModal) {
         store.dispatch(
           setSelectProductModal({
             isOpen: true,
             dataModal: {
-              attributeName: data.attributeName,
+              attributeName: attributeName,
               editHandlerName: "SelectProductModal/edit",
               closeHandlerName: "SelectProductModal/close",
             },

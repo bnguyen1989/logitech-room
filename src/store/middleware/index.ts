@@ -10,6 +10,7 @@ import {
   changeCountElement,
   deleteNodesByCards,
   removeElement,
+  updateHighlightNodes,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
 import {
@@ -28,6 +29,7 @@ import {
 import { CUSTOM_UI_ACTION_NAME, UI_ACTION_NAME } from "../slices/ui/utils";
 import { getAutoChangeDataByKeyPermission } from "../slices/ui/selectors/selectorsPermission";
 import { StepName } from "../../utils/baseUtils";
+import { CONFIGURATOR_ACTION_NAME } from "../slices/configurator/utils";
 
 declare const app: Application;
 
@@ -231,6 +233,12 @@ export const middleware: Middleware =
           const cards = Object.values(getCardsByStep(stepName)(state));
           deleteNodesByCards(cards)(store);
         });
+        break;
+      }
+      case CONFIGURATOR_ACTION_NAME.CHANGE_VALUE_NODES: {
+        const updatedNodes = action.payload;
+
+        updateHighlightNodes(updatedNodes)(store);
         break;
       }
       default:
