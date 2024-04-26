@@ -26,9 +26,11 @@ import {
 
 interface PropsI {
   keyItemPermission: string;
+  children?: React.ReactNode;
+  type?: "subSection";
 }
 export const CardItem: React.FC<PropsI> = (props) => {
-  const { keyItemPermission } = props;
+  const { keyItemPermission, children, type } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -69,7 +71,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
         isOpen: true,
         product: productName,
         keyPermission: keyItemPermission,
-        card: card
+        card: card,
       })
     );
   };
@@ -91,55 +93,69 @@ export const CardItem: React.FC<PropsI> = (props) => {
   // const isAction = card.counter || card.color || card.select;
   const isAction = card.counter || card.select;
 
+  const getStyleForSubSection = () => {
+    if (type !== "subSection") return {};
+
+    return {
+      border: isActiveCard
+        ? "2px solid var(--main-color-block)"
+        : "2px solid #F4F4F4",
+    };
+  };
+
   return (
     <CardContainer
       onClick={handleClick}
       recommended={recommended}
-      style={{ padding: "25px 20px" }}
+      style={{ padding: "25px 20px", ...getStyleForSubSection() }}
       active={isActiveCard}
     >
       <div className={s.container}>
-        <div className={s.left_content} onClick={handleClick}>
-          <div className={s.image}>
-            <img src={langProductImage} alt="item" />
+        <div className={s.wrapper}>
+          <div className={s.left_content} onClick={handleClick}>
+            <div className={s.image}>
+              <img src={langProductImage} alt="item" />
+            </div>
           </div>
-        </div>
-        <div className={s.right_content}>
-          <div className={s.header} onClick={handleClick}>
-            <div className={s.header_title}>{title}</div>
-            {langProduct && !!langProduct.ShortDescription && (
-              <div className={s.title}>{langProduct.ShortDescription}</div>
-            )}
-            <div className={s.subtitle}>{subTitle}</div>
-          </div>
-          <div
-            className={s.content}
-            style={{ borderTop: isAction ? "1px solid #E1E2E3" : "" }}
-          >
+          <div className={s.right_content}>
+            <div className={s.header} onClick={handleClick}>
+              <div className={s.header_title}>{title}</div>
+              {langProduct && !!langProduct.ShortDescription && (
+                <div className={s.title}>{langProduct.ShortDescription}</div>
+              )}
+              <div className={s.subtitle}>{subTitle}</div>
+            </div>
             <div
-              className={s.content_actions}
-              style={{ paddingTop: isAction ? "20px" : "" }}
+              className={s.content}
+              style={{ borderTop: isAction ? "1px solid #E1E2E3" : "" }}
             >
-              <ColorSwitcherItem
-                keyItemPermission={card.keyPermission}
-                disabled={disabledActions.color}
-              />
-              <CounterItem
-                keyItemPermission={card.keyPermission}
-                disabled={disabledActions.counter}
-              />
-              <SelectItem
-                keyItemPermission={card.keyPermission}
-                disabled={!isActiveCard}
-              />
-            </div>
-            <div className={s.info}>
-              <IconButton onClick={handleInfo}>
-                <InformationSVG />
-              </IconButton>
+              <div
+                className={s.content_actions}
+                style={{ paddingTop: isAction ? "20px" : "" }}
+              >
+                <ColorSwitcherItem
+                  keyItemPermission={card.keyPermission}
+                  disabled={disabledActions.color}
+                />
+                <CounterItem
+                  keyItemPermission={card.keyPermission}
+                  disabled={disabledActions.counter}
+                />
+                <SelectItem
+                  keyItemPermission={card.keyPermission}
+                  disabled={!isActiveCard}
+                />
+              </div>
+              <div className={s.info}>
+                <IconButton onClick={handleInfo}>
+                  <InformationSVG />
+                </IconButton>
+              </div>
             </div>
           </div>
         </div>
+
+        {children}
       </div>
     </CardContainer>
   );

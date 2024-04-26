@@ -1,5 +1,6 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
+import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
 import { CardI, StepI } from "../type";
 import { getTitleFromDataByKeyPermission } from "../utils";
@@ -388,6 +389,30 @@ export const getPositionStepNameBasedOnActiveStep =
     if (positionStep < positionActiveStep) return "prev";
     if (positionStep > positionActiveStep) return "next";
     return "current";
+  };
+
+export const getSubCardsKeyPermissionStep =
+  (step: StepI) =>
+  (state: RootState): Record<string, string[]> => {
+    const permission = getPermission(step.key)(state);
+    const cards = Object.values(step.cards);
+    const cardsKeyPermissions = cards.map((card) => card.keyPermission);
+    return cards.reduce<Record<string, string[]>>((acc, card) => {
+      const isActiveCard = getIsSelectedCardByKeyPermission(
+        step.key,
+        card.keyPermission
+      )(state);
+      if (!isActiveCard) return acc;
+      const currentStep = permission.getCurrentStep();
+      const element = currentStep.getElementByName(card.keyPermission);
+      if (!element || element instanceof MountElement) return acc;
+      const dependentMounts = element.getDependenceMount();
+      const dependentNames = dependentMounts.map((mount) => mount.name);
+      acc[card.keyPermission] = cardsKeyPermissions.filter((key) =>
+        dependentNames.includes(key)
+      );
+      return acc;
+    }, {});
   };
 
 const getInitDataCardsForPermission = (state: RootState) => {
