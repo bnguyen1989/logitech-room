@@ -20,8 +20,8 @@ export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getSetupModalData);
-  const { userId } = useUser();
-  const orderData: any = useAppSelector(getOrderData(userId));
+  const { user } = useUser();
+  const orderData: any = useAppSelector(getOrderData(user.id));
   const [isRequest, setIsRequest] = useState(false);
 
   const handleClose = () => {
@@ -34,7 +34,7 @@ export const SetupModal: React.FC = () => {
 
     MktoForms2.whenReady((form: any) => {
       const baseUrl = getParentURL();
-      const link = `${baseUrl}/room?userId=${userId}`;
+      const link = `${baseUrl}/room?userId=${user.id}`;
       form.setValues({
         editableField6: link,
       });

@@ -1,16 +1,22 @@
 import { useSearchParams } from "react-router-dom";
 import { useAppSelector } from "./redux";
-import { getUserId } from "../store/slices/user/selectors/selectors";
+import {
+  getRoleData,
+  getUserId,
+} from "../store/slices/user/selectors/selectors";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUserId } from "../store/slices/user/User.slice";
 import { IdGenerator } from "../models/IdGenerator";
+import { User } from "../models/user/User";
+import Role from "../models/user/role/Role";
 
 export const useUser = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const userIdUrl = searchParams.get("userId");
   const userId = useAppSelector(getUserId);
+  const roleData = useAppSelector(getRoleData);
 
   useEffect(() => {
     if (userId) return;
@@ -27,7 +33,9 @@ export const useUser = () => {
     dispatch(setUserId({ userId: userIdUrl }));
   }, [userIdUrl]);
 
+  const role = new Role(roleData.name, roleData.permissions);
+
   return {
-    userId,
+    user: new User(userId, role),
   };
 };

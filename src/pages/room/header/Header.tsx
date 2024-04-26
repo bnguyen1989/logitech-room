@@ -7,36 +7,42 @@ import { useNavigate } from "react-router-dom";
 import ImgBanner from "../../../assets/images/pages/room/room_banner.png";
 import { useUser } from "../../../hooks/user";
 import { copyToClipboard, getParentURL } from "../../../utils/browserUtils";
-import { useDispatch } from 'react-redux'
-import { setShareProjectModal } from '../../../store/slices/modals/Modals.slice'
+import { useDispatch } from "react-redux";
+import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
+import { PermissionUser } from "../../../utils/userRoleUtils";
 
 declare const app: Application;
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userId } = useUser();
+  const { user } = useUser();
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
   };
 
   const handleDownloadAll = () => {
-    app.downloadRoomsCSV(userId);
+    app.downloadRoomsCSV(user.id);
   };
 
   const handleShareUserRooms = () => {
-    const url = `${getParentURL()}/room?userId=${userId}`;
+    const url = `${getParentURL()}/room?userId=${user.id}`;
     copyToClipboard(url);
   };
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
-  }
+  };
 
   const handleShareProject = () => {
     dispatch(setShareProjectModal({ isOpen: true }));
   };
+
+  const userCanReqConsultation = user.role.can(
+    PermissionUser.REQUEST_CONSULTATION
+  );
+  const userCanAddRoom = user.role.can(PermissionUser.ADD_ROOM);
 
   return (
     <div className={s.container}>
@@ -50,26 +56,33 @@ export const Header: React.FC = () => {
             <div className={s.header_subtitle}>
               Thank you for your interest in Logitech!
             </div>
-            <div className={s.desc}>
-              Explore your finished room(s) below, and when you're ready to talk
-              next steps, simply <u>request a consultation</u>. We'd be happy to
-              discuss your project, develop a formal quote, and facilitate next
-              steps, whether through Logitech or your preferred partner.
-            </div>
+            {userCanReqConsultation && (
+              <div className={s.desc}>
+                Explore your finished room(s) below, and when you're ready to
+                talk next steps, simply <u>request a consultation</u>. We'd be
+                happy to discuss your project, develop a formal quote, and
+                facilitate next steps, whether through Logitech or your
+                preferred partner.
+              </div>
+            )}
           </div>
           <div className={s.header_action}>
             <IconButton
               onClick={handleShareUserRooms}
               text={"Copy Your Custom URL"}
-              variant={"outlined"}
+              variant={userCanReqConsultation ? "outlined" : "contained"}
             >
-              <ChainLinkSVG />
+              <ChainLinkSVG
+                color={userCanReqConsultation ? "black" : "white"}
+              />
             </IconButton>
-            <Button
-              onClick={handleRequestConsultation}
-              text={"Request Consultation"}
-              variant={"contained"}
-            />
+            {userCanReqConsultation && (
+              <Button
+                onClick={handleRequestConsultation}
+                text={"Request Consultation"}
+                variant={"contained"}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -79,16 +92,23 @@ export const Header: React.FC = () => {
           Configurations are for exploratory purposes only. Room guides and the
           prices listed are based on local MSRP for the products and are not
           formal quotes. Prices may vary by location, channel or reseller.
-          Please <u>request a consultation</u> for more information and next
-          steps.
+          {userCanReqConsultation && (
+            <span>
+              {" "}
+              Please <u>request a consultation</u> for more information and next
+              steps.
+            </span>
+          )}
         </div>
       </div>
       <div className={s.buttons}>
-        <Button
-          onClick={handleAnotherRoom}
-          text={"Add Another Room"}
-          variant={"contained"}
-        />
+        {userCanAddRoom && (
+          <Button
+            onClick={handleAnotherRoom}
+            text={"Add Another Room"}
+            variant={"contained"}
+          />
+        )}
         <IconButton
           onClick={handleDownloadAll}
           text={"Download Room Guide (All)"}

@@ -6,7 +6,7 @@ interface PropsI {
   text?: string;
   onClick: () => void;
   style?: React.CSSProperties;
-  variant?: "text" | "outlined";
+  variant?: "text" | "outlined" | "contained";
 }
 export const IconButton: React.FC<PropsI> = (props) => {
   const { children, text, onClick, style, variant = "text" } = props;
