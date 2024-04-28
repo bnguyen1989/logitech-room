@@ -23,6 +23,7 @@ import {
   getLangProductBlade1,
   getLangProductImage,
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
+import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
 
 interface PropsI {
   keyItemPermission: string;
@@ -61,6 +62,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const recommended: boolean = useAppSelector(
     getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const availableColorsData = useAppSelector(
+    getColorsFromCard(keyItemPermission)
+  );
   const dispatch = useDispatch();
 
   if (!card) return null;
@@ -90,24 +94,22 @@ export const CardItem: React.FC<PropsI> = (props) => {
     );
   };
 
-  // const isAction = card.counter || card.color || card.select;
-  const isAction = card.counter || card.select;
+  const isAction =
+    card.counter || card.select || availableColorsData.length > 1;
 
-  const getStyleForSubSection = () => {
-    if (type !== "subSection") return {};
+  const getClassNameCardContainer = () => {
+    if (type !== "subSection") return s.card_container;
 
-    return {
-      border: isActiveCard
-        ? "2px solid var(--main-color-block)"
-        : "2px solid #F4F4F4",
-    };
+    return `${s.card_container_sub} ${
+      isActiveCard ? s.card_container_sub_active : ""
+    }`;
   };
 
   return (
     <CardContainer
       onClick={handleClick}
       recommended={recommended}
-      style={{ padding: "25px 20px", ...getStyleForSubSection() }}
+      className={getClassNameCardContainer()}
       active={isActiveCard}
     >
       <div className={s.container}>

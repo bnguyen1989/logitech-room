@@ -83,3 +83,23 @@
     }
   }
 }
+
+.card_container,
+.card_container_sub {
+  padding: 25px 20px;
+}
+
+.card_container_sub {
+  border: 2px solid #f4f4f4;
+
+  & button {
+    box-shadow: 0 0 0 5px #ffff !important;
+    width: 26px !important;
+    height: 26px !important;
+    background-size: 12px !important;
+  }
+}
+
+.card_container_sub_active {
+  border: 2px solid var(--main-color-block);
+}

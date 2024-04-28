@@ -27,12 +27,5 @@
     flex-direction: column;
     gap: 20px;
     width: 100%;
-
-    & button {
-      box-shadow: 0 0 0 5px #ffff;
-      width: 26px;
-      height: 26px;
-			background-size: 12px !important;
-    }
   }
 }
