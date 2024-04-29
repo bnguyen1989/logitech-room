@@ -13,6 +13,7 @@ import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
+import { setUserData } from "../../../store/slices/user/User.slice";
 
 declare const MktoForms2: any;
 
@@ -20,7 +21,7 @@ export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getSetupModalData);
-  const { user } = useUser();
+  const user = useUser();
   const orderData: any = useAppSelector(getOrderData(user.id));
   const [isRequest, setIsRequest] = useState(false);
 
@@ -44,6 +45,7 @@ export const SetupModal: React.FC = () => {
           setIsRequest(true);
           new ThreekitService().createOrder(orderData).then(() => {
             dispatch(setMySetupModal({ isOpen: false }));
+            dispatch(setUserData({ data: { ...form.getValues() } }));
             navigate("/room", { replace: true });
           });
         }

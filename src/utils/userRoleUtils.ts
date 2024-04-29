@@ -10,6 +10,7 @@ export enum PermissionUser {
   ADD_ROOM = "ADD_ROOM",
   REMOVE_ROOM = "REMOVE_ROOM",
   REQUEST_CONSULTATION = "REQUEST_CONSULTATION",
+  SHOW_SETUP_MODAL = "SHOW_SETUP_MODAL",
 }
 
 export const getRoleByName = (roleName: RoleUserName) => {
@@ -33,6 +34,7 @@ const getRoleCustomer = () =>
     PermissionUser.ADD_ROOM,
     PermissionUser.REMOVE_ROOM,
     PermissionUser.REQUEST_CONSULTATION,
+    PermissionUser.SHOW_SETUP_MODAL,
   ]);
 
 const getRolePartner = () =>

@@ -16,7 +16,7 @@ declare const app: Application;
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useUser();
+  const user = useUser();
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });

@@ -7,23 +7,36 @@ interface PropsI {
   onClick: () => void;
   style?: React.CSSProperties;
   variant?: "text" | "outlined" | "contained";
+  position?: "left" | "right";
+  disabled?: boolean;
 }
 export const IconButton: React.FC<PropsI> = (props) => {
-  const { children, text, onClick, style, variant = "text" } = props;
+  const {
+    children,
+    text,
+    onClick,
+    style,
+    variant = "text",
+    position = "right",
+    disabled,
+  } = props;
 
   return (
     <div
       style={style}
-      className={`${s.container} ${s["button_" + variant]}`}
+      className={`${s.container} ${s["button_" + variant]} ${
+        disabled ? s.disabled : ""
+      }`}
       onClick={() => onClick()}
     >
+      {position === "left" && <div className={s.icon}>{children}</div>}
       {!!text && (
         <div
           className={s.text}
           dangerouslySetInnerHTML={{ __html: text }}
         ></div>
       )}
-      <div className={s.icon}>{children}</div>
+      {position === "right" && <div className={s.icon}>{children}</div>}
     </div>
   );
 };

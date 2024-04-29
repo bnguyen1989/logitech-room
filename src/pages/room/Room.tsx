@@ -17,7 +17,7 @@ interface RoomI {
 export const Room: React.FC = () => {
   const [rooms, setRooms] = useState<Array<RoomI>>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { user } = useUser();
+  const user = useUser();
 
   useEffect(() => {
     setIsLoaded(true);

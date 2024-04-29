@@ -9,7 +9,7 @@ interface PropsI {
 }
 export const Header: React.FC<PropsI> = (props) => {
   const { title } = props;
-  const { user } = useUser();
+  const user = useUser();
 
   const userCanReqConsultation = user.role.can(
     PermissionUser.REQUEST_CONSULTATION
