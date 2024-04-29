@@ -17,12 +17,16 @@ import {
   getActiveStep,
   getCardByKeyPermission,
   getCardsByStep,
+  getDataStepByName,
   getPermission,
+  getPositionStepNameBasedOnActiveStep,
+  getPrevNextStepByStepName,
   getPropertyCounterCardByKeyPermission,
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
 import {
   addActiveCard,
+  changeActiveStep,
   clearAllActiveCardsSteps,
   setPropertyItem,
 } from "../slices/ui/Ui.slice";
@@ -67,6 +71,22 @@ export const middleware: Middleware =
       case UI_ACTION_NAME.CHANGE_ACTIVE_STEP: {
         const stepName = action.payload;
         updateDataCardByStepName(stepName)(store, currentConfigurator);
+
+        state = store.getState();
+        const stepData = getDataStepByName(stepName)(state);
+        const isExistCards = Object.keys(stepData.cards).length > 0;
+        if (!isExistCards) {
+          const { prevStep, nextStep } =
+            getPrevNextStepByStepName(stepName)(state);
+          const positionNewStep =
+            getPositionStepNameBasedOnActiveStep(stepName)(state);
+          if (positionNewStep === "next" && nextStep) {
+            return store.dispatch(changeActiveStep(nextStep.key));
+          }
+          if (positionNewStep === "prev" && prevStep) {
+            return store.dispatch(changeActiveStep(prevStep.key));
+          }
+        }
         break;
       }
       case UI_ACTION_NAME.MOVE_TO_START_STEP: {

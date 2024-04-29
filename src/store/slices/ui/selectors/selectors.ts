@@ -26,48 +26,60 @@ export const getActiveStepData = (state: RootState) => {
 };
 
 export const getNavigationStepData = (state: RootState) => {
-  const { stepData, activeStep } = state.ui;
+  const { activeStep } = state.ui;
 
-  const listStepData = Object.values(stepData);
-
-  const currentStepIndex = listStepData.findIndex(
-    (step) => step.key === activeStep
-  );
-
-  let prevStep;
-  let nextStep;
-
-  if (currentStepIndex !== -1) {
-    const permission = getPermission(activeStep)(state);
-    let prevStepIndex = currentStepIndex - 1;
-    let nextStepIndex = currentStepIndex + 1;
-
-    while (prevStepIndex >= 0) {
-      const step = listStepData[prevStepIndex];
-      const permissionStep = permission.getStepByName(step.key);
-      if (permissionStep.getAvailable()) {
-        prevStep = step;
-        break;
-      }
-      prevStepIndex--;
-    }
-
-    while (nextStepIndex < listStepData.length) {
-      const step = listStepData[nextStepIndex];
-      const permissionStep = permission.getStepByName(step.key);
-      if (permissionStep.getAvailable()) {
-        nextStep = step;
-        break;
-      }
-      nextStepIndex++;
-    }
-  }
+  const { prevStep, nextStep } = getPrevNextStepByStepName(activeStep)(state);
 
   return {
     prevStep,
     nextStep,
   };
 };
+
+export const getPrevNextStepByStepName =
+  (stepName: StepName) => (state: RootState) => {
+    const { stepData } = state.ui;
+
+    const listStepData = Object.values(stepData);
+
+    const currentStepIndex = listStepData.findIndex(
+      (step) => step.key === stepName
+    );
+
+    let prevStep;
+    let nextStep;
+
+    if (currentStepIndex !== -1) {
+      const permission = getPermission(stepName)(state);
+      let prevStepIndex = currentStepIndex - 1;
+      let nextStepIndex = currentStepIndex + 1;
+
+      while (prevStepIndex >= 0) {
+        const step = listStepData[prevStepIndex];
+        const permissionStep = permission.getStepByName(step.key);
+        if (permissionStep.getAvailable()) {
+          prevStep = step;
+          break;
+        }
+        prevStepIndex--;
+      }
+
+      while (nextStepIndex < listStepData.length) {
+        const step = listStepData[nextStepIndex];
+        const permissionStep = permission.getStepByName(step.key);
+        if (permissionStep.getAvailable()) {
+          nextStep = step;
+          break;
+        }
+        nextStepIndex++;
+      }
+    }
+
+    return {
+      prevStep,
+      nextStep,
+    };
+  };
 
 export const getIsConfiguratorStep = (state: RootState) => {
   const { activeStep } = state.ui;
