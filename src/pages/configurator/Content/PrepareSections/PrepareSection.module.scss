@@ -68,3 +68,13 @@
     }
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    .wrapperCards {
+      padding: 30px 0;
+      overflow-x: auto;
+      justify-content: normal;
+    }
+  }
+}
