@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { RoomDetails } from "./pages/roomDetails/RoomDetails";
 import { Modals } from "./components/Modals/Modals";
 import { useEffect } from "react";
-import { ServerApi } from "./services/api/Server/ServerApi";
+// import { ServerApi } from "./services/api/Server/ServerApi";
 import { useDispatch } from "react-redux";
 import { setLangText } from "./store/slices/ui/Ui.slice";
 import dataLang from "./dataLang/products/en-us.json";
@@ -15,19 +15,19 @@ import { RequestConsultation } from "./pages/requestConsultation/RequestConsulta
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    new ServerApi()
-      .getProductsLang("en-us")
-      .then((res) => {
-        const objData: ProductsObj = {};
+    // new ServerApi()
+    //   .getProductsLang("en-us")
+    //   .then((res) => {
+    //     const objData: ProductsObj = {};
 
-        Object.keys(res.data.products).forEach((product) => {
-          const newKey = product.toUpperCase();
-          objData[newKey] = res.data.products[product];
-        });
+    //     Object.keys(res.data.products).forEach((product) => {
+    //       const newKey = product.toUpperCase();
+    //       objData[newKey] = res.data.products[product];
+    //     });
 
-        dispatch(setLangText(objData));
-      })
-      .catch(() => {
+    //     dispatch(setLangText(objData));
+    //   })
+    //   .catch(() => {
         const objData: ProductsObj = {};
 
         const data: any = dataLang;
@@ -37,7 +37,7 @@ function App() {
         });
 
         dispatch(setLangText(objData));
-      });
+      // });
   }, []);
   return (
     <div className={"app"}>
