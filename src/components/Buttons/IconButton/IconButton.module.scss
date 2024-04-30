@@ -36,6 +36,7 @@
 
   .text {
     color: var(--main-color-block);
+    line-height: 26px;
   }
 }
 
@@ -44,4 +45,9 @@
   .text {
     color: #ffffff;
   }
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

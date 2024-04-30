@@ -13,7 +13,7 @@ import { useUser } from "../../../hooks/user";
 export const ShareProjectModal: React.FC = () => {
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getShareProjectModalData);
-  const { user } = useUser();
+  const user = useUser();
   const [link, setLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
 

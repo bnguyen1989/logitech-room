@@ -7,12 +7,13 @@ form {
 }
 
 .mktoFormRow {
-	font-family: "Poppins", sans-serif;
+	padding-top: 0 !important;
+	font-family: var(--font-family);
 	& label {
 		display: none;
 	}
 
-	& input, & select {
+	& input, & textarea, & select {
 		width: 100% !important;
 		background-color: #f4f4f4 !important;
 		padding: 25px 20px !important;
@@ -23,6 +24,10 @@ form {
 		font-style: normal !important;
 		font-weight: 400 !important;
 		line-height: 24px !important;
+	}
+
+	& textarea {
+		height: 100px !important;
 	}
 
 	& select {
@@ -37,6 +42,20 @@ form {
 	#honeypot, #lastFormURL, #lastFormReferrer {
 		display: none;
 	}
+
+	.mktoCaptchaDisclaimer {
+		display: none;
+	
+	}
+}
+
+#captcha {
+	display: none;
+}
+
+.mktoCaptchaDisclaimer {
+	display: none;
+
 }
 
 .mktoFieldWrap {

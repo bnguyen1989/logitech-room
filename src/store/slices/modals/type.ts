@@ -3,6 +3,7 @@ export enum ModalName {
   ANNOTATION_ITEM = "ANNOTATION_ITEM",
   SELECT_PRODUCT = "SELECT_PRODUCT",
   SHARE_PROJECT = "SHARE_PROJECT",
+  FINISH = "FINISH",
 }
 
 export interface ModalI {

@@ -1,5 +1,6 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
+import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
 import { CardI, StepI } from "../type";
 import { getTitleFromDataByKeyPermission } from "../utils";
@@ -25,48 +26,60 @@ export const getActiveStepData = (state: RootState) => {
 };
 
 export const getNavigationStepData = (state: RootState) => {
-  const { stepData, activeStep } = state.ui;
+  const { activeStep } = state.ui;
 
-  const listStepData = Object.values(stepData);
-
-  const currentStepIndex = listStepData.findIndex(
-    (step) => step.key === activeStep
-  );
-
-  let prevStep;
-  let nextStep;
-
-  if (currentStepIndex !== -1) {
-    const permission = getPermission(activeStep)(state);
-    let prevStepIndex = currentStepIndex - 1;
-    let nextStepIndex = currentStepIndex + 1;
-
-    while (prevStepIndex >= 0) {
-      const step = listStepData[prevStepIndex];
-      const permissionStep = permission.getStepByName(step.key);
-      if (permissionStep.getAvailable()) {
-        prevStep = step;
-        break;
-      }
-      prevStepIndex--;
-    }
-
-    while (nextStepIndex < listStepData.length) {
-      const step = listStepData[nextStepIndex];
-      const permissionStep = permission.getStepByName(step.key);
-      if (permissionStep.getAvailable()) {
-        nextStep = step;
-        break;
-      }
-      nextStepIndex++;
-    }
-  }
+  const { prevStep, nextStep } = getPrevNextStepByStepName(activeStep)(state);
 
   return {
     prevStep,
     nextStep,
   };
 };
+
+export const getPrevNextStepByStepName =
+  (stepName: StepName) => (state: RootState) => {
+    const { stepData } = state.ui;
+
+    const listStepData = Object.values(stepData);
+
+    const currentStepIndex = listStepData.findIndex(
+      (step) => step.key === stepName
+    );
+
+    let prevStep;
+    let nextStep;
+
+    if (currentStepIndex !== -1) {
+      const permission = getPermission(stepName)(state);
+      let prevStepIndex = currentStepIndex - 1;
+      let nextStepIndex = currentStepIndex + 1;
+
+      while (prevStepIndex >= 0) {
+        const step = listStepData[prevStepIndex];
+        const permissionStep = permission.getStepByName(step.key);
+        if (permissionStep.getAvailable()) {
+          prevStep = step;
+          break;
+        }
+        prevStepIndex--;
+      }
+
+      while (nextStepIndex < listStepData.length) {
+        const step = listStepData[nextStepIndex];
+        const permissionStep = permission.getStepByName(step.key);
+        if (permissionStep.getAvailable()) {
+          nextStep = step;
+          break;
+        }
+        nextStepIndex++;
+      }
+    }
+
+    return {
+      prevStep,
+      nextStep,
+    };
+  };
 
 export const getIsConfiguratorStep = (state: RootState) => {
   const { activeStep } = state.ui;
@@ -261,12 +274,15 @@ export const getMetadataByKeyPermission =
 export const getIsRecommendedCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
-    const isRecommended = metadata["isRecommended"];
-    if (isRecommended !== undefined) {
-      return isRecommended === "true";
-    }
-    const permission = getPermission(stepName)(state);
-    return permission.isRecommendedElementByName(keyPermission);
+    if (!metadata) return false;
+    return getIsRecommendedCardFromMetadata(metadata);
+  };
+
+export const getIsRecommendedCardByCard =
+  (card: CardI) => (state: RootState) => {
+    const metadata = getMetadataAssetFromCard(card)(state);
+    if (!metadata) return false;
+    return getIsRecommendedCardFromMetadata(metadata);
   };
 
 export const getIsCanChangeStep = (state: RootState) => {
@@ -298,12 +314,36 @@ export const getCorrectStepDataByPermission =
     const permission = getPermission(stepName)(state);
     const items = permission.getElements();
 
-    Object.values(dataStep.cards).forEach((card: CardI) => {
-      const isExist = items.some((item) => item.name === card.keyPermission);
-      if (!isExist) {
-        delete copyDataStep.cards[card.keyPermission];
+    const correctDataCards = Object.values(copyDataStep.cards).reduce(
+      (acc, card) => {
+        const isExist = items.some((item) => item.name === card.keyPermission);
+        if (isExist) {
+          const isRecommended = getIsRecommendedCardByCard(card)(state);
+
+          if (isRecommended) {
+            if (!acc.recommended) {
+              acc.recommended = {};
+            }
+            acc.recommended[card.keyPermission] = card;
+          } else {
+            if (!acc.other) {
+              acc.other = {};
+            }
+            acc.other[card.keyPermission] = card;
+          }
+        }
+        return acc;
+      },
+      {} as {
+        recommended?: Record<string, CardI>;
+        other?: Record<string, CardI>;
       }
-    });
+    );
+
+    copyDataStep.cards = {
+      ...correctDataCards.recommended,
+      ...correctDataCards.other,
+    };
 
     return copyDataStep;
   };
@@ -390,6 +430,30 @@ export const getPositionStepNameBasedOnActiveStep =
     return "current";
   };
 
+export const getSubCardsKeyPermissionStep =
+  (step: StepI) =>
+  (state: RootState): Record<string, string[]> => {
+    const permission = getPermission(step.key)(state);
+    const cards = Object.values(step.cards);
+    const cardsKeyPermissions = cards.map((card) => card.keyPermission);
+    return cards.reduce<Record<string, string[]>>((acc, card) => {
+      const isActiveCard = getIsSelectedCardByKeyPermission(
+        step.key,
+        card.keyPermission
+      )(state);
+      if (!isActiveCard) return acc;
+      const currentStep = permission.getCurrentStep();
+      const element = currentStep.getElementByName(card.keyPermission);
+      if (!element || element instanceof MountElement) return acc;
+      const dependentMounts = element.getDependenceMount();
+      const dependentNames = dependentMounts.map((mount) => mount.name);
+      acc[card.keyPermission] = cardsKeyPermissions.filter((key) =>
+        dependentNames.includes(key)
+      );
+      return acc;
+    }, {});
+  };
+
 const getInitDataCardsForPermission = (state: RootState) => {
   const res: Record<string, Record<string, any>> = {};
   const selectedData = getSelectData(state);
@@ -411,4 +475,12 @@ const getInitDataCardsForPermission = (state: RootState) => {
     });
   });
   return res;
+};
+
+const getIsRecommendedCardFromMetadata = (metadata: Record<string, string>) => {
+  const isRecommended = metadata["isRecommended"];
+  if (isRecommended !== undefined) {
+    return isRecommended === "true";
+  }
+  return false;
 };

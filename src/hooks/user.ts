@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useAppSelector } from "./redux";
 import {
   getRoleData,
+  getUserData,
   getUserId,
 } from "../store/slices/user/selectors/selectors";
 import { useEffect } from "react";
@@ -17,6 +18,7 @@ export const useUser = () => {
   const userIdUrl = searchParams.get("userId");
   const userId = useAppSelector(getUserId);
   const roleData = useAppSelector(getRoleData);
+  const userData = useAppSelector(getUserData);
 
   useEffect(() => {
     if (userId) return;
@@ -35,7 +37,5 @@ export const useUser = () => {
 
   const role = new Role(roleData.name, roleData.permissions);
 
-  return {
-    user: new User(userId, role),
-  };
+  return new User(userId, role).setUserData(userData);
 };

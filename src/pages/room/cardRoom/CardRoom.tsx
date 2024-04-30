@@ -19,7 +19,7 @@ interface PropsI {
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId, removeRoom } = props;
   const { handleNavigate } = useUrl(`/room/${shortId}`);
-  const { user } = useUser();
+  const user = useUser();
 
   const handleDownload = () => {
     app.downloadRoomCSV(shortId);
