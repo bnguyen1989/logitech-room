@@ -16,6 +16,9 @@ import {
   ToneMapping,
 } from "@react-three/postprocessing";
 import { useCache } from "../../hooks/cache.ts";
+import { ForwardedRef, forwardRef, useState } from "react";
+import { snapshot } from "../../utils/snapshot.ts";
+import { EffectComposer as EffectComposerImpl } from "postprocessing";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -40,6 +43,14 @@ export const Player: React.FC = () => {
       fov: fovDeg,
     },
   };
+
+  const [effectComposerRef, setEffectComposerRef] =
+    useState<EffectComposerImpl | null>(null);
+  (window as any).snapshot = () =>
+    console.log(
+      effectComposerRef &&
+        snapshot(effectComposerRef, { size: { width: 640, height: 480 } })
+    );
 
   // console.log("fovDeg", fovDeg);
   if (!assetId) return null;
@@ -66,7 +77,7 @@ export const Player: React.FC = () => {
       >
         <>
           <Selection>
-            <Effects />
+            <Effects ref={setEffectComposerRef} />
             <LogitechStage>
               <Room roomAssetId={assetId} />
             </LogitechStage>
@@ -90,13 +101,14 @@ export const Player: React.FC = () => {
   );
 };
 
-function Effects() {
+const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
   return (
     <EffectComposer
       stencilBuffer
       disableNormalPass
       autoClear={false}
       multisampling={4}
+      ref={ref}
     >
       <Outline
         visibleEdgeColor={0x47b63f}
@@ -107,4 +119,4 @@ function Effects() {
       <ToneMapping />
     </EffectComposer>
   );
-}
+});
