@@ -26,7 +26,7 @@ export const IconButton: React.FC<PropsI> = (props) => {
       style={style}
       className={`${s.container} ${s["button_" + variant]} ${
         disabled ? s.disabled : ""
-      }`}
+      } ${children && !text ? s.only_icon : ""}`}
       onClick={() => onClick()}
     >
       {position === "left" && <div className={s.icon}>{children}</div>}

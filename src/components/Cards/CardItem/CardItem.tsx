@@ -98,11 +98,12 @@ export const CardItem: React.FC<PropsI> = (props) => {
     card.counter || card.select || availableColorsData.length > 1;
 
   const getClassNameCardContainer = () => {
-    if (type !== "subSection") return s.card_container;
+    if (type !== "subSection")
+      return `${s.card_container} ${s.card_container_mobile}`;
 
     return `${s.card_container_sub} ${
       isActiveCard ? s.card_container_sub_active : ""
-    }`;
+    } ${s.card_container_mobile}`;
   };
 
   return (
@@ -128,30 +129,31 @@ export const CardItem: React.FC<PropsI> = (props) => {
               <div className={s.subtitle}>{subTitle}</div>
             </div>
             <div
-              className={s.content}
-              style={{ borderTop: isAction ? "1px solid #E1E2E3" : "" }}
+              className={`${s.content} ${isAction ? s.content_actions : ""}`}
             >
-              <div
-                className={s.content_actions}
-                style={{ paddingTop: isAction ? "20px" : "" }}
-              >
-                <ColorSwitcherItem
-                  keyItemPermission={card.keyPermission}
-                  disabled={disabledActions.color}
-                />
-                <CounterItem
-                  keyItemPermission={card.keyPermission}
-                  disabled={disabledActions.counter}
-                />
-                <SelectItem
-                  keyItemPermission={card.keyPermission}
-                  disabled={!isActiveCard}
-                />
-              </div>
+              {isAction && (
+                <div className={s.actions}>
+                  <ColorSwitcherItem
+                    keyItemPermission={card.keyPermission}
+                    disabled={disabledActions.color}
+                  />
+                  <CounterItem
+                    keyItemPermission={card.keyPermission}
+                    disabled={disabledActions.counter}
+                  />
+                  <SelectItem
+                    keyItemPermission={card.keyPermission}
+                    disabled={!isActiveCard}
+                  />
+                </div>
+              )}
               <div className={s.info}>
                 <IconButton onClick={handleInfo}>
                   <InformationSVG />
                 </IconButton>
+              </div>
+              <div className={s.info_mobile} onClick={handleInfo}>
+                INFO
               </div>
             </div>
           </div>

@@ -107,9 +107,12 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
           </div>
         ) : null}
       </div>
-      <div className={s.cards}>
-        {cards.map((card, index) => getCardComponent(card, index))}
+      <div className={s.wrapper_cards}>
+        <div className={s.cards}>
+          {cards.map((card, index) => getCardComponent(card, index))}
+        </div>
       </div>
+
       {!isSubmitForm ? (
         <div className={s.form} ref={formAnchorRef}>
           <QuestionForm

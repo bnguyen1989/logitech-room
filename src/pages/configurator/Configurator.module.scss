@@ -1,10 +1,19 @@
 .container {
-	display: flex;
-	flex-direction: column;
-	gap: 60px;
-	height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  height: 100vh;
 
-	.content {
-		height: calc(100vh - 188px - 60px);
-	}
+  .content {
+    height: calc(100vh - 188px - 60px);
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    gap: 40px;
+    .content {
+      height: calc(100vh - 188px - 40px);
+    }
+  }
 }
