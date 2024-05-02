@@ -135,14 +135,20 @@ const getSelectValueBySelectData = (data: any, card: CardI) => {
 
 const getNameOrder = (state: RootState) => {
   const selectedPrepareCards = getSelectedPrepareCards(state);
-  const name = selectedPrepareCards
-    .filter((item) => !(item.key !== StepName.Platform))
-    .map((item) =>
-      getTitleFromDataByKeyPermission(item.keyPermission).replace(" Room", "")
-    )
-    .join(" ");
+  const name = selectedPrepareCards.reduce<string>((acc, item) => {
+    const titleCard = getTitleFromDataByKeyPermission(item.keyPermission);
+    if (item.key === StepName.RoomSize) {
+      acc = acc.replace("{0}", titleCard.replace("Room", "").trim());
+    }
 
-  return `${name} Room`;
+    if (item.key === StepName.Platform) {
+      acc = acc.replace("{1}", titleCard);
+    }
+
+    return acc;
+  }, "{0} {1} Room");
+
+  return name;
 };
 
 const getDescriptionRoom = (state: RootState) => {

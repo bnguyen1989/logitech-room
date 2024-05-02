@@ -49,6 +49,7 @@ import {
   getCardByKeyPermission,
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
+  getProductNameFromMetadata,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -345,14 +346,14 @@ function setStepData(
     const includeColors = colorsName.filter((item) =>
       nameItems.some((name) => name.includes(item))
     );
-    const isSetColors = includeColors.length > 1 && !color;
+    const isSetColors = includeColors.length && !color;
     if (isSetColors) {
       store.dispatch(
         setPropertyItem({
           step: stepName,
           keyItemPermission: tempCard.keyPermission,
           property: {
-            color: colorsName[0],
+            color: includeColors[0],
           },
         })
       );
@@ -519,8 +520,9 @@ function setSoftwareServicesData(configurator: Configurator) {
               [baseCard.keyPermission]: asset,
             };
           }
-          const plan = asset.metadata["Service Plan"];
-          if (plan) {
+          const productName = getProductNameFromMetadata(asset.metadata);
+          if (productName) {
+            const plan = productName.split("-")[1]?.trim();
             values.push({
               label: plan,
               value: asset.id,
