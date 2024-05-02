@@ -1,9 +1,16 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
+import { MetadataI } from "../../../../services/Threekit/type";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { RoleUserName } from "../../../../utils/userRoleUtils";
+import { getRoleData } from "../../user/selectors/selectors";
 import { CardI, StepI } from "../type";
-import { getTitleFromDataByKeyPermission } from "../utils";
+import {
+  getDataQuestionFormCustomer,
+  getDataQuestionFormPartner,
+  getTitleFromDataByKeyPermission,
+} from "../utils";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
 
@@ -217,7 +224,7 @@ export const getMetadataProductNameAssetFromCard =
     const metadata = getMetadataAssetFromCard(card)(state);
     if (!metadata) return "";
 
-    return metadata["Product Name"]?.trim();
+    return getProductNameFromMetadata(metadata);
   };
 
 export const getSkuFromMetadataByCard = (card: CardI) => (state: RootState) => {
@@ -483,4 +490,21 @@ const getIsRecommendedCardFromMetadata = (metadata: Record<string, string>) => {
     return isRecommended === "true";
   }
   return false;
+};
+
+export const getProductNameFromMetadata = (metadata: MetadataI) => {
+  return metadata["Product Name"]?.trim();
+};
+
+export const getDataQuestionsForm = (state: RootState) => {
+  const userRoleData = getRoleData(state);
+  if (userRoleData.name === RoleUserName.CUSTOMER) {
+    return getDataQuestionFormCustomer();
+  }
+
+  if (userRoleData.name === RoleUserName.PARTNER) {
+    return getDataQuestionFormPartner();
+  }
+
+  return [];
 };

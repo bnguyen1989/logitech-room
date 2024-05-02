@@ -5,10 +5,31 @@
   gap: 24px;
   height: 180px;
   z-index: 1;
+
+  .mobile_back {
+    display: none;
+  }
 }
 
 @media (max-height: 1000px) {
   .actions {
     height: 130px;
+  }
+}
+
+@media (max-width: 900px) {
+  .actions {
+    // height: 100px;
+  }
+}
+
+@media (max-width: 500px) {
+  .actions {
+    .mobile_back {
+      display: block;
+    }
+    .button_back {
+      display: none;
+    }
   }
 }

@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  justify-content: center;
   gap: 50px;
 
   .left_content {
@@ -16,6 +17,7 @@
   }
 
   .right_content {
+    flex: 1;
     max-width: 700px;
     display: flex;
     flex-direction: column;

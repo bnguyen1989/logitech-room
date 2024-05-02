@@ -83,6 +83,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             <InformationSVG />
           </IconButton>
         </div>
+        <div className={s.info_mobile}>INFO</div>
       </div>
     </CardContainer>
   );

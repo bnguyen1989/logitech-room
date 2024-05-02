@@ -29,3 +29,17 @@
     line-height: 24px;
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    .image {
+      width: 150px;
+      height: 110px;
+    }
+    .title {
+      max-width: 160px;
+      font-size: 18px;
+      line-height: 24px;
+    }
+  }
+}
