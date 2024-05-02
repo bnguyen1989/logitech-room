@@ -13,6 +13,7 @@
   font-weight: 700;
   line-height: 26px;
   letter-spacing: -0.25px;
+  white-space: nowrap;
 }
 
 .button_outlined {
@@ -38,4 +39,11 @@
 .button_contained:disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+@media (max-width: 500px) {
+  .button {
+    font-size: 15px;
+    line-height: 15px;
+  }
 }

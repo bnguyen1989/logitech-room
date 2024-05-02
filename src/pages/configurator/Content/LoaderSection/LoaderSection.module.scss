@@ -68,3 +68,24 @@
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 900px) {
+  .container {
+    .selected_cards {
+      max-width: 100%;
+      
+      .text {
+        .title {
+          font-size: 24px;
+          line-height: 22px;
+        }
+      }
+      .cards {
+        width: 100%;
+        gap: 22px;
+        justify-content: normal;
+        overflow-x: scroll;
+      }
+    }
+  }
+}

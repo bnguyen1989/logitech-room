@@ -32,3 +32,33 @@
     }
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    .title {
+      .title_text {
+        font-size: 30px;
+        line-height: 34px;
+      }
+      .sub_title_text {
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    .title {
+      .title_text {
+        font-size: 20px;
+        line-height: 24px;
+      }
+      .sub_title_text {
+        font-size: 14px;
+        line-height: 18px;
+      }
+    }
+  }
+}
