@@ -33,14 +33,10 @@
 @media (max-width: 900px) {
   .container {
     flex-direction: row;
-    height: fit-content;
-    // padding: 20px;
     
     
     align-items: center;
-    // height: 90%;
-    
-    // max-width: 400px;
+
     .header {
       width: fit-content;
       gap: 0;
@@ -55,12 +51,11 @@
       }
     }
     .wrapper_cards {
-      // height: 100%;
       // align-items: stretch;
       flex-direction: row;
-      // overflow-y: scroll;
       overflow-x: scroll;
-      // height: calc(100% - 40px);
+      overflow-y: scroll;
+      height: calc(100% - 40px);
       padding: 20px 0;
     }
   }

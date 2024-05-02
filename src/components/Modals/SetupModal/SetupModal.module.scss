@@ -48,6 +48,29 @@
   }
 
   .form {
-    
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    height: 90vh;
+    width: 90vw;
+
+    .header {
+      .text {
+        padding-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .title {
+          line-height: 34px;
+        }
+        .subtitle {
+          font-size: 18px;
+          line-height: 24px;
+        }
+      }
+    }
   }
 }
