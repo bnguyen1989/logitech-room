@@ -72,7 +72,9 @@ export const Player: React.FC = () => {
             </LogitechStage>
             <OrbitControls
               enableDamping={true}
-              enableZoom={false}
+              enableZoom={true}
+              minDistance={1}
+              maxDistance={3}
               target={
                 new Vector3(
                   -3.3342790694469784,
