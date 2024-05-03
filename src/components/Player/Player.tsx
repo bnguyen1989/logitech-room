@@ -73,8 +73,6 @@ export const Player: React.FC = () => {
             <OrbitControls
               enableDamping={true}
               enableZoom={true}
-              minDistance={0}
-              maxDistance={3}
               target={
                 new Vector3(
                   -3.3342790694469784,
