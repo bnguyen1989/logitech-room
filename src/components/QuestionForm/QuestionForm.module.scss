@@ -107,12 +107,12 @@
       .mark_item {
         .mark {
           left: -74%;
-    
+
           top: 4%;
           transform: translateY(-50%);
         }
       }
-    
+
       .item {
         padding: 28px 42px;
         gap: 20px;
@@ -126,19 +126,37 @@
             opacity: 1;
           }
         }
-    
+
         .actions {
           display: flex;
           gap: 50px;
         }
       }
     }
-    
+
     .wrapper_done {
       .item {
         .header_item {
           .edit_button {
             display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    .list {
+      .wrapper {
+        padding-left: 20px;
+        width: calc(100% - 20px);
+      }
+      .wrapper_active {
+        .item {
+          .actions {
+            gap: 20px;
           }
         }
       }

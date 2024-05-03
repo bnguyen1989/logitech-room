@@ -27,3 +27,16 @@
     z-index: 999;
   }
 }
+
+@media (max-width: 900px) {
+  .container_screen {
+    .container_modal_right {
+      right: auto;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      height: 100vh;
+      width: 100vw;
+    }
+  }
+}

@@ -16,4 +16,11 @@ export default class Role {
   public get instance(): Role {
     return Object.assign(Object.create(this), this);
   }
+
+  public getData(): { name: RoleUserName; permissions: PermissionUser[] } {
+    return {
+      name: this.name,
+      permissions: this.permissions,
+    };
+  }
 }

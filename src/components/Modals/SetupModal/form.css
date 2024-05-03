@@ -7,7 +7,7 @@ form {
 }
 
 .mktoFormRow {
-	padding-top: 0 !important;
+	padding: 0 !important;
 	font-family: var(--font-family);
 	& label {
 		display: none;
@@ -212,5 +212,33 @@ form {
 		color: var(--main-color-block);
 		background-color: #ffffff;
 		border: 1px solid var(--main-color-block);
+	}
+}
+
+@media (max-width: 900px) {
+	form {
+		padding: 0 !important;
+		
+		& > div {
+			grid-column: span 2 !important;
+		}
+	}
+
+
+	.mktoFormRow {
+	
+		& input {
+			padding: 25px 20px !important;
+		}
+	}
+}
+
+@media (max-width: 500px) {
+
+
+	.mktoFormRow {
+		& input, & textarea, & select {
+			height: 100% !important;
+		}
 	}
 }

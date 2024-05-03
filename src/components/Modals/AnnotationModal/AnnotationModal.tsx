@@ -80,6 +80,13 @@ export const AnnotationModal: React.FC = () => {
             <CloseSVG color={"white"} />
           </IconButton>
         </div>
+        <div className={s.header_mobile}>
+          <div className={s.close}>
+            <IconButton onClick={handleClose}>
+              <CloseSVG />
+            </IconButton>
+          </div>
+        </div>
         <div className={s.wrapper}>
           {dataProduct && (
             <div className={s.item}>

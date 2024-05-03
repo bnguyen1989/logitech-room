@@ -43,3 +43,34 @@
     
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    .header {
+      .text {
+        font-size: 24px;
+      }
+    }
+
+    .title {
+      .text {
+        font-size: 18px;
+        line-height: 24px;
+        color: #697172;
+      }
+    }
+
+    .cards {
+      height: calc(100vh - 246px);
+      overflow-y: auto;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    .title {
+      padding: 20px 15px;
+    }
+  }
+}
