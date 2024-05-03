@@ -12,11 +12,15 @@ export const GetStarted: React.FC = () => {
   const navigate = useNavigate();
 
   const handleCustomerClick = () => {
-    dispatch(changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER) }));
+    dispatch(
+      changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
+    );
     navigate("/configurator", { replace: true });
   };
   const handlePartnerClick = () => {
-    dispatch(changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER) }));
+    dispatch(
+      changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER).getData() })
+    );
     navigate("/configurator", { replace: true });
   };
 
