@@ -233,18 +233,13 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
     [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      // header_title: "LOGITECH Basic",
-      // title: "Device Management Software",
-      subtitle: "(Including Sync)",
       description:
-        "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
+        "Always included with your hardware purchase. Global, business-hours support and 2-year standard warranty, as well as software to better manage and maintain your deployment.",
       keyPermission: SoftwareServicesName.LogitechSync,
     },
     [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      // header_title: "LOGITECH SELECT",
-      // title: "24/7 Enterprise-Grade Support",
       description:
         "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,
@@ -252,8 +247,6 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
     [SoftwareServicesName.ExtendedWarranty]: {
       key: StepName.SoftwareServices,
       image: ServiceImg,
-      // header_title: "LOGITECH Basic",
-      // title: "Device Management Software",
       description:
         "Add up to 3 years of warranty to extend coverage and support for your devices.",
       keyPermission: SoftwareServicesName.ExtendedWarranty,
@@ -287,10 +280,8 @@ export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
       return "Appliance-Based";
     case ServiceName.PC:
       return "PC-Based";
-    case SoftwareServicesName.LogitechSync:
-      return "Device Management Software";
     case SoftwareServicesName.SupportService:
-      return "24/7 Enterprise-Grade Support";
+      return "Select Service Plan";
     default:
       return "";
   }
