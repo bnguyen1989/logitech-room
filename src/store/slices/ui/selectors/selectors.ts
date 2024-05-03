@@ -321,35 +321,18 @@ export const getCorrectStepDataByPermission =
     const permission = getPermission(stepName)(state);
     const items = permission.getElements();
 
-    const correctDataCards = Object.values(copyDataStep.cards).reduce(
-      (acc, card) => {
-        const isExist = items.some((item) => item.name === card.keyPermission);
-        if (isExist) {
-          const isRecommended = getIsRecommendedCardByCard(card)(state);
-
-          if (isRecommended) {
-            if (!acc.recommended) {
-              acc.recommended = {};
-            }
-            acc.recommended[card.keyPermission] = card;
-          } else {
-            if (!acc.other) {
-              acc.other = {};
-            }
-            acc.other[card.keyPermission] = card;
-          }
-        }
-        return acc;
-      },
-      {} as {
-        recommended?: Record<string, CardI>;
-        other?: Record<string, CardI>;
+    const correctDataCards = Object.values(copyDataStep.cards).reduce<
+      Record<string, CardI>
+    >((acc, card) => {
+      const isExist = items.some((item) => item.name === card.keyPermission);
+      if (isExist) {
+        acc[card.keyPermission] = card;
       }
-    );
+      return acc;
+    }, {});
 
     copyDataStep.cards = {
-      ...correctDataCards.recommended,
-      ...correctDataCards.other,
+      ...correctDataCards,
     };
 
     return copyDataStep;

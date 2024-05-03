@@ -16,6 +16,7 @@ import ImageAppliance from "../../../assets/images/services/appliance.png";
 import ImagePCBased from "../../../assets/images/services/pc_baced.png";
 import ServiceImg from "../../../assets/images/items/service.jpg";
 import {
+  CameraName,
   PlatformName,
   RoomSizeName,
   ServiceName,
@@ -455,6 +456,15 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
   switch (stepName) {
     case StepName.Services:
       return [ServiceName.Android, ServiceName.PC];
+    case StepName.ConferenceCamera:
+      return [
+        CameraName.RallyBar,
+        CameraName.RallyBarMini,
+        CameraName.RallyBarHuddle,
+        CameraName.MeetUp2,
+        CameraName.RallyPlus,
+        CameraName.LogitechSight,
+      ];
     case StepName.SoftwareServices:
       return [
         SoftwareServicesName.LogitechSync,
