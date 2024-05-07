@@ -4,9 +4,12 @@ import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { Application } from "../../../models/Application";
 import s from "./Header.module.scss";
 import { useNavigate } from "react-router-dom";
-import ImgBanner from "../../../assets/images/pages/room/room_banner.png";
 import { useUser } from "../../../hooks/user";
-import { copyToClipboard, getParentURL } from "../../../utils/browserUtils";
+import {
+  copyToClipboard,
+  getImageUrl,
+  getParentURL,
+} from "../../../utils/browserUtils";
 import { useDispatch } from "react-redux";
 import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
 import { PermissionUser } from "../../../utils/userRoleUtils";
@@ -48,7 +51,10 @@ export const Header: React.FC = () => {
     <div className={s.container}>
       <div className={s.header}>
         <div className={s.banner}>
-          <img src={ImgBanner} alt="banner" />
+          <img
+            src={getImageUrl("images/pages/room/room_banner.png")}
+            alt="banner"
+          />
         </div>
         <div className={s.header_content}>
           <div className={s.header_text}>

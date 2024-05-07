@@ -1,11 +1,11 @@
 import s from "./RequestConsultation.module.scss";
-import BannerImage from "../../assets/images/getStarted/banner.png";
+import { getImageUrl } from '../../utils/browserUtils'
 
 export const RequestConsultation = () => {
   return (
     <div className={s.container}>
       <div className={s.image}>
-        <img src={BannerImage} alt={"banner"} />
+        <img src={getImageUrl("images/getStarted/banner.png")} alt={"banner"} />
       </div>
 
       <div className={s.content}>
