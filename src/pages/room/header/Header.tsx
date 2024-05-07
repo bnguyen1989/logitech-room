@@ -5,14 +5,11 @@ import { Application } from "../../../models/Application";
 import s from "./Header.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../hooks/user";
-import {
-  copyToClipboard,
-  getImageUrl,
-  getParentURL,
-} from "../../../utils/browserUtils";
+import { copyToClipboard, getImageUrl } from "../../../utils/browserUtils";
 import { useDispatch } from "react-redux";
 import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
 import { PermissionUser } from "../../../utils/userRoleUtils";
+import { useUrl } from "../../../hooks/url";
 
 declare const app: Application;
 
@@ -20,6 +17,7 @@ export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useUser();
+  const { getNavLink } = useUrl();
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
@@ -30,7 +28,9 @@ export const Header: React.FC = () => {
   };
 
   const handleShareUserRooms = () => {
-    const url = `${getParentURL()}/room?userId=${user.id}`;
+    const searchParams = new URLSearchParams();
+    searchParams.set("userId", user.id);
+    const url = getNavLink("/room", searchParams);
     copyToClipboard(url);
   };
 
