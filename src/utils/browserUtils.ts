@@ -31,5 +31,9 @@ export const copyToClipboard = (data: string | object | number) => {
 };
 
 export const getImageUrl = (url: string) => {
-  return `${getParentURL()}/${url}`;
+  let baseUrl = getParentURL();
+  if (process.env.NODE_ENV !== "development") {
+    baseUrl = "https://logitech-staging.3kit.com";
+  }
+  return `${baseUrl}/${url}`;
 };
