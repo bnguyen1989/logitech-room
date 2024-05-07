@@ -104,6 +104,9 @@
 
 @media (max-height: 900px) {
   .container {
+    .image {
+      height: 40vh;
+    }
     .content {
       gap: 20px;
 
