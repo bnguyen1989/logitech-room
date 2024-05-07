@@ -31,6 +31,5 @@ export const copyToClipboard = (data: string | object | number) => {
 };
 
 export const getImageUrl = (url: string) => {
-  return `${import.meta.env.BASE_URL}/${url}`;
+  return `${getParentURL()}/${url}`;
 };
-
