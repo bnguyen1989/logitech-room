@@ -10,7 +10,7 @@ import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
 import { StepName } from "../../utils/baseUtils";
 import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
-import ImgBanner from "../../assets/images/pages/details/room_detail_banner.png";
+import { getImageUrl } from "../../utils/browserUtils";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -134,6 +134,7 @@ export const RoomDetails: React.FC = () => {
       });
   }, [roomId]);
 
+  const ImgBanner = getImageUrl("images/pages/details/room_detail_banner.png");
   const images: string[] = [ImgBanner, ImgBanner, ImgBanner];
 
   return (

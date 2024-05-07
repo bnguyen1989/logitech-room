@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import s from "./Room.module.scss";
 import { Header } from "./header/Header";
-import ImageRoom from "../../assets/images/pages/room/room.png";
 import { CardRoom } from "./cardRoom/CardRoom";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { OrderI } from "../../services/Threekit/type";
 import { Loader } from "../../components/Loader/Loader";
 import { useUser } from "../../hooks/user";
+import { getImageUrl } from "../../utils/browserUtils";
 
 interface RoomI {
   image: string;
@@ -29,7 +29,7 @@ export const Room: React.FC = () => {
           const { name, description, status } = order.metadata;
           if (status === "deleted") return acc;
           return acc.concat({
-            image: ImageRoom,
+            image: getImageUrl("images/pages/room/room.png"),
             title: name,
             desc: description,
             shortId: order.shortId,

@@ -1,20 +1,4 @@
 import { CardI, QuestionFormI, StepDataI } from "./type";
-import LogoMS from "../../../assets/images/platform/microsoft.jpg";
-import LogoGoogle from "../../../assets/images/platform/google.jpg";
-import LogoZoom from "../../../assets/images/platform/zoom.jpg";
-import DeviceMS from "../../../assets/images/platform/microsoft_device.jpg";
-import DeviceGoogle from "../../../assets/images/platform/google_device.jpg";
-import DeviceZoom from "../../../assets/images/platform/zoom_device.jpg";
-import DeviceBYOD from "../../../assets/images/platform/byod_device.jpg";
-import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.png";
-import ImageHundle from "../../../assets/images/rooms/huddle.png";
-import ImageSmall from "../../../assets/images/rooms/small.png";
-import ImageMedium from "../../../assets/images/rooms/medium.png";
-import ImageLarge from "../../../assets/images/rooms/large.png";
-import ImageAuditorium from "../../../assets/images/rooms/auditorium.png";
-import ImageAppliance from "../../../assets/images/services/appliance.png";
-import ImagePCBased from "../../../assets/images/services/pc_baced.png";
-import ServiceImg from "../../../assets/images/items/service.jpg";
 import {
   CameraName,
   PlatformName,
@@ -23,6 +7,7 @@ import {
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
 import { StepName } from "../../../utils/baseUtils";
+import { getImageUrl } from "../../../utils/browserUtils";
 
 export enum UI_ACTION_NAME {
   ADD_ACTIVE_CARD = "ui/addActiveCard",
@@ -109,25 +94,25 @@ export function getPlatformCardData(): Record<string, TypeDataCardI> {
   return {
     [PlatformName.GoogleMeet]: {
       key: StepName.Platform,
-      logo: LogoGoogle,
-      image: DeviceGoogle,
+      logo: getImageUrl("images/platform/google.jpg"),
+      image: getImageUrl("images/platform/google_device.jpg"),
       keyPermission: PlatformName.GoogleMeet,
     },
     [PlatformName.MicrosoftTeams]: {
       key: StepName.Platform,
-      logo: LogoMS,
-      image: DeviceMS,
+      logo: getImageUrl("images/platform/microsoft.jpg"),
+      image: getImageUrl("images/platform/microsoft_device.jpg"),
       keyPermission: PlatformName.MicrosoftTeams,
     },
     [PlatformName.Zoom]: {
       key: StepName.Platform,
-      logo: LogoZoom,
-      image: DeviceZoom,
+      logo: getImageUrl("images/platform/zoom.jpg"),
+      image: getImageUrl("images/platform/zoom_device.jpg"),
       keyPermission: PlatformName.Zoom,
     },
     [PlatformName.BYOD]: {
       key: StepName.Platform,
-      image: DeviceBYOD,
+      image: getImageUrl("images/platform/byod_device.jpg"),
       subtitle:
         "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
       keyPermission: PlatformName.BYOD,
@@ -139,8 +124,7 @@ function getRoomCardData(): Record<string, CardI> {
   return {
     [RoomSizeName.Phonebooth]: {
       key: StepName.RoomSize,
-      image: ImagePhonebooth,
-      // title: "Phone Booth",
+      image: getImageUrl("images/rooms/phonebooth.png"),
       subtitle: "up to 3",
       keyPermission: RoomSizeName.Phonebooth,
       dataThreekit: {
@@ -150,8 +134,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Huddle]: {
       key: StepName.RoomSize,
-      image: ImageHundle,
-      // title: "Huddle Room",
+      image: getImageUrl("images/rooms/huddle.png"),
       subtitle: "up to 6",
       keyPermission: RoomSizeName.Huddle,
       dataThreekit: {
@@ -161,8 +144,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Small]: {
       key: StepName.RoomSize,
-      image: ImageSmall,
-      // title: "Small Room",
+      image: getImageUrl("images/rooms/small.png"),
       subtitle: "up to 8",
       keyPermission: RoomSizeName.Small,
       dataThreekit: {
@@ -172,8 +154,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Medium]: {
       key: StepName.RoomSize,
-      image: ImageMedium,
-      // title: "Medium Room",
+      image: getImageUrl("images/rooms/medium.png"),
       subtitle: "up to 12",
       keyPermission: RoomSizeName.Medium,
       dataThreekit: {
@@ -183,8 +164,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Large]: {
       key: StepName.RoomSize,
-      image: ImageLarge,
-      // title: "Large Room",
+      image: getImageUrl("images/rooms/large.png"),
       subtitle: "up to 20",
       keyPermission: RoomSizeName.Large,
       dataThreekit: {
@@ -194,8 +174,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Auditorium]: {
       key: StepName.RoomSize,
-      image: ImageAuditorium,
-      // title: "Alternative",
+      image: getImageUrl("images/rooms/auditorium.png"),
       subtitle: "more than 20",
       keyPermission: RoomSizeName.Auditorium,
       dataThreekit: {
@@ -211,16 +190,14 @@ export function getServicesCardData(): Record<string, TypeDataCardI> {
   return {
     [ServiceName.Android]: {
       key: StepName.Services,
-      image: ImageAppliance,
-      // title: "Appliance-Based",
+      image: getImageUrl("images/services/appliance.png"),
       subtitle:
         "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
       keyPermission: ServiceName.Android,
     },
     [ServiceName.PC]: {
       key: StepName.Services,
-      image: ImagePCBased,
-      // title: "PC-Based",
+      image: getImageUrl("images/services/pc_baced.png"),
       subtitle:
         "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
       keyPermission: ServiceName.PC,
@@ -232,21 +209,21 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
   return {
     [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
+      image: getImageUrl("images/items/service.jpg"),
       description:
         "Always included with your hardware purchase. Global, business-hours support and 2-year standard warranty, as well as software to better manage and maintain your deployment.",
       keyPermission: SoftwareServicesName.LogitechSync,
     },
     [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
+      image: getImageUrl("images/items/service.jpg"),
       description:
         "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,
     },
     [SoftwareServicesName.ExtendedWarranty]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
+      image: getImageUrl("images/items/service.jpg"),
       description:
         "Add up to 3 years of warranty to extend coverage and support for your devices.",
       keyPermission: SoftwareServicesName.ExtendedWarranty,

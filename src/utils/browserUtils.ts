@@ -29,3 +29,7 @@ export const copyToClipboard = (data: string | object | number) => {
 
   document.body.removeChild(el);
 };
+
+export const getImageUrl = (url: string) => {
+  return `${getParentURL()}/${url}`;
+};
