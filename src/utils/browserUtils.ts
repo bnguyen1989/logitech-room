@@ -31,5 +31,11 @@ export const copyToClipboard = (data: string | object | number) => {
 };
 
 export const getImageUrl = (url: string) => {
-  return `${getParentURL()}/${url}`;
+  const currentScript = document.currentScript as any;
+  const scriptUrl = currentScript ? currentScript?.src : '';
+
+  const baseUrl = scriptUrl.substring(0, scriptUrl.lastIndexOf('/') + 1);
+
+  return `${baseUrl}${url}`;
 };
+
