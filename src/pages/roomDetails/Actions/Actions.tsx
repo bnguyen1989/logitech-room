@@ -14,7 +14,7 @@ declare const app: Application;
 export const Actions: React.FC = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const { handleNavigate } = useUrl("/room");
+  const { handleNavigate } = useUrl();
   const user = useUser();
 
   const handlerDownload = () => {
@@ -26,13 +26,17 @@ export const Actions: React.FC = () => {
     navigate("/request-consultation");
   };
 
+  const handleBack = () => {
+    handleNavigate("/room");
+  };
+
   const userCanReqConsultation = user.role.can(
     PermissionUser.REQUEST_CONSULTATION
   );
 
   return (
     <div className={s.container}>
-      <IconButton text={"Back"} onClick={handleNavigate} variant={"outlined"}>
+      <IconButton text={"Back"} onClick={handleBack} variant={"outlined"}>
         <ListSVG />
       </IconButton>
       <IconButton

@@ -29,3 +29,11 @@ export const copyToClipboard = (data: string | object | number) => {
 
   document.body.removeChild(el);
 };
+
+export const getImageUrl = (url: string) => {
+  let baseUrl = getParentURL();
+  if (process.env.NODE_ENV !== "development") {
+    baseUrl = "https://logitech-staging.3kit.com";
+  }
+  return `${baseUrl}/${url}`;
+};

@@ -367,7 +367,13 @@ function setStepData(
     }
   });
 
-  setDataCard(stepCardData, stepName)(store);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedCards = sortedCardsByArrTemplate(
+    stepCardData,
+    sortedKeyPermissions
+  );
+
+  setDataCard(sortedCards, stepName)(store);
 }
 
 function setAudioExtensionsData(configurator: Configurator) {
@@ -636,10 +642,24 @@ function sortedCardsByArrTemplate(
   templateArr: Array<string>
 ) {
   if (templateArr.length === 0) return cards;
-  return templateArr
-    .map((item) => {
-      const card = cards.find((card) => card.keyPermission === item);
-      return card;
-    })
-    .filter(Boolean) as Array<CardI>;
+
+  const sortedData = cards.reduce<{
+    sorted: Array<CardI | undefined>;
+    rest: Array<CardI>;
+  }>(
+    (acc, item) => {
+      const index = templateArr.indexOf(item.keyPermission);
+      if (index !== -1) {
+        acc.sorted[index] = item;
+      } else {
+        acc.rest.push(item);
+      }
+      return acc;
+    },
+    { sorted: new Array(templateArr.length), rest: [] }
+  );
+
+  const sortedCards = sortedData.sorted.filter(Boolean) as Array<CardI>;
+
+  return [...sortedCards, ...sortedData.rest];
 }

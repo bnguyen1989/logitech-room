@@ -18,11 +18,15 @@ interface PropsI {
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId, removeRoom } = props;
-  const { handleNavigate } = useUrl(`/room/${shortId}`);
+  const { handleNavigate } = useUrl();
   const user = useUser();
 
   const handleDownload = () => {
     app.downloadRoomCSV(shortId);
+  };
+
+  const handleViewRoom = () => {
+    handleNavigate(`/room/${shortId}`);
   };
 
   const userCanRemoveRoom = user.role.can(PermissionUser.REMOVE_ROOM);
@@ -55,7 +59,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
             <DownloadSVG />
           </IconButton>
           <Button
-            onClick={handleNavigate}
+            onClick={handleViewRoom}
             text={"View Your Room"}
             variant={"contained"}
           />
