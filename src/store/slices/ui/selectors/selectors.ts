@@ -99,6 +99,11 @@ export const getIsConfiguratorStep = (state: RootState) => {
 export const getIsProcessInitData = (state: RootState) =>
   state.ui.processInitData;
 
+export const getSelectedRoomSizeCard = (state: RootState) => {
+  const selectedPrepareCards = getSelectedPrepareCards(state);
+  return selectedPrepareCards.find((card) => card.key === StepName.RoomSize);
+};
+
 export const getSelectedPrepareCards = (state: RootState) => {
   const configuratorStepName = [
     StepName.Platform,

@@ -16,6 +16,7 @@ import {
   ToneMapping,
 } from "@react-three/postprocessing";
 import { useCache } from "../../hooks/cache.ts";
+import { usePlayer } from "../../hooks/player.ts";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -25,6 +26,7 @@ export const bhoustonAuth = {
 
 export const Player: React.FC = () => {
   const { cache, keyCache } = useCache();
+  const { distance } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
@@ -72,7 +74,9 @@ export const Player: React.FC = () => {
             </LogitechStage>
             <OrbitControls
               enableDamping={true}
-              enableZoom={false}
+              enableZoom={true}
+              minDistance={distance.minDistance}
+              maxDistance={distance.maxDistance}
               target={
                 new Vector3(
                   -3.3342790694469784,
