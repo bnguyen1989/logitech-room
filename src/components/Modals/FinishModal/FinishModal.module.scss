@@ -51,8 +51,9 @@
 
 @media (max-width: 900px) {
   .container {
-    width: auto;
-    height: auto;
+    padding: 40px 25px;
+    height: calc(100vh - 80px);
+    width: calc(100vw - 50px);
 
     .content {
       .title {

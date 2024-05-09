@@ -146,3 +146,26 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    padding: 40px 25px;
+    width: calc(100vw - 50px);
+    height: calc(100vh - 80px);
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+    .content {
+      flex: 1;
+      align-items: flex-start;
+
+      .message {
+        align-items: flex-start;
+      }
+    }
+  }
+}

@@ -58,3 +58,40 @@
     }
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    gap: 30px;
+
+    .left_content {
+      .image {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .right_content {
+      align-items: center;
+      max-width: none;
+      text-align: center;
+
+      .header {
+        .title {
+          font-size: 24px;
+          line-height: 28px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    .right_content {
+      .buttons {
+        flex-direction: column;
+      }
+    }
+  }
+}

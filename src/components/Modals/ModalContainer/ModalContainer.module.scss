@@ -7,7 +7,7 @@
   top: 0;
   bottom: 0;
   z-index: 900;
-  background-color: rgba(0, 0, 0, 0.50);
+  background-color: rgba(0, 0, 0, 0.5);
 
   .container_modal_center {
     background: #fff;
@@ -30,11 +30,16 @@
 
 @media (max-width: 900px) {
   .container_screen {
+    .container_modal_center {
+      left: auto;
+      top: auto;
+      transform: none;
+    }
     .container_modal_right {
       right: auto;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      left: auto;
+      top: auto;
+      transform: none;
       height: 100vh;
       width: 100vw;
     }

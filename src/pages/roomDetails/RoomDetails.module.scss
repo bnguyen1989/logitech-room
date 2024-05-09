@@ -34,3 +34,15 @@
     align-items: center;
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    align-items: normal;
+    justify-content: normal;
+    .wrapper {
+      padding: 40px;
+      max-width: none;
+      gap: 50px;
+    }
+  }
+}

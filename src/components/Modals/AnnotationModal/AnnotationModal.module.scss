@@ -240,14 +240,16 @@
   }
 
   .sectionsGrey {
-    background-color: #f4f4f4;
+    background-color: var(--main-color-background);
   }
 }
 
 @media (max-width: 900px) {
   .container {
     width: 100vw;
-    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 40px 0;
     .close_button {
       display: none;
@@ -262,7 +264,9 @@
     }
 
     .wrapper {
+      width: 100%;
       max-height: none;
+      overflow-y: auto;
       gap: 60px;
 
       .item {

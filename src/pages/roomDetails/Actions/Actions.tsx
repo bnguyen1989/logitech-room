@@ -36,16 +36,29 @@ export const Actions: React.FC = () => {
 
   return (
     <div className={s.container}>
+      <div className={s.mobile}>
+        <IconButton onClick={handleBack} variant={"outlined"}>
+          <ListSVG />
+        </IconButton>
+        <IconButton
+          onClick={handlerDownload}
+          variant={"outlined"}
+        >
+          <DownloadSVG />
+        </IconButton>
+      </div>
+      <div className={s.desktop}>
       <IconButton text={"Back"} onClick={handleBack} variant={"outlined"}>
-        <ListSVG />
-      </IconButton>
-      <IconButton
-        text={"Download Room Guide"}
-        onClick={handlerDownload}
-        variant={"outlined"}
-      >
-        <DownloadSVG />
-      </IconButton>
+          <ListSVG />
+        </IconButton>
+        <IconButton
+          text={"Download Room Guide"}
+          onClick={handlerDownload}
+          variant={"outlined"}
+        >
+          <DownloadSVG />
+        </IconButton>
+      </div>
       {userCanReqConsultation && (
         <Button
           onClick={handleRequestConsultation}
