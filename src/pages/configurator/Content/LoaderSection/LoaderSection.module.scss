@@ -71,9 +71,10 @@
 
 @media (max-width: 900px) {
   .container {
+    height: calc((var(--vh, 1vh) * 100) - 146px);
     .selected_cards {
       max-width: 100%;
-      
+
       .text {
         .title {
           font-size: 24px;

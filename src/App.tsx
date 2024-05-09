@@ -12,9 +12,15 @@ import { setLangText } from "./store/slices/ui/Ui.slice";
 import dataLang from "./dataLang/products/en-us.json";
 import type { ProductsObj } from "./types/textTypeProduct";
 import { RequestConsultation } from "./pages/requestConsultation/RequestConsultation";
+import { recalculateVh } from "./utils/browserUtils";
 
 function App() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    recalculateVh();
+  }, []);
+
   useEffect(() => {
     // new ServerApi()
     //   .getProductsLang("en-us")
