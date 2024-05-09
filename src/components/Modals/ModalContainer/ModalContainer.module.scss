@@ -30,6 +30,7 @@
 
 @media (max-width: 900px) {
   .container_screen {
+    height: calc(var(--vh, 1vh) * 100);
     .container_modal_center {
       left: auto;
       top: auto;
@@ -40,7 +41,7 @@
       left: auto;
       top: auto;
       transform: none;
-      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
       width: 100vw;
     }
   }

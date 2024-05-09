@@ -8,3 +8,13 @@
     height: calc(100vh - 86px - 30px);
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    height: calc(var(--vh, 1vh) * 100);
+
+    .content {
+      height: calc((var(--vh, 1vh) * 100) - 86px - 30px);
+    }
+  }
+}

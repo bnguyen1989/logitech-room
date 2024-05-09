@@ -60,7 +60,7 @@
     }
 
     .cards {
-      height: calc(100vh - 246px);
+      height: calc((var(--vh, 1vh) * 100) - 246px);
       overflow-y: auto;
     }
   }

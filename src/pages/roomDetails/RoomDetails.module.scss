@@ -45,4 +45,8 @@
       gap: 50px;
     }
   }
+
+  .container_load {
+    height: calc(var(--vh, 1vh) * 100);
+  }
 }

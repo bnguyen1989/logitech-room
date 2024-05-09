@@ -151,7 +151,7 @@
   .container {
     padding: 40px 25px;
     width: calc(100vw - 50px);
-    height: calc(100vh - 80px);
+    height: calc((var(--vh, 1vh) * 100) - 80px);
 
     .header {
       display: flex;
