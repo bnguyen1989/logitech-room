@@ -3,7 +3,9 @@ import path from "path";
 import cors from "cors";
 import userRouterProduct from "./routes/product";
 import userLang from "./routes/languages";
+import userRouterRoom from "./routes/room";
 import dataTranslate from "./routes/dataTranslate";
+
 
 const app = express();
 
@@ -15,7 +17,9 @@ app.use(express.urlencoded({ extended: true })); // Для парсинга appl
 
 app.use("/products", userRouterProduct);
 app.use("/languages", userLang);
+app.use("/room", userRouterRoom);
 app.use("/dataTranslate", dataTranslate);
+
 
 app.use(express.static(path.join(__dirname, "../../dist")));
 

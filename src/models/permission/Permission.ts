@@ -1,6 +1,5 @@
 import { IdGenerator } from "../IdGenerator";
 import { ItemElement } from "./elements/ItemElement";
-import { StepName } from "./type";
 import { Step } from "./step/Step";
 import { ChangeStepRule } from "./rules/ChangeStepRule";
 import { RemoveActiveElementRule } from "./rules/RemoveActiveElementRule";
@@ -25,9 +24,12 @@ import { RecommendationElementHandler } from "./handlers/property/Recommendation
 import { RequiredElementHandler } from "./handlers/property/RequiredElementHandler";
 import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
 import { DependentMountHandler } from "./handlers/mounts/DependentMountHandler";
+import { DisabledCounterElementHandler } from "./handlers/property/DisabledCounterElementHandler";
+import { DirectionStep, StepName } from "../../utils/baseUtils";
+import { AvailableStepHandler } from "./handlers/property/AvailableStepHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
-  private currentStepName: StepName | null = null;
+  private currentStepName: StepName;
   private steps: Array<Step> = [];
   private activeKeyItems: Array<string> = [];
 
@@ -42,10 +44,8 @@ export class Permission {
     this.setInitDataItemsSteps(dataItems);
 
     const currentStep = this.getCurrentStep();
-    if (currentStep) {
-      new ChangeStepHandler().handle(currentStep);
-      this.executeBasicHandlers(currentStep);
-    }
+    new ChangeStepHandler().handle(currentStep);
+    this.executeBasicHandlers(currentStep);
   }
 
   public init(): void {
@@ -69,7 +69,7 @@ export class Permission {
         if (value?.color) {
           element.setProperty({ color: value.color });
         }
-        if (value?.count && element instanceof ItemElement) {
+        if (value?.count !== undefined && element instanceof ItemElement) {
           const setDataCountableMount = (element: CountableMountElement) => {
             element.setActiveIndex(value.count);
             element.setMin(value.counterMin);
@@ -96,16 +96,19 @@ export class Permission {
   }
 
   public executeBasicHandlers(step: Step): void {
+    new AvailableStepHandler().handle(step);
     new DependentMountHandler().handle(step);
     new ReservationMountHandler().handle(step);
     new RecommendationElementHandler().handle(step);
     new RequiredElementHandler().handle(step);
+    new DisabledCounterElementHandler().handle(step);
   }
 
   public addStep(step: Step): Permission {
     if (this.steps.length) {
       const lastStep = this.steps[this.steps.length - 1];
       step.prevStep = lastStep;
+      lastStep.nextStep = step;
     }
     this.steps.push(step);
     return this;
@@ -117,22 +120,17 @@ export class Permission {
 
   public canNextStep(): boolean {
     const currentStep = this.getCurrentStep();
-    if (currentStep) {
-      return new ChangeStepRule("next").validate(currentStep);
-    }
-    return true;
+    return new ChangeStepRule(DirectionStep.Next).validate(currentStep);
   }
 
   public canAddActiveElementByName(itemName: string): boolean {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) {
-      return false;
-    }
     const element = currentStep.getElementByName(itemName);
-    if (!element) {
-      return false;
+    let resValid = false;
+    if (element) {
+      resValid = new AddActiveElementRule(element).validate(currentStep);
     }
-    return new AddActiveElementRule(element).validate(currentStep);
+    return resValid;
   }
 
   public processChangeColorElementByName(itemName: string): void {
@@ -141,62 +139,44 @@ export class Permission {
 
   public processAddActiveElementByName(itemName: string): void {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) {
-      return;
-    }
     const element = currentStep.getElementByName(itemName);
-    if (!element) {
-      return;
+    if (element) {
+      new AddActiveElementHandler(element).handle(currentStep);
+      this.executeBasicHandlers(currentStep);
     }
-    new AddActiveElementHandler(element).handle(currentStep);
-    this.executeBasicHandlers(currentStep);
   }
 
   public canRemoveActiveElementByName(itemName: string): boolean {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) {
-      return false;
-    }
     const element = currentStep.getElementByName(itemName);
-    if (!element) {
-      return false;
+    let resValid = false;
+    if (element) {
+      resValid = new RemoveActiveElementRule(element).validate(currentStep);
     }
-    return new RemoveActiveElementRule(element).validate(currentStep);
+    return resValid;
   }
 
   public processRemoveActiveElementByName(itemName: string): void {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) {
-      return;
-    }
     const element = currentStep.getElementByName(itemName);
-
-    if (!element) {
-      return;
+    if (element) {
+      new RemoveActiveElementHandler(element).handle(currentStep);
+      this.executeBasicHandlers(currentStep);
     }
-    new RemoveActiveElementHandler(element).handle(currentStep);
-    this.executeBasicHandlers(currentStep);
   }
 
   public getElements(): Array<ItemElement | MountElement> {
     const currentStep = this.getCurrentStep();
-    if (currentStep) {
-      return currentStep.getValidElements();
-    }
-    return [];
+    return currentStep.getValidElements();
   }
 
   public getActiveElements(): Array<ItemElement | MountElement> {
     const currentStep = this.getCurrentStep();
-    if (currentStep) {
-      return currentStep.getActiveElements();
-    }
-    return [];
+    return currentStep.getActiveElements();
   }
 
   public getDataForRemove(): Record<string, Array<string>> {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) return {};
 
     const arrayActiveKeys = this.activeKeyItems;
     const chainActiveElements = currentStep.getChainActiveElements();
@@ -211,7 +191,6 @@ export class Permission {
 
   public getDataForAdd(): Record<string, Array<string>> {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) return {};
 
     const arrayActiveKeys = this.activeKeyItems;
     const chainActiveElements = currentStep.getChainActiveElements();
@@ -227,7 +206,6 @@ export class Permission {
 
   public getItemsNeedChange(name: string): Record<string, Array<string>> {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) return {};
     const element = currentStep.getElementByName(name);
     if (!(element instanceof ItemElement)) return {};
     return element.getAutoChangeItems();
@@ -235,16 +213,26 @@ export class Permission {
 
   public isRecommendedElementByName(itemName: string): boolean {
     const currentStep = this.getCurrentStep();
-    if (!currentStep) return false;
     const element = currentStep.getElementByName(itemName);
-    if (!element) return false;
-    return element.getRecommended();
+    let res = false;
+    if (element) res = element.getRecommended();
+    return res;
   }
 
-  public getCurrentStep(): Step | null {
-    return (
-      this.steps.find((step) => step.name === this.currentStepName) || null
-    );
+  public isSecondaryElementByName(itemName: string): boolean {
+    const currentStep = this.getCurrentStep();
+    const element = currentStep.getElementByName(itemName);
+    let res = false;
+    if (element) res = element.getSecondary();
+    return res;
+  }
+
+  public getCurrentStep(): Step {
+    return this.getStepByName(this.currentStepName);
+  }
+
+  public getStepByName(stepName: StepName): Step {
+    return this.steps.find((step) => step.name === stepName) as Step;
   }
 
   private groupKeyElementsByStepName(

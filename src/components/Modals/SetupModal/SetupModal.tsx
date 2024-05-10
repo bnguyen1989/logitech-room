@@ -8,10 +8,12 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
+import { useUser } from "../../../hooks/user";
+import { setUserData } from "../../../store/slices/user/User.slice";
 
 declare const MktoForms2: any;
 
@@ -19,7 +21,9 @@ export const SetupModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getSetupModalData);
-  const orderData: any = useAppSelector(getOrderData);
+  const user = useUser();
+  const orderData: any = useAppSelector(getOrderData(user.id));
+  const [isRequest, setIsRequest] = useState(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
@@ -30,17 +34,22 @@ export const SetupModal: React.FC = () => {
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
 
     MktoForms2.whenReady((form: any) => {
-      new ThreekitService().createOrder(orderData).then((order) => {
-        const baseUrl = getParentURL();
-        const link = `${baseUrl}/room/${order.shortId}`;
-        form.setValues({
-          honeypot: link,
-        });
+      const baseUrl = getParentURL();
+      const link = `${baseUrl}/room?userId=${user.id}`;
+      form.setValues({
+        editableField6: link,
       });
 
       form.onSubmit(() => {
-        dispatch(setMySetupModal({ isOpen: false }));
-        navigate("/room", { replace: true });
+        if (!isRequest) {
+          setIsRequest(true);
+          new ThreekitService().createOrder(orderData).then(() => {
+            dispatch(setMySetupModal({ isOpen: false }));
+            dispatch(setUserData({ data: { ...form.getValues() } }));
+            navigate("/room", { replace: true });
+          });
+        }
+
         return false;
       });
       const button = document.querySelector(".mktoButton");

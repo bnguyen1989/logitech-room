@@ -10,11 +10,16 @@ export interface AttrSpecI {
 }
 
 export enum RuleName {
+  // Attribute Rules
   tapQty_tapIp = "tapQty_tapIp",
   micPodQty_sight = "micPodQty_sight",
-  micPod_micMount_optional = "micPod_micMount_optional",
-  micPod_micPodExt_optional = "micPod_micPodExt_optional",
-  micPod_micPodHub_required = "micPod_micPodHub_required",
+  micPod_CATCoupler = "micPod_CATCoupler",
+  micPod_micMount_inNoneWhite = "micPod_micMount_inNoneWhite",
+  micPod_micMount_inWhite = "micPod_micMount_inWhite",
+  rallyBar_TapIp_bundle = "rallyBar_TapIp_bundle",
+  rallyBarMini_TapIp_bundle = "rallyBarMini_TapIp_bundle",
+
+  //Recommendation Rules
   reco_micPendantMount_inWhite = "reco_micPendantMount_inWhite",
   reco_micPod_micPodHub = "reco_micPod_micPodHub",
 }

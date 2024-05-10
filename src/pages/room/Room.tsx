@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import s from "./Room.module.scss";
 import { Header } from "./header/Header";
-import ImageRoom from "../../assets/images/pages/room/room.png";
 import { CardRoom } from "./cardRoom/CardRoom";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
-import { ConfigData } from "../../utils/threekitUtils";
 import { OrderI } from "../../services/Threekit/type";
 import { Loader } from "../../components/Loader/Loader";
+import { useUser } from "../../hooks/user";
+import { getImageUrl } from "../../utils/browserUtils";
 
 interface RoomI {
   image: string;
@@ -17,35 +17,47 @@ interface RoomI {
 export const Room: React.FC = () => {
   const [rooms, setRooms] = useState<Array<RoomI>>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const user = useUser();
 
   useEffect(() => {
     setIsLoaded(true);
+    if (!user.id) return;
     new ThreekitService()
-      .getOrders({ originOrgId: ConfigData.userId })
+      .getOrders({ originOrgId: user.id })
       .then((res) => {
-        const dataRooms = res.orders.map((order: OrderI) => {
-          return {
-            image: ImageRoom,
-            title: order.metadata.name,
-            desc: order.metadata.description,
+        const dataRooms = res.orders.reduce<RoomI[]>((acc, order: OrderI) => {
+          const { name, description, status } = order.metadata;
+          if (status === "deleted") return acc;
+          return acc.concat({
+            image: getImageUrl("images/pages/room/room.png"),
+            title: name,
+            desc: description,
             shortId: order.shortId,
-          };
-        });
+          });
+        }, []);
         setRooms(dataRooms);
       })
       .finally(() => {
         setIsLoaded(false);
       });
-  }, []);
+  }, [user.id]);
+
+  const removeRoom = (shortId: string) => {
+    new ThreekitService().deleteOrder(shortId);
+    setRooms((prev) => prev.filter((room) => room.shortId !== shortId));
+  };
+
   return (
-    <div className={s.container}>
+    <div className={isLoaded ? s.container_load : s.container}>
       <Header />
 
       <div className={s.rooms}>
         {rooms.map((room, index) => (
           <div className={s.wrapper_room} key={index}>
-            <div className={s.divider}></div>
-            <CardRoom {...room} />
+            <div
+              className={index === 0 ? s.divider_solid : s.divider_dashes}
+            ></div>
+            <CardRoom {...room} removeRoom={removeRoom} />
           </div>
         ))}
       </div>

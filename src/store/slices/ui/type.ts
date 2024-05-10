@@ -1,15 +1,5 @@
 import { ValueAssetStateI } from "../../../models/configurator/type";
-
-export enum StepName {
-  Platform = "Platform",
-  RoomSize = "Room Size",
-  Services = "Services",
-  ConferenceCamera = "Conference Camera",
-  AudioExtensions = "Audio Extensions & Accessories",
-  MeetingController = "Meeting Controller & Add On",
-  VideoAccessories = "Video Accessories",
-  SoftwareServices = "Software & Services",
-}
+import { StepName } from "../../../utils/baseUtils";
 
 export interface StepDataI {
   [StepName.Platform]: StepI;
@@ -45,15 +35,16 @@ export interface StepI {
 }
 
 export type typeThreekitValue = Record<string, ValueAssetStateI>;
-export type TypeCardPermissionWithDataThreekit = Record<string, typeThreekitValue>;
+export type TypeCardPermissionWithDataThreekit = Record<
+  string,
+  typeThreekitValue
+>;
 
 export interface CardI {
   key: StepName;
-  // title: string;
-  image: string;
+  image?: string;
   logo?: string;
   subtitle?: string;
-  // header_title?: string;
   description?: string;
   counter?: CounterI;
   select?: SelectI;
@@ -92,7 +83,6 @@ export interface SelectI {
 }
 
 export interface QuestionFormI {
-  title: string;
   question: string;
   options: Array<{
     value: boolean;
@@ -101,4 +91,3 @@ export interface QuestionFormI {
   active: boolean;
   done: boolean;
 }
-

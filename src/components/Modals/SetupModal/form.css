@@ -7,12 +7,13 @@ form {
 }
 
 .mktoFormRow {
-	font-family: BrownPro;
+	padding: 0 !important;
+	font-family: var(--font-family);
 	& label {
 		display: none;
 	}
 
-	& input, & select {
+	& input, & textarea, & select {
 		width: 100% !important;
 		background-color: #f4f4f4 !important;
 		padding: 25px 20px !important;
@@ -23,6 +24,10 @@ form {
 		font-style: normal !important;
 		font-weight: 400 !important;
 		line-height: 24px !important;
+	}
+
+	& textarea {
+		height: 100px !important;
 	}
 
 	& select {
@@ -37,6 +42,20 @@ form {
 	#honeypot, #lastFormURL, #lastFormReferrer {
 		display: none;
 	}
+
+	.mktoCaptchaDisclaimer {
+		display: none;
+	
+	}
+}
+
+#captcha {
+	display: none;
+}
+
+.mktoCaptchaDisclaimer {
+	display: none;
+
 }
 
 .mktoFieldWrap {
@@ -77,7 +96,7 @@ form {
 	& p {
 		width: fit-content;
 		color: #2F3132;
-		font-family: BrownPro;
+		font-family:"Poppins", sans-serif;
 		font-size: 18px;
 		font-style: normal;
 		font-weight: 300;
@@ -85,7 +104,7 @@ form {
 
 		& a {
 			color: var(--Logitech-Colors-Kohle, #2F3132);
-			font-family: BrownPro;
+			font-family: "Poppins", sans-serif;
 			font-size: 18px;
 			font-style: normal;
 			font-weight: 700;
@@ -114,7 +133,7 @@ form {
 		& label {
 			margin: 0 !important;
 			color: #2F3132;
-			font-family: BrownPro;
+			font-family: "Poppins", sans-serif;
 			font-size: 14px;
 			font-style: normal;
 			font-weight: 300;
@@ -141,7 +160,7 @@ form {
 			width: 630px !important;
 			margin: 0 !important;
 			color: #2F3132;
-			font-family: BrownPro;
+			font-family: "Poppins", sans-serif;
 			font-size: 14px;
 			font-style: normal;
 			font-weight: 300;
@@ -149,7 +168,7 @@ form {
 
 			& a {
 				color: #2F3132;
-				font-family: BrownPro;
+				font-family:"Poppins", sans-serif;
 				font-size: 14px;
 				font-style: normal;
 				font-weight: 700;
@@ -193,5 +212,33 @@ form {
 		color: var(--main-color-block);
 		background-color: #ffffff;
 		border: 1px solid var(--main-color-block);
+	}
+}
+
+@media (max-width: 900px) {
+	form {
+		padding: 0 !important;
+		
+		& > div {
+			grid-column: span 2 !important;
+		}
+	}
+
+
+	.mktoFormRow {
+	
+		& input {
+			padding: 25px 20px !important;
+		}
+	}
+}
+
+@media (max-width: 500px) {
+
+
+	.mktoFormRow {
+		& input, & textarea, & select {
+			height: 100% !important;
+		}
 	}
 }

@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { CardI, SelectedDataI, StepDataI, StepName } from "./type";
+import { CardI, SelectedDataI, StepDataI } from "./type";
 import { getInitStepData } from "./utils";
+import { StepName } from "../../../utils/baseUtils";
 
 interface UIStateI {
+  locale: string;
   processInitData: boolean;
   stepData: StepDataI;
   activeStep: StepName;
@@ -11,6 +13,7 @@ interface UIStateI {
 }
 
 const initialState: UIStateI = {
+  locale: "en-us",
   processInitData: false,
   langTextProduct: {},
   stepData: getInitStepData(),
@@ -48,6 +51,18 @@ const uiSlice = createSlice({
         ...stepData,
         [keyItemPermission]: cardData,
       };
+    },
+    removeItem: (
+      state,
+      action: PayloadAction<{
+        step: string;
+        keyItemPermission: string;
+      }>
+    ) => {
+      const { step, keyItemPermission } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
+      delete stepData[keyItemPermission];
+      state.selectedData[step] = stepData;
     },
     setPropertyItem: (
       state,
@@ -145,11 +160,17 @@ const uiSlice = createSlice({
       action: PayloadAction<{
         step: StepName;
         keyCards: string[];
+        clear?: boolean;
       }>
     ) => {
       const { selectedData } = state;
-      const { step, keyCards } = action.payload;
+      const { step, keyCards, clear } = action.payload;
       const stepData = selectedData[step] ?? {};
+      if (clear) {
+        Object.keys(stepData).forEach((key) => {
+          stepData[key].selected = [];
+        });
+      }
       keyCards.forEach((key) => {
         const cardData = stepData[key] ?? {
           selected: [],
@@ -159,6 +180,20 @@ const uiSlice = createSlice({
         stepData[key] = cardData;
       });
       state.selectedData[step] = stepData;
+    },
+    clearAllActiveCardsSteps: (
+      state,
+      action: PayloadAction<{
+        ignoreSteps?: StepName[];
+      }>
+    ) => {
+      const { ignoreSteps = [] } = action.payload;
+      const selectedData = state.selectedData;
+      Object.keys(selectedData).forEach((step) => {
+        if (ignoreSteps.includes(step as StepName)) return;
+        selectedData[step] = {};
+      });
+      state.selectedData = selectedData;
     },
     setDataCardsStep: (
       state,
@@ -189,8 +224,10 @@ export const {
   changeProcessInitData,
   setPropertyItem,
   createItem,
+  removeItem,
   setDataCardsStep,
   removeActiveCards,
   addActiveCards,
+  clearAllActiveCardsSteps,
 } = uiSlice.actions;
 export default uiSlice.reducer;

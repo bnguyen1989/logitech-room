@@ -7,7 +7,7 @@
   top: 0;
   bottom: 0;
   z-index: 900;
-  background-color: rgba(0, 0, 0, 0.50);
+  background-color: rgba(0, 0, 0, 0.5);
 
   .container_modal_center {
     background: #fff;
@@ -25,5 +25,24 @@
     top: 0%;
     bottom: 0;
     z-index: 999;
+  }
+}
+
+@media (max-width: 900px) {
+  .container_screen {
+    height: calc(var(--vh, 1vh) * 100);
+    .container_modal_center {
+      left: auto;
+      top: auto;
+      transform: none;
+    }
+    .container_modal_right {
+      right: auto;
+      left: auto;
+      top: auto;
+      transform: none;
+      height: calc(var(--vh, 1vh) * 100);
+      width: 100vw;
+    }
   }
 }

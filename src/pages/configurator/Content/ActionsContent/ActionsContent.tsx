@@ -1,17 +1,16 @@
 import s from "./ActionsContent.module.scss";
-
-import { IconButton } from "../../../../components/Buttons/IconButton/IconButton";
-import { RevertSVG } from "../../../../assets";
 import { Button } from "../../../../components/Buttons/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setMySetupModal } from "../../../../store/slices/modals/Modals.slice";
+import { setFinishModal } from "../../../../store/slices/modals/Modals.slice";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
   getIsCanChangeStep,
   getNavigationStepData,
 } from "../../../../store/slices/ui/selectors/selectors";
 import { Application } from "../../../../models/Application";
+import { IconButton } from "../../../../components/Buttons/IconButton/IconButton";
+import { BackMarkSVG } from "../../../../assets";
 
 declare const app: Application;
 
@@ -23,7 +22,7 @@ export const ActionsContent = () => {
 
   const handleNext = () => {
     if (!nextStep) {
-      dispatch(setMySetupModal({ isOpen: true }));
+      dispatch(setFinishModal({ isOpen: true }));
       return;
     }
 
@@ -39,18 +38,16 @@ export const ActionsContent = () => {
     app.changeStep(prevStep.key);
   };
 
-  const handleRevert = () => {
-    navigate("/", { replace: true });
-  };
-
   return (
     <div className={s.actions}>
-      {!nextStep && (
-        <IconButton text={"Start over"} onClick={handleRevert}>
-          <RevertSVG />
+      <div className={s.mobile_back}>
+        <IconButton onClick={handleBack} variant={"outlined"}>
+          <BackMarkSVG />
         </IconButton>
-      )}
-      <Button onClick={handleBack} text="Back" />
+      </div>
+      <div className={s.button_back}>
+        <Button onClick={handleBack} text="Back" />
+      </div>
       <Button
         onClick={handleNext}
         text={nextStep ? "Next" : "Finish"}

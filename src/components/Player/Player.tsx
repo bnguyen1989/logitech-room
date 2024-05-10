@@ -1,15 +1,22 @@
 import s from "./Player.module.scss";
-import { CameraControls, OrbitControls } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { ExporterResolver, Viewer } from "@threekit/react-three-fiber";
-import CameraControlsImpl from "camera-controls";
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
-import Geoff2Stage from "../stages/Geoff2Stage.tsx";
+import LogitechStage from "../stages/LogitechStage.tsx";
 import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { useRef } from "react"; 
+import { Vector3 } from "three";
+import {
+  EffectComposer,
+  Selection,
+  Outline,
+  ToneMapping,
+} from "@react-three/postprocessing";
+import { useCache } from "../../hooks/cache.ts";
+import { usePlayer } from "../../hooks/player.ts";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -18,7 +25,8 @@ export const bhoustonAuth = {
 };
 
 export const Player: React.FC = () => {
-  const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
+  const { cache, keyCache } = useCache();
+  const { distance } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
@@ -45,8 +53,8 @@ export const Player: React.FC = () => {
       <Viewer
         auth={bhoustonAuth}
         resolver={ExporterResolver({
-          cache: true,
-          cacheScope: "v12",
+          cache: cache,
+          cacheScope: keyCache,
           mode: "experimental",
           settings: {
             prune: {
@@ -59,23 +67,48 @@ export const Player: React.FC = () => {
         ui={false}
       >
         <>
-          <CameraControls ref={cameraControlsRef} />
-          <Geoff2Stage cameraControlsRef={cameraControlsRef}>
-            <Room roomAssetId={assetId} />
-          </Geoff2Stage>
-          <OrbitControls
-            enableDamping={true}
-            enableZoom={false}
-            maxDistance={3}
-            minDistance={1}
-            minZoom={1}
-            maxZoom={3}
-            minPolarAngle={Math.PI / 6}
-            maxPolarAngle={Math.PI / 2}
-     
-          />
+          <Selection>
+            <Effects />
+            <LogitechStage>
+              <Room roomAssetId={assetId} />
+            </LogitechStage>
+            <OrbitControls
+              enableDamping={true}
+              enableZoom={true}
+              minDistance={distance.minDistance}
+              maxDistance={distance.maxDistance}
+              target={
+                new Vector3(
+                  -3.3342790694469784,
+                  15.269443817758102,
+                  -3.999528610518013
+                )
+              }
+              minPolarAngle={Math.PI / 6}
+              maxPolarAngle={Math.PI / 2}
+            />
+          </Selection>
         </>
       </Viewer>
     </div>
   );
 };
+
+function Effects() {
+  return (
+    <EffectComposer
+      stencilBuffer
+      disableNormalPass
+      autoClear={false}
+      multisampling={4}
+    >
+      <Outline
+        visibleEdgeColor={0x47b63f}
+        hiddenEdgeColor={0x47b63f}
+        blur={false}
+        edgeStrength={10}
+      />
+      <ToneMapping />
+    </EffectComposer>
+  );
+}

@@ -10,18 +10,14 @@ import {
 import {
   CardI,
   SelectDataI,
-  StepName,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
-import MicImg from "../../../../assets/images/items/mic.jpg";
-import CameraImg from "../../../../assets/images/items/camera.jpg";
-import ControllerImg from "../../../../assets/images/items/controller.jpg";
-import AccessImg from "../../../../assets/images/items/access.jpg";
 import {
   addActiveCard,
   addActiveCards,
   changeActiveStep,
   changeProcessInitData,
+  clearAllActiveCardsSteps,
   createItem,
   removeActiveCard,
   removeActiveCards,
@@ -33,15 +29,16 @@ import { AddItemCommand } from "../../../../models/command/AddItemCommand";
 import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import {
-  SoftwareServicesName,
   getPermissionNameByItemName,
   isSupportService,
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
+  getColorsData,
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
+  getSortedKeyPermissionsByStep,
 } from "../utils";
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
@@ -49,12 +46,16 @@ import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelect
 import {
   getActiveStep,
   getAssetFromCard,
+  getCardByKeyPermission,
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
+  getProductNameFromMetadata,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
+import { getRoomAssetId } from "../../../../utils/threekitUtils";
+import { StepName } from "../../../../utils/baseUtils";
 
 declare const app: Application;
 
@@ -107,6 +108,11 @@ export const getUiHandlers = (store: Store) => {
   app.eventEmitter.on(
     "threekitDataInitialized",
     (configurator: Configurator) => {
+      store.dispatch(
+        clearAllActiveCardsSteps({
+          ignoreSteps: [StepName.RoomSize],
+        })
+      );
       setAudioExtensionsData(configurator)(store);
       setCameraData(configurator)(store);
       setMeetingControllerData(configurator)(store);
@@ -117,6 +123,18 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(changeAssetId(configurator.assetId));
     }
   );
+};
+
+export const updateAssetIdByKeyPermission = (keyPermission: string) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const activeStep = getActiveStep(state);
+    if (activeStep !== StepName.RoomSize) return;
+    const card = getCardByKeyPermission(activeStep, keyPermission)(state);
+    if (!card) return;
+    const roomAssetId = getRoomAssetId(keyPermission);
+    app.currentConfigurator.assetId = roomAssetId;
+  };
 };
 
 export function updateActiveCardsByPermissionData(permission: Permission) {
@@ -224,7 +242,11 @@ function updateDataByConfiguration(
       }
     });
     store.dispatch(
-      setActiveCardsForStep({ step: stepName, keyCards: activeKeys })
+      setActiveCardsForStep({
+        step: stepName,
+        keyCards: activeKeys,
+        clear: stepName !== StepName.ConferenceCamera,
+      })
     );
   };
 }
@@ -238,9 +260,7 @@ function setStepData(
     | StepName.MeetingController
     | StepName.VideoAccessories
     | StepName.SoftwareServices,
-  itemNameList: Array<Array<string>>,
-  image: string,
-  subtitle?: string
+  itemNameList: Array<Array<string>>
 ) {
   const stepCardData: Array<CardI> = [];
 
@@ -259,8 +279,6 @@ function setStepData(
     Object.keys(cardPermissionWithDataThreekit).forEach((keyPermission) => {
       temp.push({
         key: stepName,
-        image: image,
-        subtitle: subtitle,
         keyPermission: keyPermission,
         dataThreekit: {
           attributeName: name,
@@ -313,23 +331,29 @@ function setStepData(
     stepCardData.push(...temp);
   });
 
+  const state = store.getState();
+
   stepCardData.forEach((tempCard) => {
     const { threekitItems } = tempCard.dataThreekit;
 
     const color = getPropertyColorCardByKeyPermission(
       stepName,
       tempCard.keyPermission
-    )(store.getState());
+    )(state);
 
-    //temp solution, but need to be refactored, because threekitItems can include isn't color items (Object.keys(threekitItems).length === 2)
-    const isSetColors = Object.keys(threekitItems).length === 2 && !color;
+    const colorsName = getColorsData().map((item) => item.name);
+    const nameItems = Object.keys(threekitItems);
+    const includeColors = colorsName.filter((item) =>
+      nameItems.some((name) => name.includes(item))
+    );
+    const isSetColors = includeColors.length && !color;
     if (isSetColors) {
       store.dispatch(
         setPropertyItem({
           step: stepName,
           keyItemPermission: tempCard.keyPermission,
           property: {
-            color: "Graphite",
+            color: includeColors[0],
           },
         })
       );
@@ -343,7 +367,13 @@ function setStepData(
     }
   });
 
-  setDataCard(stepCardData, stepName)(store);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedCards = sortedCardsByArrTemplate(
+    stepCardData,
+    sortedKeyPermissions
+  );
+
+  setDataCard(sortedCards, stepName)(store);
 }
 
 function setAudioExtensionsData(configurator: Configurator) {
@@ -352,9 +382,7 @@ function setAudioExtensionsData(configurator: Configurator) {
       configurator,
       store,
       StepName.AudioExtensions,
-      Configurator.AudioExtensionName,
-      MicImg,
-      undefined
+      Configurator.AudioExtensionName
     );
   };
 }
@@ -365,9 +393,7 @@ function setCameraData(configurator: Configurator) {
       configurator,
       store,
       StepName.ConferenceCamera,
-      Configurator.CameraName,
-      CameraImg,
-      undefined
+      Configurator.CameraName
     );
   };
 }
@@ -378,9 +404,7 @@ function setMeetingControllerData(configurator: Configurator) {
       configurator,
       store,
       StepName.MeetingController,
-      Configurator.MeetingControllerName,
-      ControllerImg,
-      "Minimum (1)"
+      Configurator.MeetingControllerName
     );
   };
 }
@@ -391,8 +415,7 @@ function setVideoAccessoriesData(configurator: Configurator) {
       configurator,
       store,
       StepName.VideoAccessories,
-      Configurator.VideoAccessoriesName,
-      AccessImg
+      Configurator.VideoAccessoriesName
     );
   };
 }
@@ -442,7 +465,10 @@ function setStepDataPrepareCard(
     );
   });
 
-  setDataCard(cardData, stepName)(store);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedCards = sortedCardsByArrTemplate(cardData, sortedKeyPermissions);
+
+  setDataCard(sortedCards, stepName)(store);
 }
 
 function setPlatformData(configurator: Configurator) {
@@ -500,8 +526,9 @@ function setSoftwareServicesData(configurator: Configurator) {
               [baseCard.keyPermission]: asset,
             };
           }
-          const plan = asset.metadata["Service Plan"];
-          if (plan) {
+          const productName = getProductNameFromMetadata(asset.metadata);
+          if (productName) {
+            const plan = productName.split("-")[1]?.trim();
             values.push({
               label: plan,
               value: asset.id,
@@ -563,21 +590,15 @@ function setSoftwareServicesData(configurator: Configurator) {
       );
     });
 
-    const sortedTemplateArr = [
-      SoftwareServicesName.LogitechSync,
-      SoftwareServicesName.SupportService,
-      SoftwareServicesName.ExtendedWarranty,
-    ];
-    const sortedArr = sortedTemplateArr
-      .map((item) => {
-        const card = softwareServicesCardData.find(
-          (card) => card.keyPermission === item
-        );
-        return card;
-      })
-      .filter(Boolean) as Array<CardI>;
+    const sortedKeyPermissions = getSortedKeyPermissionsByStep(
+      StepName.SoftwareServices
+    );
+    const sortedCards = sortedCardsByArrTemplate(
+      softwareServicesCardData,
+      sortedKeyPermissions
+    );
 
-    setDataCard(sortedArr, StepName.SoftwareServices)(store);
+    setDataCard(sortedCards, StepName.SoftwareServices)(store);
   };
 }
 
@@ -614,4 +635,31 @@ function setDataCard(cards: Array<CardI>, stepName: StepName) {
       })
     );
   };
+}
+
+function sortedCardsByArrTemplate(
+  cards: Array<CardI>,
+  templateArr: Array<string>
+) {
+  if (templateArr.length === 0) return cards;
+
+  const sortedData = cards.reduce<{
+    sorted: Array<CardI | undefined>;
+    rest: Array<CardI>;
+  }>(
+    (acc, item) => {
+      const index = templateArr.indexOf(item.keyPermission);
+      if (index !== -1) {
+        acc.sorted[index] = item;
+      } else {
+        acc.rest.push(item);
+      }
+      return acc;
+    },
+    { sorted: new Array(templateArr.length), rest: [] }
+  );
+
+  const sortedCards = sortedData.sorted.filter(Boolean) as Array<CardI>;
+
+  return [...sortedCards, ...sortedData.rest];
 }

@@ -1,19 +1,10 @@
 import React from "react";
 import s from "./Section.module.scss";
 import { Card } from "./Card/Card";
+import { SectionI } from '../../type'
 
-interface PropsI {
-  title: string;
-  data: Array<{
-    title: string;
-    subtitle: string;
-    image: string;
-    partNumber?: string;
-    count?: number;
-    amount?: string;
-  }>;
-}
-export const Section: React.FC<PropsI> = (props) => {
+
+export const Section: React.FC<SectionI> = (props) => {
   const { title, data } = props;
   return (
     <div className={s.container}>

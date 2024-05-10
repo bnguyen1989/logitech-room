@@ -1,16 +1,20 @@
 import { GroupElement } from "../elements/GroupElement";
 import { ItemElement } from "../elements/ItemElement";
 import { MountElement } from "../elements/mounts/MountElement";
-import { StepName } from "../type";
 import { CountableMountElement } from "../elements/mounts/CountableMountElement";
 import { ReferenceMountElement } from "../elements/mounts/ReferenceMountElement";
+import { StepName } from "../../../utils/baseUtils";
+import { PropertyDependentElement } from "../type";
 
 export class Step {
   public name: StepName;
   private _prevStep: Step | null = null;
+  private _nextStep: Step | null = null;
   private _activeElements: Array<ItemElement | MountElement> = [];
   private _allElements: Array<ItemElement | GroupElement> = [];
   private validElements: Array<ItemElement | MountElement> = [];
+  private isAvailable: boolean = true;
+  private availableDependence: PropertyDependentElement = {};
 
   public static getElementByName(
     name: string,
@@ -21,6 +25,27 @@ export class Step {
 
   constructor(name: StepName) {
     this.name = name;
+  }
+
+  public addAvailableDependence(value: PropertyDependentElement): Step {
+    this.availableDependence = {
+      ...this.availableDependence,
+      ...value,
+    };
+    return this;
+  }
+
+  public getAvailableDependence(): PropertyDependentElement {
+    return this.availableDependence;
+  }
+
+  public setAvailable(value: boolean): Step {
+    this.isAvailable = value;
+    return this;
+  }
+
+  public getAvailable(): boolean {
+    return this.isAvailable;
   }
 
   public getSimpleElements(): Array<ItemElement> {
@@ -156,6 +181,29 @@ export class Step {
 
   public get prevStep(): Step | null {
     return this._prevStep;
+  }
+
+  public set nextStep(step: Step | null) {
+    this._nextStep = step;
+  }
+
+  public get nextStep(): Step | null {
+    return this._nextStep;
+  }
+
+  public getChainSteps(): Array<Step> {
+    const steps: Step[] = [];
+    let currentStep: Step | null = this as Step;
+
+    while (currentStep.prevStep) {
+      currentStep = currentStep.prevStep;
+    }
+
+    while (currentStep) {
+      steps.push(currentStep);
+      currentStep = currentStep.nextStep;
+    }
+    return steps;
   }
 
   private getChainElementsByCondition(

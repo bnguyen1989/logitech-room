@@ -1,35 +1,26 @@
-import { CardI, QuestionFormI, StepDataI, StepName } from "./type";
-import LogoMS from "../../../assets/images/platform/microsoft.jpg";
-import LogoGoogle from "../../../assets/images/platform/google.jpg";
-import LogoZoom from "../../../assets/images/platform/zoom.jpg";
-import DeviceMS from "../../../assets/images/platform/microsoft_device.jpg";
-import DeviceGoogle from "../../../assets/images/platform/google_device.jpg";
-import DeviceZoom from "../../../assets/images/platform/zoom_device.jpg";
-import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.png";
-import ImageHundle from "../../../assets/images/rooms/huddle.png";
-import ImageSmall from "../../../assets/images/rooms/small.png";
-import ImageMedium from "../../../assets/images/rooms/medium.png";
-import ImageLarge from "../../../assets/images/rooms/large.png";
-import ImageAuditorium from "../../../assets/images/rooms/auditorium.png";
-import ImageAppliance from "../../../assets/images/services/appliance.png";
-import ImagePCBased from "../../../assets/images/services/pc_baced.png";
-import ServiceImg from "../../../assets/images/items/service.jpg";
+import { CardI, QuestionFormI, StepDataI } from "./type";
 import {
+  CameraName,
   PlatformName,
   RoomSizeName,
   ServiceName,
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
+import { ColorName, StepName } from "../../../utils/baseUtils";
+import { getImageUrl } from "../../../utils/browserUtils";
 
 export enum UI_ACTION_NAME {
   ADD_ACTIVE_CARD = "ui/addActiveCard",
   REMOVE_ACTIVE_CARD = "ui/removeActiveCard",
   CHANGE_ACTIVE_STEP = "ui/changeActiveStep",
+  MOVE_TO_START_STEP = "ui/moveToStartStep",
+  CLEAR_ALL_ACTIVE_CARDS_STEPS = "ui/clearAllActiveCardsSteps",
 }
 
 export enum CUSTOM_UI_ACTION_NAME {
   CHANGE_COUNT_ITEM = "CUSTOM/CHANGE_COUNT_ITEM",
   CHANGE_COLOR_ITEM = "CUSTOM/CHANGE_COLOR_ITEM",
+  CREATE_ORDER = "CUSTOM/CREATE_ORDER",
 }
 
 export const getInitStepData = (): StepDataI => {
@@ -55,7 +46,7 @@ export const getInitStepData = (): StepDataI => {
       name: "Deployment Type",
       title:
         "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
-      subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      subtitle: "",
       cards: {},
     },
     [StepName.ConferenceCamera]: {
@@ -104,24 +95,28 @@ export function getPlatformCardData(): Record<string, TypeDataCardI> {
   return {
     [PlatformName.GoogleMeet]: {
       key: StepName.Platform,
-      logo: LogoGoogle,
-      image: DeviceGoogle,
-      // title: "Google Meet",
+      logo: getImageUrl("images/platform/google.jpg"),
+      image: getImageUrl("images/platform/google_device.jpg"),
       keyPermission: PlatformName.GoogleMeet,
     },
     [PlatformName.MicrosoftTeams]: {
       key: StepName.Platform,
-      logo: LogoMS,
-      image: DeviceMS,
-      // title: "Microsoft Teams",
+      logo: getImageUrl("images/platform/microsoft.jpg"),
+      image: getImageUrl("images/platform/microsoft_device.jpg"),
       keyPermission: PlatformName.MicrosoftTeams,
     },
     [PlatformName.Zoom]: {
       key: StepName.Platform,
-      logo: LogoZoom,
-      image: DeviceZoom,
-      // title: "Zoom",
+      logo: getImageUrl("images/platform/zoom.jpg"),
+      image: getImageUrl("images/platform/zoom_device.jpg"),
       keyPermission: PlatformName.Zoom,
+    },
+    [PlatformName.BYOD]: {
+      key: StepName.Platform,
+      image: getImageUrl("images/platform/byod_device.jpg"),
+      subtitle:
+        "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
+      keyPermission: PlatformName.BYOD,
     },
   };
 }
@@ -130,8 +125,7 @@ function getRoomCardData(): Record<string, CardI> {
   return {
     [RoomSizeName.Phonebooth]: {
       key: StepName.RoomSize,
-      image: ImagePhonebooth,
-      // title: "Phone Booth",
+      image: getImageUrl("images/rooms/phonebooth.png"),
       subtitle: "up to 3",
       keyPermission: RoomSizeName.Phonebooth,
       dataThreekit: {
@@ -141,8 +135,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Huddle]: {
       key: StepName.RoomSize,
-      image: ImageHundle,
-      // title: "Huddle Room",
+      image: getImageUrl("images/rooms/huddle.png"),
       subtitle: "up to 6",
       keyPermission: RoomSizeName.Huddle,
       dataThreekit: {
@@ -152,8 +145,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Small]: {
       key: StepName.RoomSize,
-      image: ImageSmall,
-      // title: "Small Room",
+      image: getImageUrl("images/rooms/small.png"),
       subtitle: "up to 8",
       keyPermission: RoomSizeName.Small,
       dataThreekit: {
@@ -163,8 +155,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Medium]: {
       key: StepName.RoomSize,
-      image: ImageMedium,
-      // title: "Medium Room",
+      image: getImageUrl("images/rooms/medium.png"),
       subtitle: "up to 12",
       keyPermission: RoomSizeName.Medium,
       dataThreekit: {
@@ -174,8 +165,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Large]: {
       key: StepName.RoomSize,
-      image: ImageLarge,
-      // title: "Large Room",
+      image: getImageUrl("images/rooms/large.png"),
       subtitle: "up to 20",
       keyPermission: RoomSizeName.Large,
       dataThreekit: {
@@ -185,8 +175,7 @@ function getRoomCardData(): Record<string, CardI> {
     },
     [RoomSizeName.Auditorium]: {
       key: StepName.RoomSize,
-      image: ImageAuditorium,
-      // title: "Alternative",
+      image: getImageUrl("images/rooms/auditorium.png"),
       subtitle: "more than 20",
       keyPermission: RoomSizeName.Auditorium,
       dataThreekit: {
@@ -202,16 +191,14 @@ export function getServicesCardData(): Record<string, TypeDataCardI> {
   return {
     [ServiceName.Android]: {
       key: StepName.Services,
-      image: ImageAppliance,
-      // title: "Appliance-Based",
+      image: getImageUrl("images/services/appliance.png"),
       subtitle:
         "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
       keyPermission: ServiceName.Android,
     },
     [ServiceName.PC]: {
       key: StepName.Services,
-      image: ImagePCBased,
-      // title: "PC-Based",
+      image: getImageUrl("images/services/pc_baced.png"),
       subtitle:
         "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
       keyPermission: ServiceName.PC,
@@ -223,28 +210,21 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
   return {
     [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
-      // header_title: "LOGITECH Basic",
-      // title: "Device Management Software",
-      subtitle: "(Including Sync)",
+      image: getImageUrl("images/items/service.jpg"),
       description:
-        "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
+        "Always included with your hardware purchase. Global, business-hours support and 2-year standard warranty, as well as software to better manage and maintain your deployment.",
       keyPermission: SoftwareServicesName.LogitechSync,
     },
     [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
-      // header_title: "LOGITECH SELECT",
-      // title: "24/7 Enterprise-Grade Support",
+      image: getImageUrl("images/items/service.jpg"),
       description:
         "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,
     },
     [SoftwareServicesName.ExtendedWarranty]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
-      // header_title: "LOGITECH Basic",
-      // title: "Device Management Software",
+      image: getImageUrl("images/items/service.jpg"),
       description:
         "Add up to 3 years of warranty to extend coverage and support for your devices.",
       keyPermission: SoftwareServicesName.ExtendedWarranty,
@@ -272,14 +252,14 @@ export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
       return "Microsoft Teams";
     case PlatformName.Zoom:
       return "Zoom";
+    case PlatformName.BYOD:
+      return "Choose a Bring-Your-Own-Device setup";
     case ServiceName.Android:
       return "Appliance-Based";
     case ServiceName.PC:
       return "PC-Based";
-    case SoftwareServicesName.LogitechSync:
-      return "Device Management Software";
     case SoftwareServicesName.SupportService:
-      return "24/7 Enterprise-Grade Support";
+      return "Select Service Plan";
     default:
       return "";
   }
@@ -304,10 +284,52 @@ export const getDescriptionRoomBySize = (size: string) => {
   }
 };
 
-export const getDataQuestionForm = (): Array<QuestionFormI> => {
+export const getDataQuestionFormPartner = (): Array<QuestionFormI> => {
   return [
     {
-      title: "Label",
+      question: "What are the expected hours of support?",
+      options: [
+        { value: false, text: "Business Hours" },
+        { value: false, text: "24/7" },
+      ],
+      active: true,
+      done: false,
+    },
+    {
+      question: "What’s the expected repair time for meeting rooms?",
+      options: [
+        { value: false, text: "Within 1 week" },
+        { value: false, text: "Within 1 hour" },
+      ],
+      active: false,
+      done: false,
+    },
+    {
+      question: "What’s the typical life cycle for meeting room hardware?",
+      options: [
+        { value: false, text: "Less than 2 years" },
+        { value: false, text: "2-5 years" },
+        { value: false, text: "5 years or more" },
+      ],
+      active: false,
+      done: false,
+    },
+    {
+      question:
+        "What support service is needed to ensure meeting rooms are always up and running?",
+      options: [
+        { value: false, text: "Tech support when needed" },
+        { value: false, text: "Dedicated, additional service and support" },
+      ],
+      active: false,
+      done: false,
+    },
+  ];
+};
+
+export const getDataQuestionFormCustomer = (): Array<QuestionFormI> => {
+  return [
+    {
       question: " What are your hours of support?",
       options: [
         { value: false, text: "Business Hours" },
@@ -317,7 +339,6 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question: "What’s your repair time for meeting rooms?",
       options: [
         { value: false, text: "Within 1 week" },
@@ -327,24 +348,21 @@ export const getDataQuestionForm = (): Array<QuestionFormI> => {
       done: false,
     },
     {
-      title: "Label",
       question: "What’s the typical lifecycle for meeting room hardware?",
       options: [
         { value: false, text: "Less than 2 years" },
-        { value: false, text: "2-4 years" },
+        { value: false, text: "2-5 years" },
         { value: false, text: "5 years or more" },
       ],
       active: false,
       done: false,
     },
     {
-      title: "Label",
       question:
         "What support service is needed for you to ensure your meeting rooms are always up and running?",
       options: [
         { value: false, text: "Tech support when I need it" },
         { value: false, text: "Dedicated, additional service and support" },
-        { value: false, text: "Option one" },
       ],
       active: false,
       done: false,
@@ -381,4 +399,52 @@ export const getExpressionArrayForQuestionForm = () => {
     basic: expressionArrayBasic,
     extendedWarranty: expressionArrayExtendedWarranty,
   };
+};
+
+export const getColorsData = () => {
+  return [
+    {
+      name: ColorName.Graphite,
+      value:
+        "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-graphite.svg",
+    },
+    {
+      name: ColorName.White,
+      value:
+        "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-offwhite.svg",
+    },
+    {
+      name: ColorName.TAA,
+      value:
+        "https://resource.logitech.com/w_60,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-taa.png?v=1",
+    },
+  ];
+};
+
+export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
+  switch (stepName) {
+    case StepName.Services:
+      return [ServiceName.Android, ServiceName.PC];
+    case StepName.ConferenceCamera:
+      return [
+        CameraName.RallyBar,
+        CameraName.RallyBarMini,
+        CameraName.RallyBarHuddle,
+        CameraName.MeetUp2,
+        CameraName.RallyPlus,
+        CameraName.LogitechSight,
+      ];
+    case StepName.SoftwareServices:
+      return [
+        SoftwareServicesName.LogitechSync,
+        SoftwareServicesName.SupportService,
+        SoftwareServicesName.ExtendedWarranty,
+      ];
+    default:
+      return [];
+  }
+};
+
+export const getDisclaimerCSV = () => {
+  return "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.";
 };

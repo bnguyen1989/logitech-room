@@ -1,6 +1,6 @@
+import { StepName } from "../../../../utils/baseUtils";
 import { CameraName } from "../../../../utils/permissionUtils";
 import { Permission } from "../../Permission";
-import { StepName } from "../../type";
 import { RemoveActiveElementHandler } from "../RemoveActiveElementHandler";
 
 describe("RemoveActiveElementHandler", () => {
@@ -16,7 +16,6 @@ describe("RemoveActiveElementHandler", () => {
       StepName.ConferenceCamera
     );
     const currentStep = permission.getCurrentStep();
-    if (!currentStep) return;
     const elementRallyBar = currentStep.getElementByName(CameraName.RallyBar);
     if (!elementRallyBar) return;
     new RemoveActiveElementHandler(elementRallyBar).handle(currentStep);

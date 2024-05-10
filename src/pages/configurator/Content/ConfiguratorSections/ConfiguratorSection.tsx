@@ -1,6 +1,6 @@
 import { Player } from "../../../../components/Player/Player";
 import s from "./ConfiguratorSection.module.scss";
-import { PlayerWidgets } from "../../../../components/PlayerWidgets/PlayerWidgets";
+// import { PlayerWidgets } from "../../../../components/PlayerWidgets/PlayerWidgets";
 import { ConfigurationFormForStep } from "./ConfigurationFormForStep/ConfigurationFormForStep";
 import { LoaderPlayer } from "./LoaderPlayer/LoaderPlayer";
 
@@ -12,7 +12,7 @@ export const ConfiguratorSection: React.FC = () => {
           <Player />
           <LoaderPlayer />
           <div className={s.widgets}>
-            <PlayerWidgets />
+            {/* <PlayerWidgets /> */}
           </div>
         </div>
         <ConfigurationFormForStep />

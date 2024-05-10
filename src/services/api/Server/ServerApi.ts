@@ -1,9 +1,16 @@
 import { BaseApi } from "../BaseApi";
 
-// http://localhost:80/products/en-us
 export class ServerApi extends BaseApi {
+  public static getUrlApi() {
+    let link = window.location.origin;
+
+    if (process.env.NODE_ENV === "development") {
+      link = "http://localhost:80";
+    }
+    return link;
+  }
   constructor() {
-    const baseUrl = `/`;
+    const baseUrl = ServerApi.getUrlApi();
     super(baseUrl);
   }
 

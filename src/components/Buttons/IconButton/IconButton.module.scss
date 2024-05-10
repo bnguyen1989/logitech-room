@@ -20,7 +20,8 @@
   }
 }
 
-.button_outlined {
+.button_outlined,
+.button_contained {
   display: flex;
   padding: 19px 40px;
   justify-content: center;
@@ -35,5 +36,22 @@
 
   .text {
     color: var(--main-color-block);
+    line-height: 26px;
   }
+}
+
+.only_icon {
+  border: none;
+}
+
+.button_contained {
+  background-color: var(--main-color-block);
+  .text {
+    color: #ffffff;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

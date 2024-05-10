@@ -34,7 +34,7 @@ export const CounterItem: React.FC<PropsI> = (props) => {
     if (value > count && value === 1) {
       const attributeName = card.dataThreekit.attributeName;
       app.addItemConfiguration(attributeName, cardAsset.id, card.keyPermission);
-      return
+      return;
     }
     app.changeCountItemConfiguration(
       threekit.key,

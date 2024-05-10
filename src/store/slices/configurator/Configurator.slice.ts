@@ -8,6 +8,7 @@ interface ConfiguratorStateI {
   showDimensions: boolean;
   configuration: Configuration;
   nodes: Record<string, string>;
+  highlightNodes: Record<string, boolean>;
 }
 
 const initialState: ConfiguratorStateI = {
@@ -17,6 +18,7 @@ const initialState: ConfiguratorStateI = {
   showDimensions: false,
   configuration: {},
   nodes: {},
+  highlightNodes: {},
 };
 
 const configuratorSlice = createSlice({
@@ -35,7 +37,6 @@ const configuratorSlice = createSlice({
         value: Configuration;
       }>
     ) => {
-      
       state.configuration = {
         ...state.configuration,
         ...action.payload.value,
@@ -66,6 +67,19 @@ const configuratorSlice = createSlice({
     changeStatusProcessing: (state, action: PayloadAction<boolean>) => {
       state.isProcessing = action.payload;
     },
+    setHighlightNodes: (
+      state,
+      action: PayloadAction<Record<string, boolean>>
+    ) => {
+      state.highlightNodes = action.payload;
+    },
+    disabledHighlightNode: (state, action: PayloadAction<string>) => {
+      Object.keys(state.highlightNodes).forEach((key) => {
+        if (action.payload.includes(key)) {
+          state.highlightNodes[key] = false;
+        }
+      });
+    },
   },
 });
 
@@ -78,5 +92,7 @@ export const {
   removeNodes,
   removeNodeByKeys,
   changeStatusProcessing,
+  setHighlightNodes,
+  disabledHighlightNode,
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;

@@ -47,6 +47,7 @@ export interface ValueAssetStateI extends AssetI {
 }
 
 export enum AttributeName {
+  RoomLocale = "Room Locale",
   RoomService = "Room Service",
   RoomDeployment = "Room Deployment Mode",
   RoomCamera = "Room Camera",
@@ -62,17 +63,20 @@ export enum AttributeName {
   QtyMicPendantMount = "Qty - Mic Pendant Mount",
   RoomMicHub = "Room Mic Pod Hub",
   QtyMicHub = "Qty - Mic Pod Hub",
-  RoomMicExtensionCable = "Room Mic Pod Extension Cable",
-  QtyMicExtensionCable = "Qty - Mic Pod Extension Cable",
+  RoomMicCATCoupler = "Room Mic Pod CAT Coupler",
   RoomMeetingController = "Room Meeting Controller",
   QtyMeetingController = "Qty - Meeting Controller",
   RoomTapMount = "Room Tap Mount",
   QtyTapMount = "Qty - Tap Mount",
+  RoomProductBundle = "Room Product Bundle",
   RoomTapScheduler = "Room Tap Scheduler",
   RoomTapSchedulerAngleMount = "Room Tap Scheduler Angle Mount",
   RoomTapSchedulerSideMount = "Room Tap Scheduler Side Mount#not-ui",
   RoomScribe = "Room Scribe",
   RoomSwytch = "Room Swytch",
+  RoomExtend = "Room Extend",
+  RoomUSBAtoHDMICable = "Room USB-A to HDMI Cable",
   RoomDeviceManagementSoftware = "Room Device Management Software",
   RoomSupportService = "Room Support Service",
+  RoomMeetUp2ActiveCable = "Room MeetUp 2 Active Cable",
 }

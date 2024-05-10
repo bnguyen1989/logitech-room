@@ -104,6 +104,11 @@
 
 @media (max-height: 900px) {
   .container {
+    height: calc(var(--vh, 1vh) * 100);
+
+    .image {
+      height: calc(var(--vh, 1vh) * 40);
+    }
     .content {
       gap: 20px;
 
@@ -115,6 +120,102 @@
         gap: 20px;
         .type_user_title {
           font-size: 24px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    .content {
+      padding: 0 40px;
+
+      .title {
+        font-size: 32px;
+        line-height: 38px;
+      }
+
+      .description {
+        .block_1,
+        .divider {
+          display: none;
+        }
+
+        .block_2 {
+          text-align: start;
+          max-width: 500px;
+
+          .block_2_title {
+            font-size: 20px;
+            font-style: normal;
+            line-height: 30px;
+            font-weight: 700;
+            color: #697172;
+          }
+
+          .block_2_list {
+            font-size: 18px;
+            font-style: normal;
+            line-height: 24px;
+            font-weight: 300;
+            color: var(--main-color-text);
+          }
+        }
+      }
+
+      .type_user {
+        .type_user_title {
+          display: none;
+        }
+
+        .type_user_buttons {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .container {
+    .content {
+      padding: 0 20px;
+
+      .header_title {
+        font-size: 13px;
+        line-height: 20px;
+      }
+
+      .title {
+        font-size: 24px;
+        line-height: 28px;
+      }
+
+      .description {
+        .block_2 {
+          .block_2_title {
+            font-size: 14px;
+            line-height: 18px;
+          }
+
+          .block_2_list {
+            font-size: 11px;
+            line-height: 15px;
+          }
+        }
+      }
+
+      .type_user {
+        .type_user_buttons {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
         }
       }
     }

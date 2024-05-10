@@ -440,9 +440,9 @@
       "end": "Add to Room"
     }
   },
-  "LOGITECH TAP SCHEDULER": {
+  "Tap Scheduler": {
     "Blade_1": {
-      "ProductName": "LOGITECH TAP SCHEDULER",
+      "ProductName": "Logitech Tap Scheduler",
       "ShortDescription": "Purpose-built scheduling panel for meeting rooms",
       "LongDescription": "Make it easy to find and claim the right meeting space with Tap Scheduler, a purpose-built scheduling panel that’s designed for deployment at scale.",
       "Colors": {
@@ -518,7 +518,7 @@
       "end": "Add to Room"
     }
   },
-  "Logitech Tap Scheduler Angle Mount": {
+  "Tap Scheduler Angle Mount": {
     "Blade_1": {
       "ProductName": "Tap Scheduler Angle Mount",
       "LongDescription": "Mounts Logitech Tap Scheduler at a comfortable, lower angle.",
@@ -641,9 +641,9 @@
       ]
     }
   },
-  "LOGITECH ROOMMATE": {
+  "RoomMate": {
     "Blade_1": {
-      "ProductName": "LOGITECH ROOMMATE",
+      "ProductName": "Logitech RoomMate",
       "ShortDescription": "CollabOS appliance for supported conference cameras and room solution peripherals",
       "Colors": {
         "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/roommate/gallery-1-v2.png?v=1"
@@ -774,7 +774,7 @@
       "end": "logitech.com/MeetUp2"
     }
   },
-  "Active USB Cable": {
+  "Logitech Active USB Cable": {
     "Blade_1": {
       "ProductName": "Active USB Cable",
       "ShortDescription": "Enables single-cable BYOD connection for MeetUp 2.",
@@ -840,7 +840,7 @@
       "Headline": "ANY MEETING, EVERY ROOM",
       "Description": "With an innovative design that maximizes compatibility and incorporates DisplayLink® Plug-and-Display technology, Logitech Swytch offers a one-cable laptop link to a room’s conference camera and display, making it easy for teams to meet, present, and stream over any service.",
       "Image|Video": {
-        "Video": "https://www.youtube.com/watch?v=t35q4s5cawA&feature=youtu.be"
+        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/swytch-any-meeting-room-config.png?v=1"
       }
     },
     "Blade_3A": {},
@@ -853,14 +853,14 @@
       "ShortDescription": "",
       "LongDescription": "Add another display to meeting rooms with simple setup and maintenance",
       "Colors": {
-        "Graphite": ""
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/gallery/usb-a-hdmi-adapter-01.png?v=1"
       }
     },
     "Blade_2": {
       "Headline": "Easily Connect Another Display",
       "Description": "Logitech USB-A to HDMI Adapter allows you to easily add another display to meeting rooms with Logitech conferencing cameras. Plug and play with DisplayLink technology for a reliable connection to common USB-A ports.",
       "Image|Video": {
-        "Logitech USB-A to HDMI Adapter - Interior.png": "https://drive.google.com/file/d/1HRI4fUW1VHIRREytZ_hFTRqMOz7nvWdO/view?usp=drive_link"
+        "Logitech USB-A to HDMI Adapter - Interior.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-overview.png?v=1"
       }
     },
     "Blade_3A": {
@@ -870,7 +870,7 @@
           "sorting": "1",
           "KeyFeature": "Enterprise-grade cable management and mounting options ensure an easy installation and minimize future problems.",
           "LinkImgFeature": {
-            "Logitech USB-A to HDMI Adapter - Secure Installs.png": "https://drive.google.com/file/d/1WGCh9ECgA5dfyG00DdV-08xWcBHxv4v1/view?usp=drive_link"
+            "Logitech USB-A to HDMI Adapter - Secure Installs.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-feature-secure-mounting.png?v=1"
           }
         },
         {
@@ -878,7 +878,7 @@
           "sorting": "2",
           "KeyFeature": "​​The Logitech USB-A to HDMI Adapter supports HDMI CEC communication for automated power control between device and display. This feature is configured and enabled in Logitech Sync and used to save energy and extend the lifespan of your displays.",
           "LinkImgFeature": {
-            "Logitech USB-A to HDMI Adapter - Automated Power.mp4": "https://drive.google.com/file/d/1LU4UL4kkYVHV9-yiDZRF2bnvPzYrVpxQ/view?usp=drive_link"
+            "Logitech USB-A to HDMI Adapter - Automated Power.mp4": "https://resource.logitech.com/w_900,ac_none,f_auto,dpr_1.0,q_auto:best/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-feature-automated-power.mp4"
           }
         },
         {
@@ -886,7 +886,7 @@
           "sorting": "3",
           "KeyFeature": "Manage all of your Logitech devices remotely with Logitech Sync, including USB-A  to HDMI Adapter. Know whether devices are connected and functional without physically inspecting every meeting room.",
           "LinkImgFeature": {
-            "logitech-sync-hero-laptop-dashboard-only-rooms.png": "https://drive.google.com/file/d/1T2KESE0rLPD6usQcx8JrWznYa1l_vdAF/view?usp=sharing"
+            "logitech-sync-hero-laptop-dashboard-only-rooms.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/usb-a-to-hdmi-adapter/usb-a-hdmi-adapter-feature-remote-management.png?v=1"
           }
         }
       ]
@@ -978,9 +978,9 @@
       "end": "Add to Room"
     }
   },
-  "MIC POD MOUNT": {
+  "Rally Mic Pod Mount": {
     "Blade_1": {
-      "ProductName": "MIC POD MOUNT",
+      "ProductName": "Mic Pod Mount",
       "LongDescription": "Anchor Rally Mic Pod to a table or ceiling, with cable management for a clean installation.",
       "Colors": {
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-mic-pod-mount/mic-pod-mount-gallery-1.png?v=1",
@@ -1016,18 +1016,38 @@
       ]
     }
   },
-  "Pendant Mount": {
+  "Rally Mic Pod Pendant Mount": {
     "Blade_1": {
-      "ProductName": "Pendant Mount",
+      "ProductName": "Mic Pod Pendant Mount",
       "ShortDescription": "Ceiling pendant mount for Rally Mic Pods.",
       "Colors": {
         "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/mic-pod-pendant/mic-pod-pendant-mount-white-1.png?v=1"
       }
+    },
+    "Blade_2A": {
+      "Features": [
+        {
+          "HeaderFeature": "CONVERSATIONS WITHIN REACH",
+          "sorting": "1",
+          "KeyFeature": "Mic Pod Pendant Mount allows you to hang Rally Mic Pods in rooms that have tall ceiling rooms and tables that can’t have mics attached or that have unique setups. Hanging mics from the ceiling helps ensure everyone can be heard equally even in your largest spaces.",
+          "LinkImgFeature": {
+            "Cable Retention 1": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/mic-pod-pendant-mount-hero-banner-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "FLEXIBLE MOUNTING OPTIONS",
+          "sorting": "2",
+          "KeyFeature": "Mic Pod Pendant Mount easily secures the mic pods to both drop ceilings and solid ceilings.",
+          "LinkImgFeature": {
+            "Cable Retention 1": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/mic-pod-pendant-mount-feature-room-config.png?v=1"
+          }
+        }
+      ]
     }
   },
-  "RALLY MIC POD HUB": {
+  "Mic Pod Hub": {
     "Blade_1": {
-      "ProductName": "RALLY MIC POD HUB",
+      "ProductName": "Rally Mic Pod Hub",
       "LongDescription": "Customize microphone placement for most any conference table configuration",
       "Colors": {
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-mic-pod-hub/gallery/rally-mic-pod-hub-gallery-1.png?v=1"
@@ -1036,7 +1056,9 @@
     "Blade_2": {
       "Headline": "YOUR CONFERENCE ROOM. YOUR WAY.",
       "Description": "Rally Mic Pod Hubs provide installers with the flexibility to customize microphone placement on virtually any conference table. An alternative to daisy-chaining mic pods to one another, Rally Mic Pod Hub provides three connections that support any combination of mic pods or additional hubs. Under-table mounting hardware helps conceal cables for a clean look.",
-      "Image|Video": {}
+      "Image|Video": {
+        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/rally-system-b2b-pdp.jpg?v=1"
+      }
     },
     "Blade_3A": {
       "Features": [
@@ -1067,9 +1089,9 @@
       ]
     }
   },
-  "RALLY MIC POD CAT COUPLER": {
+  "Mic Pod CAT Coupler": {
     "Blade_1": {
-      "ProductName": "RALLY MIC POD CAT COUPLER",
+      "ProductName": "Rally Mic Pod CAT Coupler",
       "ShortDescription": "Extend Mic Pods with CAT Coupler",
       "LongDescription": "Extend the length of Rally Mic Pod cables by connecting Rally Mic Pod CAT Coupler to a standard CAT cable.",
       "Colors": {
@@ -1179,7 +1201,7 @@
       ]
     }
   },
-  "Logitech Tap Table Mount": {
+  "Tap Table Mount": {
     "Blade_1": {
       "ProductName": "Logitech Tap Table Mount",
       "ShortDescription": "Secure the Tap controller to the table for a tidy setup",
@@ -1217,9 +1239,9 @@
       ]
     }
   },
-  "LOGITECH TAP RISER MOUNT": {
+  "Tap Riser Mount": {
     "Blade_1": {
-      "ProductName": "LOGITECH TAP RISER MOUNT",
+      "ProductName": "Logitech Tap Riser Mount",
       "ShortDescription": "Raise the Tap controller for better visibility",
       "LongDescription": "Elevated table mount with swivel and cable management for Logitech Tap and Tap IP meeting room touch controllers.",
       "Colors": {
@@ -1256,7 +1278,7 @@
       ]
     }
   },
-  "Logitech Tap Wall Mount": {
+  "Tap Wall Mount": {
     "Blade_1": {
       "ProductName": "Logitech Tap Wall Mount",
       "ShortDescription": "Mount Tap controllers to the wall to save table space",
@@ -1268,7 +1290,9 @@
     "Blade_2": {
       "Headline": "LOGITECH TAP WALL MOUNT",
       "Description": "Designed to conserve table space in huddle rooms and for stand-up operation in hallways and open areas, the Logitech Tap Wall Mount offers convenient access to touch controls. A magnetic cable dock neatly holds an HDMI cable for wired content sharing.",
-      "Image|Video": {}
+      "Image|Video": {
+        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-wall-mount-intro.png?v=1"
+      }
     },
     "Blade_3A": {
       "Features": [
@@ -1300,9 +1324,9 @@
       ]
     }
   },
-  "TV Mount for Video Bars": {
+  "Logitech TV Mount": {
     "Blade_1": {
-      "ProductName": "TV Mount",
+      "ProductName": "TV Mount for Video Bars",
       "ShortDescription": "For Logitech video bars",
       "LongDescription": "Attach Rally Bar, Rally Bar Mini, or Rally Camera to almost any display with VESA mounting points.",
       "Colors": {
@@ -1365,9 +1389,9 @@
       ]
     }
   },
-  "WALL MOUNT FOR VIDEO BARS": {
+  "Logitech Wall Mount": {
     "Blade_1": {
-      "ProductName": "WALL MOUNT FOR VIDEO BARS",
+      "ProductName": "Wall Mount for Video Bars",
       "ShortDescription": "VESA-compatible mounting kit for Rally Bar and Rally Bar Mini.",
       "Colors": {
         "Metallic": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/wall-mount/hero-tablet-mobile-v2.png?v=1"
@@ -1436,7 +1460,7 @@
       "Description": "Achieve a streamlined installation of each Rally Plus component with included brackets and mounting hardware.",
       "Image|Video": {
         "RALLY PLUS_PDP_Best Fit_Single Screen with Credenza Side Speakers.png": "https://drive.google.com/file/d/1yzJ6yK5uwTFHlypPzJe4n0OL49yiMukw/view?usp=drive_link",
-        "Image Link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/rally-plus-best-fit-mounted-room-config.png?v=1"
+        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/rally-plus-best-fit-mounted-room-config.png?v=1"
       }
     },
     "Blade_2A": {

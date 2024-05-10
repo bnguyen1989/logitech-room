@@ -6,12 +6,23 @@ export class BaseElement extends Element<BaseElement> {
   private _defaultActive: boolean = false;
   private _isRequired: boolean = false;
   private _isRecommended: boolean = false;
-  private _isActionDisabled: boolean = false;
+  private isDisabledCounter: boolean = false;
+  private isDisabledColor: boolean = false;
   private property: Record<string, any> = {};
+  private _isSecondary: boolean = false;
 
   constructor(name: string) {
     super();
     this.name = name;
+  }
+
+  public getSecondary(): boolean {
+    return this._isSecondary;
+  }
+
+  public setSecondary(value: boolean) {
+    this._isSecondary = value;
+    return this;
   }
 
   public setProperty(property: Record<string, any>): BaseElement {
@@ -62,13 +73,22 @@ export class BaseElement extends Element<BaseElement> {
     return this;
   }
 
-  public getActionDisabled(): boolean {
-    return this._isActionDisabled;
+  public setDisabledCounter(value: boolean) {
+    this.isDisabledCounter = value;
+    return this;
   }
 
-  public setActionDisabled(value: boolean) {
-    this._isActionDisabled = value;
+  public getDisabledCounter(): boolean {
+    return this.isDisabledCounter;
+  }
+
+  public setDisabledColor(value: boolean) {
+    this.isDisabledColor = value;
     return this;
+  }
+
+  public getDisabledColor(): boolean {
+    return this.isDisabledColor;
   }
 
   public isEquals(element: BaseElement): boolean {
@@ -81,7 +101,8 @@ export class BaseElement extends Element<BaseElement> {
     baseElement.setDefaultActive(this.getDefaultActive());
     baseElement.setRequired(this.getRequired());
     baseElement.setRecommended(this.getRecommended());
-    baseElement.setActionDisabled(this.getActionDisabled());
+    baseElement.setDisabledCounter(this.getDisabledCounter());
+    baseElement.setDisabledColor(this.getDisabledColor());
     baseElement.setProperty(this.getProperty());
     return baseElement;
   }

@@ -1,7 +1,7 @@
 import { AssetI } from "../../services/Threekit/type";
+import { StepName } from "../../utils/baseUtils";
 import { isAssetType, isStringType } from "../../utils/threekitUtils";
 import { IdGenerator } from "../IdGenerator";
-import { StepName } from "../permission/type";
 import {
   AttributeI,
   AttributeName,
@@ -41,6 +41,7 @@ export class Configurator {
     [AttributeName.RoomCompute],
     [AttributeName.RoomComputeMount],
     [AttributeName.RoomSight],
+    [AttributeName.RoomMeetUp2ActiveCable],
   ];
 
   public static AudioExtensionName = [
@@ -48,12 +49,13 @@ export class Configurator {
     [AttributeName.RoomMicMount, AttributeName.QtyMicMount],
     [AttributeName.RoomMicPendantMount, AttributeName.QtyMicPendantMount],
     [AttributeName.RoomMicHub, AttributeName.QtyMicHub],
-    [AttributeName.RoomMicExtensionCable, AttributeName.QtyMicExtensionCable],
+    [AttributeName.RoomMicCATCoupler],
   ];
 
   public static MeetingControllerName = [
     [AttributeName.RoomMeetingController, AttributeName.QtyMeetingController],
     [AttributeName.RoomTapMount, AttributeName.QtyTapMount],
+    [AttributeName.RoomProductBundle],
   ];
 
   public static VideoAccessoriesName = [
@@ -62,6 +64,8 @@ export class Configurator {
     [AttributeName.RoomTapSchedulerSideMount],
     [AttributeName.RoomScribe],
     [AttributeName.RoomSwytch],
+    [AttributeName.RoomExtend],
+    [AttributeName.RoomUSBAtoHDMICable],
   ];
 
   public static SoftwareServicesName = [
@@ -127,7 +131,7 @@ export class Configurator {
   }
 
   public static getNameNodeScheduler(): string {
-    return "Scheduler_placement";
+    return "Scheduler_Placement";
   }
 
   public static getNameNodeMicPodMount(): string {

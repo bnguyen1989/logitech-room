@@ -21,3 +21,14 @@ export const getAssetId = (state: RootState) => state.configurator.assetId;
 
 export const getIsProcessing = (state: RootState) =>
   state.configurator.isProcessing;
+
+export const getHighlightNodes = (state: RootState) =>
+  state.configurator.highlightNodes;
+
+export const getIsHighlightNode = (nameNode: string) => (state: RootState) => {
+  const highlightNodes = getHighlightNodes(state);
+  return Object.entries(highlightNodes).some(([key, value]) => {
+    if (!nameNode.includes(key)) return false;
+    return value;
+  });
+};

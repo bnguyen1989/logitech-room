@@ -1,7 +1,7 @@
+import { StepName } from '../../../../utils/baseUtils'
 import { CameraName, PlatformName } from "../../../../utils/permissionUtils";
 import { Permission } from "../../Permission";
 import { ItemElement } from "../../elements/ItemElement";
-import { StepName } from "../../type";
 import { AddActiveElementHandler } from "../AddActiveElementHandler";
 
 describe("AddActiveElementHandler", () => {
@@ -13,7 +13,6 @@ describe("AddActiveElementHandler", () => {
         StepName.Platform
       );
       const step = permission.getCurrentStep();
-      if (!step) return;
       const elementAdded = step.getElementByName(PlatformName.MicrosoftTeams);
       if (!elementAdded) return;
 
@@ -35,7 +34,6 @@ describe("AddActiveElementHandler", () => {
         StepName.ConferenceCamera
       );
       const step = permission.getCurrentStep();
-      if (!step) return;
       const elementAdded = step.getElementByName(CameraName.RallyBar);
       if (!(elementAdded instanceof ItemElement)) return;
 

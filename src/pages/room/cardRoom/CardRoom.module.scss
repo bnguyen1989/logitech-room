@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  justify-content: center;
   gap: 50px;
 
   .left_content {
@@ -16,24 +17,30 @@
   }
 
   .right_content {
-		max-width: 700px;
-		display: flex;
-		flex-direction: column;
-		gap: 30px;
+    flex: 1;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 
     .header {
-			display: flex;
-			gap: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
       .title {
         color: #000;
-        font-family: BrownPro;
+        font-family: var(--font-family);
         font-size: 30px;
         font-style: normal;
         font-weight: 700;
-        line-height: 40px; /* 133.333% */
+        line-height: 40px;
         letter-spacing: -0.3px;
       }
-      .button_edit {
+      .button_remove {
+        background-color: #f4f4f4;
+        padding: 10px 11px;
+        border-radius: 50%;
       }
     }
 
@@ -46,8 +53,45 @@
     }
 
     .buttons {
-			display: flex;
-			gap: 20px;
+      display: flex;
+      gap: 20px;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    gap: 30px;
+
+    .left_content {
+      .image {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .right_content {
+      align-items: center;
+      max-width: none;
+      text-align: center;
+
+      .header {
+        .title {
+          font-size: 24px;
+          line-height: 28px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    .right_content {
+      .buttons {
+        flex-direction: column;
+      }
     }
   }
 }
