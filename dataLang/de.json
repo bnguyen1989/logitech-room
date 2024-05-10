@@ -1,0 +1,239 @@
+{
+    "de": {
+        "Rally Bar": {
+            "Blade_1": {
+                "ProductName": "Rally Bar",
+                "ShortDescription": "All-in-one-Videobar für mittelgroße bis große Räume",
+                "LongDescription": "Die führende Videobar für mittelgroße bis große Konferenzräume. Erleben Sie mit der Rally Bar bemerkenswert einfache All-in-One-Videokonferenzen mit integrierter KI-Technologie, brillanter Optik und leistungsstarkem Audio."
+            },
+            "Blade_2": {
+                "Headline": "ALL-IN-ONE-VIDEOBAR FÜR MITTELGROSSE UND GROSSE RÄUME",
+                "Description": "Erleben Sie ein bemerkenswert einfaches All-in-One-Videokonferenzsystem mit brillanter Optik, KI-basiertem Audio, Fernverwaltung mit Logitech Sync und vielem mehr."
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "STELLEN SIE SICHER, DASS ALLE GESEHEN UND GEHÖRT WERDEN",
+                        "KeyFeature": "KI-Videointelligenz, fortschrittliche Tonaufnahme, Geräuschunterdrückung und kontinuierliche Software-Optimierungen garantieren eine klare und natürliche Meeting-Erfahrung für Remote-Mitarbeiter."
+                    },
+                    {
+                        "HeaderFeature": "ERWEITERN SIE DEN GESPRÄCHSBEREICH",
+                        "KeyFeature": "Fügen Sie eine Sight Companion-Tischkamera oder Rally Mic Pods hinzu, um den Audio-Erfassungsbereich zu erhöhen und bequemen Zugang zu den Stummschaltungsfunktionen zu bieten."
+                    },
+                    {
+                        "HeaderFeature": "EINFACHE BEREITSTELLUNG",
+                        "KeyFeature": "Rally Bar wurde für die einfache Durchführung von Videokonferenzen entwickelt und lässt sich schnell einrichten, einfach verwalten und in Meeting-Controller wie Tap IP integrieren."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "EINFACHE VERWALTUNG",
+                        "KeyFeature": "Verwalten Sie mit Logitech Sync mühelos alle Ihre Bereiche nach Maß – von Räumen bis hin zu persönlichen Arbeitsbereichen. Überwachen Sie den Zustand der Räume, stellen Sie Updates bereit und ändern Sie Einstellungen – alles über eine einzige cloudbasierte Plattform. Sync Insights bietet Ihnen zudem langfristige Einblicke in die Nutzung Ihrer Konferenzräume."
+                    },
+                    {
+                        "HeaderFeature": "HERGESTELLT MIT NEXT LIFE PLASTICS",
+                        "KeyFeature": "Die Kunststoffteile der Variante Grafit von Rally Bar enthalten 40 % zertifizierten recycelten Kunststoff. Wir schenken Kunststoff aus Unterhaltungselektronik ein zweites Leben, um unseren CO2-Fußabdruck zu verringern."
+                    }
+                ]
+            },
+            "END_CTA": {
+                "end": "Zum Raum hinzufügen"
+            }
+        },
+        "Rally Bar Mini": {
+            "Blade_1": {
+                "ProductName": "Rally Bar Mini",
+                "ShortDescription": "All-in-one-Videobar für kleine bis mittelgroße Räume",
+                "LongDescription": "All-in-one-Videobar für kleine bis mittelgroße Konferenzräume. Erleben Sie bemerkenswert einfache All-in-one-Videokonferenzen mit integrierter KI-Technologie, brillanter Optik und leistungsstarkem Sound."
+            },
+            "Blade_2": {
+                "Headline": "ALL-IN-ONE-VIDEOBAR FÜR KLEINE BIS MITTELGROSSE RÄUME",
+                "Description": "Erleben Sie eine außergewöhnlich unkomplizierte Videokonferenzlösung mit hervorragender Optik, KI-gesteuerten Audioverbesserungen, nahtloser Fernverwaltung durch Logitech Sync und weiteren fortschrittlichen Funktionen."
+            },
+            "Blade_3A": {
+                "Features": [
+                    null,
+                    {
+                        "KeyFeature": "Fügen Sie bis zu drei Rally Mic Pods hinzu, um den Audio-Erfassungsbereich zu erhöhen und bequemen Zugang zu den Stummschaltungsfunktionen zu bieten."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    null,
+                    {
+                        "KeyFeature": "Die Kunststoffteile der Variante Grafit von Rally Bar Mini enthalten 36 % zertifizierten recycelten Kunststoff. Wir schenken Kunststoff aus Unterhaltungselektronik ein zweites Leben, um unseren CO2-Fußabdruck zu verringern."
+                    }
+                ]
+            }
+        },
+        "Rally Bar Huddle": {
+            "Blade_1": {
+                "ProductName": "Rally Bar Huddle",
+                "ShortDescription": "All-in-one-Videobar für Huddle- und kleine Räume.",
+                "LongDescription": "Rally Bar Huddle ist eine unkomplizierte und leistungsstarke Lösung für kleine Räume, die sich durch ihr elegantes Design und ihre zuverlässige Technologie auszeichnet."
+            },
+            "Blade_2": {
+                "Headline": "VERLOCKEND EINFACH"
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "GLEICHBERECHTIGTE MEETINGS ERMÖGLICHEN",
+                        "KeyFeature": "Stellen Sie sicher, dass bei hybriden Meetings jeder deutlich gesehen und gehört werden kann. KI-Videointelligenz, fortschrittliche Tonaufnahme, Geräuschunterdrückung und kontinuierliche Software-Optimierungen garantieren eine klare und natürliche Meeting-Erfahrung für Remote-Mitarbeiter."
+                    },
+                    {
+                        "HeaderFeature": "3 MÖGLICHKEITEN FÜR DIE BEREITSTELLUNG",
+                        "KeyFeature": "Rally Bar Huddle lässt sich auf drei Arten verwenden: als Konferenzraum-Appliance, im USB-Modus an einen Konferenzraum-PC angeschlossen oder über eine Verbindung mit einem Notebook."
+                    },
+                    {
+                        "HeaderFeature": "EINRICHTUNG IN MINUTEN",
+                        "KeyFeature": "Rally Bar Huddle wurde für die einfache Durchführung von Videobesprechungen entwickelt und lässt sich schnell einrichten, einfach verwalten und über CollabOS problemlos in Tap IP integrieren. Die mitgelieferte Mehrfachhalterung kann verwendet werden, um Rally Bar Huddle auf drei verschiedene Arten zu montieren; an der Wand, auf dem Tisch oder über dem Bildschirm."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    null,
+                    {
+                        "HeaderFeature": "MIT RECYCELTEM KUNSTSTOFF",
+                        "KeyFeature": "Die Kunststoffteile von Rally Bar Huddle bestehen zu 42 % aus recyceltem Kunststoff. Wir schenken Kunststoff aus Unterhaltungselektronik ein zweites Leben, um unseren CO2-Fußabdruck zu verringern."
+                    }
+                ]
+            }
+        },
+        "LOGITECH TAP": {
+            "Blade_1": {
+                "ProductName": "LOGITECH TAP",
+                "ShortDescription": "Vereinfachen Sie die Teilnahme an Videobesprechungen mit einem Touch-Controller mit kabellosem Teilen von Inhalten oder Teilen über HDMI.",
+                "LongDescription": "Verwandeln Sie Ihren Raum mit Logitech Tap in einen Google Meet™- oder Microsoft Teams®-Konferenzraum unter Windows. Die Lösungen für Konferenzräume bieten eine One-Touch-Teilnahme, eine Kalender-Integration, einfaches Teilen von Inhalten und eine einheitliche Erfahrung für alle Räume."
+            },
+            "Blade_2": {
+                "Headline": "SETZEN SIE RAUMLÖSUNGEN GANZ EINFACH EIN"
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "GENAU DIE RICHTIGE PRÄSENZ",
+                        "KeyFeature": "Mit einem großen 10,1 Zoll-Display, einem flachen Profil und einem Bewegungssensor für ständige Bereitschaft zeigt Tap eine schlichte und dezente Präsenz im Raum."
+                    },
+                    {
+                        "HeaderFeature": "EINFACHE UND SICHERE VERKABELUNG"
+                    },
+                    {
+                        "HeaderFeature": "MEHRERE MONTAGEMÖGLICHKEITEN"
+                    }
+                ]
+            }
+        },
+        "LOGITECH TAP IP": {
+            "Blade_3A": {
+                "Features": [
+                    null,
+                    {
+                        "KeyFeature": "Vereinfachen Sie das Einrichten mit einem einzigen Kabel, das durch die Rückseite oder die Unterseite des Geräts geführt werden kann. Die integrierten Mechanismen zur Zugentlastung und Fixierung halten alle Kabelverbindungen sicher an Ort und Stelle."
+                    },
+                    {
+                        "KeyFeature": "Montieren Sie Tap IP fast überall im Raum mit Tisch- und Gelenkhalterungen, die zu Standard-Kabeldurchführungen durch die Tischplatte passen und sich für mehr Sichtbarkeit und Komfort um 180° drehen lassen. Oder sparen Sie in kleinen Räumen mit der Wandhalterung Platz am Tisch."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "EINFACHE INSTALLATION MIT NUR EINEM KABEL",
+                        "KeyFeature": "Platzieren Sie Tap IP für ein sauberes und professionelles Einrichten mit einem einzigen Power-over-Ethernet-Kabel bequem in der Nähe der Teilnehmer."
+                    },
+                    {
+                        "HeaderFeature": "ENTWICKELT FÜR JEDEN RAUM",
+                        "KeyFeature": "Bieten Sie ein einheitliches Erlebnis mit One-Touch-Teilnahme in Räumen praktisch jeder Größe oder Form."
+                    },
+                    {
+                        "HeaderFeature": "EINFACHE VERWALTUNG MIT LOGITECH SYNC",
+                        "KeyFeature": "Nutzen Sie Logitech Sync und überwachen und verwalten Sie Tap IP zusammen mit Ihren übrigen Konferenzraumgeräten von einer einzigen Plattform aus."
+                    }
+                ]
+            }
+        },
+        "LOGITECH SIGHT": {
+            "Blade_1": {
+                "ProductName": "LOGITECH SIGHT",
+                "ShortDescription": "Companion-Tischkamera",
+                "LongDescription": "Mit Logitech Sight erhalten Sie die beste Perspektive. Logitech Sight arbeitet für ein intelligentes Framing mit mehreren Teilnehmern mit der Frontkamera des Raumes zusammen."
+            },
+            "Blade_2": {
+                "Headline": "ALLE WIE AN EINEM TISCH",
+                "Description": "Die KI-gesteuerte Kamera für Konferenzräume gibt Remote-Teilnehmenden das Gefühl, direkt am Tisch zu sitzen."
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "DIREKT MITTENDRIN",
+                        "KeyFeature": "Fügen Sie Ihrer Frontkamera im Raum die Tischperspektive hinzu, um eine bessere, integrativere hybride Meeting-Erfahrung zu bieten."
+                    },
+                    {
+                        "HeaderFeature": "VERFOLGEN SIE GESPRÄCHE AUF NATÜRLICHE WEISE",
+                        "KeyFeature": "Sight unterstützt das nahtlose Tracking, Framing und Darstellen von mehreren aktiven Sprechern in Echtzeit. So können die Personen dynamisch ins Bild gesetzt werden, während sie sich an der Unterhaltung am Tisch beteiligen. Gleichzeitig überlagert die Kamera an der Vorderseite des Raums eine Ansicht aller Teilnehmer im Raum von der Vorderseite und bietet so einen umfassenden und ansprechenden Überblick über das gesamte Meeting."
+                    },
+                    {
+                        "HeaderFeature": "KLARES VIDEO UND AUDIO IN GRÖSSEREN RÄUMEN",
+                        "KeyFeature": "Mit einer Erfassungsreichweite von 2,30 m ist Sight für mittelgroße bis große Räume ausgelegt. Sight erkennt aktive Sprecher mithilfe von 7 Mikrofonen und verwendet 4K-Kameras und KI, um Gespräche und nonverbale Hinweise klar und deutlich zu erfassen."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "ENTWICKELT FÜR VERSCHIEDENE BEREICHE",
+                        "KeyFeature": "Sight wurde für mittelgroße bis große Räume entwickelt und erweitert die Möglichkeiten der Kamera im vorderen Teil des Raums, um Gespräche und nonverbale Hinweise im Raum zu erfassen."
+                    },
+                    {
+                        "HeaderFeature": "KLARER TON. KLARES BILD. ÜBERSICHTLICHE BEDIENELEMENTE",
+                        "KeyFeature": "Mit 4K-Kameras und 7 Beamforming-Mikrofonen erfasst Sight Gespräche und nonverbale Hinweise klar und deutlich. Statusanzeigen und Abdeckblende ermöglichen eine klare Signalisierung und eine einfache Statuskontrolle."
+                    },
+                    {
+                        "HeaderFeature": "SAUBERE UND SICHERE INSTALLATION",
+                        "KeyFeature": "Mit den mitgelieferten Halterungen lässt sich Sight ganz einfach installieren und sichern. Dank integriertem Kabelmanagement bleiben die Tische ordentlich und die Kabel angeschlossen."
+                    }
+                ]
+            }
+        },
+        "LOGITECH TAP SCHEDULER": {
+            "Blade_1": {
+                "ProductName": "LOGITECH TAP SCHEDULER",
+                "ShortDescription": "Spezielles Planungspanel für Konferenzräume",
+                "LongDescription": "Mit Tap Scheduler, einem speziellen Planungspanel, das für die Bereitstellung nach Maß entwickelt wurde, ist es ganz einfach, den richtigen Besprechungsraum zu finden und zu belegen."
+            },
+            "Blade_2": {
+                "Headline": "RICHTIGER ORT, RICHTIGE ZEIT",
+                "Description": "Tap Scheduler erleichtert den Zugriff auf Meetinginformationen und die Buchung eines Raums für Ad-hoc- oder zukünftige Besprechungen. Lässt sich problemlos als spezielles Planungspanel für führende Raumplanungslösungen einsetzen: Mitarbeitende finden den richtigen Raum auf Anhieb."
+            },
+            "Blade_3A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "WÄHLEN SIE IHRE PLATTFORM",
+                        "KeyFeature": "Ermöglichen Sie eine nahtlose Meeting-Erfahrung mit Tap Scheduler und den vielfältigen Raumlösungen von Logitech, die sich in Microsoft Teams®, Zoom Rooms™, Logitechs eigenem Buchungsservice und Lösungen anderer Dienstleister integrieren lassen, um die Zusammenarbeit auf ein neues Level zu bringen."
+                    },
+                    {
+                        "HeaderFeature": "GRÜN HEISST LOS",
+                        "KeyFeature": "Finden Sie anhand der farbigen LED-Leuchten, die die Verfügbarkeit aus der Ferne anzeigen, schnell einen freien Raum."
+                    },
+                    {
+                        "HeaderFeature": "SAUBERES UND EINFACHES MONTIEREN",
+                        "KeyFeature": "Beiliegende Halterungen und saubere Kabelführung sorgen für eine ansprechende, professionelle Einrichtung. Verwenden Sie eine Winkelhalterung für eine bessere Sicht in geringerer Höhe."
+                    }
+                ]
+            },
+            "Blade_2A": {
+                "Features": [
+                    {
+                        "HeaderFeature": "DETAILS AUS DER NÄHE",
+                        "KeyFeature": "Sehen Sie sich auf einem großen 10,1-Zoll-Bildschirm Meetingdetails an, buchen Sie Räume und planen Sie Meetings. Die Verfügbarkeitsanzeige zeigt den Raumstatus schon aus der Ferne an."
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,814 @@
+[
+  {
+    "en-us": "What size room are you setting up? ",
+    "de": "Wie groß ist der Raum, den Sie einrichten?",
+    "es-ES": "¿Qué tamaño de sala va a configurar?",
+    "es-MX": "¿Cuál es el tamaño de la sala que estás instalando?",
+    "key": "ChooseRoomSize#title"
+  },
+  {
+    "en-us": "Choose the option that best matches the seating capacity of your room.",
+    "de": "Wählen Sie die Option, die am besten zu der Kapazität Ihres Raums passt.",
+    "es-ES": "Elija la opción que mejor se adapte a la capacidad de su sala.",
+    "es-MX": "Elige la opción que mejor se adapte a la cantidad de asientos de tu sala.",
+    "key": "ChooseRoomSize#subtitle"
+  },
+  {
+    "en-us": "LOGITECH ROOM CONFIGURATOR",
+    "de": "LOGITECH RAUMKONFIGURATOR",
+    "es-ES": "CONFIGURADOR DE SALAS DE LOGITECH",
+    "es-MX": "CONFIGURADOR DE SALAS DE LOGITECH",
+    "key": ""
+  },
+  {
+    "en-us": "Configure products for a variety of rooms and setups",
+    "de": "Konfigurieren Sie Produkte für verschiedene Räume und Setups",
+    "es-ES": "Configure productos para diversos tipos de salas y entornos",
+    "es-MX": "Configura productos para diversas salas y entornos",
+    "key": ""
+  },
+  {
+    "en-us": "How it works:",
+    "de": "So funktioniert‘s:",
+    "es-ES": "Cómo funciona:",
+    "es-MX": "Cómo funciona:",
+    "key": ""
+  },
+  {
+    "en-us": "Choose guided selections based on your room and setup",
+    "de": "Wählen Sie aus Vorschlägen für Ihren Raum und Ihr Setup aus",
+    "es-ES": "Seleccione las opciones que se le ofrecen según su sala y su configuración",
+    "es-MX": "Elige las selecciones guiadas basadas en tu sala y configuración",
+    "key": ""
+  },
+  {
+    "en-us": "Get a complete look at the room(s) you configured",
+    "de": "Sehen Sie sich eine Vorschau Ihrer Raumkonfiguration an",
+    "es-ES": "Obtenga una vista general de la sala que ha configurado",
+    "es-MX": "Obtén una visualización completa de las salas que configuraste",
+    "key": ""
+  },
+  {
+    "en-us": "View and share your detailed solutions per room",
+    "de": "Sie erhalten eine detaillierte Lösungsübersicht zum Ansehen und Teilen",
+    "es-ES": "Vea y comparta sus soluciones detalladas por sala",
+    "es-MX": "Explora y comparte tus soluciones detalladas por sala",
+    "key": ""
+  },
+  {
+    "en-us": "I’m a customer",
+    "de": "Ich bin ein Kunde",
+    "es-ES": "Soy un cliente",
+    "es-MX": "Soy cliente",
+    "key": ""
+  },
+  {
+    "en-us": "I’m a partner",
+    "de": "Ich bin ein Partner",
+    "es-ES": "Soy un asociado",
+    "es-MX": "Soy asociado",
+    "key": ""
+  },
+  {
+    "en-us": "What size room are you setting up? ",
+    "de": "Wie groß ist der Raum, den Sie einrichten?",
+    "es-ES": "¿Qué tamaño de sala va a configurar?",
+    "es-MX": "¿Cuál es el tamaño de la sala que estás instalando?",
+    "key": ""
+  },
+  {
+    "en-us": "Choose the option that best matches the seating capacity of your room.",
+    "de": "Wählen Sie die Option, die am besten zu der Kapazität Ihres Raums passt.",
+    "es-ES": "Elija la opción que mejor se adapte a la capacidad de su sala.",
+    "es-MX": "Elige la opción que mejor se adapte a la cantidad de asientos de tu sala.",
+    "key": ""
+  },
+  {
+    "en-us": "Up to 2",
+    "de": "Bis zu 2",
+    "es-ES": "Hasta 2",
+    "es-MX": "Hasta 2",
+    "key": ""
+  },
+  {
+    "en-us": "Phone Booth",
+    "de": "Telefonzelle",
+    "es-ES": "Cabina",
+    "es-MX": "Cabina",
+    "key": ""
+  },
+  {
+    "en-us": "Up to 6",
+    "de": "Bis zu 6",
+    "es-ES": "Hasta 6",
+    "es-MX": "Hasta 6",
+    "key": ""
+  },
+  {
+    "en-us": "Huddle Room",
+    "de": "Huddle-Room",
+    "es-ES": "Espacio de reunión reducido",
+    "es-MX": "Espacio de reunión pequeño",
+    "key": ""
+  },
+  {
+    "en-us": "Up to 8",
+    "de": "Bis zu 8",
+    "es-ES": "Hasta 8",
+    "es-MX": "Hasta 8",
+    "key": ""
+  },
+  {
+    "en-us": "Small Room",
+    "de": "Kleiner Raum",
+    "es-ES": "Sala pequeña",
+    "es-MX": "Sala pequeña",
+    "key": ""
+  },
+  {
+    "en-us": "Up to 12",
+    "de": "Bis zu 12",
+    "es-ES": "Hasta 12",
+    "es-MX": "Hasta 12",
+    "key": ""
+  },
+  {
+    "en-us": "Medium Room",
+    "de": "Mittelgroßer Raum",
+    "es-ES": "Sala mediana",
+    "es-MX": "Sala mediana",
+    "key": ""
+  },
+  {
+    "en-us": "Up to 20",
+    "de": "Bis zu 20",
+    "es-ES": "Hasta 20",
+    "es-MX": "Hasta 20",
+    "key": ""
+  },
+  {
+    "en-us": "Large Room",
+    "de": "Großer Raum",
+    "es-ES": "Sala grande",
+    "es-MX": "Sala grande",
+    "key": ""
+  },
+  {
+    "en-us": "More than  20",
+    "de": "Mehr als 20",
+    "es-ES": "Más de 20",
+    "es-MX": "Más de 20",
+    "key": ""
+  },
+  {
+    "en-us": "Alternative",
+    "de": "Alternative",
+    "es-ES": "Alternativa",
+    "es-MX": "Alternativa",
+    "key": ""
+  },
+  {
+    "en-us": "What is your primary video conferencing platform?",
+    "de": "Was ist Ihre primäre Videokonferenzplattform?",
+    "es-ES": "¿Cuál es su principal plataforma de videoconferencia?",
+    "es-MX": "¿Cuál es tu principal plataforma de videoconferencia?",
+    "key": ""
+  },
+  {
+    "en-us": "Choose the video conferencing platform your organization uses most often.",
+    "de": "Wählen Sie die Videokonferenzplattform, die Ihr Unternehmen am häufigsten verwendet.",
+    "es-ES": "Elija la plataforma de videoconferencia que su organización utiliza con más frecuencia.",
+    "es-MX": "Elige la plataforma de videoconferencia que tu organización usa con mayor frecuencia.",
+    "key": ""
+  },
+  {
+    "en-us": "Google Meet",
+    "de": "Google Meet",
+    "es-ES": "Google Meet",
+    "es-MX": "Google Meet",
+    "key": ""
+  },
+  {
+    "en-us": "Microsoft Teams",
+    "de": "Microsoft Teams",
+    "es-ES": "Microsoft Teams",
+    "es-MX": "Microsoft Teams",
+    "key": ""
+  },
+  {
+    "en-us": "Zoom",
+    "de": "Zoom",
+    "es-ES": "Zoom",
+    "es-MX": "Zoom",
+    "key": ""
+  },
+  {
+    "en-us": "Looking for another solution?",
+    "de": "Sie suchen nach einer anderen Lösung?",
+    "es-ES": "¿Busca otra solución?",
+    "es-MX": "¿Buscas otra solución?",
+    "key": ""
+  },
+  {
+    "en-us": "Choose a Bring-Your-Own-Device setup.",
+    "de": "Wählen Sie ein Setup zur Verwendung eigener Geräte (BYOD).",
+    "es-ES": "Elija el modo de dispositivo propio.",
+    "es-MX": "Elige una configuración de “Trae tu propio dispositivo”.",
+    "key": ""
+  },
+  {
+    "en-us": "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
+    "de": "Bevorzugen Sie eine Videokonferenz-Appliance oder ein eigenes Computergerät?",
+    "es-ES": "¿Prefiere un dispositivo de videoconferencia o tener un dispositivo informático específico?",
+    "es-MX": "¿Prefieres un dispositivo de videoconferencia o tener un dispositivo informático dedicado?",
+    "key": ""
+  },
+  {
+    "en-us": "Appliance-Based",
+    "de": "Appliance-basiert",
+    "es-ES": "Basada en aparatos",
+    "es-MX": "Basado en dispositivos",
+    "key": ""
+  },
+  {
+    "en-us": "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
+    "de": "Ein vorkonfiguriertes Videokonferenzsystem mit integrierten Computerfunktionen. Kein externer PC erforderlich.",
+    "es-ES": "Un sistema de videoconferencia preconfigurado con prestaciones informáticas integradas, sin necesidad de un PC externo.",
+    "es-MX": "Un sistema de videoconferencia preconfigurado con capacidades informáticas integradas, sin necesidad de utilizar un PC externo.",
+    "key": ""
+  },
+  {
+    "en-us": "PC-Based",
+    "de": "PC-basiert",
+    "es-ES": "Basado en PC",
+    "es-MX": "Basado en PC",
+    "key": ""
+  },
+  {
+    "en-us": "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
+    "de": "Plug-and-Play mit einem beliebigen PC, Mac oder einer beliebigen Chromebox über USB, um Ihre Raumlösung zu komplettieren.",
+    "es-ES": "Plug and Play con cualquier PC, Mac o Chromebox a través de USB para completar su solución para salas de reunión.",
+    "es-MX": "Plug and Play con cualquier PC, Mac o Chromebox mediante USB para completar tu solución para salas de reuniones.",
+    "key": ""
+  },
+  {
+    "en-us": "Choose your conferencing camera(s).",
+    "de": "Wählen Sie Ihre Konferenzkamera(s) aus.",
+    "es-ES": "Elija sus cámaras para conferencias.",
+    "es-MX": "Elige tus cámaras para conferencias.",
+    "key": ""
+  },
+  {
+    "en-us": "These recommendations are based on your previous answers. You selected:",
+    "de": "Diese Empfehlungen basieren auf Ihren vorherigen Antworten. Sie haben Folgendes ausgewählt:",
+    "es-ES": "Estas recomendaciones se basan en sus respuestas anteriores. Ha seleccionado:",
+    "es-MX": "Estas recomendaciones se basan en tus respuestas anteriores. Seleccionaste:",
+    "key": ""
+  },
+  {
+    "en-us": "[3. deployment] running [2. platform] in a [1. room] room.",
+    "de": "[3. Bereitstellung] mit [2. Plattform] in einem Raum [1. Raum].",
+    "es-ES": "[3. implementación] que ejecuta [2. plataforma] en una sala [1. sala].",
+    "es-MX": "[3. implementación] en ejecución [2. plataforma] en una [1. sala] sala.",
+    "key": ""
+  },
+  {
+    "en-us": "Add room-filling audio.",
+    "de": "Fügen Sie raumfüllenden Sound hinzu.",
+    "es-ES": "Agregue audio envolvente.",
+    "es-MX": "Agrega un audio pleno para toda la sala.",
+    "key": ""
+  },
+  {
+    "en-us": "Choose from the following audio extensions to make sure everyone can hear and be heard clearly.",
+    "de": "Wählen Sie eine der folgenden Audioerweiterungen, damit jeder deutlich hören und gehört werden kann.",
+    "es-ES": "Elija entre las siguientes ampliaciones de audio para asegurarse de que todos puedan oír y ser escuchados con claridad.",
+    "es-MX": "Elige entre las siguientes extensiones de audio para asegurar que todos puedan escuchar y ser escuchados con claridad.",
+    "key": ""
+  },
+  {
+    "en-us": "Add video conferencing accessories.",
+    "de": "Fügen Sie Videokonferenzzubehör hinzu.",
+    "es-ES": "Incorpore accesorios para videoconferencias.",
+    "es-MX": "Agregar accesorios para videoconferencias",
+    "key": ""
+  },
+  {
+    "en-us": "Keep a clean and secure setup by adding additional cabling and hubs.",
+    "de": "Sorgen Sie für ein sauberes und sicheres Einrichten durch Hinzufügen weiterer Kabel und Hubs.",
+    "es-ES": "Mantenga una configuración limpia y segura añadiendo cables y hubs adicionales.",
+    "es-MX": "Mantén una configuración limpia y segura agregando cables y hubs adicionales.",
+    "key": ""
+  },
+  {
+    "en-us": "Choose your meeting controller.",
+    "de": "Wählen Sie Ihren Meeting-Controller aus.",
+    "es-ES": "Elija un controlador para sus reuniones.",
+    "es-MX": "Elige el controlador para tu reunión.",
+    "key": ""
+  },
+  {
+    "en-us": "Select tethered or network-connected meeting controller for one-touch join meetings.",
+    "de": "Wählen Sie einen kabelgebundenen oder netzwerkfähigen Meeting-Controller für Meetings mit One-Touch-Teilnahme.",
+    "es-ES": "Seleccione un controlador de reuniones con cable o conectado a la red para unirse a las reuniones con un solo toque.",
+    "es-MX": "Selecciona un controlador para reuniones con cable o conectado a la red para unirte a las reuniones con un solo toque.",
+    "key": ""
+  },
+  {
+    "en-us": "Choose your add-ons.",
+    "de": "Wählen Sie Ihre Erweiterungen aus.",
+    "es-ES": "Elija sus complementos.",
+    "es-MX": "Elige tus complementos.",
+    "key": ""
+  },
+  {
+    "en-us": "Enhance the meeting experience with add-ons.",
+    "de": "Verbessern Sie die Meeting-Erfahrung mit Erweiterungen.",
+    "es-ES": "Mejore la experiencia de la reunión con complementos.",
+    "es-MX": "Mejora la experiencia de la reunión con complementos.",
+    "key": ""
+  },
+  {
+    "en-us": "Finish up by adding services and tools to ensure your deployment is always up and running.",
+    "de": "Fügen Sie abschließend Dienste und Tools hinzu, um sicherzustellen, dass Ihre Bereitstellung immer betriebsbereit ist.",
+    "es-ES": "Para terminar, añada servicios y herramientas para asegurarse de que su implementación esté siempre en funcionamiento.",
+    "es-MX": "Finaliza agregando servicios y herramientas para garantizar que tu implementación siempre esté en funcionamiento.",
+    "key": ""
+  },
+  {
+    "en-us": "Need help choosing? ",
+    "de": "Benötigen Sie Hilfe bei der Auswahl?",
+    "es-ES": "¿Necesita ayuda para elegir?",
+    "es-MX": "¿Necesitas ayuda para elegir?",
+    "key": ""
+  },
+  {
+    "en-us": "BASIC SERVICES",
+    "de": "STANDARDDIENSTE",
+    "es-ES": "SERVICIOS BÁSICOS",
+    "es-MX": "SERVICIOS BÁSICOS",
+    "key": ""
+  },
+  {
+    "en-us": "Global, business-hours support and 2-year standard warranty, as well as software to better manage and maintain your deployment.",
+    "de": "Weltweiter Support während der Geschäftszeiten und zwei Jahre Standardgarantie sowie Software zur besseren Verwaltung und Wartung Ihrer Installation.",
+    "es-ES": "Asistencia global en horario laboral y garantía estándar de 2 años, así como software para gestionar y mantener mejor su implementación.",
+    "es-MX": "Asistencia global en horario laboral y garantía estándar de 2 años, así como software para administrar y mantener mejor su implementación.",
+    "key": ""
+  },
+  {
+    "en-us": "EXTENDED WARRANTY",
+    "de": "GARANTIEVERLÄNGERUNG",
+    "es-ES": "GARANTÍA AMPLIADA",
+    "es-MX": "GARANTÍA AMPLIADA",
+    "key": ""
+  },
+  {
+    "en-us": "Add up to 3 years of warranty to extend coverage and support for your devices.",
+    "de": "Verlängern Sie die Garantie auf bis zu 3 Jahre, um die Abdeckung und den Support für Ihre Geräte zu verlängern.",
+    "es-ES": "Añada hasta 3 años de garantía para ampliar la cobertura y la asistencia para sus dispositivos.",
+    "es-MX": "Agrega hasta 3 años de garantía para ampliar la cobertura y la asistencia para tus dispositivos.",
+    "key": ""
+  },
+  {
+    "en-us": "SELECT SERVICE PLAN",
+    "de": "SERVICE-PLAN WÄHLEN",
+    "es-ES": "PLAN DE SERVICIO SELECT",
+    "es-MX": "SELECCIONA EL PLAN DE SERVICIO",
+    "key": ""
+  },
+  {
+    "en-us": "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
+    "de": "Umfassender Support rund um die Uhr, erweiterter Produktaustausch sowie proaktive Software und Erkenntnisse, um die Geschäftskontinuität sicherzustellen.",
+    "es-ES": "Asistencia integral 24 horas al día, 7 días a la semana, sustituciones avanzadas de productos y software e información proactiva para asegurar la continuidad del negocio.",
+    "es-MX": "Asistencia integral 24 horas al día, los 7 días de la semana, reemplazos avanzados de productos y software e información proactiva para garantizar la continuidad del negocio.",
+    "key": ""
+  },
+  {
+    "en-us": "What are your hours of support?",
+    "de": "Wie sind Ihre Geschäftszeiten für den Support?",
+    "es-ES": "¿Cuál es el horario de asistencia?",
+    "es-MX": "¿Cuál es tu horario de asistencia?",
+    "key": ""
+  },
+  {
+    "en-us": "Business Hours",
+    "de": "Geschäftszeiten",
+    "es-ES": "Horario laboral",
+    "es-MX": "Horario comercial",
+    "key": ""
+  },
+  {
+    "en-us": "Basic, Extended Warranty",
+    "de": "Standard, Garantieverlängerung",
+    "es-ES": "Básicos, garantía ampliada",
+    "es-MX": "Garantía básica, ampliada",
+    "key": ""
+  },
+  {
+    "en-us": "24/7",
+    "de": "24/7",
+    "es-ES": "24/7",
+    "es-MX": "24/7",
+    "key": ""
+  },
+  {
+    "en-us": "Select",
+    "de": "Auswahl",
+    "es-ES": "Select",
+    "es-MX": "Seleccionar",
+    "key": ""
+  },
+  {
+    "en-us": "What’s your repair time for meeting rooms?",
+    "de": "Wie lange brauchen Sie für die Reparatur von Konferenzräumen?",
+    "es-ES": "¿Cuál es el tiempo de reparación de las salas de reuniones?",
+    "es-MX": "¿Cuál es tu tiempo de reparación de las salas de reuniones?",
+    "key": ""
+  },
+  {
+    "en-us": "Within 1 week",
+    "de": "Innerhalb 1 Woche",
+    "es-ES": "En 1 semana",
+    "es-MX": "En el transcurso de 1 semana",
+    "key": ""
+  },
+  {
+    "en-us": "Basic, Extended Warranty",
+    "de": "Standard, Garantieverlängerung",
+    "es-ES": "Básicos, garantía ampliada",
+    "es-MX": "Garantía básica, ampliada",
+    "key": ""
+  },
+  {
+    "en-us": "Within 1 hour",
+    "de": "Innerhalb 1 Stunde",
+    "es-ES": "En 1 hora",
+    "es-MX": "En el transcurso de 1 hora",
+    "key": ""
+  },
+  {
+    "en-us": "Select",
+    "de": "Auswahl",
+    "es-ES": "Select",
+    "es-MX": "Seleccionar",
+    "key": ""
+  },
+  {
+    "en-us": "What’s the typical lifecycle for meeting room hardware?",
+    "de": "Wie sieht der typische Lebenszyklus von Hardware für Konferenzräume aus?",
+    "es-ES": "¿Cuál es el ciclo de vida habitual del hardware de las salas de reuniones?",
+    "es-MX": "¿Cuál es el ciclo de vida habitual del hardware en las salas de reuniones?",
+    "key": ""
+  },
+  {
+    "en-us": "Less than 2 years",
+    "de": "Weniger als 2 Jahre",
+    "es-ES": "Menos de 2 años",
+    "es-MX": "Menos de 2 años",
+    "key": ""
+  },
+  {
+    "en-us": "Basic",
+    "de": "Standard",
+    "es-ES": "Básicos",
+    "es-MX": "Básica",
+    "key": ""
+  },
+  {
+    "en-us": "2-5 years",
+    "de": "2-5 Jahre",
+    "es-ES": "De 2 a 5 años",
+    "es-MX": "2-5 años",
+    "key": ""
+  },
+  {
+    "en-us": "Extended Warranty",
+    "de": "Garantieverlängerung",
+    "es-ES": "Garantía ampliada",
+    "es-MX": "Garantía ampliada",
+    "key": ""
+  },
+  {
+    "en-us": "5 years or more",
+    "de": "5 Jahre oder mehr",
+    "es-ES": "5 años o más",
+    "es-MX": "5 años o más",
+    "key": ""
+  },
+  {
+    "en-us": "Select",
+    "de": "Auswahl",
+    "es-ES": "Select",
+    "es-MX": "Seleccionar",
+    "key": ""
+  },
+  {
+    "en-us": "What support service is needed for you to ensure your meeting rooms are always up and running?",
+    "de": "Welchen Support-Service benötigen Sie, um sicherzustellen, dass Ihre Konferenzräume immer betriebsbereit sind?",
+    "es-ES": "¿Qué servicio de asistencia necesita para asegurarse de que sus salas de reunión estén siempre en funcionamiento?",
+    "es-MX": "¿Qué servicio de asistencia necesitas para garantizar que tus salas de reunión estén siempre en funcionamiento?",
+    "key": ""
+  },
+  {
+    "en-us": "Tech support when I need it",
+    "de": "Technischer Support, wenn ich ihn brauche",
+    "es-ES": "Asistencia técnica cuando la necesito",
+    "es-MX": "Asistencia técnica cuando la necesito",
+    "key": ""
+  },
+  {
+    "en-us": "Basic, Extended Warranty",
+    "de": "Standard, Garantieverlängerung",
+    "es-ES": "Básicos, garantía ampliada",
+    "es-MX": "Garantía básica, ampliada",
+    "key": ""
+  },
+  {
+    "en-us": "Dedicated, additional service and support",
+    "de": "Spezielle, zusätzliche Service- und Supportleistungen",
+    "es-ES": "Servicio y asistencia adicionales y específicos",
+    "es-MX": "Servicio y asistencia adicionales y dedicados",
+    "key": ""
+  },
+  {
+    "en-us": "Select",
+    "de": "Auswahl",
+    "es-ES": "Select",
+    "es-MX": "Seleccionar",
+    "key": ""
+  },
+  {
+    "en-us": "SHOW ME THE COMPLETE SETUP",
+    "de": "ZEIGEN SIE MIR DAS KOMPLETTE SETUP",
+    "es-ES": "VER EL EQUIPO COMPLETO",
+    "es-MX": "MUÉSTRAME LA CONFIGURACIÓN COMPLETA",
+    "key": ""
+  },
+  {
+    "en-us": "All finished! Complete the form below to view your project summary page, including guidance on next steps and a detailed shopping guide that you can download and share. ",
+    "de": "Alles fertig! Füllen Sie das nachstehende Formular aus, um die Projekt-Übersichtsseite für Ihr Projekt aufzurufen. Dort finden Sie Hinweise zu den nächsten Schritten und einen detaillierten Einkaufsführer, den Sie herunterladen und weiterleiten können.",
+    "es-ES": "¡Listo! Rellene el siguiente formulario para ver la página de resumen de su proyecto, que incluye orientación sobre los próximos pasos y una guía de compras detallada que puede descargar y compartir.",
+    "es-MX": "¡Todo listo! Completa el siguiente formulario para ver la página de resumen de tu proyecto, incluida orientación sobre los pasos siguientes y una guía de compras detallada que podrás descargar y compartir.",
+    "key": ""
+  },
+  {
+    "en-us": "See my results",
+    "de": "Meine Ergebnisse anzeigen",
+    "es-ES": "Ver mis resultados",
+    "es-MX": "Ver mis resultados",
+    "key": ""
+  },
+  {
+    "en-us": "Project Summary Page",
+    "de": "Projekt-Übersichtsseite",
+    "es-ES": "Página de resumen del proyecto",
+    "es-MX": "Página de resumen del proyecto",
+    "key": ""
+  },
+  {
+    "en-us": "Thank you for your interest in Logitech! Review your finished room(s) below. Download and share your custom shopping guide(s). Request to be contacted today to receive a formal quote and facilitate next steps, whether through Logitech or your preferred partner.",
+    "de": "Vielen Dank für Ihr Interesse an Logitech!  Sehen Sie sich nachfolgend Ihre fertig eingerichteten Räume an.  Laden Sie Ihre benutzerdefinierten Einkaufsführer herunter und leiten Sie sie an andere weiter.  Beantragen Sie noch heute eine Kontaktaufnahme durch Logitech oder Ihren bevorzugten Partner, um ein formelles Angebot zu erhalten und die nächsten Schritte festzulegen.",
+    "es-ES": "Agradecemos su interés en Logitech.  Revise sus salas terminadas a continuación.  Descargue y comparta sus guías de compra personalizadas.  Solicite que se pongan en contacto con usted hoy mismo para recibir un presupuesto formal y facilitarle los siguientes pasos, ya sea a través de Logitech o del asociado que elija.",
+    "es-MX": "¡Gracias por tu interés en Logitech!  Revisa a continuación tus salas finalizadas.  Descarga y comparte tus guías de compra personalizadas.  Solicita que se pongan en contacto contigo hoy mismo para recibir un presupuesto formal y facilitar los pasos siguientes, ya sea mediante Logitech o tu asociado preferido.",
+    "key": ""
+  },
+  {
+    "en-us": "Request Quote",
+    "de": "Angebot anfordern",
+    "es-ES": "Solicitar presupuesto",
+    "es-MX": "Solicitar presupuesto",
+    "key": ""
+  },
+  {
+    "en-us": "Explore Your Finished Room(s)",
+    "de": "Fertig eingerichtete Räume ansehen",
+    "es-ES": "Explore sus salas terminadas",
+    "es-MX": "Explora tus salas finalizadas",
+    "key": ""
+  },
+  {
+    "en-us": "Configurations are for exploratory purposes only. Shopping guides reflect MSRP and are not formal quotes. Please request to be contacted to finalize your quote and next steps.",
+    "de": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die Einkaufsführer enthalten den MSRP und sind keine formellen Angebote. Nehmen Sie Kontakt mit uns auf, um Ihr persönliches Angebot zu erhalten und die nächsten Schritte festzulegen.",
+    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicite que se pongan en contacto con usted para finalizar el presupuesto y ver los próximos pasos.",
+    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicita que se pongan en contacto contigo para finalizar tu presupuesto y los pasos siguientes.",
+    "key": ""
+  },
+  {
+    "en-us": "Add Another Room",
+    "de": "Weiteren Raum hinzufügen",
+    "es-ES": "Añadir otra sala",
+    "es-MX": "Agregar otra sala",
+    "key": ""
+  },
+  {
+    "en-us": "[Phone Booth] [2. Deployment] Room",
+    "de": "[Telefonzelle] [2. Bereitstellung] Raum",
+    "es-ES": "[Cabina] [2. Implementación] sala",
+    "es-MX": "[Cabina] [2. Implementación] Sala",
+    "key": ""
+  },
+  {
+    "en-us": "Phone booths work great for ad-hoc video meetings when you need a quiet environment without disturbing others.",
+    "de": "Telefonkabinen eignen sich hervorragend für spontane Videobesprechungen, wenn Sie eine ruhige Umgebung benötigen, ohne andere zu stören.",
+    "es-ES": "Las cabinas son ideales para reuniones de vídeo puntuales cuando se necesita un entorno tranquilo sin molestar a los demás.",
+    "es-MX": "Las cabinas son ideales para reuniones por video a la medida cuando se necesita un entorno discreto que no moleste a los demás.",
+    "key": ""
+  },
+  {
+    "en-us": "[Huddle] [2. Deployment] Room",
+    "de": "[Huddle] [2. Bereitstellung] Raum",
+    "es-ES": "[Espacio de reunión reducido] [2. Implementación] sala",
+    "es-MX": "[Espacio de reunión reducido] [2. Implementación] Sala",
+    "key": ""
+  },
+  {
+    "en-us": "Huddle rooms are great for hybrid meetings with remote participants.",
+    "de": "Huddle-Räume eignen sich hervorragend für hybride Meetings mit Remote-Teilnehmern.",
+    "es-ES": "Los espacios de reunión reducidos son ideales para reuniones híbridas con participantes remotos.",
+    "es-MX": "Los espacios de reunión reducidos son ideales para reuniones híbridas con participantes remotos.",
+    "key": ""
+  },
+  {
+    "en-us": "[Small] [2. Deployment] Room",
+    "de": "[Klein] [2. Bereitstellung] Raum",
+    "es-ES": "[Pequeña] [2. Implementación] sala",
+    "es-MX": "[Pequeña] [2. Implementación] Sala",
+    "key": ""
+  },
+  {
+    "en-us": "Small meeting rooms are great for hybrid meetings when you have a few more people in the room with you.",
+    "de": "Kleine Konferenzräume eignen sich hervorragend für hybride Meetings, wenn sich ein paar mehr Personen mit Ihnen im Raum befinden.",
+    "es-ES": "Las salas de reunión pequeñas son ideales para reuniones híbridas cuando hay varias personas en la sala.",
+    "es-MX": "Las salas de reuniones pequeñas son ideales para reuniones híbridas cuando hay algunas personas más en la sala contigo.",
+    "key": ""
+  },
+  {
+    "en-us": "[Medium] [2. Deployment] Room",
+    "de": "[Mittelgroß] [2. Bereitstellung] Raum",
+    "es-ES": "[Mediana] [2. Implementación] sala",
+    "es-MX": "[Mediana] [2. Implementación] Sala",
+    "key": ""
+  },
+  {
+    "en-us": "These traditionally-sized rooms typically need additional add-ons or smarter capabilities to better capture the in-room action.",
+    "de": "Räume klassischer Größe benötigen in der Regel zusätzliche Erweiterungen oder intelligentere Funktionen, um das Geschehen im Raum besser zu erfassen.",
+    "es-ES": "Estas salas de tamaño tradicional suelen necesitar complementos adicionales o prestaciones más inteligentes para capturar mejor la acción en la sala.",
+    "es-MX": "Estas salas de tamaño tradicional suelen necesitar complementos adicionales o capacidades más inteligentes para capturar mejor la acción en la sala.",
+    "key": ""
+  },
+  {
+    "en-us": "[Large] [2. Deployment] Room",
+    "de": "[Groß] [2. Bereitstellung] Raum",
+    "es-ES": "[Grande] [2. Implementación] sala",
+    "es-MX": "Grande] [2. Implementación] Sala",
+    "key": ""
+  },
+  {
+    "en-us": "Large, traditionally shaped rooms typically require additional products to extend coverage and ensure everyone can be seen and heard clearly.",
+    "de": "Große, klassisch geschnittene Räume erfordern in der Regel zusätzliche Produkte, um die Erfassung zu erweitern und sicherzustellen, dass alle Personen deutlich gesehen und gehört werden können.",
+    "es-ES": "Las salas grandes con formas tradicionales suelen requerir productos adicionales para ampliar la cobertura y garantizar que se pueda ver y oír a todos con claridad.",
+    "es-MX": "Las salas grandes con formas tradicionales suelen requerir productos adicionales para ampliar la cobertura y garantizar que se pueda ver y oír a todos con claridad.",
+    "key": ""
+  },
+  {
+    "en-us": "[Alternative] [2. Deployment] Room",
+    "de": "[Alternative] [2. Bereitstellung] Raum",
+    "es-ES": "[Alternativa] [2. Implementación] sala",
+    "es-MX": "[Alternativa] [2. Implementación] Sala",
+    "key": ""
+  },
+  {
+    "en-us": "Large, traditionally shaped rooms typically require additional products to extend coverage and ensure everyone can be seen and heard clearly.",
+    "de": "Große, klassisch geschnittene Räume erfordern in der Regel zusätzliche Produkte, um die Erfassung zu erweitern und sicherzustellen, dass alle Personen deutlich gesehen und gehört werden können.",
+    "es-ES": "Las salas grandes con formas tradicionales suelen requerir productos adicionales para ampliar la cobertura y garantizar que se pueda ver y oír a todos con claridad.",
+    "es-MX": "Las salas grandes con formas tradicionales suelen requerir productos adicionales para ampliar la cobertura y garantizar que se pueda ver y oír a todos con claridad.",
+    "key": ""
+  },
+  {
+    "en-us": "PRIMARY: View",
+    "de": "PRIMÄR: Anzeigen",
+    "es-ES": "PRINCIPAL: Ver",
+    "es-MX": "PRIMARIO: Visualización",
+    "key": ""
+  },
+  {
+    "en-us": "SECONDARY: Download",
+    "de": "SEKUNDÄR: Herunterladen",
+    "es-ES": "SECUNDARIA: Descargar",
+    "es-MX": "SECUNDARIO: Descargar",
+    "key": ""
+  },
+  {
+    "en-us": "Share",
+    "de": "Teilen",
+    "es-ES": "Compartir",
+    "es-MX": "Compartir",
+    "key": ""
+  },
+  {
+    "en-us": "Configurations are for exploratory purposes only. Shopping guides reflect MSRP and are not formal quotes. Please request to be contacted to finalize your quote and next steps.",
+    "de": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die Einkaufsführer enthalten den MSRP und sind keine formellen Angebote. Nehmen Sie Kontakt mit uns auf, um Ihr persönliches Angebot zu erhalten und die nächsten Schritte festzulegen.",
+    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicite que se pongan en contacto con usted para finalizar el presupuesto y ver los próximos pasos.",
+    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicita que se pongan en contacto contigo para finalizar tu presupuesto y los pasos siguientes.",
+    "key": ""
+  },
+  {
+    "en-us": "Request Quote",
+    "de": "Angebot anfordern",
+    "es-ES": "Solicitar presupuesto",
+    "es-MX": "Solicitar presupuesto",
+    "key": ""
+  },
+  {
+    "en-us": "[1. Room] [2. Deployment] Room",
+    "de": "[1. Raum] [2. Bereitstellung] Raum",
+    "es-ES": "[1. Sala] [2. Implementación] sala",
+    "es-MX": "[1. Sala] [2. Implementación] Sala",
+    "key": ""
+  },
+  {
+    "en-us": "Back",
+    "de": "Zurück",
+    "es-ES": "Retroceder",
+    "es-MX": "Atrás",
+    "key": ""
+  },
+  {
+    "en-us": "Download",
+    "de": "Herunterladen",
+    "es-ES": "Descargar",
+    "es-MX": "Descargar",
+    "key": ""
+  },
+  {
+    "en-us": "Share",
+    "de": "Teilen",
+    "es-ES": "Compartir",
+    "es-MX": "Compartir",
+    "key": ""
+  },
+  {
+    "en-us": "Conferencing Cameras",
+    "de": "Konferenzkameras",
+    "es-ES": "Cámaras para conferencias",
+    "es-MX": "Cámaras para videoconferencias",
+    "key": ""
+  },
+  {
+    "en-us": "Audio Add-Ons",
+    "de": "Audio-Erweiterungen",
+    "es-ES": "Complementos de audio",
+    "es-MX": "Complementos de audio",
+    "key": ""
+  },
+  {
+    "en-us": "Audio Accessories",
+    "de": "Audiozubehör",
+    "es-ES": "Accesorios de audio",
+    "es-MX": "Accesorios de audio",
+    "key": ""
+  },
+  {
+    "en-us": "Video Conferencing Add-Ons",
+    "de": "Erweiterungen für Videokonferenzen",
+    "es-ES": "Complementos de videoconferencia",
+    "es-MX": "Complementos para videoconferencias",
+    "key": ""
+  },
+  {
+    "en-us": "Services",
+    "de": "Services",
+    "es-ES": "Servicios",
+    "es-MX": "Servicios",
+    "key": ""
+  },
+  {
+    "en-us": "Prices may vary by channel or reseller",
+    "de": "Die Preise können je nach Kanal oder Händler variieren",
+    "es-ES": "Los precios pueden variar según el canal o el distribuidor",
+    "es-MX": "Los precios pueden variar según el canal o el distribuidor",
+    "key": ""
+  },
+  {
+    "en-us": "*Prices listed are based on product MSRPs. Contact your local reseller or a Logitech Sales Representative for more information.",
+    "de": "* Die angegebenen Preise basieren auf MSRPs der Produkte. Weitere Informationen erhalten Sie von Ihrem lokalen Händler oder einem Logitech Handelsvertreter.",
+    "es-ES": "* Los precios indicados se basan en los MSRP de los productos. Póngase en contacto con su distribuidor local o su representante de ventas de Logitech para obtener más información.",
+    "es-MX": "*Los precios indicados se basan en los MSRP de los productos. Para obtener más información, ponte en contacto con tu canal local o con tu representante de ventas de Logitech.",
+    "key": ""
+  },
+  {
+    "en-us": "",
+    "de": "",
+    "es-ES": "",
+    "es-MX": "",
+    "key": ""
+  },
+  {
+    "en-us": "Modal Copy",
+    "de": "Modale Kopie",
+    "es-ES": "Copia modal",
+    "es-MX": "Copia modal",
+    "key": ""
+  }
+]
