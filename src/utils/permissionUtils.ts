@@ -69,6 +69,9 @@ export enum MeetingControllerName {
   TapWallMount = "Tap Mount - Wall Mount",
   TapRiserMount = "Tap Mount - Riser Mount",
   TapTableMount = "Tap Mount - Table Mount",
+
+  RallyBarTapIP = "Rally Bar + Tap IP",
+  RallyBarMiniTapIP = "Rally Bar Mini + Tap IP",
 }
 
 export enum VideoAccessoryName {
@@ -381,7 +384,7 @@ export function createStepMeetingController() {
         new MountElement(item.name, Configurator.getNameNodeForTap("Table", 1))
       );
   };
-  const group1 = new GroupElement()
+  const groupTap = new GroupElement()
     .addElement(
       setMountForTap(new ItemElement(MeetingControllerName.LogitechTapIP))
     )
@@ -390,7 +393,15 @@ export function createStepMeetingController() {
     )
     .setRequiredOne(true);
 
-  stepMeetingController.allElements = [group1];
+  const groupBundle = new GroupElement()
+    .addElement(
+      new ItemElement(MeetingControllerName.RallyBarTapIP).setVisible(false)
+    )
+    .addElement(
+      new ItemElement(MeetingControllerName.RallyBarMiniTapIP).setVisible(false)
+    );
+
+  stepMeetingController.allElements = [groupTap, groupBundle];
   return stepMeetingController;
 }
 
@@ -518,7 +529,7 @@ export const isMic = (name: string) => {
   return isCompareName(name)([AudioExtensionName.RallyMicPod]);
 };
 
-export const isTap = (name: string) => {
+export const isTapElement = (name: string) => {
   return isCompareName(name)([
     MeetingControllerName.LogitechTapIP,
     MeetingControllerName.LogitechTap,
@@ -542,6 +553,23 @@ export const isTapMount = (name: string) => {
 
 export const isSupportService = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.SupportService]);
+};
+
+export const isBundleElement = (name: string) => {
+  return isCompareName(name)([
+    MeetingControllerName.RallyBarTapIP,
+    MeetingControllerName.RallyBarMiniTapIP,
+  ]);
+};
+
+export const isCameraElement = (name: string) => {
+  return isCompareName(name)([
+    CameraName.MeetUp2,
+    CameraName.RallyBarHuddle,
+    CameraName.RallyBarMini,
+    CameraName.RallyBar,
+    CameraName.RallyPlus,
+  ]);
 };
 
 function isCompareName(name: string) {

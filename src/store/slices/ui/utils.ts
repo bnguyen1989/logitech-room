@@ -6,7 +6,7 @@ import {
   ServiceName,
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
-import { StepName } from "../../../utils/baseUtils";
+import { ColorName, StepName } from "../../../utils/baseUtils";
 import { getImageUrl } from "../../../utils/browserUtils";
 
 export enum UI_ACTION_NAME {
@@ -20,6 +20,7 @@ export enum UI_ACTION_NAME {
 export enum CUSTOM_UI_ACTION_NAME {
   CHANGE_COUNT_ITEM = "CUSTOM/CHANGE_COUNT_ITEM",
   CHANGE_COLOR_ITEM = "CUSTOM/CHANGE_COLOR_ITEM",
+  CREATE_ORDER = "CUSTOM/CREATE_ORDER",
 }
 
 export const getInitStepData = (): StepDataI => {
@@ -403,17 +404,17 @@ export const getExpressionArrayForQuestionForm = () => {
 export const getColorsData = () => {
   return [
     {
-      name: "Graphite",
+      name: ColorName.Graphite,
       value:
         "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-graphite.svg",
     },
     {
-      name: "White",
+      name: ColorName.White,
       value:
         "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-offwhite.svg",
     },
     {
-      name: "TAA",
+      name: ColorName.TAA,
       value:
         "https://resource.logitech.com/w_60,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-taa.png?v=1",
     },
