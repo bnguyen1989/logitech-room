@@ -13,7 +13,8 @@ import { Handler } from "./Handler";
 import { AttrSpecI, RuleName } from "./type";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { Application } from "../Application";
-import { getSeparatorItemColor } from "../../utils/baseUtils";
+import { ColorName, getSeparatorItemColor } from "../../utils/baseUtils";
+import { CameraName, MeetingControllerName } from "../../utils/permissionUtils";
 
 declare const app: Application;
 
@@ -241,6 +242,14 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.micPod_CATCoupler)) {
       this.rule_micPod_CATCoupler();
     }
+
+    if (attrRulesArr.includes(RuleName.rallyBar_TapIp_bundle)) {
+      this.rule_rallyBar_TapIp_bundle();
+    }
+
+    if (attrRulesArr.includes(RuleName.rallyBarMini_TapIp_bundle)) {
+      this.rule_rallyBarMini_TapIp_bundle();
+    }
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -255,6 +264,75 @@ export class ConfigurationConstraintHandler extends Handler {
     if (recoRulesArr.includes(RuleName.reco_micPendantMount_inWhite)) {
       this.rule_reco_micPendantMount_inWhite();
     }
+  }
+
+  private rule_rallyBar_TapIp_bundle() {
+    this.rule_camera_TapIp_bundle(
+      CameraName.RallyBar,
+      MeetingControllerName.RallyBarTapIP
+    );
+  }
+
+  private rule_rallyBarMini_TapIp_bundle() {
+    this.rule_camera_TapIp_bundle(
+      CameraName.RallyBarMini,
+      MeetingControllerName.RallyBarMiniTapIP
+    );
+  }
+
+  private rule_camera_TapIp_bundle(cameraName: string, bundleName: string) {
+    const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
+    const isSelectCamera = typeof selectedCamera === "object";
+    const isSelectRallyBar =
+      isSelectCamera && selectedCamera.name.includes(cameraName);
+    const colorSelectCamera =
+      isSelectRallyBar && this.getColorFromAssetName(selectedCamera.name);
+    const isCameraGraphite = colorSelectCamera === ColorName.Graphite;
+
+    const selectedMeetingController = this.getSelectedValue(
+      AttributeName.RoomMeetingController
+    );
+    const isSelectedMeetingController =
+      typeof selectedMeetingController === "object";
+    const isSelectedTapIP =
+      isSelectedMeetingController &&
+      selectedMeetingController.name.includes(
+        MeetingControllerName.LogitechTapIP
+      );
+    const colorSelectTapIP =
+      isSelectedTapIP &&
+      this.getColorFromAssetName(selectedMeetingController.name);
+    const isSelectTapIPGraphite = colorSelectTapIP === ColorName.Graphite;
+
+    if (!isCameraGraphite || !isSelectTapIPGraphite) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomProductBundle]: {
+          assetId: "",
+        },
+      });
+      return;
+    }
+
+    const attribute = this.getAttribute(AttributeName.RoomProductBundle);
+    if (!attribute) return;
+    const attrState = this.configurator.getAttributeState();
+    const attributeValuesArr = attrState[attribute.id].values;
+    if (!attributeValuesArr) return;
+
+    const visibleValues = attributeValuesArr.filter(
+      (option) => option.visible
+    ) as ValueAssetStateI[];
+    if (!visibleValues.length) return;
+    const bundleElement = visibleValues.find((option) =>
+      option.name.includes(bundleName)
+    );
+    if (!bundleElement) return;
+
+    this.configurator.setConfiguration({
+      [AttributeName.RoomProductBundle]: {
+        assetId: bundleElement.id,
+      },
+    });
   }
 
   private rule_micPod_micMount_inWhite() {

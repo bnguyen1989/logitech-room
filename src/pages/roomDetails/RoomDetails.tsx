@@ -11,6 +11,7 @@ import { CardI } from "../../store/slices/ui/type";
 import { StepName } from "../../utils/baseUtils";
 import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
 import { getImageUrl } from "../../utils/browserUtils";
+import { isBundleElement } from "../../utils/permissionUtils";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -35,6 +36,8 @@ export const RoomDetails: React.FC = () => {
         return "";
     }
   };
+
+  const titleSectionBundle = "Room Solution Bundle";
 
   const getFormatPrice =
     (locale: string, currency: string) => (price: number) => {
@@ -84,13 +87,18 @@ export const RoomDetails: React.FC = () => {
           } = item.metadata;
           const card = JSON.parse(data) as CardI;
 
+          let titleSection = getTitleSectionOrderByStepName(card.key);
+          const isBundleCard = isBundleElement(card.keyPermission);
+          if (isBundleCard) {
+            titleSection = titleSectionBundle;
+          }
+
           const sectionId = dataSections.findIndex(
-            (section) =>
-              section.title === getTitleSectionOrderByStepName(card.key)
+            (section) => section.title === titleSection
           );
 
           let itemSection: SectionI = {
-            title: getTitleSectionOrderByStepName(card.key),
+            title: titleSection,
             data: [
               {
                 title: title,
@@ -105,7 +113,9 @@ export const RoomDetails: React.FC = () => {
             const amountInt = parseFloat(price) * parseInt(count);
             total += amountInt;
             const amount = formatPrice(amountInt);
-            const partNumber = `${color}${color ? " : " : ""}${sku}`;
+            const partNumber = `${color}${color ? " : " : ""}${
+              isBundleCard ? sku + "*" : sku
+            }`;
             itemSection = {
               ...itemSection,
               data: [

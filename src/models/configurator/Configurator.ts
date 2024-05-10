@@ -55,6 +55,7 @@ export class Configurator {
   public static MeetingControllerName = [
     [AttributeName.RoomMeetingController, AttributeName.QtyMeetingController],
     [AttributeName.RoomTapMount, AttributeName.QtyTapMount],
+    [AttributeName.RoomProductBundle],
   ];
 
   public static VideoAccessoriesName = [
