@@ -2,11 +2,11 @@ import { createReadStream, existsSync, mkdirSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import csvParser from "csv-parser";
-import dataTemplatePage from "../../dataLang/pageTemplate.json";
-import dataTemplateProduct from "../../dataLang/productTemplate.json";
+import dataTemplatePage from "../dataLang/pageTemplate.json";
+import dataTemplateProduct from "../dataLang/productTemplate.json";
 
 export class LanguageFileProcessor {
-  private outputFilePath = path.join(__dirname, "./../../../dataLang/");
+  private outputFilePath = path.join(__dirname, "./../dataLang/");
   private folderPage = "/page";
   private folderProduct = "/product";
   private templatePage = dataTemplatePage;

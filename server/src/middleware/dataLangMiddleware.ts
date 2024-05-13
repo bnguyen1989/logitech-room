@@ -8,14 +8,14 @@ export function dataLangFile(
   next: NextFunction
 ): void {
   const processor = new LanguageFileProcessor()
-    .setOutputFilePath(path.join(__dirname, "./../../dataLang/result"))
+    .setOutputFilePath(path.join(__dirname, "./../dataLang/result"))
     .setFolderPage("/page")
     .setFolderProduct("/product");
   if (processor.isExist()) {
     return next();
   }
 
-  const filePath = path.join(__dirname, "./../../dataLang/", "sheet.tsv");
+  const filePath = path.join(__dirname, "./../dataLang/", "sheet.tsv");
   processor
     .processFile(filePath)
     .then(() => console.log("File processing completed successfully."))
