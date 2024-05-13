@@ -8,6 +8,10 @@ import { Application } from "../../../models/Application";
 import { useUrl } from "../../../hooks/url";
 import { useUser } from "../../../hooks/user";
 import { PermissionUser } from "../../../utils/userRoleUtils";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
 
 declare const app: Application;
 
@@ -20,14 +24,31 @@ export const Actions: React.FC = () => {
   const handlerDownload = () => {
     if (!roomId) return;
     app.downloadRoomCSV(roomId);
+    app.analyticsEvent({
+      category: EventCategoryName.room_page,
+      action: EventActionName.download_room,
+      value: {
+        id_room: roomId,
+      },
+    });
   };
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
+    app.analyticsEvent({
+      category: EventCategoryName.room_page,
+      action: EventActionName.request_consultation,
+      value: {},
+    });
   };
 
   const handleBack = () => {
     handleNavigate("/room");
+    app.analyticsEvent({
+      category: EventCategoryName.room_page,
+      action: EventActionName.back_to_summary_page,
+      value: {},
+    });
   };
 
   const userCanReqConsultation = user.role.can(
@@ -40,15 +61,12 @@ export const Actions: React.FC = () => {
         <IconButton onClick={handleBack} variant={"outlined"}>
           <ListSVG />
         </IconButton>
-        <IconButton
-          onClick={handlerDownload}
-          variant={"outlined"}
-        >
+        <IconButton onClick={handlerDownload} variant={"outlined"}>
           <DownloadSVG />
         </IconButton>
       </div>
       <div className={s.desktop}>
-      <IconButton text={"Back"} onClick={handleBack} variant={"outlined"}>
+        <IconButton text={"Back"} onClick={handleBack} variant={"outlined"}>
           <ListSVG />
         </IconButton>
         <IconButton

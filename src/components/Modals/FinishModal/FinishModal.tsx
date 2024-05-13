@@ -16,6 +16,13 @@ import { useNavigate } from "react-router-dom";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
 import { useState } from "react";
+import { Application } from "../../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
+
+declare const app: Application;
 
 export const FinishModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,19 +40,27 @@ export const FinishModal: React.FC = () => {
   };
 
   const handleLetsProceed = () => {
+    app.analyticsEvent({
+      category: EventCategoryName.threekit_configurator,
+      action: EventActionName.configurator_complete,
+      value: {},
+    });
     if (isShowSetupModal) {
       dispatch(setMySetupModal({ isOpen: true }));
       dispatch(setFinishModal({ isOpen: false }));
       return;
     }
 
-		setSendRequest(true);
-    new ThreekitService().createOrder(orderData).then(() => {
-      dispatch(setFinishModal({ isOpen: false }));
-      navigate("/room", { replace: true });
-    }).finally(() => {
-			setSendRequest(false);
-		});
+    setSendRequest(true);
+    new ThreekitService()
+      .createOrder(orderData)
+      .then(() => {
+        dispatch(setFinishModal({ isOpen: false }));
+        navigate("/room", { replace: true });
+      })
+      .finally(() => {
+        setSendRequest(false);
+      });
   };
 
   if (!isOpen) return null;
@@ -80,7 +95,7 @@ export const FinishModal: React.FC = () => {
               onClick={handleLetsProceed}
               text={"Yes, Let's Proceed"}
               variant={"contained"}
-							disabled={sendRequest}
+              disabled={sendRequest}
             />
           </div>
         </div>
