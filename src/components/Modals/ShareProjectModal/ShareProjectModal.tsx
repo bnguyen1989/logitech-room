@@ -45,7 +45,7 @@ export const ShareProjectModal: React.FC = () => {
     copyToClipboard(link);
     setIsCopied(true);
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.share_project,
       value: {
         link: link,

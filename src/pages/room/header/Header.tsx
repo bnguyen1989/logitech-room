@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.add_another_room,
       value: {},
     });
@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
   const handleDownloadAll = () => {
     app.downloadRoomsCSV(user.id);
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.download_room_all,
       value: {
         userId: user.id,
@@ -49,7 +49,7 @@ export const Header: React.FC = () => {
     const url = getNavLink("/room", searchParams);
     copyToClipboard(url);
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.share_project,
       value: {
         link: url,
@@ -60,7 +60,7 @@ export const Header: React.FC = () => {
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.request_consultation,
       value: {},
     });

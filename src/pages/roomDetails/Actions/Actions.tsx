@@ -46,7 +46,7 @@ export const Actions: React.FC = () => {
     handleNavigate("/room");
     app.analyticsEvent({
       category: EventCategoryName.room_page,
-      action: EventActionName.back_to_summery_page,
+      action: EventActionName.back_to_summary_page,
       value: {},
     });
   };

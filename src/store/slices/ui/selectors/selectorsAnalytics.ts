@@ -91,7 +91,7 @@ export const getDataEvent =
         }
       }
 
-      case EventCategoryName.summery_page:
+      case EventCategoryName.summary_page:
       case EventCategoryName.room_page:
         return baseDataEvent;
       default:

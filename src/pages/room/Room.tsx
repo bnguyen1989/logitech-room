@@ -52,7 +52,7 @@ export const Room: React.FC = () => {
     new ThreekitService().deleteOrder(shortId);
     setRooms((prev) => prev.filter((room) => room.shortId !== shortId));
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.delete_room,
       value: {
         id_room: shortId,

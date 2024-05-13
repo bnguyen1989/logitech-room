@@ -7,6 +7,7 @@ export class Analytics {
     const event = new CustomEvent(this.name, {
       detail: eventData,
     });
+    console.log("analytics-event", eventData);
     document.body.dispatchEvent(event);
   }
 }

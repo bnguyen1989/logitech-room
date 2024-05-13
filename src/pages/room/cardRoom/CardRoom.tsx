@@ -28,7 +28,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
   const handleDownload = () => {
     app.downloadRoomCSV(shortId);
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.download_room,
       value: {
         id_room: shortId,
@@ -39,7 +39,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
   const handleViewRoom = () => {
     handleNavigate(`/room/${shortId}`);
     app.analyticsEvent({
-      category: EventCategoryName.summery_page,
+      category: EventCategoryName.summary_page,
       action: EventActionName.view_room,
       value: {
         id_room: shortId,
