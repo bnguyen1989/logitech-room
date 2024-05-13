@@ -10,6 +10,13 @@ import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice"
 import { copyToClipboard } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { useUrl } from "../../../hooks/url";
+import { Application } from "../../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
+
+declare const app: Application;
 
 export const ShareProjectModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,6 +44,13 @@ export const ShareProjectModal: React.FC = () => {
   const handleCopy = () => {
     copyToClipboard(link);
     setIsCopied(true);
+    app.analyticsEvent({
+      category: EventCategoryName.summery_page,
+      action: EventActionName.share_project,
+      value: {
+        link: link,
+      },
+    });
   };
 
   if (!isOpen) return null;

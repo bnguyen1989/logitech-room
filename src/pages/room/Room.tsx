@@ -7,7 +7,13 @@ import { OrderI } from "../../services/Threekit/type";
 import { Loader } from "../../components/Loader/Loader";
 import { useUser } from "../../hooks/user";
 import { getImageUrl } from "../../utils/browserUtils";
+import { Application } from "../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../models/analytics/type";
 
+declare const app: Application;
 interface RoomI {
   image: string;
   title: string;
@@ -45,6 +51,13 @@ export const Room: React.FC = () => {
   const removeRoom = (shortId: string) => {
     new ThreekitService().deleteOrder(shortId);
     setRooms((prev) => prev.filter((room) => room.shortId !== shortId));
+    app.analyticsEvent({
+      category: EventCategoryName.summery_page,
+      action: EventActionName.delete_room,
+      value: {
+        id_room: shortId,
+      },
+    });
   };
 
   return (

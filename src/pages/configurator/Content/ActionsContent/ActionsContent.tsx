@@ -11,6 +11,10 @@ import {
 import { Application } from "../../../../models/Application";
 import { IconButton } from "../../../../components/Buttons/IconButton/IconButton";
 import { BackMarkSVG } from "../../../../assets";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../../models/analytics/type";
 
 declare const app: Application;
 
@@ -25,6 +29,12 @@ export const ActionsContent = () => {
       dispatch(setFinishModal({ isOpen: true }));
       return;
     }
+
+    app.analyticsEvent({
+      category: EventCategoryName.threekit_configurator,
+      action: EventActionName.step_complete,
+      value: {},
+    });
 
     app.changeStep(nextStep.key);
   };

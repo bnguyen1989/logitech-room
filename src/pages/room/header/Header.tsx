@@ -10,6 +10,10 @@ import { useDispatch } from "react-redux";
 import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
 import { PermissionUser } from "../../../utils/userRoleUtils";
 import { useUrl } from "../../../hooks/url";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
 
 declare const app: Application;
 
@@ -21,10 +25,22 @@ export const Header: React.FC = () => {
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
+    app.analyticsEvent({
+      category: EventCategoryName.summery_page,
+      action: EventActionName.add_another_room,
+      value: {},
+    });
   };
 
   const handleDownloadAll = () => {
     app.downloadRoomsCSV(user.id);
+    app.analyticsEvent({
+      category: EventCategoryName.summery_page,
+      action: EventActionName.download_room_all,
+      value: {
+        userId: user.id,
+      },
+    });
   };
 
   const handleShareUserRooms = () => {
@@ -32,10 +48,22 @@ export const Header: React.FC = () => {
     searchParams.set("userId", user.id);
     const url = getNavLink("/room", searchParams);
     copyToClipboard(url);
+    app.analyticsEvent({
+      category: EventCategoryName.summery_page,
+      action: EventActionName.share_project,
+      value: {
+        link: url,
+      },
+    });
   };
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
+    app.analyticsEvent({
+      category: EventCategoryName.summery_page,
+      action: EventActionName.request_consultation,
+      value: {},
+    });
   };
 
   const handleShareProject = () => {
