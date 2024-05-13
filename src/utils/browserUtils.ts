@@ -33,14 +33,14 @@ export const copyToClipboard = (data: string | object | number) => {
 export const getImageUrl = (url: string) => {
   let baseUrl = getParentURL();
   if (process.env.NODE_ENV !== "development") {
-    baseUrl = "https://logitech-staging.3kit.com";
+    baseUrl = "https://staging.project--logitech.pages.dev";
   }
   return `${baseUrl}/${url}`;
 };
 
 export const recalculateVh = () => {
   let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
 
   window.onresize = function () {
     setTimeout(function () {
@@ -49,7 +49,7 @@ export const recalculateVh = () => {
           ? document.documentElement.clientHeight
           : window.innerHeight;
       vh = height * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
     }, 500);
   };
 };
