@@ -20,6 +20,11 @@ type ProductFeature = {
   };
 };
 
+export type Card = {
+  ProductName: string;
+  ShortDescription: string;
+}
+
 export type Blade_1 = {
   ProductName: string;
   ShortDescription: string;
@@ -39,6 +44,6 @@ export type Blade_3A = {
 };
 
 export type ProductDataType = {
-  [bladeName: string]: Blade_1 | Blade_2 | Blade_2A | Blade_3A;
+  [bladeName: string]: Card | Blade_1 | Blade_2 | Blade_2A | Blade_3A;
 };
 export type ProductsObj = Record<string, ProductDataType>;

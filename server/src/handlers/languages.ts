@@ -51,8 +51,8 @@ export async function getLanguageData(req: Request, res: Response) {
       const dataPage = fs.readFileSync(pagePath, "utf8");
       const dataProduct = fs.readFileSync(productPath, "utf8");
       res.json({
-        page: JSON.parse(dataPage),
-        product: JSON.parse(dataProduct),
+        pages: JSON.parse(dataPage),
+        products: JSON.parse(dataProduct),
       });
     } else {
       res.status(404).json({ message: "Language data not found" });

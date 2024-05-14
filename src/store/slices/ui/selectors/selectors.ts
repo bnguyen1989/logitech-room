@@ -11,6 +11,7 @@ import {
   getDataQuestionFormPartner,
   getTitleFromDataByKeyPermission,
 } from "../utils";
+import { getLangProductCard } from "./selectoreLangProduct";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
 
@@ -251,6 +252,11 @@ export const getSubTitleCardByKeyPermission =
 export const getTitleCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const card = getCardByKeyPermission(stepName, keyPermission)(state);
+    const productName = getMetadataProductNameAssetFromCard(card)(state);
+    const langDataCard = getLangProductCard(productName)(state);
+    if (langDataCard) {
+      return langDataCard.ProductName;
+    }
     const title = getMetadataProductNameAssetFromCard(card)(state);
     if (title) return title;
 
