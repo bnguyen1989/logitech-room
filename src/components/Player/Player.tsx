@@ -20,7 +20,7 @@ import { ForwardedRef, forwardRef, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
 import { EffectComposer as EffectComposerImpl } from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
-
+import { base64ToBlob } from "../../utils/browserUtils.ts";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -49,13 +49,17 @@ export const Player: React.FC = () => {
 
   const [effectComposerRef, setEffectComposerRef] =
     useState<EffectComposerImpl | null>(null);
-  (window as any).snapshot = () =>
-    console.log(
-      effectComposerRef &&
-        snapshot(effectComposerRef, { size: { width: 640, height: 480 } })
-    );
+  (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
+    if (!effectComposerRef) return "";
+    const dataSnapshot = snapshot(effectComposerRef, {
+      size: { width: 800, height: 650 },
+    });
+    if (type === "string") {
+      return dataSnapshot;
+    }
+    return base64ToBlob(dataSnapshot);
+  };
 
-  // console.log("fovDeg", fovDeg);
   if (!assetId) return null;
   return (
     <div className={s.container}>
