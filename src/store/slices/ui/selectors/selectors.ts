@@ -1,9 +1,16 @@
 import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
+import { MetadataI } from "../../../../services/Threekit/type";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { RoleUserName } from "../../../../utils/userRoleUtils";
+import { getRoleData } from "../../user/selectors/selectors";
 import { CardI, StepI } from "../type";
-import { getTitleFromDataByKeyPermission } from "../utils";
+import {
+  getDataQuestionFormCustomer,
+  getDataQuestionFormPartner,
+  getTitleFromDataByKeyPermission,
+} from "../utils";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
 
@@ -91,6 +98,11 @@ export const getIsConfiguratorStep = (state: RootState) => {
 
 export const getIsProcessInitData = (state: RootState) =>
   state.ui.processInitData;
+
+export const getSelectedRoomSizeCard = (state: RootState) => {
+  const selectedPrepareCards = getSelectedPrepareCards(state);
+  return selectedPrepareCards.find((card) => card.key === StepName.RoomSize);
+};
 
 export const getSelectedPrepareCards = (state: RootState) => {
   const configuratorStepName = [
@@ -217,7 +229,7 @@ export const getMetadataProductNameAssetFromCard =
     const metadata = getMetadataAssetFromCard(card)(state);
     if (!metadata) return "";
 
-    return metadata["Product Name"]?.trim();
+    return getProductNameFromMetadata(metadata);
   };
 
 export const getSkuFromMetadataByCard = (card: CardI) => (state: RootState) => {
@@ -314,35 +326,18 @@ export const getCorrectStepDataByPermission =
     const permission = getPermission(stepName)(state);
     const items = permission.getElements();
 
-    const correctDataCards = Object.values(copyDataStep.cards).reduce(
-      (acc, card) => {
-        const isExist = items.some((item) => item.name === card.keyPermission);
-        if (isExist) {
-          const isRecommended = getIsRecommendedCardByCard(card)(state);
-
-          if (isRecommended) {
-            if (!acc.recommended) {
-              acc.recommended = {};
-            }
-            acc.recommended[card.keyPermission] = card;
-          } else {
-            if (!acc.other) {
-              acc.other = {};
-            }
-            acc.other[card.keyPermission] = card;
-          }
-        }
-        return acc;
-      },
-      {} as {
-        recommended?: Record<string, CardI>;
-        other?: Record<string, CardI>;
+    const correctDataCards = Object.values(copyDataStep.cards).reduce<
+      Record<string, CardI>
+    >((acc, card) => {
+      const isExist = items.some((item) => item.name === card.keyPermission);
+      if (isExist) {
+        acc[card.keyPermission] = card;
       }
-    );
+      return acc;
+    }, {});
 
     copyDataStep.cards = {
-      ...correctDataCards.recommended,
-      ...correctDataCards.other,
+      ...correctDataCards,
     };
 
     return copyDataStep;
@@ -483,4 +478,21 @@ const getIsRecommendedCardFromMetadata = (metadata: Record<string, string>) => {
     return isRecommended === "true";
   }
   return false;
+};
+
+export const getProductNameFromMetadata = (metadata: MetadataI) => {
+  return metadata["Product Name"]?.trim();
+};
+
+export const getDataQuestionsForm = (state: RootState) => {
+  const userRoleData = getRoleData(state);
+  if (userRoleData.name === RoleUserName.CUSTOMER) {
+    return getDataQuestionFormCustomer();
+  }
+
+  if (userRoleData.name === RoleUserName.PARTNER) {
+    return getDataQuestionFormPartner();
+  }
+
+  return [];
 };

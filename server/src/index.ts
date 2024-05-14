@@ -4,6 +4,7 @@ import cors from "cors";
 import userRouterProduct from "./routes/product";
 import userLang from "./routes/languages";
 import userRouterRoom from "./routes/room";
+import { applyServerHardening } from "./middleware";
 
 const app = express();
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 80;
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true })); // Для парсинга application/x-www-form-urlencoded
+applyServerHardening(app);
 
 app.use("/products", userRouterProduct);
 app.use("/languages", userLang);

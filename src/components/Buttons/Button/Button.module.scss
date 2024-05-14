@@ -1,41 +1,76 @@
-.button {
-  display: inline-block;
-  padding: 19px 60px;
-  text-decoration: none;
-  align-items: center;
-  border-radius: 40px;
-  cursor: pointer;
+button {
+  &.button {
+    display: inline-block;
+    padding: 19px 60px;
+    text-decoration: none;
+    align-items: center;
+    border-radius: 40px;
+    cursor: pointer;
 
-  color: #fff;
-  text-align: center;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 26px;
-  letter-spacing: -0.25px;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px;
+    letter-spacing: -0.25px;
+    white-space: nowrap;
+  }
+  &.button_outlined {
+    color: var(--main-color-block);
+    background-color: #ffffff;
+    box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.08);
+    border: 1px solid #ffffff;
+  }
+
+  &.button_contained {
+    background-color: var(--main-color-block);
+    color: #ffffff;
+    box-shadow: 0px 6px 18px 0px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--main-color-block);
+  }
+
+  &.button_contained:hover {
+    color: var(--main-color-block);
+    background-color: #ffffff;
+    border: 1px solid var(--main-color-block);
+  }
+
+  &.button_contained:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  &.button_outlined {
+    color: var(--main-color-block);
+    background-color: #ffffff;
+    box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.08);
+    border: 1px solid #ffffff;
+  }
+
+  &.button_contained {
+    background-color: var(--main-color-block);
+    color: #ffffff;
+    box-shadow: 0px 6px 18px 0px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--main-color-block);
+  }
+
+  &.button_contained:hover {
+    color: var(--main-color-block);
+    background-color: #ffffff;
+    border: 1px solid var(--main-color-block);
+  }
+
+  &.button_contained:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
-.button_outlined {
-  color: var(--main-color-block);
-  background-color: #ffffff;
-  box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.08);
-  border: 1px solid #ffffff;
-}
-
-.button_contained {
-  background-color: var(--main-color-block);
-  color: #ffffff;
-  box-shadow: 0px 6px 18px 0px rgba(0, 0, 0, 0.12);
-  border: 1px solid var(--main-color-block);
-}
-
-.button_contained:hover {
-  color: var(--main-color-block);
-  background-color: #ffffff;
-  border: 1px solid var(--main-color-block);
-}
-
-.button_contained:disabled {
-  opacity: 0.5;
-  pointer-events: none;
+@media (max-width: 500px) {
+  button {
+    &.button {
+      font-size: 15px;
+      line-height: 15px;
+    }
+  }
 }

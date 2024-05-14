@@ -5,7 +5,6 @@ import {
   RoleUserName,
   getRoleByName,
 } from "../../../utils/userRoleUtils";
-import Role from "../../../models/user/role/Role";
 
 interface ModalsStateI {
   userId: string;
@@ -40,13 +39,15 @@ const UserSlice = createSlice({
     changeRoleUser: (
       state,
       action: PayloadAction<{
-        role: Role;
+        role: {
+          name: RoleUserName;
+          permissions: PermissionUser[];
+        };
       }>
     ) => {
       const { role } = action.payload;
       state.roleData = {
-        name: role.name,
-        permissions: role.permissions,
+        ...role,
       };
     },
     setUserData: (

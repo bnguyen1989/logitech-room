@@ -3,22 +3,22 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-	.image {
+  .image {
     display: flex;
     justify-content: center;
     height: 60%;
     & img {
       height: 100%;
+      width: 100%;
     }
   }
 
   .text {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 7px;
-    
-   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+
     .title {
       color: #000;
       text-align: center;
@@ -28,14 +28,52 @@
       line-height: 24px;
     }
 
-		.subtitle {
-			max-width: 350px;
+    .subtitle {
+      max-width: 350px;
       color: #697172;
       text-align: center;
       font-size: 16px;
       font-style: normal;
       font-weight: 300;
       line-height: 22px;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    justify-content: center;
+    min-width: 300px;
+
+    .image {
+      display: flex;
+      & img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+    .text {
+      .title {
+        font-size: 24px;
+        line-height: 32px;
+      }
+      .subtitle {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    gap: 30px;
+
+    .text {
+      .title {
+        font-size: 18px;
+        line-height: 24px;
+      }
     }
   }
 }

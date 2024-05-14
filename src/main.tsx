@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { initApplication } from "./utils/initApplication.ts";
 import { initHandlers } from "./store/handlers.ts";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 initApplication();
 initHandlers();
@@ -14,9 +14,9 @@ initHandlers();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter>
+      <HashRouter>
         <App />
-      </BrowserRouter>
+      </HashRouter>
     </React.StrictMode>
   </Provider>
 );

@@ -7,13 +7,22 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./ShareProjectModal.module.scss";
 import { useDispatch } from "react-redux";
 import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
-import { copyToClipboard, getParentURL } from "../../../utils/browserUtils";
+import { copyToClipboard } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
+import { useUrl } from "../../../hooks/url";
+import { Application } from "../../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
+
+declare const app: Application;
 
 export const ShareProjectModal: React.FC = () => {
   const dispatch = useDispatch();
   const { isOpen } = useAppSelector(getShareProjectModalData);
   const user = useUser();
+  const { getNavLink } = useUrl();
   const [link, setLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
 
@@ -21,7 +30,10 @@ export const ShareProjectModal: React.FC = () => {
     if (!isOpen) {
       setIsCopied(false);
     } else {
-      setLink(`${getParentURL()}/room?userId=${user.id}`);
+      const searchParams = new URLSearchParams();
+      searchParams.set("userId", user.id);
+      const link = getNavLink("/room", searchParams);
+      setLink(link);
     }
   }, [isOpen, user.id]);
 
@@ -32,6 +44,13 @@ export const ShareProjectModal: React.FC = () => {
   const handleCopy = () => {
     copyToClipboard(link);
     setIsCopied(true);
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.share_project,
+      value: {
+        link: link,
+      },
+    });
   };
 
   if (!isOpen) return null;

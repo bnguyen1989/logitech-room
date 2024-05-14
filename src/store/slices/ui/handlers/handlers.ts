@@ -49,12 +49,15 @@ import {
   getCardByKeyPermission,
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
+  getProductNameFromMetadata,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
 import { getRoomAssetId } from "../../../../utils/threekitUtils";
 import { StepName } from "../../../../utils/baseUtils";
+import { EventDataAnalyticsI } from "../../../../models/analytics/type";
+import { getDataEvent } from "../selectors/selectorsAnalytics";
 
 declare const app: Application;
 
@@ -103,6 +106,18 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(changeActiveStep(data.stepName));
     }
   });
+
+  app.eventEmitter.on(
+    "analyticsEvent",
+    (data: Omit<EventDataAnalyticsI, "locale">) => {
+      const eventData = getDataEvent(
+        data.category,
+        data.action,
+        data.value
+      )(store.getState());
+      analytics.notify(eventData);
+    }
+  );
 
   app.eventEmitter.on(
     "threekitDataInitialized",
@@ -345,14 +360,14 @@ function setStepData(
     const includeColors = colorsName.filter((item) =>
       nameItems.some((name) => name.includes(item))
     );
-    const isSetColors = includeColors.length > 1 && !color;
+    const isSetColors = includeColors.length && !color;
     if (isSetColors) {
       store.dispatch(
         setPropertyItem({
           step: stepName,
           keyItemPermission: tempCard.keyPermission,
           property: {
-            color: colorsName[0],
+            color: includeColors[0],
           },
         })
       );
@@ -366,7 +381,13 @@ function setStepData(
     }
   });
 
-  setDataCard(stepCardData, stepName)(store);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedCards = sortedCardsByArrTemplate(
+    stepCardData,
+    sortedKeyPermissions
+  );
+
+  setDataCard(sortedCards, stepName)(store);
 }
 
 function setAudioExtensionsData(configurator: Configurator) {
@@ -519,8 +540,9 @@ function setSoftwareServicesData(configurator: Configurator) {
               [baseCard.keyPermission]: asset,
             };
           }
-          const plan = asset.metadata["Service Plan"];
-          if (plan) {
+          const productName = getProductNameFromMetadata(asset.metadata);
+          if (productName) {
+            const plan = productName.split("-")[1]?.trim();
             values.push({
               label: plan,
               value: asset.id,
@@ -634,10 +656,24 @@ function sortedCardsByArrTemplate(
   templateArr: Array<string>
 ) {
   if (templateArr.length === 0) return cards;
-  return templateArr
-    .map((item) => {
-      const card = cards.find((card) => card.keyPermission === item);
-      return card;
-    })
-    .filter(Boolean) as Array<CardI>;
+
+  const sortedData = cards.reduce<{
+    sorted: Array<CardI | undefined>;
+    rest: Array<CardI>;
+  }>(
+    (acc, item) => {
+      const index = templateArr.indexOf(item.keyPermission);
+      if (index !== -1) {
+        acc.sorted[index] = item;
+      } else {
+        acc.rest.push(item);
+      }
+      return acc;
+    },
+    { sorted: new Array(templateArr.length), rest: [] }
+  );
+
+  const sortedCards = sortedData.sorted.filter(Boolean) as Array<CardI>;
+
+  return [...sortedCards, ...sortedData.rest];
 }

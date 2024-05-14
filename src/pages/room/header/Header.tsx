@@ -4,12 +4,16 @@ import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { Application } from "../../../models/Application";
 import s from "./Header.module.scss";
 import { useNavigate } from "react-router-dom";
-import ImgBanner from "../../../assets/images/pages/room/room_banner.png";
 import { useUser } from "../../../hooks/user";
-import { copyToClipboard, getParentURL } from "../../../utils/browserUtils";
+import { copyToClipboard, getImageUrl } from "../../../utils/browserUtils";
 import { useDispatch } from "react-redux";
 import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
 import { PermissionUser } from "../../../utils/userRoleUtils";
+import { useUrl } from "../../../hooks/url";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
 
 declare const app: Application;
 
@@ -17,22 +21,49 @@ export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useUser();
+  const { getNavLink } = useUrl();
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.add_another_room,
+      value: {},
+    });
   };
 
   const handleDownloadAll = () => {
     app.downloadRoomsCSV(user.id);
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.download_room_all,
+      value: {
+        userId: user.id,
+      },
+    });
   };
 
   const handleShareUserRooms = () => {
-    const url = `${getParentURL()}/room?userId=${user.id}`;
+    const searchParams = new URLSearchParams();
+    searchParams.set("userId", user.id);
+    const url = getNavLink("/room", searchParams);
     copyToClipboard(url);
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.share_project,
+      value: {
+        link: url,
+      },
+    });
   };
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.request_consultation,
+      value: {},
+    });
   };
 
   const handleShareProject = () => {
@@ -48,7 +79,10 @@ export const Header: React.FC = () => {
     <div className={s.container}>
       <div className={s.header}>
         <div className={s.banner}>
-          <img src={ImgBanner} alt="banner" />
+          <img
+            src={getImageUrl("images/pages/room/room_banner.png")}
+            alt="banner"
+          />
         </div>
         <div className={s.header_content}>
           <div className={s.header_text}>

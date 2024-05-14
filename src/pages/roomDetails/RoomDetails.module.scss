@@ -34,3 +34,19 @@
     align-items: center;
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    align-items: normal;
+    justify-content: normal;
+    .wrapper {
+      padding: 40px;
+      max-width: none;
+      gap: 50px;
+    }
+  }
+
+  .container_load {
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}

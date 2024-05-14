@@ -23,6 +23,11 @@ import {
   getTitleCardByKeyPermission,
 } from "./selectors";
 import lang from "../../../../dataLang/languages.json";
+import {
+  isBundleElement,
+  isCameraElement,
+  isTapElement,
+} from "../../../../utils/permissionUtils";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -34,56 +39,7 @@ export const getPropertyColorCardByKeyPermissionForOrder =
   };
 
 export const getOrderData = (userId: string) => (state: RootState) => {
-  const selectedCards = getSelectedConfiguratorCards(state);
-  const cardData = selectedCards.map((card) => {
-    const copyCard = JSON.parse(JSON.stringify(card)) as CardI;
-    const cardAsset = getAssetFromCard(copyCard)(state);
-    const selectData = getSelectedDataByKeyPermission(
-      copyCard.key,
-      copyCard.keyPermission
-    )(state);
-    const price = getPriceFromMetadataByKeyPermission(
-      copyCard.key,
-      copyCard.keyPermission
-    )(state);
-    const title = getTitleCardByKeyPermission(
-      copyCard.key,
-      copyCard.keyPermission
-    )(state);
-    const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
-    const langProduct = getLangProductBlade1(productName)(state);
-    const sku = getSkuFromMetadataByCard(copyCard)(state);
-
-    const selectValue = getSelectValueBySelectData(selectData, copyCard);
-
-    const langProductImage = getLangProductImage(
-      productName,
-      copyCard.keyPermission
-    )(state);
-    const colorCard = getPropertyColorCardByKeyPermissionForOrder(
-      selectData,
-      productName
-    )(state);
-
-    if (langProductImage) {
-      copyCard.image = langProductImage;
-    }
-
-    return {
-      metadata: {
-        data: JSON.stringify(copyCard),
-        title: title,
-        description: langProduct?.ShortDescription,
-        sku: sku,
-        color: colorCard,
-        count: selectData?.property?.count ?? 1,
-        price: price,
-        selectValue: selectValue,
-      },
-      configurationId: cardAsset?.id ?? "",
-      count: 1,
-    };
-  });
+  const cardData = getCardData(state);
   const nameOrder = getNameOrder(state);
 
   const description = getDescriptionRoom(state);
@@ -135,14 +91,20 @@ const getSelectValueBySelectData = (data: any, card: CardI) => {
 
 const getNameOrder = (state: RootState) => {
   const selectedPrepareCards = getSelectedPrepareCards(state);
-  const name = selectedPrepareCards
-    .filter((item) => !(item.key !== StepName.Platform))
-    .map((item) =>
-      getTitleFromDataByKeyPermission(item.keyPermission).replace(" Room", "")
-    )
-    .join(" ");
+  const name = selectedPrepareCards.reduce<string>((acc, item) => {
+    const titleCard = getTitleFromDataByKeyPermission(item.keyPermission);
+    if (item.key === StepName.RoomSize) {
+      acc = acc.replace("{0}", titleCard.replace("Room", "").trim());
+    }
 
-  return `${name} Room`;
+    if (item.key === StepName.Platform) {
+      acc = acc.replace("{1}", titleCard);
+    }
+
+    return acc;
+  }, "{0} {1} Room");
+
+  return name;
 };
 
 const getDescriptionRoom = (state: RootState) => {
@@ -153,4 +115,95 @@ const getDescriptionRoom = (state: RootState) => {
   if (!nameRoomSize) return "";
   const description = getDescriptionRoomBySize(nameRoomSize);
   return description;
+};
+
+const getCardData = (state: RootState) => {
+  const selectedCards = getSelectedConfiguratorCards(state);
+  return processCards(selectedCards)(state).map(({ card, selectData }) => {
+    const copyCard = JSON.parse(JSON.stringify(card)) as CardI;
+    const cardAsset = getAssetFromCard(copyCard)(state);
+    const price = getPriceFromMetadataByKeyPermission(
+      copyCard.key,
+      copyCard.keyPermission
+    )(state);
+    const title = getTitleCardByKeyPermission(
+      copyCard.key,
+      copyCard.keyPermission
+    )(state);
+    const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
+    const langProduct = getLangProductBlade1(productName)(state);
+    const sku = getSkuFromMetadataByCard(copyCard)(state);
+
+    const selectValue = getSelectValueBySelectData(selectData, copyCard);
+
+    const langProductImage = getLangProductImage(
+      productName,
+      copyCard.keyPermission
+    )(state);
+    const colorCard = getPropertyColorCardByKeyPermissionForOrder(
+      selectData,
+      productName
+    )(state);
+
+    if (langProductImage) {
+      copyCard.image = langProductImage;
+    }
+
+    return {
+      metadata: {
+        data: JSON.stringify(copyCard),
+        title: title,
+        description: langProduct?.ShortDescription,
+        sku: sku,
+        color: colorCard,
+        count: selectData?.property?.count ?? 1,
+        price: price,
+        selectValue: selectValue,
+      },
+      configurationId: cardAsset?.id ?? "",
+      count: 1,
+    };
+  });
+};
+
+const processCards = (cards: CardI[]) => (state: RootState) => {
+  const existCardBundle = cards.some((card) =>
+    isBundleElement(card.keyPermission)
+  );
+  return cards.reduce<
+    {
+      card: CardI;
+      selectData: any;
+    }[]
+  >((acc, card) => {
+    const selectData = getSelectedDataByKeyPermission(
+      card.key,
+      card.keyPermission
+    )(state);
+    const isCamera = isCameraElement(card.keyPermission);
+    if (existCardBundle && isCamera) return acc;
+    const isTap = isTapElement(card.keyPermission);
+    if (existCardBundle && isTap) {
+      const count = selectData?.property?.count;
+      if (!count || count < 2) return acc;
+
+      const copySelectData = JSON.parse(JSON.stringify(selectData));
+      copySelectData.property.count -= 1;
+      return [
+        ...acc,
+        {
+          card,
+          selectData: copySelectData,
+        },
+      ];
+    }
+
+    return [
+      ...acc,
+      {
+        card,
+        selectData: selectData,
+      },
+    ];
+  }, []);
 };

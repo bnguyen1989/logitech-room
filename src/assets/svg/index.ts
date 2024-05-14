@@ -13,3 +13,4 @@ export { ArrowRightSVG } from "./ArrowRight.tsx";
 export { ChainLinkSVG } from "./ChainLink.tsx";
 export { ArrowLeftSVG } from "./ArrowLeft.tsx";
 export { CheckMarkSVG } from "./CheckMark.tsx";
+export { BackMarkSVG } from "./BackMark.tsx";

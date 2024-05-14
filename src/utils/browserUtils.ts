@@ -29,3 +29,27 @@ export const copyToClipboard = (data: string | object | number) => {
 
   document.body.removeChild(el);
 };
+
+export const getImageUrl = (url: string) => {
+  let baseUrl = getParentURL();
+  if (process.env.NODE_ENV !== "development") {
+    baseUrl = "https://staging.project--logitech.pages.dev";
+  }
+  return `${baseUrl}/${url}`;
+};
+
+export const recalculateVh = () => {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+
+  window.onresize = function () {
+    setTimeout(function () {
+      const height =
+        document.documentElement.clientHeight > window.innerHeight
+          ? document.documentElement.clientHeight
+          : window.innerHeight;
+      vh = height * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    }, 500);
+  };
+};

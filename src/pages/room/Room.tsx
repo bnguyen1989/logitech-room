@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import s from "./Room.module.scss";
 import { Header } from "./header/Header";
-import ImageRoom from "../../assets/images/pages/room/room.png";
 import { CardRoom } from "./cardRoom/CardRoom";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { OrderI } from "../../services/Threekit/type";
 import { Loader } from "../../components/Loader/Loader";
 import { useUser } from "../../hooks/user";
+import { getImageUrl } from "../../utils/browserUtils";
+import { Application } from "../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../models/analytics/type";
 
+declare const app: Application;
 interface RoomI {
   image: string;
   title: string;
@@ -29,7 +35,7 @@ export const Room: React.FC = () => {
           const { name, description, status } = order.metadata;
           if (status === "deleted") return acc;
           return acc.concat({
-            image: ImageRoom,
+            image: getImageUrl("images/pages/room/room.png"),
             title: name,
             desc: description,
             shortId: order.shortId,
@@ -45,6 +51,13 @@ export const Room: React.FC = () => {
   const removeRoom = (shortId: string) => {
     new ThreekitService().deleteOrder(shortId);
     setRooms((prev) => prev.filter((room) => room.shortId !== shortId));
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.delete_room,
+      value: {
+        id_room: shortId,
+      },
+    });
   };
 
   return (

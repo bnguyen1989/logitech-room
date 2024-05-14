@@ -5,12 +5,11 @@ import { CardSoftware } from "../../../../../components/Cards/CardSoftware/CardS
 import { QuestionForm } from "../../../../../components/QuestionForm/QuestionForm";
 import { CardI, QuestionFormI } from "../../../../../store/slices/ui/type";
 import s from "./SoftwareServiceSection.module.scss";
-import {
-  getDataQuestionForm,
-  getExpressionArrayForQuestionForm,
-} from "../../../../../store/slices/ui/utils";
+import { getExpressionArrayForQuestionForm } from "../../../../../store/slices/ui/utils";
 import { SoftwareServicesName } from "../../../../../utils/permissionUtils";
 import { StepName } from "../../../../../utils/baseUtils";
+import { useAppSelector } from "../../../../../hooks/redux";
+import { getDataQuestionsForm } from "../../../../../store/slices/ui/selectors/selectors";
 
 interface ExpressionI {
   questionIndex: number;
@@ -27,6 +26,8 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
   );
+
+  const dataQuestionForm = useAppSelector(getDataQuestionsForm);
 
   const submitFormData = (data: Array<QuestionFormI>) => {
     const { select, basic, extendedWarranty } =
@@ -107,13 +108,16 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
           </div>
         ) : null}
       </div>
-      <div className={s.cards}>
-        {cards.map((card, index) => getCardComponent(card, index))}
+      <div className={s.wrapper_cards}>
+        <div className={s.cards}>
+          {cards.map((card, index) => getCardComponent(card, index))}
+        </div>
       </div>
+
       {!isSubmitForm ? (
         <div className={s.form} ref={formAnchorRef}>
           <QuestionForm
-            baseData={getDataQuestionForm()}
+            baseData={dataQuestionForm}
             submitData={submitFormData}
           />
         </div>

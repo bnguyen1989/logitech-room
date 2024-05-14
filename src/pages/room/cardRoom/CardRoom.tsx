@@ -6,6 +6,10 @@ import { Application } from "../../../models/Application";
 import { useUrl } from "../../../hooks/url";
 import { useUser } from "../../../hooks/user";
 import { PermissionUser } from "../../../utils/userRoleUtils";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
 
 declare const app: Application;
 
@@ -18,11 +22,30 @@ interface PropsI {
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId, removeRoom } = props;
-  const { handleNavigate } = useUrl(`/room/${shortId}`);
+  const { handleNavigate } = useUrl();
   const user = useUser();
 
   const handleDownload = () => {
     app.downloadRoomCSV(shortId);
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.download_room,
+      value: {
+        id_room: shortId,
+      },
+    });
+  };
+
+  const handleViewRoom = () => {
+    handleNavigate(`/room/${shortId}`);
+    app.analyticsEvent({
+      category: EventCategoryName.summary_page,
+      action: EventActionName.view_room,
+      value: {
+        id_room: shortId,
+        name: title,
+      },
+    });
   };
 
   const userCanRemoveRoom = user.role.can(PermissionUser.REMOVE_ROOM);
@@ -55,7 +78,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
             <DownloadSVG />
           </IconButton>
           <Button
-            onClick={handleNavigate}
+            onClick={handleViewRoom}
             text={"View Your Room"}
             variant={"contained"}
           />

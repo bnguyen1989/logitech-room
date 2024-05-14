@@ -20,6 +20,7 @@
     "@types/three": "^0.161.0",
     "axios": "^1.6.7",
     "camera-controls": "^2.7.4",
+    "csv-parser": "^3.0.0",
     "events": "^3.3.0",
     "js-file-download": "^0.4.12",
     "postprocessing": "^6.35.4",

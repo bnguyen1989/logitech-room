@@ -35,3 +35,14 @@
 	pointer-events: none;
 	opacity: 0.5;
 }
+
+@media (max-width: 900px) {
+	.container {
+		justify-content: center;
+		gap: 7.5px;
+		
+		.text {
+			display: none;
+		}
+	}
+}

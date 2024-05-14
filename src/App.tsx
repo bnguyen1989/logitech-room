@@ -1,3 +1,4 @@
+import s from "./App.module.scss";
 import { Configurator } from "./pages/configurator/Configurator";
 import { GetStarted } from "./pages/getStarted/GetStarted";
 import { Room } from "./pages/room/Room";
@@ -11,9 +12,15 @@ import { setLangText } from "./store/slices/ui/Ui.slice";
 import dataLang from "./dataLang/products/en-us.json";
 import type { ProductsObj } from "./types/textTypeProduct";
 import { RequestConsultation } from "./pages/requestConsultation/RequestConsultation";
+import { recalculateVh } from "./utils/browserUtils";
 
 function App() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    recalculateVh();
+  }, []);
+
   useEffect(() => {
     // new ServerApi()
     //   .getProductsLang("en-us")
@@ -28,19 +35,19 @@ function App() {
     //     dispatch(setLangText(objData));
     //   })
     //   .catch(() => {
-        const objData: ProductsObj = {};
+    const objData: ProductsObj = {};
 
-        const data: any = dataLang;
-        Object.keys(data).forEach((productKey) => {
-          const newKey = productKey.toUpperCase();
-          objData[newKey] = data[productKey];
-        });
+    const data: any = dataLang;
+    Object.keys(data).forEach((productKey) => {
+      const newKey = productKey.toUpperCase();
+      objData[newKey] = data[productKey];
+    });
 
-        dispatch(setLangText(objData));
-      // });
+    dispatch(setLangText(objData));
+    // });
   }, []);
   return (
-    <div className={"app"}>
+    <div className={s.app}>
       <Routes>
         <Route path="/" element={<GetStarted />} />
         <Route path="/configurator" element={<Configurator />} />

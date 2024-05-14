@@ -29,3 +29,34 @@
     width: 100%;
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: row;
+    
+    
+    align-items: center;
+
+    .header {
+      width: fit-content;
+      gap: 0;
+
+      .title {
+        display: none;
+      }
+      .divider {
+        height: 100%;
+        border: 1px dashed #c3c6c8;
+        width: 1px;
+      }
+    }
+    .wrapper_cards {
+      // align-items: stretch;
+      flex-direction: row;
+      overflow-x: scroll;
+      overflow-y: scroll;
+      height: calc(100% - 40px);
+      padding: 20px 0;
+    }
+  }
+}

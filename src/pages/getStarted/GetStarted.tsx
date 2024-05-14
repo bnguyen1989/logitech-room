@@ -1,29 +1,50 @@
 import React from "react";
 import s from "./GetStarted.module.scss";
-import BannerImage from "../../assets/images/getStarted/banner.png";
 import { Button } from "../../components/Buttons/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeRoleUser } from "../../store/slices/user/User.slice";
 import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
+import { getImageUrl } from "../../utils/browserUtils";
+import { Application } from "../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../models/analytics/type";
+
+declare const app: Application;
 
 export const GetStarted: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const sendAnalytics = () => {
+    app.analyticsEvent({
+      category: EventCategoryName.get_started,
+      action: EventActionName.chose_type_user,
+      value: {},
+    });
+  };
+
   const handleCustomerClick = () => {
-    dispatch(changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER) }));
+    dispatch(
+      changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
+    );
     navigate("/configurator", { replace: true });
+    sendAnalytics();
   };
   const handlePartnerClick = () => {
-    dispatch(changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER) }));
+    dispatch(
+      changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER).getData() })
+    );
     navigate("/configurator", { replace: true });
+    sendAnalytics();
   };
 
   return (
     <div className={s.container}>
       <div className={s.image}>
-        <img src={BannerImage} alt={"banner"} />
+        <img src={getImageUrl("images/getStarted/banner.png")} alt={"banner"} />
       </div>
 
       <div className={s.content}>

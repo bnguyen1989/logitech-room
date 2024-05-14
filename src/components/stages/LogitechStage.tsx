@@ -50,7 +50,7 @@ const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
   const shadowBias = -0.002;
   return (
     <>
-      <Environment files={`/assets/ibl/env.hdr`} blur={0} />
+      <Environment files={`https://staging.project--logitech.pages.dev/assets/ibl/env.hdr`} blur={0} />
       {/* <SoftShadows
         size={controls.shadows.keySize}
         focus={controls.shadows.keyFocus}

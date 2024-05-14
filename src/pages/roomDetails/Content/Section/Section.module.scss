@@ -5,19 +5,33 @@
     font-style: normal;
     font-weight: 700;
     line-height: 24px;
-		padding-bottom: 15px;
+    padding-bottom: 15px;
   }
-	.divider {
-		border-top: 1px solid #C3C6C8;
-		height: 1px;
-	}
-	.cards {
-		padding-top: 45px;
-		.wrapper {
-			.divider {
-				border-top: 1px dashed #e1e2e3;
-				height: 1px;
-			}
-		}
-	}
+  .divider {
+    border-top: 1px solid #c3c6c8;
+    height: 1px;
+  }
+  .cards {
+    padding-top: 45px;
+    .wrapper {
+      .divider {
+        border-top: 1px dashed #e1e2e3;
+        height: 1px;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    .cards {
+      padding-top: 0;
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 20px;
+      }
+    }
+  }
 }
