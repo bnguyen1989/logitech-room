@@ -167,11 +167,7 @@ export class LanguageFileProcessor {
 
     const languageJSON = this.createLanguageFiles(data);
     for (const langCode in languageJSON) {
-      const content = JSON.stringify(
-        { [langCode]: languageJSON[langCode] },
-        null,
-        4
-      );
+      const content = JSON.stringify(languageJSON[langCode], null, 4);
       await writeFile(path.join(dir, `${langCode}.json`), content);
     }
   }

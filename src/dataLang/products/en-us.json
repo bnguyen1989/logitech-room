@@ -1,5 +1,9 @@
 {
   "Rally Bar": {
+    "Card": {
+      "ProductName": "Rally Bar",
+      "ShortDescription": "Video bar for medium to large rooms"
+    },
     "Blade_1": {
       "ProductName": "Rally Bar",
       "ShortDescription": "All-in-one video bar for medium to large rooms",
@@ -18,6 +22,7 @@
         "Cover image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar/buy/rally-bar-overview-cover.png?v=1"
       }
     },
+
     "Blade_3A": {
       "Features": [
         {
@@ -71,6 +76,10 @@
     }
   },
   "Rally Bar Mini": {
+    "Card": {
+      "ProductName": "Rally Bar Mini",
+      "ShortDescription": "Video bar for small to medium rooms"
+    },
     "Blade_1": {
       "ProductName": "Rally Bar Mini",
       "ShortDescription": "All-in-one video bar for small to medium rooms",
@@ -141,6 +150,10 @@
     }
   },
   "Rally Bar Huddle": {
+    "Card": {
+      "ProductName": "Rally Bar Huddle",
+      "ShortDescription": "Video bar for small rooms with built-in AI"
+    },
     "Blade_1": {
       "ProductName": "Rally Bar Huddle",
       "ShortDescription": "All-in-one video bar for huddle and small rooms.",
@@ -212,6 +225,10 @@
     }
   },
   "LOGITECH TAP": {
+    "Card": {
+      "ProductName": "Logitech Tap",
+      "ShortDescription": "Tethered room controller with Cat5e kit"
+    },
     "Blade_1": {
       "ProductName": "LOGITECH TAP",
       "ShortDescription": "Make video meetings simple to join with a touch controller with wireless and HDMI content-sharing.",
@@ -282,6 +299,10 @@
     }
   },
   "LOGITECH TAP IP": {
+    "Card": {
+      "ProductName": "Logitech Tap IP",
+      "ShortDescription": "Network-connected room controller"
+    },
     "Blade_1": {
       "ProductName": "LOGITECH TAP IP",
       "ShortDescription": "Make video meetings simple to join with a network-connected touch controller.",
@@ -361,6 +382,10 @@
     }
   },
   "LOGITECH SIGHT": {
+    "Card": {
+      "ProductName": "Logitech Sight",
+      "ShortDescription": "Tabletop AI companion camera"
+    },
     "Blade_1": {
       "ProductName": "LOGITECH SIGHT",
       "ShortDescription": "Tabletop companion camera",
@@ -440,6 +465,10 @@
     }
   },
   "Tap Scheduler": {
+    "Card": {
+      "ProductName": "Tap Scheduler",
+      "ShortDescription": "Room scheduling panel"
+    },
     "Blade_1": {
       "ProductName": "Logitech Tap Scheduler",
       "ShortDescription": "Purpose-built scheduling panel for meeting rooms",
@@ -518,6 +547,10 @@
     }
   },
   "Tap Scheduler Angle Mount": {
+    "Card": {
+      "ProductName": "Tap Scheduler Angle Mount",
+      "ShortDescription": "Mount Tap Scheduler at lower angle"
+    },
     "Blade_1": {
       "ProductName": "Tap Scheduler Angle Mount",
       "LongDescription": "Mounts Logitech Tap Scheduler at a comfortable, lower angle.",
@@ -556,6 +589,10 @@
     }
   },
   "RALLY PLUS": {
+    "Card": {
+      "ProductName": "Rally Plus",
+      "ShortDescription": "Modular videoconferencing system for larger spaces"
+    },
     "Blade_1": {
       "ProductName": "RALLY PLUS",
       "ShortDescription": "Premier modular video conferencing system for larger  rooms.",
@@ -601,6 +638,10 @@
     }
   },
   "RALLY CAMERA": {
+    "Card": {
+      "ProductName": "Rally Camera",
+      "ShortDescription": "Premium PTZ camera"
+    },
     "Blade_1": {
       "ProductName": "RALLY CAMERA",
       "ShortDescription": "Premium PTZ camera with Ultra-HD imaging",
@@ -641,6 +682,10 @@
     }
   },
   "RoomMate": {
+    "Card": {
+      "ProductName": "RoomMate",
+      "ShortDescription": "Appliance for video and other room solutions"
+    },
     "Blade_1": {
       "ProductName": "Logitech RoomMate",
       "ShortDescription": "CollabOS appliance for supported conference cameras and room solution peripherals",
@@ -709,6 +754,10 @@
     }
   },
   "MeetUp 2": {
+    "Card": {
+      "ProductName": "MeetUp 2",
+      "ShortDescription": "USB conference camera with built-in AI"
+    },
     "Blade_1": {
       "ProductName": "MeetUp 2",
       "ShortDescription": "All-in-one USB conference camera for huddle and small rooms.",
@@ -774,6 +823,10 @@
     }
   },
   "Logitech Active USB Cable": {
+    "Card": {
+      "ProductName": "Logitech Active USB Cable",
+      "ShortDescription": "Bring-your-own-laptop connection for MeetUp 2"
+    },
     "Blade_1": {
       "ProductName": "Active USB Cable",
       "ShortDescription": "Enables single-cable BYOD connection for MeetUp 2.",
@@ -789,6 +842,10 @@
     }
   },
   "LOGITECH SCRIBE": {
+    "Card": {
+      "ProductName": "Logitech Scribe",
+      "ShortDescription": "AI-powered whiteboard camera"
+    },
     "Blade_1": {
       "ProductName": "LOGITECH SCRIBE",
       "ShortDescription": "Whiteboard camera for video conferencing rooms",
@@ -827,6 +884,10 @@
     }
   },
   "LOGITECH SWYTCH": {
+    "Card": {
+      "ProductName": "Logitech Swytch",
+      "ShortDescription": "Bring-your-own-laptop connection"
+    },
     "Blade_1": {
       "ProductName": "LOGITECH SWYTCH",
       "ShortDescription": "LAPTOP LINK FOR PC-BASED MEETING ROOMS",
@@ -847,6 +908,10 @@
     "END_CTA": {}
   },
   "Logitech USB-A to HDMI Adapter": {
+    "Card": {
+      "ProductName": "Logitech USB-A to HDMI Adapter",
+      "ShortDescription": "Connect an additional display"
+    },
     "Blade_1": {
       "ProductName": "Logitech USB-A to HDMI Adapter",
       "ShortDescription": "",
@@ -892,6 +957,10 @@
     }
   },
   "RALLY SPEAKER": {
+    "Card": {
+      "ProductName": "RALLY SPEAKER",
+      "ShortDescription": "Second speaker connects to Logitech Rally for clear, rich sound"
+    },
     "Blade_1": {
       "ProductName": "RALLY SPEAKER",
       "LongDescription": "Second speaker connects to Logitech Rally for clear, rich sound",
@@ -936,6 +1005,10 @@
     }
   },
   "RALLY MIC POD": {
+    "Card": {
+      "ProductName": "Rally Mic Pod",
+      "ShortDescription": "Extend audio pickup"
+    },
     "Blade_1": {
       "ProductName": "RALLY MIC POD",
       "ShortDescription": "Modular microphones to extend audio coverage",
@@ -978,6 +1051,10 @@
     }
   },
   "Rally Mic Pod Mount": {
+    "Card": {
+      "ProductName": "Rally Mic Pod Mount",
+      "ShortDescription": "Table mount for Mic Pods"
+    },
     "Blade_1": {
       "ProductName": "Mic Pod Mount",
       "LongDescription": "Anchor Rally Mic Pod to a table or ceiling, with cable management for a clean installation.",
@@ -1016,6 +1093,10 @@
     }
   },
   "Rally Mic Pod Pendant Mount": {
+    "Card": {
+      "ProductName": "Rally Mic Pod Pendant Mount",
+      "ShortDescription": "Ceiling mount for Mic Pods"
+    },
     "Blade_1": {
       "ProductName": "Mic Pod Pendant Mount",
       "ShortDescription": "Ceiling pendant mount for Rally Mic Pods.",
@@ -1045,6 +1126,10 @@
     }
   },
   "Mic Pod Hub": {
+    "Card": {
+      "ProductName": "Mic Pod Hub",
+      "ShortDescription": "Connect and clean up cabling for Mic Pods"
+    },
     "Blade_1": {
       "ProductName": "Rally Mic Pod Hub",
       "LongDescription": "Customize microphone placement for most any conference table configuration",
@@ -1089,6 +1174,10 @@
     }
   },
   "Mic Pod CAT Coupler": {
+    "Card": {
+      "ProductName": "Mic Pod CAT Coupler",
+      "ShortDescription": "Extend Mic Pods with category cabling"
+    },
     "Blade_1": {
       "ProductName": "Rally Mic Pod CAT Coupler",
       "ShortDescription": "Extend Mic Pods with CAT Coupler",
@@ -1106,6 +1195,10 @@
     }
   },
   "Mic Pod Extension Cable": {
+    "Card": {
+      "ProductName": "Mic Pod Extension Cable",
+      "ShortDescription": "10 meter extension cable"
+    },
     "Blade_1": {
       "ProductName": "Mic Pod Extension Cable",
       "ShortDescription": "10 meter extension cable",
@@ -1156,6 +1249,10 @@
     }
   },
   "Compute Mount": {
+    "Card": {
+      "ProductName": "Compute Mount",
+      "ShortDescription": "Mount for RoomMate and PCs"
+    },
     "Blade_1": {
       "ProductName": "Compute Mount",
       "ShortDescription": "FOR LOGITECH ROOMMATE AND MINI PCs",
@@ -1201,6 +1298,10 @@
     }
   },
   "Tap Table Mount": {
+    "Card": {
+      "ProductName": "Tap Table Mount",
+      "ShortDescription": "Secure Tap controllers to the table"
+    },
     "Blade_1": {
       "ProductName": "Logitech Tap Table Mount",
       "ShortDescription": "Secure the Tap controller to the table for a tidy setup",
@@ -1239,6 +1340,10 @@
     }
   },
   "Tap Riser Mount": {
+    "Card": {
+      "ProductName": "Tap Riser Mount",
+      "ShortDescription": "Raise Tap controllers at the table"
+    },
     "Blade_1": {
       "ProductName": "Logitech Tap Riser Mount",
       "ShortDescription": "Raise the Tap controller for better visibility",
@@ -1278,6 +1383,10 @@
     }
   },
   "Tap Wall Mount": {
+    "Card": {
+      "ProductName": "Tap Wall Mount",
+      "ShortDescription": "Mount Tap controllers to the wall"
+    },
     "Blade_1": {
       "ProductName": "Logitech Tap Wall Mount",
       "ShortDescription": "Mount Tap controllers to the wall to save table space",
@@ -1324,6 +1433,10 @@
     }
   },
   "Logitech TV Mount": {
+    "Card": {
+      "ProductName": "Logitech TV Mount",
+      "ShortDescription": "TV mount for video bars"
+    },
     "Blade_1": {
       "ProductName": "TV Mount for Video Bars",
       "ShortDescription": "For Logitech video bars",
@@ -1389,6 +1502,10 @@
     }
   },
   "Logitech Wall Mount": {
+    "Card": {
+      "ProductName": "Logitech Wall Mount",
+      "ShortDescription": "Wall mount for video bars"
+    },
     "Blade_1": {
       "ProductName": "Wall Mount for Video Bars",
       "ShortDescription": "VESA-compatible mounting kit for Rally Bar and Rally Bar Mini.",
@@ -1446,6 +1563,10 @@
     }
   },
   "RALLY MOUNTING KIT": {
+    "Card": {
+      "ProductName": "Rally Mounting Kit",
+      "ShortDescription": "Custom mounts for Rally Plus system"
+    },
     "Blade_1": {
       "ProductName": "RALLY MOUNTING KIT",
       "ShortDescription": "Custom mounts for a sleek installation and secure cabling",
@@ -1484,6 +1605,10 @@
     }
   },
   "GENERIC PC COMPUTE": {
+    "Card": {
+      "ProductName": "Generic PC compute",
+      "ShortDescription": "Mini PC (from verified partner reseller)"
+    },
     "Blade_1": {
       "ProductName": "GENERIC PC COMPUTE",
       "ShortDescription": "Choose a mini PC from a variety of partners.",
@@ -1494,9 +1619,13 @@
     }
   },
   "Rally Bar + Tap IP": {
+    "Card": {
+      "ProductName": "Rally Bar and Tap IP bundle",
+      "ShortDescription": "Includes all-in-one video bar for larger rooms and a touch controller with PoE connectivity."
+    },
     "Blade_1": {
-      "ProductName": "Rally Bar + Tap IP",
-      "ShortDescription": "",
+      "ProductName": "Rally Bar and Tap IP bundle",
+      "ShortDescription": "Includes all-in-one video bar for larger rooms and a touch controller with PoE connectivity.",
       "LongDescription": "",
       "Colors": {
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/tap-ip-appliance-based-vc-bundles/gallery/rally-bar-tap-ip-gallery-1.png?v=1"
@@ -1504,9 +1633,13 @@
     }
   },
   "Rally Bar Mini + Tap IP": {
+    "Card": {
+      "ProductName": "Rally Bar Mini and Tap IP bundle",
+      "ShortDescription": "Includes all-in-one video bar for medium to large rooms and a touch controller with PoE connectivity."
+    },
     "Blade_1": {
-      "ProductName": "Rally Bar Mini + Tap IP",
-      "ShortDescription": "",
+      "ProductName": "Rally Bar Mini and Tap IP bundle",
+      "ShortDescription": "Includes all-in-one video bar for medium to large rooms and a touch controller with PoE connectivity.",
       "LongDescription": "",
       "Colors": {
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/tap-ip-appliance-based-vc-bundles/gallery/rally-bar-mini-tap-ip-gallery-1.png?v=1"

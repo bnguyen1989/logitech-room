@@ -4,6 +4,7 @@ import {
   Blade_2,
   Blade_2A,
   Blade_3A,
+  Card,
   ProductDataType,
 } from "../../../../types/textTypeProduct";
 import { getActiveStep } from "./selectors";
@@ -17,13 +18,26 @@ export const getLangProduct =
   (keyProduct: string | undefined) =>
   (state: RootState): ProductDataType | undefined => {
     if (!keyProduct) return undefined;
-    if (state.ui.langTextProduct[keyProduct]) {
-      return state.ui.langTextProduct[keyProduct];
+    const allLangProducts = getAllLangProducts(state);
+    if (allLangProducts[keyProduct]) {
+      return allLangProducts[keyProduct];
     }
-    if (state.ui.langTextProduct[keyProduct.toUpperCase()]) {
-      return state.ui.langTextProduct[keyProduct.toUpperCase()];
+    if (allLangProducts[keyProduct.toUpperCase()]) {
+      return allLangProducts[keyProduct.toUpperCase()];
     }
 
+    return undefined;
+  };
+
+export const getLangProductCard =
+  (keyProduct: string | undefined) =>
+  (state: RootState): Card | undefined => {
+    if (!keyProduct) return undefined;
+    const langsProduct = getLangProduct(keyProduct)(state);
+
+    if (langsProduct && langsProduct["Card"]) {
+      return langsProduct["Card"] as Card;
+    }
     return undefined;
   };
 
