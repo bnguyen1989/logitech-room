@@ -1,15 +1,15 @@
 import { Suspense } from "react";
-import { Configurator } from "../../models/configurator/Configurator";
 import { NodeMatcher } from "./GLTFNode";
 import { ProductNode } from "./ProductNode";
+import { PlacementManager } from "../../models/configurator/PlacementManager";
 
 export const ProductsNodes = () => {
-  const allNodePlacement = Configurator.getAllPlacement();
+  const allNodePlacement = PlacementManager.getAllPlacement();
 
   const nodeMatchers: NodeMatcher[] = [
     (threeNode) => {
       console.log("threeNode.name", threeNode.name);
-      
+
       if (allNodePlacement.includes(threeNode.name)) {
         return (
           <Suspense>
