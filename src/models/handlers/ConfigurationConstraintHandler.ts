@@ -675,8 +675,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (!attributeValuesArr) return;
     const isSelectMic = typeof selectedMic === "object";
     const isSelectMicMount = typeof selectedMicMount === "object";
+    const isRecommendedMicQty =
+      typeof selectedMicQty === "string" && parseInt(selectedMicQty) >= 2;
     const isNeedSetRecommended =
-      isSelectMic && selectedMicQty === "2" && !isSelectMicMount;
+      isSelectMic && isRecommendedMicQty && !isSelectMicMount;
     if (isNeedSetRecommended) {
       attributeValuesArr.forEach((option) => {
         this.setRecommendedInMetadata(option, true);
