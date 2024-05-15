@@ -122,6 +122,12 @@ export class Configurator {
     return `Camera_${type}_Placement_${id}`;
   }
 
+  public static getNameNodeCommodeForCamera(
+    type: "RallyBar" | "Huddle" | "Mini"
+  ): string {
+    return `Camera_Commode_${type}`;
+  }
+
   public static getNameNodeForScribe(): string {
     return "Scribe_Placement";
   }
@@ -211,6 +217,9 @@ export class Configurator {
       getNameNodePodPendantMount(),
       getNameNodeAngleMountScheduler(),
       getNameNodeSideMountScheduler(),
+      this.getNameNodeCommodeForCamera("RallyBar"),
+      this.getNameNodeCommodeForCamera("Huddle"),
+      this.getNameNodeCommodeForCamera("Mini"),
     ];
   }
 
