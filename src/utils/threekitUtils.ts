@@ -16,6 +16,8 @@ export const getRoomAssetId = (roomSize: string) => {
       return "6931dca5-c102-44ad-91f4-97987edcb70b";
     case RoomSizeName.Medium:
       return "3bb4f42a-939d-4392-b073-f6e333c50a06";
+    case RoomSizeName.Large:
+      return "82d8aa99-b8a5-43a7-8f75-b2fa9550c582";
     case RoomSizeName.Auditorium:
       return "42fb08de-e0d8-4456-a246-e105e1bb1d5b";
     default:

@@ -86,6 +86,10 @@ export class PlacementManager {
       );
     });
 
+    Array.from({ length: 3 }, (_, i) => i + 1).forEach((num) =>
+      placements.push(this.getNameNodePendantMount(num))
+    );
+
     placements.push(
       this.getNameNodeForScribe(),
       this.getNameNodeSwytch(),
@@ -95,8 +99,6 @@ export class PlacementManager {
       this.getNameNodeTapTableMount(),
       this.getNameNodeCameraWallMount(),
       this.getNameNodeCameraTVMount(),
-      this.getNameNodePendantMount(1),
-      this.getNameNodePendantMount(2),
       this.getNameNodePodPendantMount(),
       this.getNameNodeAngleMountScheduler(),
       this.getNameNodeSideMountScheduler(),
