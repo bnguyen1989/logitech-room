@@ -147,9 +147,7 @@ describe("Permission", () => {
       permission.processAddActiveElementByName(CameraName.RallyBar);
       const dataForAdd = permission.getDataForAdd();
 
-      expect(dataForAdd).toEqual({
-        [StepName.ConferenceCamera]: [CameraName.WallMountForVideoBars],
-      });
+      expect(dataForAdd).toEqual({});
     });
   });
 

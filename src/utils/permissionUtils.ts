@@ -167,13 +167,8 @@ export function createStepConferenceCamera() {
       )
       .setDefaultMount(
         new MountElement(
-          CameraName.WallMountForVideoBars,
-          Configurator.getNameNodeForCamera("Wall", 1)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.WallMountForVideoBars,
-            Configurator.getNameNodeCameraWallMount()
-          )
+          item.name,
+          Configurator.getNameNodeCommodeForCamera("RallyBar")
         )
       );
   };
