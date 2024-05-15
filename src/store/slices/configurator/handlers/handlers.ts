@@ -83,11 +83,21 @@ export function updateNodesByConfiguration(
         );
         if (!card) return;
 
+        const count = getPropertyCounterCardByKeyPermission(
+          stepName,
+          card.keyPermission
+        )(state);
+
         const nodes = getNodes(state);
         const keys = Object.keys(nodes);
         const key = keys.find((key) => nodes[key] === value.assetId);
         if (key) return;
         addElement(card, stepName)(store);
+        if (count && count > 1) {
+          changeCountElement(card.keyPermission, stepName, count, {
+            [card.keyPermission]: 1,
+          })(store);
+        }
       }
     });
   };
