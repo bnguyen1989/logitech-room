@@ -29,10 +29,19 @@ export const Card: React.FC<DataSectionI> = (props) => {
           </div>
         )}
         {!!count && <div className={s.count}>x {count}</div>}
+        {!!count && (
+          <div className={s.count_mobile}>
+            <div className={s.count_mobile_text}>QUANTITY</div>
+            <div className={s.count_mobile_value}>x{count}</div>
+          </div>
+        )}
         {!!amount && (
           <div className={s.amount}>
-            <div className={s.amount_value}>{amount}</div>
-            <div className={s.amount_text}>MSRP</div>
+            <div className={s.amount_mobile_title}>PRICE</div>
+            <div className={s.amount_price}>
+              <div className={s.amount_value}>{amount}</div>
+              <div className={s.amount_text}>MSRP</div>
+            </div>
           </div>
         )}
         {!!selectValue && <div className={s.value}>{selectValue}</div>}

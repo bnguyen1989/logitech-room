@@ -104,7 +104,7 @@
 }
 
 .card_container_sub {
-  border: 2px solid #f4f4f4;
+  border: 2px solid #f4f4f4 !important;
 
   & button {
     box-shadow: 0 0 0 5px #ffff !important;
@@ -211,6 +211,7 @@
   }
 
   .card_container_mobile {
-    height: 100%;
+    height: fit-content;
+    min-height: fit-content !important;
   }
 }

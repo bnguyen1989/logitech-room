@@ -20,7 +20,7 @@ import {
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
 import {
-  getLangProductBlade1,
+  getLangProductCard,
   getLangProductImage,
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
@@ -38,7 +38,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
   );
   const productName = useAppSelector(getMetadataProductNameAssetFromCard(card));
 
-  const langProduct = useAppSelector(getLangProductBlade1(productName));
+  const langDataCard = useAppSelector(getLangProductCard(productName));
+
   const langProductImage = useAppSelector(
     getLangProductImage(productName, keyItemPermission)
   );
@@ -123,8 +124,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
           <div className={s.right_content}>
             <div className={s.header} onClick={handleClick}>
               <div className={s.header_title}>{title}</div>
-              {langProduct && !!langProduct.ShortDescription && (
-                <div className={s.title}>{langProduct.ShortDescription}</div>
+              {langDataCard && (
+                <div className={s.title}>{langDataCard.ShortDescription}</div>
               )}
               <div className={s.subtitle}>{subTitle}</div>
             </div>

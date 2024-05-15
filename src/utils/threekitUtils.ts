@@ -3,7 +3,7 @@ import { RoomSizeName } from "./permissionUtils";
 export const ConfigData = {
   host: "preview.threekit.com",
   orgId: "04015bb6-401d-47f8-97c0-dd6fa759c441",
-  publicToken: "69da68c5-a63b-4c58-9607-6beb1ef1cffa",
+  publicToken: "10d33d14-2cbb-4e98-8161-99225a65e298",
 };
 
 export const getRoomAssetId = (roomSize: string) => {
@@ -16,6 +16,10 @@ export const getRoomAssetId = (roomSize: string) => {
       return "6931dca5-c102-44ad-91f4-97987edcb70b";
     case RoomSizeName.Medium:
       return "3bb4f42a-939d-4392-b073-f6e333c50a06";
+    case RoomSizeName.Large:
+      return "82d8aa99-b8a5-43a7-8f75-b2fa9550c582";
+    case RoomSizeName.Auditorium:
+      return "42fb08de-e0d8-4456-a246-e105e1bb1d5b";
     default:
       return "3bb4f42a-939d-4392-b073-f6e333c50a06";
   }

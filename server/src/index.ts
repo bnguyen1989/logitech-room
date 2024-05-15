@@ -4,6 +4,7 @@ import cors from "cors";
 import userRouterProduct from "./routes/product";
 import userLang from "./routes/languages";
 import userRouterRoom from "./routes/room";
+import { dataLangFile } from "./utils/langUtils";
 
 const app = express();
 
@@ -23,4 +24,7 @@ app.get("/*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../../dist/index.html"));
 });
 
-app.listen(PORT, () => console.log("listening on port: ", PORT));
+app.listen(PORT, () => {
+  dataLangFile();
+  console.log("listening on port: ", PORT);
+});

@@ -104,8 +104,10 @@
 
 @media (max-height: 900px) {
   .container {
+    height: calc(var(--vh, 1vh) * 100);
+
     .image {
-      height: 40vh;
+      height: calc(var(--vh, 1vh) * 40);
     }
     .content {
       gap: 20px;
@@ -127,6 +129,8 @@
 @media (max-width: 900px) {
   .container {
     .content {
+      padding: 0 40px;
+
       .title {
         font-size: 32px;
         line-height: 38px;
@@ -176,11 +180,36 @@
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
   .container {
     .content {
-      .type_user {
+      padding: 0 20px;
 
+      .header_title {
+        font-size: 13px;
+        line-height: 20px;
+      }
+
+      .title {
+        font-size: 24px;
+        line-height: 28px;
+      }
+
+      .description {
+        .block_2 {
+          .block_2_title {
+            font-size: 14px;
+            line-height: 18px;
+          }
+
+          .block_2_list {
+            font-size: 11px;
+            line-height: 15px;
+          }
+        }
+      }
+
+      .type_user {
         .type_user_buttons {
           display: flex;
           flex-direction: column;

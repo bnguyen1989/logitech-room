@@ -1,14 +1,14 @@
 .container {
   display: flex;
   flex-direction: column;
-	align-items: center;
+  align-items: center;
   gap: 60px;
-  border-top: 4px solid #E2E2E2;
+  border-top: 4px solid #e2e2e2;
 
   .desc {
     display: flex;
     justify-content: space-between;
-    background-color: #F4F4F4;
+    background-color: #f4f4f4;
     padding: 40px;
 
     .text {
@@ -29,7 +29,6 @@
         line-height: 32px;
         font-weight: 300;
         color: #797979;
-
       }
 
       .amount {
@@ -39,23 +38,34 @@
         color: #000;
         font-style: normal;
         text-transform: uppercase;
-  
+
         .amount_value {
           font-size: 34px;
           line-height: 32px;
           font-weight: 300;
         }
-  
+
         .amount_text {
           font-size: 20px;
           line-height: 22px;
           font-weight: 400;
         }
       }
-
     }
-
   }
   .buttons {
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    gap: 40px;
+    
+    .desc {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: normal;
+    }
   }
 }

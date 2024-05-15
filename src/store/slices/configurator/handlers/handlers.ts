@@ -19,10 +19,7 @@ import {
   getPermission,
   getPropertyCounterCardByKeyPermission,
 } from "../../ui/selectors/selectors";
-import {
-  getAssetIdByNameNode,
-  getNodes,
-} from "../selectors/selectors";
+import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
 import { StepName } from "../../../../utils/baseUtils";
 
@@ -86,11 +83,21 @@ export function updateNodesByConfiguration(
         );
         if (!card) return;
 
+        const count = getPropertyCounterCardByKeyPermission(
+          stepName,
+          card.keyPermission
+        )(state);
+
         const nodes = getNodes(state);
         const keys = Object.keys(nodes);
         const key = keys.find((key) => nodes[key] === value.assetId);
         if (key) return;
         addElement(card, stepName)(store);
+        if (count && count > 1) {
+          changeCountElement(card.keyPermission, stepName, count, {
+            [card.keyPermission]: 1,
+          })(store);
+        }
       }
     });
   };
@@ -364,23 +371,23 @@ export function removeElement(card: CardI, stepName: StepName) {
           cardItemElementAsset.id,
           defaultMount.nodeName
         )(store);
-        return;
+      } else {
+        store.dispatch(changeStatusProcessing(true));
+        const dependentCard = getCardByKeyPermission(
+          stepName,
+          dependentMount.name
+        )(state);
+        const dependentCardAsset = getAssetFromCard(dependentCard)(state);
+        store.dispatch(removeNodes(cardItemElementAsset.id));
+        setElementByNameNode(
+          dependentCardAsset.id,
+          defaultMount.getNameNode()
+        )(store);
+        setElementByNameNode(
+          cardItemElementAsset.id,
+          dependentMount.getNameNode()
+        )(store);
       }
-      store.dispatch(changeStatusProcessing(true));
-      const dependentCard = getCardByKeyPermission(
-        stepName,
-        dependentMount.name
-      )(state);
-      const dependentCardAsset = getAssetFromCard(dependentCard)(state);
-      store.dispatch(removeNodes(cardItemElementAsset.id));
-      setElementByNameNode(
-        dependentCardAsset.id,
-        defaultMount.getNameNode()
-      )(store);
-      setElementByNameNode(
-        cardItemElementAsset.id,
-        dependentMount.getNameNode()
-      )(store);
     }
 
     store.dispatch(removeNodes(cardAsset.id));

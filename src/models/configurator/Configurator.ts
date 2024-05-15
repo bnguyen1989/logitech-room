@@ -55,6 +55,7 @@ export class Configurator {
   public static MeetingControllerName = [
     [AttributeName.RoomMeetingController, AttributeName.QtyMeetingController],
     [AttributeName.RoomTapMount, AttributeName.QtyTapMount],
+    [AttributeName.RoomProductBundle],
   ];
 
   public static VideoAccessoriesName = [
@@ -106,111 +107,6 @@ export class Configurator {
       }
       return acc;
     }, "");
-  }
-
-  public static getNameNodeForMic(id?: number): string {
-    if (!id) return `Mic_Placement`;
-    return `Mic_Placement_${id}`;
-  }
-
-  public static getNameNodeForTap(type: "Wall" | "Table", id: number): string {
-    return `Tap_Placement_${type}_${id}`;
-  }
-
-  public static getNameNodeForCamera(type: "Wall" | "TV", id: number): string {
-    return `Camera_${type}_Placement_${id}`;
-  }
-
-  public static getNameNodeForScribe(): string {
-    return "Scribe_Placement";
-  }
-
-  public static getNameNodeSwytch(): string {
-    return "Swytch_Placement";
-  }
-
-  public static getNameNodeScheduler(): string {
-    return "Scheduler_Placement";
-  }
-
-  public static getNameNodeMicPodMount(): string {
-    return "Pod_Table_Mount_mic_point";
-  }
-
-  public static getNameNodeTapRiserMount(): string {
-    return "Tap_Riser_Mount_Placement";
-  }
-
-  public static getNameNodeTapTableMount(): string {
-    return "Tap_Table_Mount_Placement";
-  }
-
-  public static getNameNodeCameraWallMount(): string {
-    return "Camera_Wall_Mount_Placement";
-  }
-
-  public static getNameNodeCameraTVMount(): string {
-    return "Camera_TV_Mount_placement";
-  }
-
-  public static getNameNodePendantMount(id?: number): string {
-    if (!id) return `Mic_Placement_pedant`;
-    return `Mic_Placement_pedant_${id}`;
-  }
-
-  public static getNameNodePodPendantMount(): string {
-    return "Pod_Pendant_Mount_Point";
-  }
-
-  public static getNameNodeAngleMountScheduler(): string {
-    return "Angle_Mount_scheduler_point";
-  }
-
-  public static getNameNodeSideMountScheduler(): string {
-    return "Side_Mount_scheduler_point";
-  }
-
-  public static getAllPlacement(): string[] {
-    const getNameNodeForMic = this.getNameNodeForMic;
-    const getNameNodeForTap = this.getNameNodeForTap;
-    const getNameNodeForCamera = this.getNameNodeForCamera;
-    const getNameNodeForScribe = this.getNameNodeForScribe;
-    const getNameNodeSwytch = this.getNameNodeSwytch;
-    const getNameNodeScheduler = this.getNameNodeScheduler;
-    const getNameNodeMicPodMount = this.getNameNodeMicPodMount;
-    const getNameNodeTapRiserMount = this.getNameNodeTapRiserMount;
-    const getNameNodeTapTableMount = this.getNameNodeTapTableMount;
-    const getNameNodeCameraWallMount = this.getNameNodeCameraWallMount;
-    const getNameNodeCameraTVMount = this.getNameNodeCameraTVMount;
-    const getNameNodePendantMount = this.getNameNodePendantMount;
-    const getNameNodePodPendantMount = this.getNameNodePodPendantMount;
-    const getNameNodeAngleMountScheduler = this.getNameNodeAngleMountScheduler;
-    const getNameNodeSideMountScheduler = this.getNameNodeSideMountScheduler;
-
-    return [
-      getNameNodeForMic(1),
-      getNameNodeForMic(2),
-      getNameNodeForMic(3),
-      getNameNodeForTap("Wall", 1),
-      getNameNodeForTap("Table", 1),
-      getNameNodeForTap("Table", 2),
-      getNameNodeForCamera("Wall", 1),
-      getNameNodeForCamera("TV", 1),
-      getNameNodeForCamera("TV", 2),
-      getNameNodeForScribe(),
-      getNameNodeSwytch(),
-      getNameNodeScheduler(),
-      getNameNodeMicPodMount(),
-      getNameNodeTapRiserMount(),
-      getNameNodeTapTableMount(),
-      getNameNodeCameraWallMount(),
-      getNameNodeCameraTVMount(),
-      getNameNodePendantMount(1),
-      getNameNodePendantMount(2),
-      getNameNodePodPendantMount(),
-      getNameNodeAngleMountScheduler(),
-      getNameNodeSideMountScheduler(),
-    ];
   }
 
   public get assetId(): string {

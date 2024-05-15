@@ -17,3 +17,9 @@ export enum DirectionStep {
   Next = "next",
   Prev = "prev",
 }
+
+export enum ColorName {
+  Graphite = "Graphite",
+  White = "White",
+  TAA = "TAA",
+}

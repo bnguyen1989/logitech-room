@@ -1,4 +1,3 @@
-import { Configurator } from "../models/configurator/Configurator";
 import { CountableMountElement } from "../models/permission/elements/mounts/CountableMountElement";
 import { GroupElement } from "../models/permission/elements/GroupElement";
 import { ItemElement } from "../models/permission/elements/ItemElement";
@@ -6,6 +5,7 @@ import { MountElement } from "../models/permission/elements/mounts/MountElement"
 import { ReferenceMountElement } from "../models/permission/elements/mounts/ReferenceMountElement";
 import { Step } from "../models/permission/step/Step";
 import { StepName, getSeparatorItemColor } from "./baseUtils";
+import { PlacementManager } from "../models/configurator/PlacementManager";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -69,6 +69,9 @@ export enum MeetingControllerName {
   TapWallMount = "Tap Mount - Wall Mount",
   TapRiserMount = "Tap Mount - Riser Mount",
   TapTableMount = "Tap Mount - Table Mount",
+
+  RallyBarTapIP = "Rally Bar + Tap IP",
+  RallyBarMiniTapIP = "Rally Bar Mini + Tap IP",
 }
 
 export enum VideoAccessoryName {
@@ -105,15 +108,7 @@ export function createStepRoomSize() {
 export function createStepPlatform() {
   const stepPlatform = new Step(StepName.Platform);
   const group = new GroupElement()
-    .addElement(
-      new ItemElement(PlatformName.GoogleMeet).addDependence([
-        new ItemElement(RoomSizeName.Phonebooth),
-        new ItemElement(RoomSizeName.Huddle),
-        new ItemElement(RoomSizeName.Small),
-        new ItemElement(RoomSizeName.Medium),
-        new ItemElement(RoomSizeName.Large),
-      ])
-    )
+    .addElement(new ItemElement(PlatformName.GoogleMeet))
     .addElement(new ItemElement(PlatformName.MicrosoftTeams))
     .addElement(new ItemElement(PlatformName.Zoom))
     .addElement(new ItemElement(PlatformName.BYOD).setSecondary(true))
@@ -143,34 +138,29 @@ export function createStepConferenceCamera() {
       .addDependenceMount(
         new MountElement(
           CameraName.WallMountForVideoBars,
-          Configurator.getNameNodeForCamera("Wall", 1)
+          PlacementManager.getNameNodeForCamera("Wall", 1)
         ).setDependentMount(
           new MountElement(
             CameraName.WallMountForVideoBars,
-            Configurator.getNameNodeCameraWallMount()
+            PlacementManager.getNameNodeCameraWallMount()
           )
         )
       )
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
-          Configurator.getNameNodeForCamera("TV", 2)
+          PlacementManager.getNameNodeForCamera("TV", 2)
         ).setDependentMount(
           new MountElement(
             CameraName.TVMountForVideoBars,
-            Configurator.getNameNodeCameraTVMount()
+            PlacementManager.getNameNodeCameraTVMount()
           )
         )
       )
       .setDefaultMount(
         new MountElement(
-          CameraName.WallMountForVideoBars,
-          Configurator.getNameNodeForCamera("Wall", 1)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.WallMountForVideoBars,
-            Configurator.getNameNodeCameraWallMount()
-          )
+          item.name,
+          PlacementManager.getNameNodeCommodeForCamera("RallyBar")
         )
       );
   };
@@ -181,7 +171,7 @@ export function createStepConferenceCamera() {
       new ItemElement(CameraName.MeetUp2).setDefaultMount(
         new MountElement(
           CameraName.MeetUp2,
-          Configurator.getNameNodeForCamera("TV", 2)
+          PlacementManager.getNameNodeForCamera("TV", 2)
         )
       )
     )
@@ -189,7 +179,7 @@ export function createStepConferenceCamera() {
       new ItemElement(CameraName.RallyBarHuddle).setDefaultMount(
         new MountElement(
           CameraName.RallyBarHuddle,
-          Configurator.getNameNodeForCamera("TV", 2)
+          PlacementManager.getNameNodeForCamera("TV", 2)
         )
       )
     )
@@ -225,7 +215,7 @@ export function createStepConferenceCamera() {
     new ItemElement(CameraName.LogitechSight).setDefaultMount(
       new MountElement(
         CameraName.LogitechSight,
-        Configurator.getNameNodeForMic(3)
+        PlacementManager.getNameNodeForMic(3)
       )
     )
   );
@@ -260,7 +250,7 @@ export function createStepAudioExtensions() {
       .setDefaultMount(
         new CountableMountElement(
           AudioExtensionName.RallyMicPod,
-          Configurator.getNameNodeForMic()
+          PlacementManager.getNameNodeForMic()
         )
       )
       .addAutoChangeItems({
@@ -276,11 +266,11 @@ export function createStepAudioExtensions() {
       .setDefaultMount(
         new CountableMountElement(
           AudioExtensionName.RallyMicPodMount,
-          Configurator.getNameNodeForMic()
+          PlacementManager.getNameNodeForMic()
         ).setDependentMount(
           new ReferenceMountElement(
             AudioExtensionName.RallyMicPod,
-            Configurator.getNameNodeMicPodMount()
+            PlacementManager.getNameNodeMicPodMount()
           )
         )
       )
@@ -302,11 +292,11 @@ export function createStepAudioExtensions() {
       .setDefaultMount(
         new CountableMountElement(
           AudioExtensionName.RallyMicPodPendantMount,
-          Configurator.getNameNodePendantMount()
+          PlacementManager.getNameNodePendantMount()
         ).setDependentMount(
           new ReferenceMountElement(
             AudioExtensionName.RallyMicPod,
-            Configurator.getNameNodePodPendantMount()
+            PlacementManager.getNameNodePodPendantMount()
           )
         )
       )
@@ -347,41 +337,44 @@ export function createStepMeetingController() {
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapWallMount,
-          Configurator.getNameNodeForTap("Wall", 1)
+          PlacementManager.getNameNodeForTap("Wall", 1)
         ).setDependentMount(
           new MountElement(
             MeetingControllerName.TapWallMount,
-            Configurator.getNameNodeForTap("Wall", 1)
+            PlacementManager.getNameNodeForTap("Wall", 1)
           )
         )
       )
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapRiserMount,
-          Configurator.getNameNodeForTap("Table", 1)
+          PlacementManager.getNameNodeForTap("Table", 1)
         ).setDependentMount(
           new MountElement(
             MeetingControllerName.TapRiserMount,
-            Configurator.getNameNodeTapRiserMount()
+            PlacementManager.getNameNodeTapRiserMount()
           )
         )
       )
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapTableMount,
-          Configurator.getNameNodeForTap("Table", 1)
+          PlacementManager.getNameNodeForTap("Table", 1)
         ).setDependentMount(
           new MountElement(
             MeetingControllerName.TapTableMount,
-            Configurator.getNameNodeTapTableMount()
+            PlacementManager.getNameNodeTapTableMount()
           )
         )
       )
       .setDefaultMount(
-        new MountElement(item.name, Configurator.getNameNodeForTap("Table", 1))
+        new MountElement(
+          item.name,
+          PlacementManager.getNameNodeForTap("Table", 1)
+        )
       );
   };
-  const group1 = new GroupElement()
+  const groupTap = new GroupElement()
     .addElement(
       setMountForTap(new ItemElement(MeetingControllerName.LogitechTapIP))
     )
@@ -390,7 +383,15 @@ export function createStepMeetingController() {
     )
     .setRequiredOne(true);
 
-  stepMeetingController.allElements = [group1];
+  const groupBundle = new GroupElement()
+    .addElement(
+      new ItemElement(MeetingControllerName.RallyBarTapIP).setVisible(false)
+    )
+    .addElement(
+      new ItemElement(MeetingControllerName.RallyBarMiniTapIP).setVisible(false)
+    );
+
+  stepMeetingController.allElements = [groupTap, groupBundle];
   return stepMeetingController;
 }
 
@@ -402,23 +403,23 @@ export function createStepVideoAccessories() {
       .setDefaultMount(
         new MountElement(
           VideoAccessoryName.LogitechTapSchedulerSideMount,
-          Configurator.getNameNodeScheduler()
+          PlacementManager.getNameNodeScheduler()
         ).setDependentMount(
           new MountElement(
             VideoAccessoryName.LogitechTapSchedulerSideMount,
-            Configurator.getNameNodeSideMountScheduler()
+            PlacementManager.getNameNodeSideMountScheduler()
           )
         )
       )
       .addDependenceMount(
         new MountElement(
           VideoAccessoryName.LogitechTapSchedulerAngleMount,
-          Configurator.getNameNodeScheduler()
+          PlacementManager.getNameNodeScheduler()
         )
           .setDependentMount(
             new MountElement(
               VideoAccessoryName.LogitechTapSchedulerAngleMount,
-              Configurator.getNameNodeAngleMountScheduler()
+              PlacementManager.getNameNodeAngleMountScheduler()
             )
           )
           .setDisabledColor(true)
@@ -434,7 +435,7 @@ export function createStepVideoAccessories() {
       new ItemElement(VideoAccessoryName.LogitechSwytch).setDefaultMount(
         new MountElement(
           VideoAccessoryName.LogitechSwytch,
-          Configurator.getNameNodeSwytch()
+          PlacementManager.getNameNodeSwytch()
         )
       )
     )
@@ -442,7 +443,7 @@ export function createStepVideoAccessories() {
       new ItemElement(VideoAccessoryName.LogitechScribe).setDefaultMount(
         new MountElement(
           VideoAccessoryName.LogitechScribe,
-          Configurator.getNameNodeForScribe()
+          PlacementManager.getNameNodeForScribe()
         )
       )
     )
@@ -518,7 +519,7 @@ export const isMic = (name: string) => {
   return isCompareName(name)([AudioExtensionName.RallyMicPod]);
 };
 
-export const isTap = (name: string) => {
+export const isTapElement = (name: string) => {
   return isCompareName(name)([
     MeetingControllerName.LogitechTapIP,
     MeetingControllerName.LogitechTap,
@@ -542,6 +543,23 @@ export const isTapMount = (name: string) => {
 
 export const isSupportService = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.SupportService]);
+};
+
+export const isBundleElement = (name: string) => {
+  return isCompareName(name)([
+    MeetingControllerName.RallyBarTapIP,
+    MeetingControllerName.RallyBarMiniTapIP,
+  ]);
+};
+
+export const isCameraElement = (name: string) => {
+  return isCompareName(name)([
+    CameraName.MeetUp2,
+    CameraName.RallyBarHuddle,
+    CameraName.RallyBarMini,
+    CameraName.RallyBar,
+    CameraName.RallyPlus,
+  ]);
 };
 
 function isCompareName(name: string) {

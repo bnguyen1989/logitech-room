@@ -49,3 +49,28 @@
     align-items: center;
   }
 }
+
+@media (max-width: 900px) {
+  .container {
+    min-height: calc(var(--vh, 1vh) * 100);
+    gap: 30px;
+    .rooms {
+      padding: 0 40px;
+      gap: 30px;
+      .wrapper_room {
+        gap: 30px;
+      }
+    }
+  }
+  .container_load {
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    .rooms {
+      padding: 0 20px;
+    }
+  }
+}

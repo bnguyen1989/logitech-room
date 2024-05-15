@@ -40,10 +40,21 @@ export const SetupModal: React.FC = () => {
         editableField6: link,
       });
 
+      const threekitService = new ThreekitService();
+
+      const assetId = orderData.metadata.configurator.assetId;
+      const snapshot = window.snapshot("blob") as Blob;
+      threekitService.saveConfigurator(snapshot, assetId ?? "").then((id) => {
+        const linkSnapshot = threekitService.getSnapshotLinkById(id);
+        form.setValues({
+          editableField5: linkSnapshot,
+        });
+      });
+
       form.onSubmit(() => {
         if (!isRequest) {
           setIsRequest(true);
-          new ThreekitService().createOrder(orderData).then(() => {
+          threekitService.createOrder(orderData).then(() => {
             dispatch(setMySetupModal({ isOpen: false }));
             dispatch(setUserData({ data: { ...form.getValues() } }));
             navigate("/room", { replace: true });

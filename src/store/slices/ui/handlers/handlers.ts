@@ -56,6 +56,8 @@ import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
 import { getRoomAssetId } from "../../../../utils/threekitUtils";
 import { StepName } from "../../../../utils/baseUtils";
+import { EventDataAnalyticsI } from "../../../../models/analytics/type";
+import { getDataEvent } from "../selectors/selectorsAnalytics";
 
 declare const app: Application;
 
@@ -104,6 +106,18 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(changeActiveStep(data.stepName));
     }
   });
+
+  app.eventEmitter.on(
+    "analyticsEvent",
+    (data: Omit<EventDataAnalyticsI, "locale">) => {
+      const eventData = getDataEvent(
+        data.category,
+        data.action,
+        data.value
+      )(store.getState());
+      analytics.notify(eventData);
+    }
+  );
 
   app.eventEmitter.on(
     "threekitDataInitialized",
@@ -215,7 +229,7 @@ function updateDataByConfiguration(
       }
 
       const tempCard = Object.values(cards).find(
-        (item) => getAssetFromCard(item)(state).id === value.assetId
+        (item) => getAssetFromCard(item)(state)?.id === value.assetId
       );
 
       if (!tempCard) {

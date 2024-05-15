@@ -6,22 +6,39 @@ import { useDispatch } from "react-redux";
 import { changeRoleUser } from "../../store/slices/user/User.slice";
 import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
 import { getImageUrl } from "../../utils/browserUtils";
+import { Application } from "../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../models/analytics/type";
+
+declare const app: Application;
 
 export const GetStarted: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const sendAnalytics = () => {
+    app.analyticsEvent({
+      category: EventCategoryName.get_started,
+      action: EventActionName.chose_type_user,
+      value: {},
+    });
+  };
 
   const handleCustomerClick = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
     );
     navigate("/configurator", { replace: true });
+    sendAnalytics();
   };
   const handlePartnerClick = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER).getData() })
     );
     navigate("/configurator", { replace: true });
+    sendAnalytics();
   };
 
   return (
