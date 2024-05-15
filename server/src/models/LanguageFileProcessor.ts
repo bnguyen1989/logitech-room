@@ -31,14 +31,10 @@ export class LanguageFileProcessor {
   }
 
   public async processFile(filePath: string): Promise<void> {
-    console.log("data");
-
     const readStream = createReadStream(filePath);
-    readStream.on("data", (data: any) => {
-      console.log("data", data);
-    });
+
     readStream
-      .pipe(csvParser({ separator: "\t" }))
+      .pipe(csvParser({ separator: "\t", quote: "" }))
       .on("data", (data: any) => {
         this.lineNumber++;
         if (this.lineNumber <= 116) {
@@ -51,13 +47,15 @@ export class LanguageFileProcessor {
           this.pageJson.push(data);
         } else {
           if (data["en-us"]) {
-            const resultPath = this.findKeyPath(
+            const resultPaths = this.findKeyPaths(
               this.templateProduct,
               data["en-us"]
             );
 
-            data["key"] = resultPath;
-            this.productJson.push(data);
+            resultPaths.forEach((resultPath) => {
+              data["key"] = resultPath;
+              this.productJson.push({ ...data });
+            });
           } else {
             data["key"] = "";
             this.productJson.push(data);
@@ -76,23 +74,30 @@ export class LanguageFileProcessor {
     return existsSync(this.outputFilePath);
   }
 
-  private findKeyPath(obj: any, searchText: any, currentPath = "") {
+  private findKeyPaths(obj: any, searchText: any, currentPath = "") {
+    const newSearchText = searchText.trim().toUpperCase();
+    let foundPaths: string[] = [];
     for (const key in obj) {
       const value = obj[key];
       const newPath = currentPath ? `${currentPath}#${key}` : key;
       if (typeof value === "string") {
-        if (value === searchText) {
-          return newPath;
+        const newValue = value.trim().toUpperCase();
+        if (newValue === newSearchText) {
+          foundPaths.push(newPath);
         }
       } else if (typeof value === "object" && value !== null) {
-        const result: any = this.findKeyPath(value, searchText, newPath);
-        if (result) {
-          return result;
+        const results: string[] = this.findKeyPaths(
+          value,
+          newSearchText,
+          newPath
+        );
+        if (results.length > 0) {
+          foundPaths = foundPaths.concat(results);
         }
       }
     }
 
-    return null;
+    return foundPaths;
   }
 
   private findKeyPathPage(arr: any[], searchText: any, keyLang = "en-us") {
@@ -152,12 +157,17 @@ export class LanguageFileProcessor {
       mkdirSync(this.outputFilePath, { recursive: true });
     }
     await this.saveLanguageFiles(this.pageJson, this.folderPage);
-    await this.saveLanguageFiles(this.productJson, this.folderProduct);
+    await this.saveLanguageFiles(
+      this.productJson,
+      this.folderProduct,
+      this.templateProduct
+    );
   }
 
   private async saveLanguageFiles(
     data: any[],
-    nameFolder: string
+    nameFolder: string,
+    template?: object
   ): Promise<void> {
     const dir = path.join(this.outputFilePath, nameFolder);
 
@@ -167,8 +177,40 @@ export class LanguageFileProcessor {
 
     const languageJSON = this.createLanguageFiles(data);
     for (const langCode in languageJSON) {
-      const content = JSON.stringify(languageJSON[langCode], null, 4);
+      let dataLang = languageJSON[langCode];
+      if (template) {
+        dataLang = this.updateJson(
+          nameFolder === "page" ? this.templatePage : this.templateProduct,
+          dataLang
+        );
+      }
+
+      const content = JSON.stringify(dataLang, null, 4);
       await writeFile(path.join(dir, `${langCode}.json`), content);
+    }
+  }
+
+  private updateJson(template: any, update: any) {
+    const updatedJson = JSON.parse(JSON.stringify(template));
+    this.recursiveUpdate(updatedJson, update);
+    return updatedJson;
+  }
+
+  private recursiveUpdate(target: any, source: any) {
+    for (const key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        if (Object.prototype.hasOwnProperty.call(target, key)) {
+          if (
+            typeof source[key] === "object" &&
+            !Array.isArray(source[key]) &&
+            typeof target[key] === "object"
+          ) {
+            this.recursiveUpdate(target[key], source[key]);
+          } else {
+            target[key] = source[key];
+          }
+        }
+      }
     }
   }
 }
