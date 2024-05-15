@@ -31,9 +31,17 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   const { min, max, threekit } = card.counter;
 
   const handleChange = (value: number) => {
-    if (value > count && value === 1) {
-      const attributeName = card.dataThreekit.attributeName;
+    const attributeName = card.dataThreekit.attributeName;
+    const isIncrement = value > count;
+    if (isIncrement && value === 1) {
       app.addItemConfiguration(attributeName, cardAsset.id, card.keyPermission);
+      return;
+    }
+    if (!isIncrement && disabled) {
+      app.removeItem(attributeName, card.keyPermission);
+      return;
+    }
+    if (isIncrement && value > 1 && disabled) {
       return;
     }
     app.changeCountItemConfiguration(
@@ -45,13 +53,7 @@ export const CounterItem: React.FC<PropsI> = (props) => {
 
   return (
     <div className={s.container}>
-      <Counter
-        min={min}
-        max={max}
-        onChange={handleChange}
-        value={count}
-        disabled={disabled}
-      />
+      <Counter min={min} max={max} onChange={handleChange} value={count} />
       <div className={s.text}>Max ({max})</div>
     </div>
   );
