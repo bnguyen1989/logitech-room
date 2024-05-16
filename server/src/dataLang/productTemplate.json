@@ -308,8 +308,8 @@
       "ShortDescription": "Make video meetings simple to join with a network-connected touch controller.",
       "LongDescription": "Transform collaboration spaces with Logitech Tap IP and leading video conferencing room solutions. Deliver one-touch join, easy content-sharing, and a seamless meeting experience across all rooms.",
       "Colors": {
-        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-ip-gallery-graphite-config.png?v=1",
-        "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-ip-gallery-offwhite-config.png?v=1"
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-ip-gallery-graphite-config-1.png?v=1",
+        "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-ip-gallery-offwhite-config-1.png?v=1"
       }
     },
     "Blade_2": {
@@ -851,7 +851,7 @@
       "ShortDescription": "Whiteboard camera for video conferencing rooms",
       "LongDescription": "Effortlessly share whiteboards into video meetings with Logitech Scribe, an AI-powered whiteboard camera for Microsoft Teams Rooms, Zoom Rooms, Google Meet and other leading video conferencing services.",
       "Colors": {
-        "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/scribe/scribe-gallery-family.png?v=1"
+        "White": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/scribe-gallery-room-config.png?v=1"
       }
     },
     "Blade_3A": {
