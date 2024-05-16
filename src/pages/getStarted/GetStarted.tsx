@@ -56,17 +56,10 @@ export const GetStarted: React.FC = () => {
         </div>
 
         <div className={s.description}>
-          <div className={s.block_1}>
-            Not sure where to start? Use our Room Configurator to instantly
-            outfit any size meeting room with the perfect video conferencing
-            solution.
-          </div>
-          <div className={s.divider}></div>
-          <div className={s.block_2}>
-            <div className={s.block_2_title}>How it works:</div>
+          <div className={s.block}>
+            <div className={s.block_title}>How it works:</div>
 
-            <ul className={s.block_2_list}>
-              <li>Answer a few quick questions about your space</li>
+            <ul className={s.block_list}>
               <li>Choose guided selections based on your room</li>
               <li>Get a complete look at the room(s) you configured</li>
               <li>View and share your detailed solutions per room</li>
@@ -75,9 +68,6 @@ export const GetStarted: React.FC = () => {
         </div>
 
         <div className={s.type_user}>
-          <div className={s.type_user_title}>
-            Ready to get started? Choose the best experience for you.
-          </div>
           <div className={s.type_user_buttons}>
             <Button
               text="I’m a customer"

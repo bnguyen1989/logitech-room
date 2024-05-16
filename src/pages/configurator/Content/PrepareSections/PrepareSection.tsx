@@ -46,9 +46,11 @@ export const PrepareSection: React.FC = () => {
     <div className={s.container}>
       <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
         <div className={s.wrapperCards}>
-          {Object.values(activeStepData.cards).map((card, index) =>
-            getCardComponent(card, index)
-          )}
+          <div className={s.content_cards}>
+            {Object.values(activeStepData.cards).map((card, index) =>
+              getCardComponent(card, index)
+            )}
+          </div>
         </div>
         {isSecondaryCards && (
           <div className={s.secondaryWrapper}>
