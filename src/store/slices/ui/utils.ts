@@ -1,6 +1,7 @@
 import { CardI, QuestionFormI, StepDataI } from "./type";
 import {
   CameraName,
+  MeetingControllerName,
   PlatformName,
   RoomSizeName,
   ServiceName,
@@ -440,6 +441,12 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
         SoftwareServicesName.SupportService,
         SoftwareServicesName.ExtendedWarranty,
       ];
+    case StepName.MeetingController: 
+    return [
+      MeetingControllerName.TapTableMount,
+      MeetingControllerName.TapRiserMount,
+      MeetingControllerName.TapWallMount,
+    ]
     default:
       return [];
   }
