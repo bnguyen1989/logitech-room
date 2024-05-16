@@ -8,7 +8,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { Vector3 } from "three";
+import { Camera, PerspectiveCamera, Vector3 } from "three";
 import {
   EffectComposer,
   Selection,
@@ -16,7 +16,7 @@ import {
   ToneMapping,
 } from "@react-three/postprocessing";
 import { useCache } from "../../hooks/cache.ts";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
 import { EffectComposer as EffectComposerImpl } from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
@@ -34,6 +34,10 @@ export const Player: React.FC = () => {
 
   const assetId = useAppSelector(getAssetId);
 
+  const [effectComposerRef, setEffectComposerRef] =
+    useState<EffectComposerImpl | null>(null);
+  const [snapshotCamera, setSnapshotCamera] = useState<Camera>();
+
   const focalLengthMm = 65; // Focal length in mm
   const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
 
@@ -47,12 +51,23 @@ export const Player: React.FC = () => {
     },
   };
 
-  const [effectComposerRef, setEffectComposerRef] =
-    useState<EffectComposerImpl | null>(null);
+  useEffect(() => {
+    if (!effectComposerRef || snapshotCamera) return;
+    const oldCamera = (
+      effectComposerRef.passes.find((pass) => !!(pass as any).camera) as any
+    )?.camera as Camera | undefined;
+    if (oldCamera) {
+      const camera = new PerspectiveCamera();
+      camera.copy(oldCamera as PerspectiveCamera);
+      setSnapshotCamera(camera);
+    }
+  }, [effectComposerRef]);
+
   (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
     if (!effectComposerRef) return "";
     const dataSnapshot = snapshot(effectComposerRef, {
-      size: { width: 800, height: 650 },
+      size: { width: 1920, height: 1080 },
+      camera: snapshotCamera,
     });
     if (type === "string") {
       return dataSnapshot;

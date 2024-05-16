@@ -41,6 +41,7 @@ export const SetupModal: React.FC = () => {
 
       const threekitService = new ThreekitService();
 
+      let snapshotLink = "";
       const assetId = orderData.metadata.configurator.assetId;
       const snapshot = window.snapshot("blob") as Blob;
       threekitService.saveConfigurator(snapshot, assetId ?? "").then((id) => {
@@ -48,6 +49,7 @@ export const SetupModal: React.FC = () => {
         form.setValues({
           editableField5: linkSnapshot,
         });
+        snapshotLink = linkSnapshot;
       });
 
       form.onSubmit(
@@ -56,6 +58,7 @@ export const SetupModal: React.FC = () => {
           return () => {
             if (!isRequest) {
               isRequest = true;
+              orderData.metadata["snapshot"] = snapshotLink;
               threekitService.createOrder(orderData).then(() => {
                 dispatch(setMySetupModal({ isOpen: false }));
                 dispatch(setUserData({ data: { ...form.getValues() } }));
