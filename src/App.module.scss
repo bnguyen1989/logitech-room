@@ -4,7 +4,7 @@
   font-family: var(--font-family);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .app {
     height: calc(var(--vh, 1vh) * 100);
   }

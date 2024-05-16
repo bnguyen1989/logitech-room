@@ -8,7 +8,7 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
@@ -23,7 +23,6 @@ export const SetupModal: React.FC = () => {
   const { isOpen } = useAppSelector(getSetupModalData);
   const user = useUser();
   const orderData: any = useAppSelector(getOrderData(user.id));
-  const [isRequest, setIsRequest] = useState(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
@@ -51,18 +50,23 @@ export const SetupModal: React.FC = () => {
         });
       });
 
-      form.onSubmit(() => {
-        if (!isRequest) {
-          setIsRequest(true);
-          threekitService.createOrder(orderData).then(() => {
-            dispatch(setMySetupModal({ isOpen: false }));
-            dispatch(setUserData({ data: { ...form.getValues() } }));
-            navigate("/room", { replace: true });
-          });
-        }
+      form.onSubmit(
+        (() => {
+          let isRequest = false;
+          return () => {
+            if (!isRequest) {
+              isRequest = true;
+              threekitService.createOrder(orderData).then(() => {
+                dispatch(setMySetupModal({ isOpen: false }));
+                dispatch(setUserData({ data: { ...form.getValues() } }));
+                navigate("/room", { replace: true });
+              });
+            }
 
-        return false;
-      });
+            return isRequest;
+          };
+        })()
+      );
       const button = document.querySelector(".mktoButton");
       if (button) {
         button.textContent = "See my results";

@@ -69,7 +69,7 @@
   justify-content: center;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .container {
     height: calc((var(--vh, 1vh) * 100) - 146px);
     .selected_cards {

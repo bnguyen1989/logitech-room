@@ -101,7 +101,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
         <ul className={s.options}>
           {card.select.data.map((option) => (
             <li
-              className={isActive(option) ? s.active_li : ""}
+              className={`${s.li} ${isActive(option) ? s.active_li : ""}`}
               key={option.value}
               onClick={() => handleSelect(option)}
             >

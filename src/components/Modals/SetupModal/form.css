@@ -215,7 +215,7 @@ form {
 	}
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 	form {
 		padding: 0 !important;
 		
