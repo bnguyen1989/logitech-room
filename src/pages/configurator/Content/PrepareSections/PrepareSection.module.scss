@@ -35,10 +35,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    align-items: stretch;
-    gap: 28px;
-    min-height: 300px;
-    height: 80%;
+    height: 100%;
+    width: 100%;
+
+    .content_cards {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-items: stretch;
+      gap: 28px;
+      min-height: 300px;
+      max-height: 450px;
+      height: 90%;
+    }
   }
 
   .secondaryWrapper {
@@ -65,12 +74,26 @@
 @media (max-width: 1500px) {
   .container {
     .wrapperCards {
-      gap: 15px;
+      .content_cards {
+        gap: 15px;
+      }
     }
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1300px) {
+  .container {
+    .wrapperCards {
+      .content_cards {
+        padding: 30px 0;
+        overflow-x: auto;
+        justify-content: normal;
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
   .container {
     padding-top: 40px;
     height: calc(100% - 40px);
@@ -81,12 +104,14 @@
     }
 
     .wrapperCards {
-      padding: 30px 0;
-      overflow-x: auto;
-      justify-content: normal;
+      .content_cards {
+        padding: 30px 0;
+        overflow-x: auto;
+        justify-content: normal;
+      }
     }
 
-    .wrapper_scroll > .wrapperCards {
+    .wrapper_scroll > .wrapperCards > .content_cards {
       border-bottom: 1px solid #c3c6c8;
     }
 
