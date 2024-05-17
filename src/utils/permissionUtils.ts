@@ -183,6 +183,7 @@ export function createStepConferenceCamera() {
         )
       )
     )
+    .addElement(new ItemElement(CameraName.RallyPlus))
     .setRequiredOne(true);
 
   const tempGroupMount = new GroupElement()

@@ -217,7 +217,11 @@ export const getAssetFromCard = (card: CardI) => (state: RootState) => {
 
   const separatorItemColor = getSeparatorItemColor();
   const nameAsset = `${keyPermission}${separatorItemColor}${color}`;
-  return threekitItems[nameAsset];
+  const asset = threekitItems[nameAsset];
+  if (asset) return asset;
+
+  const keys = Object.keys(threekitItems).filter((key) => key.includes(color));
+  return threekitItems[keys[0]];
 };
 
 export const getMetadataAssetFromCard = (card: CardI) => (state: RootState) => {
