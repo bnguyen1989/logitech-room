@@ -229,7 +229,7 @@ function updateDataByConfiguration(
       }
 
       const tempCard = Object.values(cards).find(
-        (item) => getAssetFromCard(item)(state)?.id === value.assetId
+        (item) => getAssetFromCard(item)(state).id === value.assetId
       );
 
       if (!tempCard) {

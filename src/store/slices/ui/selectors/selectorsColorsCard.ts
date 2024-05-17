@@ -40,7 +40,7 @@ export const getColorsFromCard =
     const availableColors = getColors(Object.keys(assetCard));
 
     const availableColorsData = colorsData.filter((color) =>
-      availableColors.includes(color.name)
+      availableColors.some((ac) => ac.includes(color.name))
     );
 
     return availableColorsData;
