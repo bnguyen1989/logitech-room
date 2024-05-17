@@ -11,7 +11,7 @@ import { getActiveStep } from "./selectors";
 import { getPropertyColorCardByKeyPermission } from "./selectorsColorsCard";
 
 export const getAllLangProducts = (state: RootState) => {
-  return state.ui.langTextProduct;
+  return state.ui.langText.products;
 };
 
 export const getLangProduct =

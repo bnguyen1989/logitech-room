@@ -10,6 +10,7 @@ import { SoftwareServicesName } from "../../../../../utils/permissionUtils";
 import { StepName } from "../../../../../utils/baseUtils";
 import { useAppSelector } from "../../../../../hooks/redux";
 import { getDataQuestionsForm } from "../../../../../store/slices/ui/selectors/selectors";
+import { getSoftwareServicesLangPage } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 interface ExpressionI {
   questionIndex: number;
@@ -26,6 +27,7 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
   );
+  const langPage = useAppSelector(getSoftwareServicesLangPage);
 
   const dataQuestionForm = useAppSelector(getDataQuestionsForm);
 
@@ -99,7 +101,7 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
         {!isSubmitForm ? (
           <div className={s.actions}>
             <IconButton
-              text={"Need help? Anchor link"}
+              text={langPage.helpButton}
               onClick={handleClick}
               variant={"outlined"}
             >

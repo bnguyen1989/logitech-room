@@ -11,12 +11,15 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../models/analytics/type";
+import { getGetStartedLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
+import { useAppSelector } from "../../hooks/redux";
 
 declare const app: Application;
 
 export const GetStarted: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const langPage = useAppSelector(getGetStartedLangPage);
 
   const sendAnalytics = () => {
     app.analyticsEvent({
@@ -48,21 +51,17 @@ export const GetStarted: React.FC = () => {
       </div>
 
       <div className={s.content}>
-        <div className={s.header_title}>
-          TAKE THE GUESSWORK OUT OF YOUR VIDEO CONFERENCING SETUP
-        </div>
-        <div className={s.title}>
-          Configure the perfect video collaboration setup for any meeting room
-        </div>
+        <div className={s.header_title}>{langPage.subtitle}</div>
+        <div className={s.title}>{langPage.title}</div>
 
         <div className={s.description}>
           <div className={s.block}>
-            <div className={s.block_title}>How it works:</div>
+            <div className={s.block_title}>{langPage.list.title}</div>
 
             <ul className={s.block_list}>
-              <li>Choose guided selections based on your room</li>
-              <li>Get a complete look at the room(s) you configured</li>
-              <li>View and share your detailed solutions per room</li>
+              <li>{langPage.list["0"]}</li>
+              <li>{langPage.list["1"]}</li>
+              <li>{langPage.list["2"]}</li>
             </ul>
           </div>
         </div>
@@ -70,12 +69,12 @@ export const GetStarted: React.FC = () => {
         <div className={s.type_user}>
           <div className={s.type_user_buttons}>
             <Button
-              text="I’m a customer"
+              text={langPage.Btn.customer}
               variant="contained"
               onClick={handleCustomerClick}
             />
             <Button
-              text="I’m a partner"
+              text={langPage.Btn.partner}
               variant="outlined"
               onClick={handlePartnerClick}
             />

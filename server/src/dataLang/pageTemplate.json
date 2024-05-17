@@ -74,84 +74,84 @@
     "de": "Bis zu 2",
     "es-ES": "Hasta 2",
     "es-MX": "Hasta 2",
-    "key": "Room Size#Phonebooth#subtitle"
+    "key": "Room Size#Cards#Phonebooth#subtitle"
   },
   {
     "en-us": "Phone Booth",
     "de": "Telefonzelle",
     "es-ES": "Cabina",
     "es-MX": "Cabina",
-    "key": "Room Size#Phonebooth#title"
+    "key": "Room Size#Cards#Phonebooth#title"
   },
   {
     "en-us": "Up to 6",
     "de": "Bis zu 6",
     "es-ES": "Hasta 6",
     "es-MX": "Hasta 6",
-    "key": "Room Size#Huddle#subtitle"
+    "key": "Room Size#Cards#Huddle#subtitle"
   },
   {
     "en-us": "Huddle Room",
     "de": "Huddle-Room",
     "es-ES": "Espacio de reunión reducido",
     "es-MX": "Espacio de reunión pequeño",
-    "key": "Room Size#Huddle#title"
+    "key": "Room Size#Cards#Huddle#title"
   },
   {
     "en-us": "Up to 8",
     "de": "Bis zu 8",
     "es-ES": "Hasta 8",
     "es-MX": "Hasta 8",
-    "key": "Room Size#titleRoom8"
+    "key": "Room Size#Cards#Small#subtitle"
   },
   {
     "en-us": "Small Room",
     "de": "Kleiner Raum",
     "es-ES": "Sala pequeña",
     "es-MX": "Sala pequeña",
-    "key": "Room Size#nameRoom8"
+    "key": "Room Size#Cards#Small#title"
   },
   {
     "en-us": "Up to 12",
     "de": "Bis zu 12",
     "es-ES": "Hasta 12",
     "es-MX": "Hasta 12",
-    "key": "Room Size#titleRoom12"
+    "key": "Room Size#Cards#Medium#subtitle"
   },
   {
     "en-us": "Medium Room",
     "de": "Mittelgroßer Raum",
     "es-ES": "Sala mediana",
     "es-MX": "Sala mediana",
-    "key": "Room Size#nameRoom12"
+    "key": "Room Size#Cards#Medium#title"
   },
   {
     "en-us": "Up to 20",
     "de": "Bis zu 20",
     "es-ES": "Hasta 20",
     "es-MX": "Hasta 20",
-    "key": "Room Size#titleRoom20"
+    "key": "Room Size#Cards#Large#subtitle"
   },
   {
     "en-us": "Large Room",
     "de": "Großer Raum",
     "es-ES": "Sala grande",
     "es-MX": "Sala grande",
-    "key": "Room Size#nameRoom20"
+    "key": "Room Size#Cards#Large#title"
   },
   {
     "en-us": "More than  20",
     "de": "Mehr als 20",
     "es-ES": "Más de 20",
     "es-MX": "Más de 20",
-    "key": "Room Size#titleRoomMore20"
+    "key": "Room Size#Cards#Auditorium#subtitle"
   },
   {
     "en-us": "Alternative",
     "de": "Alternative",
     "es-ES": "Alternativa",
     "es-MX": "Alternativa",
-    "key": "Room Size#nameRoomMore20"
+    "key": "Room Size#Cards#Auditorium#title"
   },
   {
     "en-us": "What is your primary video conferencing platform?",
@@ -172,21 +172,21 @@
     "de": "Google Meet",
     "es-ES": "Google Meet",
     "es-MX": "Google Meet",
-    "key": "Platform#GoogleMeet"
+    "key": "Platform#Cards#Google Meet"
   },
   {
     "en-us": "Microsoft Teams",
     "de": "Microsoft Teams",
     "es-ES": "Microsoft Teams",
     "es-MX": "Microsoft Teams",
-    "key": "Platform#MicrosoftTeams"
+    "key": "Platform#Cards#Microsoft Teams"
   },
   {
     "en-us": "Zoom",
     "de": "Zoom",
     "es-ES": "Zoom",
     "es-MX": "Zoom",
-    "key": "Platform#Zoom"
+    "key": "Platform#Cards#Zoom"
   },
   {
     "en-us": "Looking for another solution?",
@@ -200,7 +200,7 @@
     "de": "Wählen Sie ein Setup zur Verwendung eigener Geräte (BYOD).",
     "es-ES": "Elija el modo de dispositivo propio.",
     "es-MX": "Elige una configuración de “Trae tu propio dispositivo”.",
-    "key": "Platform#AditionCard#0#title"
+    "key": "Platform#Cards#AditionCard#0#title"
   },
   {
     "en-us": "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
@@ -214,28 +214,28 @@
     "de": "Appliance-basiert",
     "es-ES": "Basada en aparatos",
     "es-MX": "Basado en dispositivos",
-    "key": "LoremServices#CardAplication#title"
+    "key": "Services#Cards#Appliance#title"
   },
   {
     "en-us": "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
     "de": "Ein vorkonfiguriertes Videokonferenzsystem mit integrierten Computerfunktionen. Kein externer PC erforderlich.",
     "es-ES": "Un sistema de videoconferencia preconfigurado con prestaciones informáticas integradas, sin necesidad de un PC externo.",
     "es-MX": "Un sistema de videoconferencia preconfigurado con capacidades informáticas integradas, sin necesidad de utilizar un PC externo.",
-    "key": "LoremServices#CardAplication#descriptions"
+    "key": "Services#Cards#Appliance#descriptions"
   },
   {
     "en-us": "PC-Based",
     "de": "PC-basiert",
     "es-ES": "Basado en PC",
     "es-MX": "Basado en PC",
-    "key": "LoremServices#CardPCBased#title"
+    "key": "Services#Cards#PC based#title"
   },
   {
     "en-us": "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
     "de": "Plug-and-Play mit einem beliebigen PC, Mac oder einer beliebigen Chromebox über USB, um Ihre Raumlösung zu komplettieren.",
     "es-ES": "Plug and Play con cualquier PC, Mac o Chromebox a través de USB para completar su solución para salas de reunión.",
     "es-MX": "Plug and Play con cualquier PC, Mac o Chromebox mediante USB para completar tu solución para salas de reuniones.",
-    "key": "LoremServices#CardPCBased#descriptions"
+    "key": "Services#Cards#PC based#descriptions"
   },
   {
     "en-us": "Choose your conferencing camera(s).",
@@ -333,56 +333,56 @@
     "de": "STANDARDDIENSTE",
     "es-ES": "SERVICIOS BÁSICOS",
     "es-MX": "SERVICIOS BÁSICOS",
-    "key": "SoftwareServices#Logitech Sync#title"
+    "key": "Software & Services#Cards#Logitech Sync#title"
   },
   {
     "en-us": "Global, business-hours support and 2-year standard warranty, as well as software to better manage and maintain your deployment.",
     "de": "Weltweiter Support während der Geschäftszeiten und zwei Jahre Standardgarantie sowie Software zur besseren Verwaltung und Wartung Ihrer Installation.",
     "es-ES": "Asistencia global en horario laboral y garantía estándar de 2 años, así como software para gestionar y mantener mejor su implementación.",
     "es-MX": "Asistencia global en horario laboral y garantía estándar de 2 años, así como software para administrar y mantener mejor su implementación.",
-    "key": "SoftwareServices#Logitech Sync#description"
+    "key": "Software & Services#Cards#Logitech Sync#description"
   },
   {
     "en-us": "EXTENDED WARRANTY",
     "de": "GARANTIEVERLÄNGERUNG",
     "es-ES": "GARANTÍA AMPLIADA",
     "es-MX": "GARANTÍA AMPLIADA",
-    "key": "SoftwareServices#Logitech Extended Warranty#title"
+    "key": "Software & Services#Cards#Logitech Extended Warranty#title"
   },
   {
     "en-us": "Add up to 3 years of warranty to extend coverage and support for your devices.",
     "de": "Verlängern Sie die Garantie auf bis zu 3 Jahre, um die Abdeckung und den Support für Ihre Geräte zu verlängern.",
     "es-ES": "Añada hasta 3 años de garantía para ampliar la cobertura y la asistencia para sus dispositivos.",
     "es-MX": "Agrega hasta 3 años de garantía para ampliar la cobertura y la asistencia para tus dispositivos.",
-    "key": "SoftwareServices#Logitech Extended Warranty#description"
+    "key": "Software & Services#Cards#Logitech Extended Warranty#description"
   },
   {
     "en-us": "SELECT SERVICE PLAN",
     "de": "SERVICE-PLAN WÄHLEN",
     "es-ES": "PLAN DE SERVICIO SELECT",
     "es-MX": "SELECCIONA EL PLAN DE SERVICIO",
-    "key": "SoftwareServices#Support Service#title"
+    "key": "Software & Services#Cards#Support Service#title"
   },
   {
     "en-us": "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
     "de": "Umfassender Support rund um die Uhr, erweiterter Produktaustausch sowie proaktive Software und Erkenntnisse, um die Geschäftskontinuität sicherzustellen.",
     "es-ES": "Asistencia integral 24 horas al día, 7 días a la semana, sustituciones avanzadas de productos y software e información proactiva para asegurar la continuidad del negocio.",
     "es-MX": "Asistencia integral 24 horas al día, los 7 días de la semana, reemplazos avanzados de productos y software e información proactiva para garantizar la continuidad del negocio.",
-    "key": "SoftwareServices#Support Service#description"
+    "key": "Software & Services#Cards#Support Service#description"
   },
   {
     "en-us": "What are your hours of support?",
     "de": "Wie sind Ihre Geschäftszeiten für den Support?",
     "es-ES": "¿Cuál es el horario de asistencia?",
     "es-MX": "¿Cuál es tu horario de asistencia?",
-    "key": "QuestionForm#0#question"
+    "key": "Software & Services#QuestionForm#0#question"
   },
   {
     "en-us": "Business Hours",
     "de": "Geschäftszeiten",
     "es-ES": "Horario laboral",
     "es-MX": "Horario comercial",
-    "key": "QuestionForm#0#option_1"
+    "key": "Software & Services#QuestionForm#0#option_1"
   },
   {
     "en-us": "Basic, Extended Warranty",
@@ -396,7 +396,7 @@
     "de": "24/7",
     "es-ES": "24/7",
     "es-MX": "24/7",
-    "key": "QuestionForm#0#option_2"
+    "key": "Software & Services#QuestionForm#0#option_2"
   },
   {
     "en-us": "Select",
@@ -410,14 +410,14 @@
     "de": "Wie lange brauchen Sie für die Reparatur von Konferenzräumen?",
     "es-ES": "¿Cuál es el tiempo de reparación de las salas de reuniones?",
     "es-MX": "¿Cuál es tu tiempo de reparación de las salas de reuniones?",
-    "key": "QuestionForm#1#question"
+    "key": "Software & Services#QuestionForm#1#question"
   },
   {
     "en-us": "Within 1 week",
     "de": "Innerhalb 1 Woche",
     "es-ES": "En 1 semana",
     "es-MX": "En el transcurso de 1 semana",
-    "key": "QuestionForm#1#option_1"
+    "key": "Software & Services#QuestionForm#1#option_1"
   },
   {
     "en-us": "Basic, Extended Warranty",
@@ -431,7 +431,7 @@
     "de": "Innerhalb 1 Stunde",
     "es-ES": "En 1 hora",
     "es-MX": "En el transcurso de 1 hora",
-    "key": "QuestionForm#1#option_2"
+    "key": "Software & Services#QuestionForm#1#option_2"
   },
   {
     "en-us": "Select",
@@ -445,14 +445,14 @@
     "de": "Wie sieht der typische Lebenszyklus von Hardware für Konferenzräume aus?",
     "es-ES": "¿Cuál es el ciclo de vida habitual del hardware de las salas de reuniones?",
     "es-MX": "¿Cuál es el ciclo de vida habitual del hardware en las salas de reuniones?",
-    "key": "QuestionForm#2#question"
+    "key": "Software & Services#QuestionForm#2#question"
   },
   {
     "en-us": "Less than 2 years",
     "de": "Weniger als 2 Jahre",
     "es-ES": "Menos de 2 años",
     "es-MX": "Menos de 2 años",
-    "key": "QuestionForm#2#option_1"
+    "key": "Software & Services#QuestionForm#2#option_1"
   },
   {
     "en-us": "Basic",
@@ -466,7 +466,7 @@
     "de": "2-5 Jahre",
     "es-ES": "De 2 a 5 años",
     "es-MX": "2-5 años",
-    "key": "QuestionForm#2#option_2"
+    "key": "Software & Services#QuestionForm#2#option_2"
   },
   {
     "en-us": "Extended Warranty",
@@ -480,7 +480,7 @@
     "de": "5 Jahre oder mehr",
     "es-ES": "5 años o más",
     "es-MX": "5 años o más",
-    "key": "QuestionForm#2#option_3"
+    "key": "Software & Services#QuestionForm#2#option_3"
   },
   {
     "en-us": "Select",
@@ -494,14 +494,14 @@
     "de": "Welchen Support-Service benötigen Sie, um sicherzustellen, dass Ihre Konferenzräume immer betriebsbereit sind?",
     "es-ES": "¿Qué servicio de asistencia necesita para asegurarse de que sus salas de reunión estén siempre en funcionamiento?",
     "es-MX": "¿Qué servicio de asistencia necesitas para garantizar que tus salas de reunión estén siempre en funcionamiento?",
-    "key": "QuestionForm#3#question"
+    "key": "Software & Services#QuestionForm#3#question"
   },
   {
     "en-us": "Tech support when I need it",
     "de": "Technischer Support, wenn ich ihn brauche",
     "es-ES": "Asistencia técnica cuando la necesito",
     "es-MX": "Asistencia técnica cuando la necesito",
-    "key": "QuestionForm#3#option_1"
+    "key": "Software & Services#QuestionForm#3#option_1"
   },
   {
     "en-us": "Basic, Extended Warranty",
@@ -515,7 +515,7 @@
     "de": "Spezielle, zusätzliche Service- und Supportleistungen",
     "es-ES": "Servicio y asistencia adicionales y específicos",
     "es-MX": "Servicio y asistencia adicionales y dedicados",
-    "key": "QuestionForm#3#option_2"
+    "key": "Software & Services#QuestionForm#3#option_2"
   },
   {
     "en-us": "Select",
@@ -529,21 +529,21 @@
     "de": "ZEIGEN SIE MIR DAS KOMPLETTE SETUP",
     "es-ES": "VER EL EQUIPO COMPLETO",
     "es-MX": "MUÉSTRAME LA CONFIGURACIÓN COMPLETA",
-    "key": "ModalFinish#title"
+    "key": "SetupModal#title"
   },
   {
     "en-us": "All finished! Complete the form below to view your project summary page, including guidance on next steps and a detailed shopping guide that you can download and share. ",
     "de": "Alles fertig! Füllen Sie das nachstehende Formular aus, um die Projekt-Übersichtsseite für Ihr Projekt aufzurufen. Dort finden Sie Hinweise zu den nächsten Schritten und einen detaillierten Einkaufsführer, den Sie herunterladen und weiterleiten können.",
     "es-ES": "¡Listo! Rellene el siguiente formulario para ver la página de resumen de su proyecto, que incluye orientación sobre los próximos pasos y una guía de compras detallada que puede descargar y compartir.",
     "es-MX": "¡Todo listo! Completa el siguiente formulario para ver la página de resumen de tu proyecto, incluida orientación sobre los pasos siguientes y una guía de compras detallada que podrás descargar y compartir.",
-    "key": "ModalFinish#subtitle"
+    "key": "SetupModal#subtitle"
   },
   {
     "en-us": "See my results",
     "de": "Meine Ergebnisse anzeigen",
     "es-ES": "Ver mis resultados",
     "es-MX": "Ver mis resultados",
-    "key": "ModalFinish#btn_done"
+    "key": "SetupModal#btn_done"
   },
   {
     "en-us": "Project Summary Page",

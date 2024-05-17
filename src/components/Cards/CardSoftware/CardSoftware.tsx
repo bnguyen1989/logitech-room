@@ -12,6 +12,7 @@ import {
   getIsSelectedCardByKeyPermission,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
+import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 interface PropsI {
   keyItemPermission: string;
@@ -26,6 +27,9 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   const threekitAsset = useAppSelector(getAssetFromCard(card));
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const description = useAppSelector(
+    getPrepareDescriptionLangByKeyPermission(keyItemPermission)
   );
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
@@ -67,7 +71,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
               <div className={s.subtitle}>{card.subtitle}</div>
             )}
           </div>
-          <div className={s.desc}>{card.description}</div>
+          <div className={s.desc}>{description}</div>
           <div className={s.actions}>
             {!!card.select && (
               <SelectItem

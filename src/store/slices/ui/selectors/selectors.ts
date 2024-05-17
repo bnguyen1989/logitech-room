@@ -3,15 +3,18 @@ import { Permission } from "../../../../models/permission/Permission";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { MetadataI } from "../../../../services/Threekit/type";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { replaceArrValues } from "../../../../utils/strUtils";
 import { RoleUserName } from "../../../../utils/userRoleUtils";
 import { getRoleData } from "../../user/selectors/selectors";
 import { CardI, StepI } from "../type";
+import { getDataQuestionFormPartner } from "../utils";
+import { getLangProductCard } from "./selectoreLangProduct";
 import {
   getDataQuestionFormCustomer,
-  getDataQuestionFormPartner,
-  getTitleFromDataByKeyPermission,
-} from "../utils";
-import { getLangProductCard } from "./selectoreLangProduct";
+  getPrepareCardTitleLangByKeyPermission,
+  getSubTitleStepByStepName,
+  getTitleStepByStepName,
+} from "./selectoteLangPage";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
 
@@ -261,10 +264,12 @@ export const getTitleCardByKeyPermission =
     if (langDataCard) {
       return langDataCard.ProductName;
     }
+    const titlePrepareCard =
+      getPrepareCardTitleLangByKeyPermission(keyPermission)(state);
+    if (titlePrepareCard) return titlePrepareCard;
     const title = getMetadataProductNameAssetFromCard(card)(state);
     if (title) return title;
-
-    return getTitleFromDataByKeyPermission(keyPermission);
+    return "";
   };
 
 export const getLocale = (state: RootState) => state.ui.locale;
@@ -350,6 +355,11 @@ export const getCorrectStepDataByPermission =
       ...correctDataCards,
     };
 
+    const title = getTitleStepByStepName(stepName)(state);
+    copyDataStep.title = title;
+    const subtitle = getSubTitleStepByStepName(stepName)(state);
+    copyDataStep.subtitle = subtitle;
+
     return copyDataStep;
   };
 
@@ -367,12 +377,14 @@ export const getFormattingSubtitleByState =
       (card: { key: string }) => card.key === StepName.Services
     );
 
+    const arrValues: string[] = [];
+
     if (roomSizeCard) {
       const roomSizeTile = getTitleCardByKeyPermission(
         StepName.RoomSize,
         roomSizeCard.keyPermission
       )(state);
-      text = text.replace("{0}", getName(roomSizeTile));
+      arrValues.push(getName(roomSizeTile));
     }
 
     if (platformCard) {
@@ -380,7 +392,7 @@ export const getFormattingSubtitleByState =
         StepName.Platform,
         platformCard.keyPermission
       )(state);
-      text = text.replace("{1}", getName(platformTile));
+      arrValues.push(getName(platformTile));
     }
 
     if (serviceCard) {
@@ -388,8 +400,10 @@ export const getFormattingSubtitleByState =
         StepName.Services,
         serviceCard.keyPermission
       )(state);
-      text = text.replace("{2}", getName(serviceTile));
+      arrValues.push(getName(serviceTile));
     }
+
+    text = replaceArrValues(text, arrValues);
 
     return text;
   };
@@ -497,7 +511,7 @@ export const getProductNameFromMetadata = (metadata: MetadataI) => {
 export const getDataQuestionsForm = (state: RootState) => {
   const userRoleData = getRoleData(state);
   if (userRoleData.name === RoleUserName.CUSTOMER) {
-    return getDataQuestionFormCustomer();
+    return getDataQuestionFormCustomer(state);
   }
 
   if (userRoleData.name === RoleUserName.PARTNER) {
