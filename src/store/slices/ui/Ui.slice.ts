@@ -9,16 +9,22 @@ interface UIStateI {
   stepData: StepDataI;
   activeStep: StepName;
   selectedData: SelectedDataI;
-  langTextProduct: Record<string, any>;
+  langText: {
+    pages: Record<string, any>;
+    products: Record<string, any>;
+  };
 }
 
 const initialState: UIStateI = {
   locale: "en-us",
   processInitData: false,
-  langTextProduct: {},
   stepData: getInitStepData(),
   activeStep: StepName.Services,
   selectedData: {},
+  langText: {
+    pages: {},
+    products: {},
+  },
 };
 
 const uiSlice = createSlice({
@@ -29,7 +35,7 @@ const uiSlice = createSlice({
       state.activeStep = action.payload;
     },
     setLangText: (state, action) => {
-      state.langTextProduct = action.payload;
+      state.langText = action.payload;
     },
     moveToStartStep: (state) => {
       state.activeStep = StepName.RoomSize;
@@ -211,6 +217,9 @@ const uiSlice = createSlice({
     changeProcessInitData: (state, action: PayloadAction<boolean>) => {
       state.processInitData = action.payload;
     },
+    updateLocale: (state, action: PayloadAction<string>) => {
+      state.locale = action.payload;
+    },
   },
 });
 
@@ -229,5 +238,6 @@ export const {
   removeActiveCards,
   addActiveCards,
   clearAllActiveCardsSteps,
+  updateLocale,
 } = uiSlice.actions;
 export default uiSlice.reducer;

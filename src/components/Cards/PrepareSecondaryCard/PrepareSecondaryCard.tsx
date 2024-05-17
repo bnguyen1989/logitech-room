@@ -4,6 +4,7 @@ import {
   getCardByKeyPermission,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
+import { getPrepareSubTitleLangByKeyPermission } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { PrepareCardContainer } from "../PrepareCardContainer/PrepareCardContainer";
 import s from "./PrepareSecondaryCard.module.scss";
 
@@ -19,6 +20,9 @@ export const PrepareSecondaryCard: React.FC<PropsI> = (props) => {
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const subtitle = useAppSelector(
+    getPrepareSubTitleLangByKeyPermission(keyItemPermission)
+  );
 
   return (
     <PrepareCardContainer keyItemPermission={keyItemPermission}>
@@ -30,7 +34,7 @@ export const PrepareSecondaryCard: React.FC<PropsI> = (props) => {
         </div>
         <div className={s.right_content}>
           <div className={s.title}>{title}</div>
-          <div className={s.subtitle}>{card.subtitle}</div>
+          <div className={s.subtitle}>{subtitle}</div>
         </div>
       </div>
     </PrepareCardContainer>

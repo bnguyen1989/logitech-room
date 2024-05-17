@@ -4,8 +4,13 @@
   font-family: var(--font-family);
 }
 
+.loader {
+  height: 100vh;
+}
+
 @media (max-width: 1000px) {
-  .app {
+  .app,
+  .loader {
     height: calc(var(--vh, 1vh) * 100);
   }
 }
