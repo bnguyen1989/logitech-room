@@ -1,7 +1,6 @@
 import React from "react";
 import s from "./GetStarted.module.scss";
 import { Button } from "../../components/Buttons/Button/Button";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeRoleUser } from "../../store/slices/user/User.slice";
 import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
@@ -13,13 +12,14 @@ import {
 } from "../../models/analytics/type";
 import { getGetStartedLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
 import { useAppSelector } from "../../hooks/redux";
+import { useUrl } from "../../hooks/url";
 
 declare const app: Application;
 
 export const GetStarted: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const langPage = useAppSelector(getGetStartedLangPage);
+  const { handleNavigate } = useUrl();
 
   const sendAnalytics = () => {
     app.analyticsEvent({
@@ -33,14 +33,14 @@ export const GetStarted: React.FC = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
     );
-    navigate("/configurator", { replace: true });
+    handleNavigate("/configurator");
     sendAnalytics();
   };
   const handlePartnerClick = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER).getData() })
     );
-    navigate("/configurator", { replace: true });
+    handleNavigate("/configurator");
     sendAnalytics();
   };
 

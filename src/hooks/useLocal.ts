@@ -11,6 +11,8 @@ export const useLocale = () => {
   const localParam = searchParams.get("locale");
   const locale = useAppSelector(getLocale);
 
+	console.log("localParam", searchParams.get("locale"));
+	
   useEffect(() => {
     if (!localParam) {
       dispatch(updateLocale("en-us"));
