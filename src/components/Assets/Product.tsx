@@ -6,12 +6,17 @@ import { ProductsNodes } from "./ProductsNodes.js";
 import { GLTFNode } from "./GLTFNode.js";
 import { Select } from "@react-three/postprocessing";
 import { useEffect } from "react";
+import { useAppSelector } from "../../hooks/redux.js";
+import { getKeyPermissionFromNameNode } from "../../store/slices/configurator/selectors/selectors.js";
+import { AnnotationProductContainer } from "../Annotation/AnnotationProduct/AnnotationContainer.js";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
   productAssetId: string;
   highlight?: boolean;
   callbackDisableHighlight: () => void;
+  callbackOnHighlight: () => void;
+  nameNode: string;
 };
 
 export const Product: React.FC<ProductProps> = ({
@@ -19,9 +24,16 @@ export const Product: React.FC<ProductProps> = ({
   productAssetId,
   highlight = false,
   callbackDisableHighlight = () => {},
+  callbackOnHighlight = () => {},
+  nameNode,
 }) => {
   const dispatch = useDispatch();
   const productGltf = useAsset({ assetId: productAssetId });
+  const keyPermission = useAppSelector(getKeyPermissionFromNameNode(nameNode));
+
+  const sizeProduct = new THREE.Box3()
+    .setFromObject(productGltf.scene.clone())
+    .getSize(new THREE.Vector3());
 
   dispatch(changeStatusProcessing(false));
 
@@ -41,7 +53,14 @@ export const Product: React.FC<ProductProps> = ({
       scale={parentNode.scale}
       rotation={parentNode.rotation}
     >
-      <Select enabled={highlight}>
+      <Select enabled={highlight} onClick={callbackOnHighlight}>
+        {highlight && keyPermission !== undefined && (
+          <AnnotationProductContainer
+            keyPermission={keyPermission}
+            position={[0, sizeProduct.y + 0.4, 0]}
+          />
+        )}
+
         <GLTFNode
           threeNode={productGltf.scene.clone()}
           nodeMatchers={ProductsNodes()}

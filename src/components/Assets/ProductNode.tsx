@@ -7,7 +7,7 @@ import {
 import { Product } from "./Product";
 import * as THREE from "three";
 import { useDispatch } from "react-redux";
-import { disabledHighlightNode } from "../../store/slices/configurator/Configurator.slice";
+import { disabledHighlightNode, setHighlightNodes } from "../../store/slices/configurator/Configurator.slice";
 
 type ProductProps = {
   nameNode: string;
@@ -27,6 +27,10 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
     dispatch(disabledHighlightNode(nameNode));
   };
 
+  const callbackOnHighlight = () => {
+    dispatch(setHighlightNodes({ [nameNode]: true } ));
+  };
+
   if (!Object.keys(attachNodeNameToAssetId).includes(nameNode))
     return undefined;
 
@@ -36,6 +40,8 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
       productAssetId={attachNodeNameToAssetId[nameNode]}
       highlight={isHighlightNode}
       callbackDisableHighlight={callbackDisableHighlight}
+      callbackOnHighlight={callbackOnHighlight}
+      nameNode={nameNode}
     />
   );
 };

@@ -1,4 +1,7 @@
 import { RootState } from "../../../";
+import { ItemElement } from "../../../../models/permission/elements/ItemElement";
+import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
+import { getActiveStep, getCardByKeyPermission, getPermission } from "../../ui/selectors/selectors";
 
 export const getIsBuilding = (state: RootState) =>
   state.configurator.isBuilding;
@@ -32,3 +35,38 @@ export const getIsHighlightNode = (nameNode: string) => (state: RootState) => {
     return value;
   });
 };
+
+export const getKeyPermissionFromNameNode =
+  (nameNode: string) => (state: RootState) => {
+    let keyPermission: string | undefined = undefined;
+    const activeStep = getActiveStep(state);
+    const permission = getPermission(activeStep)(state);
+    const step = permission.getCurrentStep();
+    step.getActiveElements().forEach((element) => {
+      if (element instanceof MountElement) {
+        const nodeName = element.getNameNode();
+        if (nodeName === nameNode) {
+          const itemElement = step.getActiveItemElementByMountName(
+            element.name
+          );
+          if (itemElement instanceof ItemElement) {
+            const card = getCardByKeyPermission(
+              activeStep,
+              itemElement.name
+            )(state);
+            keyPermission = card.keyPermission;
+          }
+        }
+      } else if (element instanceof ItemElement) {
+        const defaultMount = element.getDefaultMount();
+        if (!(defaultMount instanceof MountElement)) return;
+        const nodeName = defaultMount.getNameNode();
+
+        if (nodeName === nameNode) {
+          const card = getCardByKeyPermission(activeStep, element.name)(state);
+          keyPermission = card.keyPermission;
+        }
+      }
+    });
+    return keyPermission;
+  };
