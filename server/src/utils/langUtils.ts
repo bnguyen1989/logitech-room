@@ -7,6 +7,9 @@ export const dataLangFile = (): void => {
     .setFolderPage("/page")
     .setFolderProduct("/product");
 
+  if (processor.isExist()) {
+    return;
+  }
 
   const filePath = path.join(__dirname, "./../dataLang/", "sheet.tsv");
   processor

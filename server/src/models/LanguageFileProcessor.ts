@@ -180,7 +180,7 @@ export class LanguageFileProcessor {
       let dataLang = languageJSON[langCode];
       if (template) {
         dataLang = this.updateJson(
-          nameFolder === "page" ? this.templatePage : this.templateProduct,
+          template,
           dataLang
         );
       }
