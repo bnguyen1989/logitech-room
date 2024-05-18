@@ -112,8 +112,12 @@ export const getLangStepDataByStepName =
         return getMeetingControllerLangPage(state);
       case StepName.VideoAccessories:
         return getVideoAccessoriesLangPage(state);
-      case StepName.SoftwareServices:
-        return getSoftwareServicesLangPage(state);
+      case StepName.SoftwareServices: {
+        const data = {...getSoftwareServicesLangPage(state)};
+        const title = data.title.replace("Finish up", "Finish");
+        data.title = title;
+        return data;
+      }
       default:
         throw new Error("Step not found");
     }
