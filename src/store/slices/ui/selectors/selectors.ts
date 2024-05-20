@@ -4,13 +4,9 @@ import { MountElement } from "../../../../models/permission/elements/mounts/Moun
 import { MetadataI } from "../../../../services/Threekit/type";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
 import { replaceArrValues } from "../../../../utils/strUtils";
-import { RoleUserName } from "../../../../utils/userRoleUtils";
-import { getRoleData } from "../../user/selectors/selectors";
 import { CardI, StepI } from "../type";
-import { getDataQuestionFormPartner } from "../utils";
 import { getLangProductCard } from "./selectoreLangProduct";
 import {
-  getDataQuestionFormCustomer,
   getPrepareCardTitleLangByKeyPermission,
   getSubTitleStepByStepName,
   getTitleStepByStepName,
@@ -506,17 +502,4 @@ const getIsRecommendedCardFromMetadata = (metadata: Record<string, string>) => {
 
 export const getProductNameFromMetadata = (metadata: MetadataI) => {
   return metadata["Product Name"]?.trim();
-};
-
-export const getDataQuestionsForm = (state: RootState) => {
-  const userRoleData = getRoleData(state);
-  if (userRoleData.name === RoleUserName.CUSTOMER) {
-    return getDataQuestionFormCustomer(state);
-  }
-
-  if (userRoleData.name === RoleUserName.PARTNER) {
-    return getDataQuestionFormPartner();
-  }
-
-  return [];
 };

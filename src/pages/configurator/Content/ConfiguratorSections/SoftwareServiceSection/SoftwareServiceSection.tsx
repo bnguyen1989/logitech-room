@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowSelectDownSVG } from "../../../../../assets";
 import { IconButton } from "../../../../../components/Buttons/IconButton/IconButton";
 import { CardSoftware } from "../../../../../components/Cards/CardSoftware/CardSoftware";
@@ -7,10 +7,12 @@ import { CardI, QuestionFormI } from "../../../../../store/slices/ui/type";
 import s from "./SoftwareServiceSection.module.scss";
 import { getExpressionArrayForQuestionForm } from "../../../../../store/slices/ui/utils";
 import { SoftwareServicesName } from "../../../../../utils/permissionUtils";
-import { StepName } from "../../../../../utils/baseUtils";
+import { FormName, StepName } from "../../../../../utils/baseUtils";
 import { useAppSelector } from "../../../../../hooks/redux";
-import { getDataQuestionsForm } from "../../../../../store/slices/ui/selectors/selectors";
 import { getSoftwareServicesLangPage } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
+import { useDispatch } from "react-redux";
+import { updateDataForm } from "../../../../../store/slices/ui/Ui.slice";
+import { getDataSoftwareQuestionsForm } from "../../../../../store/slices/ui/selectors/selectorsForm";
 
 interface ExpressionI {
   questionIndex: number;
@@ -22,19 +24,34 @@ interface PropsI {
 }
 export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   const { cards } = props;
+  const dispatch = useDispatch();
   const formAnchorRef = useRef<HTMLDivElement>(null);
-  const [isSubmitForm, setIsSubmitForm] = useState<boolean>(false);
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
   );
   const langPage = useAppSelector(getSoftwareServicesLangPage);
 
-  const dataQuestionForm = useAppSelector(getDataQuestionsForm);
+  const dataQuestionForm = useAppSelector(getDataSoftwareQuestionsForm);
+
+  const setStatusForm = (value: boolean) => {
+    dispatch(
+      updateDataForm({
+        key: FormName.QuestionFormSoftware,
+        value: {
+          isSubmit: value,
+        },
+      })
+    );
+  };
+
+  useEffect(() => {
+    return () => setStatusForm(false);
+  }, []);
 
   const submitFormData = (data: Array<QuestionFormI>) => {
     const { select, basic, extendedWarranty } =
       getExpressionArrayForQuestionForm();
-    setIsSubmitForm(true);
+    setStatusForm(true);
     const dataKeys = [
       SoftwareServicesName.LogitechSync,
       SoftwareServicesName.SupportService,
@@ -97,8 +114,8 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   };
   return (
     <div className={s.container}>
-      <div className={s.button_link}>
-        {!isSubmitForm ? (
+      {!dataQuestionForm.isSubmit ? (
+        <div className={s.button_link}>
           <div className={s.actions}>
             <IconButton
               text={langPage.helpButton}
@@ -108,18 +125,18 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
               <ArrowSelectDownSVG />
             </IconButton>
           </div>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
       <div className={s.wrapper_cards}>
         <div className={s.cards}>
           {cards.map((card, index) => getCardComponent(card, index))}
         </div>
       </div>
 
-      {!isSubmitForm ? (
+      {!dataQuestionForm.isSubmit ? (
         <div className={s.form} ref={formAnchorRef}>
           <QuestionForm
-            baseData={dataQuestionForm}
+            baseData={dataQuestionForm.data}
             submitData={submitFormData}
           />
         </div>

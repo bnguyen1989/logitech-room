@@ -4,7 +4,7 @@ import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from "react-redux";
 import { changeRoleUser } from "../../store/slices/user/User.slice";
 import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
-import { getImageUrl } from "../../utils/browserUtils";
+import { copyToClipboard, getImageUrl } from "../../utils/browserUtils";
 import { Application } from "../../models/Application";
 import {
   EventActionName,
@@ -13,6 +13,8 @@ import {
 import { getGetStartedLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
 import { useAppSelector } from "../../hooks/redux";
 import { useUrl } from "../../hooks/url";
+import { IconButton } from "../../components/Buttons/IconButton/IconButton";
+import { CopyMarkSVG } from "../../assets";
 
 declare const app: Application;
 
@@ -44,6 +46,11 @@ export const GetStarted: React.FC = () => {
     sendAnalytics();
   };
 
+  const handleCopyUrl = () => {
+    const url = window.location.href;
+    copyToClipboard(url);
+  };
+
   return (
     <div className={s.container}>
       <div className={s.image}>
@@ -51,8 +58,10 @@ export const GetStarted: React.FC = () => {
       </div>
 
       <div className={s.content}>
-        <div className={s.header_title}>{langPage.subtitle}</div>
-        <div className={s.title}>{langPage.title}</div>
+        <div className={s.text}>
+          <div className={s.header_title}>{langPage.subtitle}</div>
+          <div className={s.title}>{langPage.title}</div>
+        </div>
 
         <div className={s.description}>
           <div className={s.block}>
@@ -79,6 +88,19 @@ export const GetStarted: React.FC = () => {
               onClick={handlePartnerClick}
             />
           </div>
+        </div>
+
+        <div className={s.mobile_link}>
+          <div className={s.link_title}>
+            This experience is optimized for desktop
+          </div>
+          <IconButton
+            onClick={handleCopyUrl}
+            text={"COPY URL"}
+            position={"left"}
+          >
+            <CopyMarkSVG />
+          </IconButton>
         </div>
       </div>
     </div>

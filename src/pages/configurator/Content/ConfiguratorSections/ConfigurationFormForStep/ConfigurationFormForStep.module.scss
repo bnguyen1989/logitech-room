@@ -22,10 +22,16 @@
     flex-direction: row;
     align-items: center;
     align-items: stretch;
-    padding: 20px;
+    padding: 20px 40px;
     overflow-y: auto;
     overflow-x: auto;
     height: calc(100% - 40px);
     gap: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .form {
+    padding: 20px 30px;
   }
 }
