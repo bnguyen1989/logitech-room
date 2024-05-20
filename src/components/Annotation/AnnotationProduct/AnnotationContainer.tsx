@@ -1,6 +1,5 @@
 import { useAppSelector } from "../../../hooks/redux";
 import {
-  getActiveStep,
   getCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
   getTitleCardByKeyPermission,
@@ -10,26 +9,31 @@ import { Html } from "@react-three/drei";
 import { AnnotationProduct } from "./AnnotationProduct";
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
+import { StepName } from "../../../utils/baseUtils";
+import { useEffect, useRef } from "react";
 
 interface AnnotationProductPropsI {
+  stepPermission: StepName;
   keyPermission: string;
-  position: [number, number, number]
+  position: [number, number, number],
+  callbackDisableHighlight: () => void;
 }
 
 export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
   props: AnnotationProductPropsI
 ) => {
-  const { keyPermission, position } = props;
+  const { stepPermission, keyPermission, position, callbackDisableHighlight } = props;
+  const htmlRef = useRef<HTMLDivElement>(null);
+  console.log("props --- ==== ", props);
   const dispatch = useDispatch();
-  const activeStep = useAppSelector(getActiveStep);
   const title = useAppSelector(
-    getTitleCardByKeyPermission(activeStep, keyPermission)
+    getTitleCardByKeyPermission(stepPermission, keyPermission)
   );
   const card = useAppSelector(
-    getCardByKeyPermission(activeStep, keyPermission)
+    getCardByKeyPermission(stepPermission, keyPermission)
   );
   const colorValue = useAppSelector(
-    getPropertyColorCardByKeyPermission(activeStep, keyPermission)
+    getPropertyColorCardByKeyPermission(stepPermission, keyPermission)
   );
   const productName = useAppSelector(getMetadataProductNameAssetFromCard(card));
 
@@ -44,6 +48,22 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
     );
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (htmlRef.current && !htmlRef.current.contains(event.target as Node)) {
+      console.log(" ---- ==== Clicked outside of annotation");
+      // Додайте тут обробку кліків поза межами компонента Html
+      callbackDisableHighlight();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+
   if (keyPermission === undefined) return null;
 
   return (
@@ -51,6 +71,7 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
       distanceFactor={40}
       center
       position={position}
+      ref={htmlRef} // Прив'язуємо посилання до компонента Html
     >
       <AnnotationProduct annotationText={`${title} - ${colorValue}`} onHandleInfo={handleInfo} />
     </Html>

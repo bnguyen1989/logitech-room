@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useAppSelector } from "../../hooks/redux.js";
 import { getKeyPermissionFromNameNode } from "../../store/slices/configurator/selectors/selectors.js";
 import { AnnotationProductContainer } from "../Annotation/AnnotationProduct/AnnotationContainer.js";
+import { StepName } from "../../utils/baseUtils.js";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
@@ -29,7 +30,7 @@ export const Product: React.FC<ProductProps> = ({
 }) => {
   const dispatch = useDispatch();
   const productGltf = useAsset({ assetId: productAssetId });
-  const keyPermission = useAppSelector(getKeyPermissionFromNameNode(nameNode));
+  const keyPermissionObj = useAppSelector(getKeyPermissionFromNameNode(nameNode));
 
   const sizeProduct = new THREE.Box3()
     .setFromObject(productGltf.scene.clone())
@@ -54,10 +55,12 @@ export const Product: React.FC<ProductProps> = ({
       rotation={parentNode.rotation}
     >
       <Select enabled={highlight} onClick={callbackOnHighlight}>
-        {highlight && keyPermission !== undefined && (
+        {highlight && keyPermissionObj !== undefined && Object.keys(keyPermissionObj).length > 0 && (
           <AnnotationProductContainer
-            keyPermission={keyPermission}
+            stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
+            keyPermission={Object.values(keyPermissionObj)[0]}
             position={[0, sizeProduct.y + 0.4, 0]}
+            callbackDisableHighlight={callbackDisableHighlight}
           />
         )}
 
