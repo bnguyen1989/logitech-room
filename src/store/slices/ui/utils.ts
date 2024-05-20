@@ -1,4 +1,4 @@
-import { CardI, QuestionFormI, StepDataI } from "./type";
+import { CardI, FormI, QuestionFormI, StepDataI } from "./type";
 import {
   CameraName,
   MeetingControllerName,
@@ -7,7 +7,7 @@ import {
   ServiceName,
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
-import { ColorName, StepName } from "../../../utils/baseUtils";
+import { ColorName, FormName, StepName } from "../../../utils/baseUtils";
 import { getImageUrl } from "../../../utils/browserUtils";
 
 export enum UI_ACTION_NAME {
@@ -22,6 +22,14 @@ export enum CUSTOM_UI_ACTION_NAME {
   CHANGE_COUNT_ITEM = "CUSTOM/CHANGE_COUNT_ITEM",
   CHANGE_COLOR_ITEM = "CUSTOM/CHANGE_COLOR_ITEM",
   CREATE_ORDER = "CUSTOM/CREATE_ORDER",
+}
+
+export const getFormInitData = (): FormI => {
+  return {
+    [FormName.QuestionFormSoftware]: {
+      isSubmit: false,
+    },
+  }
 }
 
 export const getInitStepData = (): StepDataI => {

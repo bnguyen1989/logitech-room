@@ -23,6 +23,7 @@ import {
   SoftwareServicesName,
 } from "../../../../utils/permissionUtils";
 import { QuestionFormI } from "../type";
+import { getDataSoftwareQuestionsForm } from "./selectorsForm";
 
 export const getAllLangPage = (state: RootState) =>
   state.ui.langText.pages as PagesI;
@@ -113,9 +114,15 @@ export const getLangStepDataByStepName =
       case StepName.VideoAccessories:
         return getVideoAccessoriesLangPage(state);
       case StepName.SoftwareServices: {
-        const data = {...getSoftwareServicesLangPage(state)};
-        const title = data.title.replace("Finish up", "Finish");
-        data.title = title;
+        const data = { ...getSoftwareServicesLangPage(state) };
+        const { isSubmit } = getDataSoftwareQuestionsForm(state);
+        if (isSubmit) {
+          data.title = "Based on your answers, we recommend:";
+        } else {
+          const title = data.title.replace("Finish up", "Finish");
+          data.title = title;
+        }
+
         return data;
       }
       default:

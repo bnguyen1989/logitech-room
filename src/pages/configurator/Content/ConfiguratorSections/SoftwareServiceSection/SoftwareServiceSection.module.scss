@@ -18,11 +18,19 @@
   .button_link {
   }
 
-  .cards {
+  .wrapper_cards {
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 60px;
+
+    .cards {
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 60px;
+    }
   }
 
   .form {

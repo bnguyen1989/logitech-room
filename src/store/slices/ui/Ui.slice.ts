@@ -1,7 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { CardI, SelectedDataI, StepDataI } from "./type";
-import { getInitStepData } from "./utils";
-import { StepName } from "../../../utils/baseUtils";
+import {
+  CardI,
+  FormDataI,
+  FormI,
+  LangTextI,
+  SelectedDataI,
+  StepDataI,
+} from "./type";
+import { getFormInitData, getInitStepData } from "./utils";
+import { FormName, StepName } from "../../../utils/baseUtils";
 
 interface UIStateI {
   locale: string;
@@ -9,10 +16,8 @@ interface UIStateI {
   stepData: StepDataI;
   activeStep: StepName;
   selectedData: SelectedDataI;
-  langText: {
-    pages: Record<string, any>;
-    products: Record<string, any>;
-  };
+  langText: LangTextI;
+  formData: FormI;
 }
 
 const initialState: UIStateI = {
@@ -25,6 +30,7 @@ const initialState: UIStateI = {
     pages: {},
     products: {},
   },
+  formData: getFormInitData(),
 };
 
 const uiSlice = createSlice({
@@ -220,6 +226,19 @@ const uiSlice = createSlice({
     updateLocale: (state, action: PayloadAction<string>) => {
       state.locale = action.payload;
     },
+    updateDataForm(
+      state,
+      action: PayloadAction<{
+        key: FormName;
+        value: Partial<FormDataI>;
+      }>
+    ) {
+      const { key, value } = action.payload;
+      state.formData[key] = {
+        ...state.formData[key],
+        ...value,
+      };
+    },
   },
 });
 
@@ -239,5 +258,6 @@ export const {
   addActiveCards,
   clearAllActiveCardsSteps,
   updateLocale,
+  updateDataForm,
 } = uiSlice.actions;
 export default uiSlice.reducer;

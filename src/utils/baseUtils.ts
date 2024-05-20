@@ -23,3 +23,7 @@ export enum ColorName {
   White = "White",
   TAA = "TAA",
 }
+
+export enum FormName {
+  QuestionFormSoftware = "QuestionFormSoftware",
+}
