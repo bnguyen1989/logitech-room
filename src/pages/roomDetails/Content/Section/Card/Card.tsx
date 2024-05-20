@@ -13,12 +13,7 @@ export const Card: React.FC<DataSectionI> = (props) => {
         </div>
       </div>
       <div className={s.right_content}>
-        <div
-          className={s.text}
-          style={{
-            width: partNumber ? "335px" : "790px",
-          }}
-        >
+        <div className={s.text}>
           <div className={s.title}>{title}</div>
           <div className={s.subtitle}>{subtitle}</div>
         </div>

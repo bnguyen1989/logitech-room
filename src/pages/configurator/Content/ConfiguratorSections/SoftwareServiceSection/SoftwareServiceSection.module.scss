@@ -40,6 +40,9 @@
 @media (max-width: 1000px) {
   .container {
     gap: 50px;
+    padding-right: 40px;
+    padding-left: 40px;
+
     .wrapper_cards {
       width: 100%;
       display: flex;
@@ -53,5 +56,12 @@
         overflow-x: auto;
       }
     }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding-right: 30px;
+    padding-left: 30px;
   }
 }

@@ -150,8 +150,7 @@
 @media (max-width: 1000px) {
   .container {
     padding: 40px 25px;
-    width: calc(100vw - 50px);
-    height: calc((var(--vh, 1vh) * 100) - 80px);
+    width: calc(100% - 50px);
 
     .header {
       display: flex;
@@ -165,6 +164,27 @@
 
       .message {
         align-items: flex-start;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    height: auto;
+    .content {
+      .input {
+        & input {
+          width: 100%;
+          padding: 20px;
+          border: none;
+          outline: none;
+        }
+
+        .button {
+          gap: 10px;
+          padding: 20px;
+        }
       }
     }
   }
