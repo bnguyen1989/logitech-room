@@ -25,6 +25,7 @@ export const GLTFNode = ({
   threeNode,
   props,
 }: ThreeNodeRendererProps): ReactNode => {
+
   if (nodeMatchers) {
     for (let i = 0; i < nodeMatchers.length; i++) {
       const jsx = nodeMatchers[i](threeNode, nodeMatchers);
