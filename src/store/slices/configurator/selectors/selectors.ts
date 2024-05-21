@@ -1,5 +1,6 @@
 import { RootState } from "../../../";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
+import { CountableMountElement } from "../../../../models/permission/elements/mounts/CountableMountElement";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { StepName } from "../../../../utils/baseUtils";
 import {
@@ -50,13 +51,15 @@ export const getKeyPermissionFromNameNode =
 
     permissionSteps.forEach((step) => {
       if (objKeyPermission !== undefined) return;
-      const stepCurentElements = step.getActiveElements();
-      stepCurentElements.forEach((element) => {
+      const stepActiveElements = step.getActiveElements();
+      stepActiveElements.forEach((element) => {
         if (objKeyPermission !== undefined) return;
         if (element instanceof MountElement) {
+
           const nodeName = element.getNameNode();
           const dependentMount = element.getDependentMount();
           const dependentNodeName = dependentMount?.getNameNode();
+
           if (nodeName === nameNode || dependentNodeName === nameNode) {
             const itemElement = step.getActiveItemElementByMountName(
               element.name
@@ -71,9 +74,27 @@ export const getKeyPermissionFromNameNode =
               };
             }
           }
+
         } else if (element instanceof ItemElement) {
+          
           const defaultMount = element.getDefaultMount();
+
+          if (defaultMount instanceof CountableMountElement) {
+            const allCountableNames = defaultMount.getAvailableNameNode();
+            if (allCountableNames.includes(nameNode)) {
+              const card = getCardByKeyPermission(
+                step["name"],
+                element.name
+              )(state);
+              objKeyPermission = {
+                [step["name"]]: card.keyPermission,
+              };
+            }
+            return;
+          }
+
           if (!(defaultMount instanceof MountElement)) return;
+
           const nodeName = defaultMount.getNameNode();
           if (nodeName === nameNode) {
             const card = getCardByKeyPermission(
@@ -84,6 +105,7 @@ export const getKeyPermissionFromNameNode =
               [step["name"]]: card.keyPermission,
             };
           }
+
         }
       });
     });

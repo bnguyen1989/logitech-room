@@ -28,6 +28,7 @@ export const Product: React.FC<ProductProps> = ({
   callbackOnHighlight = () => {},
   nameNode,
 }) => {
+
   const dispatch = useDispatch();
   const productGltf = useAsset({ assetId: productAssetId });
   const keyPermissionObj = useAppSelector(getKeyPermissionFromNameNode(nameNode));
@@ -55,6 +56,7 @@ export const Product: React.FC<ProductProps> = ({
       rotation={parentNode.rotation}
     >
       <Select enabled={highlight} onClick={() => callbackOnHighlight(nameNode)}>
+
         {highlight && keyPermissionObj !== undefined && Object.keys(keyPermissionObj).length > 0 && (
           <AnnotationProductContainer
             stepPermission={Object.keys(keyPermissionObj)[0] as StepName}

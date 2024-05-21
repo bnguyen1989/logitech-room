@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useAppSelector } from "../../hooks/redux";
 import {
   getIsHighlightNode,
@@ -16,16 +16,19 @@ type ProductProps = {
 
 export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
 
+  const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const dispatch = useDispatch();
 
-  const isHighlightNode = useAppSelector(getIsHighlightNode(nameNode));
+  const isHighlightNode = useAppSelector(getIsHighlightNode(selectedNode !== null ? selectedNode : nameNode));
   const attachNodeNameToAssetId = useAppSelector(getNodes);
 
   const callbackDisableHighlight = () => {
+    setSelectedNode(null);
     dispatch(disabledHighlightNode(nameNode));
   };
 
   const callbackOnHighlight = (nameNodeParam: string) => {
+    setSelectedNode(nameNodeParam);
     dispatch(setHighlightNodes({ [nameNodeParam]: true } ));
   };
 
