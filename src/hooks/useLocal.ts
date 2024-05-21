@@ -5,6 +5,15 @@ import { getLocale } from "../store/slices/ui/selectors/selectors";
 import { useDispatch } from "react-redux";
 import { updateLocale } from "../store/slices/ui/Ui.slice";
 
+const langCodeUrl: Record<string, string> = {
+  en_us: "en-US",
+  es_es: "es-ES",
+  de_de: "de-DE",
+  es_mx: "es-MX",
+  en_gb: "en-US",
+  es_us: "es-ES",
+};
+
 export const useLocale = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
@@ -12,26 +21,25 @@ export const useLocale = () => {
   const locale = useAppSelector(getLocale);
 
   const getLocaleFromPathName = () => {
-    const pathName = window.location.pathname;
+    const pathName = window.location.href;
     const pathNameParts = pathName.split("/");
-    const locale = pathNameParts.find((part) =>
-      ["es_mx", "es_es", "de_de", "es_us"].includes(part)
-    );
-    if (locale === "es_us") return "es-us";
-    if (locale === "es_es") return "es-ES";
-    if (locale === "de_de") return "de";
-    if (locale === "es_mx") return "es-MX";
+    const keysLang = Object.keys(langCodeUrl);
+    const locale = pathNameParts.find((part) => [...keysLang].includes(part));
+    if (locale && keysLang.includes(locale)) {
+      return langCodeUrl[locale];
+    }
     return locale;
   };
 
   useEffect(() => {
     const localPathName = getLocaleFromPathName();
+
     if (localPathName) {
       dispatch(updateLocale(localPathName));
       return;
     }
     if (!localParam) {
-      dispatch(updateLocale("en-us"));
+      dispatch(updateLocale("en-US"));
       return;
     }
     if (localParam === locale) return;
