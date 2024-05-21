@@ -16,7 +16,7 @@ export type ProductProps = {
   productAssetId: string;
   highlight?: boolean;
   callbackDisableHighlight: () => void;
-  callbackOnHighlight: () => void;
+  callbackOnHighlight: (nameNode: string) => void;
   nameNode: string;
 };
 
@@ -54,7 +54,7 @@ export const Product: React.FC<ProductProps> = ({
       scale={parentNode.scale}
       rotation={parentNode.rotation}
     >
-      <Select enabled={highlight} onClick={callbackOnHighlight}>
+      <Select enabled={highlight} onClick={() => callbackOnHighlight(nameNode)}>
         {highlight && keyPermissionObj !== undefined && Object.keys(keyPermissionObj).length > 0 && (
           <AnnotationProductContainer
             stepPermission={Object.keys(keyPermissionObj)[0] as StepName}

@@ -43,16 +43,21 @@ export const getIsHighlightNode = (nameNode: string) => (state: RootState) => {
 export const getKeyPermissionFromNameNode =
   (nameNode: string) =>
   (state: RootState): { [key in StepName]?: string } | undefined => {
+
     let objKeyPermission: { [key in StepName]?: string } | undefined = undefined;
     const permission = getPermission()(state);
     const permissionSteps = permission.getSteps();
 
     permissionSteps.forEach((step) => {
+      if (objKeyPermission !== undefined) return;
       const stepCurentElements = step.getActiveElements();
       stepCurentElements.forEach((element) => {
+        if (objKeyPermission !== undefined) return;
         if (element instanceof MountElement) {
           const nodeName = element.getNameNode();
-          if (nodeName === nameNode) {
+          const dependentMount = element.getDependentMount();
+          const dependentNodeName = dependentMount?.getNameNode();
+          if (nodeName === nameNode || dependentNodeName === nameNode) {
             const itemElement = step.getActiveItemElementByMountName(
               element.name
             );
@@ -70,7 +75,6 @@ export const getKeyPermissionFromNameNode =
           const defaultMount = element.getDefaultMount();
           if (!(defaultMount instanceof MountElement)) return;
           const nodeName = defaultMount.getNameNode();
-
           if (nodeName === nameNode) {
             const card = getCardByKeyPermission(
               step["name"],
@@ -82,7 +86,7 @@ export const getKeyPermissionFromNameNode =
           }
         }
       });
-    });  
+    });
 
     return objKeyPermission;
   };

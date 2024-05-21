@@ -15,8 +15,6 @@ type ProductProps = {
 };
 
 export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
-  console.log("nameNode", nameNode);
-  console.log("parentNode", parentNode);
 
   const dispatch = useDispatch();
 
@@ -27,8 +25,8 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
     dispatch(disabledHighlightNode(nameNode));
   };
 
-  const callbackOnHighlight = () => {
-    dispatch(setHighlightNodes({ [nameNode]: true } ));
+  const callbackOnHighlight = (nameNodeParam: string) => {
+    dispatch(setHighlightNodes({ [nameNodeParam]: true } ));
   };
 
   if (!Object.keys(attachNodeNameToAssetId).includes(nameNode))

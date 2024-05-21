@@ -24,7 +24,6 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
 ) => {
   const { stepPermission, keyPermission, position, callbackDisableHighlight } = props;
   const htmlRef = useRef<HTMLDivElement>(null);
-  console.log("props --- ==== ", props);
   const dispatch = useDispatch();
   const title = useAppSelector(
     getTitleCardByKeyPermission(stepPermission, keyPermission)
@@ -50,8 +49,6 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
 
   const handleClickOutside = (event: MouseEvent) => {
     if (htmlRef.current && !htmlRef.current.contains(event.target as Node)) {
-      console.log(" ---- ==== Clicked outside of annotation");
-      // Додайте тут обробку кліків поза межами компонента Html
       callbackDisableHighlight();
     }
   };
