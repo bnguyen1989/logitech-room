@@ -31,7 +31,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     host: ConfigData.host,
     orgId: ConfigData.orgId,
     publicToken: ConfigData.publicToken,
-  },
+  };
   const { keyItemPermission, disabled, activeStepProp } = props;
   const activeStep = useAppSelector(getActiveStep);
   const activeStepName = activeStepProp ?? activeStep;

@@ -16,7 +16,7 @@ export const CheckBox: React.FC<PropsI> = (props) => {
     host: ConfigData.host,
     orgId: ConfigData.orgId,
     publicToken: ConfigData.publicToken,
-  },
+  };
   
   const { value, onChange, text } = props;
 
