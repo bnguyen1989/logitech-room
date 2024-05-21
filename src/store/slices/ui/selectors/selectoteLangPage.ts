@@ -118,11 +118,7 @@ export const getLangStepDataByStepName =
         const { isSubmit } = getDataSoftwareQuestionsForm(state);
         if (isSubmit) {
           data.title = "Based on your answers, we recommend:";
-        } else {
-          const title = data.title.replace("Finish up", "Finish");
-          data.title = title;
         }
-
         return data;
       }
       default:
