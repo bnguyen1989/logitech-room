@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./GetStarted.module.scss";
 import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from "react-redux";
@@ -15,10 +15,20 @@ import { useAppSelector } from "../../hooks/redux";
 import { useUrl } from "../../hooks/url";
 import { IconButton } from "../../components/Buttons/IconButton/IconButton";
 import { CopyMarkSVG } from "../../assets";
+import { ConfigData } from "../../utils/threekitUtils";
+import { optionsShow } from "../../utils/analytics/optionsShow";
+import { useSession } from "@threekit/react-three-fiber";
+import { optionInteraction } from "../../utils/analytics/optionSelect";
 
 declare const app: Application;
 
 export const GetStarted: React.FC = () => {
+  const { sessionId } = useSession();
+  const auth = {
+    host: ConfigData.host,
+    orgId: ConfigData.orgId,
+    publicToken: ConfigData.publicToken,
+  }
   const dispatch = useDispatch();
   const langPage = useAppSelector(getGetStartedLangPage);
   const { handleNavigate } = useUrl();
@@ -31,12 +41,34 @@ export const GetStarted: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+  
+    optionsShow({
+      auth,
+      options: [RoleUserName.CUSTOMER,RoleUserName.PARTNER].map(name=> ({
+        optionId: name,
+        optionName: name,
+        optionValue: name
+      })),
+      optionsSetKey: EventCategoryName.get_started,
+      sessionId  
+    });
+  }, []);
+
+  
   const handleCustomerClick = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
     );
     handleNavigate("/configurator");
     sendAnalytics();
+    optionInteraction({
+      auth,
+      optionId: RoleUserName.CUSTOMER,
+      optionsSetKey: EventCategoryName.get_started,
+      sessionId
+    });
+
   };
   const handlePartnerClick = () => {
     dispatch(
@@ -44,6 +76,13 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
+    optionInteraction({
+      auth,
+    
+      optionId: RoleUserName.PARTNER,
+      optionsSetKey: EventCategoryName.get_started,
+      sessionId
+    });
   };
 
   const handleCopyUrl = () => {
