@@ -64,7 +64,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
     getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
   );
   const availableColorsData = useAppSelector(
-    getColorsFromCard(keyItemPermission)
+    getColorsFromCard(activeStep, keyItemPermission)
   );
   const dispatch = useDispatch();
 

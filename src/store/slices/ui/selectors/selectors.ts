@@ -199,9 +199,8 @@ export const getIsSelectedCardByKeyPermission =
   };
 
 export const getAllAssetFromCard =
-  (keyItemPermission: string) => (state: RootState) => {
-    const activeStep = getActiveStep(state);
-    const card = getCardByKeyPermission(activeStep, keyItemPermission)(state);
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const card = getCardByKeyPermission(stepName, keyPermission)(state);
     return card.dataThreekit.threekitItems;
   };
 
