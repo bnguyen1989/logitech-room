@@ -22,6 +22,8 @@ import {
 import { useEffect } from "react";
 import { useSession } from "@threekit/react-three-fiber/dist/utilities/analytics.js";
 import { ConfigData } from "../../../../utils/threekitUtils";
+import { optionsShow } from "../../../../utils/analytics/optionsShow";
+import { optionInteraction } from "../../../../utils/analytics/optionSelect";
 
 export const PrepareSection: React.FC = () => {
   const { sessionId } = useSession();
@@ -33,43 +35,24 @@ export const PrepareSection: React.FC = () => {
 
   console.log( "PrepareSection", activeStepData);
   
-  const options = 
-      Object.values(activeStepData.cards).map((card) => ({
-        optionId: card.keyPermission,
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        optionName: useAppSelector(
-          getTitleCardByKeyPermission(activeStepData.key, card.keyPermission)
-        ),
-        optionValue: card.keyPermission,
-      }));
 
+
+    
   // submit event:
   useEffect(() => {
-    const auth = {
-      host: ConfigData.host,
-      orgId: ConfigData.orgId,
-      publicToken: ConfigData.publicToken,
-    }
-    const analytics = new Analytics2(auth);
 
-    const fakeUuid = "00000000-0000-0000-0000-000000000000";
-
-    const optionsShowEvent: OptionsShowEvent = {
-      orgId: ConfigData.orgId,
-      componentId: fakeUuid,
+    optionsShow( {
+      auth: {
+        host: ConfigData.host,
+        orgId: ConfigData.orgId,
+        publicToken: ConfigData.publicToken,
+      },
+      cards: activeStepData.cards,
+      optionsSetKey: activeStepData.key,
       sessionId,
-      eventType: Event2Types.OptionsShow,
-      eventVersion: "1",
-      optionsType: OptionsType.Value,
-      optionsSetId: activeStepData.key,
-      clientTime: new Date().toISOString(),
-      pageUrl: window.location.href,
-      referrer: document.referrer,
-      userAgent: navigator.userAgent,
-      options,
-    };
-    console.log( "PrepareSection optionsShowEvent", optionsShowEvent);
-    analytics.reportEvent(optionsShowEvent);
+      ConfigData,
+    } );
+    
   }, [activeStepData.key]);
 
   if (isConfiguratorStep) return null;
@@ -102,30 +85,16 @@ export const PrepareSection: React.FC = () => {
         <div className={s.wrapperCards}>
           <div className={s.content_cards}>
             {Object.values(activeStepData.cards).map((card, index) =>
-              getCardComponent(card, index, () => {
-                // submit event:
-                const auth = {
+              getCardComponent(card, index, () => optionInteraction( {
+                auth: {
                   host: ConfigData.host,
                   orgId: ConfigData.orgId,
                   publicToken: ConfigData.publicToken,
-                }
-                const analytics = new Analytics2(auth);
-
-                const fakeUuid = "00000000-0000-0000-0000-000000000000";
-
-                const optionInteractionEvent: OptionInteractionEvent = {
-                  orgId: ConfigData.orgId,
-                  componentId: fakeUuid,
-                  sessionId,
-                  eventType: Event2Types.OptionInteraction,
-                  eventVersion: "1",
-                  optionId: card.keyPermission,
-                  interactionType: "select",
-                  optionsSetId: activeStepData.key,
-                  clientTime: new Date().toISOString(),
-                };
-                analytics.reportEvent(optionInteractionEvent);
-              }
+                },
+                card: card,
+                optionsSetKey: activeStepData.key,
+                sessionId,
+                ConfigData } )
             ))}
           </div>
         </div>
@@ -139,6 +108,18 @@ export const PrepareSection: React.FC = () => {
                 <PrepareSecondaryCard
                   key={index}
                   keyItemPermission={card.keyPermission}
+                  onSelectedAnalytics={ () =>
+                    optionInteraction( {
+                      auth: {
+                        host: ConfigData.host,
+                        orgId: ConfigData.orgId,
+                        publicToken: ConfigData.publicToken,
+                      },
+                      card: card,
+                      optionsSetKey: activeStepData.key,
+                      sessionId,
+                      ConfigData } )
+                    }
                 />
               ))}
             </div>

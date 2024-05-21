@@ -10,9 +10,10 @@ import s from "./PrepareSecondaryCard.module.scss";
 
 interface PropsI {
   keyItemPermission: string;
+  onSelectedAnalytics: () => void;
 }
 export const PrepareSecondaryCard: React.FC<PropsI> = (props) => {
-  const { keyItemPermission } = props;
+  const { keyItemPermission, onSelectedAnalytics } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -25,7 +26,7 @@ export const PrepareSecondaryCard: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer keyItemPermission={keyItemPermission} onSelectedAnalytics={()=>{ console.log("TODO: Record analytics here!")}}>
+    <PrepareCardContainer keyItemPermission={keyItemPermission} onSelectedAnalytics={onSelectedAnalytics}>
       <div className={s.container}>
         <div className={s.left_content}>
           <div className={s.image}>
