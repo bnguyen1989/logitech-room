@@ -11,39 +11,12 @@ interface PropsI {
   text: string;
 }
 export const CheckBox: React.FC<PropsI> = (props) => {
-  const { sessionId } = useSession();
-  const auth =  {
-    host: ConfigData.host,
-    orgId: ConfigData.orgId,
-    publicToken: ConfigData.publicToken,
-  };
-  
   const { value, onChange, text } = props;
-
-  useEffect( () => {
-    optionsShow({
-      auth,
-      options: [true, false].map((item) => ({
-        optionId: String(item),
-        optionName: String(item),
-        optionValue: String(item)
-      })),
-      optionsSetKey: text,
-      sessionId  
-    });
-  }, [ text ]);
-
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!onChange) {
       return;
     }
-    optionInteraction({
-      auth,
-      optionId: e.target.checked.toString(),
-      optionsSetKey: text,
-      sessionId
-    })
+
     onChange(e.target.checked);
   };
   return (

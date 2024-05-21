@@ -81,6 +81,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
     );
   };
 
+  console.warn("TODO: Add analytics capture for cards!  But it is non-trivial.")
+
   const handleClick = () => {
     const { attributeName } = card.dataThreekit;
     if (isActiveCard && card.keyPermission) {
