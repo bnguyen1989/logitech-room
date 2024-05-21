@@ -21,7 +21,7 @@ interface UIStateI {
 }
 
 const initialState: UIStateI = {
-  locale: "en-us",
+  locale: "",
   processInitData: false,
   stepData: getInitStepData(),
   activeStep: StepName.Services,
