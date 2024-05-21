@@ -18,6 +18,7 @@ export enum RuleName {
   micPod_micMount_inWhite = "micPod_micMount_inWhite",
   rallyBar_TapIp_bundle = "rallyBar_TapIp_bundle",
   rallyBarMini_TapIp_bundle = "rallyBarMini_TapIp_bundle",
+  rallyPlus_bundle = "rallyPlus_bundle",
 
   //Recommendation Rules
   reco_micPendantMount_inWhite = "reco_micPendantMount_inWhite",

@@ -183,7 +183,12 @@ export function createStepConferenceCamera() {
         )
       )
     )
-    .addElement(new ItemElement(CameraName.RallyPlus))
+    .addElement(
+      new ItemElement(CameraName.RallyPlus).addAutoChangeItems({
+        [AudioExtensionName.RallyMicPod]: ["color"],
+        [AudioExtensionName.RallyMicPodMount]: ["color"],
+      })
+    )
     .setRequiredOne(true);
 
   const tempGroupMount = new GroupElement()
@@ -260,6 +265,11 @@ export function createStepAudioExtensions() {
       })
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
+      })
+      .addDisabledColorDependence({
+        [CameraName.RallyPlus]: {
+          active: true,
+        },
       })
   );
   const group2 = new GroupElement().addElement(

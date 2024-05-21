@@ -250,6 +250,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.rallyBarMini_TapIp_bundle)) {
       this.rule_rallyBarMini_TapIp_bundle();
     }
+
+    if (attrRulesArr.includes(RuleName.rallyPlus_bundle)) {
+      this.rule_rallyPlus_bundle();
+    }
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -264,6 +268,22 @@ export class ConfigurationConstraintHandler extends Handler {
     if (recoRulesArr.includes(RuleName.reco_micPendantMount_inWhite)) {
       this.rule_reco_micPendantMount_inWhite();
     }
+  }
+
+  private rule_rallyPlus_bundle() {
+    const isSelectRallyPlus = this.isSelectRallyPlus();
+
+    const attrDataQtyMicPod = this.getAttrStateDataByName(AttributeName.QtyMic);
+    if (!attrDataQtyMicPod) return;
+
+    const allCountMicPod = attrDataQtyMicPod.values.length - 1;
+    const availableCountMicPod = allCountMicPod - 2;
+    if (!isSelectRallyPlus) return;
+    this.limitValuesAttrByCallback(
+      attrDataQtyMicPod.values,
+      attrDataQtyMicPod.id,
+      (currentCount: number) => currentCount <= availableCountMicPod
+    );
   }
 
   private rule_rallyBar_TapIp_bundle() {
@@ -365,7 +385,6 @@ export class ConfigurationConstraintHandler extends Handler {
       });
     }
 
-    const countMic = parseInt(qtyMicPod);
     const attrDataQtyMicMount = this.getAttrStateDataByName(
       AttributeName.QtyMicMount
     );
@@ -374,32 +393,19 @@ export class ConfigurationConstraintHandler extends Handler {
     );
     if (!attrDataQtyPendantMount || !attrDataQtyMicMount) return;
 
-    const limitValuesAttrByCount = (
-      attributeValuesArr: ValueAttributeStateI[],
-      attrId: string
-    ) => {
-      return (count: number) => {
-        let tempCount = 0;
-        attributeValuesArr.forEach((option) => {
-          if (tempCount > count) {
-            option.visible = false;
-          }
-          tempCount += 1;
-        });
-        this.configurator.setAttributeState(attrId, {
-          values: attributeValuesArr,
-        });
-      };
-    };
+    const availableCountMic = this.getQtyMicForMounts();
 
-    limitValuesAttrByCount(
+    this.limitValuesAttrByCallback(
       attrDataQtyMicMount.values,
-      attrDataQtyMicMount.id
-    )(countMic);
-    limitValuesAttrByCount(
+      attrDataQtyMicMount.id,
+      (currentCount: number) => currentCount <= availableCountMic
+    );
+
+    this.limitValuesAttrByCallback(
       attrDataQtyPendantMount.values,
-      attrDataQtyPendantMount.id
-    )(countMic);
+      attrDataQtyPendantMount.id,
+      (currentCount: number) => currentCount <= availableCountMic
+    );
 
     const qtyMicMount = this.getSelectedValue(AttributeName.QtyMicMount);
     if (typeof qtyMicMount !== "string") return;
@@ -410,7 +416,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const countMicMount = parseInt(qtyMicMount);
     const countMicPendantMount = parseInt(qtyMicPendantMount);
     const countAllMount = countMicMount + countMicPendantMount;
-    if (countAllMount === countMic) return;
+    if (countAllMount === availableCountMic) return;
     if (!isSelectMicMount || !isSelectPendant) return;
     const isChangeQtyMicMount = this.triggeredByAttr.includes(
       AttributeName.QtyMicMount
@@ -421,20 +427,20 @@ export class ConfigurationConstraintHandler extends Handler {
     if (isChangeQtyMicMount && isChangeQtyMicPendantMount) return;
 
     if (
-      countMic > countAllMount &&
+      availableCountMic > countAllMount &&
       !isChangeQtyMicMount &&
       !isChangeQtyMicPendantMount
     ) {
       if (countMicMount > countMicPendantMount) {
         this.configurator.setConfiguration({
           [AttributeName.QtyMicPendantMount]: (
-            countMic - countMicMount
+            availableCountMic - countMicMount
           ).toString(),
         });
       } else {
         this.configurator.setConfiguration({
           [AttributeName.QtyMicMount]: (
-            countMic - countMicPendantMount
+            availableCountMic - countMicPendantMount
           ).toString(),
         });
       }
@@ -451,12 +457,12 @@ export class ConfigurationConstraintHandler extends Handler {
     };
 
     if (
-      countMic < countAllMount &&
+      availableCountMic < countAllMount &&
       !isChangeQtyMicMount &&
       !isChangeQtyMicPendantMount
     ) {
       if (countMicMount > countMicPendantMount) {
-        const count = countMic - countMicPendantMount;
+        const count = availableCountMic - countMicPendantMount;
         this.configurator.setConfiguration({
           [AttributeName.QtyMicMount]: count.toString(),
         });
@@ -464,7 +470,7 @@ export class ConfigurationConstraintHandler extends Handler {
           removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
         }
       } else {
-        const count = countMic - countMicMount;
+        const count = availableCountMic - countMicMount;
         this.configurator.setConfiguration({
           [AttributeName.QtyMicPendantMount]: count.toString(),
         });
@@ -478,7 +484,7 @@ export class ConfigurationConstraintHandler extends Handler {
       return;
     }
 
-    if (countAllMount > countMic) {
+    if (countAllMount > availableCountMic) {
       if (isChangeQtyMicMount) {
         const count = countMicPendantMount - 1;
         this.configurator.setConfiguration({
@@ -507,7 +513,7 @@ export class ConfigurationConstraintHandler extends Handler {
       this.configurator.setConfiguration({
         [AttributeName.QtyMicPendantMount]: count.toString(),
       });
-      if (count === countMic) {
+      if (count === availableCountMic) {
         removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
       }
     }
@@ -516,7 +522,7 @@ export class ConfigurationConstraintHandler extends Handler {
       this.configurator.setConfiguration({
         [AttributeName.QtyMicMount]: count.toString(),
       });
-      if (count === countMic) {
+      if (count === availableCountMic) {
         removeMount(
           AttributeName.RoomMicPendantMount,
           AttributeName.QtyMicPendantMount
@@ -1189,4 +1195,36 @@ export class ConfigurationConstraintHandler extends Handler {
       values: attributeValuesArr,
     };
   }
+
+  private limitValuesAttrByCallback = (
+    attributeValuesArr: ValueAttributeStateI[],
+    attrId: string,
+    callback: (currentCount: number, option?: ValueAttributeStateI) => boolean
+  ) => {
+    let tempCount = 0;
+    attributeValuesArr.forEach((option) => {
+      const isVisible = callback(tempCount, option);
+      option.visible = isVisible;
+      tempCount += 1;
+    });
+    this.configurator.setAttributeState(attrId, {
+      values: attributeValuesArr,
+    });
+  };
+
+  private isSelectRallyPlus() {
+    const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
+    const isSelectCamera = typeof selectedCamera === "object";
+    const isSelectRallyPlus =
+      isSelectCamera && selectedCamera.name.includes(CameraName.RallyPlus);
+    return isSelectRallyPlus;
+  }
+
+  private getQtyMicForMounts = () => {
+    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
+    if (typeof qtyMicPod !== "string") return 0;
+    const count = parseInt(qtyMicPod);
+    const isSelectRallyPlus = this.isSelectRallyPlus();
+    return isSelectRallyPlus ? count + 2 : count;
+  };
 }
