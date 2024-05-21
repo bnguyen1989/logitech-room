@@ -57,7 +57,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .container {
     gap: 40px;
     
@@ -66,6 +66,24 @@
       flex-direction: column;
       gap: 20px;
       justify-content: normal;
+
+      .total_amount {
+        justify-content: flex-start;
+        width: 100%;
+        gap: 14px;
+        .total {
+          font-size: 34px;
+          line-height: 32px;
+          font-weight: 300;
+          color: #797979;
+        }
+  
+        .amount {
+          flex-direction: row;
+          align-items: center;
+          gap: 10px
+        }
+      }
     }
   }
 }

@@ -1,22 +1,27 @@
 import React from "react";
 import s from "./GetStarted.module.scss";
 import { Button } from "../../components/Buttons/Button/Button";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeRoleUser } from "../../store/slices/user/User.slice";
 import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
-import { getImageUrl } from "../../utils/browserUtils";
+import { copyToClipboard, getImageUrl } from "../../utils/browserUtils";
 import { Application } from "../../models/Application";
 import {
   EventActionName,
   EventCategoryName,
 } from "../../models/analytics/type";
+import { getGetStartedLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
+import { useAppSelector } from "../../hooks/redux";
+import { useUrl } from "../../hooks/url";
+import { IconButton } from "../../components/Buttons/IconButton/IconButton";
+import { CopyMarkSVG } from "../../assets";
 
 declare const app: Application;
 
 export const GetStarted: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const langPage = useAppSelector(getGetStartedLangPage);
+  const { handleNavigate } = useUrl();
 
   const sendAnalytics = () => {
     app.analyticsEvent({
@@ -30,15 +35,20 @@ export const GetStarted: React.FC = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
     );
-    navigate("/configurator", { replace: true });
+    handleNavigate("/configurator");
     sendAnalytics();
   };
   const handlePartnerClick = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER).getData() })
     );
-    navigate("/configurator", { replace: true });
+    handleNavigate("/configurator");
     sendAnalytics();
+  };
+
+  const handleCopyUrl = () => {
+    const url = window.location.href;
+    copyToClipboard(url);
   };
 
   return (
@@ -48,48 +58,49 @@ export const GetStarted: React.FC = () => {
       </div>
 
       <div className={s.content}>
-        <div className={s.header_title}>
-          TAKE THE GUESSWORK OUT OF YOUR VIDEO CONFERENCING SETUP
-        </div>
-        <div className={s.title}>
-          Configure the perfect video collaboration setup for any meeting room
+        <div className={s.text}>
+          <div className={s.header_title}>{langPage.subtitle}</div>
+          <div className={s.title}>{langPage.title}</div>
         </div>
 
         <div className={s.description}>
-          <div className={s.block_1}>
-            Not sure where to start? Use our Room Configurator to instantly
-            outfit any size meeting room with the perfect video conferencing
-            solution.
-          </div>
-          <div className={s.divider}></div>
-          <div className={s.block_2}>
-            <div className={s.block_2_title}>How it works:</div>
+          <div className={s.block}>
+            <div className={s.block_title}>{langPage.list.title}</div>
 
-            <ul className={s.block_2_list}>
-              <li>Answer a few quick questions about your space</li>
-              <li>Choose guided selections based on your room</li>
-              <li>Get a complete look at the room(s) you configured</li>
-              <li>View and share your detailed solutions per room</li>
+            <ul className={s.block_list}>
+              <li>{langPage.list["0"]}</li>
+              <li>{langPage.list["1"]}</li>
+              <li>{langPage.list["2"]}</li>
             </ul>
           </div>
         </div>
 
         <div className={s.type_user}>
-          <div className={s.type_user_title}>
-            Ready to get started? Choose the best experience for you.
-          </div>
           <div className={s.type_user_buttons}>
             <Button
-              text="I’m a customer"
+              text={langPage.Btn.customer}
               variant="contained"
               onClick={handleCustomerClick}
             />
             <Button
-              text="I’m a partner"
+              text={langPage.Btn.partner}
               variant="outlined"
               onClick={handlePartnerClick}
             />
           </div>
+        </div>
+
+        <div className={s.mobile_link}>
+          <div className={s.link_title}>
+            This experience is optimized for desktop
+          </div>
+          <IconButton
+            onClick={handleCopyUrl}
+            text={"COPY URL"}
+            position={"left"}
+          >
+            <CopyMarkSVG />
+          </IconButton>
         </div>
       </div>
     </div>

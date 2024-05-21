@@ -8,12 +8,13 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
+import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const MktoForms2: any;
 
@@ -23,7 +24,7 @@ export const SetupModal: React.FC = () => {
   const { isOpen } = useAppSelector(getSetupModalData);
   const user = useUser();
   const orderData: any = useAppSelector(getOrderData(user.id));
-  const [isRequest, setIsRequest] = useState(false);
+  const dataLang = useAppSelector(getSetupModalLangPage);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
@@ -43,6 +44,7 @@ export const SetupModal: React.FC = () => {
 
       const threekitService = new ThreekitService();
 
+      let snapshotLink = "";
       const assetId = orderData.metadata.configurator.assetId;
       const snapshot = window.snapshot("blob") as Blob;
       threekitService.saveConfigurator(snapshot, assetId ?? "").then((id) => {
@@ -50,23 +52,30 @@ export const SetupModal: React.FC = () => {
         form.setValues({
           editableField5: linkSnapshot,
         });
+        snapshotLink = linkSnapshot;
       });
 
-      form.onSubmit(() => {
-        if (!isRequest) {
-          setIsRequest(true);
-          threekitService.createOrder(orderData).then(() => {
-            dispatch(setMySetupModal({ isOpen: false }));
-            dispatch(setUserData({ data: { ...form.getValues() } }));
-            navigate("/room", { replace: true });
-          });
-        }
+      form.onSubmit(
+        (() => {
+          let isRequest = false;
+          return () => {
+            if (!isRequest) {
+              isRequest = true;
+              orderData.metadata["snapshot"] = snapshotLink;
+              threekitService.createOrder(orderData).then(() => {
+                dispatch(setMySetupModal({ isOpen: false }));
+                dispatch(setUserData({ data: { ...form.getValues() } }));
+                navigate("/room", { replace: true });
+              });
+            }
 
-        return false;
-      });
+            return isRequest;
+          };
+        })()
+      );
       const button = document.querySelector(".mktoButton");
       if (button) {
-        button.textContent = "See my results";
+        button.textContent = dataLang.btn_done;
       }
     });
   }, [isOpen]);
@@ -83,12 +92,8 @@ export const SetupModal: React.FC = () => {
             </IconButton>
           </div>
           <div className={s.text}>
-            <div className={s.title}>Show me the complete setup</div>
-            <div className={s.subtitle}>
-              All finished! Complete the form below so we can share a detailed
-              look at your new space and a detailed product details that you can
-              download and share.
-            </div>
+            <div className={s.title}>{dataLang.title}</div>
+            <div className={s.subtitle}>{dataLang.subtitle}</div>
           </div>
         </div>
 

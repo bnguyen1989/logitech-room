@@ -51,10 +51,10 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .container {
     padding: 40px 25px;
-    max-height: none;
+    max-height: 90vh;
 
     .header {
       .text {

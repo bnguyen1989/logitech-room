@@ -1,3 +1,5 @@
+import { ServerApi } from "../services/api/Server/ServerApi";
+
 export const getParentURL = () => {
   if (typeof window !== "undefined" && typeof document !== "undefined") {
     if (window.location !== window.parent.location) {
@@ -33,7 +35,7 @@ export const copyToClipboard = (data: string | object | number) => {
 export const getImageUrl = (url: string) => {
   let baseUrl = getParentURL();
   if (process.env.NODE_ENV !== "development") {
-    baseUrl = "https://staging.project--logitech.pages.dev";
+    baseUrl = ServerApi.getUrlApi();
   }
   return `${baseUrl}/${url}`;
 };

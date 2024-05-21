@@ -18,20 +18,31 @@
   .button_link {
   }
 
-  .cards {
+  .wrapper_cards {
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 60px;
+
+    .cards {
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 60px;
+    }
   }
 
   .form {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .container {
     gap: 50px;
+    padding-right: 40px;
+    padding-left: 40px;
+
     .wrapper_cards {
       width: 100%;
       display: flex;
@@ -45,5 +56,12 @@
         overflow-x: auto;
       }
     }
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding-right: 30px;
+    padding-left: 30px;
   }
 }

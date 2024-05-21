@@ -1,12 +1,13 @@
-import { CardI, QuestionFormI, StepDataI } from "./type";
+import { CardI, FormI, QuestionFormI, StepDataI } from "./type";
 import {
   CameraName,
+  MeetingControllerName,
   PlatformName,
   RoomSizeName,
   ServiceName,
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
-import { ColorName, StepName } from "../../../utils/baseUtils";
+import { ColorName, FormName, StepName } from "../../../utils/baseUtils";
 import { getImageUrl } from "../../../utils/browserUtils";
 
 export enum UI_ACTION_NAME {
@@ -21,6 +22,14 @@ export enum CUSTOM_UI_ACTION_NAME {
   CHANGE_COUNT_ITEM = "CUSTOM/CHANGE_COUNT_ITEM",
   CHANGE_COLOR_ITEM = "CUSTOM/CHANGE_COLOR_ITEM",
   CREATE_ORDER = "CUSTOM/CREATE_ORDER",
+}
+
+export const getFormInitData = (): FormI => {
+  return {
+    [FormName.QuestionFormSoftware]: {
+      isSubmit: false,
+    },
+  }
 }
 
 export const getInitStepData = (): StepDataI => {
@@ -114,8 +123,6 @@ export function getPlatformCardData(): Record<string, TypeDataCardI> {
     [PlatformName.BYOD]: {
       key: StepName.Platform,
       image: getImageUrl("images/platform/byod_device.jpg"),
-      subtitle:
-        "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
       keyPermission: PlatformName.BYOD,
     },
   };
@@ -126,7 +133,6 @@ function getRoomCardData(): Record<string, CardI> {
     [RoomSizeName.Phonebooth]: {
       key: StepName.RoomSize,
       image: getImageUrl("images/rooms/phonebooth.png"),
-      subtitle: "up to 3",
       keyPermission: RoomSizeName.Phonebooth,
       dataThreekit: {
         attributeName: "",
@@ -136,7 +142,6 @@ function getRoomCardData(): Record<string, CardI> {
     [RoomSizeName.Huddle]: {
       key: StepName.RoomSize,
       image: getImageUrl("images/rooms/huddle.png"),
-      subtitle: "up to 6",
       keyPermission: RoomSizeName.Huddle,
       dataThreekit: {
         attributeName: "",
@@ -146,7 +151,6 @@ function getRoomCardData(): Record<string, CardI> {
     [RoomSizeName.Small]: {
       key: StepName.RoomSize,
       image: getImageUrl("images/rooms/small.png"),
-      subtitle: "up to 8",
       keyPermission: RoomSizeName.Small,
       dataThreekit: {
         attributeName: "",
@@ -156,7 +160,6 @@ function getRoomCardData(): Record<string, CardI> {
     [RoomSizeName.Medium]: {
       key: StepName.RoomSize,
       image: getImageUrl("images/rooms/medium.png"),
-      subtitle: "up to 12",
       keyPermission: RoomSizeName.Medium,
       dataThreekit: {
         attributeName: "",
@@ -166,7 +169,6 @@ function getRoomCardData(): Record<string, CardI> {
     [RoomSizeName.Large]: {
       key: StepName.RoomSize,
       image: getImageUrl("images/rooms/large.png"),
-      subtitle: "up to 20",
       keyPermission: RoomSizeName.Large,
       dataThreekit: {
         attributeName: "",
@@ -176,7 +178,6 @@ function getRoomCardData(): Record<string, CardI> {
     [RoomSizeName.Auditorium]: {
       key: StepName.RoomSize,
       image: getImageUrl("images/rooms/auditorium.png"),
-      subtitle: "more than 20",
       keyPermission: RoomSizeName.Auditorium,
       dataThreekit: {
         attributeName: "",
@@ -192,15 +193,11 @@ export function getServicesCardData(): Record<string, TypeDataCardI> {
     [ServiceName.Android]: {
       key: StepName.Services,
       image: getImageUrl("images/services/appliance.png"),
-      subtitle:
-        "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
       keyPermission: ServiceName.Android,
     },
     [ServiceName.PC]: {
       key: StepName.Services,
       image: getImageUrl("images/services/pc_baced.png"),
-      subtitle:
-        "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
       keyPermission: ServiceName.PC,
     },
   };
@@ -211,78 +208,20 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
     [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
       image: getImageUrl("images/items/service.jpg"),
-      description:
-        "Always included with your hardware purchase. Global, business-hours support and 2-year standard warranty, as well as software to better manage and maintain your deployment.",
       keyPermission: SoftwareServicesName.LogitechSync,
     },
     [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
       image: getImageUrl("images/items/service.jpg"),
-      description:
-        "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
       keyPermission: SoftwareServicesName.SupportService,
     },
     [SoftwareServicesName.ExtendedWarranty]: {
       key: StepName.SoftwareServices,
       image: getImageUrl("images/items/service.jpg"),
-      description:
-        "Add up to 3 years of warranty to extend coverage and support for your devices.",
       keyPermission: SoftwareServicesName.ExtendedWarranty,
     },
   };
 }
-
-export const getTitleFromDataByKeyPermission = (keyPermission: string) => {
-  switch (keyPermission) {
-    case RoomSizeName.Phonebooth:
-      return "Phone Booth";
-    case RoomSizeName.Huddle:
-      return "Huddle Room";
-    case RoomSizeName.Small:
-      return "Small Room";
-    case RoomSizeName.Medium:
-      return "Medium Room";
-    case RoomSizeName.Large:
-      return "Large Room";
-    case RoomSizeName.Auditorium:
-      return "Auditorium";
-    case PlatformName.GoogleMeet:
-      return "Google Meet";
-    case PlatformName.MicrosoftTeams:
-      return "Microsoft Teams";
-    case PlatformName.Zoom:
-      return "Zoom";
-    case PlatformName.BYOD:
-      return "Choose a Bring-Your-Own-Device setup";
-    case ServiceName.Android:
-      return "Appliance-Based";
-    case ServiceName.PC:
-      return "PC-Based";
-    case SoftwareServicesName.SupportService:
-      return "Select Service Plan";
-    default:
-      return "";
-  }
-};
-
-export const getDescriptionRoomBySize = (size: string) => {
-  switch (size) {
-    case RoomSizeName.Phonebooth:
-      return "Phone booths work great for ad-hoc video meetings when you need a quiet environment without disturbing others.";
-    case RoomSizeName.Huddle:
-      return "Huddle rooms are great for hybrid meetings with remote participants.";
-    case RoomSizeName.Small:
-      return "Small meeting rooms are great for hybrid meetings when you have a few more people in the room with you.";
-    case RoomSizeName.Medium:
-      return "These traditionally-sized rooms typically need additional add-ons or smarter capabilities to better capture the in-room action.";
-    case RoomSizeName.Large:
-      return "Large, traditionally shaped rooms typically require additional products to extend coverage and ensure everyone can be seen and heard clearly.";
-    case RoomSizeName.Auditorium:
-      return "Large, traditionally shaped rooms typically require additional products to extend coverage and ensure everyone can be seen and heard clearly.";
-    default:
-      return "";
-  }
-};
 
 export const getDataQuestionFormPartner = (): Array<QuestionFormI> => {
   return [
@@ -327,48 +266,6 @@ export const getDataQuestionFormPartner = (): Array<QuestionFormI> => {
   ];
 };
 
-export const getDataQuestionFormCustomer = (): Array<QuestionFormI> => {
-  return [
-    {
-      question: " What are your hours of support?",
-      options: [
-        { value: false, text: "Business Hours" },
-        { value: false, text: "24/7" },
-      ],
-      active: true,
-      done: false,
-    },
-    {
-      question: "What’s your repair time for meeting rooms?",
-      options: [
-        { value: false, text: "Within 1 week" },
-        { value: false, text: "Within 1 hour" },
-      ],
-      active: false,
-      done: false,
-    },
-    {
-      question: "What’s the typical lifecycle for meeting room hardware?",
-      options: [
-        { value: false, text: "Less than 2 years" },
-        { value: false, text: "2-5 years" },
-        { value: false, text: "5 years or more" },
-      ],
-      active: false,
-      done: false,
-    },
-    {
-      question:
-        "What support service is needed for you to ensure your meeting rooms are always up and running?",
-      options: [
-        { value: false, text: "Tech support when I need it" },
-        { value: false, text: "Dedicated, additional service and support" },
-      ],
-      active: false,
-      done: false,
-    },
-  ];
-};
 
 export const getExpressionArrayForQuestionForm = () => {
   const expressionArraySelect = [
@@ -439,6 +336,12 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
         SoftwareServicesName.LogitechSync,
         SoftwareServicesName.SupportService,
         SoftwareServicesName.ExtendedWarranty,
+      ];
+    case StepName.MeetingController:
+      return [
+        MeetingControllerName.TapTableMount,
+        MeetingControllerName.TapRiserMount,
+        MeetingControllerName.TapWallMount,
       ];
     default:
       return [];

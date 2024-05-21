@@ -32,10 +32,10 @@ export const Room: React.FC = () => {
       .getOrders({ originOrgId: user.id })
       .then((res) => {
         const dataRooms = res.orders.reduce<RoomI[]>((acc, order: OrderI) => {
-          const { name, description, status } = order.metadata;
+          const { name, description, status, snapshot } = order.metadata;
           if (status === "deleted") return acc;
           return acc.concat({
-            image: getImageUrl("images/pages/room/room.png"),
+            image: snapshot ?? getImageUrl("images/pages/room/room.png"),
             title: name,
             desc: description,
             shortId: order.shortId,

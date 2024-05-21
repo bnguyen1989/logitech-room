@@ -52,11 +52,19 @@ export const FinishModal: React.FC = () => {
     }
 
     setSendRequest(true);
-    new ThreekitService()
-      .createOrder(orderData)
-      .then(() => {
-        dispatch(setFinishModal({ isOpen: false }));
-        navigate("/room", { replace: true });
+    const threekitService = new ThreekitService();
+    const assetId = orderData.metadata.configurator.assetId;
+    const snapshot = window.snapshot("blob") as Blob;
+    threekitService
+      .saveConfigurator(snapshot, assetId ?? "")
+      .then((id) => {
+        const linkSnapshot = threekitService.getSnapshotLinkById(id);
+        orderData.metadata["snapshot"] = linkSnapshot;
+
+        return threekitService.createOrder(orderData).then(() => {
+          dispatch(setFinishModal({ isOpen: false }));
+          navigate("/room", { replace: true });
+        });
       })
       .finally(() => {
         setSendRequest(false);

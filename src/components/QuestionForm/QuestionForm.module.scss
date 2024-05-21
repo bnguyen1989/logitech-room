@@ -146,13 +146,9 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .container {
     .list {
-      .wrapper {
-        padding: 0 10px;
-        width: calc(100% - 20px);
-      }
       .wrapper_active {
         .item {
           .actions {
@@ -167,10 +163,6 @@
 @media (max-width: 500px) {
   .container {
     .list {
-      .wrapper {
-        padding: 0 5px;
-        width: calc(100% - 10px);
-      }
       .wrapper_active {
         .item {
           padding: 20px;

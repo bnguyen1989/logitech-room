@@ -38,7 +38,7 @@ export class LanguageFileProcessor {
       .on("data", (data: any) => {
         this.lineNumber++;
         if (this.lineNumber <= 116) {
-          const path = this.findKeyPathPage(this.templatePage, data["en-us"]);
+          const path = this.findKeyPathPage(this.templatePage, data["en-US"]);
           if (path) {
             data["key"] = path;
           } else {
@@ -46,10 +46,10 @@ export class LanguageFileProcessor {
           }
           this.pageJson.push(data);
         } else {
-          if (data["en-us"]) {
+          if (data["en-US"]) {
             const resultPaths = this.findKeyPaths(
               this.templateProduct,
-              data["en-us"]
+              data["en-US"]
             );
 
             resultPaths.forEach((resultPath) => {
@@ -100,7 +100,7 @@ export class LanguageFileProcessor {
     return foundPaths;
   }
 
-  private findKeyPathPage(arr: any[], searchText: any, keyLang = "en-us") {
+  private findKeyPathPage(arr: any[], searchText: any, keyLang = "en-US") {
     for (const item of arr) {
       const value = item[keyLang];
       if (value === searchText) {
@@ -180,7 +180,7 @@ export class LanguageFileProcessor {
       let dataLang = languageJSON[langCode];
       if (template) {
         dataLang = this.updateJson(
-          nameFolder === "page" ? this.templatePage : this.templateProduct,
+          template,
           dataLang
         );
       }
