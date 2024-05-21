@@ -7,18 +7,11 @@ import {
   getActiveStepData,
   getIsConfiguratorStep,
   getSecondaryCardsFromStep,
-  getTitleCardByKeyPermission,
 } from "../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../store/slices/ui/type";
 import { StepName } from "../../../../utils/baseUtils";
 import s from "./PrepareSection.module.scss";
-import {
-  Analytics2,
-  Event2Types,
-  OptionInteractionEvent,
-  OptionsShowEvent,
-  OptionsType,
-} from "@threekit/rest-api";
+
 import { useEffect } from "react";
 import { useSession } from "@threekit/react-three-fiber/dist/utilities/analytics.js";
 import { ConfigData } from "../../../../utils/threekitUtils";
@@ -35,8 +28,6 @@ export const PrepareSection: React.FC = () => {
 
   console.log( "PrepareSection", activeStepData);
   
-
-
     
   // submit event:
   useEffect(() => {
@@ -47,10 +38,13 @@ export const PrepareSection: React.FC = () => {
         orgId: ConfigData.orgId,
         publicToken: ConfigData.publicToken,
       },
-      cards: activeStepData.cards,
+      options: Object.values(activeStepData.cards).map((card) => ({
+        optionId: card.keyPermission,
+        optionName: card.keyPermission,
+        optionValue: card.keyPermission,
+      })),    
       optionsSetKey: activeStepData.key,
-      sessionId,
-      ConfigData,
+      sessionId
     } );
     
   }, [activeStepData.key]);
@@ -91,10 +85,9 @@ export const PrepareSection: React.FC = () => {
                   orgId: ConfigData.orgId,
                   publicToken: ConfigData.publicToken,
                 },
-                card: card,
+                optionId: card.keyPermission,
                 optionsSetKey: activeStepData.key,
-                sessionId,
-                ConfigData } )
+                sessionId } )
             ))}
           </div>
         </div>
@@ -115,10 +108,9 @@ export const PrepareSection: React.FC = () => {
                         orgId: ConfigData.orgId,
                         publicToken: ConfigData.publicToken,
                       },
-                      card: card,
+                      optionId: card.keyPermission,
                       optionsSetKey: activeStepData.key,
-                      sessionId,
-                      ConfigData } )
+                      sessionId } )
                     }
                 />
               ))}

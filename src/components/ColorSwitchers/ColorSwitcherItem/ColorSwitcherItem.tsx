@@ -11,6 +11,11 @@ import {
   getPropertyColorCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectorsColorsCard";
 import { StepName } from "../../../utils/baseUtils";
+import { useEffect } from "react";
+import { optionsShow } from "../../../utils/analytics/optionsShow";
+import { ConfigData } from "../../../utils/threekitUtils";
+import { useSession } from "@threekit/react-three-fiber";
+import { optionInteraction } from "../../../utils/analytics/optionSelect";
 
 declare const app: Application;
 
@@ -21,6 +26,7 @@ interface PropsI {
 }
 
 export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
+  const { sessionId } = useSession();
   const { keyItemPermission, disabled, activeStepProp } = props;
   const activeStep = useAppSelector(getActiveStep);
   const activeStepName = activeStepProp ?? activeStep;
@@ -35,6 +41,26 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     getColorsFromCard(activeStepName, keyItemPermission)
   );
 
+  useEffect(() => {
+    if (!card) return;
+    if (availableColorsData.length < 1) return;
+
+    optionsShow({
+      auth: {
+        host: ConfigData.host,
+        orgId: ConfigData.orgId,
+        publicToken: ConfigData.publicToken,
+      },
+      options: availableColorsData.map((item) => ({
+        optionId: item.name,
+        optionName: item.name,
+        optionValue: item.value
+      })),
+      optionsSetKey: keyItemPermission,
+      sessionId  
+    });
+  }, [ keyItemPermission]);
+
   if (!card) return;
   if (availableColorsData.length < 1) return;
 
@@ -45,6 +71,17 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
       value.name,
       card.keyPermission
     );
+
+    optionInteraction({
+      auth: {
+        host: ConfigData.host,
+        orgId: ConfigData.orgId,
+        publicToken: ConfigData.publicToken,
+      },
+      optionId: value.name,
+      optionsSetKey: keyItemPermission,
+      sessionId
+    });
   };
 
   return (
