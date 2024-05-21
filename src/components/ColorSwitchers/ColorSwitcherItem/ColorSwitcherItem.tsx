@@ -27,6 +27,11 @@ interface PropsI {
 
 export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
   const { sessionId } = useSession();
+  const auth =  {
+    host: ConfigData.host,
+    orgId: ConfigData.orgId,
+    publicToken: ConfigData.publicToken,
+  },
   const { keyItemPermission, disabled, activeStepProp } = props;
   const activeStep = useAppSelector(getActiveStep);
   const activeStepName = activeStepProp ?? activeStep;
@@ -46,11 +51,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     if (availableColorsData.length < 1) return;
 
     optionsShow({
-      auth: {
-        host: ConfigData.host,
-        orgId: ConfigData.orgId,
-        publicToken: ConfigData.publicToken,
-      },
+      auth,
       options: availableColorsData.map((item) => ({
         optionId: item.name,
         optionName: item.name,
@@ -59,7 +60,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
       optionsSetKey: keyItemPermission,
       sessionId  
     });
-  }, [ keyItemPermission]);
+  }, [ card, availableColorsData.length]);
 
   if (!card) return;
   if (availableColorsData.length < 1) return;
@@ -73,11 +74,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     );
 
     optionInteraction({
-      auth: {
-        host: ConfigData.host,
-        orgId: ConfigData.orgId,
-        publicToken: ConfigData.publicToken,
-      },
+      auth,
       optionId: value.name,
       optionsSetKey: keyItemPermission,
       sessionId
