@@ -1,10 +1,6 @@
 import { useDispatch } from "react-redux";
-import { CloseSVG } from "../../../assets";
 import { useAppSelector } from "../../../hooks/redux";
 import { setMySetupModal } from "../../../store/slices/modals/Modals.slice";
-import { getSetupModalData } from "../../../store/slices/modals/selectors/selectors";
-import { IconButton } from "../../Buttons/IconButton/IconButton";
-import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
@@ -14,27 +10,33 @@ import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder"
 import { getParentURL } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
+import { FORM_MKTO, formLocalization } from "../../../utils/formUtils";
 
 declare const MktoForms2: any;
 
-export const SetupModal: React.FC = () => {
+interface FormMktoPropsI {
+  formName: FORM_MKTO;
+  buttonText: string;
+}
+
+export const FormMkto: React.FC<FormMktoPropsI> = ({
+  formName,
+  buttonText,
+}: FormMktoPropsI) => {
+
+  const formData = formLocalization[formName];
+  console.log("formData --- ==== ", formData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isOpen } = useAppSelector(getSetupModalData);
   const user = useUser();
   const orderData: any = useAppSelector(getOrderData(user.id));
   const [isRequest, setIsRequest] = useState(false);
 
-  const handleClose = () => {
-    dispatch(setMySetupModal({ isOpen: false }));
-  };
-
   useEffect(() => {
-    if (!isOpen) return;
-    MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
+
+    MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18461);
 
     MktoForms2.whenReady((form: any) => {
-      console.log("form.getValues() --- ==== ", form.getValues());
       const baseUrl = getParentURL();
       const link = `${baseUrl}/room?userId=${user.id}`;
       form.setValues({
@@ -64,38 +66,20 @@ export const SetupModal: React.FC = () => {
 
         return false;
       });
+
       const button = document.querySelector(".mktoButton");
       if (button) {
-        button.textContent = "See my results";
+        button.textContent = buttonText;
       }
-    });
-  }, [isOpen]);
 
-  if (!isOpen) return null;
+    });
+  }, []);
 
   return (
-    <ModalContainer>
-      <div className={s.container}>
-        <div className={s.header}>
-          <div className={s.close}>
-            <IconButton onClick={handleClose}>
-              <CloseSVG />
-            </IconButton>
-          </div>
-          <div className={s.text}>
-            <div className={s.title}>Show me the complete setup</div>
-            <div className={s.subtitle}>
-              All finished! Complete the form below so we can share a detailed
-              look at your new space and a detailed product details that you can
-              download and share.
-            </div>
-          </div>
-        </div>
-
-        <div className={s.form}>
-          <form id="mktoForm_18414"></form>
-        </div>
+    <div className={s.container}>
+      <div className={s.form}>
+        <form id="mktoForm_18461"></form>
       </div>
-    </ModalContainer>
+    </div>
   );
 };
