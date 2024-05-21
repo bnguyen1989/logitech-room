@@ -25,7 +25,7 @@ export const PrepareSecondaryCard: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer keyItemPermission={keyItemPermission}>
+    <PrepareCardContainer keyItemPermission={keyItemPermission} onSelectedAnalytics={()=>{ console.log("TODO: Record analytics here!")}}>
       <div className={s.container}>
         <div className={s.left_content}>
           <div className={s.image}>

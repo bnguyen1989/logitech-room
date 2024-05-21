@@ -17,6 +17,7 @@ import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/
 interface PropsI {
   keyItemPermission: string;
   autoActive?: boolean;
+  onSelectedAnalytics: () => void;
 }
 export const CardSoftware: React.FC<PropsI> = (props) => {
   const { keyItemPermission, autoActive } = props;
@@ -36,6 +37,10 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   );
 
   const handleClick = () => {
+
+    props.onSelectedAnalytics();
+    
+
     const { attributeName } = card.dataThreekit;
     if (isActiveCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);

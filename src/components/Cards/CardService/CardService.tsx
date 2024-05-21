@@ -10,6 +10,7 @@ import s from "./CardService.module.scss";
 
 interface PropsI {
   keyItemPermission: string;
+  onSelectedAnalytics: () => void;
 }
 export const CardService: React.FC<PropsI> = (props) => {
   const { keyItemPermission } = props;
@@ -25,7 +26,7 @@ export const CardService: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer keyItemPermission={keyItemPermission}>
+    <PrepareCardContainer keyItemPermission={keyItemPermission} onSelectedAnalytics={props.onSelectedAnalytics}>
       <div className={s.container}>
         <div className={s.image}>
           <img src={card.image} alt="" />

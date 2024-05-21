@@ -108,10 +108,11 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
       <CardSoftware
         key={index}
         keyItemPermission={card.keyPermission}
-        autoActive={!!keysNotVisibleCards.length}
+        autoActive={!!keysNotVisibleCards.length}  onSelectedAnalytics={()=>{ console.log("TODO: Record analytics here!")}}
       />
     );
   };
+
   return (
     <div className={s.container}>
       {!dataQuestionForm.isSubmit ? (
