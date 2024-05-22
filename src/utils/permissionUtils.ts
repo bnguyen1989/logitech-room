@@ -49,8 +49,6 @@ export enum CameraName {
   ComputeMount = "Compute Mount",
 
   LogitechSight = "Logitech Sight",
-
-  MeetUp2ActiveCable = "Logitech MeetUp 2 Active Cable",
 }
 
 export enum AudioExtensionName {
@@ -82,6 +80,7 @@ export enum VideoAccessoryName {
   LogitechSwytch = "Logitech Swytch",
   LogitechExtend = "Logitech Extend",
   LogitechUSBaToHDMIAdapter = "Logitech USB-A to HDMI Adapter (NITRO)",
+  MeetUp2ActiveCable = "Logitech MeetUp 2 Active Cable",
 }
 
 export enum SoftwareServicesName {
@@ -229,18 +228,11 @@ export function createStepConferenceCamera() {
     )
   );
 
-  const groupMeetUp2ActiveCable = new GroupElement().addElement(
-    new ItemElement(CameraName.MeetUp2ActiveCable).addDependence(
-      new ItemElement(CameraName.MeetUp2)
-    )
-  );
-
   stepConferenceCamera.allElements = [
     group,
     groupCompute,
     tempGroupMount,
     groupSight,
-    groupMeetUp2ActiveCable,
   ];
   return stepConferenceCamera;
 }
@@ -466,7 +458,12 @@ export function createStepVideoAccessories() {
       )
     )
     .addElement(new ItemElement(VideoAccessoryName.LogitechExtend))
-    .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter));
+    .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter))
+    .addElement(
+      new ItemElement(VideoAccessoryName.MeetUp2ActiveCable).addDependence(
+        new ItemElement(CameraName.MeetUp2)
+      )
+    );
 
   stepVideoAccessories.allElements = [groupScheduler, group];
   return stepVideoAccessories;
