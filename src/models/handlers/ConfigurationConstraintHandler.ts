@@ -687,13 +687,6 @@ export class ConfigurationConstraintHandler extends Handler {
       attributeValuesArr.forEach((option) => {
         this.setRecommendedInMetadata(option, false);
       });
-
-      this.configurator.setConfiguration({
-        [AttributeName.RoomMicHub]: {
-          assetId: "",
-        },
-        [AttributeName.QtyMicHub]: "0",
-      });
     }
     this.configurator.setAttributeState(attribute.id, {
       values: attributeValuesArr,
