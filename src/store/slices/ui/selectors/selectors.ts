@@ -451,18 +451,12 @@ export const getSubCardsKeyPermissionStep =
     const cards = Object.values(step.cards);
     const cardsKeyPermissions = cards.map((card) => card.keyPermission);
     return cards.reduce<Record<string, string[]>>((acc, card) => {
-      const isActiveCard = getIsSelectedCardByKeyPermission(
-        step.key,
-        card.keyPermission
-      )(state);
-      if (!isActiveCard) return acc;
       const currentStep = permission.getCurrentStep();
       const element = currentStep.getElementByName(card.keyPermission);
       if (!element || element instanceof MountElement) return acc;
-      const dependentMounts = element.getDependenceMount();
-      const dependentNames = dependentMounts.map((mount) => mount.name);
+      const accessItems = element.getAccessoryItems();
       acc[card.keyPermission] = cardsKeyPermissions.filter((key) =>
-        dependentNames.includes(key)
+        accessItems.includes(key)
       );
       return acc;
     }, {});

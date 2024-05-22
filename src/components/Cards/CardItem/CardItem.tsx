@@ -160,7 +160,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
           </div>
         </div>
 
-        {children}
+        {isActiveCard ? children : null}
       </div>
     </CardContainer>
   );

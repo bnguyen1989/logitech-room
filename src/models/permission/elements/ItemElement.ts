@@ -7,6 +7,7 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private dependence: Array<ItemElement | Array<ItemElement>> = [];
   private dependenceMount: Array<MountElement> = [];
   private defaultMount: MountElement | null = null;
+  private accessoryItems: Array<string> = [];
   private autoChangeItems: Record<string, Array<string>> = {};
   private reservationMount: Record<string, Array<string | number>> = {};
   private recommendationDependence: PropertyDependentElement = {};
@@ -15,6 +16,15 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   constructor(name: string) {
     super(name);
+  }
+
+  public setAccessoryItems(value: Array<string>): ItemElement {
+    this.accessoryItems = value;
+    return this;
+  }
+
+  public getAccessoryItems(): Array<string> {
+    return [...this.accessoryItems];
   }
 
   public addRequiredDependence(value: PropertyDependentElement): ItemElement {
