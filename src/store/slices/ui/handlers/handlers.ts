@@ -218,7 +218,6 @@ function updateDataByConfiguration(
     const stepData = getDataStepByName(stepName)(state);
     const cards: Record<string, CardI> = stepData.cards;
     const activeKeys: string[] = [];
-    console.log("stepName", stepName);
 
     arrayAttributes.forEach((item) => {
       const [name, qtyName] = item;
@@ -548,6 +547,12 @@ function setSoftwareServicesData(configurator: Configurator) {
               value: asset.id,
             });
           }
+        });
+
+        values.sort((a, b) => {
+          const aNumber = parseInt(a.label.split(" ")[0]);
+          const bNumber = parseInt(b.label.split(" ")[0]);
+          return aNumber - bNumber;
         });
 
         softwareServicesCardData.push({
