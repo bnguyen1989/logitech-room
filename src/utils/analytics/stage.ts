@@ -2,16 +2,22 @@ import { useSession as getSession } from "@threekit/react-three-fiber";
 import {
   Analytics2,
   Event2Types,
-  OptionInteractionEvent,
+  StageEvent,
 } from "@threekit/rest-api";
 import { ConfigData } from "../threekitUtils";
 
-export type OptionInteractionProp = {
-  optionId: string;
-  optionsSetKey: string;
+export type StageProp = {
+  stageName: string;
 };
-export const optionInteraction = (props: OptionInteractionProp) => {
-  const { optionId,optionsSetKey } = props;
+
+let lastStageName = ""; // to prevent duplicates.
+
+export const stage = (props: StageProp) => {
+  const { stageName } = props;
+
+  // prevent duplicates
+  if( lastStageName === stageName ) return;
+  lastStageName = stageName;
 
   const { sessionId } = getSession();
   const auth =  {
@@ -25,16 +31,17 @@ export const optionInteraction = (props: OptionInteractionProp) => {
 
   const fakeUuid = "00000000-0000-0000-0000-000000000000";
 
-  const optionInteractionEvent: OptionInteractionEvent = {
+  const stageEvent: StageEvent = {
     orgId: auth.orgId,
     componentId: fakeUuid,
     sessionId,
-    eventType: Event2Types.OptionInteraction,
+    eventType: Event2Types.Stage,
     eventVersion: "1",
-    optionId,
-    interactionType: "select",
-    optionsSetId: optionsSetKey,
+    stageName,
     clientTime: new Date().toISOString(),
+    pageUrl: window.location.href,
+    referrer: document.referrer,
+    userAgent: navigator.userAgent,
   };
-  analytics.reportEvent(optionInteractionEvent);
+  analytics.reportEvent(stageEvent);
 };

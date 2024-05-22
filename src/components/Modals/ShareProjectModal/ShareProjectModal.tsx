@@ -15,6 +15,7 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { share } from "../../../utils/analytics/share";
 
 declare const app: Application;
 
@@ -44,6 +45,10 @@ export const ShareProjectModal: React.FC = () => {
   const handleCopy = () => {
     copyToClipboard(link);
     setIsCopied(true);
+
+
+    share({ shareLink: link });
+
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.share_project,

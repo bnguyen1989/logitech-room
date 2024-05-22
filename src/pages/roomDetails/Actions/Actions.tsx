@@ -12,6 +12,7 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { stage } from "../../../utils/analytics/stage";
 
 declare const app: Application;
 
@@ -24,6 +25,7 @@ export const Actions: React.FC = () => {
   const handlerDownload = () => {
     if (!roomId) return;
     app.downloadRoomCSV(roomId);
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.download_room,
@@ -35,6 +37,9 @@ export const Actions: React.FC = () => {
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
+    
+    stage({ stageName: EventActionName.request_consultation });
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.request_consultation,

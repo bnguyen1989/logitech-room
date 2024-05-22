@@ -27,6 +27,7 @@ export const optionsShow = (props: OptionsShowProp) => {
   };  
 
   const analytics = new Analytics2(auth);
+  analytics.trace = true;
   const fakeUuid = "00000000-0000-0000-0000-000000000000";
 
   const optionsShowEvent: OptionsShowEvent = {

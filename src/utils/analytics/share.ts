@@ -2,16 +2,18 @@ import { useSession as getSession } from "@threekit/react-three-fiber";
 import {
   Analytics2,
   Event2Types,
-  OptionInteractionEvent,
+  ShareEvent,
 } from "@threekit/rest-api";
 import { ConfigData } from "../threekitUtils";
 
-export type OptionInteractionProp = {
-  optionId: string;
-  optionsSetKey: string;
+export type ShareProp = {
+  shareLink: string;
 };
-export const optionInteraction = (props: OptionInteractionProp) => {
-  const { optionId,optionsSetKey } = props;
+
+
+export const share = (props: ShareProp) => {
+  const { shareLink } = props;
+
 
   const { sessionId } = getSession();
   const auth =  {
@@ -25,16 +27,16 @@ export const optionInteraction = (props: OptionInteractionProp) => {
 
   const fakeUuid = "00000000-0000-0000-0000-000000000000";
 
-  const optionInteractionEvent: OptionInteractionEvent = {
+  const shareEvent: ShareEvent = {
     orgId: auth.orgId,
     componentId: fakeUuid,
     sessionId,
-    eventType: Event2Types.OptionInteraction,
+    assetId: fakeUuid,
+    eventType: Event2Types.Share,
     eventVersion: "1",
-    optionId,
-    interactionType: "select",
-    optionsSetId: optionsSetKey,
     clientTime: new Date().toISOString(),
+    shareType: 'create',
+    shareLink
   };
-  analytics.reportEvent(optionInteractionEvent);
+  analytics.reportEvent(shareEvent);
 };

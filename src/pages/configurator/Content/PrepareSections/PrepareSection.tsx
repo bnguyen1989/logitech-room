@@ -15,6 +15,7 @@ import s from "./PrepareSection.module.scss";
 import { useEffect } from "react";
 import { optionsShow } from "../../../../utils/analytics/optionsShow";
 import { optionInteraction } from "../../../../utils/analytics/optionSelect";
+import { stage } from "../../../../utils/analytics/stage";
 
 export const PrepareSection: React.FC = () => {
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -26,6 +27,9 @@ export const PrepareSection: React.FC = () => {
   // submit event:
   useEffect(() => {
     if( isConfiguratorStep ) return;
+
+    stage({ stageName: activeStepData.key });
+  
     optionsShow( {
       optionsSetKey: activeStepData.key,
       options: Object.values(activeStepData.cards).map((card) => ({

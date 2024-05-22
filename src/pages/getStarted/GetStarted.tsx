@@ -17,6 +17,7 @@ import { IconButton } from "../../components/Buttons/IconButton/IconButton";
 import { CopyMarkSVG } from "../../assets";
 import { optionsShow } from "../../utils/analytics/optionsShow";
 import { optionInteraction } from "../../utils/analytics/optionSelect";
+import { stage } from "../../utils/analytics/stage";
 
 declare const app: Application;
 
@@ -24,6 +25,9 @@ export const GetStarted: React.FC = () => {
   const dispatch = useDispatch();
   const langPage = useAppSelector(getGetStartedLangPage);
   const { handleNavigate } = useUrl();
+
+
+
 
   const sendAnalytics = () => {
     app.analyticsEvent({
@@ -34,7 +38,7 @@ export const GetStarted: React.FC = () => {
   };
 
   useEffect(() => {
-  
+    stage({ stageName: EventCategoryName.get_started });
     optionsShow({
       optionsSetKey: EventCategoryName.get_started,
       options: [RoleUserName.CUSTOMER,RoleUserName.PARTNER].map(name=> ({
