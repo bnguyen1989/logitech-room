@@ -1,0 +1,86 @@
+.formWrap {
+  display: block;
+  :global {
+    .mktoForm {
+      .mktoFormRow {
+        .mktoFieldDescriptor {
+          width: 100%;
+          margin-bottom: 0 !important;
+          .mktoOffset,
+          .mktoGutter {
+            display: none;
+          }
+          .mktoLogicalField {
+            display: flex;
+            width: 100% !important;
+            > input {
+              width: 22px !important;
+              height: 22px !important;
+              border: 1px solid #c3c6c8 !important;
+              background: #fff !important;
+              margin: 0;
+              margin-top: 5px;
+              border-radius: 0;
+            }
+            > label {
+              flex: 1;
+              margin: 0 0 0 20px;
+              color: #2f3132;
+              font-family: "Poppins", sans-serif;
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 300;
+              line-height: 20px;
+            }
+          }
+        }
+      }
+      // .mktoButtonRow {
+      //   // padding-top: 30px;
+      //   .mktoButtonWrap {
+      //     .mktoButton {
+      //       // padding: 11px 60px;
+      //     }
+      //   }
+      // }
+    }
+  }
+}
+
+:global {
+
+  .abridgeForm {
+    .mktoForm {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100% !important;
+    }
+    .mktoFormRow {
+      width: 100%;
+      &:nth-of-type(n + 3) {
+        display: none;
+      }
+    }
+  }
+
+  .requestConsultation {
+    .mktoForm {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100% !important;
+    }
+    .mktoFormRow {
+      width: calc(50% - 10px);
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
+        width: 100%;
+      }
+      &:nth-of-type(n + 5) {
+        display: none;
+      }
+    }
+  }
+  
+}

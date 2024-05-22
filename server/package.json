@@ -14,7 +14,7 @@
   "scripts": {
     "seed:run": "ts-node ./prisma/seed.ts",
     "build": "tsc && copyfiles -f src/dataLang/sheet.tsv dist/dataLang/",
-    "start:dev": "TYPE=development nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
+    "start:dev": "set TYPE=development && nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec ts-node src/index.ts",
     "start:prod": "node ."
   },
   "devDependencies": {

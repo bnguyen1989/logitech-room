@@ -33,3 +33,12 @@ export const formLocalization = {
     }
   },
 }
+
+export const getFormIdLocale = (formName: FORM_MKTO, localeUI: string) => {
+  const formData = formLocalization[formName];
+  if (formData["localization"].hasOwnProperty(localeUI)) {
+    // @ts-ignore
+    return formData["localization"][localeUI.toUpperCase()]
+  }
+  return formData["localization"]["EN-US"];
+}

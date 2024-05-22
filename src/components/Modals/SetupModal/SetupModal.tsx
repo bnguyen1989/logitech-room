@@ -35,7 +35,6 @@ export const SetupModal: React.FC = () => {
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
 
     MktoForms2.whenReady((form: any) => {
-      console.log("form.getValues() --- ==== ", form.getValues());
       const baseUrl = getParentURL();
       const link = `${baseUrl}/room?userId=${user.id}`;
       form.setValues({
