@@ -2,22 +2,18 @@ import { useSession as getSession } from "@threekit/react-three-fiber";
 import {
   Analytics2,
   Event2Types,
-  StageEvent,
+  ShareEvent,
 } from "@threekit/rest-api";
 import { ConfigData } from "../threekitUtils";
 
-export type StageProp = {
-  stageName: string;
+export type ShareProp = {
+  shareLink: string;
 };
 
-let lastStageName = ""; // to prevent duplicates.
 
-export const stage = (props: StageProp) => {
-  const { stageName } = props;
+export const analyticsShare = (props: ShareProp) => {
+  const { shareLink } = props;
 
-  // prevent duplicates
-  if( lastStageName === stageName ) return;
-  lastStageName = stageName;
 
   const { sessionId } = getSession();
   const auth =  {
@@ -27,21 +23,19 @@ export const stage = (props: StageProp) => {
   };  
 
   const analytics = new Analytics2(auth);
-  analytics.trace = true;
-
+  
   const fakeUuid = "00000000-0000-0000-0000-000000000000";
 
-  const stageEvent: StageEvent = {
+  const shareEvent: ShareEvent = {
     orgId: auth.orgId,
     componentId: fakeUuid,
     sessionId,
-    eventType: Event2Types.Stage,
+    assetId: fakeUuid,
+    eventType: Event2Types.Share,
     eventVersion: "1",
-    stageName,
     clientTime: new Date().toISOString(),
-    pageUrl: window.location.href,
-    referrer: document.referrer,
-    userAgent: navigator.userAgent,
+    shareType: 'create',
+    shareLink
   };
-  analytics.reportEvent(stageEvent);
+  analytics.reportEvent(shareEvent);
 };

@@ -13,9 +13,9 @@ import { StepName } from "../../../../utils/baseUtils";
 import s from "./PrepareSection.module.scss";
 
 import { useEffect } from "react";
-import { optionsShow } from "../../../../utils/analytics/optionsShow";
-import { optionInteraction } from "../../../../utils/analytics/optionSelect";
-import { stage } from "../../../../utils/analytics/stage";
+import { analyticsOptionsShow } from "../../../../utils/analytics/analyticsOptionsShow";
+import { analyticsOptionInteraction } from "../../../../utils/analytics/analyticsOptionInteraction";
+import { analyticsStage } from "../../../../utils/analytics/analyticsStage";
 
 export const PrepareSection: React.FC = () => {
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -28,9 +28,9 @@ export const PrepareSection: React.FC = () => {
   useEffect(() => {
     if( isConfiguratorStep ) return;
 
-    stage({ stageName: activeStepData.key });
+    analyticsStage({ stageName: activeStepData.key });
   
-    optionsShow( {
+    analyticsOptionsShow( {
       optionsSetKey: activeStepData.key,
       options: Object.values(activeStepData.cards).map((card) => ({
         optionId: card.keyPermission,
@@ -70,7 +70,7 @@ export const PrepareSection: React.FC = () => {
         <div className={s.wrapperCards}>
           <div className={s.content_cards}>
             {Object.values(activeStepData.cards).map((card, index) =>
-              getCardComponent(card, index, () => optionInteraction( {
+              getCardComponent(card, index, () => analyticsOptionInteraction( {
                 optionsSetKey: activeStepData.key,
                 optionId: card.keyPermission } )
             ))}
@@ -87,7 +87,7 @@ export const PrepareSection: React.FC = () => {
                   key={index}
                   keyItemPermission={card.keyPermission}
                   onSelectedAnalytics={ () =>
-                    optionInteraction( {
+                    analyticsOptionInteraction( {
                       optionsSetKey: activeStepData.key,
                       optionId: card.keyPermission } )
                     }

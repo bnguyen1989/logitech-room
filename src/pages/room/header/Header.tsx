@@ -17,9 +17,9 @@ import {
 import { useAppSelector } from "../../../hooks/redux";
 import { getRoomsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { divideTextIntoSentence } from "../../../utils/strUtils";
-import { custom } from "../../../utils/analytics/custom";
+import { analyticsCustom } from "../../../utils/analytics/analyticsCustom";
 import { useEffect } from "react";
-import { stage } from "../../../utils/analytics/stage";
+import { analyticsStage } from "../../../utils/analytics/analyticsStage";
 
 declare const app: Application;
 
@@ -31,14 +31,14 @@ export const Header: React.FC = () => {
   const langPage = useAppSelector(getRoomsLangPage);
 
   useEffect(() => {
-    stage({ stageName: EventCategoryName.summary_page });
+    analyticsStage({ stageName: EventCategoryName.summary_page });
   }, [] );
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
 
 
-    custom({ customName: EventActionName.add_another_room });
+    analyticsCustom({ customName: EventActionName.add_another_room });
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.add_another_room,
@@ -48,7 +48,7 @@ export const Header: React.FC = () => {
 
   const handleDownloadAll = () => {
     app.downloadRoomsCSV(user.id);
-    custom({ customName: EventActionName.download_room_all });
+    analyticsCustom({ customName: EventActionName.download_room_all });
   
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
     const url = getNavLink("/room", searchParams);
     copyToClipboard(url);
 
-    custom({ customName: EventActionName.share_project });
+    analyticsCustom({ customName: EventActionName.share_project });
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.share_project,
@@ -77,7 +77,7 @@ export const Header: React.FC = () => {
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
-    custom({ customName: EventActionName.request_consultation });
+    analyticsCustom({ customName: EventActionName.request_consultation });
   
     app.analyticsEvent({
       category: EventCategoryName.summary_page,

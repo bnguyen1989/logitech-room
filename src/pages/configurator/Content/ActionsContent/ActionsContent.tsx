@@ -15,7 +15,6 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../../models/analytics/type";
-import { stage } from "../../../../utils/analytics/stage";
 
 declare const app: Application;
 

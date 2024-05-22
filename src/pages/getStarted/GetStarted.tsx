@@ -15,9 +15,9 @@ import { useAppSelector } from "../../hooks/redux";
 import { useUrl } from "../../hooks/url";
 import { IconButton } from "../../components/Buttons/IconButton/IconButton";
 import { CopyMarkSVG } from "../../assets";
-import { optionsShow } from "../../utils/analytics/optionsShow";
-import { optionInteraction } from "../../utils/analytics/optionSelect";
-import { stage } from "../../utils/analytics/stage";
+import { analyticsOptionsShow } from "../../utils/analytics/analyticsOptionsShow";
+import { analyticsOptionInteraction } from "../../utils/analytics/analyticsOptionInteraction";
+import { analyticsStage } from "../../utils/analytics/analyticsStage";
 
 declare const app: Application;
 
@@ -38,8 +38,8 @@ export const GetStarted: React.FC = () => {
   };
 
   useEffect(() => {
-    stage({ stageName: EventCategoryName.get_started });
-    optionsShow({
+    analyticsStage({ stageName: EventCategoryName.get_started });
+    analyticsOptionsShow({
       optionsSetKey: EventCategoryName.get_started,
       options: [RoleUserName.CUSTOMER,RoleUserName.PARTNER].map(name=> ({
         optionId: name,
@@ -56,7 +56,7 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
-    optionInteraction({
+    analyticsOptionInteraction({
       optionsSetKey: EventCategoryName.get_started,
       optionId: RoleUserName.CUSTOMER
     });
@@ -68,7 +68,7 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
-    optionInteraction({    
+    analyticsOptionInteraction({    
       optionsSetKey: EventCategoryName.get_started,
       optionId: RoleUserName.PARTNER
     });

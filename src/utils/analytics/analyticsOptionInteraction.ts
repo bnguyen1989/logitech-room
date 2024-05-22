@@ -2,18 +2,16 @@ import { useSession as getSession } from "@threekit/react-three-fiber";
 import {
   Analytics2,
   Event2Types,
-  CustomEvent,
+  OptionInteractionEvent,
 } from "@threekit/rest-api";
 import { ConfigData } from "../threekitUtils";
 
-export type CustomProp = {
-  customName: string;
+export type OptionInteractionProp = {
+  optionId: string;
+  optionsSetKey: string;
 };
-
-
-export const custom = (props: CustomProp) => {
-  const { customName } = props;
-
+export const analyticsOptionInteraction = (props: OptionInteractionProp) => {
+  const { optionId,optionsSetKey } = props;
 
   const { sessionId } = getSession();
   const auth =  {
@@ -23,19 +21,19 @@ export const custom = (props: CustomProp) => {
   };  
 
   const analytics = new Analytics2(auth);
-  analytics.trace = true;
-
+  
   const fakeUuid = "00000000-0000-0000-0000-000000000000";
 
-  const customEvent: CustomEvent = {
+  const optionInteractionEvent: OptionInteractionEvent = {
     orgId: auth.orgId,
     componentId: fakeUuid,
     sessionId,
-    assetId: fakeUuid,
-    eventType: Event2Types.Custom,
+    eventType: Event2Types.OptionInteraction,
     eventVersion: "1",
+    optionId,
+    interactionType: "select",
+    optionsSetId: optionsSetKey,
     clientTime: new Date().toISOString(),
-    customName
   };
-  analytics.reportEvent(customEvent);
+  analytics.reportEvent(optionInteractionEvent);
 };

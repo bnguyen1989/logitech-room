@@ -14,7 +14,7 @@ export type OptionsShowProp = {
   optionsSetKey: string;
 };
 
-export const optionsShow = (props: OptionsShowProp) => {
+export const analyticsOptionsShow = (props: OptionsShowProp) => {
   const {  options,optionsSetKey } = props;
 
   if (options.length === 0) return;
@@ -27,7 +27,6 @@ export const optionsShow = (props: OptionsShowProp) => {
   };  
 
   const analytics = new Analytics2(auth);
-  analytics.trace = true;
   const fakeUuid = "00000000-0000-0000-0000-000000000000";
 
   const optionsShowEvent: OptionsShowEvent = {

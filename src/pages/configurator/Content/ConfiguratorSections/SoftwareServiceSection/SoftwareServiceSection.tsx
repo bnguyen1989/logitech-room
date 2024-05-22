@@ -13,8 +13,8 @@ import { getSoftwareServicesLangPage } from "../../../../../store/slices/ui/sele
 import { useDispatch } from "react-redux";
 import { updateDataForm } from "../../../../../store/slices/ui/Ui.slice";
 import { getDataSoftwareQuestionsForm } from "../../../../../store/slices/ui/selectors/selectorsForm";
-import { optionsShow } from "../../../../../utils/analytics/optionsShow";
-import { optionInteraction } from "../../../../../utils/analytics/optionSelect";
+import { analyticsOptionsShow } from "../../../../../utils/analytics/analyticsOptionsShow";
+import { analyticsOptionInteraction } from "../../../../../utils/analytics/analyticsOptionInteraction";
 
 interface ExpressionI {
   questionIndex: number;
@@ -33,7 +33,7 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   );
 
   useEffect(() => {
-    optionsShow({
+    analyticsOptionsShow({
       optionsSetKey: "SoftwareServiceSection",
       options: cards.map((card) => ({
         optionId: card.keyPermission,
@@ -123,7 +123,7 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
         key={index}
         keyItemPermission={card.keyPermission}
         autoActive={!!keysNotVisibleCards.length}  onSelectedAnalytics={()=>
-          optionInteraction({
+          analyticsOptionInteraction({
             optionsSetKey: "SoftwareServiceSection",
             optionId: card.keyPermission
         })}

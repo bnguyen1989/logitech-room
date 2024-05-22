@@ -24,9 +24,9 @@ import {
   getLangProductImage,
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
-import { optionsShow } from "../../../utils/analytics/optionsShow";
+import { analyticsOptionsShow } from "../../../utils/analytics/analyticsOptionsShow";
 import { useEffect } from "react";
-import { optionInteraction } from "../../../utils/analytics/optionSelect";
+import { analyticsOptionInteraction } from "../../../utils/analytics/analyticsOptionInteraction";
 
 interface PropsI {
   keyItemPermission: string;
@@ -37,7 +37,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const { keyItemPermission, children, type } = props;
 
   useEffect(() => {
-    optionsShow({
+    analyticsOptionsShow({
       optionsSetKey: keyItemPermission + " [Checkbox]",
       options: [
         {
@@ -108,7 +108,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const handleClick = () => {
     const { attributeName } = card.dataThreekit;
 
-    optionInteraction({
+    analyticsOptionInteraction({
       optionsSetKey: keyItemPermission + " [Checkbox]",
       optionId: String( !isActiveCard )
     });

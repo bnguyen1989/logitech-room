@@ -12,7 +12,7 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
-import { stage } from "../../../utils/analytics/stage";
+import { analyticsStage } from "../../../utils/analytics/analyticsStage";
 
 declare const app: Application;
 
@@ -38,7 +38,7 @@ export const Actions: React.FC = () => {
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
     
-    stage({ stageName: EventActionName.request_consultation });
+    analyticsStage({ stageName: EventActionName.request_consultation });
 
     app.analyticsEvent({
       category: EventCategoryName.room_page,

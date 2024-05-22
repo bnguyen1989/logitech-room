@@ -12,8 +12,8 @@ import {
 } from "../../../store/slices/ui/selectors/selectorsColorsCard";
 import { StepName } from "../../../utils/baseUtils";
 import { useEffect } from "react";
-import { optionsShow } from "../../../utils/analytics/optionsShow";
-import { optionInteraction } from "../../../utils/analytics/optionSelect";
+import { analyticsOptionsShow } from "../../../utils/analytics/analyticsOptionsShow";
+import { analyticsOptionInteraction } from "../../../utils/analytics/analyticsOptionInteraction";
 
 declare const app: Application;
 
@@ -43,7 +43,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     if (!card) return;
     if (availableColorsData.length < 1) return;
 
-    optionsShow({
+    analyticsOptionsShow({
       optionsSetKey: keyItemPermission + " [ColorSwitcher]",
       options: availableColorsData.map((item) => ({
         optionId: item.name,
@@ -64,7 +64,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
       card.keyPermission
     );
 
-    optionInteraction({
+    analyticsOptionInteraction({
       optionsSetKey: keyItemPermission + " [ColorSwitcher]",
       optionId: value.name
     });
