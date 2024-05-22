@@ -22,7 +22,6 @@ export const ConfigurationFormForStep = () => {
     getSubCardsKeyPermissionStep(activeStepData)
   );
 
-  console.log( "ConfigurationFormForStep", activeStepData);
   
   useEffect(() => {
     if (!contentRef.current) return;

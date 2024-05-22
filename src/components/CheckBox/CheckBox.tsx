@@ -1,9 +1,4 @@
-import { useSession } from "@threekit/react-three-fiber";
 import s from "./CheckBox.module.scss";
-import { ConfigData } from "../../utils/threekitUtils";
-import { optionsShow } from "../../utils/analytics/optionsShow";
-import { useEffect } from "react";
-import { optionInteraction } from "../../utils/analytics/optionSelect";
 
 interface PropsI {
   value?: boolean;

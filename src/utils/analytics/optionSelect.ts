@@ -1,18 +1,24 @@
+import { useSession as getSession } from "@threekit/react-three-fiber";
 import {
   Analytics2,
   Event2Types,
   OptionInteractionEvent,
-  ThreekitAuthProps,
 } from "@threekit/rest-api";
+import { ConfigData } from "../threekitUtils";
 
 export type OptionInteractionProp = {
-  auth: ThreekitAuthProps;
   optionId: string;
   optionsSetKey: string;
-  sessionId: string;
 };
 export const optionInteraction = (props: OptionInteractionProp) => {
-  const { auth, optionId, sessionId, optionsSetKey } = props;
+  const { optionId,optionsSetKey } = props;
+
+  const { sessionId } = getSession();
+  const auth =  {
+    host: ConfigData.host,
+    orgId: ConfigData.orgId,
+    publicToken: ConfigData.publicToken,
+  };  
 
   const analytics = new Analytics2(auth);
 

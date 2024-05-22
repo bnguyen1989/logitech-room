@@ -13,40 +13,27 @@ import { StepName } from "../../../../utils/baseUtils";
 import s from "./PrepareSection.module.scss";
 
 import { useEffect } from "react";
-import { useSession } from "@threekit/react-three-fiber/dist/utilities/analytics.js";
-import { ConfigData } from "../../../../utils/threekitUtils";
 import { optionsShow } from "../../../../utils/analytics/optionsShow";
 import { optionInteraction } from "../../../../utils/analytics/optionSelect";
 
 export const PrepareSection: React.FC = () => {
-  const { sessionId } = useSession();
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
   const secondaryCards = useAppSelector(
     getSecondaryCardsFromStep(activeStepData)
   );
-
-  console.log( "PrepareSection", activeStepData);
-  
     
   // submit event:
   useEffect(() => {
-
+    if( isConfiguratorStep ) return;
     optionsShow( {
-      auth: {
-        host: ConfigData.host,
-        orgId: ConfigData.orgId,
-        publicToken: ConfigData.publicToken,
-      },
+      optionsSetKey: activeStepData.key,
       options: Object.values(activeStepData.cards).map((card) => ({
         optionId: card.keyPermission,
         optionName: card.keyPermission,
         optionValue: card.keyPermission,
-      })),    
-      optionsSetKey: activeStepData.key,
-      sessionId
+      }))
     } );
-    
   }, [activeStepData.key]);
 
   if (isConfiguratorStep) return null;
@@ -80,14 +67,8 @@ export const PrepareSection: React.FC = () => {
           <div className={s.content_cards}>
             {Object.values(activeStepData.cards).map((card, index) =>
               getCardComponent(card, index, () => optionInteraction( {
-                auth: {
-                  host: ConfigData.host,
-                  orgId: ConfigData.orgId,
-                  publicToken: ConfigData.publicToken,
-                },
-                optionId: card.keyPermission,
                 optionsSetKey: activeStepData.key,
-                sessionId } )
+                optionId: card.keyPermission } )
             ))}
           </div>
         </div>
@@ -103,14 +84,8 @@ export const PrepareSection: React.FC = () => {
                   keyItemPermission={card.keyPermission}
                   onSelectedAnalytics={ () =>
                     optionInteraction( {
-                      auth: {
-                        host: ConfigData.host,
-                        orgId: ConfigData.orgId,
-                        publicToken: ConfigData.publicToken,
-                      },
-                      optionId: card.keyPermission,
                       optionsSetKey: activeStepData.key,
-                      sessionId } )
+                      optionId: card.keyPermission } )
                     }
                 />
               ))}

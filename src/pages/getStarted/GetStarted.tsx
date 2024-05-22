@@ -15,20 +15,12 @@ import { useAppSelector } from "../../hooks/redux";
 import { useUrl } from "../../hooks/url";
 import { IconButton } from "../../components/Buttons/IconButton/IconButton";
 import { CopyMarkSVG } from "../../assets";
-import { ConfigData } from "../../utils/threekitUtils";
 import { optionsShow } from "../../utils/analytics/optionsShow";
-import { useSession } from "@threekit/react-three-fiber";
 import { optionInteraction } from "../../utils/analytics/optionSelect";
 
 declare const app: Application;
 
 export const GetStarted: React.FC = () => {
-  const { sessionId } = useSession();
-  const auth = {
-    host: ConfigData.host,
-    orgId: ConfigData.orgId,
-    publicToken: ConfigData.publicToken,
-  }
   const dispatch = useDispatch();
   const langPage = useAppSelector(getGetStartedLangPage);
   const { handleNavigate } = useUrl();
@@ -44,14 +36,12 @@ export const GetStarted: React.FC = () => {
   useEffect(() => {
   
     optionsShow({
-      auth,
+      optionsSetKey: EventCategoryName.get_started,
       options: [RoleUserName.CUSTOMER,RoleUserName.PARTNER].map(name=> ({
         optionId: name,
         optionName: name,
         optionValue: name
-      })),
-      optionsSetKey: EventCategoryName.get_started,
-      sessionId  
+      }))
     });
   }, []);
 
@@ -63,10 +53,8 @@ export const GetStarted: React.FC = () => {
     handleNavigate("/configurator");
     sendAnalytics();
     optionInteraction({
-      auth,
-      optionId: RoleUserName.CUSTOMER,
       optionsSetKey: EventCategoryName.get_started,
-      sessionId
+      optionId: RoleUserName.CUSTOMER
     });
 
   };
@@ -76,12 +64,9 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
-    optionInteraction({
-      auth,
-    
-      optionId: RoleUserName.PARTNER,
+    optionInteraction({    
       optionsSetKey: EventCategoryName.get_started,
-      sessionId
+      optionId: RoleUserName.PARTNER
     });
   };
 

@@ -24,6 +24,9 @@ import {
   getLangProductImage,
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
+import { optionsShow } from "../../../utils/analytics/optionsShow";
+import { useEffect } from "react";
+import { optionInteraction } from "../../../utils/analytics/optionSelect";
 
 interface PropsI {
   keyItemPermission: string;
@@ -32,7 +35,27 @@ interface PropsI {
 }
 export const CardItem: React.FC<PropsI> = (props) => {
   const { keyItemPermission, children, type } = props;
+
+  useEffect(() => {
+    optionsShow({
+      optionsSetKey: keyItemPermission + " [Checkbox]",
+      options: [
+        {
+          optionId: "true",
+          optionName: "true",
+          optionValue: "true",
+        },
+        {
+          optionId: "false",
+          optionName: "false",
+          optionValue: "false",
+        },
+      ],
+    });
+  }, []);
+
   const activeStep = useAppSelector(getActiveStep);
+
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -46,7 +69,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
 
   const threekitAsset = useAppSelector(getAssetFromCard(card));
 
-  console.log("langProduct");
+  //console.log("langProduct");
 
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
@@ -81,10 +104,15 @@ export const CardItem: React.FC<PropsI> = (props) => {
     );
   };
 
-  console.warn("TODO: Add analytics capture for cards!  But it is non-trivial.")
-
+  
   const handleClick = () => {
     const { attributeName } = card.dataThreekit;
+
+    optionInteraction({
+      optionsSetKey: keyItemPermission + " [Checkbox]",
+      optionId: String( !isActiveCard )
+    });
+    
     if (isActiveCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
       return;
