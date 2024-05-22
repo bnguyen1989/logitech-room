@@ -533,22 +533,24 @@ export function changeCountElement(
 
     const element = step.getElementByName(card.keyPermission);
 
-    if (element instanceof MountElement && value === 0) {
+    const removeElement = () => {
+      store.dispatch(removeNodes(cardAsset.id));
       const nameProperty = card.dataThreekit.attributeName;
       app.removeItem(nameProperty, card.keyPermission);
+    };
+
+    if (element instanceof MountElement && value === 0) {
+      removeElement();
     }
 
     if (!element || !(element instanceof ItemElement)) return;
 
     const mountElement = element.getDefaultMount();
 
-    if (!mountElement) return;
-
-    const removeElement = () => {
-      store.dispatch(removeNodes(cardAsset.id));
-      const nameProperty = card.dataThreekit.attributeName;
-      app.removeItem(nameProperty, card.keyPermission);
-    };
+    if (!mountElement && value === 0) {
+      removeElement();
+      return;
+    }
 
     if (!(mountElement instanceof CountableMountElement)) return;
 
