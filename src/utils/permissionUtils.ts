@@ -230,7 +230,9 @@ export function createStepConferenceCamera() {
   );
 
   const groupMeetUp2ActiveCable = new GroupElement().addElement(
-    new ItemElement(CameraName.MeetUp2ActiveCable)
+    new ItemElement(CameraName.MeetUp2ActiveCable).addDependence(
+      new ItemElement(CameraName.MeetUp2)
+    )
   );
 
   stepConferenceCamera.allElements = [
