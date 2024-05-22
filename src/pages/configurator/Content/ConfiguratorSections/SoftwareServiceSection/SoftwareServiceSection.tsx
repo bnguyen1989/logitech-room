@@ -13,6 +13,8 @@ import { getSoftwareServicesLangPage } from "../../../../../store/slices/ui/sele
 import { useDispatch } from "react-redux";
 import { updateDataForm } from "../../../../../store/slices/ui/Ui.slice";
 import { getDataSoftwareQuestionsForm } from "../../../../../store/slices/ui/selectors/selectorsForm";
+import { optionsShow } from "../../../../../utils/analytics/optionsShow";
+import { optionInteraction } from "../../../../../utils/analytics/optionSelect";
 
 interface ExpressionI {
   questionIndex: number;
@@ -29,6 +31,18 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
   );
+
+  useEffect(() => {
+    optionsShow({
+      optionsSetKey: "SoftwareServiceSection",
+      options: cards.map((card) => ({
+        optionId: card.keyPermission,
+        optionName: card.keyPermission,
+        optionValue: card.keyPermission,
+      })),
+    });
+  }, []);
+
   const langPage = useAppSelector(getSoftwareServicesLangPage);
 
   const dataQuestionForm = useAppSelector(getDataSoftwareQuestionsForm);
@@ -108,7 +122,11 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
       <CardSoftware
         key={index}
         keyItemPermission={card.keyPermission}
-        autoActive={!!keysNotVisibleCards.length}  onSelectedAnalytics={()=>{ console.log("TODO: Record analytics here!")}}
+        autoActive={!!keysNotVisibleCards.length}  onSelectedAnalytics={()=>
+          optionInteraction({
+            optionsSetKey: "SoftwareServiceSection",
+            optionId: card.keyPermission
+        })}
       />
     );
   };
