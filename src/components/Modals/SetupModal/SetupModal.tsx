@@ -8,7 +8,7 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
@@ -25,14 +25,20 @@ export const SetupModal: React.FC = () => {
   const user = useUser();
   const orderData: any = useAppSelector(getOrderData(user.id));
   const dataLang = useAppSelector(getSetupModalLangPage);
+  const formLoaded = useRef(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
   };
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      formLoaded.current = false;
+      return;
+    }
+    if (formLoaded.current) return;
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
+    formLoaded.current = true;
 
     MktoForms2.whenReady((form: any) => {
       const baseUrl = getParentURL();
