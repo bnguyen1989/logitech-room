@@ -41,7 +41,6 @@ export class Configurator {
     [AttributeName.RoomCompute],
     [AttributeName.RoomComputeMount],
     [AttributeName.RoomSight],
-    [AttributeName.RoomMeetUp2ActiveCable],
   ];
 
   public static AudioExtensionName = [
@@ -66,6 +65,7 @@ export class Configurator {
     [AttributeName.RoomSwytch],
     [AttributeName.RoomExtend],
     [AttributeName.RoomUSBAtoHDMICable],
+    [AttributeName.RoomMeetUp2ActiveCable],
   ];
 
   public static SoftwareServicesName = [
