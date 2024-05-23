@@ -126,7 +126,25 @@ export class ConfigurationConstraintHandler extends Handler {
       leadingSpecCharForRecommended
     );
 
-    if (!level2row || !level2row.value) return true; //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
+    //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
+    if (!level2row || !level2row.value) {
+      //disabled all options in the level 2 attributes if the level 1 attributes are not all selected
+      //todo: Temp solution
+      const attrState = this.getAttrStateDataByName(
+        AttributeName.RoomAdditionalCamera
+      );
+      if (attrState) {
+        attrState.values.forEach((option) => {
+          option.visible = false;
+        });
+
+        this.configurator.setAttributeState(attrState.id, {
+          values: attrState.values,
+        });
+      }
+
+      return true;
+    }
 
     const level2datatableId = level2row.value[skipColumns[0]];
     const attrRulesStr = level2row.value[skipColumns[1]];

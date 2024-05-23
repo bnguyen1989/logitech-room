@@ -5,9 +5,15 @@ export class CountableMountElement extends MountElement {
   public max: number = 0;
   public activeIndex: number = 0;
   public notAvailableIndex: Array<number> = [];
+  private templateIndex: Array<number> = [];
 
   constructor(name: string, nodeName: string) {
     super(name, nodeName);
+  }
+
+  public setTemplateIndex(templateIndex: Array<number>): CountableMountElement {
+    this.templateIndex = templateIndex;
+    return this;
   }
 
   public next(): CountableMountElement {
@@ -25,13 +31,23 @@ export class CountableMountElement extends MountElement {
   public getNameNode(): string {
     const availableIndex = this.getRangeAvailableIndex();
     const indexNode = availableIndex[this.activeIndex - 1];
+
+    const templateNode = this.getNameNodeByTemplateIndex(indexNode - 1);
+    if (templateNode) {
+      return templateNode;
+    }
     return `${this.nodeName}_${indexNode}`;
   }
 
   public getRangeNameNode(): string[] {
-    return this.getRangeAvailableIndex().map(
-      (index) => `${this.nodeName}_${index}`
-    );
+    return this.getRangeAvailableIndex().map((index) => {
+      const templateNode = this.getNameNodeByTemplateIndex(index - 1);
+      if (templateNode) {
+        return templateNode;
+      }
+
+      return `${this.nodeName}_${index}`;
+    });
   }
 
   public getAvailableNameNode(): string[] {
@@ -39,7 +55,12 @@ export class CountableMountElement extends MountElement {
     const rangeAvailableIndex = this.getRangeAvailableIndex();
     for (let i = 1; i <= this.activeIndex; i++) {
       const index = rangeAvailableIndex[i - 1];
-      range.push(`${this.nodeName}_${index}`);
+      const templateNode = this.getNameNodeByTemplateIndex(index - 1);
+      if (templateNode) {
+        range.push(templateNode);
+      } else {
+        range.push(`${this.nodeName}_${index}`);
+      }
     }
     return range;
   }
@@ -76,6 +97,12 @@ export class CountableMountElement extends MountElement {
     return mountElement;
   }
 
+  private getNameNodeByTemplateIndex(index: number): string | undefined {
+    const indexTemplate = this.templateIndex[index];
+    if (!indexTemplate) return;
+    return `${this.nodeName}_${indexTemplate}`;
+  }
+
   private getRangeAvailableIndex(): number[] {
     const range = [];
     const allCountIndex = this.max + this.notAvailableIndex.length;
@@ -92,7 +119,7 @@ export class CountableMountElement extends MountElement {
     if (nexIndex > this.max) {
       return this.max;
     }
-    
+
     return nexIndex;
   }
 

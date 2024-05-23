@@ -29,12 +29,12 @@ export enum ServiceName {
 }
 
 export enum CameraName {
-  MeetUp = "MeetUp",
   MeetUp2 = "Logitech MeetUp 2",
   RallyBarHuddle = "Logitech Rally Bar Huddle",
   RallyBarMini = "Logitech Rally Bar Mini",
   RallyBar = "Logitech Rally Bar",
   RallyPlus = "Logitech Rally Plus",
+  RallyCamera = "Logitech Rally Camera",
 
   AddCameras = "Add'l Cameras",
 
@@ -207,6 +207,15 @@ export function createStepConferenceCamera() {
       )
     );
 
+  const groupRallyCamera = new GroupElement().addElement(
+    new ItemElement(CameraName.RallyCamera).setDefaultMount(
+      new CountableMountElement(
+        CameraName.RallyCamera,
+        PlacementManager.getNameNodeForCamera("Wall")
+      ).setTemplateIndex([2, 3])
+    )
+  );
+
   const groupCompute = new GroupElement()
     .addElement(
       new ItemElement(CameraName.PreConfiguredMiniPC)
@@ -230,6 +239,7 @@ export function createStepConferenceCamera() {
 
   stepConferenceCamera.allElements = [
     group,
+    groupRallyCamera,
     groupCompute,
     tempGroupMount,
     groupSight,
