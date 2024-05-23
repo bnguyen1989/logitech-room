@@ -38,7 +38,7 @@ export class LanguageFileProcessor {
       .on("data", (data: any) => {
         this.lineNumber++;
         if (this.lineNumber <= 116) {
-          const path = this.findKeyPathPage(this.templatePage, data["en-us"]);
+          const path = this.findKeyPathPage(this.templatePage, data["en-US"]);
           if (path) {
             data["key"] = path;
           } else {
@@ -46,10 +46,10 @@ export class LanguageFileProcessor {
           }
           this.pageJson.push(data);
         } else {
-          if (data["en-us"]) {
+          if (data["en-US"]) {
             const resultPaths = this.findKeyPaths(
               this.templateProduct,
-              data["en-us"]
+              data["en-US"]
             );
 
             resultPaths.forEach((resultPath) => {
@@ -100,7 +100,7 @@ export class LanguageFileProcessor {
     return foundPaths;
   }
 
-  private findKeyPathPage(arr: any[], searchText: any, keyLang = "en-us") {
+  private findKeyPathPage(arr: any[], searchText: any, keyLang = "en-US") {
     for (const item of arr) {
       const value = item[keyLang];
       if (value === searchText) {
@@ -179,10 +179,7 @@ export class LanguageFileProcessor {
     for (const langCode in languageJSON) {
       let dataLang = languageJSON[langCode];
       if (template) {
-        dataLang = this.updateJson(
-          nameFolder === "page" ? this.templatePage : this.templateProduct,
-          dataLang
-        );
+        dataLang = this.updateJson(template, dataLang);
       }
 
       const content = JSON.stringify(dataLang, null, 4);
@@ -193,6 +190,7 @@ export class LanguageFileProcessor {
   private updateJson(template: any, update: any) {
     const updatedJson = JSON.parse(JSON.stringify(template));
     this.recursiveUpdate(updatedJson, update);
+
     return updatedJson;
   }
 
@@ -206,9 +204,22 @@ export class LanguageFileProcessor {
             typeof target[key] === "object"
           ) {
             this.recursiveUpdate(target[key], source[key]);
+          } else if (Array.isArray(source[key]) && Array.isArray(target[key])) {
+            source[key].forEach((sourceElement: any, index: number) => {
+              if (
+                typeof sourceElement === "object" &&
+                typeof target[key][index] === "object"
+              ) {
+                this.recursiveUpdate(target[key][index], sourceElement);
+              } else {
+                target[key][index] = sourceElement;
+              }
+            });
           } else {
             target[key] = source[key];
           }
+        } else {
+          target[key] = source[key];
         }
       }
     }

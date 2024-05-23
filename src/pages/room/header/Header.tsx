@@ -14,6 +14,9 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { useAppSelector } from "../../../hooks/redux";
+import { getRoomsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { divideTextIntoSentence } from "../../../utils/strUtils";
 
 declare const app: Application;
 
@@ -22,6 +25,7 @@ export const Header: React.FC = () => {
   const navigate = useNavigate();
   const user = useUser();
   const { getNavLink } = useUrl();
+  const langPage = useAppSelector(getRoomsLangPage);
 
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
@@ -75,6 +79,8 @@ export const Header: React.FC = () => {
   );
   const userCanAddRoom = user.role.can(PermissionUser.ADD_ROOM);
 
+  const arrSubtileSentences = divideTextIntoSentence(langPage.header.subtitle);
+
   return (
     <div className={s.container}>
       <div className={s.header}>
@@ -86,17 +92,13 @@ export const Header: React.FC = () => {
         </div>
         <div className={s.header_content}>
           <div className={s.header_text}>
-            <div className={s.header_title}>Project Summary</div>
-            <div className={s.header_subtitle}>
-              Thank you for your interest in Logitech!
-            </div>
+            <div className={s.header_title}>{langPage.header.name}</div>
+            <div className={s.header_subtitle}>{arrSubtileSentences[0]}</div>
             {userCanReqConsultation && (
               <div className={s.desc}>
-                Explore your finished room(s) below, and when you're ready to
-                talk next steps, simply <u>request a consultation</u>. We'd be
-                happy to discuss your project, develop a formal quote, and
-                facilitate next steps, whether through Logitech or your
-                preferred partner.
+                {langPage.header.subtitle
+                  .replace(arrSubtileSentences[0], "")
+                  .trim()}
               </div>
             )}
           </div>
@@ -121,25 +123,14 @@ export const Header: React.FC = () => {
         </div>
       </div>
       <div className={s.text}>
-        <div className={s.title}>Explore Your Finished Rooms</div>
-        <div className={s.subtitle}>
-          Configurations are for exploratory purposes only. Room guides and the
-          prices listed are based on local MSRP for the products and are not
-          formal quotes. Prices may vary by location, channel or reseller.
-          {userCanReqConsultation && (
-            <span>
-              {" "}
-              Please <u>request a consultation</u> for more information and next
-              steps.
-            </span>
-          )}
-        </div>
+        <div className={s.title}>{langPage.title}</div>
+        <div className={s.subtitle}>{langPage.subtitle}</div>
       </div>
       <div className={s.buttons}>
         {userCanAddRoom && (
           <Button
             onClick={handleAnotherRoom}
-            text={"Add Another Room"}
+            text={langPage.btn_1}
             variant={"contained"}
           />
         )}

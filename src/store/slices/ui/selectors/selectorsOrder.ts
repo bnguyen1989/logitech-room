@@ -3,10 +3,6 @@ import { StepName } from "../../../../utils/baseUtils";
 import { getAssetId, getNodes } from "../../configurator/selectors/selectors";
 import { CardI } from "../type";
 import {
-  getDescriptionRoomBySize,
-  getTitleFromDataByKeyPermission,
-} from "../utils";
-import {
   getLangProductBlade1,
   getLangProductImage,
   getLangSimpleColorProduct,
@@ -22,12 +18,16 @@ import {
   getSkuFromMetadataByCard,
   getTitleCardByKeyPermission,
 } from "./selectors";
-import lang from "../../../../dataLang/languages.json";
 import {
   isBundleElement,
   isCameraElement,
   isTapElement,
 } from "../../../../utils/permissionUtils";
+import {
+  getLangDescriptionRoomBySize,
+  getPrepareCardTitleLangByKeyPermission,
+  getPrepareDescriptionLangByKeyPermission,
+} from "./selectoteLangPage";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -51,9 +51,6 @@ export const getOrderData = (userId: string) => (state: RootState) => {
   );
 
   const currentLocale = getLocale(state);
-  const localeObj = lang.find(
-    (item: any) => item.languageCode === currentLocale
-  );
   return {
     customerId: userId,
     originOrgId: userId,
@@ -72,8 +69,8 @@ export const getOrderData = (userId: string) => (state: RootState) => {
         configuration,
       },
       locale: {
-        currency: localeObj?.currencyCode ?? "USD",
-        currencyLocale: localeObj?.languageCode ?? "en-US",
+        currency: "USD",
+        currencyLocale: currentLocale ?? "en-US",
       },
     },
     status: "List",
@@ -92,7 +89,9 @@ const getSelectValueBySelectData = (data: any, card: CardI) => {
 const getNameOrder = (state: RootState) => {
   const selectedPrepareCards = getSelectedPrepareCards(state);
   const name = selectedPrepareCards.reduce<string>((acc, item) => {
-    const titleCard = getTitleFromDataByKeyPermission(item.keyPermission);
+    const titleCard = getPrepareCardTitleLangByKeyPermission(
+      item.keyPermission
+    )(state);
     if (item.key === StepName.RoomSize) {
       acc = acc.replace("{0}", titleCard.replace("Room", "").trim());
     }
@@ -113,7 +112,7 @@ const getDescriptionRoom = (state: RootState) => {
     (card) => card.key === StepName.RoomSize
   )?.keyPermission;
   if (!nameRoomSize) return "";
-  const description = getDescriptionRoomBySize(nameRoomSize);
+  const description = getLangDescriptionRoomBySize(nameRoomSize)(state);
   return description;
 };
 
@@ -149,11 +148,15 @@ const getCardData = (state: RootState) => {
       copyCard.image = langProductImage;
     }
 
+    const prepareCardDescription = getPrepareDescriptionLangByKeyPermission(
+      copyCard.keyPermission
+    )(state);
+
     return {
       metadata: {
         data: JSON.stringify(copyCard),
         title: title,
-        description: langProduct?.ShortDescription,
+        description: prepareCardDescription ?? langProduct?.ShortDescription,
         sku: sku,
         color: colorCard,
         count: selectData?.property?.count ?? 1,

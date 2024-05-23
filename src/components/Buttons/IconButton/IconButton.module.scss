@@ -27,6 +27,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  max-width: 100%;
 
   border-radius: 40px;
   border: 1px solid var(--main-color-block);
@@ -36,7 +37,7 @@
 
   .text {
     color: var(--main-color-block);
-    line-height: 26px;
+    line-height: 20px;
   }
 }
 
@@ -54,4 +55,13 @@
 .disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+@media (max-width: 500px) {
+  .button_outlined,
+  .button_contained {
+    .text {
+      line-height: 20px;
+    }
+  }
 }

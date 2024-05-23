@@ -1,5 +1,5 @@
 import { ValueAssetStateI } from "../../../models/configurator/type";
-import { StepName } from "../../../utils/baseUtils";
+import { FormName, StepName } from "../../../utils/baseUtils";
 
 export interface StepDataI {
   [StepName.Platform]: StepI;
@@ -90,4 +90,17 @@ export interface QuestionFormI {
   }>;
   active: boolean;
   done: boolean;
+}
+
+export interface LangTextI {
+  pages: Record<string, any>;
+  products: Record<string, any>;
+}
+
+export interface FormI {
+  [FormName.QuestionFormSoftware]: FormDataI;
+}
+
+export interface FormDataI {
+  isSubmit: boolean;
 }

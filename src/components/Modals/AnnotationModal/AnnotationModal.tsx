@@ -118,6 +118,7 @@ export const AnnotationModal: React.FC = () => {
                   <ColorSwitcherItem
                     keyItemPermission={keyPermission}
                     disabled={disabledActions?.color}
+                    activeStepProp={card["key"]}
                   />
                 </div>
                 <div className={s.button}>

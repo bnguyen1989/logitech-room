@@ -8,12 +8,13 @@ import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
 import { useNavigate } from "react-router-dom";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./form.css";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
+import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const MktoForms2: any;
 
@@ -23,14 +24,21 @@ export const SetupModal: React.FC = () => {
   const { isOpen } = useAppSelector(getSetupModalData);
   const user = useUser();
   const orderData: any = useAppSelector(getOrderData(user.id));
+  const dataLang = useAppSelector(getSetupModalLangPage);
+  const formLoaded = useRef(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
   };
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      formLoaded.current = false;
+      return;
+    }
+    if (formLoaded.current) return;
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
+    formLoaded.current = true;
 
     MktoForms2.whenReady((form: any) => {
       const baseUrl = getParentURL();
@@ -72,7 +80,7 @@ export const SetupModal: React.FC = () => {
       );
       const button = document.querySelector(".mktoButton");
       if (button) {
-        button.textContent = "See my results";
+        button.textContent = dataLang.btn_done;
       }
     });
   }, [isOpen]);
@@ -89,12 +97,8 @@ export const SetupModal: React.FC = () => {
             </IconButton>
           </div>
           <div className={s.text}>
-            <div className={s.title}>Show me the complete setup</div>
-            <div className={s.subtitle}>
-              All finished! Complete the form below so we can share a detailed
-              look at your new space and a detailed product details that you can
-              download and share.
-            </div>
+            <div className={s.title}>{dataLang.title}</div>
+            <div className={s.subtitle}>{dataLang.subtitle}</div>
           </div>
         </div>
 

@@ -12,6 +12,8 @@ import { StepName } from "../../utils/baseUtils";
 import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
 import { getImageUrl } from "../../utils/browserUtils";
 import { isBundleElement } from "../../utils/permissionUtils";
+import { useAppSelector } from "../../hooks/redux";
+import { getDetailRoomLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -19,19 +21,16 @@ export const RoomDetails: React.FC = () => {
   const [nameRoom, setNameRoom] = useState<string>("");
   const [totalAmount, setTotalAmount] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState(true);
+  const langPage = useAppSelector(getDetailRoomLangPage);
 
   const getTitleSectionOrderByStepName = (stepName: StepName) => {
     switch (stepName) {
       case StepName.ConferenceCamera:
-        return "Conferencing Cameras";
       case StepName.AudioExtensions:
-        return "Audio Add-Ons";
       case StepName.MeetingController:
-        return "Audio Accessories";
       case StepName.VideoAccessories:
-        return "Video Conferencing Add-Ons";
       case StepName.SoftwareServices:
-        return "Services";
+        return langPage.StepName[stepName];
       default:
         return "";
     }
@@ -102,7 +101,7 @@ export const RoomDetails: React.FC = () => {
             data: [
               {
                 title: title,
-                subtitle: card.description || description || "",
+                subtitle: description ?? "",
                 image: card.image ?? "",
                 selectValue: selectValue,
               },

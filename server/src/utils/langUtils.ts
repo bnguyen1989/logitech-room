@@ -6,6 +6,7 @@ export const dataLangFile = (): void => {
     .setOutputFilePath(path.join(__dirname, "./../dataLang/result"))
     .setFolderPage("/page")
     .setFolderProduct("/product");
+
   if (processor.isExist()) {
     return;
   }

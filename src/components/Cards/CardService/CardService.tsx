@@ -4,6 +4,7 @@ import {
   getCardByKeyPermission,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
+import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { PrepareCardContainer } from "../PrepareCardContainer/PrepareCardContainer";
 import s from "./CardService.module.scss";
 
@@ -15,6 +16,9 @@ export const CardService: React.FC<PropsI> = (props) => {
   const activeStep = useAppSelector(getActiveStep);
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const description = useAppSelector(
+    getPrepareDescriptionLangByKeyPermission(keyItemPermission)
   );
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -28,7 +32,7 @@ export const CardService: React.FC<PropsI> = (props) => {
         </div>
         <div className={s.text}>
           <div className={s.title}>{title}</div>
-          <div className={s.subtitle}>{card.subtitle}</div>
+          <div className={s.subtitle}>{description}</div>
         </div>
       </div>
     </PrepareCardContainer>

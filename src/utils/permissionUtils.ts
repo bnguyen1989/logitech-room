@@ -29,12 +29,12 @@ export enum ServiceName {
 }
 
 export enum CameraName {
-  MeetUp = "MeetUp",
   MeetUp2 = "Logitech MeetUp 2",
   RallyBarHuddle = "Logitech Rally Bar Huddle",
   RallyBarMini = "Logitech Rally Bar Mini",
   RallyBar = "Logitech Rally Bar",
   RallyPlus = "Logitech Rally Plus",
+  RallyCamera = "Logitech Rally Camera",
 
   AddCameras = "Add'l Cameras",
 
@@ -49,8 +49,6 @@ export enum CameraName {
   ComputeMount = "Compute Mount",
 
   LogitechSight = "Logitech Sight",
-
-  MeetUp2ActiveCable = "Logitech MeetUp 2 Active Cable",
 }
 
 export enum AudioExtensionName {
@@ -82,6 +80,7 @@ export enum VideoAccessoryName {
   LogitechSwytch = "Logitech Swytch",
   LogitechExtend = "Logitech Extend",
   LogitechUSBaToHDMIAdapter = "Logitech USB-A to HDMI Adapter (NITRO)",
+  MeetUp2ActiveCable = "Logitech MeetUp 2 Active Cable",
 }
 
 export enum SoftwareServicesName {
@@ -162,18 +161,24 @@ export function createStepConferenceCamera() {
           item.name,
           PlacementManager.getNameNodeCommodeForCamera("RallyBar")
         )
-      );
+      )
+      .setAccessoryItems([
+        CameraName.WallMountForVideoBars,
+        CameraName.TVMountForVideoBars,
+      ]);
   };
   const group = new GroupElement()
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBarMini)))
     .addElement(
-      new ItemElement(CameraName.MeetUp2).setDefaultMount(
-        new MountElement(
-          CameraName.MeetUp2,
-          PlacementManager.getNameNodeForCamera("TV", 2)
+      new ItemElement(CameraName.MeetUp2)
+        .setDefaultMount(
+          new MountElement(
+            CameraName.MeetUp2,
+            PlacementManager.getNameNodeForCamera("TV", 2)
+          )
         )
-      )
+        .setAccessoryItems([CameraName.TVMountForMeetUP])
     )
     .addElement(
       new ItemElement(CameraName.RallyBarHuddle).setDefaultMount(
@@ -183,27 +188,39 @@ export function createStepConferenceCamera() {
         )
       )
     )
+    .addElement(
+      new ItemElement(CameraName.RallyPlus).setAccessoryItems([
+        CameraName.RallyMountingKit,
+      ])
+    )
     .setRequiredOne(true);
 
   const tempGroupMount = new GroupElement()
     .addElement(
-      new ItemElement(CameraName.TVMountForMeetUP).addDependence([
-        new ItemElement(RoomSizeName.Phonebooth),
-        new ItemElement(RoomSizeName.Huddle),
-      ])
+      new ItemElement(CameraName.TVMountForMeetUP).addDependence(
+        new ItemElement(CameraName.MeetUp2)
+      )
     )
     .addElement(
-      new ItemElement(CameraName.RallyMountingKit).addDependence([
-        new ItemElement(RoomSizeName.Phonebooth),
-        new ItemElement(RoomSizeName.Huddle),
-      ])
+      new ItemElement(CameraName.RallyMountingKit).addDependence(
+        new ItemElement(CameraName.RallyPlus)
+      )
     );
+
+  const groupRallyCamera = new GroupElement().addElement(
+    new ItemElement(CameraName.RallyCamera).setDefaultMount(
+      new CountableMountElement(
+        CameraName.RallyCamera,
+        PlacementManager.getNameNodeForCamera("Wall")
+      ).setTemplateIndex([2, 3])
+    )
+  );
 
   const groupCompute = new GroupElement()
     .addElement(
       new ItemElement(CameraName.PreConfiguredMiniPC)
-        .setVisible(false)
         .setRequired(true)
+        .setAccessoryItems([CameraName.ComputeMount])
     )
     .addElement(
       new ItemElement(CameraName.ComputeMount).addDependence(
@@ -220,16 +237,12 @@ export function createStepConferenceCamera() {
     )
   );
 
-  const groupMeetUp2ActiveCable = new GroupElement().addElement(
-    new ItemElement(CameraName.MeetUp2ActiveCable)
-  );
-
   stepConferenceCamera.allElements = [
     group,
+    groupRallyCamera,
     groupCompute,
     tempGroupMount,
     groupSight,
-    groupMeetUp2ActiveCable,
   ];
   return stepConferenceCamera;
 }
@@ -260,6 +273,7 @@ export function createStepAudioExtensions() {
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
+      .setAccessoryItems([AudioExtensionName.RallyMicPodMount])
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)
@@ -372,7 +386,12 @@ export function createStepMeetingController() {
           item.name,
           PlacementManager.getNameNodeForTap("Table", 1)
         )
-      );
+      )
+      .setAccessoryItems([
+        MeetingControllerName.TapTableMount,
+        MeetingControllerName.TapRiserMount,
+        MeetingControllerName.TapWallMount,
+      ]);
   };
   const groupTap = new GroupElement()
     .addElement(
@@ -428,6 +447,7 @@ export function createStepVideoAccessories() {
         [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],
         [VideoAccessoryName.LogitechTapSchedulerSideMount]: ["color"],
       })
+      .setAccessoryItems([VideoAccessoryName.LogitechTapSchedulerAngleMount])
   );
 
   const group = new GroupElement()
@@ -448,7 +468,12 @@ export function createStepVideoAccessories() {
       )
     )
     .addElement(new ItemElement(VideoAccessoryName.LogitechExtend))
-    .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter));
+    .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter))
+    .addElement(
+      new ItemElement(VideoAccessoryName.MeetUp2ActiveCable).addDependence(
+        new ItemElement(CameraName.MeetUp2)
+      )
+    );
 
   stepVideoAccessories.allElements = [groupScheduler, group];
   return stepVideoAccessories;

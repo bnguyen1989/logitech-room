@@ -18,7 +18,10 @@ import {
 import { useCache } from "../../hooks/cache.ts";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
-import { EffectComposer as EffectComposerImpl } from "postprocessing";
+import {
+  EffectComposer as EffectComposerImpl,
+  ToneMappingMode,
+} from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
 import { base64ToBlob } from "../../utils/browserUtils.ts";
 
@@ -140,7 +143,14 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
         blur={false}
         edgeStrength={10}
       />
-      <ToneMapping />
+      <ToneMapping
+        mode={ToneMappingMode.UNCHARTED2}
+        whitePoint={1}
+        middleGrey={0.5}
+        minLuminance={0.01}
+        maxLuminance={1}
+        averageLuminance={0.5}
+      />
     </EffectComposer>
   );
 });

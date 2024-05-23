@@ -14,8 +14,9 @@ export const getPropertyColorCardByKeyPermission =
   };
 
 export const getColorsFromCard =
-  (keyItemPermission: string) => (state: RootState) => {
-    const assetCard = getAllAssetFromCard(keyItemPermission)(state);
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+
+    const assetCard = getAllAssetFromCard(stepName, keyPermission)(state);;
 
     const colorsData = getColorsData();
 
@@ -40,7 +41,7 @@ export const getColorsFromCard =
     const availableColors = getColors(Object.keys(assetCard));
 
     const availableColorsData = colorsData.filter((color) =>
-      availableColors.includes(color.name)
+      availableColors.some((ac) => ac.includes(color.name))
     );
 
     return availableColorsData;

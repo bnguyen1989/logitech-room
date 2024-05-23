@@ -1,4 +1,4 @@
-import { useAsset } from "@threekit/react-three-fiber";
+import { useScene } from "@threekit/react-three-fiber";
 import * as THREE from "three";
 
 import { GLTFNode } from "./GLTFNode.js";
@@ -22,16 +22,33 @@ export const logNode = (node: THREE.Object3D, depth = 0) => {
 
 export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
   const dispatch = useDispatch();
-  const gltf = useAsset({ assetId: roomAssetId });
+  const gltf = useScene({ assetId: roomAssetId });
   const threeSet = useThree(({ set }) => set);
+  const threeScene = useThree(({ scene }) => scene);
 
   useEffect(() => {
     if (!gltf) return;
     dispatch(changeStatusBuilding(false));
+    const domeLight = gltf.scene.userData.domeLight;
     const camera = gltf.scene.userData.camera as THREE.PerspectiveCamera;
     camera.near = 0.1;
     camera.far = 1000;
+    threeScene.environment = domeLight.image;
     threeSet({ camera });
+
+    gltf.scene.traverse((node) => {
+      if (node instanceof THREE.Mesh && node.isMesh) {
+        const materials = Array.isArray(node.material)
+          ? node.material
+          : [node.material];
+
+        materials.forEach((material) => {
+          if (material instanceof THREE.MeshStandardMaterial) {
+            material.envMapIntensity = domeLight.intensity;
+          }
+        });
+      }
+    });
   }, [gltf]);
 
   if (!gltf) return <></>;
@@ -40,6 +57,7 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
   return (
     <>
       {camera && <primitive object={camera}></primitive>}
+      <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
     </>
   );

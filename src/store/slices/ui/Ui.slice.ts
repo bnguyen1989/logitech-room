@@ -1,7 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { CardI, SelectedDataI, StepDataI } from "./type";
-import { getInitStepData } from "./utils";
-import { StepName } from "../../../utils/baseUtils";
+import {
+  CardI,
+  FormDataI,
+  FormI,
+  LangTextI,
+  SelectedDataI,
+  StepDataI,
+} from "./type";
+import { getFormInitData, getInitStepData } from "./utils";
+import { FormName, StepName } from "../../../utils/baseUtils";
 
 interface UIStateI {
   locale: string;
@@ -9,16 +16,21 @@ interface UIStateI {
   stepData: StepDataI;
   activeStep: StepName;
   selectedData: SelectedDataI;
-  langTextProduct: Record<string, any>;
+  langText: LangTextI;
+  formData: FormI;
 }
 
 const initialState: UIStateI = {
-  locale: "en-us",
+  locale: "",
   processInitData: false,
-  langTextProduct: {},
   stepData: getInitStepData(),
   activeStep: StepName.Services,
   selectedData: {},
+  langText: {
+    pages: {},
+    products: {},
+  },
+  formData: getFormInitData(),
 };
 
 const uiSlice = createSlice({
@@ -29,7 +41,7 @@ const uiSlice = createSlice({
       state.activeStep = action.payload;
     },
     setLangText: (state, action) => {
-      state.langTextProduct = action.payload;
+      state.langText = action.payload;
     },
     moveToStartStep: (state) => {
       state.activeStep = StepName.RoomSize;
@@ -211,6 +223,22 @@ const uiSlice = createSlice({
     changeProcessInitData: (state, action: PayloadAction<boolean>) => {
       state.processInitData = action.payload;
     },
+    updateLocale: (state, action: PayloadAction<string>) => {
+      state.locale = action.payload;
+    },
+    updateDataForm(
+      state,
+      action: PayloadAction<{
+        key: FormName;
+        value: Partial<FormDataI>;
+      }>
+    ) {
+      const { key, value } = action.payload;
+      state.formData[key] = {
+        ...state.formData[key],
+        ...value,
+      };
+    },
   },
 });
 
@@ -229,5 +257,7 @@ export const {
   removeActiveCards,
   addActiveCards,
   clearAllActiveCardsSteps,
+  updateLocale,
+  updateDataForm,
 } = uiSlice.actions;
 export default uiSlice.reducer;

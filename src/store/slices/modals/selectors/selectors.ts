@@ -45,6 +45,7 @@ export const getIsShowProductModal =
     const selectedData = getSelectData(state);
     const { nextStep } = getNavigationStepData(state);
     const selectedDataNextStep = selectedData[nextStep.key];
+    if(!selectedDataNextStep) return false;
     const isActiveElements = Object.values(selectedDataNextStep).some(
       (item) => item.selected.length > 0
     );

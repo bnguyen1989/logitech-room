@@ -64,7 +64,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
     getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
   );
   const availableColorsData = useAppSelector(
-    getColorsFromCard(keyItemPermission)
+    getColorsFromCard(activeStep, keyItemPermission)
   );
   const dispatch = useDispatch();
 
@@ -99,12 +99,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
     card.counter || card.select || availableColorsData.length > 1;
 
   const getClassNameCardContainer = () => {
-    if (type !== "subSection")
-      return `${s.card_container} ${s.card_container_mobile}`;
+    if (type !== "subSection") return `${s.card_container}`;
 
     return `${s.card_container_sub} ${
       isActiveCard ? s.card_container_sub_active : ""
-    } ${s.card_container_mobile}`;
+    }`;
   };
 
   return (
@@ -127,11 +126,12 @@ export const CardItem: React.FC<PropsI> = (props) => {
               {langDataCard && (
                 <div className={s.title}>{langDataCard.ShortDescription}</div>
               )}
-              <div className={s.subtitle}>{subTitle}</div>
+              {!!subTitle?.length && (
+                <div className={s.subtitle}>{subTitle}</div>
+              )}
             </div>
-            <div
-              className={`${s.content} ${isAction ? s.content_actions : ""}`}
-            >
+            {isAction && <div className={s.divider}></div>}
+            <div className={s.content}>
               {isAction && (
                 <div className={s.actions}>
                   <ColorSwitcherItem
@@ -153,14 +153,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   <InformationSVG />
                 </IconButton>
               </div>
-              <div className={s.info_mobile} onClick={handleInfo}>
-                INFO
-              </div>
             </div>
           </div>
         </div>
 
-        {children}
+        {isActiveCard ? children : null}
       </div>
     </CardContainer>
   );

@@ -3,7 +3,10 @@ import {
   getActiveStep,
   getCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
-import { getTitleFromDataByKeyPermission } from "../../../store/slices/ui/utils";
+import {
+  getPrepareCardTitleLangByKeyPermission,
+  getPrepareSubTitleLangByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { PrepareCardContainer } from "../PrepareCardContainer/PrepareCardContainer";
 import s from "./CardRoom.module.scss";
 
@@ -13,7 +16,12 @@ interface PropsI {
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { keyItemPermission } = props;
   const activeStep = useAppSelector(getActiveStep);
-  const title = getTitleFromDataByKeyPermission(keyItemPermission);
+  const title = useAppSelector(
+    getPrepareCardTitleLangByKeyPermission(keyItemPermission)
+  );
+  const subtitle = useAppSelector(
+    getPrepareSubTitleLangByKeyPermission(keyItemPermission)
+  );
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -26,7 +34,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
         </div>
 
         <div className={s.text}>
-          <div className={s.subtitle}>{card.subtitle}</div>
+          <div className={s.subtitle}>{subtitle}</div>
           <div className={s.title}>{title}</div>
         </div>
       </div>

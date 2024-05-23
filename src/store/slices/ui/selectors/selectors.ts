@@ -3,15 +3,14 @@ import { Permission } from "../../../../models/permission/Permission";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { MetadataI } from "../../../../services/Threekit/type";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
-import { RoleUserName } from "../../../../utils/userRoleUtils";
-import { getRoleData } from "../../user/selectors/selectors";
+import { replaceArrValues } from "../../../../utils/strUtils";
 import { CardI, StepI } from "../type";
-import {
-  getDataQuestionFormCustomer,
-  getDataQuestionFormPartner,
-  getTitleFromDataByKeyPermission,
-} from "../utils";
 import { getLangProductCard } from "./selectoreLangProduct";
+import {
+  getPrepareCardTitleLangByKeyPermission,
+  getSubTitleStepByStepName,
+  getTitleStepByStepName,
+} from "./selectoteLangPage";
 
 export const getSelectData = (state: RootState) => state.ui.selectedData;
 
@@ -200,9 +199,8 @@ export const getIsSelectedCardByKeyPermission =
   };
 
 export const getAllAssetFromCard =
-  (keyItemPermission: string) => (state: RootState) => {
-    const activeStep = getActiveStep(state);
-    const card = getCardByKeyPermission(activeStep, keyItemPermission)(state);
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const card = getCardByKeyPermission(stepName, keyPermission)(state);
     return card.dataThreekit.threekitItems;
   };
 
@@ -217,7 +215,11 @@ export const getAssetFromCard = (card: CardI) => (state: RootState) => {
 
   const separatorItemColor = getSeparatorItemColor();
   const nameAsset = `${keyPermission}${separatorItemColor}${color}`;
-  return threekitItems[nameAsset];
+  const asset = threekitItems[nameAsset];
+  if (asset) return asset;
+
+  const keys = Object.keys(threekitItems).filter((key) => key.includes(color));
+  return threekitItems[keys[0]];
 };
 
 export const getMetadataAssetFromCard = (card: CardI) => (state: RootState) => {
@@ -257,10 +259,12 @@ export const getTitleCardByKeyPermission =
     if (langDataCard) {
       return langDataCard.ProductName;
     }
+    const titlePrepareCard =
+      getPrepareCardTitleLangByKeyPermission(keyPermission)(state);
+    if (titlePrepareCard) return titlePrepareCard;
     const title = getMetadataProductNameAssetFromCard(card)(state);
     if (title) return title;
-
-    return getTitleFromDataByKeyPermission(keyPermission);
+    return "";
   };
 
 export const getLocale = (state: RootState) => state.ui.locale;
@@ -269,7 +273,7 @@ export const getPriceFromMetadataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const locale = getLocale(state);
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
-    const keyPrice = `Price_${locale}`;
+    const keyPrice = `Price_${locale.toLowerCase()}`;
     return metadata?.[keyPrice] || "0.000";
   };
 
@@ -346,6 +350,11 @@ export const getCorrectStepDataByPermission =
       ...correctDataCards,
     };
 
+    const title = getTitleStepByStepName(stepName)(state);
+    copyDataStep.title = title;
+    const subtitle = getSubTitleStepByStepName(stepName)(state);
+    copyDataStep.subtitle = subtitle;
+
     return copyDataStep;
   };
 
@@ -363,12 +372,14 @@ export const getFormattingSubtitleByState =
       (card: { key: string }) => card.key === StepName.Services
     );
 
+    const arrValues: string[] = [];
+
     if (roomSizeCard) {
       const roomSizeTile = getTitleCardByKeyPermission(
         StepName.RoomSize,
         roomSizeCard.keyPermission
       )(state);
-      text = text.replace("{0}", getName(roomSizeTile));
+      arrValues.push(getName(roomSizeTile));
     }
 
     if (platformCard) {
@@ -376,7 +387,7 @@ export const getFormattingSubtitleByState =
         StepName.Platform,
         platformCard.keyPermission
       )(state);
-      text = text.replace("{1}", getName(platformTile));
+      arrValues.push(getName(platformTile));
     }
 
     if (serviceCard) {
@@ -384,8 +395,10 @@ export const getFormattingSubtitleByState =
         StepName.Services,
         serviceCard.keyPermission
       )(state);
-      text = text.replace("{2}", getName(serviceTile));
+      arrValues.push(getName(serviceTile));
     }
+
+    text = replaceArrValues(text, arrValues);
 
     return text;
   };
@@ -438,18 +451,12 @@ export const getSubCardsKeyPermissionStep =
     const cards = Object.values(step.cards);
     const cardsKeyPermissions = cards.map((card) => card.keyPermission);
     return cards.reduce<Record<string, string[]>>((acc, card) => {
-      const isActiveCard = getIsSelectedCardByKeyPermission(
-        step.key,
-        card.keyPermission
-      )(state);
-      if (!isActiveCard) return acc;
       const currentStep = permission.getCurrentStep();
       const element = currentStep.getElementByName(card.keyPermission);
       if (!element || element instanceof MountElement) return acc;
-      const dependentMounts = element.getDependenceMount();
-      const dependentNames = dependentMounts.map((mount) => mount.name);
+      const accessItems = element.getAccessoryItems();
       acc[card.keyPermission] = cardsKeyPermissions.filter((key) =>
-        dependentNames.includes(key)
+        accessItems.includes(key)
       );
       return acc;
     }, {});
@@ -488,17 +495,4 @@ const getIsRecommendedCardFromMetadata = (metadata: Record<string, string>) => {
 
 export const getProductNameFromMetadata = (metadata: MetadataI) => {
   return metadata["Product Name"]?.trim();
-};
-
-export const getDataQuestionsForm = (state: RootState) => {
-  const userRoleData = getRoleData(state);
-  if (userRoleData.name === RoleUserName.CUSTOMER) {
-    return getDataQuestionFormCustomer();
-  }
-
-  if (userRoleData.name === RoleUserName.PARTNER) {
-    return getDataQuestionFormPartner();
-  }
-
-  return [];
 };
