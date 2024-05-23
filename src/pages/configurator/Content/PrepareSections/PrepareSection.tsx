@@ -1,3 +1,4 @@
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { CardPlatform } from "../../../../components/Cards/CardPlatform/CardPlatform";
 import { CardRoom } from "../../../../components/Cards/CardRoom/CardRoom";
 import { CardService } from "../../../../components/Cards/CardService/CardService";
@@ -10,12 +11,10 @@ import {
 } from "../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../store/slices/ui/type";
 import { StepName } from "../../../../utils/baseUtils";
+import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 import s from "./PrepareSection.module.scss";
 
 import { useEffect } from "react";
-import { analyticsOptionsShow } from "../../../../utils/analytics/analyticsOptionsShow";
-import { analyticsOptionInteraction } from "../../../../utils/analytics/analyticsOptionInteraction";
-import { analyticsStage } from "../../../../utils/analytics/analyticsStage";
 
 export const PrepareSection: React.FC = () => {
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -28,10 +27,11 @@ export const PrepareSection: React.FC = () => {
   useEffect(() => {
     if( isConfiguratorStep ) return;
 
-    analyticsStage({ stageName: activeStepData.key });
+    getTKAnalytics().stage({ stageName: activeStepData.key });
   
-    analyticsOptionsShow( {
-      optionsSetKey: activeStepData.key,
+    getTKAnalytics().optionsShow( {
+      optionsSetId: activeStepData.key,
+      optionsType: OptionsType.Value,
       options: Object.values(activeStepData.cards).map((card) => ({
         optionId: card.keyPermission,
         optionName: card.keyPermission,
@@ -70,8 +70,9 @@ export const PrepareSection: React.FC = () => {
         <div className={s.wrapperCards}>
           <div className={s.content_cards}>
             {Object.values(activeStepData.cards).map((card, index) =>
-              getCardComponent(card, index, () => analyticsOptionInteraction( {
-                optionsSetKey: activeStepData.key,
+              getCardComponent(card, index, () => getTKAnalytics().optionInteraction( {
+                optionsSetId: activeStepData.key,
+                interactionType: OptionInteractionType.Select,
                 optionId: card.keyPermission } )
             ))}
           </div>
@@ -87,8 +88,9 @@ export const PrepareSection: React.FC = () => {
                   key={index}
                   keyItemPermission={card.keyPermission}
                   onSelectedAnalytics={ () =>
-                    analyticsOptionInteraction( {
-                      optionsSetKey: activeStepData.key,
+                    getTKAnalytics().optionInteraction( {
+                      optionsSetId: activeStepData.key,
+                      interactionType: OptionInteractionType.Select,
                       optionId: card.keyPermission } )
                     }
                 />

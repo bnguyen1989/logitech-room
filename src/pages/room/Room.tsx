@@ -12,7 +12,7 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../models/analytics/type";
-import { analyticsCustom } from "../../utils/analytics/analyticsCustom";
+import { getTKAnalytics } from "../../utils/getTKAnalytics";
 
 declare const app: Application;
 interface RoomI {
@@ -52,7 +52,7 @@ export const Room: React.FC = () => {
   const removeRoom = (shortId: string) => {
     new ThreekitService().deleteOrder(shortId);
     setRooms((prev) => prev.filter((room) => room.shortId !== shortId));
-    analyticsCustom({ customName: "Delete Room" });
+    getTKAnalytics().custom({ customName: "Delete Room" });
   
     app.analyticsEvent({
       category: EventCategoryName.summary_page,

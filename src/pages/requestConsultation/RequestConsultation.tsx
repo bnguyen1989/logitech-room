@@ -1,12 +1,12 @@
 import s from "./RequestConsultation.module.scss";
 import { getImageUrl } from '../../utils/browserUtils'
 import { useEffect } from "react";
-import { analyticsStage } from "../../utils/analytics/analyticsStage";
+import { getTKAnalytics } from "../../utils/getTKAnalytics";
 
 export const RequestConsultation = () => {
 
   useEffect(() => {
-    analyticsStage({ stageName: "Request Consultation" });
+    getTKAnalytics().stage({ stageName: "Request Consultation" });
   }, []);
   
   return (

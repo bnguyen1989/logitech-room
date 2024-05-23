@@ -24,9 +24,9 @@ import {
   getLangProductImage,
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
-import { analyticsOptionsShow } from "../../../utils/analytics/analyticsOptionsShow";
 import { useEffect } from "react";
-import { analyticsOptionInteraction } from "../../../utils/analytics/analyticsOptionInteraction";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 
 interface PropsI {
   keyItemPermission: string;
@@ -37,8 +37,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const { keyItemPermission, children, type } = props;
 
   useEffect(() => {
-    analyticsOptionsShow({
-      optionsSetKey: keyItemPermission + " [Checkbox]",
+    getTKAnalytics().optionsShow({
+      optionsSetId: keyItemPermission + " [Checkbox]",
+      optionsType: OptionsType.Value,
       options: [
         {
           optionId: "true",
@@ -108,9 +109,10 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const handleClick = () => {
     const { attributeName } = card.dataThreekit;
 
-    analyticsOptionInteraction({
-      optionsSetKey: keyItemPermission + " [Checkbox]",
-      optionId: String( !isActiveCard )
+    getTKAnalytics().optionInteraction({
+      optionsSetId: keyItemPermission + " [Checkbox]",
+      optionId: String( !isActiveCard ),
+      interactionType: OptionInteractionType.Select
     });
     
     if (isActiveCard && card.keyPermission) {

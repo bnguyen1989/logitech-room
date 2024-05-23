@@ -21,8 +21,7 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
-import { analyticsStage } from "../../../utils/analytics/analyticsStage";
-import { analyticsCustom } from "../../../utils/analytics/analyticsCustom";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 
 declare const app: Application;
 
@@ -38,18 +37,18 @@ export const FinishModal: React.FC = () => {
   const isShowSetupModal = userCanShowSetupModal && user.isEmptyUserData();
 
   useEffect(() => {
-    analyticsStage({ stageName: "Finish Modal" });
+    getTKAnalytics().stage({ stageName: "Finish Modal" });
   }, []);
   
   const handleClose = () => {
-    analyticsCustom({ customName: "Finish Modal Back" });
+    getTKAnalytics().custom({ customName: "Finish Modal Back" });
     dispatch(setFinishModal({ isOpen: false }));
   };
 
   const handleLetsProceed = () => {
 
 
-    analyticsStage({ stageName: EventActionName.configurator_complete });
+    getTKAnalytics().stage({ stageName: EventActionName.configurator_complete });
 
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,

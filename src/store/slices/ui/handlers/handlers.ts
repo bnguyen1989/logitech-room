@@ -58,7 +58,7 @@ import { getRoomAssetId } from "../../../../utils/threekitUtils";
 import { StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
-import { analyticsStage } from "../../../../utils/analytics/analyticsStage";
+import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 
 declare const app: Application;
 
@@ -221,7 +221,7 @@ function updateDataByConfiguration(
     const activeKeys: string[] = [];
     console.log("stepName", stepName);
 
-    analyticsStage({ stageName: stepName });
+    getTKAnalytics().stage({ stageName: stepName });
 
     arrayAttributes.forEach((item) => {
       const [name, qtyName] = item;

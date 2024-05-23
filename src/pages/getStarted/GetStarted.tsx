@@ -15,9 +15,8 @@ import { useAppSelector } from "../../hooks/redux";
 import { useUrl } from "../../hooks/url";
 import { IconButton } from "../../components/Buttons/IconButton/IconButton";
 import { CopyMarkSVG } from "../../assets";
-import { analyticsOptionsShow } from "../../utils/analytics/analyticsOptionsShow";
-import { analyticsOptionInteraction } from "../../utils/analytics/analyticsOptionInteraction";
-import { analyticsStage } from "../../utils/analytics/analyticsStage";
+import { getTKAnalytics } from "../../utils/getTKAnalytics";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 
 declare const app: Application;
 
@@ -38,9 +37,10 @@ export const GetStarted: React.FC = () => {
   };
 
   useEffect(() => {
-    analyticsStage({ stageName: EventCategoryName.get_started });
-    analyticsOptionsShow({
-      optionsSetKey: EventCategoryName.get_started,
+    getTKAnalytics().stage({ stageName: EventCategoryName.get_started });
+    getTKAnalytics().optionsShow({
+      optionsSetId: EventCategoryName.get_started,
+      optionsType: OptionsType.Value,
       options: [RoleUserName.CUSTOMER,RoleUserName.PARTNER].map(name=> ({
         optionId: name,
         optionName: name,
@@ -56,9 +56,10 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
-    analyticsOptionInteraction({
-      optionsSetKey: EventCategoryName.get_started,
-      optionId: RoleUserName.CUSTOMER
+    getTKAnalytics().optionInteraction({
+      optionsSetId: EventCategoryName.get_started,
+      optionId: RoleUserName.CUSTOMER,
+      interactionType: OptionInteractionType.Select
     });
 
   };
@@ -68,9 +69,10 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
-    analyticsOptionInteraction({    
-      optionsSetKey: EventCategoryName.get_started,
-      optionId: RoleUserName.PARTNER
+    getTKAnalytics().optionInteraction({    
+      optionsSetId: EventCategoryName.get_started,
+      optionId: RoleUserName.PARTNER,
+      interactionType: OptionInteractionType.Select
     });
   };
 

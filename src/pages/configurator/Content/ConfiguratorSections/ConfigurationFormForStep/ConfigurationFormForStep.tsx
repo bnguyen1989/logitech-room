@@ -12,7 +12,7 @@ import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServic
 import { useEffect, useRef } from "react";
 import { StepName } from "../../../../../utils/baseUtils";
 import { SubSectionCardItem } from "../SubSectionCardItem/SubSectionCardItem";
-import { analyticsStage } from "../../../../../utils/analytics/analyticsStage";
+import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
 
 export const ConfigurationFormForStep = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -24,7 +24,7 @@ export const ConfigurationFormForStep = () => {
   );
 
   useEffect(() => {
-    analyticsStage({ stageName: activeStepName });
+    getTKAnalytics().stage({ stageName: activeStepName });
   }, []);
   
   useEffect(() => {

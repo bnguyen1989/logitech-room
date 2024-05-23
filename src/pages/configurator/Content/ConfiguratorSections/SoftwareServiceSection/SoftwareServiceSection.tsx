@@ -13,8 +13,8 @@ import { getSoftwareServicesLangPage } from "../../../../../store/slices/ui/sele
 import { useDispatch } from "react-redux";
 import { updateDataForm } from "../../../../../store/slices/ui/Ui.slice";
 import { getDataSoftwareQuestionsForm } from "../../../../../store/slices/ui/selectors/selectorsForm";
-import { analyticsOptionsShow } from "../../../../../utils/analytics/analyticsOptionsShow";
-import { analyticsOptionInteraction } from "../../../../../utils/analytics/analyticsOptionInteraction";
+import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 
 interface ExpressionI {
   questionIndex: number;
@@ -33,8 +33,9 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   );
 
   useEffect(() => {
-    analyticsOptionsShow({
-      optionsSetKey: "SoftwareServiceSection",
+    getTKAnalytics().optionsShow({
+      optionsSetId: "SoftwareServiceSection",
+      optionsType: OptionsType.Value,
       options: cards.map((card) => ({
         optionId: card.keyPermission,
         optionName: card.keyPermission,
@@ -123,9 +124,10 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
         key={index}
         keyItemPermission={card.keyPermission}
         autoActive={!!keysNotVisibleCards.length}  onSelectedAnalytics={()=>
-          analyticsOptionInteraction({
-            optionsSetKey: "SoftwareServiceSection",
-            optionId: card.keyPermission
+          getTKAnalytics().optionInteraction({
+            optionsSetId: "SoftwareServiceSection",
+            optionId: card.keyPermission,
+            interactionType: OptionInteractionType.Select
         })}
       />
     );
