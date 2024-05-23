@@ -36,9 +36,8 @@
 	opacity: 0.5;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 500px) {
 	.container {
-		justify-content: center;
 		gap: 7.5px;
 		
 		.text {

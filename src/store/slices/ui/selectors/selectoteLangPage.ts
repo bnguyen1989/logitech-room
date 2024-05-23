@@ -195,7 +195,7 @@ export const getPrepareSubTitleLangByKeyPermission =
         return roomSize.Cards[keyPermission].subtitle;
       }
       case PlatformName.BYOD: {
-        return "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.";
+        return "";
       }
       case ServiceName.Android:
       case ServiceName.PC: {
