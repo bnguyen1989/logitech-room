@@ -589,7 +589,7 @@ function setSoftwareServicesData(configurator: Configurator) {
     });
 
     softwareServicesCardData.forEach((tempCard) => {
-      if (tempCard.select) {
+      if (tempCard.select && tempCard.select.data.length) {
         store.dispatch(
           setPropertyItem({
             step: StepName.SoftwareServices,

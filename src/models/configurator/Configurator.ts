@@ -38,6 +38,7 @@ export class Configurator {
   public static CameraName = [
     [AttributeName.RoomCamera],
     [AttributeName.RoomCameraMount],
+    [AttributeName.RoomAdditionalCamera, AttributeName.QtyAdditionalCamera],
     [AttributeName.RoomCompute],
     [AttributeName.RoomComputeMount],
     [AttributeName.RoomSight],

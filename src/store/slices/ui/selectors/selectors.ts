@@ -273,7 +273,7 @@ export const getPriceFromMetadataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const locale = getLocale(state);
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
-    const keyPrice = `Price_${locale}`;
+    const keyPrice = `Price_${locale.toLowerCase()}`;
     return metadata?.[keyPrice] || "0.000";
   };
 
