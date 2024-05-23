@@ -60,27 +60,7 @@ const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
         focus={controls.shadows.keyFocus}
         samples={controls.shadows.keySamples}
       /> */}
-      <group rotation={[0, (Math.PI / 180) * controls.lighting.keyRotation, 0]}>
-        <directionalLight
-          color={[1.0, 1.0, 1.0]}
-          castShadow
-          shadow-bias={shadowBias}
-          position={[
-            radius * 3,
-            radius * 3 + controls.lighting.keyOffset,
-            radius,
-          ]}
-          intensity={controls.lighting.keyIntensity}
-          shadow-mapSize={1024}
-          shadow-camera-near={0.1}
-          shadow-camera-far={10}
-        >
-          <orthographicCamera
-            attach="shadow-camera"
-            args={[-2.5, 2.5, -2.5, 2.5, 0.5, 50]}
-          />
-        </directionalLight>
-      </group>
+
       <group rotation={[0, (Math.PI / 180) * controls.productRotation, 0]}>
         {children}
       </group>
