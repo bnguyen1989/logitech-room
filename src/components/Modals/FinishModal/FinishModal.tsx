@@ -15,12 +15,13 @@ import { PermissionUser } from "../../../utils/userRoleUtils";
 import { useNavigate } from "react-router-dom";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Application } from "../../../models/Application";
 import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 
 declare const app: Application;
 
@@ -35,11 +36,20 @@ export const FinishModal: React.FC = () => {
   const userCanShowSetupModal = user.role.can(PermissionUser.SHOW_SETUP_MODAL);
   const isShowSetupModal = userCanShowSetupModal && user.isEmptyUserData();
 
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: "Finish Modal" });
+  }, []);
+  
   const handleClose = () => {
+    getTKAnalytics().custom({ customName: "Finish Modal Back" });
     dispatch(setFinishModal({ isOpen: false }));
   };
 
   const handleLetsProceed = () => {
+
+
+    getTKAnalytics().stage({ stageName: EventActionName.configurator_complete });
+
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,
       action: EventActionName.configurator_complete,

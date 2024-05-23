@@ -12,6 +12,7 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 
 declare const app: Application;
 
@@ -24,6 +25,9 @@ export const Actions: React.FC = () => {
   const handlerDownload = () => {
     if (!roomId) return;
     app.downloadRoomCSV(roomId);
+
+    getTKAnalytics().custom({ customName: EventActionName.download_room });
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.download_room,
@@ -35,6 +39,9 @@ export const Actions: React.FC = () => {
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
+    
+    getTKAnalytics().stage({ stageName: EventActionName.request_consultation });
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.request_consultation,

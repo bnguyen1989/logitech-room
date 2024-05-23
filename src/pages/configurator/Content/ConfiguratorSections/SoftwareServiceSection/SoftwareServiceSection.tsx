@@ -13,6 +13,8 @@ import { getSoftwareServicesLangPage } from "../../../../../store/slices/ui/sele
 import { useDispatch } from "react-redux";
 import { updateDataForm } from "../../../../../store/slices/ui/Ui.slice";
 import { getDataSoftwareQuestionsForm } from "../../../../../store/slices/ui/selectors/selectorsForm";
+import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 
 interface ExpressionI {
   questionIndex: number;
@@ -29,6 +31,19 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
   );
+
+  useEffect(() => {
+    getTKAnalytics().optionsShow({
+      optionsSetId: "SoftwareServiceSection",
+      optionsType: OptionsType.Value,
+      options: cards.map((card) => ({
+        optionId: card.keyPermission,
+        optionName: card.keyPermission,
+        optionValue: card.keyPermission,
+      })),
+    });
+  }, []);
+
   const langPage = useAppSelector(getSoftwareServicesLangPage);
 
   const dataQuestionForm = useAppSelector(getDataSoftwareQuestionsForm);
@@ -108,10 +123,16 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
       <CardSoftware
         key={index}
         keyItemPermission={card.keyPermission}
-        autoActive={!!keysNotVisibleCards.length}
+        autoActive={!!keysNotVisibleCards.length}  onSelectedAnalytics={()=>
+          getTKAnalytics().optionInteraction({
+            optionsSetId: "SoftwareServiceSection",
+            optionId: card.keyPermission,
+            interactionType: OptionInteractionType.Select
+        })}
       />
     );
   };
+
   return (
     <div className={s.container}>
       {!dataQuestionForm.isSubmit ? (

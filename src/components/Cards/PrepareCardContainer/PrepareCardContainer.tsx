@@ -18,6 +18,7 @@ declare const app: Application;
 interface PropsI {
   keyItemPermission: string;
   children: React.ReactNode;
+  onSelectedAnalytics: () => void;
 }
 export const PrepareCardContainer: React.FC<PropsI> = (props) => {
   const { keyItemPermission, children } = props;
@@ -35,6 +36,8 @@ export const PrepareCardContainer: React.FC<PropsI> = (props) => {
     const { attributeName, threekitItems } = card.dataThreekit;
     const threekitAsset = threekitItems[card.keyPermission];
 
+    props.onSelectedAnalytics();
+    
     if (!attributeName.length) {
       if (isActiveCard) {
         dispatch(removeActiveCard({ key: card.keyPermission }));

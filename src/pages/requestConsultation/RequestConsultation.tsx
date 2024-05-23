@@ -1,7 +1,14 @@
 import s from "./RequestConsultation.module.scss";
 import { getImageUrl } from '../../utils/browserUtils'
+import { useEffect } from "react";
+import { getTKAnalytics } from "../../utils/getTKAnalytics";
 
 export const RequestConsultation = () => {
+
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: "Request Consultation" });
+  }, []);
+  
   return (
     <div className={s.container}>
       <div className={s.image}>

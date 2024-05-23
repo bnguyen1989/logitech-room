@@ -15,6 +15,8 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { ShareType } from "@threekit/rest-api";
 
 declare const app: Application;
 
@@ -44,6 +46,9 @@ export const ShareProjectModal: React.FC = () => {
   const handleCopy = () => {
     copyToClipboard(link);
     setIsCopied(true);
+
+    getTKAnalytics().share({ shareLink: link, shareType: ShareType.Share });
+
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.share_project,

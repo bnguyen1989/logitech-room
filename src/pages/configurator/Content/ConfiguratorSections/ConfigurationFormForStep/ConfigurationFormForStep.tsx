@@ -12,6 +12,7 @@ import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServic
 import { useEffect, useRef } from "react";
 import { StepName } from "../../../../../utils/baseUtils";
 import { SubSectionCardItem } from "../SubSectionCardItem/SubSectionCardItem";
+import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
 
 export const ConfigurationFormForStep = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -22,6 +23,10 @@ export const ConfigurationFormForStep = () => {
     getSubCardsKeyPermissionStep(activeStepData)
   );
 
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: activeStepName });
+  }, []);
+  
   useEffect(() => {
     if (!contentRef.current) return;
     contentRef.current.scrollTop = 0;

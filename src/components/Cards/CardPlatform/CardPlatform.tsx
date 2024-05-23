@@ -9,6 +9,7 @@ import s from "./CardPlatform.module.scss";
 
 interface PropsI {
   keyItemPermission: string;
+  onSelectedAnalytics: () => void;
 }
 export const CardPlatform: React.FC<PropsI> = (props) => {
   const { keyItemPermission } = props;
@@ -21,7 +22,7 @@ export const CardPlatform: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer keyItemPermission={keyItemPermission}>
+    <PrepareCardContainer keyItemPermission={keyItemPermission} onSelectedAnalytics={props.onSelectedAnalytics}>
       <div className={s.container}>
         <div className={s.logo}>
           <img src={card.logo} alt="logo_ms" />

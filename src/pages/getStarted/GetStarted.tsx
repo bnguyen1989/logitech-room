@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./GetStarted.module.scss";
 import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,8 @@ import { useAppSelector } from "../../hooks/redux";
 import { useUrl } from "../../hooks/url";
 import { IconButton } from "../../components/Buttons/IconButton/IconButton";
 import { CopyMarkSVG } from "../../assets";
+import { getTKAnalytics } from "../../utils/getTKAnalytics";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 
 declare const app: Application;
 
@@ -22,6 +24,9 @@ export const GetStarted: React.FC = () => {
   const dispatch = useDispatch();
   const langPage = useAppSelector(getGetStartedLangPage);
   const { handleNavigate } = useUrl();
+
+
+
 
   const sendAnalytics = () => {
     app.analyticsEvent({
@@ -31,12 +36,32 @@ export const GetStarted: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: EventCategoryName.get_started });
+    getTKAnalytics().optionsShow({
+      optionsSetId: EventCategoryName.get_started,
+      optionsType: OptionsType.Value,
+      options: [RoleUserName.CUSTOMER,RoleUserName.PARTNER].map(name=> ({
+        optionId: name,
+        optionName: name,
+        optionValue: name
+      }))
+    });
+  }, []);
+
+  
   const handleCustomerClick = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
     );
     handleNavigate("/configurator");
     sendAnalytics();
+    getTKAnalytics().optionInteraction({
+      optionsSetId: EventCategoryName.get_started,
+      optionId: RoleUserName.CUSTOMER,
+      interactionType: OptionInteractionType.Select
+    });
+
   };
   const handlePartnerClick = () => {
     dispatch(
@@ -44,6 +69,11 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
+    getTKAnalytics().optionInteraction({    
+      optionsSetId: EventCategoryName.get_started,
+      optionId: RoleUserName.PARTNER,
+      interactionType: OptionInteractionType.Select
+    });
   };
 
   const handleCopyUrl = () => {

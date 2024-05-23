@@ -45,6 +45,8 @@ export const ActionsContent = () => {
       return;
     }
 
+
+    
     app.changeStep(prevStep.key);
   };
 
