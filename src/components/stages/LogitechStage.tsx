@@ -2,7 +2,7 @@ import { ContactShadows, Environment } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import CameraControls from "camera-controls";
 import type React from "react";
-import { type ReactNode, useState, MutableRefObject } from "react";
+import { type ReactNode, MutableRefObject } from "react";
 import { ServerApi } from "../../services/api/Server/ServerApi";
 
 const controls = {
@@ -42,13 +42,11 @@ export type LogitechStageProps = {
 };
 
 const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
-  const [radius] = useState<number>(2.0);
 
   const { gl } = useThree();
 
   gl.toneMappingExposure = controls.toneMapping.exposure;
 
-  const shadowBias = -0.002;
   return (
     <>
       <Environment

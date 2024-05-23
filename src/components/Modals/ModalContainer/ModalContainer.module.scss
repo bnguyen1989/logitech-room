@@ -1,6 +1,6 @@
 .container_screen {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   left: 0;
   right: 0;
@@ -30,7 +30,6 @@
 
 @media (max-width: 1000px) {
   .container_screen {
-    height: calc(var(--vh, 1vh) * 100);
     .container_modal_center {
       width: calc(100% - 80px);
     }
@@ -39,7 +38,6 @@
       left: auto;
       top: auto;
       transform: none;
-      height: calc(var(--vh, 1vh) * 100);
       width: 100vw;
     }
   }

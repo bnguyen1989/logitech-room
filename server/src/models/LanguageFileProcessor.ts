@@ -179,10 +179,7 @@ export class LanguageFileProcessor {
     for (const langCode in languageJSON) {
       let dataLang = languageJSON[langCode];
       if (template) {
-        dataLang = this.updateJson(
-          template,
-          dataLang
-        );
+        dataLang = this.updateJson(template, dataLang);
       }
 
       const content = JSON.stringify(dataLang, null, 4);
@@ -193,6 +190,7 @@ export class LanguageFileProcessor {
   private updateJson(template: any, update: any) {
     const updatedJson = JSON.parse(JSON.stringify(template));
     this.recursiveUpdate(updatedJson, update);
+
     return updatedJson;
   }
 
@@ -206,9 +204,22 @@ export class LanguageFileProcessor {
             typeof target[key] === "object"
           ) {
             this.recursiveUpdate(target[key], source[key]);
+          } else if (Array.isArray(source[key]) && Array.isArray(target[key])) {
+            source[key].forEach((sourceElement: any, index: number) => {
+              if (
+                typeof sourceElement === "object" &&
+                typeof target[key][index] === "object"
+              ) {
+                this.recursiveUpdate(target[key][index], sourceElement);
+              } else {
+                target[key][index] = sourceElement;
+              }
+            });
           } else {
             target[key] = source[key];
           }
+        } else {
+          target[key] = source[key];
         }
       }
     }
