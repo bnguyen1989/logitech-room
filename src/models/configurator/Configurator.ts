@@ -14,6 +14,7 @@ export class Configurator {
   public id: string = IdGenerator.generateId();
   public attributesSequenceLevel1: Array<string> = [];
   private _assetId: string = "";
+  private _language: string = "en-US";
   private attributes: Array<AttributeI> = [];
   private configuration: ConfigurationI = {};
   private attributeState: AttributesStateI = {};
@@ -118,6 +119,14 @@ export class Configurator {
     this._assetId = assetId;
   }
 
+  public get language(): string {
+    return this._language;
+  }
+
+  public set language(language: string) {
+    this._language = language;
+  }
+
   public setAttributes(attributes: Array<AttributeI>) {
     this.attributes = attributes;
     this.attributes.forEach((attribute) => {
@@ -209,6 +218,7 @@ export class Configurator {
       configurator.configuration = configuration;
     }
     configurator.assetId = this.assetId;
+    configurator.language = this.language;
     configurator.attributes = [...this.attributes];
     configurator.attributesSequenceLevel1 = [...this.attributesSequenceLevel1];
     return configurator;
