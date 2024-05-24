@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   gap: 24px;
-  height: 180px;
+  // height: 180px;
   z-index: 1;
 
   .mobile_back {
@@ -12,15 +12,15 @@
 }
 
 @media (max-height: 1000px) {
-  .actions {
-    height: 130px;
-  }
+  // .actions {
+  //   height: 130px;
+  // }
 }
 
 @media (max-width: 1000px) {
-  .actions {
-    height: 100px;
-  }
+  // .actions {
+  //   height: 100px;
+  // }
 }
 
 @media (max-width: 500px) {
