@@ -1,4 +1,4 @@
-.container {
+.container_PrepareSection {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,7 +72,7 @@
 }
 
 @media (max-width: 1500px) {
-  .container {
+  .container_PrepareSection {
     .wrapperCards {
       .content_cards {
         gap: 15px;
@@ -82,7 +82,7 @@
 }
 
 @media (max-width: 1300px) {
-  .container {
+  .container_PrepareSection {
     .wrapperCards {
       padding: 0 40px;
       width: calc(100% - 80px);
@@ -96,7 +96,7 @@
 }
 
 @media (max-width: 1000px) {
-  .container {
+  .container_PrepareSection {
     padding-top: 40px;
     height: calc(100% - 40px);
 
@@ -127,7 +127,7 @@
 }
 
 @media (max-width: 500px) {
-  .container {
+  .container_PrepareSection {
     .wrapperCards {
       width: calc(100% - 60px);
       padding: 0 30px;

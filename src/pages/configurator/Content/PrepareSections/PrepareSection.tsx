@@ -65,7 +65,7 @@ export const PrepareSection: React.FC = () => {
   const isSecondaryCards = !!secondaryCards.length;
 
   return (
-    <div className={s.container}>
+    <div className={s.container_PrepareSection}>
       <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
         <div className={s.wrapperCards}>
           <div className={s.content_cards}>
