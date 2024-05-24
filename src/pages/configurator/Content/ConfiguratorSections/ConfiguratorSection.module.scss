@@ -1,4 +1,4 @@
-.container {
+.container_configuratorSection {
   display: grid;
   grid-template-columns: 60% 40%;
   width: 100%;
@@ -25,13 +25,13 @@
 }
 
 @media (max-width: 1200px) {
-  .container {
+  .container_configuratorSection {
     grid-template-columns: 50% 50%;
   }
 }
 
 @media (max-width: 1000px) {
-  .container {
+  .container_configuratorSection {
     padding-top: 40px;
     height: calc(100% - 40px);
     grid-template-columns: auto;

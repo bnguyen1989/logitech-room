@@ -11,7 +11,7 @@ export const Content: React.FC<PropsI> = () => {
   return (
     <div className={s.container}>
       <Heading />
-      <div className={s.content}>
+      <div className={s.content_wrap_section}>
         <PrepareSection />
         <ConfiguratorSection />
       </div>

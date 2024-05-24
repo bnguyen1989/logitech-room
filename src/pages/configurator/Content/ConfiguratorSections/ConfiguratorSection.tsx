@@ -7,7 +7,7 @@ import { LoaderPlayer } from "./LoaderPlayer/LoaderPlayer";
 export const ConfiguratorSection: React.FC = () => {
   return (
     <>
-      <div className={s.container}>
+      <div className={s.container_configuratorSection}>
         <div className={s.player}>
           <Player />
           <LoaderPlayer />
