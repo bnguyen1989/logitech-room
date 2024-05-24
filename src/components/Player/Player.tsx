@@ -129,6 +129,28 @@ export const Player: React.FC = () => {
 };
 
 const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
+  const [edgeStrength, setEdgeStrength] = useState(10);
+  const [fadeDirection, setFadeDirection] = useState(-1);
+
+  useEffect(() => {
+    const duration = 1200;
+    const steps = 30;
+    const intervalTime = duration / steps;
+    const changePerStep = 10 / steps;
+
+    const interval = setInterval(() => {
+      setEdgeStrength((prev) => {
+        const newStrength = prev + fadeDirection * changePerStep;
+        if (newStrength <= 0 || newStrength >= 10) {
+          setFadeDirection((prev) => -prev);
+        }
+        return Math.max(0, Math.min(10, newStrength));
+      });
+    }, intervalTime);
+
+    return () => clearInterval(interval);
+  }, [fadeDirection]);
+
   return (
     <EffectComposer
       stencilBuffer
@@ -138,10 +160,10 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
       ref={ref}
     >
       <Outline
-        visibleEdgeColor={0x47b63f}
-        hiddenEdgeColor={0x47b63f}
+        visibleEdgeColor={0x814efa}
+        hiddenEdgeColor={0x000000}
         blur={false}
-        edgeStrength={10}
+        edgeStrength={edgeStrength}
       />
       <ToneMapping
         mode={ToneMappingMode.UNCHARTED2}
