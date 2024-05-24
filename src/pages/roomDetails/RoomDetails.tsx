@@ -109,9 +109,10 @@ export const RoomDetails: React.FC = () => {
           };
 
           if (card.key !== StepName.SoftwareServices) {
-            const amountInt = parseFloat(price) * parseInt(count);
-            total += amountInt;
-            const amount = formatPrice(amountInt);
+            const priceNumber = parseFloat(price);
+            const amountNumber = priceNumber * parseInt(count);
+            total += amountNumber;
+            const amount = formatPrice(priceNumber);
             const partNumber = `${color}${color ? " : " : ""}${
               isBundleCard ? sku + "*" : sku
             }`;
