@@ -4,15 +4,7 @@ import { useAppSelector } from "./redux";
 import { getLocale } from "../store/slices/ui/selectors/selectors";
 import { useDispatch } from "react-redux";
 import { updateLocale } from "../store/slices/ui/Ui.slice";
-
-const langCodeUrl: Record<string, string> = {
-  en_us: "en-US",
-  es_es: "es-ES",
-  de_de: "de-DE",
-  es_mx: "es-MX",
-  en_gb: "en-US",
-  es_us: "es-ES",
-};
+import { langRegionCodes } from "../utils/localeUtils";
 
 export const useLocale = () => {
   const dispatch = useDispatch();
@@ -23,10 +15,10 @@ export const useLocale = () => {
   const getLocaleFromPathName = () => {
     const pathName = window.location.href;
     const pathNameParts = pathName.split("/");
-    const keysLang = Object.keys(langCodeUrl);
+    const keysLang = Object.keys(langRegionCodes);
     const locale = pathNameParts.find((part) => [...keysLang].includes(part));
     if (locale && keysLang.includes(locale)) {
-      return langCodeUrl[locale];
+      return langRegionCodes[locale];
     }
     return locale;
   };

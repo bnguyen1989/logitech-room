@@ -109,7 +109,10 @@ export const RoomDetails: React.FC = () => {
           };
 
           if (card.key !== StepName.SoftwareServices) {
-            const priceNumber = parseFloat(price);
+            let priceNumber = parseFloat(price);
+            if (isNaN(priceNumber)) {
+              priceNumber = 0.0;
+            }
             const amountNumber = priceNumber * parseInt(count);
             total += amountNumber;
             const amount = formatPrice(priceNumber);

@@ -28,6 +28,7 @@ import {
   getPrepareCardTitleLangByKeyPermission,
   getPrepareDescriptionLangByKeyPermission,
 } from "./selectoteLangPage";
+import { localeToCurrency } from "../../../../utils/localeUtils";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -51,6 +52,7 @@ export const getOrderData = (userId: string) => (state: RootState) => {
   );
 
   const currentLocale = getLocale(state);
+  const currencyCode = getCurrencyCodeByLocale(state);
   return {
     customerId: userId,
     originOrgId: userId,
@@ -69,7 +71,7 @@ export const getOrderData = (userId: string) => (state: RootState) => {
         configuration,
       },
       locale: {
-        currency: "USD",
+        currency: currencyCode ?? "USD",
         currencyLocale: currentLocale ?? "en-US",
       },
     },
@@ -209,4 +211,10 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
       },
     ];
   }, []);
+};
+
+export const getCurrencyCodeByLocale = (state: RootState) => {
+  const locale: string = getLocale(state);
+
+  return localeToCurrency[locale];
 };
