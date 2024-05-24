@@ -16,7 +16,9 @@ export const Content: React.FC<PropsI> = () => {
         <ConfiguratorSection />
       </div>
 
-      <ActionsContent />
+      <div className={s.wrapControl}>
+        <ActionsContent />
+      </div>
       <LoaderSection />
     </div>
   );

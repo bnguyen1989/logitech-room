@@ -10,6 +10,7 @@
     width: 100%;
 
     & img {
+      padding-top: 10%;
       max-width: 160px;
       max-height: 120px;
     }
@@ -32,6 +33,11 @@
 
 @media (max-width: 1000px) {
   .container {
+    .image {
+      & img {
+        padding-top: 0%;
+      }
+    }
     .text {
       white-space: nowrap;
       font-size: 24px;
