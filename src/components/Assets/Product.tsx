@@ -43,7 +43,7 @@ export const Product: React.FC<ProductProps> = ({
     if (!productGltf) return;
     const id = setTimeout(() => {
       callbackDisableHighlight();
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(id);
   }, [productGltf]);
