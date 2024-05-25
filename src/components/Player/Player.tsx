@@ -160,10 +160,22 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
       ref={ref}
     >
       <Outline
-        visibleEdgeColor={0x814efa}
-        hiddenEdgeColor={0x000000}
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
         blur={false}
         edgeStrength={edgeStrength}
+      />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.75}
+      />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.5}
       />
       <ToneMapping
         mode={ToneMappingMode.UNCHARTED2}

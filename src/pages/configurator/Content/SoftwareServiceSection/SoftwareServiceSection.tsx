@@ -1,38 +1,42 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowSelectDownSVG } from "../../../../../assets";
-import { IconButton } from "../../../../../components/Buttons/IconButton/IconButton";
-import { CardSoftware } from "../../../../../components/Cards/CardSoftware/CardSoftware";
-import { QuestionForm } from "../../../../../components/QuestionForm/QuestionForm";
-import { CardI, QuestionFormI } from "../../../../../store/slices/ui/type";
+import { ArrowSelectDownSVG } from "../../../../assets";
+import { IconButton } from "../../../../components/Buttons/IconButton/IconButton";
+import { CardSoftware } from "../../../../components/Cards/CardSoftware/CardSoftware";
+import { QuestionForm } from "../../../../components/QuestionForm/QuestionForm";
+import { CardI, QuestionFormI, StepI } from "../../../../store/slices/ui/type";
 import s from "./SoftwareServiceSection.module.scss";
-import { getExpressionArrayForQuestionForm } from "../../../../../store/slices/ui/utils";
-import { SoftwareServicesName } from "../../../../../utils/permissionUtils";
-import { FormName, StepName } from "../../../../../utils/baseUtils";
-import { useAppSelector } from "../../../../../hooks/redux";
-import { getSoftwareServicesLangPage } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
+import { getExpressionArrayForQuestionForm } from "../../../../store/slices/ui/utils";
+import { SoftwareServicesName } from "../../../../utils/permissionUtils";
+import { FormName, StepName } from "../../../../utils/baseUtils";
+import { useAppSelector } from "../../../../hooks/redux";
+import { getSoftwareServicesLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 import { useDispatch } from "react-redux";
-import { updateDataForm } from "../../../../../store/slices/ui/Ui.slice";
-import { getDataSoftwareQuestionsForm } from "../../../../../store/slices/ui/selectors/selectorsForm";
-import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
+import { updateDataForm } from "../../../../store/slices/ui/Ui.slice";
+import { getDataSoftwareQuestionsForm } from "../../../../store/slices/ui/selectors/selectorsForm";
+import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
+import { getActiveStepData } from "../../../../store/slices/ui/selectors/selectors";
 
 interface ExpressionI {
   questionIndex: number;
   optionIndex: number;
 }
 
-interface PropsI {
-  cards: CardI[];
-}
-export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
-  const { cards } = props;
+export const SoftwareServiceSection: React.FC = () => {
   const dispatch = useDispatch();
   const formAnchorRef = useRef<HTMLDivElement>(null);
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
   );
+  const activeStepData: StepI = useAppSelector(getActiveStepData);
+
+  const cards = Object.values(activeStepData.cards);
+
+  const isSoftwareServicesStep =
+    activeStepData.key === StepName.SoftwareServices;
 
   useEffect(() => {
+    if (!isSoftwareServicesStep) return;
     getTKAnalytics().optionsShow({
       optionsSetId: "SoftwareServiceSection",
       optionsType: OptionsType.Value,
@@ -42,7 +46,7 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
         optionValue: card.keyPermission,
       })),
     });
-  }, []);
+  }, [isSoftwareServicesStep]);
 
   const langPage = useAppSelector(getSoftwareServicesLangPage);
 
@@ -60,8 +64,10 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
   };
 
   useEffect(() => {
-    return () => setStatusForm(false);
-  }, []);
+    if (!isSoftwareServicesStep) {
+      setStatusForm(false);
+    }
+  }, [isSoftwareServicesStep]);
 
   const submitFormData = (data: Array<QuestionFormI>) => {
     const { select, basic, extendedWarranty } =
@@ -123,15 +129,19 @@ export const SoftwareServiceSection: React.FC<PropsI> = (props) => {
       <CardSoftware
         key={index}
         keyItemPermission={card.keyPermission}
-        autoActive={!!keysNotVisibleCards.length}  onSelectedAnalytics={()=>
+        autoActive={!!keysNotVisibleCards.length}
+        onSelectedAnalytics={() =>
           getTKAnalytics().optionInteraction({
             optionsSetId: "SoftwareServiceSection",
             optionId: card.keyPermission,
-            interactionType: OptionInteractionType.Select
-        })}
+            interactionType: OptionInteractionType.Select,
+          })
+        }
       />
     );
   };
+
+  if (!isSoftwareServicesStep) return null;
 
   return (
     <div className={s.container}>
