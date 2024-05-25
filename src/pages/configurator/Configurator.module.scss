@@ -2,12 +2,6 @@
   min-height: calc(var(--vh, 1vh) * 100 - 32px - 24px - 39px);
 }
 
-@media (max-width: 720px) {
-  .container {
-    min-height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px);
-  }
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -17,5 +11,11 @@
     flex: 1;
     height: 100%;
     width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .container {
+    min-height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px);
   }
 }

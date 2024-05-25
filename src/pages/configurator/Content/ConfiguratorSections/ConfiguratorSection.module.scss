@@ -1,15 +1,16 @@
 .container_configuratorSection {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+
+  padding-top: 60px;
   display: grid;
   grid-template-columns: 60% 40%;
   width: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 50;
-  padding-top: 60px;
-  height: calc(100% - 60px);
+  position: relative;
 
   .player {
     width: 100%;
@@ -33,7 +34,6 @@
 @media (max-width: 1000px) {
   .container_configuratorSection {
     padding-top: 40px;
-    height: calc(100% - 40px);
     grid-template-columns: auto;
     grid-template-rows: 45% 55%;
   }

@@ -1,15 +1,9 @@
 .container_PrepareSection {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 60;
   background-color: #f4f4f4;
+  width: 100%;
   padding-top: 60px;
   height: calc(100% - 60px);
 
@@ -17,7 +11,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
+    align-items: center;
+    height: 44.8vh;
     width: 100%;
   }
 
@@ -25,10 +20,7 @@
     display: flex;
     flex-direction: column;
     gap: 60px;
-    padding: 30px 0;
-    height: calc(100% - 60px);
     width: 100%;
-    overflow-y: auto;
   }
 
   .wrapperCards {
@@ -100,9 +92,12 @@
     padding-top: 40px;
     height: calc(100% - 40px);
 
+    .wrapper {
+      height: calc(var(--vh, 1vh) * 46.83);
+    }
+
     .wrapper_scroll {
       gap: 40px;
-      height: calc(100% - 40px);
     }
 
     .wrapperCards {
