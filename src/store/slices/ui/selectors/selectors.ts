@@ -96,6 +96,17 @@ export const getIsConfiguratorStep = (state: RootState) => {
   );
 };
 
+export const getIsIncludePlayer = (state: RootState) => {
+  const { activeStep } = state.ui;
+
+  return ![
+    StepName.Platform,
+    StepName.RoomSize,
+    StepName.Services,
+    StepName.SoftwareServices,
+  ].includes(activeStep);
+};
+
 export const getIsProcessInitData = (state: RootState) =>
   state.ui.processInitData;
 

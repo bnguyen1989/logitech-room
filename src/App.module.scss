@@ -1,5 +1,5 @@
 .app {
-  min-height: 100vh;
+  min-height: auto;
   background-color: var(--main-color-background);
   font-family: var(--font-family);
   position: relative;
@@ -11,8 +11,7 @@
 }
 
 @media (max-width: 1000px) {
-  .app,
-  .loader {
+  .app {
     min-height: calc(var(--vh, 1vh) * 100);
   }
 

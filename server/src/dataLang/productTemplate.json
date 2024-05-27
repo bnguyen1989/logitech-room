@@ -1604,6 +1604,21 @@
       ]
     }
   },
+  
+  "TV MOUNT FOR MEETUP": {
+    "Card": {
+      "ProductName": "TV Mount for MeetUp",
+      "ShortDescription": "Mount MeetUp 2 to TVs"
+    },
+    "Blade_1": {
+      "ProductName": "TV MOUNT FOR MEETUP",
+      "ShortDescription": "Mount MeetUp 2 to TVs",
+      "LongDescription": "Mount MeetUp 2 below a TV for the most natural video experience, or above a smaller display for an alternate angle. Featuring a swing arm design and VESA standard mounting points, easily install MeetUp 2 to almost any flat-panel monitor.",
+      "Colors": {
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/tv-mount-for-meetup/gallery/tv-mount-for-meetup-gallery-1.png?v=1"
+      }
+    }
+  },
   "GENERIC PC COMPUTE": {
     "Card": {
       "ProductName": "Generic PC compute",

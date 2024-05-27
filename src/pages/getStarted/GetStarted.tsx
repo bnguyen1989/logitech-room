@@ -25,9 +25,6 @@ export const GetStarted: React.FC = () => {
   const langPage = useAppSelector(getGetStartedLangPage);
   const { handleNavigate } = useUrl();
 
-
-
-
   const sendAnalytics = () => {
     app.analyticsEvent({
       category: EventCategoryName.get_started,
@@ -41,15 +38,14 @@ export const GetStarted: React.FC = () => {
     getTKAnalytics().optionsShow({
       optionsSetId: EventCategoryName.get_started,
       optionsType: OptionsType.Value,
-      options: [RoleUserName.CUSTOMER,RoleUserName.PARTNER].map(name=> ({
+      options: [RoleUserName.CUSTOMER, RoleUserName.PARTNER].map((name) => ({
         optionId: name,
         optionName: name,
-        optionValue: name
-      }))
+        optionValue: name,
+      })),
     });
   }, []);
 
-  
   const handleCustomerClick = () => {
     dispatch(
       changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
@@ -59,9 +55,8 @@ export const GetStarted: React.FC = () => {
     getTKAnalytics().optionInteraction({
       optionsSetId: EventCategoryName.get_started,
       optionId: RoleUserName.CUSTOMER,
-      interactionType: OptionInteractionType.Select
+      interactionType: OptionInteractionType.Select,
     });
-
   };
   const handlePartnerClick = () => {
     dispatch(
@@ -69,10 +64,10 @@ export const GetStarted: React.FC = () => {
     );
     handleNavigate("/configurator");
     sendAnalytics();
-    getTKAnalytics().optionInteraction({    
+    getTKAnalytics().optionInteraction({
       optionsSetId: EventCategoryName.get_started,
       optionId: RoleUserName.PARTNER,
-      interactionType: OptionInteractionType.Select
+      interactionType: OptionInteractionType.Select,
     });
   };
 
@@ -83,8 +78,15 @@ export const GetStarted: React.FC = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.image}>
-        <img src={getImageUrl("images/getStarted/banner.png")} alt={"banner"} />
+      <div className={s.image_wrap}>
+        <div
+          className={s.image}
+          style={{
+            backgroundImage: `url(${getImageUrl(
+              "images/getStarted/banner.png"
+            )})`,
+          }}
+        ></div>
       </div>
 
       <div className={s.content}>

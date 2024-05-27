@@ -8,9 +8,7 @@ import {
 } from "../../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
-import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
 import { useEffect, useRef } from "react";
-import { StepName } from "../../../../../utils/baseUtils";
 import { SubSectionCardItem } from "../SubSectionCardItem/SubSectionCardItem";
 import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
 
@@ -53,12 +51,6 @@ export const ConfigurationFormForStep = () => {
       </CardItem>
     );
   };
-
-  if (activeStepData.key === StepName.SoftwareServices) {
-    return (
-      <SoftwareServiceSection cards={Object.values(activeStepData.cards)} />
-    );
-  }
 
   return (
     <div ref={contentRef} className={s.form}>

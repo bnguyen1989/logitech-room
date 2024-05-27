@@ -91,7 +91,8 @@ export class ConfigurationConstraintHandler extends Handler {
     this.triggeredByAttr = triggeredByAttr;
     console.log("triggeredByAttr", triggeredByAttr);
 
-    const localeTagStr = "locale_en-us";
+    const locale = this.configurator.language;
+    const localeTagStr = `locale_${locale.toLowerCase()}`;
     const leadingSpecCharForDefault = "*";
     const leadingSpecCharForRecommended = "r";
     const skipColumns = ["level2datatableId", "attrRules", "recoRules"];
@@ -134,12 +135,16 @@ export class ConfigurationConstraintHandler extends Handler {
         AttributeName.RoomAdditionalCamera
       );
       if (attrState) {
-        attrState.values.forEach((option) => {
+        const values = this.copyStructure(
+          attrState.values
+        ) as ValueAssetStateI[];
+
+        values.forEach((option) => {
           option.visible = false;
         });
 
         this.configurator.setAttributeState(attrState.id, {
-          values: attrState.values,
+          values: values,
         });
       }
 
@@ -281,6 +286,14 @@ export class ConfigurationConstraintHandler extends Handler {
 
     if (recoRulesArr.includes(RuleName.reco_micPendantMount_inWhite)) {
       this.rule_reco_micPendantMount_inWhite();
+    }
+
+    if (recoRulesArr.includes(RuleName.reco_RallyBar)) {
+      this.rule_reco_RallyBar();
+    }
+
+    if (recoRulesArr.includes(RuleName.reco_RallyPlus)) {
+      this.rule_reco_RallyPlus();
     }
   }
 
@@ -590,14 +603,16 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_micPod_CATCoupler() {
     const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
+    const isSelectMic = typeof selectedMic === "object";
+    const selectSight = this.getSelectedValue(AttributeName.RoomSight);
+    const isSelectSight = typeof selectSight === "object";
     const attribute = this.getAttribute(AttributeName.RoomMicCATCoupler);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
     const attributeValuesArr = attrState[attribute.id].values;
     if (!attributeValuesArr) return;
 
-    const isSelectMic = typeof selectedMic === "object";
-    if (!isSelectMic) {
+    if (!isSelectMic || isSelectSight) {
       this.configurator.setConfiguration({
         [AttributeName.RoomMicCATCoupler]: {
           assetId: "",
@@ -623,7 +638,9 @@ export class ConfigurationConstraintHandler extends Handler {
     const attribute = this.getAttribute(AttributeName.RoomMicPendantMount);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attrState[attribute.id].values;
+    const attributeValuesArr = this.copyStructure(
+      attrState[attribute.id].values
+    ) as ValueAssetStateI[];
     if (!attributeValuesArr) return;
     const isSelectMic = typeof selectedMic === "object";
     const isSelectMicWhite =
@@ -689,7 +706,9 @@ export class ConfigurationConstraintHandler extends Handler {
     const attribute = this.getAttribute(AttributeName.RoomMicHub);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attrState[attribute.id].values;
+    const attributeValuesArr = this.copyStructure(
+      attrState[attribute.id].values
+    ) as ValueAssetStateI[];
     if (!attributeValuesArr) return;
     const isSelectMic = typeof selectedMic === "object";
     const isSelectMicMount = typeof selectedMicMount === "object";
@@ -736,6 +755,53 @@ export class ConfigurationConstraintHandler extends Handler {
         assetId: visibleValue.id,
       },
       [AttributeName.QtyMicHub]: "1",
+    });
+  }
+
+  private rule_reco_RallyBar() {
+    const attrState = this.getAttrStateDataByName(AttributeName.RoomCamera);
+    if (!attrState) return;
+    const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
+    if (typeof selectedCamera !== "object") return;
+    const isSelectRallyBar = selectedCamera.name.includes(CameraName.RallyBar);
+    const values = this.copyStructure(attrState.values) as ValueAssetStateI[];
+    values.forEach((option) => {
+      if (!("name" in option)) return;
+
+      const isRallyBar = option.name.includes(CameraName.RallyBar);
+      if (isRallyBar && isSelectRallyBar) {
+        this.setRecommendedInMetadata(option, true);
+      } else {
+        this.setRecommendedInMetadata(option, false);
+      }
+    });
+
+    this.configurator.setAttributeState(attrState.id, {
+      values,
+    });
+  }
+
+  private rule_reco_RallyPlus() {
+    const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
+    if (typeof selectedCamera !== "object") return;
+    const isSelectRallyPlus = selectedCamera.name.includes(
+      CameraName.RallyPlus
+    );
+    const attrState = this.getAttrStateDataByName(AttributeName.RoomCamera);
+    if (!attrState) return;
+    const values = this.copyStructure(attrState.values) as ValueAssetStateI[];
+    values.forEach((option) => {
+      if (!("name" in option)) return;
+      const isRallyBar = option.name.includes(CameraName.RallyPlus);
+      if (isRallyBar && isSelectRallyPlus) {
+        this.setRecommendedInMetadata(option, true);
+      } else {
+        this.setRecommendedInMetadata(option, false);
+      }
+    });
+
+    this.configurator.setAttributeState(attrState.id, {
+      values,
     });
   }
 
@@ -1199,5 +1265,9 @@ export class ConfigurationConstraintHandler extends Handler {
       id: attribute.id,
       values: attributeValuesArr,
     };
+  }
+
+  private copyStructure(obj: any) {
+    return JSON.parse(JSON.stringify(obj));
   }
 }
