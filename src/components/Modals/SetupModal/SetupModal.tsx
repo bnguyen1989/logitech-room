@@ -49,29 +49,29 @@ export const SetupModal: React.FC = () => {
 
       const threekitService = new ThreekitService();
 
-      let snapshotLink = "";
-      const assetId = orderData.metadata.configurator.assetId;
-      const snapshot = window.snapshot("blob") as Blob;
-      threekitService.saveConfigurator(snapshot, assetId ?? "").then((id) => {
-        const linkSnapshot = threekitService.getSnapshotLinkById(id);
-        form.setValues({
-          editableField5: linkSnapshot,
-        });
-        snapshotLink = linkSnapshot;
-      });
-
       form.onSubmit(
         (() => {
           let isRequest = false;
           return () => {
             if (!isRequest) {
               isRequest = true;
-              orderData.metadata["snapshot"] = snapshotLink;
-              threekitService.createOrder(orderData).then(() => {
-                dispatch(setMySetupModal({ isOpen: false }));
-                dispatch(setUserData({ data: { ...form.getValues() } }));
-                navigate("/room", { replace: true });
-              });
+              const assetId = orderData.metadata.configurator.assetId;
+              const snapshot = window.snapshot("blob") as Blob;
+              threekitService
+                .saveConfigurator(snapshot, assetId ?? "")
+                .then((id) => {
+                  const linkSnapshot = threekitService.getSnapshotLinkById(id);
+                  form.setValues({
+                    editableField5: linkSnapshot,
+                  });
+
+                  orderData.metadata["snapshot"] = linkSnapshot;
+                  return threekitService.createOrder(orderData).then(() => {
+                    dispatch(setMySetupModal({ isOpen: false }));
+                    dispatch(setUserData({ data: { ...form.getValues() } }));
+                    navigate("/room", { replace: true });
+                  });
+                });
             }
 
             return isRequest;

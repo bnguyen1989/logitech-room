@@ -16,7 +16,7 @@ import {
   ToneMapping,
 } from "@react-three/postprocessing";
 import { useCache } from "../../hooks/cache.ts";
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
 import {
   EffectComposer as EffectComposerImpl,

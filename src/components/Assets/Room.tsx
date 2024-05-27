@@ -34,7 +34,9 @@ export const Room: React.FC<RoomProps> = (props) => {
 
     const snapshotCamera = gltf.cameras[1];
     if (snapshotCamera) {
-      setSnapshotCamera(snapshotCamera);
+      const camera = new THREE.PerspectiveCamera();
+      camera.copy(snapshotCamera as THREE.PerspectiveCamera);
+      setSnapshotCamera(camera);
     }
 
     const domeLight = gltf.scene.userData.domeLight;
