@@ -39,7 +39,7 @@ export enum CameraName {
   AddCameras = "Add'l Cameras",
 
   PreConfiguredMiniPC = "Pre-Configured Mini PC",
-  RoomMate = "RoomMate",
+  RoomMate = "Logitech RoomMate",
 
   TVMountForMeetUP = "TV Mount for MeetUp",
   TVMountForVideoBars = "TV Mount for Video Bars",
@@ -198,11 +198,13 @@ export function createStepConferenceCamera() {
   const tempGroupMount = new GroupElement()
     .addElement(
       new ItemElement(CameraName.TVMountForMeetUP).addDependence(
+        "instruction-1",
         new ItemElement(CameraName.MeetUp2)
       )
     )
     .addElement(
       new ItemElement(CameraName.RallyMountingKit).addDependence(
+        "instruction-1",
         new ItemElement(CameraName.RallyPlus)
       )
     );
@@ -221,11 +223,67 @@ export function createStepConferenceCamera() {
       new ItemElement(CameraName.PreConfiguredMiniPC)
         .setRequired(true)
         .setAccessoryItems([CameraName.ComputeMount])
+        .addDependence("instruction-1", [
+          new ItemElement(RoomSizeName.Phonebooth),
+          new ItemElement(RoomSizeName.Huddle),
+          new ItemElement(RoomSizeName.Small),
+          new ItemElement(RoomSizeName.Medium),
+        ])
+        .addDependence("instruction-1", [new ItemElement(ServiceName.PC)])
+        .addDependence("instruction-1", [
+          new ItemElement(CameraName.MeetUp2),
+          new ItemElement(CameraName.RallyBarHuddle),
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyBarMini),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(RoomSizeName.Large),
+          new ItemElement(RoomSizeName.Auditorium),
+        ])
+        .addDependence("instruction-2", [new ItemElement(ServiceName.PC)])
+        .addDependence("instruction-2", [
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyPlus),
+        ])
     )
     .addElement(
-      new ItemElement(CameraName.ComputeMount).addDependence(
-        new ItemElement(ServiceName.PC)
-      )
+      new ItemElement(CameraName.ComputeMount)
+        .addDependence("instruction-1", [
+          new ItemElement(RoomSizeName.Phonebooth),
+          new ItemElement(RoomSizeName.Huddle),
+          new ItemElement(RoomSizeName.Small),
+          new ItemElement(RoomSizeName.Medium),
+        ])
+        .addDependence("instruction-1", [new ItemElement(ServiceName.PC)])
+        .addDependence("instruction-1", [
+          new ItemElement(CameraName.MeetUp2),
+          new ItemElement(CameraName.RallyBarHuddle),
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyBarMini),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(RoomSizeName.Large),
+          new ItemElement(RoomSizeName.Auditorium),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(ServiceName.PC),
+          new ItemElement(ServiceName.Android),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyPlus),
+        ])
+    )
+    .addElement(
+      new ItemElement(CameraName.RoomMate)
+        .setRequired(true)
+        .setAccessoryItems([CameraName.ComputeMount])
+        .addDependence("instruction-1", [
+          new ItemElement(RoomSizeName.Large),
+          new ItemElement(RoomSizeName.Auditorium),
+        ])
+        .addDependence("instruction-1", [new ItemElement(ServiceName.Android)])
+        .addDependence("instruction-1", [new ItemElement(CameraName.RallyPlus)])
     );
 
   const groupSight = new GroupElement().addElement(
@@ -273,7 +331,10 @@ export function createStepAudioExtensions() {
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
-      .setAccessoryItems([AudioExtensionName.RallyMicPodMount])
+      .setAccessoryItems([
+        AudioExtensionName.RallyMicPodMount,
+        AudioExtensionName.RallyMicPodPendantMount,
+      ])
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)
@@ -471,6 +532,7 @@ export function createStepVideoAccessories() {
     .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter))
     .addElement(
       new ItemElement(VideoAccessoryName.MeetUp2ActiveCable).addDependence(
+        "instruction-1",
         new ItemElement(CameraName.MeetUp2)
       )
     );
