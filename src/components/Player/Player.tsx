@@ -8,7 +8,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { Camera, PerspectiveCamera, Vector3 } from "three";
+import { Camera, Vector3 } from "three";
 import {
   EffectComposer,
   Selection,
@@ -54,18 +54,6 @@ export const Player: React.FC = () => {
     },
   };
 
-  useEffect(() => {
-    if (!effectComposerRef || snapshotCamera) return;
-    const oldCamera = (
-      effectComposerRef.passes.find((pass) => !!(pass as any).camera) as any
-    )?.camera as Camera | undefined;
-    if (oldCamera) {
-      const camera = new PerspectiveCamera();
-      camera.copy(oldCamera as PerspectiveCamera);
-      setSnapshotCamera(camera);
-    }
-  }, [effectComposerRef]);
-
   (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
     if (!effectComposerRef) return "";
     const dataSnapshot = snapshot(effectComposerRef, {
@@ -104,7 +92,10 @@ export const Player: React.FC = () => {
           <Selection>
             <Effects ref={setEffectComposerRef} />
             <LogitechStage>
-              <Room roomAssetId={assetId} />
+              <Room
+                roomAssetId={assetId}
+                setSnapshotCamera={setSnapshotCamera}
+              />
             </LogitechStage>
             <OrbitControls
               enableDamping={true}

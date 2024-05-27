@@ -12,6 +12,7 @@ import { useThree } from "@react-three/fiber";
 export type RoomProps = {
   roomAssetId: string;
   attachNodeNameToAssetId?: Record<string, string>;
+  setSnapshotCamera: (camera: THREE.Camera) => void;
 };
 
 export const logNode = (node: THREE.Object3D, depth = 0) => {
@@ -20,7 +21,8 @@ export const logNode = (node: THREE.Object3D, depth = 0) => {
   node.children.forEach((child) => logNode(child, depth + 1));
 };
 
-export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
+export const Room: React.FC<RoomProps> = (props) => {
+  const { roomAssetId, setSnapshotCamera } = props;
   const dispatch = useDispatch();
   const gltf = useScene({ assetId: roomAssetId });
   const threeSet = useThree(({ set }) => set);
@@ -29,6 +31,14 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
   useEffect(() => {
     if (!gltf) return;
     dispatch(changeStatusBuilding(false));
+
+    const snapshotCamera = gltf.cameras[1];
+    if (snapshotCamera) {
+      const camera = new THREE.PerspectiveCamera();
+      camera.copy(snapshotCamera as THREE.PerspectiveCamera);
+      setSnapshotCamera(camera);
+    }
+
     const domeLight = gltf.scene.userData.domeLight;
     const camera = gltf.scene.userData.camera as THREE.PerspectiveCamera;
     camera.near = 0.1;
