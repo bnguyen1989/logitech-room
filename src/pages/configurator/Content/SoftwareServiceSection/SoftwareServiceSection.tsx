@@ -16,6 +16,7 @@ import { getDataSoftwareQuestionsForm } from "../../../../store/slices/ui/select
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getActiveStepData } from "../../../../store/slices/ui/selectors/selectors";
+import { ContentContainer } from "../ContentContainer/ContentContainer";
 
 interface ExpressionI {
   questionIndex: number;
@@ -144,34 +145,36 @@ export const SoftwareServiceSection: React.FC = () => {
   if (!isSoftwareServicesStep) return null;
 
   return (
-    <div className={s.container}>
-      {!dataQuestionForm.isSubmit ? (
-        <div className={s.button_link}>
-          <div className={s.actions}>
-            <IconButton
-              text={langPage.helpButton}
-              onClick={handleClick}
-              variant={"outlined"}
-            >
-              <ArrowSelectDownSVG />
-            </IconButton>
+    <ContentContainer>
+      <div className={s.container}>
+        {!dataQuestionForm.isSubmit ? (
+          <div className={s.button_link}>
+            <div className={s.actions}>
+              <IconButton
+                text={langPage.helpButton}
+                onClick={handleClick}
+                variant={"outlined"}
+              >
+                <ArrowSelectDownSVG />
+              </IconButton>
+            </div>
+          </div>
+        ) : null}
+        <div className={s.wrapper_cards}>
+          <div className={s.cards}>
+            {cards.map((card, index) => getCardComponent(card, index))}
           </div>
         </div>
-      ) : null}
-      <div className={s.wrapper_cards}>
-        <div className={s.cards}>
-          {cards.map((card, index) => getCardComponent(card, index))}
-        </div>
-      </div>
 
-      {!dataQuestionForm.isSubmit ? (
-        <div className={s.form} ref={formAnchorRef}>
-          <QuestionForm
-            baseData={dataQuestionForm.data}
-            submitData={submitFormData}
-          />
-        </div>
-      ) : null}
-    </div>
+        {!dataQuestionForm.isSubmit ? (
+          <div className={s.form} ref={formAnchorRef}>
+            <QuestionForm
+              baseData={dataQuestionForm.data}
+              submitData={submitFormData}
+            />
+          </div>
+        ) : null}
+      </div>
+    </ContentContainer>
   );
 };

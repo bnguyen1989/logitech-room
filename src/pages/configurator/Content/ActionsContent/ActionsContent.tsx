@@ -6,7 +6,6 @@ import { setFinishModal } from "../../../../store/slices/modals/Modals.slice";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
   getIsCanChangeStep,
-  getIsIncludePlayer,
   getNavigationStepData,
 } from "../../../../store/slices/ui/selectors/selectors";
 import { Application } from "../../../../models/Application";
@@ -16,40 +15,14 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../../models/analytics/type";
-import { useEffect } from "react";
 
 declare const app: Application;
 
 export const ActionsContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isIncludePlayer = useAppSelector(getIsIncludePlayer);
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
   const isCanChangeStep = useAppSelector(getIsCanChangeStep);
-
-  useEffect(() => {
-    const playerContainer = document.getElementById(
-      "configurator-section-elementals"
-    );
-    if (!playerContainer) return;
-    if (isIncludePlayer) {
-      playerContainer.style.position = "static";
-      playerContainer.style.width = "100%";
-      playerContainer.style.height = "44.85vh";
-      if (window.innerWidth < 1000) {
-        playerContainer.style.height = "48.85vh";
-      }
-      if (window.innerWidth < 720) {
-        playerContainer.style.height = "52.85vh";
-      }
-
-      return;
-    }
-
-    playerContainer.style.position = "relative";
-    playerContainer.style.width = "1px";
-    playerContainer.style.height = "1px";
-  }, [isIncludePlayer]);
 
   const handleNext = () => {
     if (!nextStep) {

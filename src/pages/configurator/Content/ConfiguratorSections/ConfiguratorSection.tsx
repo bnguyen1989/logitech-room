@@ -1,21 +1,21 @@
 import { Player } from "../../../../components/Player/Player";
 import s from "./ConfiguratorSection.module.scss";
-// import { PlayerWidgets } from "../../../../components/PlayerWidgets/PlayerWidgets";
 import { ConfigurationFormForStep } from "./ConfigurationFormForStep/ConfigurationFormForStep";
 import { LoaderPlayer } from "./LoaderPlayer/LoaderPlayer";
+import { ContentContainer } from "../ContentContainer/ContentContainer";
 
 export const ConfiguratorSection: React.FC = () => {
   return (
-    <div
-      id={"configurator-section-elementals"}
-      className={s.container_configuratorSection}
-    >
-      <div className={s.player}>
-        <Player />
-        <LoaderPlayer />
-        <div className={s.widgets}>{/* <PlayerWidgets /> */}</div>
+    <ContentContainer>
+      <div className={s.container_configuratorSection}>
+        <div className={s.wrapper}>
+          <div className={s.player}>
+            <Player />
+            <LoaderPlayer />
+          </div>
+          <ConfigurationFormForStep />
+        </div>
       </div>
-      <ConfigurationFormForStep />
-    </div>
+    </ContentContainer>
   );
 };
