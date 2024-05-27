@@ -24,10 +24,7 @@ export const Configurator: React.FC = () => {
   return (
     <div className={s.container}>
       <Header />
-
-      <div className={s.content}>
-        <Content />
-      </div>
+      <Content />
     </div>
   );
 };

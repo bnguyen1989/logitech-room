@@ -15,6 +15,7 @@ import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 import s from "./PrepareSection.module.scss";
 
 import { useEffect } from "react";
+import { ContentContainer } from "../ContentContainer/ContentContainer";
 
 export const PrepareSection: React.FC = () => {
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -85,44 +86,46 @@ export const PrepareSection: React.FC = () => {
   const isSecondaryCards = !!secondaryCards.length;
 
   return (
-    <div className={s.container_PrepareSection}>
-      <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
-        <div className={s.wrapperCards}>
-          <div className={s.content_cards}>
-            {Object.values(activeStepData.cards).map((card, index) =>
-              getCardComponent(card, index, () =>
-                getTKAnalytics().optionInteraction({
-                  optionsSetId: activeStepData.key,
-                  interactionType: OptionInteractionType.Select,
-                  optionId: card.keyPermission,
-                })
-              )
-            )}
+    <ContentContainer>
+      <div className={s.container_PrepareSection}>
+        <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
+          <div className={s.wrapperCards}>
+            <div className={s.content_cards}>
+              {Object.values(activeStepData.cards).map((card, index) =>
+                getCardComponent(card, index, () =>
+                  getTKAnalytics().optionInteraction({
+                    optionsSetId: activeStepData.key,
+                    interactionType: OptionInteractionType.Select,
+                    optionId: card.keyPermission,
+                  })
+                )
+              )}
+            </div>
           </div>
+          {isSecondaryCards && (
+            <div className={s.secondaryWrapper}>
+              <div className={s.titleSecond}>
+                Not quite what you’re looking for?
+              </div>
+              <div className={s.secondaryWrapperCards}>
+                {secondaryCards.map((card, index) => (
+                  <PrepareSecondaryCard
+                    key={index}
+                    keyItemPermission={card.keyPermission}
+                    onSelectedAnalytics={() =>
+                      getTKAnalytics().optionInteraction({
+                        optionsSetId: activeStepData.key,
+                        interactionType: OptionInteractionType.Select,
+                        optionId: card.keyPermission,
+                      })
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        {isSecondaryCards && (
-          <div className={s.secondaryWrapper}>
-            <div className={s.titleSecond}>
-              Not quite what you’re looking for?
-            </div>
-            <div className={s.secondaryWrapperCards}>
-              {secondaryCards.map((card, index) => (
-                <PrepareSecondaryCard
-                  key={index}
-                  keyItemPermission={card.keyPermission}
-                  onSelectedAnalytics={() =>
-                    getTKAnalytics().optionInteraction({
-                      optionsSetId: activeStepData.key,
-                      interactionType: OptionInteractionType.Select,
-                      optionId: card.keyPermission,
-                    })
-                  }
-                />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+    </ContentContainer>
   );
 };
