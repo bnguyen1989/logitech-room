@@ -290,7 +290,7 @@ export function createStepConferenceCamera() {
     new ItemElement(CameraName.LogitechSight).setDefaultMount(
       new MountElement(
         CameraName.LogitechSight,
-        PlacementManager.getNameNodeForMic(3)
+        PlacementManager.getNameNodeForSight()
       )
     )
   );
