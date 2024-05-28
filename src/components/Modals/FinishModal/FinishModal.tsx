@@ -39,28 +39,22 @@ export const FinishModal: React.FC = () => {
   useEffect(() => {
     getTKAnalytics().stage({ stageName: "Finish Modal" });
   }, []);
-  
+
   const handleClose = () => {
     getTKAnalytics().custom({ customName: "Finish Modal Back" });
     dispatch(setFinishModal({ isOpen: false }));
   };
 
   const handleLetsProceed = () => {
-
-
-    getTKAnalytics().stage({ stageName: EventActionName.configurator_complete });
+    getTKAnalytics().stage({
+      stageName: EventActionName.configurator_complete,
+    });
 
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,
       action: EventActionName.configurator_complete,
       value: {},
     });
-    if (isShowSetupModal) {
-      dispatch(setMySetupModal({ isOpen: true }));
-      dispatch(setFinishModal({ isOpen: false }));
-      return;
-    }
-
     setSendRequest(true);
     const threekitService = new ThreekitService();
     const assetId = orderData.metadata.configurator.assetId;
@@ -73,7 +67,13 @@ export const FinishModal: React.FC = () => {
 
         return threekitService.createOrder(orderData).then(() => {
           dispatch(setFinishModal({ isOpen: false }));
-          navigate("/room", { replace: true });
+          if (isShowSetupModal) {
+            dispatch(
+              setMySetupModal({ isOpen: true, dataModal: { linkSnapshot } })
+            );
+          } else {
+            navigate("/room", { replace: true });
+          }
         });
       })
       .finally(() => {
