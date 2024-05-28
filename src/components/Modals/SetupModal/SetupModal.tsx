@@ -6,21 +6,21 @@ import { getSetupModalData } from "../../../store/slices/modals/selectors/select
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import "./form.css";
 import { getParentURL } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
 import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { useUrl } from "../../../hooks/url";
 
 declare const MktoForms2: any;
 
 export const SetupModal: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen, dataModal } = useAppSelector(getSetupModalData);
   const user = useUser();
+  const { handleNavigate } = useUrl();
   const dataLang = useAppSelector(getSetupModalLangPage);
   const formLoaded = useRef(false);
 
@@ -53,7 +53,7 @@ export const SetupModal: React.FC = () => {
       form.onSubmit(() => {
         dispatch(setMySetupModal({ isOpen: false }));
         dispatch(setUserData({ data: { ...form.getValues() } }));
-        navigate("/room", { replace: true });
+        handleNavigate("/room");
         return true;
       });
       const button = document.querySelector(".mktoButton");

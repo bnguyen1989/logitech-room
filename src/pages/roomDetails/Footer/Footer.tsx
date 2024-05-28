@@ -1,20 +1,20 @@
 import React from "react";
 import s from "./Footer.module.scss";
 import { Actions } from "../Actions/Actions";
+import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface PropsI {
   totalAmount?: string;
 }
 export const Footer: React.FC<PropsI> = (props) => {
   const { totalAmount } = props;
+  const langPage = useAppSelector(getDetailRoomLangPage);
+
   return (
     <div className={s.container}>
       <div className={s.desc}>
-        <div className={s.text}>
-          Configurations are for exploratory purposes only. Room guides and the
-          prices listed are based on local MSRP for the products and are not
-          formal quotes. Prices may vary by location, channel or reseller.
-        </div>
+        <div className={s.text}>{langPage.subtitle.v2}</div>
 
         {!!totalAmount && (
           <div className={s.total_amount}>

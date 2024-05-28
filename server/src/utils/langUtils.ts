@@ -5,7 +5,8 @@ export const dataLangFile = (): void => {
   const processor = new LanguageFileProcessor()
     .setOutputFilePath(path.join(__dirname, "./../dataLang/result"))
     .setFolderPage("/page")
-    .setFolderProduct("/product");
+    .setFolderProduct("/product")
+    .setNumberRowDivider(227);
 
   if (processor.isExist()) {
     return;

@@ -1,4 +1,4 @@
-import { CardI, FormI, QuestionFormI, StepDataI } from "./type";
+import { CardI, FormI, StepDataI } from "./type";
 import {
   CameraName,
   MeetingControllerName,
@@ -29,8 +29,8 @@ export const getFormInitData = (): FormI => {
     [FormName.QuestionFormSoftware]: {
       isSubmit: false,
     },
-  }
-}
+  };
+};
 
 export const getInitStepData = (): StepDataI => {
   return {
@@ -222,50 +222,6 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
     },
   };
 }
-
-export const getDataQuestionFormPartner = (): Array<QuestionFormI> => {
-  return [
-    {
-      question: "What are the expected hours of support?",
-      options: [
-        { value: false, text: "Business Hours" },
-        { value: false, text: "24/7" },
-      ],
-      active: true,
-      done: false,
-    },
-    {
-      question: "What’s the expected repair time for meeting rooms?",
-      options: [
-        { value: false, text: "Within 1 week" },
-        { value: false, text: "Within 1 hour" },
-      ],
-      active: false,
-      done: false,
-    },
-    {
-      question: "What’s the typical life cycle for meeting room hardware?",
-      options: [
-        { value: false, text: "Less than 2 years" },
-        { value: false, text: "2-5 years" },
-        { value: false, text: "5 years or more" },
-      ],
-      active: false,
-      done: false,
-    },
-    {
-      question:
-        "What support service is needed to ensure meeting rooms are always up and running?",
-      options: [
-        { value: false, text: "Tech support when needed" },
-        { value: false, text: "Dedicated, additional service and support" },
-      ],
-      active: false,
-      done: false,
-    },
-  ];
-};
-
 
 export const getExpressionArrayForQuestionForm = () => {
   const expressionArraySelect = [
