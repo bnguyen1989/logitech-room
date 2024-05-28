@@ -65,7 +65,10 @@ export const RoomDetails: React.FC = () => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
-        const locale = room.metadata["locale"] as any;
+        const locale = (room.metadata["locale"] as any) ?? {
+          currencyLocale: "en-US",
+          currency: "USD",
+        };
 
         const formatPrice = getFormatPrice(
           locale.currencyLocale,
