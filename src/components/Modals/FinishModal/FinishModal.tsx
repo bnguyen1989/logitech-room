@@ -12,7 +12,6 @@ import {
 import { Button } from "../../Buttons/Button/Button";
 import { useUser } from "../../../hooks/user";
 import { PermissionUser } from "../../../utils/userRoleUtils";
-import { useNavigate } from "react-router-dom";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
 import { useEffect, useState } from "react";
@@ -22,13 +21,14 @@ import {
   EventCategoryName,
 } from "../../../models/analytics/type";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { useUrl } from "../../../hooks/url";
 
 declare const app: Application;
 
 export const FinishModal: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useUser();
+  const { handleNavigate } = useUrl();
   const { isOpen } = useAppSelector(getFinishModalData);
   const orderData: any = useAppSelector(getOrderData(user.id));
   const [sendRequest, setSendRequest] = useState(false);
@@ -72,7 +72,7 @@ export const FinishModal: React.FC = () => {
               setMySetupModal({ isOpen: true, dataModal: { linkSnapshot } })
             );
           } else {
-            navigate("/room", { replace: true });
+            handleNavigate("/room");
           }
         });
       })

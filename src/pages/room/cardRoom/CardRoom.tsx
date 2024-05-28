@@ -10,6 +10,8 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { useAppSelector } from "../../../hooks/redux";
+import { getRoomsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -24,6 +26,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId, removeRoom } = props;
   const { handleNavigate } = useUrl();
   const user = useUser();
+  const langPage = useAppSelector(getRoomsLangPage);
 
   const handleDownload = () => {
     app.downloadRoomCSV(shortId);
@@ -72,14 +75,14 @@ export const CardRoom: React.FC<PropsI> = (props) => {
         <div className={s.buttons}>
           <IconButton
             onClick={handleDownload}
-            text={"Download Room Guide"}
+            text={langPage.card.buttons.DownloadRoomGuide}
             variant={"outlined"}
           >
             <DownloadSVG />
           </IconButton>
           <Button
             onClick={handleViewRoom}
-            text={"View Your Room"}
+            text={langPage.card.buttons.ViewRoom}
             variant={"contained"}
           />
         </div>

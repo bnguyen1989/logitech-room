@@ -315,14 +315,21 @@
     "key": "Video Accessories#subtitle"
   },
   {
-    "en-US": "Finish up by adding services and tools to ensure your deployment is always up and running.",
+    "en-US": "Finish up by adding services and tools to ensure the deployment is always up and running.",
     "de-DE": "Fügen Sie abschließend Dienste und Tools hinzu, um sicherzustellen, dass Ihre Bereitstellung immer betriebsbereit ist.",
     "es-ES": "Para terminar, añada servicios y herramientas para asegurarse de que su implementación esté siempre en funcionamiento.",
     "es-MX": "Finaliza agregando servicios y herramientas para garantizar que tu implementación siempre esté en funcionamiento.",
     "key": "Software & Services#title"
   },
   {
-    "en-US": "Need help choosing? ",
+    "en-US": "Based on your answers, we recommend:",
+    "de-DE": "Basierend auf Ihren Antworten empfehlen wir Folgendes:",
+    "es-ES": "Basándonos en sus respuestas, le recomendamos:",
+    "es-MX": "Basándonos en sus respuestas, le recomendamos:",
+    "key": "Software & Services#titleAfterForm"
+  },
+  {
+    "en-US": "Need help choosing?",
     "de-DE": "Benötigen Sie Hilfe bei der Auswahl?",
     "es-ES": "¿Necesita ayuda para elegir?",
     "es-MX": "¿Necesitas ayuda para elegir?",
@@ -336,10 +343,10 @@
     "key": "Software & Services#Cards#Logitech Sync#title"
   },
   {
-    "en-US": "Global, business-hours support and 2-year standard warranty, as well as software to better manage and maintain your deployment.",
-    "de-DE": "Weltweiter Support während der Geschäftszeiten und zwei Jahre Standardgarantie sowie Software zur besseren Verwaltung und Wartung Ihrer Installation.",
-    "es-ES": "Asistencia global en horario laboral y garantía estándar de 2 años, así como software para gestionar y mantener mejor su implementación.",
-    "es-MX": "Asistencia global en horario laboral y garantía estándar de 2 años, así como software para administrar y mantener mejor su implementación.",
+    "en-US": "Always included with hardware purchase. Global, business-hours support and 2-year standard warranty, as well as Sync management platform to better manage and maintain the deployment.",
+    "de-DE": "Immer im Lieferumfang enthalten. Weltweiter Support während der Geschäftszeiten und eine Standardgarantie von 2 Jahren sowie Sync-Verwaltungsplattform für eine bessere Verwaltung und Wartung der Bereitstellung.",
+    "es-ES": "Siempre incluido con la compra de hardware. Asistencia global en horario laboral y garantía estándar de 2 años, así como plataforma de gestión Sync para gestionar y mantener mejor la implementación.",
+    "es-MX": "Siempre incluido con la compra de hardware. Asistencia global en horario laboral y garantía estándar de 2 años, así como plataforma de gestión Sync para gestionar y mantener mejor la implementación.",
     "key": "Software & Services#Cards#Logitech Sync#description"
   },
   {
@@ -350,7 +357,7 @@
     "key": "Software & Services#Cards#Logitech Extended Warranty#title"
   },
   {
-    "en-US": "Add up to 3 years of warranty to extend coverage and support for your devices.",
+    "en-US": "Add up to 3 years of warranty to extend coverage and support for the devices.",
     "de-DE": "Verlängern Sie die Garantie auf bis zu 3 Jahre, um die Abdeckung und den Support für Ihre Geräte zu verlängern.",
     "es-ES": "Añada hasta 3 años de garantía para ampliar la cobertura y la asistencia para sus dispositivos.",
     "es-MX": "Agrega hasta 3 años de garantía para ampliar la cobertura y la asistencia para tus dispositivos.",
@@ -375,14 +382,14 @@
     "de-DE": "Wie sind Ihre Geschäftszeiten für den Support?",
     "es-ES": "¿Cuál es el horario de asistencia?",
     "es-MX": "¿Cuál es tu horario de asistencia?",
-    "key": "Software & Services#QuestionForm#0#question"
+    "key": "Software & Services#QuestionForm#v1#0#question"
   },
   {
     "en-US": "Business Hours",
     "de-DE": "Geschäftszeiten",
     "es-ES": "Horario laboral",
     "es-MX": "Horario comercial",
-    "key": "Software & Services#QuestionForm#0#option_1"
+    "key": "Software & Services#QuestionForm#v1#0#option_1"
   },
   {
     "en-US": "Basic, Extended Warranty",
@@ -396,7 +403,7 @@
     "de-DE": "24/7",
     "es-ES": "24/7",
     "es-MX": "24/7",
-    "key": "Software & Services#QuestionForm#0#option_2"
+    "key": "Software & Services#QuestionForm#v1#0#option_2"
   },
   {
     "en-US": "Select",
@@ -410,14 +417,14 @@
     "de-DE": "Wie lange brauchen Sie für die Reparatur von Konferenzräumen?",
     "es-ES": "¿Cuál es el tiempo de reparación de las salas de reuniones?",
     "es-MX": "¿Cuál es tu tiempo de reparación de las salas de reuniones?",
-    "key": "Software & Services#QuestionForm#1#question"
+    "key": "Software & Services#QuestionForm#v1#1#question"
   },
   {
     "en-US": "Within 1 week",
     "de-DE": "Innerhalb 1 Woche",
     "es-ES": "En 1 semana",
     "es-MX": "En el transcurso de 1 semana",
-    "key": "Software & Services#QuestionForm#1#option_1"
+    "key": "Software & Services#QuestionForm#v1#1#option_1"
   },
   {
     "en-US": "Basic, Extended Warranty",
@@ -431,7 +438,7 @@
     "de-DE": "Innerhalb 1 Stunde",
     "es-ES": "En 1 hora",
     "es-MX": "En el transcurso de 1 hora",
-    "key": "Software & Services#QuestionForm#1#option_2"
+    "key": "Software & Services#QuestionForm#v1#1#option_2"
   },
   {
     "en-US": "Select",
@@ -445,14 +452,14 @@
     "de-DE": "Wie sieht der typische Lebenszyklus von Hardware für Konferenzräume aus?",
     "es-ES": "¿Cuál es el ciclo de vida habitual del hardware de las salas de reuniones?",
     "es-MX": "¿Cuál es el ciclo de vida habitual del hardware en las salas de reuniones?",
-    "key": "Software & Services#QuestionForm#2#question"
+    "key": "Software & Services#QuestionForm#v1#2#question"
   },
   {
     "en-US": "Less than 2 years",
     "de-DE": "Weniger als 2 Jahre",
     "es-ES": "Menos de 2 años",
     "es-MX": "Menos de 2 años",
-    "key": "Software & Services#QuestionForm#2#option_1"
+    "key": "Software & Services#QuestionForm#v1#2#option_1"
   },
   {
     "en-US": "Basic",
@@ -466,7 +473,7 @@
     "de-DE": "2-5 Jahre",
     "es-ES": "De 2 a 5 años",
     "es-MX": "2-5 años",
-    "key": "Software & Services#QuestionForm#2#option_2"
+    "key": "Software & Services#QuestionForm#v1#2#option_2"
   },
   {
     "en-US": "Extended Warranty",
@@ -480,7 +487,7 @@
     "de-DE": "5 Jahre oder mehr",
     "es-ES": "5 años o más",
     "es-MX": "5 años o más",
-    "key": "Software & Services#QuestionForm#2#option_3"
+    "key": "Software & Services#QuestionForm#v1#2#option_3"
   },
   {
     "en-US": "Select",
@@ -494,14 +501,14 @@
     "de-DE": "Welchen Support-Service benötigen Sie, um sicherzustellen, dass Ihre Konferenzräume immer betriebsbereit sind?",
     "es-ES": "¿Qué servicio de asistencia necesita para asegurarse de que sus salas de reunión estén siempre en funcionamiento?",
     "es-MX": "¿Qué servicio de asistencia necesitas para garantizar que tus salas de reunión estén siempre en funcionamiento?",
-    "key": "Software & Services#QuestionForm#3#question"
+    "key": "Software & Services#QuestionForm#v1#3#question"
   },
   {
     "en-US": "Tech support when I need it",
     "de-DE": "Technischer Support, wenn ich ihn brauche",
     "es-ES": "Asistencia técnica cuando la necesito",
     "es-MX": "Asistencia técnica cuando la necesito",
-    "key": "Software & Services#QuestionForm#3#option_1"
+    "key": "Software & Services#QuestionForm#v1#3#option_1"
   },
   {
     "en-US": "Basic, Extended Warranty",
@@ -515,7 +522,7 @@
     "de-DE": "Spezielle, zusätzliche Service- und Supportleistungen",
     "es-ES": "Servicio y asistencia adicionales y específicos",
     "es-MX": "Servicio y asistencia adicionales y dedicados",
-    "key": "Software & Services#QuestionForm#3#option_2"
+    "key": "Software & Services#QuestionForm#v1#3#option_2"
   },
   {
     "en-US": "Select",
@@ -523,6 +530,97 @@
     "es-ES": "Select",
     "es-MX": "Seleccionar",
     "key": "unknown#o11"
+  },
+  {
+    "en-US": "1. What are the expected hours of support?",
+    "de-DE": "Wie sind Ihre Geschäftszeiten für den Support?",
+    "es-ES": "¿Cuál es el horario de asistencia?",
+    "es-MX": "¿Cuál es tu horario de asistencia?",
+    "key": "Software & Services#QuestionForm#v2#0#question"
+  },
+  {
+    "en-US": "Business Hours",
+    "de-DE": "Geschäftszeiten",
+    "es-ES": "Horario laboral",
+    "es-MX": "Horario comercial",
+    "key": "Software & Services#QuestionForm#v2#0#option_1"
+  },
+  {
+    "en-US": "24/7",
+    "de-DE": "24/7",
+    "es-ES": "24/7",
+    "es-MX": "24/7",
+    "key": "Software & Services#QuestionForm#v2#0#option_2"
+  },
+  {
+    "en-US": "2. What’s the expected repair time for meeting rooms?",
+    "de-DE": "Wie lange brauchen Sie für die Reparatur von Konferenzräumen?",
+    "es-ES": "¿Cuál es el tiempo de reparación de las salas de reuniones?",
+    "es-MX": "¿Cuál es tu tiempo de reparación de las salas de reuniones?",
+    "key": "Software & Services#QuestionForm#v2#1#question"
+  },
+  {
+    "en-US": "Within 1 week",
+    "de-DE": "Innerhalb 1 Woche",
+    "es-ES": "En 1 semana",
+    "es-MX": "En el transcurso de 1 semana",
+    "key": "Software & Services#QuestionForm#v2#1#option_1"
+  },
+  {
+    "en-US": "Within 1 hour",
+    "de-DE": "Innerhalb 1 Stunde",
+    "es-ES": "En 1 hora",
+    "es-MX": "En el transcurso de 1 hora",
+    "key": "Software & Services#QuestionForm#v2#1#option_2"
+  },
+  {
+    "en-US": "3. What’s the typical life cycle for meeting room hardware?",
+    "de-DE": "Wie sieht der typische Lebenszyklus von Hardware für Konferenzräume aus?",
+    "es-ES": "¿Cuál es el ciclo de vida habitual del hardware de las salas de reuniones?",
+    "es-MX": "¿Cuál es el ciclo de vida habitual del hardware en las salas de reuniones?",
+    "key": "Software & Services#QuestionForm#v2#2#question"
+  },
+  {
+    "en-US": "Less than 2 years",
+    "de-DE": "Weniger als 2 Jahre",
+    "es-ES": "Menos de 2 años",
+    "es-MX": "Menos de 2 años",
+    "key": "Software & Services#QuestionForm#v2#2#option_1"
+  },
+  {
+    "en-US": "2-5 years",
+    "de-DE": "2-5 Jahre",
+    "es-ES": "De 2 a 5 años",
+    "es-MX": "2-5 años",
+    "key": "Software & Services#QuestionForm#v2#2#option_2"
+  },
+  {
+    "en-US": "5 years or more",
+    "de-DE": "5 Jahre oder mehr",
+    "es-ES": "5 años o más",
+    "es-MX": "5 años o más",
+    "key": "Software & Services#QuestionForm#v2#2#option_3"
+  },
+  {
+    "en-US": "4. What support service is needed to ensure meeting rooms are always up and running?",
+    "de-DE": "Welchen Support-Service benötigen Sie, um sicherzustellen, dass Ihre Konferenzräume immer betriebsbereit sind?",
+    "es-ES": "¿Qué servicio de asistencia necesita para asegurarse de que sus salas de reunión estén siempre en funcionamiento?",
+    "es-MX": "¿Qué servicio de asistencia necesitas para garantizar que tus salas de reunión estén siempre en funcionamiento?",
+    "key": "Software & Services#QuestionForm#v2#3#question"
+  },
+  {
+    "en-US": "Tech support when needed",
+    "de-DE": "Technischer Support, wenn ich ihn brauche",
+    "es-ES": "Asistencia técnica cuando la necesito",
+    "es-MX": "Asistencia técnica cuando la necesito",
+    "key": "Software & Services#QuestionForm#v2#3#option_1"
+  },
+  {
+    "en-US": "Dedicated, additional service and support",
+    "de-DE": "Spezielle, zusätzliche Service- und Supportleistungen",
+    "es-ES": "Servicio y asistencia adicionales y específicos",
+    "es-MX": "Servicio y asistencia adicionales y dedicados",
+    "key": "Software & Services#QuestionForm#v2#3#option_2"
   },
   {
     "en-US": "SHOW ME THE COMPLETE SETUP",
@@ -553,18 +651,39 @@
     "key": "Rooms#header#name"
   },
   {
-    "en-US": "Thank you for your interest in Logitech! Review your finished room(s) below. Download and share your custom shopping guide(s). Request to be contacted today to receive a formal quote and facilitate next steps, whether through Logitech or your preferred partner.",
-    "de-DE": "Vielen Dank für Ihr Interesse an Logitech!  Sehen Sie sich nachfolgend Ihre fertig eingerichteten Räume an.  Laden Sie Ihre benutzerdefinierten Einkaufsführer herunter und leiten Sie sie an andere weiter.  Beantragen Sie noch heute eine Kontaktaufnahme durch Logitech oder Ihren bevorzugten Partner, um ein formelles Angebot zu erhalten und die nächsten Schritte festzulegen.",
-    "es-ES": "Agradecemos su interés en Logitech.  Revise sus salas terminadas a continuación.  Descargue y comparta sus guías de compra personalizadas.  Solicite que se pongan en contacto con usted hoy mismo para recibir un presupuesto formal y facilitarle los siguientes pasos, ya sea a través de Logitech o del asociado que elija.",
-    "es-MX": "¡Gracias por tu interés en Logitech!  Revisa a continuación tus salas finalizadas.  Descarga y comparte tus guías de compra personalizadas.  Solicita que se pongan en contacto contigo hoy mismo para recibir un presupuesto formal y facilitar los pasos siguientes, ya sea mediante Logitech o tu asociado preferido.",
-    "key": "Rooms#header#subtitle"
+    "en-US": "Thank you for your interest in Logitech!",
+    "de-DE": "Vielen Dank für Ihr Interesse an Logitech!",
+    "es-ES": "Agradecemos su interés en Logitech.",
+    "es-MX": "¡Gracias por tu interés en Logitech!",
+    "key": "Rooms#header#title"
   },
   {
-    "en-US": "Request Quote",
-    "de-DE": "Angebot anfordern",
-    "es-ES": "Solicitar presupuesto",
-    "es-MX": "Solicitar presupuesto",
-    "key": "unknown#o13"
+    "en-US": "Review your finished room(s) below.",
+    "de-DE": "Sehen Sie sich nachfolgend Ihre fertig eingerichteten Räume an.",
+    "es-ES": "Revise sus salas terminadas a continuación.",
+    "es-MX": "Revisa a continuación tus salas finalizadas.",
+    "key": "Rooms#header#subtitle#0"
+  },
+  {
+    "en-US": "Download and share your custom room guide.",
+    "de-DE": "Laden Sie Ihren individuellen Raumführer herunter und teilen Sie ihn mit anderen.",
+    "es-ES": "Descargue y comparta su guía de salas personalizada.",
+    "es-MX": "Descargue y comparta su guía de salas personalizada.",
+    "key": "Rooms#header#subtitle#1"
+  },
+  {
+    "en-US": "Request a consultation to receive a formal quote and facilitate next steps, whether through Logitech or your preferred partner.",
+    "de-DE": "Beantragen Sie noch heute eine Beratung durch Logitech oder Ihren bevorzugten Partner, um ein formelles Angebot zu erhalten und die nächsten Schritte festzulegen.",
+    "es-ES": "Solicite un asesoramiento hoy mismo para recibir un presupuesto formal y facilitarle los siguientes pasos, ya sea a través de Logitech o del asociado que elija.",
+    "es-MX": "Solicite una consulta para recibir un presupuesto formal y facilitar los pasos siguientes, ya sea mediante Logitech o su asociado preferido.",
+    "key": "Rooms#header#subtitle#2"
+  },
+  {
+    "en-US": "Request Consultation",
+    "de-DE": "Beratung anfordern",
+    "es-ES": "Solicitar asesoramiento",
+    "es-MX": "Solicitar consulta",
+    "key": "Rooms#header#buttons#RequestConsultation"
   },
   {
     "en-US": "Explore Your Finished Room(s)",
@@ -574,18 +693,39 @@
     "key": "Rooms#title"
   },
   {
-    "en-US": "Configurations are for exploratory purposes only. Shopping guides reflect MSRP and are not formal quotes. Please request to be contacted to finalize your quote and next steps.",
-    "de-DE": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die Einkaufsführer enthalten den MSRP und sind keine formellen Angebote. Nehmen Sie Kontakt mit uns auf, um Ihr persönliches Angebot zu erhalten und die nächsten Schritte festzulegen.",
-    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicite que se pongan en contacto con usted para finalizar el presupuesto y ver los próximos pasos.",
-    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicita que se pongan en contacto contigo para finalizar tu presupuesto y los pasos siguientes.",
-    "key": "Rooms#subtitle"
+    "en-US": "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.",
+    "de-DE": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die aufgeführten Raumführer und Preise basieren auf der lokalen unverbindlichen Preisempfehlung der Produkte und sind keine offiziellen Preisangebote. Die Preise können je nach Standort, Vertriebskanal oder Händler variieren. Bitte fordern Sie eine Beratung an, um weitere Informationen und die nächsten Schritte zu erfahren.",
+    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor. Solicite un asesoramiento para obtener más información y los pasos a seguir.",
+    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor. Solicite una consulta para obtener más información y los pasos a seguir.",
+    "key": "Rooms#subtitle#v1"
+  },
+  {
+    "en-US": "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller.",
+    "de-DE": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die aufgeführten Raumführer und Preise basieren auf der lokalen unverbindlichen Preisempfehlung der Produkte und sind keine offiziellen Preisangebote. Die Preise können je nach Standort, Vertriebskanal oder Händler variieren.",
+    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor.",
+    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor.",
+    "key": "Rooms#subtitle#v2"
   },
   {
     "en-US": "Add Another Room",
     "de-DE": "Weiteren Raum hinzufügen",
     "es-ES": "Añadir otra sala",
     "es-MX": "Agregar otra sala",
-    "key": "Rooms#btn_1"
+    "key": "Rooms#buttons#AddAnotherRoom"
+  },
+  {
+    "en-US": "Download Room Guide (All)",
+    "de-DE": "Raumführer (Alle) herunterladen",
+    "es-ES": "Descargar guía de salas (todos)",
+    "es-MX": "Descargar guía de salas (todos)",
+    "key": "Rooms#buttons#DownloadRoomGuideAll"
+  },
+  {
+    "en-US": "Share Your Project",
+    "de-DE": "Teilen Sie Ihr Projekt",
+    "es-ES": "Comparta su proyecto",
+    "es-MX": "Comparta su proyecto",
+    "key": "Rooms#buttons#ShareYourProject"
   },
   {
     "en-US": "[Phone Booth] [2. Deployment] Room",
@@ -672,39 +812,18 @@
     "key": "Rooms#card#descriptionRoomBySize#Auditorium"
   },
   {
-    "en-US": "PRIMARY: View",
-    "de-DE": "PRIMÄR: Anzeigen",
-    "es-ES": "PRINCIPAL: Ver",
-    "es-MX": "PRIMARIO: Visualización",
-    "key": "Rooms#card#btn_view"
+    "en-US": "View Your Room",
+    "de-DE": "RAUM ANSEHEN",
+    "es-ES": "Visualice su sala",
+    "es-MX": "Vea su sala",
+    "key": "Rooms#card#buttons#ViewRoom"
   },
   {
-    "en-US": "SECONDARY: Download",
-    "de-DE": "SEKUNDÄR: Herunterladen",
-    "es-ES": "SECUNDARIA: Descargar",
-    "es-MX": "SECUNDARIO: Descargar",
-    "key": "Rooms#card#btn_download"
-  },
-  {
-    "en-US": "Share",
-    "de-DE": "Teilen",
-    "es-ES": "Compartir",
-    "es-MX": "Compartir",
-    "key": "Rooms#btn_2"
-  },
-  {
-    "en-US": "Configurations are for exploratory purposes only. Shopping guides reflect MSRP and are not formal quotes. Please request to be contacted to finalize your quote and next steps.",
-    "de-DE": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die Einkaufsführer enthalten den MSRP und sind keine formellen Angebote. Nehmen Sie Kontakt mit uns auf, um Ihr persönliches Angebot zu erhalten und die nächsten Schritte festzulegen.",
-    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicite que se pongan en contacto con usted para finalizar el presupuesto y ver los próximos pasos.",
-    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de compra reflejan el MSRP y no son presupuestos formales. Solicita que se pongan en contacto contigo para finalizar tu presupuesto y los pasos siguientes.",
-    "key": "unknown#o23"
-  },
-  {
-    "en-US": "Request Quote",
-    "de-DE": "Angebot anfordern",
-    "es-ES": "Solicitar presupuesto",
-    "es-MX": "Solicitar presupuesto",
-    "key": "unknown#o24"
+    "en-US": "Download Room Guide",
+    "de-DE": "Raumführer herunterladen",
+    "es-ES": "Descargar guía de salas",
+    "es-MX": "Descargar guía de salas",
+    "key": "Rooms#card#buttons#DownloadRoomGuide"
   },
   {
     "en-US": "[1. Room] [2. Deployment] Room",
@@ -714,25 +833,39 @@
     "key": "Order#TemplateRoomName"
   },
   {
+    "en-US": "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.",
+    "de-DE": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die aufgeführten Raumführer und Preise basieren auf der lokalen unverbindlichen Preisempfehlung der Produkte und sind keine offiziellen Preisangebote. Die Preise können je nach Standort, Vertriebskanal oder Händler variieren. Bitte fordern Sie eine Beratung an, um weitere Informationen und die nächsten Schritte zu erfahren.",
+    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor. Solicite un asesoramiento para obtener más información y los pasos a seguir.",
+    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor. Solicite una consulta para obtener más información y los pasos a seguir.",
+    "key": "Order#subtitle#v1"
+  },
+  {
+    "en-US": "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller.",
+    "de-DE": "Die Konfigurationen dienen nur zu Demonstrationszwecken. Die aufgeführten Raumführer und Preise basieren auf der lokalen unverbindlichen Preisempfehlung der Produkte und sind keine offiziellen Preisangebote. Die Preise können je nach Standort, Vertriebskanal oder Händler variieren.",
+    "es-ES": "Las configuraciones tienen únicamente fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor.",
+    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de salas y los precios indicados se basan en el PVP local de los productos y no son presupuestos formales. Los precios pueden variar según la ubicación, el canal o el distribuidor.",
+    "key": "Order#subtitle#v2"
+  },
+  {
     "en-US": "Back",
     "de-DE": "Zurück",
     "es-ES": "Retroceder",
     "es-MX": "Atrás",
-    "key": "Order#Btn#Back"
+    "key": "Order#buttons#Back"
   },
   {
-    "en-US": "Download",
-    "de-DE": "Herunterladen",
-    "es-ES": "Descargar",
-    "es-MX": "Descargar",
-    "key": "Order#Btn#Download"
+    "en-US": "Download Room Guide",
+    "de-DE": "Raumführer herunterladen",
+    "es-ES": "Descargar guía de salas",
+    "es-MX": "Descargar guía de salas",
+    "key": "Order#buttons#DownloadRoomGuide"
   },
   {
-    "en-US": "Share",
-    "de-DE": "Teilen",
-    "es-ES": "Compartir",
-    "es-MX": "Compartir",
-    "key": "Order#Btn#share"
+    "en-US": "Request Consultation",
+    "de-DE": "Beratung anfordern",
+    "es-ES": "Solicitar asesoramiento",
+    "es-MX": "Solicitar consulta",
+    "key": "Order#buttons#RequestConsultation"
   },
   {
     "en-US": "Conferencing Cameras",
@@ -784,10 +917,38 @@
     "key": "Order#Footer#subtitle"
   },
   {
-    "en-US": "Modal Copy",
-    "de-DE": "Modale Kopie",
-    "es-ES": "Copia modal",
-    "es-MX": "Copia modal",
-    "key": "unknown#o26"
+    "en-US": "Share Your Project",
+    "de-DE": "Teilen Sie Ihr Projekt",
+    "es-ES": "Comparta su proyecto",
+    "es-MX": "Comparta su proyecto",
+    "key": "ShareModal#title"
+  },
+  {
+    "en-US": "Copy your custom link below to share with others.",
+    "de-DE": "Kopieren Sie Ihren benutzerdefinierten unten genannten Link, um ihn mit anderen zu teilen.",
+    "es-ES": "Copie su vínculo personalizado indicado más abajo para compartirlo con otras personas.",
+    "es-MX": "Copie su vínculo personalizado más abajo para compartirlo con otras personas.",
+    "key": "ShareModal#subtitle"
+  },
+  {
+    "en-US": "Copy Link",
+    "de-DE": "Link kopieren",
+    "es-ES": "Copiar enlace",
+    "es-MX": "Copiar enlace",
+    "key": "ShareModal#button"
+  },
+  {
+    "en-US": "Link copied!",
+    "de-DE": "Link kopiert!",
+    "es-ES": "¡Enlace copiado!",
+    "es-MX": "¡Enlace copiado!",
+    "key": "ShareModal#labelAfterCopy"
+  },
+  {
+    "en-US": "Thank you for your request! We will reach out shortly to discuss any remaining needs to finalize your quote and next steps.",
+    "de-DE": "Vielen Dank für Ihre Anfrage! Wir werden uns in Kürze bei Ihnen melden, um mögliche verbleibende Bedürfnisse um Ihr Angebot abzuschließen und die nächsten Schritte zu besprechen.",
+    "es-ES": "¡Gracias por su solicitud! Nos pondremos en contacto en breve para analizar cualquier necesidad restante para finalizar su presupuesto y los próximos pasos.",
+    "es-MX": "¡Gracias por su solicitud! Nos pondremos en contacto en breve para analizar cualquier necesidad restante para finalizar su presupuesto y dar los próximos pasos.",
+    "key": "RequestConsultation#text"
   }
 ]

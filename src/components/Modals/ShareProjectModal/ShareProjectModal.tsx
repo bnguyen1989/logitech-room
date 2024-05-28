@@ -17,6 +17,7 @@ import {
 } from "../../../models/analytics/type";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { ShareType } from "@threekit/rest-api";
+import { getShareModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -27,6 +28,8 @@ export const ShareProjectModal: React.FC = () => {
   const { getNavLink } = useUrl();
   const [link, setLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+
+  const langPage = useAppSelector(getShareModalLangPage);
 
   useEffect(() => {
     if (!isOpen) {
@@ -75,10 +78,8 @@ export const ShareProjectModal: React.FC = () => {
               <ChainLinkSVG color={"white"} />
             </div>
 
-            <div className={s.title}>Share Your Project</div>
-            <div className={s.subtitle}>
-              Copy your custom link below to share with others.
-            </div>
+            <div className={s.title}>{langPage.title}</div>
+            <div className={s.subtitle}>{langPage.subtitle}</div>
           </div>
         </div>
         <div className={s.content}>
@@ -86,7 +87,7 @@ export const ShareProjectModal: React.FC = () => {
             <input type="text" value={link} readOnly />
 
             <div className={s.button} onClick={handleCopy}>
-              <div className={s.button_text}>Copy Link</div>
+              <div className={s.button_text}>{langPage.button}</div>
               <div className={s.button_icon}>
                 <ChainLinkSVG color={"white"} />
               </div>
@@ -94,7 +95,7 @@ export const ShareProjectModal: React.FC = () => {
           </div>
           <div className={s.message}>
             <ChainLinkSVG color={"#C3C6C8"} />
-            <div className={s.message_text}>Link copied!</div>
+            <div className={s.message_text}>{langPage.labelAfterCopy}</div>
           </div>
         </div>
       </div>
