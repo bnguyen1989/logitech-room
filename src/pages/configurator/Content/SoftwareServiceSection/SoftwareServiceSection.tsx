@@ -33,8 +33,28 @@ export const SoftwareServiceSection: React.FC = () => {
 
   const cards = Object.values(activeStepData.cards);
 
-  const isSoftwareServicesStep =
-    activeStepData.key === StepName.SoftwareServices;
+  const isSoftwareServicesStep = activeStepData.key === StepName.SoftwareServices;
+
+  const setStatusForm = (value: boolean) => {
+    dispatch(
+      updateDataForm({
+        key: FormName.QuestionFormSoftware,
+        value: {
+          isSubmit: value,
+        },
+      })
+    );
+  };
+
+  useEffect(() => {
+    return () => setStatusForm(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isSoftwareServicesStep) {
+      setStatusForm(false);
+    }
+  }, [isSoftwareServicesStep]);
 
   useEffect(() => {
     if (!isSoftwareServicesStep) return;
@@ -52,23 +72,6 @@ export const SoftwareServiceSection: React.FC = () => {
   const langPage = useAppSelector(getSoftwareServicesLangPage);
 
   const dataQuestionForm = useAppSelector(getDataSoftwareQuestionsForm);
-
-  const setStatusForm = (value: boolean) => {
-    dispatch(
-      updateDataForm({
-        key: FormName.QuestionFormSoftware,
-        value: {
-          isSubmit: value,
-        },
-      })
-    );
-  };
-
-  useEffect(() => {
-    if (!isSoftwareServicesStep) {
-      setStatusForm(false);
-    }
-  }, [isSoftwareServicesStep]);
 
   const submitFormData = (data: Array<QuestionFormI>) => {
     const { select, basic, extendedWarranty } =
