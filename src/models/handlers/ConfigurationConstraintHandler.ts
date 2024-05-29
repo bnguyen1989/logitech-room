@@ -16,6 +16,7 @@ import { Application } from "../Application";
 import { ColorName, getSeparatorItemColor } from "../../utils/baseUtils";
 import { CameraName, MeetingControllerName } from "../../utils/permissionUtils";
 import { Cache } from "../Cache";
+import { deepCopy } from "../../utils/objUtils";
 
 declare const app: Application;
 
@@ -128,9 +129,7 @@ export class ConfigurationConstraintHandler extends Handler {
         AttributeName.RoomAdditionalCamera
       );
       if (attrState) {
-        const values = this.copyStructure(
-          attrState.values
-        ) as ValueAssetStateI[];
+        const values = deepCopy(attrState.values) as ValueAssetStateI[];
 
         values.forEach((option) => {
           option.visible = false;
@@ -594,15 +593,13 @@ export class ConfigurationConstraintHandler extends Handler {
   private rule_micPod_CATCoupler() {
     const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
     const isSelectMic = typeof selectedMic === "object";
-    const selectSight = this.getSelectedValue(AttributeName.RoomSight);
-    const isSelectSight = typeof selectSight === "object";
     const attribute = this.getAttribute(AttributeName.RoomMicCATCoupler);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
     const attributeValuesArr = attrState[attribute.id].values;
     if (!attributeValuesArr) return;
 
-    if (!isSelectMic || isSelectSight) {
+    if (!isSelectMic) {
       this.configurator.setConfiguration({
         [AttributeName.RoomMicCATCoupler]: {
           assetId: "",
@@ -618,6 +615,14 @@ export class ConfigurationConstraintHandler extends Handler {
       });
     }
 
+    const selectSight = this.getSelectedValue(AttributeName.RoomSight);
+    const isSelectSight = typeof selectSight === "object";
+    if (isSelectSight) {
+      attributeValuesArr.forEach((option) => {
+        this.setRecommendedInMetadata(option, false);
+      });
+    }
+
     this.configurator.setAttributeState(attribute.id, {
       values: attributeValuesArr,
     });
@@ -628,7 +633,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const attribute = this.getAttribute(AttributeName.RoomMicPendantMount);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = this.copyStructure(
+    const attributeValuesArr = deepCopy(
       attrState[attribute.id].values
     ) as ValueAssetStateI[];
     if (!attributeValuesArr) return;
@@ -691,7 +696,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const attribute = this.getAttribute(AttributeName.RoomMicHub);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = this.copyStructure(
+    const attributeValuesArr = deepCopy(
       attrState[attribute.id].values
     ) as ValueAssetStateI[];
     if (!attributeValuesArr) return;
@@ -744,7 +749,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
     if (typeof selectedCamera !== "object") return;
     const isSelectRallyBar = selectedCamera.name.includes(CameraName.RallyBar);
-    const values = this.copyStructure(attrState.values) as ValueAssetStateI[];
+    const values = deepCopy(attrState.values) as ValueAssetStateI[];
     values.forEach((option) => {
       if (!("name" in option)) return;
 
@@ -769,7 +774,7 @@ export class ConfigurationConstraintHandler extends Handler {
     );
     const attrState = this.getAttrStateDataByName(AttributeName.RoomCamera);
     if (!attrState) return;
-    const values = this.copyStructure(attrState.values) as ValueAssetStateI[];
+    const values = deepCopy(attrState.values) as ValueAssetStateI[];
     values.forEach((option) => {
       if (!("name" in option)) return;
       const isRallyBar = option.name.includes(CameraName.RallyPlus);
@@ -939,9 +944,9 @@ export class ConfigurationConstraintHandler extends Handler {
         : selectedValue
       : "None";
     if (theAttrValuesArr) {
-      const copyAttrValuesArr = JSON.parse(
-        JSON.stringify(theAttrValuesArr)
-      ) as Array<ValueStringStateI | ValueAssetStateI>;
+      const copyAttrValuesArr = deepCopy(theAttrValuesArr) as Array<
+        ValueStringStateI | ValueAssetStateI
+      >;
 
       copyAttrValuesArr.forEach((option) => {
         //Only show option when it's in the datatable
@@ -969,8 +974,6 @@ export class ConfigurationConstraintHandler extends Handler {
 
           attrSpec.attrType = isContainId ? "Asset" : "String";
         } else {
-          console.log("Option", option, "is not visible");
-
           option.visible = false;
           if (
             selectedValue_str &&
@@ -997,11 +1000,21 @@ export class ConfigurationConstraintHandler extends Handler {
           attrSpec.defaultValue = option.id;
         }
 
-        if (isContainName && optionRecommendation.includes(option.name)) {
+        if (!isContainName) return;
+
+        let isExist = optionRecommendation.includes(option.name);
+        if (!isExist) {
+          const name = this.getAssetNameWithoutColor(option.name);
+          const separatorColor = getSeparatorItemColor();
+          isExist = optionRecommendation.some((recoName) =>
+            recoName.includes(`${name}${separatorColor}`)
+          );
+        }
+
+        if (isExist) {
           this.setRecommendedInMetadata(option, true);
         }
       });
-      console.log("copyAttrValuesArr", copyAttrValuesArr);
 
       this.configurator.setAttributeState(theAttrId, {
         values: copyAttrValuesArr,
@@ -1227,6 +1240,11 @@ export class ConfigurationConstraintHandler extends Handler {
     return color;
   }
 
+  private getAssetNameWithoutColor(name: string) {
+    const colorSeparator = getSeparatorItemColor();
+    return name.split(colorSeparator)[0];
+  }
+
   private setRecommendedInMetadata(
     value: ValueAttributeStateI,
     isRecommended: boolean
@@ -1245,9 +1263,5 @@ export class ConfigurationConstraintHandler extends Handler {
       id: attribute.id,
       values: attributeValuesArr,
     };
-  }
-
-  private copyStructure(obj: any) {
-    return JSON.parse(JSON.stringify(obj));
   }
 }
