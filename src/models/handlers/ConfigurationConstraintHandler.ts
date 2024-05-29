@@ -223,12 +223,7 @@ export class ConfigurationConstraintHandler extends Handler {
     ////*3rd call the rule(s) based on what's selected in the level1 datatable
     this.handleRecoRules(recoRulesStr);
     this.handleAttrRules(attrRulesStr);
-
-    // this.rule_Pendant_Mount_Mic();
-    this.clearRuleCache();
   }
-
-  private clearRuleCache() {}
 
   private handleAttrRules(attrRulesStr: string) {
     const attrRulesArr = attrRulesStr
