@@ -83,7 +83,6 @@ export class ConfigurationConstraintHandler extends Handler {
     const triggeredByAttr =
       ConfigurationConstraintHandler.getTriggeredAttribute(this.configurator);
     this.triggeredByAttr = triggeredByAttr;
-    console.log("triggeredByAttr", triggeredByAttr);
 
     const locale = this.configurator.language;
     const localeTagStr = `locale_${locale.toLowerCase()}`;
@@ -799,64 +798,53 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_micPodQty_sight() {
-    const sightAttrName_str = "Room Sight";
-    const micPodQtyAttrName_str = AttributeName.QtyMic;
+    const selectedSight = this.getSelectedValue(AttributeName.RoomSight);
+    const isSelectSight = typeof selectedSight === "object";
+    if (!isSelectSight) return;
 
-    const selectedSight = this.getSelectedValue(sightAttrName_str);
-
-    if (typeof selectedSight === "object") {
-      const attribute = this.getAttribute(micPodQtyAttrName_str);
-      const attrState = this.configurator.getAttributeState();
-      const attributeValuesArr = attribute
-        ? attrState[attribute.id].values
-        : undefined;
-      if (attribute && attributeValuesArr) {
-        const countVisible = attributeValuesArr.filter(
-          (option) => option.visible
-        ).length;
-        let tempCount = countVisible;
-        attributeValuesArr.forEach((option) => {
-          if (option.visible) {
-            tempCount--;
-          }
-          if (tempCount === 0) {
-            option.visible = false;
-          }
-        });
-        this.configurator.setAttributeState(attribute.id, {
-          values: attributeValuesArr,
-        });
+    const attrState = this.getAttrStateDataByName(AttributeName.QtyMic);
+    if (!attrState) return;
+    const values = deepCopy(attrState.values) as ValueAttributeStateI[];
+    const countVisible = values.filter((option) => option.visible).length;
+    let tempCount = countVisible;
+    values.forEach((option) => {
+      if (option.visible) {
+        tempCount--;
       }
-    }
+      if (tempCount === 0) {
+        option.visible = false;
+      }
+    });
+    this.configurator.setAttributeState(attrState.id, {
+      values,
+    });
   }
 
   private rule_tapQty10_tapIp() {
-    const meetingControllerAttrName_str = "Room Meeting Controller";
-    const meetingControllerQtyAttr_str = "Qty - Meeting Controller";
-
     const selectedMeetingController = this.getSelectedValue(
-      meetingControllerAttrName_str
+      AttributeName.RoomMeetingController
     );
-    if (
-      typeof selectedMeetingController === "object" &&
-      selectedMeetingController.name.includes("Logitech Tap IP")
-    ) {
-      const attribute = this.getAttribute(meetingControllerQtyAttr_str);
-      const attrState = this.configurator.getAttributeState();
-      const attributeValuesArr = attribute
-        ? attrState[attribute.id].values
-        : undefined;
-      if (attribute && attributeValuesArr) {
-        attributeValuesArr.forEach((option) => {
-          if ("value" in option && Number(option.value) <= 10) {
-            option.visible = true;
-          }
-        });
-        this.configurator.setAttributeState(attribute.id, {
-          values: attributeValuesArr,
-        });
+    const isSelectMeetingController =
+      typeof selectedMeetingController === "object";
+    if (!isSelectMeetingController) return;
+    const isSelectTapIP = selectedMeetingController.name.includes(
+      MeetingControllerName.LogitechTapIP
+    );
+    if (!isSelectTapIP) return;
+    const attrState = this.getAttrStateDataByName(
+      AttributeName.QtyMeetingController
+    );
+    if (!attrState) return;
+    const values = deepCopy(attrState.values) as ValueAssetStateI[];
+    values.forEach((option) => {
+      const isValue = "value" in option;
+      if (isValue && Number(option.value) <= 10) {
+        option.visible = true;
       }
-    }
+    });
+    this.configurator.setAttributeState(attrState.id, {
+      values,
+    });
   }
 
   private getAttribute(name: string) {
@@ -1107,6 +1095,11 @@ export class ConfigurationConstraintHandler extends Handler {
 
     for (let i = 0; i < validatedAttrNames.length; i++) {
       const attrName = validatedAttrNames[i];
+
+      const validateAttrSpecByAttrName = validatedAttrSpec[attrName];
+      const attrType = validateAttrSpecByAttrName.attrType;
+      const defaultValue = validateAttrSpecByAttrName.defaultValue;
+
       const currentSelectedValue = this.getSelectedValue(attrName);
       const currentSelectedValue_str = currentSelectedValue
         ? typeof currentSelectedValue === "object" && currentSelectedValue.id
@@ -1115,30 +1108,35 @@ export class ConfigurationConstraintHandler extends Handler {
         : "";
       if (setDefaults) {
         setConfig_obj[attrName] =
-          validatedAttrSpec[attrName].attrType === "Asset"
+          attrType === "Asset"
             ? {
-                assetId: validatedAttrSpec[attrName].defaultValue,
+                assetId: defaultValue,
               }
-            : validatedAttrSpec[attrName].defaultValue;
+            : defaultValue;
       }
+
+      const isAllowBlank = validateAttrSpecByAttrName.allowBlank;
+      const validOptionIds = validateAttrSpecByAttrName.validOptionIds;
+
+      const isIntegerString = (str: string) => {
+        return /^[0-9]+$/.test(str);
+      };
 
       if (
         //When not allow blank and only one option available set it to that option if it's currently not that value
-        (!validatedAttrSpec[attrName].allowBlank &&
-          validatedAttrSpec[attrName].validOptionIds &&
-          validatedAttrSpec[attrName].validOptionIds.length === 1 &&
-          currentSelectedValue_str !==
-            validatedAttrSpec[attrName].validOptionIds[0]) ||
+        (!isAllowBlank &&
+          validOptionIds &&
+          validOptionIds.length === 1 &&
+          !isIntegerString(validOptionIds[0]) &&
+          currentSelectedValue_str !== validOptionIds[0]) ||
         //When allow blank and only one option is blank, set it to blank if it's currently not blank
-        (validatedAttrSpec[attrName].allowBlank &&
-          validatedAttrSpec[attrName].validOptionIds.length === 0 &&
+        (isAllowBlank &&
+          validOptionIds.length === 0 &&
           currentSelectedValue_str)
       ) {
-        const setToVal = validatedAttrSpec[attrName].validOptionIds[0]
-          ? validatedAttrSpec[attrName].validOptionIds[0]
-          : "";
+        const setToVal = validOptionIds[0] ? validOptionIds[0] : "";
         setConfig_obj[attrName] =
-          validatedAttrSpec[attrName].attrType === "Asset"
+          attrType === "Asset"
             ? {
                 assetId: setToVal,
               }
