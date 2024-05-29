@@ -15,19 +15,22 @@ import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { Application } from "../Application";
 import { ColorName, getSeparatorItemColor } from "../../utils/baseUtils";
 import { CameraName, MeetingControllerName } from "../../utils/permissionUtils";
+import { Cache } from "../Cache";
 
 declare const app: Application;
 
+type DataCache =
+  | {
+      [key: string]: string;
+    }
+  | string
+  | boolean
+  | undefined;
 interface CacheI {
-  [key: string]:
-    | {
-        [key: string]: string;
-      }
-    | string
-    | boolean
-    | undefined;
+  [key: string]: DataCache;
 }
-const CACHE_DATA: CacheI = {};
+
+const CACHE = new Cache<CacheI, DataCache>();
 
 export class ConfigurationConstraintHandler extends Handler {
   private dataTableLevel1: DataTable;
@@ -46,40 +49,30 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   public static clearCacheData() {
-    Object.keys(CACHE_DATA).forEach((key) => {
-      delete CACHE_DATA[key];
-    });
-  }
-
-  public static addCacheData(key: string, value: any) {
-    CACHE_DATA[key] = value;
-  }
-
-  public static getCacheData(key: string) {
-    return CACHE_DATA[key];
+    CACHE.clearCache();
   }
 
   public static getTriggeredAttribute(configurator: Configurator) {
     const attrArr = configurator.getAttributes();
     const configuration = configurator.getConfiguration();
-    const cache = CACHE_DATA;
+    const attrValCache = CACHE.get("attrValCache");
     const triggeredByAttr: Array<string> = [];
     attrArr.forEach((attr) => {
-      if (cache.attrValCache && typeof cache.attrValCache === "object") {
+      if (attrValCache && typeof attrValCache === "object") {
         let attrValue = configuration[attr.name];
         if (typeof attrValue === "object" && attrValue["assetId"]) {
           attrValue = attrValue["assetId"];
         }
-        if (cache.attrValCache[attr.name] !== attrValue) {
-          // api.cache.attrValCache[attr.name]  === 'undefined', only when loading the configurator, because the cache is not created
-
-          if (typeof cache.attrValCache[attr.name] !== "undefined") {
+        if (attrValCache[attr.name] !== attrValue) {
+          if (typeof attrValCache[attr.name] !== "undefined") {
             triggeredByAttr.push(attr.name);
           }
-          cache.attrValCache[attr.name] = attrValue as string;
+          CACHE.update("attrValCache", {
+            [attr.name]: attrValue as string,
+          });
         }
       } else {
-        cache["attrValCache"] = {};
+        CACHE.set("attrValCache", {});
       }
     });
     return triggeredByAttr;
@@ -156,13 +149,10 @@ export class ConfigurationConstraintHandler extends Handler {
     const recoRulesStr = level2row.value[skipColumns[2]];
 
     let setLevel2Default_flag = false;
-    const cache = CACHE_DATA;
-    if (
-      !cache.level2datatableId ||
-      cache.level2datatableId !== level2datatableId
-    ) {
+    const cacheLevel2Id = CACHE.get("level2datatableId");
+    if (!cacheLevel2Id || cacheLevel2Id !== level2datatableId) {
       setLevel2Default_flag = true;
-      cache.level2datatableId = level2datatableId;
+      CACHE.set("level2datatableId", level2datatableId);
     }
 
     if (
@@ -667,9 +657,7 @@ export class ConfigurationConstraintHandler extends Handler {
       values: attributeValuesArr,
     });
 
-    const cache = ConfigurationConstraintHandler.getCacheData(
-      RuleName.reco_micPendantMount_inWhite
-    );
+    const cache = CACHE.get(RuleName.reco_micPendantMount_inWhite);
 
     if (!isSelectMicWhite || cache) return;
 
@@ -693,10 +681,7 @@ export class ConfigurationConstraintHandler extends Handler {
       [AttributeName.QtyMicMount]: "0",
     });
 
-    ConfigurationConstraintHandler.addCacheData(
-      RuleName.reco_micPendantMount_inWhite,
-      true
-    );
+    CACHE.set(RuleName.reco_micPendantMount_inWhite, true);
   }
 
   private rule_reco_micPod_micPodHub() {
@@ -735,15 +720,10 @@ export class ConfigurationConstraintHandler extends Handler {
     const isChangeHub = this.triggeredByAttr.includes(AttributeName.RoomMicHub);
 
     if (!isSelectHub && isChangeHub) {
-      ConfigurationConstraintHandler.addCacheData(
-        RuleName.reco_micPod_micPodHub,
-        true
-      );
+      CACHE.set(RuleName.reco_micPod_micPodHub, true);
     }
 
-    const cache = ConfigurationConstraintHandler.getCacheData(
-      RuleName.reco_micPod_micPodHub
-    );
+    const cache = CACHE.get(RuleName.reco_micPod_micPodHub);
     if (!isNeedSetRecommended || cache) return;
 
     const visibleValue = attributeValuesArr.find(
