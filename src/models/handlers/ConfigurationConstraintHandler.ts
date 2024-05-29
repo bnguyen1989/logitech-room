@@ -626,6 +626,19 @@ export class ConfigurationConstraintHandler extends Handler {
     this.configurator.setAttributeState(attribute.id, {
       values: attributeValuesArr,
     });
+
+    const cache = CACHE.get(RuleName.micPod_CATCoupler);
+    const isChangeSight = this.triggeredByAttr.includes(
+      AttributeName.RoomSight
+    );
+    if (!cache && isSelectSight && isChangeSight) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicCATCoupler]: {
+          assetId: "",
+        },
+      });
+      CACHE.set(RuleName.micPod_CATCoupler, true);
+    }
   }
 
   private rule_reco_micPendantMount_inWhite() {
