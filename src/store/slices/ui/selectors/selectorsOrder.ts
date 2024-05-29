@@ -29,6 +29,7 @@ import {
   getPrepareDescriptionLangByKeyPermission,
 } from "./selectoteLangPage";
 import { localeToCurrency } from "../../../../utils/localeUtils";
+import { deepCopy } from "../../../../utils/objUtils";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -192,7 +193,7 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
       const count = selectData?.property?.count;
       if (!count || count < 2) return acc;
 
-      const copySelectData = JSON.parse(JSON.stringify(selectData));
+      const copySelectData = deepCopy(selectData);
       copySelectData.property.count -= 1;
       return [
         ...acc,
