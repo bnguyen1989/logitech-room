@@ -1,6 +1,6 @@
 import { GroupElement } from "../elements/GroupElement";
 import { ItemElement } from "../elements/ItemElement";
-import { MountElement } from "../elements/MountElement";
+import { MountElement } from "../elements/mounts/MountElement";
 import { Step } from "../step/Step";
 import { Handler } from "./Handler";
 
@@ -27,11 +27,6 @@ export class AddActiveElementHandler extends Handler {
       }
       return true;
     }
-
-    const mountElements = this.element.getDependenceMount();
-    mountElements.forEach((mount) => {
-      step.addValidElement(mount);
-    });
 
     const groups = step.allElements.filter(
       (elem) => elem instanceof GroupElement && elem.isRequiredOne()

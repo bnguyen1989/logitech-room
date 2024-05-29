@@ -1,42 +1,106 @@
 import React from "react";
 import s from "./Actions.module.scss";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
-import { DownloadSVG, ListSVG, RevertSVG, ShareSVG } from "../../../assets";
+import { DownloadSVG, ListSVG } from "../../../assets";
 import { Button } from "../../../components/Buttons/Button/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Application } from "../../../models/Application";
+import { useUrl } from "../../../hooks/url";
+import { useUser } from "../../../hooks/user";
+import { PermissionUser } from "../../../utils/userRoleUtils";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../../models/analytics/type";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { useAppSelector } from "../../../hooks/redux";
+import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+
+declare const app: Application;
 
 export const Actions: React.FC = () => {
+  const { roomId } = useParams();
   const navigate = useNavigate();
-  const handlerBack = () => {
-    navigate("/room", { replace: true });
+  const { handleNavigate } = useUrl();
+  const user = useUser();
+  const langPage = useAppSelector(getDetailRoomLangPage);
+
+  const handlerDownload = () => {
+    if (!roomId) return;
+    app.downloadRoomCSV(roomId);
+
+    getTKAnalytics().custom({ customName: EventActionName.download_room });
+
+    app.analyticsEvent({
+      category: EventCategoryName.room_page,
+      action: EventActionName.download_room,
+      value: {
+        id_room: roomId,
+      },
+    });
   };
 
-  const handlerStartOver = () => {
-    navigate("/", { replace: true });
+  const handleRequestConsultation = () => {
+    navigate("/request-consultation");
+
+    getTKAnalytics().stage({ stageName: EventActionName.request_consultation });
+
+    app.analyticsEvent({
+      category: EventCategoryName.room_page,
+      action: EventActionName.request_consultation,
+      value: {},
+    });
   };
+
+  const handleBack = () => {
+    handleNavigate("/room");
+    app.analyticsEvent({
+      category: EventCategoryName.room_page,
+      action: EventActionName.back_to_summary_page,
+      value: {},
+    });
+  };
+
+  const userCanReqConsultation = user.role.can(
+    PermissionUser.REQUEST_CONSULTATION
+  );
 
   return (
     <div className={s.container}>
-      <IconButton text={"Back"} onClick={handlerBack} variant={"outlined"}>
-        <ListSVG />
-      </IconButton>
-      <IconButton text={"Download"} onClick={() => {}} variant={"outlined"}>
-        <DownloadSVG />
-      </IconButton>
-      <IconButton text={"Share"} onClick={() => {}} variant={"outlined"}>
-        <ShareSVG />
-      </IconButton>
-      <Button
-        onClick={() => {}}
-        text={"Contact Sales"}
-        variant={"contained"}
-        style={{
-          padding: "19px 40px",
-        }}
-      />
-      <IconButton text={"Start over"} onClick={handlerStartOver}>
-        <RevertSVG />
-      </IconButton>
+      <div className={s.mobile}>
+        <IconButton onClick={handleBack} variant={"outlined"}>
+          <ListSVG />
+        </IconButton>
+        <IconButton onClick={handlerDownload} variant={"outlined"}>
+          <DownloadSVG />
+        </IconButton>
+      </div>
+      <div className={s.desktop}>
+        <IconButton
+          text={langPage.buttons.Back}
+          onClick={handleBack}
+          variant={"outlined"}
+        >
+          <ListSVG />
+        </IconButton>
+        <IconButton
+          text={langPage.buttons.DownloadRoomGuide}
+          onClick={handlerDownload}
+          variant={"outlined"}
+        >
+          <DownloadSVG />
+        </IconButton>
+      </div>
+      {userCanReqConsultation && (
+        <Button
+          onClick={handleRequestConsultation}
+          text={langPage.buttons.RequestConsultation}
+          variant={"contained"}
+          style={{
+            padding: "19px 40px",
+          }}
+        />
+      )}
     </div>
   );
 };

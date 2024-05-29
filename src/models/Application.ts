@@ -7,10 +7,13 @@ import { ChangeCountItemCommand } from "./command/ChangeCountItemCommand";
 import { ChangeColorItemCommand } from "./command/ChangeColorItemCommand";
 import { RemoveItemCommand } from "./command/RemoveItemCommand";
 import { ChangeStepCommand } from "./command/ChangeStepCommand";
-import { StepName } from "./permission/type";
 import { DataTable } from "./dataTable/DataTable";
 import { ChangeSelectItemCommand } from "./command/ChangeSelectItemCommand";
 import { ConfigurationConstraintHandler } from "./handlers/ConfigurationConstraintHandler";
+import { StepName } from "../utils/baseUtils";
+import fileDownload from "js-file-download";
+import { RoomService } from "../services/RoomService/RoomService";
+import { EventDataAnalyticsI } from "./analytics/type";
 
 declare const logger: Logger;
 
@@ -20,6 +23,14 @@ export class Application {
   public dataTableLevel1: DataTable = new DataTable([]);
   public dataTableLevel2: DataTable = new DataTable([]);
 
+  public resetApplication(): void {
+    const language = this.currentConfigurator.language;
+    this.currentConfigurator = new Configurator();
+    this.currentConfigurator.language = language;
+    this.dataTableLevel1 = new DataTable([]);
+    this.dataTableLevel2 = new DataTable([]);
+  }
+
   public get currentConfigurator(): Configurator {
     return this._currentConfigurator;
   }
@@ -28,42 +39,93 @@ export class Application {
     this._currentConfigurator = configurator;
   }
 
+  public analyticsEvent(dataEvent: Omit<EventDataAnalyticsI, "locale">): void {
+    app.eventEmitter.emit("analyticsEvent", dataEvent);
+  }
+
+  public downloadRoomCSV(shortId: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      return new RoomService().generateRoomCSV({ shortId }).then((res: any) => {
+        if (!res) {
+          return resolve(false);
+        }
+        fileDownload(res, `order-room-${shortId}.csv`);
+        logger.log("Download Room CSV", { shortId });
+        return resolve(true);
+      });
+    });
+  }
+
+  public downloadRoomsCSV(originOrgId: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      return new RoomService()
+        .generateRoomCSV({ originOrgId })
+        .then((res: any) => {
+          if (!res) {
+            return resolve(false);
+          }
+          fileDownload(res, `order-rooms.csv`);
+          logger.log("Download Rooms CSV", { originOrgId });
+          return resolve(true);
+        });
+    });
+  }
+
   public addItemConfiguration(
     nameProperty: string,
-    assetId: string
+    assetId: string,
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
-      new AddItemCommand(this.currentConfigurator, nameProperty, assetId)
+      new AddItemCommand(
+        this.currentConfigurator,
+        nameProperty,
+        assetId,
+        keyItemPermission
+      )
     );
   }
 
-  public removeItem(nameProperty: string, assetId: string): Promise<boolean> {
+  public removeItem(
+    nameProperty: string,
+    keyItemPermission: string
+  ): Promise<boolean> {
     return this.executeCommand(
-      new RemoveItemCommand(this.currentConfigurator, nameProperty, assetId)
+      new RemoveItemCommand(
+        this.currentConfigurator,
+        nameProperty,
+        keyItemPermission
+      )
     );
   }
 
   public changeCountItemConfiguration(
     nameProperty: string,
     value: string,
-    assetId: string
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
       new ChangeCountItemCommand(
         this.currentConfigurator,
         nameProperty,
         value,
-        assetId
+        keyItemPermission
       )
     );
   }
 
   public changeColorItemConfiguration(
+    nameProperty: string,
     value: string,
-    assetId: string
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
-      new ChangeColorItemCommand(this.currentConfigurator, value, assetId)
+      new ChangeColorItemCommand(
+        this.currentConfigurator,
+        nameProperty,
+        value,
+        keyItemPermission
+      )
     );
   }
 
@@ -75,13 +137,15 @@ export class Application {
 
   public changeSelectItemConfiguration(
     nameProperty: string,
-    assetId: string
+    assetId: string,
+    keyItemPermission: string
   ): Promise<boolean> {
     return this.executeCommand(
       new ChangeSelectItemCommand(
         this.currentConfigurator,
         nameProperty,
-        assetId
+        assetId,
+        keyItemPermission
       )
     );
   }

@@ -4,18 +4,58 @@ import { Header } from "./Header/Header";
 import { Footer } from "./Footer/Footer";
 import { Content } from "./Content/Content";
 import { useParams } from "react-router-dom";
-import ImageItem from "../../assets/images/pages/details/item.png";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
-import { ItemCardI } from "../../store/slices/ui/type";
 import { SectionI } from "./type";
-import { StepName } from "../../models/permission/type";
 import { Loader } from "../../components/Loader/Loader";
+import { CardI } from "../../store/slices/ui/type";
+import { StepName } from "../../utils/baseUtils";
+import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
+import { getImageUrl } from "../../utils/browserUtils";
+import { isBundleElement } from "../../utils/permissionUtils";
+import { useAppSelector } from "../../hooks/redux";
+import { getDetailRoomLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [totalAmount, setTotalAmount] = useState<string>("");
+  const [isLoaded, setIsLoaded] = useState(true);
+  const langPage = useAppSelector(getDetailRoomLangPage);
+
+  const getTitleSectionOrderByStepName = (stepName: StepName) => {
+    switch (stepName) {
+      case StepName.ConferenceCamera:
+      case StepName.AudioExtensions:
+      case StepName.MeetingController:
+      case StepName.VideoAccessories:
+      case StepName.SoftwareServices:
+        return langPage.StepName[stepName];
+      default:
+        return "";
+    }
+  };
+
+  const titleSectionBundle = "Room Solution Bundle";
+
+  const getFormatPrice =
+    (locale: string, currency: string) => (price: number) => {
+      const formattedCurrency = currency.toUpperCase();
+      const localeParts = locale.split("-");
+
+      if (localeParts.length !== 2) {
+        return price.toString();
+      }
+
+      const formattedLocale = `${
+        localeParts[0]
+      }-${localeParts[1].toUpperCase()}`;
+
+      return price.toLocaleString(formattedLocale, {
+        style: "currency",
+        currency: formattedCurrency,
+      });
+    };
 
   useEffect(() => {
     setIsLoaded(true);
@@ -25,34 +65,71 @@ export const RoomDetails: React.FC = () => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
+        const locale = (room.metadata["locale"] as any) ?? {
+          currencyLocale: "en-US",
+          currency: "USD",
+        };
+
+        const formatPrice = getFormatPrice(
+          locale.currencyLocale,
+          locale.currency
+        );
+        let total = 0;
         const dataSections: Array<SectionI> = [];
         room.cart.forEach((item) => {
-          const card = JSON.parse(item.metadata.data) as ItemCardI;
+          const {
+            data,
+            color,
+            price,
+            count,
+            title,
+            sku,
+            description,
+            selectValue,
+          } = item.metadata;
+          const card = JSON.parse(data) as CardI;
+
+          let titleSection = getTitleSectionOrderByStepName(card.key);
+          const isBundleCard = isBundleElement(card.keyPermission);
+          if (isBundleCard) {
+            titleSection = titleSectionBundle;
+          }
 
           const sectionId = dataSections.findIndex(
-            (section) => section.title === card.key
+            (section) => section.title === titleSection
           );
 
           let itemSection: SectionI = {
-            title: card.key,
+            title: titleSection,
             data: [
               {
-                title: card.title,
-                subtitle: card.description || card.subtitle || "",
-                image: ImageItem,
+                title: title,
+                subtitle: description ?? "",
+                image: card.image ?? "",
+                selectValue: selectValue,
               },
             ],
           };
 
           if (card.key !== StepName.SoftwareServices) {
+            let priceNumber = parseFloat(price);
+            if (isNaN(priceNumber)) {
+              priceNumber = 0.0;
+            }
+            const amountNumber = priceNumber * parseInt(count);
+            total += amountNumber;
+            const amount = formatPrice(priceNumber);
+            const partNumber = `${color}${color ? " : " : ""}${
+              isBundleCard ? sku + "*" : sku
+            }`;
             itemSection = {
               ...itemSection,
               data: [
                 {
                   ...itemSection.data[0],
-                  partNumber: "Graphite : 960-000000",
-                  count: card.counter?.currentValue || 1,
-                  amount: `$ 0.000.00`,
+                  partNumber,
+                  count: count,
+                  amount,
                 },
               ],
             };
@@ -66,18 +143,23 @@ export const RoomDetails: React.FC = () => {
         });
 
         setSections(dataSections);
+        setTotalAmount(formatPrice(total));
       })
       .finally(() => {
         setIsLoaded(false);
       });
   }, [roomId]);
 
+  const ImgBanner = getImageUrl("images/pages/details/room_detail_banner.png");
+  const images: string[] = [ImgBanner, ImgBanner, ImgBanner];
+
   return (
-    <div className={s.container}>
+    <div className={isLoaded ? s.container_load : s.container}>
+      <ImageGallery images={images} />
       <div className={s.wrapper}>
         <Header title={nameRoom} />
         <Content sections={sections} />
-        <Footer />
+        <Footer totalAmount={totalAmount} />
       </div>
       {isLoaded && (
         <div className={s.loader}>

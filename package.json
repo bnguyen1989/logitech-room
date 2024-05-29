@@ -8,18 +8,25 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start-server": "cd server && npm run start:prod"
+    "start-server": "cd server && npx prisma migrate deploy && npm run start:prod",
+    "test": "npx jest"
   },
   "dependencies": {
     "@react-three/drei": "^9.96.1",
     "@react-three/fiber": "^8.15.14",
     "@reduxjs/toolkit": "^2.0.1",
-    "@threekit/react-three-fiber": "^0.1.38",
+    "@threekit/analytics": "^0.1.67",
+    "@threekit/diagnostics": "^0.1.52",
+    "@threekit/react-three-fiber": "^0.1.67",
+    "@threekit/rest-api": "^0.1.67",
     "@types/react-router-dom": "^5.3.3",
     "@types/three": "^0.161.0",
     "axios": "^1.6.7",
     "camera-controls": "^2.7.4",
+    "csv-parser": "^3.0.0",
     "events": "^3.3.0",
+    "js-file-download": "^0.4.12",
+    "postprocessing": "^6.35.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
@@ -30,6 +37,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.13",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
@@ -41,6 +49,9 @@
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.1.7"
   }

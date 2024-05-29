@@ -20,12 +20,14 @@
   }
 }
 
-.button_outlined {
+.button_outlined,
+.button_contained {
   display: flex;
   padding: 19px 40px;
   justify-content: center;
   align-items: center;
   gap: 20px;
+  max-width: 100%;
 
   border-radius: 40px;
   border: 1px solid var(--main-color-block);
@@ -35,5 +37,31 @@
 
   .text {
     color: var(--main-color-block);
+    line-height: 20px;
+  }
+}
+
+.only_icon {
+  border: none;
+}
+
+.button_contained {
+  background-color: var(--main-color-block);
+  .text {
+    color: #ffffff;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@media (max-width: 500px) {
+  .button_outlined,
+  .button_contained {
+    .text {
+      line-height: 20px;
+    }
   }
 }

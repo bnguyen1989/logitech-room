@@ -1,31 +1,32 @@
 export interface DataCreateOrderI {
-	customerId: string,
-	originOrgId: string,
-	platform: PlatformOrderI,
-	cart: Array<CartOrderI>,
-	metadata?: MetadataOrderI,
-	derivative?: DerivativeI,
+  customerId: string;
+  originOrgId: string;
+  platform: PlatformOrderI;
+  cart: Array<CartOrderI>;
+  status?: "List";
+  metadata?: MetadataOrderI;
+  derivative?: DerivativeI;
 }
 
 export interface PlatformOrderI {
-	id: string,
-	platform: string,
-	storeName: string,
+  id: string;
+  platform: string;
+  storeName: string;
 }
 
 export interface CartOrderI {
-	metadata: MetadataOrderI,
-	configurationId: string
-	count: number
+  metadata: MetadataOrderI;
+  configurationId: string;
+  count: number;
 }
 
 export interface MetadataOrderI {
-	[key: string]: string
+  [key: string]: string;
 }
 
 export interface DerivativeI extends MetadataOrderI {}
 
 export interface DataGetOrdersI {
-	shortId?: string,
-	originOrgId?: string,
+  shortId?: string;
+  originOrgId?: string;
 }

@@ -1,129 +1,62 @@
-import { useDispatch } from "react-redux";
 import { CardItem } from "../../../../../components/Cards/CardItem/CardItem";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
-  addActiveCard,
-} from "../../../../../store/slices/ui/Ui.slice";
-import {
   getActiveStep,
+  getActiveStepData,
   getIsConfiguratorStep,
+  getSubCardsKeyPermissionStep,
 } from "../../../../../store/slices/ui/selectors/selectors";
-import {
-  ItemCardI,
-  StepCardType,
-  StepI,
-} from "../../../../../store/slices/ui/type";
+import { CardI, StepI } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
-import { StepName } from "../../../../../models/permission/type";
-import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
+import { useEffect, useRef } from "react";
+import { SubSectionCardItem } from "../SubSectionCardItem/SubSectionCardItem";
+import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
 
 export const ConfigurationFormForStep = () => {
-  const dispatch = useDispatch();
-  const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const activeStepName = useAppSelector(getActiveStep);
+  const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
+  const subCardKeyPermissions = useAppSelector(
+    getSubCardsKeyPermissionStep(activeStepData)
+  );
 
-  const onChange = (
-    value: StepCardType,
-    type: "counter" | "color" | "select"
-  ) => {
-    if (type === "counter") {
-      const counter = (value as ItemCardI).counter;
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: activeStepName });
+  }, []);
+  
+  useEffect(() => {
+    if (!contentRef.current) return;
+    contentRef.current.scrollTop = 0;
+  }, [activeStepName]);
 
-      const threekit = (value as ItemCardI).threekit;
-      if (counter && threekit) {
-        app.changeCountItemConfiguration(
-          counter.threekit.key,
-          String(counter.currentValue),
-          threekit.assetId
-        );
-      }
-      return;
-    }
-
-    if (type === "color") {
-      const color = (value as ItemCardI).color;
-      const threekit = (value as ItemCardI).threekit;
-      if (color && threekit) {
-        app.changeColorItemConfiguration(
-          color.currentColor.value,
-          threekit.assetId
-        );
-      }
-    }
-
-    if (type === "select") {
-      const select = (value as ItemCardI).select;
-      const threekit = (value as ItemCardI).threekit;
-      if (select && threekit) {
-        app.changeSelectItemConfiguration(
-          threekit.key,
-          select.value.threekit.assetId,
-        );
-      }
-    }
-  };
-
-  const handleClick = (card: StepCardType) => {
-    const activeItems = permission.getActiveItems();
-    const isContain = activeItems.some(
-      (item) => item.name === card.keyPermission
-    );
-    const threekit = (card as ItemCardI).threekit;
-    if (!threekit) {
-      dispatch(addActiveCard(card));
-      return;
-    }
-
-    if (isContain && card.keyPermission) {
-      app.removeItem(threekit.key, threekit.assetId);
-      return;
-    }
-
-    app.addItemConfiguration(threekit.key, threekit.assetId);
-  };
-
-  const getCardComponent = (card: StepCardType, index: number) => {
+  const getCardComponent = (card: CardI, index: number) => {
     if (!isConfiguratorStep) return null;
-    const onClick = () => handleClick(card);
-    const isConfiguratorCard =
-      card.key === StepName.ConferenceCamera ||
-      card.key === StepName.AudioExtensions ||
-      card.key === StepName.MeetingController ||
-      card.key === StepName.VideoAccessories;
-    if (isConfiguratorCard) {
-      const activeCards = activeStep?.activeCards || [];
-      const currentActiveItem = activeCards.find(
-        (item) => item.keyPermission === card.keyPermission
-      );
-      return (
-        <CardItem
-          key={index}
-          data={card}
-          onClick={onClick}
-          active={!!currentActiveItem}
-          onChange={onChange}
-          recommended={card.recommended}
-        />
-      );
+    const subKeyPermissions = subCardKeyPermissions[card.keyPermission];
+    if (!subKeyPermissions || !subKeyPermissions.length) {
+      const arrSubKeyPermissions = Object.values(subCardKeyPermissions).flat();
+      const isSubSection = arrSubKeyPermissions.includes(card.keyPermission);
+      if (!isSubSection) {
+        return <CardItem key={index} keyItemPermission={card.keyPermission} />;
+      }
+
+      return null;
     }
-    return null;
-  };
-
-  if (!activeStep) return null;
-
-  if (activeStep.key === StepName.SoftwareServices) {
     return (
-      <SoftwareServiceSection
-        handleClickCard={handleClick}
-        onChangeValueCard={onChange}
-        cards={activeStep.cards}
-      />
+      <CardItem key={index} keyItemPermission={card.keyPermission}>
+        <SubSectionCardItem
+          name={"Accessories"}
+          keyPermissionCards={subKeyPermissions}
+        />
+      </CardItem>
     );
-  }
+  };
 
   return (
-    <div className={s.form}>
-      {activeStep.cards.map((card, index) => getCardComponent(card, index))}
+    <div ref={contentRef} className={s.form}>
+      {Object.values(activeStepData.cards).map((card, index) =>
+        getCardComponent(card, index)
+      )}
     </div>
   );
 };

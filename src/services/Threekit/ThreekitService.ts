@@ -103,4 +103,26 @@ export class ThreekitService {
     const dataOrder = response.data;
     return dataOrder;
   }
+
+  public async updateOrder(
+    id: string,
+    data: Partial<DataCreateOrderI>
+  ): Promise<OrderI> {
+    const response = await this.threekitApi.updateOrder(id, data);
+    const dataOrder = response.data;
+    return dataOrder;
+  }
+
+  public async deleteOrder(id: string) {
+    await this.updateOrder(id, { metadata: { status: "deleted" } });
+  }
+
+  public async saveConfigurator(blob: Blob, assetId: string) {
+    const response = await this.threekitApi.saveConfigurator(blob, assetId);
+    return response.data.shortId;
+  }
+
+  public getSnapshotLinkById(shortId: string) {
+    return this.threekitApi.getThreekitSnapshotLink(shortId);
+  }
 }

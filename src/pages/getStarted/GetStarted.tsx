@@ -1,71 +1,138 @@
 import React, { useEffect } from "react";
 import s from "./GetStarted.module.scss";
-import BannerImage from "../../assets/images/getStarted/banner.png";
 import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from "react-redux";
-import { changeActiveStep } from "../../store/slices/ui/Ui.slice";
-import { useNavigate } from "react-router-dom";
+import { changeRoleUser } from "../../store/slices/user/User.slice";
+import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
+import { copyToClipboard, getImageUrl } from "../../utils/browserUtils";
+import { Application } from "../../models/Application";
+import {
+  EventActionName,
+  EventCategoryName,
+} from "../../models/analytics/type";
+import { getGetStartedLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
+import { useAppSelector } from "../../hooks/redux";
+import { useUrl } from "../../hooks/url";
+import { IconButton } from "../../components/Buttons/IconButton/IconButton";
+import { CopyMarkSVG } from "../../assets";
+import { getTKAnalytics } from "../../utils/getTKAnalytics";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
+
+declare const app: Application;
 
 export const GetStarted: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleClick = () => {
-    navigate("/configurator", { replace: true });
+  const langPage = useAppSelector(getGetStartedLangPage);
+  const { handleNavigate } = useUrl();
+
+  const sendAnalytics = () => {
+    app.analyticsEvent({
+      category: EventCategoryName.get_started,
+      action: EventActionName.chose_type_user,
+      value: {},
+    });
   };
 
   useEffect(() => {
-    dispatch(changeActiveStep(null));
+    getTKAnalytics().stage({ stageName: EventCategoryName.get_started });
+    getTKAnalytics().optionsShow({
+      optionsSetId: EventCategoryName.get_started,
+      optionsType: OptionsType.Value,
+      options: [RoleUserName.CUSTOMER, RoleUserName.PARTNER].map((name) => ({
+        optionId: name,
+        optionName: name,
+        optionValue: name,
+      })),
+    });
   }, []);
+
+  const handleCustomerClick = () => {
+    dispatch(
+      changeRoleUser({ role: getRoleByName(RoleUserName.CUSTOMER).getData() })
+    );
+    handleNavigate("/configurator");
+    sendAnalytics();
+    getTKAnalytics().optionInteraction({
+      optionsSetId: EventCategoryName.get_started,
+      optionId: RoleUserName.CUSTOMER,
+      interactionType: OptionInteractionType.Select,
+    });
+  };
+  const handlePartnerClick = () => {
+    dispatch(
+      changeRoleUser({ role: getRoleByName(RoleUserName.PARTNER).getData() })
+    );
+    handleNavigate("/configurator");
+    sendAnalytics();
+    getTKAnalytics().optionInteraction({
+      optionsSetId: EventCategoryName.get_started,
+      optionId: RoleUserName.PARTNER,
+      interactionType: OptionInteractionType.Select,
+    });
+  };
+
+  const handleCopyUrl = () => {
+    const url = window.location.href;
+    copyToClipboard(url);
+  };
 
   return (
     <div className={s.container}>
-      <div className={s.image}>
-        <img src={BannerImage} alt={"banner"} />
+      <div className={s.image_wrap}>
+        <div
+          className={s.image}
+          style={{
+            backgroundImage: `url(${getImageUrl(
+              "images/getStarted/banner.png"
+            )})`,
+          }}
+        ></div>
       </div>
 
       <div className={s.content}>
-        <div className={s.header_title}>
-          TAKE THE GUESSWORK OUT OF YOUR VIDEO CONFERENCING SETUP
-        </div>
-        <div className={s.title}>
-          Configure the perfect video collaboration setup for any meeting room
+        <div className={s.text}>
+          <div className={s.header_title}>{langPage.subtitle}</div>
+          <div className={s.title}>{langPage.title}</div>
         </div>
 
         <div className={s.description}>
-          <div className={s.block_1}>
-            Not sure where to start? Use our Room Configurator to instantly
-            outfit any size meeting room with the perfect video conferencing
-            solution.
-          </div>
-          <div className={s.divider}></div>
-          <div className={s.block_2}>
-            <div className={s.block_2_title}>How it works:</div>
+          <div className={s.block}>
+            <div className={s.block_title}>{langPage.list.title}</div>
 
-            <ul className={s.block_2_list}>
-              <li>Answer a few quick questions about your space</li>
-              <li>Choose guided selections based on your room</li>
-              <li>Get a complete look at the room(s) you configured</li>
-              <li>View and share your detailed solutions per room</li>
+            <ul className={s.block_list}>
+              <li>{langPage.list["0"]}</li>
+              <li>{langPage.list["1"]}</li>
+              <li>{langPage.list["2"]}</li>
             </ul>
           </div>
         </div>
 
         <div className={s.type_user}>
-          <div className={s.type_user_title}>
-            Ready to get started? Choose the best experience for you.
-          </div>
           <div className={s.type_user_buttons}>
             <Button
-              text="I’m a customer"
+              text={langPage.Btn.customer}
               variant="contained"
-              onClick={handleClick}
+              onClick={handleCustomerClick}
             />
             <Button
-              text="I’m a partner"
+              text={langPage.Btn.partner}
               variant="outlined"
-              onClick={handleClick}
+              onClick={handlePartnerClick}
             />
           </div>
+        </div>
+
+        <div className={s.mobile_link}>
+          <div className={s.link_title}>
+            This experience is optimized for desktop
+          </div>
+          <IconButton
+            onClick={handleCopyUrl}
+            text={"COPY URL"}
+            position={"left"}
+          >
+            <CopyMarkSVG />
+          </IconButton>
         </div>
       </div>
     </div>

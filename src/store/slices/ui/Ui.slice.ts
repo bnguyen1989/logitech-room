@@ -1,151 +1,243 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
-  ItemCardI,
-  PlatformCardI,
-  RoomCardI,
-  ServiceCardI,
-  StepCardType,
+  CardI,
+  FormDataI,
+  FormI,
+  LangTextI,
+  SelectedDataI,
   StepDataI,
-  StepI,
-  StepName,
 } from "./type";
-import { getInitStepData } from "./utils";
-import { Permission } from "../../../models/permission/Permission";
+import { getFormInitData, getInitStepData } from "./utils";
+import { FormName, StepName } from "../../../utils/baseUtils";
 
-declare const permission: Permission;
 interface UIStateI {
+  locale: string;
   processInitData: boolean;
   stepData: StepDataI;
-  activeStep: StepI<StepCardType> | null;
+  activeStep: StepName;
+  selectedData: SelectedDataI;
+  langText: LangTextI;
+  formData: FormI;
 }
 
 const initialState: UIStateI = {
+  locale: "",
   processInitData: false,
   stepData: getInitStepData(),
-  activeStep: null,
+  activeStep: StepName.Services,
+  selectedData: {},
+  langText: {
+    pages: {},
+    products: {},
+  },
+  formData: getFormInitData(),
 };
 
 const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    changeActiveStep: (
-      state,
-      action: PayloadAction<StepI<StepCardType> | null>
-    ) => {
+    changeActiveStep: (state, action: PayloadAction<StepName>) => {
       state.activeStep = action.payload;
     },
+    setLangText: (state, action) => {
+      state.langText = action.payload;
+    },
     moveToStartStep: (state) => {
-      permission.changeStepName(StepName.RoomSize);
-      state.activeStep = state.stepData[StepName.RoomSize];
+      state.activeStep = StepName.RoomSize;
     },
-    addActiveCard: (state, action: PayloadAction<StepCardType>) => {
-      const { activeStep } = state;
-      if (activeStep) {
-        const isExist = activeStep.activeCards.some(
-          (card) => card.keyPermission === action.payload.keyPermission
-        );
-        if (!isExist) {
-          const activeItems = permission.getActiveItems();
-          const activeCards = activeStep.activeCards.filter((card) =>
-            activeItems.some((item) => item.name === card.keyPermission)
-          );
-          
-          activeStep.activeCards = [...activeCards, action.payload];
-        }
-      }
+    createItem: (
+      state,
+      action: PayloadAction<{
+        step: string;
+        keyItemPermission: string;
+      }>
+    ) => {
+      const { step, keyItemPermission } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
+      const cardData = stepData[keyItemPermission] ?? {
+        selected: [],
+        property: {},
+      };
+      state.selectedData[step] = {
+        ...stepData,
+        [keyItemPermission]: cardData,
+      };
     },
-    removeActiveCard: (state, action: PayloadAction<StepCardType>) => {
+    removeItem: (
+      state,
+      action: PayloadAction<{
+        step: string;
+        keyItemPermission: string;
+      }>
+    ) => {
+      const { step, keyItemPermission } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
+      delete stepData[keyItemPermission];
+      state.selectedData[step] = stepData;
+    },
+    setPropertyItem: (
+      state,
+      action: PayloadAction<{
+        step: string;
+        keyItemPermission: string;
+        property: Record<string, any>;
+      }>
+    ) => {
+      const { step, keyItemPermission, property } = action.payload;
+
+      const stepData = state.selectedData[step] ?? {};
+      const cardData = stepData[keyItemPermission] ?? {
+        selected: [],
+        property: {},
+      };
+
+      const updatedCardData = {
+        ...cardData,
+        property: {
+          ...cardData.property,
+          ...property,
+        },
+      };
+
+      state.selectedData[step] = {
+        ...stepData,
+        [keyItemPermission]: updatedCardData,
+      };
+    },
+    addActiveCard: (state, action: PayloadAction<{ key: string }>) => {
       const { activeStep } = state;
-      if (activeStep && action.payload) {
-        const index = activeStep.activeCards.findIndex(
-          (card) => card.title === action.payload.title
-        );
-        if (index !== -1) {
-          activeStep.activeCards.splice(index, 1);
-        }
+      const { key } = action.payload;
+      const stepData = state.selectedData[activeStep] ?? {};
+      const cardData = stepData[key] ?? {
+        selected: [],
+        property: {},
+      };
+      const isExist = cardData.selected.some((item) => item === key);
+      if (!isExist) {
+        cardData.selected.push(key);
       }
+      state.selectedData[activeStep] = {
+        ...stepData,
+        [key]: cardData,
+      };
+    },
+    addActiveCards: (
+      state,
+      action: PayloadAction<{
+        step: StepName;
+        keys: string[];
+      }>
+    ) => {
+      const { keys, step } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
+      keys.forEach((key) => {
+        const cardData = stepData[key] ?? {
+          selected: [],
+          property: {},
+        };
+        cardData.selected = [key];
+        stepData[key] = cardData;
+      });
+      state.selectedData[step] = stepData;
+    },
+    removeActiveCard: (state, action: PayloadAction<{ key: string }>) => {
+      const { activeStep } = state;
+      const { key } = action.payload;
+      const card = state.selectedData[activeStep][key];
+      const index = card.selected.findIndex((item) => item === key);
+      if (index !== -1) {
+        card.selected.splice(index, 1);
+      }
+      state.selectedData[activeStep][key] = card;
+    },
+    removeActiveCards: (
+      state,
+      action: PayloadAction<{
+        step: StepName;
+        keys: string[];
+      }>
+    ) => {
+      const { keys, step } = action.payload;
+      const stepData = state.selectedData[step] ?? {};
+      keys.forEach((key) => {
+        const card = stepData[key];
+        card.selected = [];
+        stepData[key] = card;
+      });
+      state.selectedData[step] = stepData;
     },
     setActiveCardsForStep: (
       state,
       action: PayloadAction<{
-        key: StepName;
-        cards: Array<StepCardType>;
+        step: StepName;
+        keyCards: string[];
+        clear?: boolean;
       }>
     ) => {
-      const { stepData } = state;
-      if (action.payload.key == StepName.RoomSize) {
-        stepData[action.payload.key].activeCards = action.payload
-          .cards as Array<RoomCardI>;
+      const { selectedData } = state;
+      const { step, keyCards, clear } = action.payload;
+      const stepData = selectedData[step] ?? {};
+      if (clear) {
+        Object.keys(stepData).forEach((key) => {
+          stepData[key].selected = [];
+        });
       }
-      if (action.payload.key == StepName.Platform) {
-        stepData[action.payload.key].activeCards = action.payload
-          .cards as Array<PlatformCardI>;
-      }
-      if (action.payload.key == StepName.Services) {
-        stepData[action.payload.key].activeCards = action.payload
-          .cards as Array<ServiceCardI>;
-      }
-      stepData[action.payload.key].activeCards = action.payload
-        .cards as Array<ItemCardI>;
+      keyCards.forEach((key) => {
+        const cardData = stepData[key] ?? {
+          selected: [],
+          property: {},
+        };
+        cardData.selected = [key];
+        stepData[key] = cardData;
+      });
+      state.selectedData[step] = stepData;
     },
-    changeValueCard: (state, action: PayloadAction<StepCardType>) => {
-      const { activeStep } = state;
-      if (activeStep) {
-        const { cards } = activeStep;
-        const index = cards.findIndex(
-          (card) => card.title === action.payload.title
-        );
-        if (index !== -1) {
-          cards[index] = action.payload;
-        }
-      }
-    },
-    setDataItemStep: (
+    clearAllActiveCardsSteps: (
       state,
       action: PayloadAction<{
-        key:
-          | StepName.AudioExtensions
-          | StepName.ConferenceCamera
-          | StepName.MeetingController
-          | StepName.VideoAccessories
-          | StepName.SoftwareServices;
-        values: Array<ItemCardI>;
+        ignoreSteps?: StepName[];
       }>
     ) => {
-      state.stepData[action.payload.key] = {
-        ...state.stepData[action.payload.key],
-        cards: action.payload.values,
+      const { ignoreSteps = [] } = action.payload;
+      const selectedData = state.selectedData;
+      Object.keys(selectedData).forEach((step) => {
+        if (ignoreSteps.includes(step as StepName)) return;
+        selectedData[step] = {};
+      });
+      state.selectedData = selectedData;
+    },
+    setDataCardsStep: (
+      state,
+      action: PayloadAction<{
+        step: StepName;
+        cards: Record<string, CardI>;
+      }>
+    ) => {
+      const { step, cards } = action.payload;
+      state.stepData[step] = {
+        ...state.stepData[step],
+        cards: cards,
       };
-      if (state.activeStep && state.activeStep.key === action.payload.key) {
-        state.activeStep = state.stepData[state.activeStep.key];
-      }
-    },
-    setDataPrepareStep: (
-      state,
-      action: PayloadAction<{
-        key: StepName.Platform | StepName.Services;
-        values: Array<PlatformCardI | ServiceCardI>;
-      }>
-    ) => {
-      if (action.payload.key === StepName.Platform) {
-        state.stepData[action.payload.key] = {
-          ...state.stepData[action.payload.key],
-          cards: action.payload.values as Array<PlatformCardI>,
-        };
-      }
-      if (action.payload.key === StepName.Services) {
-        state.stepData[action.payload.key] = {
-          ...state.stepData[action.payload.key],
-          cards: action.payload.values as Array<ServiceCardI>,
-        };
-      }
-      if (state.activeStep && state.activeStep.key === action.payload.key) {
-        state.activeStep = state.stepData[state.activeStep.key];
-      }
     },
     changeProcessInitData: (state, action: PayloadAction<boolean>) => {
       state.processInitData = action.payload;
+    },
+    updateLocale: (state, action: PayloadAction<string>) => {
+      state.locale = action.payload;
+    },
+    updateDataForm(
+      state,
+      action: PayloadAction<{
+        key: FormName;
+        value: Partial<FormDataI>;
+      }>
+    ) {
+      const { key, value } = action.payload;
+      state.formData[key] = {
+        ...state.formData[key],
+        ...value,
+      };
     },
   },
 });
@@ -153,12 +245,19 @@ const uiSlice = createSlice({
 export const {
   changeActiveStep,
   moveToStartStep,
+  setLangText,
   addActiveCard,
   removeActiveCard,
   setActiveCardsForStep,
-  changeValueCard,
-  setDataItemStep,
   changeProcessInitData,
-  setDataPrepareStep,
+  setPropertyItem,
+  createItem,
+  removeItem,
+  setDataCardsStep,
+  removeActiveCards,
+  addActiveCards,
+  clearAllActiveCardsSteps,
+  updateLocale,
+  updateDataForm,
 } = uiSlice.actions;
 export default uiSlice.reducer;

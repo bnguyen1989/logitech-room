@@ -81,4 +81,34 @@ export class ThreekitApi extends BaseApi {
       }
     );
   }
+
+  public async updateOrder(id: string, orderData: Partial<DataCreateOrderI>) {
+    return this.axiosInstance.put(
+      `/orders/${id}?bearer_token=${this.PUBLIC_TOKEN}&orgId=${this.ORG_ID}`,
+      orderData,
+      {
+        headers: {
+          Authorization: `Bearer ${this.PUBLIC_TOKEN}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+
+  public saveConfigurator(blob: Blob, assetId: string) {
+    const file_small = new File([blob], "snapshot.png");
+    const formData = new FormData();
+    formData.append("files", file_small);
+    formData.append("productId", assetId);
+    formData.append("productVersion", "v1");
+    return this.axiosInstance.post(
+      `/configurations?bearer_token=${this.PUBLIC_TOKEN}&orgId=${this.ORG_ID}`,
+      formData
+    );
+  }
+
+  public getThreekitSnapshotLink(shortId: string) {
+    return `https://${ConfigData.host}/api/configurations/${shortId}/thumbnail?bearer_token=${this.PUBLIC_TOKEN}`;
+  }
 }

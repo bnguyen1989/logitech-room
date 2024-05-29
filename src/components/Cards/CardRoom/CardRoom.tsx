@@ -1,32 +1,44 @@
-import { RoomCardI } from "../../../store/slices/ui/type";
-import { CardContainer } from "../CardContainer/CardContainer";
+import { useAppSelector } from "../../../hooks/redux";
+import {
+  getActiveStep,
+  getCardByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectors";
+import {
+  getPrepareCardTitleLangByKeyPermission,
+  getPrepareSubTitleLangByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { PrepareCardContainer } from "../PrepareCardContainer/PrepareCardContainer";
 import s from "./CardRoom.module.scss";
 
 interface PropsI {
-  data: RoomCardI;
-  onClick: () => void;
-  active?: boolean;
-  disabled?: boolean;
+  keyItemPermission: string;
+  onSelectedAnalytics: () => void;
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
-  const { data, onClick, active, disabled } = props;
+  const { keyItemPermission } = props;
+  const activeStep = useAppSelector(getActiveStep);
+  const title = useAppSelector(
+    getPrepareCardTitleLangByKeyPermission(keyItemPermission)
+  );
+  const subtitle = useAppSelector(
+    getPrepareSubTitleLangByKeyPermission(keyItemPermission)
+  );
+  const card = useAppSelector(
+    getCardByKeyPermission(activeStep, keyItemPermission)
+  );
+
   return (
-    <CardContainer
-      onClick={onClick}
-      active={active}
-      disabled={disabled}
-      isFullClick
-    >
+    <PrepareCardContainer keyItemPermission={keyItemPermission}  onSelectedAnalytics={props.onSelectedAnalytics}>
       <div className={s.container}>
         <div className={s.image}>
-          <img src={data.image} alt={data.title} />
+          <img src={card.image} alt={"image"} />
         </div>
 
         <div className={s.text}>
-          <div className={s.subtitle}>{data.subtitle}</div>
-          <div className={s.title}>{data.title}</div>
+          <div className={s.subtitle}>{subtitle}</div>
+          <div className={s.title}>{title}</div>
         </div>
       </div>
-    </CardContainer>
+    </PrepareCardContainer>
   );
 };

@@ -11,6 +11,7 @@ export const CheckBox: React.FC<PropsI> = (props) => {
     if (!onChange) {
       return;
     }
+
     onChange(e.target.checked);
   };
   return (

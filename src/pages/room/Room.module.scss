@@ -1,13 +1,14 @@
 .container {
+  min-height: 100vh;
+  max-height: fit-content;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   gap: 60px;
-  padding: 60px 0;
-  position: relative;
-  height: 100%;
+  padding-bottom: 60px;
 
   .rooms {
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,12 +17,22 @@
       display: flex;
       flex-direction: column;
       gap: 50px;
-      .divider {
+      width: 100%;
+      .divider_dashes {
         border-top: 1px dashed #e1e2e3;
+        height: 5px;
+      }
+      .divider_solid {
+        border-top: 1px solid #c3c6c8;
         height: 5px;
       }
     }
   }
+}
+
+.container_load {
+  height: 100vh;
+  background-color: #ffffff;
 
   .loader {
     position: absolute;
@@ -36,5 +47,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+@media (max-width: 1000px) {
+  .container {
+    min-height: calc(var(--vh, 1vh) * 100);
+    gap: 30px;
+    .rooms {
+      padding: 0 40px;
+      gap: 30px;
+      .wrapper_room {
+        gap: 30px;
+      }
+    }
+  }
+  .container_load {
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    .rooms {
+      padding: 0 20px;
+    }
   }
 }

@@ -1,26 +1,24 @@
 import { Configurator } from "../configurator/Configurator";
-import { Command } from "./Command";
+import { ItemCommand } from "./ItemCommand";
 
-export class RemoveItemCommand extends Command {
+export class RemoveItemCommand extends ItemCommand {
   public name: string = "RemoveItemCommand";
-  public assetId: string;
   public nameProperty: string;
 
   constructor(
     configurator: Configurator,
     nameProperty: string,
-    assetId: string
+    keyItemPermission: string
   ) {
-    super(configurator);
-    this.assetId = assetId;
+    super(configurator, keyItemPermission);
     this.nameProperty = nameProperty;
   }
 
   public executeCommand(): boolean {
     const namesRemove: Array<string> = [this.nameProperty];
-    const mountName = Configurator.NameAttrWithMountNames[this.nameProperty];
-    if (mountName) {
-      namesRemove.push(mountName);
+    const mountNames = Configurator.NameAttrWithMountNames[this.nameProperty];
+    if (mountNames) {
+      namesRemove.push(...mountNames);
     }
     namesRemove.forEach((name) => {
       this.configurator.setConfiguration({
@@ -29,15 +27,15 @@ export class RemoveItemCommand extends Command {
         },
       });
       this.changeProperties.push(name);
-    });
 
-    const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
-    if (qtyName) {
-      this.configurator.setConfiguration({
-        [qtyName]: "0",
-      });
-      this.changeProperties.push(qtyName);
-    }
+      const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
+      if (qtyName) {
+        this.configurator.setConfiguration({
+          [qtyName]: "0",
+        });
+        this.changeProperties.push(qtyName);
+      }
+    });
 
     return true;
   }

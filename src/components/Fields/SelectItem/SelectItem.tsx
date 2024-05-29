@@ -1,24 +1,44 @@
 import { useState } from "react";
 import s from "./SelectItem.module.scss";
+import {
+  getActiveStep,
+  getCardByKeyPermission,
+  getPropertySelectValueCardByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectors";
+import { useAppSelector } from "../../../hooks/redux";
+import { Application } from "../../../models/Application";
+
+declare const app: Application;
 
 interface OptionI {
   label: string;
   value: string;
-  threekit: { assetId: string };
 }
 
 interface PropsI {
-  value: OptionI;
-  onSelect: (option: OptionI) => void;
-  options: Array<OptionI>;
+  keyItemPermission: string;
   disabled?: boolean;
 }
 export const SelectItem: React.FC<PropsI> = (props) => {
-  const { value, onSelect, options, disabled } = props;
+  const { disabled, keyItemPermission } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const activeStep = useAppSelector(getActiveStep);
+  const card = useAppSelector(
+    getCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const selectValue = useAppSelector(
+    getPropertySelectValueCardByKeyPermission(activeStep, keyItemPermission)
+  );
+
+  if (!card || !card.select || !selectValue) return null;
 
   const handleSelect = (option: OptionI) => {
-    onSelect(option);
+    const attributeName = card.dataThreekit.attributeName;
+    app.changeSelectItemConfiguration(
+      attributeName,
+      option.value,
+      card.keyPermission
+    );
     setIsOpen(false);
   };
 
@@ -30,7 +50,11 @@ export const SelectItem: React.FC<PropsI> = (props) => {
   };
 
   const isActive = (currentValue: OptionI) => {
-    return value?.value === currentValue.value;
+    return selectValue === currentValue.value;
+  };
+
+  const getName = () => {
+    return card.select?.data.find((item) => item.value === selectValue)?.label;
   };
 
   return (
@@ -40,7 +64,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
       }`}
       onClick={toggleSelect}
     >
-      <div className={s.value}>{value.label}</div>
+      <div className={s.value}>{getName()}</div>
       <div className={s.icon}>
         <svg
           width="16"
@@ -75,9 +99,9 @@ export const SelectItem: React.FC<PropsI> = (props) => {
       </div>
       {isOpen && (
         <ul className={s.options}>
-          {options.map((option) => (
+          {card.select.data.map((option) => (
             <li
-              className={isActive(option) ? s.active_li : ""}
+              className={`${s.li} ${isActive(option) ? s.active_li : ""}`}
               key={option.value}
               onClick={() => handleSelect(option)}
             >

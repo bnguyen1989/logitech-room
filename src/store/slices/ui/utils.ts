@@ -1,32 +1,36 @@
+import { CardI, FormI, StepDataI } from "./type";
 import {
-  ItemCardI,
-  PlatformCardI,
-  RoomCardI,
-  ServiceCardI,
-  StepDataI,
-  StepName,
-} from "./type";
-import LogoMS from "../../../assets/images/platform/microsoft.jpg";
-import LogoGoogle from "../../../assets/images/platform/google.jpg";
-import LogoZoom from "../../../assets/images/platform/zoom.jpg";
-import DeviceMS from "../../../assets/images/platform/microsoft_device.jpg";
-import DeviceGoogle from "../../../assets/images/platform/google_device.jpg";
-import DeviceZoom from "../../../assets/images/platform/zoom_device.jpg";
-import ImagePhonebooth from "../../../assets/images/rooms/phonebooth.png";
-import ImageHundle from "../../../assets/images/rooms/huddle.png";
-import ImageSmall from "../../../assets/images/rooms/small.png";
-import ImageMedium from "../../../assets/images/rooms/medium.png";
-import ImageLarge from "../../../assets/images/rooms/large.png";
-import ImageAuditorium from "../../../assets/images/rooms/auditorium.png";
-import ImageAppliance from "../../../assets/images/services/appliance.png";
-import ImagePCBased from "../../../assets/images/services/pc_baced.png";
-import ServiceImg from "../../../assets/images/items/service.jpg";
-import {
+  CameraName,
+  MeetingControllerName,
   PlatformName,
   RoomSizeName,
   ServiceName,
   SoftwareServicesName,
 } from "../../../utils/permissionUtils";
+import { ColorName, FormName, StepName } from "../../../utils/baseUtils";
+import { getImageUrl } from "../../../utils/browserUtils";
+
+export enum UI_ACTION_NAME {
+  ADD_ACTIVE_CARD = "ui/addActiveCard",
+  REMOVE_ACTIVE_CARD = "ui/removeActiveCard",
+  CHANGE_ACTIVE_STEP = "ui/changeActiveStep",
+  MOVE_TO_START_STEP = "ui/moveToStartStep",
+  CLEAR_ALL_ACTIVE_CARDS_STEPS = "ui/clearAllActiveCardsSteps",
+}
+
+export enum CUSTOM_UI_ACTION_NAME {
+  CHANGE_COUNT_ITEM = "CUSTOM/CHANGE_COUNT_ITEM",
+  CHANGE_COLOR_ITEM = "CUSTOM/CHANGE_COLOR_ITEM",
+  CREATE_ORDER = "CUSTOM/CREATE_ORDER",
+}
+
+export const getFormInitData = (): FormI => {
+  return {
+    [FormName.QuestionFormSoftware]: {
+      isSubmit: false,
+    },
+  };
+};
 
 export const getInitStepData = (): StepDataI => {
   return {
@@ -37,7 +41,6 @@ export const getInitStepData = (): StepDataI => {
       subtitle:
         "Choose the option that best matches the seating capacity of your room.",
       cards: getRoomCardData(),
-      activeCards: [],
     },
     [StepName.Platform]: {
       key: StepName.Platform,
@@ -45,17 +48,15 @@ export const getInitStepData = (): StepDataI => {
       title: "What is your primary video conferencing platform?",
       subtitle:
         "Choose the video conferencing platform your organization uses most often.",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.Services]: {
       key: StepName.Services,
       name: "Deployment Type",
       title:
         "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
-      subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      cards: [],
-      activeCards: [],
+      subtitle: "",
+      cards: {},
     },
     [StepName.ConferenceCamera]: {
       key: StepName.ConferenceCamera,
@@ -63,8 +64,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Choose your conferencing camera(s).",
       subtitle:
         "These recommendations are based on your previous answers. You selected: {2} deployment running {1} in a {0}.",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.AudioExtensions]: {
       key: StepName.AudioExtensions,
@@ -72,8 +72,7 @@ export const getInitStepData = (): StepDataI => {
       title: "Add room-filling audio.",
       subtitle:
         "Choose from the following audio extensions to make sure everyone can hear and be heard clearly. ",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.MeetingController]: {
       key: StepName.MeetingController,
@@ -81,17 +80,14 @@ export const getInitStepData = (): StepDataI => {
       title: "Choose your meeting controller.",
       subtitle:
         "Select tethered or network-connected meeting controller for one-touch join meetings.",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
     [StepName.VideoAccessories]: {
       key: StepName.VideoAccessories,
       name: "Additional Add-Ons",
       title: "Choose your add-ons.",
-      subtitle:
-        "Enhance the meeting experience with add-ons.",
-      cards: [],
-      activeCards: [],
+      subtitle: "Enhance the meeting experience with add-ons.",
+      cards: {},
     },
     [StepName.SoftwareServices]: {
       key: StepName.SoftwareServices,
@@ -99,126 +95,215 @@ export const getInitStepData = (): StepDataI => {
       title:
         "Finish up by adding services and tools to ensure your deployment is always up and running.",
       subtitle: "",
-      cards: [],
-      activeCards: [],
+      cards: {},
     },
   };
 };
 
-export function getPlatformCardData(): Array<PlatformCardI> {
-  return [
-    {
+export function getPlatformCardData(): Record<string, TypeDataCardI> {
+  return {
+    [PlatformName.GoogleMeet]: {
       key: StepName.Platform,
-      logo: LogoGoogle,
-      image: DeviceGoogle,
-      title: "Google Meet",
+      logo: getImageUrl("images/platform/google.jpg"),
+      image: getImageUrl("images/platform/google_device.jpg"),
       keyPermission: PlatformName.GoogleMeet,
     },
-    {
+    [PlatformName.MicrosoftTeams]: {
       key: StepName.Platform,
-      logo: LogoMS,
-      image: DeviceMS,
-      title: "Microsoft Teams",
+      logo: getImageUrl("images/platform/microsoft.jpg"),
+      image: getImageUrl("images/platform/microsoft_device.jpg"),
       keyPermission: PlatformName.MicrosoftTeams,
     },
-    {
+    [PlatformName.Zoom]: {
       key: StepName.Platform,
-      logo: LogoZoom,
-      image: DeviceZoom,
-      title: "Zoom",
+      logo: getImageUrl("images/platform/zoom.jpg"),
+      image: getImageUrl("images/platform/zoom_device.jpg"),
       keyPermission: PlatformName.Zoom,
     },
-  ];
+    [PlatformName.BYOD]: {
+      key: StepName.Platform,
+      image: getImageUrl("images/platform/byod_device.jpg"),
+      keyPermission: PlatformName.BYOD,
+    },
+  };
 }
 
-function getRoomCardData(): Array<RoomCardI> {
-  return [
-    {
+function getRoomCardData(): Record<string, CardI> {
+  return {
+    [RoomSizeName.Phonebooth]: {
       key: StepName.RoomSize,
-      image: ImagePhonebooth,
-      title: "Phone Booth",
-      subtitle: "up to 3",
+      image: getImageUrl("images/rooms/phonebooth.png"),
       keyPermission: RoomSizeName.Phonebooth,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
-    {
+    [RoomSizeName.Huddle]: {
       key: StepName.RoomSize,
-      image: ImageHundle,
-      title: "Huddle Room",
-      subtitle: "up to 6",
+      image: getImageUrl("images/rooms/huddle.png"),
       keyPermission: RoomSizeName.Huddle,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
-    {
+    [RoomSizeName.Small]: {
       key: StepName.RoomSize,
-      image: ImageSmall,
-      title: "Small Room",
-      subtitle: "up to 8",
+      image: getImageUrl("images/rooms/small.png"),
       keyPermission: RoomSizeName.Small,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
-    {
+    [RoomSizeName.Medium]: {
       key: StepName.RoomSize,
-      image: ImageMedium,
-      title: "Medium Room",
-      subtitle: "up to 12",
+      image: getImageUrl("images/rooms/medium.png"),
       keyPermission: RoomSizeName.Medium,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
-    {
+    [RoomSizeName.Large]: {
       key: StepName.RoomSize,
-      image: ImageLarge,
-      title: "Large Room",
-      subtitle: "up to 20",
+      image: getImageUrl("images/rooms/large.png"),
       keyPermission: RoomSizeName.Large,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
-    {
+    [RoomSizeName.Auditorium]: {
       key: StepName.RoomSize,
-      image: ImageAuditorium,
-      title: "Alternative",
-      subtitle: "more than 20",
+      image: getImageUrl("images/rooms/auditorium.png"),
       keyPermission: RoomSizeName.Auditorium,
+      dataThreekit: {
+        attributeName: "",
+        threekitItems: {},
+      },
     },
-  ];
+  };
 }
 
-export function getServicesCardData(): Array<ServiceCardI> {
-  return [
-    {
+type TypeDataCardI = Omit<CardI, "dataThreekit">;
+export function getServicesCardData(): Record<string, TypeDataCardI> {
+  return {
+    [ServiceName.Android]: {
       key: StepName.Services,
-      image: ImageAppliance,
-      title: "Appliance-Based",
-      subtitle:
-        "A pre-configured video conferencing system with built-in computing capabilities, no external PC required.",
+      image: getImageUrl("images/services/appliance.png"),
       keyPermission: ServiceName.Android,
     },
-    {
+    [ServiceName.PC]: {
       key: StepName.Services,
-      image: ImagePCBased,
-      title: "PC-Based",
-      subtitle:
-        "Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.",
+      image: getImageUrl("images/services/pc_baced.png"),
       keyPermission: ServiceName.PC,
     },
-  ];
+  };
 }
 
-export function getSoftwareServicesCardData(): Array<ItemCardI> {
-  return [
-    {
+export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
+  return {
+    [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
-      header_title: "LOGITECH Basic",
-      title: "Device Management Software",
-      subtitle: "(Including Sync)",
-      description:
-        "Global, business-hours support and 2 year standard warranty, as well as software to better manage and maintain your deployment.",
+      image: getImageUrl("images/items/service.jpg"),
       keyPermission: SoftwareServicesName.LogitechSync,
     },
-    {
+    [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
-      image: ServiceImg,
-      header_title: "LOGITECH SELECT",
-      title: "24/7 Enterprise-Grade Support",
-      description:
-        "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
+      image: getImageUrl("images/items/service.jpg"),
       keyPermission: SoftwareServicesName.SupportService,
     },
-  ];
+    [SoftwareServicesName.ExtendedWarranty]: {
+      key: StepName.SoftwareServices,
+      image: getImageUrl("images/items/service.jpg"),
+      keyPermission: SoftwareServicesName.ExtendedWarranty,
+    },
+  };
 }
+
+export const getExpressionArrayForQuestionForm = () => {
+  const expressionArraySelect = [
+    [
+      { questionIndex: 1, optionIndex: 2 },
+      { questionIndex: 2, optionIndex: 2 },
+      { questionIndex: 3, optionIndex: 3 },
+      { questionIndex: 4, optionIndex: 2 },
+    ],
+  ];
+
+  const baseExpressionArray = [
+    [{ questionIndex: 1, optionIndex: 1 }],
+    [{ questionIndex: 2, optionIndex: 1 }],
+    [{ questionIndex: 4, optionIndex: 1 }],
+  ];
+  const expressionArrayBasic = [
+    ...baseExpressionArray,
+    [{ questionIndex: 3, optionIndex: 1 }],
+  ];
+  const expressionArrayExtendedWarranty = [
+    ...baseExpressionArray,
+    [{ questionIndex: 3, optionIndex: 2 }],
+  ];
+
+  return {
+    select: expressionArraySelect,
+    basic: expressionArrayBasic,
+    extendedWarranty: expressionArrayExtendedWarranty,
+  };
+};
+
+export const getColorsData = () => {
+  return [
+    {
+      name: ColorName.Graphite,
+      value:
+        "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-graphite.svg",
+    },
+    {
+      name: ColorName.White,
+      value:
+        "https://resource.logitech.com/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-offwhite.svg",
+    },
+    {
+      name: ColorName.TAA,
+      value:
+        "https://resource.logitech.com/w_60,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/color-swatch-taa.png?v=1",
+    },
+  ];
+};
+
+export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
+  switch (stepName) {
+    case StepName.Services:
+      return [ServiceName.Android, ServiceName.PC];
+    case StepName.ConferenceCamera:
+      return [
+        CameraName.RallyBar,
+        CameraName.RallyBarMini,
+        CameraName.RallyBarHuddle,
+        CameraName.MeetUp2,
+        CameraName.RallyPlus,
+        CameraName.LogitechSight,
+      ];
+    case StepName.SoftwareServices:
+      return [
+        SoftwareServicesName.LogitechSync,
+        SoftwareServicesName.SupportService,
+        SoftwareServicesName.ExtendedWarranty,
+      ];
+    case StepName.MeetingController:
+      return [
+        MeetingControllerName.TapTableMount,
+        MeetingControllerName.TapRiserMount,
+        MeetingControllerName.TapWallMount,
+      ];
+    default:
+      return [];
+  }
+};
+
+export const getDisclaimerCSV = () => {
+  return "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.";
+};

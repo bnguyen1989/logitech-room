@@ -1,15 +1,29 @@
 import s from "./Player.module.scss";
-import { CameraControls, OrbitControls } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { ExporterResolver, Viewer } from "@threekit/react-three-fiber";
-import CameraControlsImpl from "camera-controls";
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
-import Geoff2Stage from "../stages/Geoff2Stage.tsx";
+import LogitechStage from "../stages/LogitechStage.tsx";
 import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { useRef } from "react";
+import { Camera, Vector3 } from "three";
+import {
+  EffectComposer,
+  Selection,
+  Outline,
+  ToneMapping,
+} from "@react-three/postprocessing";
+import { useCache } from "../../hooks/cache.ts";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { snapshot } from "../../utils/snapshot.ts";
+import {
+  EffectComposer as EffectComposerImpl,
+  ToneMappingMode,
+} from "postprocessing";
+import { usePlayer } from "../../hooks/player.ts";
+import { base64ToBlob } from "../../utils/browserUtils.ts";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -18,14 +32,41 @@ export const bhoustonAuth = {
 };
 
 export const Player: React.FC = () => {
-  const cameraControlsRef = useRef<CameraControlsImpl | null>(null);
-
-  // const configuration = useAppSelector(getConfiguration);
+  const { cache, keyCache } = useCache();
+  const { distance } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
-  if (!assetId) return null;
+  const [effectComposerRef, setEffectComposerRef] =
+    useState<EffectComposerImpl | null>(null);
+  const [snapshotCamera, setSnapshotCamera] = useState<Camera>();
 
+  const focalLengthMm = 65; // Focal length in mm
+  const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
+
+  const fovRad = 2 * Math.atan(sensorSizeMm / (2 * focalLengthMm));
+  const fovDeg = fovRad * (180 / Math.PI); // Conversion of radians to degrees
+
+  const canvasProps: any = {
+    camera: {
+      position: [155.8439, 79.0929, 106.9646],
+      fov: fovDeg,
+    },
+  };
+
+  (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
+    if (!effectComposerRef) return "";
+    const dataSnapshot = snapshot(effectComposerRef, {
+      size: { width: 1920, height: 1080 },
+      camera: snapshotCamera,
+    });
+    if (type === "string") {
+      return dataSnapshot;
+    }
+    return base64ToBlob(dataSnapshot);
+  };
+
+  if (!assetId) return null;
   return (
     <div className={s.container}>
       <Head>
@@ -34,8 +75,8 @@ export const Player: React.FC = () => {
       <Viewer
         auth={bhoustonAuth}
         resolver={ExporterResolver({
-          cache: true,
-          cacheScope: "v6",
+          cache: cache,
+          cacheScope: keyCache,
           mode: "experimental",
           settings: {
             prune: {
@@ -44,29 +85,97 @@ export const Player: React.FC = () => {
             },
           },
         })}
+        canvasProps={canvasProps}
+        ui={false}
       >
         <>
-          <CameraControls ref={cameraControlsRef} />
-          <Geoff2Stage cameraControlsRef={cameraControlsRef}>
-            <Room roomAssetId={assetId} />
-          </Geoff2Stage>
-          <OrbitControls
-            autoRotate={false}
-            autoRotateSpeed={0.15}
-            enableDamping={true}
-            enableZoom={false}
-            maxDistance={3}
-            minDistance={1}
-            panSpeed={0}
-            minZoom={1}
-            maxZoom={3}
-            minPolarAngle={Math.PI / 6}
-            maxPolarAngle={Math.PI / 2}
-            makeDefault
-            enabled={true}
-          />
+          <Selection>
+            <Effects ref={setEffectComposerRef} />
+            <LogitechStage>
+              <Room
+                roomAssetId={assetId}
+                setSnapshotCamera={setSnapshotCamera}
+              />
+            </LogitechStage>
+            <OrbitControls
+              enableDamping={true}
+              enableZoom={true}
+              minDistance={distance.minDistance}
+              maxDistance={distance.maxDistance}
+              target={
+                new Vector3(
+                  -3.3342790694469784,
+                  15.269443817758102,
+                  -3.999528610518013
+                )
+              }
+              minPolarAngle={Math.PI / 6}
+              maxPolarAngle={Math.PI / 2}
+            />
+          </Selection>
         </>
       </Viewer>
     </div>
   );
 };
+
+const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
+  const [edgeStrength, setEdgeStrength] = useState(10);
+  const [fadeDirection, setFadeDirection] = useState(-1);
+
+  useEffect(() => {
+    const duration = 1200;
+    const steps = 30;
+    const intervalTime = duration / steps;
+    const changePerStep = 10 / steps;
+
+    const interval = setInterval(() => {
+      setEdgeStrength((prev) => {
+        const newStrength = prev + fadeDirection * changePerStep;
+        if (newStrength <= 0 || newStrength >= 10) {
+          setFadeDirection((prev) => -prev);
+        }
+        return Math.max(0, Math.min(10, newStrength));
+      });
+    }, intervalTime);
+
+    return () => clearInterval(interval);
+  }, [fadeDirection]);
+
+  return (
+    <EffectComposer
+      stencilBuffer
+      disableNormalPass
+      autoClear={false}
+      multisampling={4}
+      ref={ref}
+    >
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength}
+      />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.75}
+      />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.5}
+      />
+      <ToneMapping
+        mode={ToneMappingMode.UNCHARTED2}
+        whitePoint={1}
+        middleGrey={0.5}
+        minLuminance={0.01}
+        maxLuminance={1}
+        averageLuminance={0.5}
+      />
+    </EffectComposer>
+  );
+});

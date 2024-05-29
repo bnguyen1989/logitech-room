@@ -50,6 +50,7 @@
       font-style: normal;
       font-weight: 300;
       line-height: 22px;
+      text-align: center;
     }
 
     .actions {
@@ -59,5 +60,52 @@
   .info {
 		display: flex;
 		justify-content: flex-end;
+  }
+
+  .info_mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .container {
+    align-items: center;
+    gap: 10px;
+
+    .content {
+      padding: 0;
+      height: 100%;
+      min-width: 230px;
+      
+      .header {
+        .header_title {
+          font-size: 18px;
+          line-height: 24px;
+        }
+        .title {
+          font-size: 18px;
+          line-height: 24px;
+        }
+        .subtitle {
+          font-size: 18px;
+          line-height: 24px;
+        }
+      }
+    }
+
+    .info {
+      display: none;
+    }
+
+    .info_mobile {
+      display: flex;
+      padding: 8px 33px;
+      border-radius: 40px;
+      background-color: #f4f4f4;
+
+      font-size: 13px;
+      line-height: 18px;
+      font-weight: 700;
+    }
   }
 }

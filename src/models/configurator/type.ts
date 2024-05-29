@@ -41,7 +41,44 @@ export interface ValueStringStateI {
   enabled: boolean;
   visible: boolean;
 }
-export interface ValueAssetStateI extends AssetI{
+export interface ValueAssetStateI extends AssetI {
   enabled: boolean;
   visible: boolean;
+}
+
+export enum AttributeName {
+  RoomLocale = "Room Locale",
+  RoomService = "Room Service",
+  RoomDeployment = "Room Deployment Mode",
+  RoomCamera = "Room Camera",
+  RoomCameraMount = "Room Camera Mount",
+  RoomAdditionalCamera = "Room Additional Camera",
+  QtyAdditionalCamera = "Qty - Additional Camera",
+  RoomCompute = "Room Compute",
+  RoomComputeMount = "Room Compute Mount",
+  RoomSight = "Room Sight",
+  RoomMic = "Room Mic",
+  QtyMic = "Qty - Micpod",
+  RoomMicMount = "Room Mic Mount",
+  QtyMicMount = "Qty - Mic Mount",
+  RoomMicPendantMount = "Room Mic Pod Pendant Mount",
+  QtyMicPendantMount = "Qty - Mic Pendant Mount",
+  RoomMicHub = "Room Mic Pod Hub",
+  QtyMicHub = "Qty - Mic Pod Hub",
+  RoomMicCATCoupler = "Room Mic Pod CAT Coupler",
+  RoomMeetingController = "Room Meeting Controller",
+  QtyMeetingController = "Qty - Meeting Controller",
+  RoomTapMount = "Room Tap Mount",
+  QtyTapMount = "Qty - Tap Mount",
+  RoomProductBundle = "Room Product Bundle",
+  RoomTapScheduler = "Room Tap Scheduler",
+  RoomTapSchedulerAngleMount = "Room Tap Scheduler Angle Mount",
+  RoomTapSchedulerSideMount = "Room Tap Scheduler Side Mount#not-ui",
+  RoomScribe = "Room Scribe",
+  RoomSwytch = "Room Swytch",
+  RoomExtend = "Room Extend",
+  RoomUSBAtoHDMICable = "Room USB-A to HDMI Cable",
+  RoomDeviceManagementSoftware = "Room Device Management Software",
+  RoomSupportService = "Room Support Service",
+  RoomMeetUp2ActiveCable = "Room MeetUp 2 Active Cable",
 }

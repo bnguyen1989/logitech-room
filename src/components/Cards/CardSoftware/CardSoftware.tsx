@@ -1,51 +1,87 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./CardSoftware.module.scss";
 import { CardContainer } from "../CardContainer/CardContainer";
-import { ItemCardI, SelectDataI } from "../../../store/slices/ui/type";
 import { SelectItem } from "../../Fields/SelectItem/SelectItem";
 import { InformationSVG } from "../../../assets";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
+import { useAppSelector } from "../../../hooks/redux";
+import {
+  getActiveStep,
+  getAssetFromCard,
+  getCardByKeyPermission,
+  getIsSelectedCardByKeyPermission,
+  getTitleCardByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectors";
+import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 interface PropsI {
-  active?: boolean;
-  onClick: () => void;
-  data: ItemCardI;
-  onChange?: (value: ItemCardI, type: "select") => void;
+  keyItemPermission: string;
+  autoActive?: boolean;
+  onSelectedAnalytics: () => void;
 }
 export const CardSoftware: React.FC<PropsI> = (props) => {
-  const { onClick, active, data, onChange } = props;
+  const { keyItemPermission, autoActive } = props;
+  const activeStep = useAppSelector(getActiveStep);
+  const card = useAppSelector(
+    getCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const threekitAsset = useAppSelector(getAssetFromCard(card));
+  const title = useAppSelector(
+    getTitleCardByKeyPermission(activeStep, keyItemPermission)
+  );
+  const description = useAppSelector(
+    getPrepareDescriptionLangByKeyPermission(keyItemPermission)
+  );
+  const isActiveCard = useAppSelector(
+    getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
+  );
 
-  const handleChangeSelect = (value: SelectDataI) => {
-    if (!onChange || !data.select) {
+  const handleClick = () => {
+
+    props.onSelectedAnalytics();
+    
+
+    const { attributeName } = card.dataThreekit;
+    if (isActiveCard && card.keyPermission) {
+      app.removeItem(attributeName, card.keyPermission);
       return;
     }
 
-    onChange({ ...data, select: { ...data.select, value } }, "select");
+    app.addItemConfiguration(
+      attributeName,
+      threekitAsset.id,
+      card.keyPermission
+    );
   };
+
+  useEffect(() => {
+    if (isActiveCard) return;
+    if (autoActive) handleClick();
+  }, [autoActive]);
+
+  if (!card) return null;
 
   return (
     <CardContainer
-      onClick={onClick}
-      active={active}
+      onClick={handleClick}
+      active={isActiveCard}
       style={{ padding: "0px" }}
     >
       <div className={s.container}>
         <div className={s.content}>
-          <div className={s.header} onClick={onClick}>
-            <div className={s.header_title}>{data.header_title}</div>
-            <div className={s.title}>{data.title}</div>
-            {!!data.subtitle && (
-              <div className={s.subtitle}>{data.subtitle}</div>
+          <div className={s.header} onClick={handleClick}>
+            {/* <div className={s.header_title}>{card.header_title}</div> */}
+            <div className={s.title}>{title}</div>
+            {!!card.subtitle && (
+              <div className={s.subtitle}>{card.subtitle}</div>
             )}
           </div>
-          <div className={s.desc}>{data.description}</div>
+          <div className={s.desc}>{description}</div>
           <div className={s.actions}>
-            {!!data.select && (
+            {!!card.select && (
               <SelectItem
-                value={data.select.value}
-                onSelect={handleChangeSelect}
-                options={data.select.data}
-                disabled={!active}
+                keyItemPermission={keyItemPermission}
+                disabled={!isActiveCard}
               />
             )}
           </div>
@@ -56,6 +92,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             <InformationSVG />
           </IconButton>
         </div>
+        <div className={s.info_mobile}>INFO</div>
       </div>
     </CardContainer>
   );

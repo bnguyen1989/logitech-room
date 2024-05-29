@@ -1,35 +1,39 @@
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { getRoomAssetId } from "../../../utils/threekitUtils";
+import { StepName } from "../../../utils/baseUtils";
 import { Application } from "../../Application";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
 import { ConfigurationConstraintHandler } from "../../handlers/ConfigurationConstraintHandler";
-import { Permission } from "../../permission/Permission";
-import { StepName } from "../../permission/type";
 import { ChangeStepCommand } from "../ChangeStepCommand";
 import Behavior from "./Behavior";
 
 declare const app: Application;
-declare const permission: Permission;
 
 export class ChangeStepBehavior extends Behavior {
   public async execute(command: ChangeStepCommand): Promise<boolean> {
     return new Promise((resolve) => {
-      const activeElement = permission.getActiveItems()[0];
-      if (command.stepName === StepName.Platform && activeElement) {
-        const roomAssetId = getRoomAssetId(activeElement.name);
-        app.currentConfigurator.assetId = roomAssetId;
+      const dataTableAssetId = app.dataTableLevel1.assetId;
+      const roomAssetId = app.currentConfigurator.assetId;
+      const isLoadThreekitData =
+        command.stepName === StepName.Platform &&
+        dataTableAssetId !== roomAssetId;
+
+      if (isLoadThreekitData) {
+        const roomAssetId = app.currentConfigurator.assetId;
         app.eventEmitter.emit("processInitThreekitData", true);
         return new ThreekitService()
           .getInitDataAssetById(roomAssetId)
           .then(({ attributes, dataTables, attributesSequenceLevel1 }) => {
-            app.dataTableLevel1 = new DataTable(dataTables);
+            app.dataTableLevel1 = new DataTable(dataTables).setAssetId(
+              roomAssetId
+            );
             app.currentConfigurator.attributesSequenceLevel1 =
               attributesSequenceLevel1;
 
             const configurator = app.currentConfigurator.getSnapshot();
             configurator.setAttributes(attributes as Array<AttributeI>);
             app.currentConfigurator = configurator;
+            ConfigurationConstraintHandler.clearCacheData();
             return new ConfigurationConstraintHandler(
               configurator,
               app.dataTableLevel1,

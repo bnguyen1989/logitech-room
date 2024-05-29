@@ -1,99 +1,106 @@
-
-export enum StepName {
-	Platform = 'Platform',
-	RoomSize = 'Room Size',
-	Services = 'Services',
-	ConferenceCamera = 'Conference Camera',
-	AudioExtensions = 'Audio Extensions & Accessories',
-	MeetingController = 'Meeting Controller & Add On',
-	VideoAccessories = 'Video Accessories',
-	SoftwareServices = 'Software & Services',
-}
-
-export type StepCardType = PlatformCardI | RoomCardI | ServiceCardI | ItemCardI;
+import { ValueAssetStateI } from "../../../models/configurator/type";
+import { FormName, StepName } from "../../../utils/baseUtils";
 
 export interface StepDataI {
-	[StepName.Platform]: StepI<PlatformCardI>;
-	[StepName.RoomSize]: StepI<RoomCardI>;
-	[StepName.Services]: StepI<ServiceCardI>;
-	[StepName.ConferenceCamera]: StepI<ItemCardI>;
-	[StepName.AudioExtensions]: StepI<ItemCardI>;
-	[StepName.MeetingController]: StepI<ItemCardI>;
-	[StepName.VideoAccessories]: StepI<ItemCardI>;
-	[StepName.SoftwareServices]: StepI<ItemCardI>;
+  [StepName.Platform]: StepI;
+  [StepName.RoomSize]: StepI;
+  [StepName.Services]: StepI;
+  [StepName.ConferenceCamera]: StepI;
+  [StepName.AudioExtensions]: StepI;
+  [StepName.MeetingController]: StepI;
+  [StepName.VideoAccessories]: StepI;
+  [StepName.SoftwareServices]: StepI;
 }
 
-export interface StepI<CI> {
-	key: StepName;
-	name: string;
-	title: string;
-	subtitle: string;
-
-	activeCards: Array<CI>;
-	cards: Array<CI>;
+export interface SelectedDataI {
+  [key_step: string]: {
+    [key_card: string]: {
+      selected: Array<string>;
+      property: {
+        [key: string]: any;
+        count?: number;
+        color?: string;
+      };
+    };
+  };
 }
 
-export interface BaseCardI {
-	title: string;
-	image: string;
-	keyPermission?: string;
-	threekit?: ThreekitI;
-	recommended?: boolean;
+export interface StepI {
+  key: StepName;
+  name: string;
+  title: string;
+  subtitle: string;
+
+  cards: Record<string, CardI>;
 }
 
-export interface RoomCardI extends BaseCardI{
-	key: StepName.RoomSize;
-	subtitle: string;
-}
+export type typeThreekitValue = Record<string, ValueAssetStateI>;
+export type TypeCardPermissionWithDataThreekit = Record<
+  string,
+  typeThreekitValue
+>;
 
-export interface PlatformCardI extends BaseCardI {
-	key: StepName.Platform;
-	logo: string;
-}
-
-export interface ServiceCardI extends BaseCardI {
-	key: StepName.Services;
-	subtitle: string;
+export interface CardI {
+  key: StepName;
+  image?: string;
+  logo?: string;
+  subtitle?: string;
+  description?: string;
+  counter?: CounterI;
+  select?: SelectI;
+  keyPermission: string;
+  dataThreekit: {
+    attributeName: string;
+    threekitItems: typeThreekitValue;
+  };
 }
 
 export interface ColorItemI {
-	name: string;
-	value: string;
+  name: string;
+  value: string;
 }
 export interface ColorI {
-	currentColor: ColorItemI;
-	colors: Array<ColorItemI>;
+  colors: Array<ColorItemI>;
 }
 
 export interface CounterI {
-	min: number;
-	max: number;
-	currentValue: number;
-	threekit: Pick<ThreekitI, "key">;
+  min: number;
+  max: number;
+  threekit: Pick<ThreekitI, "key">;
 }
 
 export interface ThreekitI {
-	assetId: string;
-	key: string;
+  assetId: string;
+  key: string;
 }
-
 
 export interface SelectDataI {
-	label: string;
-	value: string;
-	threekit: Pick<ThreekitI, "assetId">;
+  label: string;
+  value: string;
 }
 export interface SelectI {
-	value: SelectDataI;
-	data: Array<SelectDataI>;
+  data: Array<SelectDataI>;
 }
 
-export interface ItemCardI extends BaseCardI {
-	key: StepName.ConferenceCamera | StepName.AudioExtensions | StepName.MeetingController | StepName.VideoAccessories | StepName.SoftwareServices;
-	header_title: string;
-	subtitle?: string;
-	description?: string;
-	color?: ColorI;
-	counter?: CounterI;
-	select?: SelectI;
+export interface QuestionFormI {
+  question: string;
+  options: Array<{
+    value: boolean;
+    text: string;
+  }>;
+  active: boolean;
+  done: boolean;
+}
+
+export interface LangTextI {
+  pages: Record<string, any>;
+  products: Record<string, any>;
+}
+
+export interface FormI {
+  [FormName.QuestionFormSoftware]: FormDataI;
+}
+
+export interface FormDataI {
+  isSubmit: boolean;
 }

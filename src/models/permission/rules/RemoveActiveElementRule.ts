@@ -1,5 +1,5 @@
 import { ItemElement } from "../elements/ItemElement";
-import { MountElement } from "../elements/MountElement";
+import { MountElement } from "../elements/mounts/MountElement";
 import { Step } from "../step/Step";
 import { Rule } from "./Rule";
 
@@ -17,10 +17,8 @@ export class RemoveActiveElementRule extends Rule {
       return true;
     }
     const isRequired = this.element.getRequired();
-    const isDefaultActive = this.element.getDefaultActive();
     return !(
       isRequired &&
-      isDefaultActive &&
       step.getActiveElements().length > 1
     );
   }

@@ -6,98 +6,62 @@ import { getSetupModalData } from "../../../store/slices/modals/selectors/select
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
-import { useNavigate } from "react-router-dom";
-import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { ConfigData } from "../../../utils/threekitUtils";
-import { Application } from "../../../models/Application";
-import {
-  getSelectedConfiguratorCards,
-  getSelectedPrepareCards,
-} from "../../../store/slices/ui/selectors/selectors";
-import { ItemCardI, StepName } from "../../../store/slices/ui/type";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./form.css";
-import { getDescriptionRoomBySize } from './utils'
+import { getParentURL } from "../../../utils/browserUtils";
+import { useUser } from "../../../hooks/user";
+import { setUserData } from "../../../store/slices/user/User.slice";
+import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { useUrl } from "../../../hooks/url";
 
-declare const app: Application;
 declare const MktoForms2: any;
 
 export const SetupModal: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isOpen } = useAppSelector(getSetupModalData);
-  const selectedCards: Array<ItemCardI> = useAppSelector(
-    getSelectedConfiguratorCards
-  );
-  const selectedPrepareCards = useAppSelector(getSelectedPrepareCards);
+  const { isOpen, dataModal } = useAppSelector(getSetupModalData);
+  const user = useUser();
+  const { handleNavigate } = useUrl();
+  const dataLang = useAppSelector(getSetupModalLangPage);
+  const formLoaded = useRef(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
   };
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      formLoaded.current = false;
+      return;
+    }
+    if (formLoaded.current) return;
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
+    formLoaded.current = true;
 
     MktoForms2.whenReady((form: any) => {
-      form.onSubmit(() => {
-        createOrder().then(() => {
-          dispatch(setMySetupModal({ isOpen: false }));
-          navigate("/room", { replace: true });
+      const baseUrl = getParentURL();
+      const link = `${baseUrl}/room?userId=${user.id}`;
+      form.setValues({
+        editableField6: link,
+      });
+
+      if (dataModal) {
+        form.setValues({
+          editableField5: dataModal.linkSnapshot,
         });
-        return false;
+      }
+
+      form.onSubmit(() => {
+        dispatch(setMySetupModal({ isOpen: false }));
+        dispatch(setUserData({ data: { ...form.getValues() } }));
+        handleNavigate("/room");
+        return true;
       });
       const button = document.querySelector(".mktoButton");
       if (button) {
-        button.textContent = "See my results";
+        button.textContent = dataLang.btn_done;
       }
     });
   }, [isOpen]);
-
-  const getNameOrder = () => {
-    const name = selectedPrepareCards
-      .filter((item) => !(item.key !== StepName.Platform))
-      .map((item) => item.title.replace(" Room", ""))
-      .join(" ");
-
-    return `${name} Room`;
-  };
-
-  const createOrder = async () => {
-    const cardData = selectedCards.map((card) => {
-      return {
-        metadata: {
-          data: JSON.stringify(card),
-        },
-        configurationId: card.threekit?.assetId || "",
-        count: 1,
-      };
-    });
-    const nameOrder = getNameOrder();
-    const nameRoomSize = selectedPrepareCards.find(
-      (card) => card.key === StepName.RoomSize 
-    )?.keyPermission;
-    if (!nameRoomSize) return;
-    const description = getDescriptionRoomBySize(nameRoomSize);
-    return new ThreekitService().createOrder({
-      customerId: ConfigData.userId,
-      originOrgId: ConfigData.userId,
-      platform: {
-        id: "1",
-        platform: "1",
-        storeName: "1",
-      },
-      cart: cardData,
-      metadata: {
-        assetId: app.currentConfigurator.assetId,
-        configuration: JSON.stringify(
-          app.currentConfigurator.getConfiguration()
-        ),
-        description: description,
-        name: nameOrder,
-      },
-    });
-  };
 
   if (!isOpen) return null;
 
@@ -111,12 +75,8 @@ export const SetupModal: React.FC = () => {
             </IconButton>
           </div>
           <div className={s.text}>
-            <div className={s.title}>Show me the complete setup</div>
-            <div className={s.subtitle}>
-              All finished! Complete the form below so we can share a detailed
-              look at your new space and a detailed product details that you can
-              download and share.
-            </div>
+            <div className={s.title}>{dataLang.title}</div>
+            <div className={s.subtitle}>{dataLang.subtitle}</div>
           </div>
         </div>
 

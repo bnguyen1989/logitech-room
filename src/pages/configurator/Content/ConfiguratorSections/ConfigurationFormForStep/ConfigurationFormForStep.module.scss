@@ -1,6 +1,7 @@
 .form {
-  padding: 20px 20px;
+  padding: 20px;
   overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -8,10 +9,22 @@
 
 .form::-webkit-scrollbar {
   width: 12px;
-  height: 100px;
+  height: 12px;
 }
 
 .form::-webkit-scrollbar-thumb {
-  background-color: #E1E2E3;
+  background-color: #e1e2e3;
   border-radius: 50px;
+}
+
+@media (max-width: 1000px) {
+  .form {
+    padding: 20px 40px;
+  }
+}
+
+@media (max-width: 500px) {
+  .form {
+    padding: 20px 30px;
+  }
 }

@@ -1,86 +1,64 @@
-import { useDispatch } from "react-redux";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { CardPlatform } from "../../../../components/Cards/CardPlatform/CardPlatform";
 import { CardRoom } from "../../../../components/Cards/CardRoom/CardRoom";
 import { CardService } from "../../../../components/Cards/CardService/CardService";
+import { PrepareSecondaryCard } from "../../../../components/Cards/PrepareSecondaryCard/PrepareSecondaryCard";
 import { useAppSelector } from "../../../../hooks/redux";
 import {
-  getActiveStep,
+  getActiveStepData,
   getIsConfiguratorStep,
+  getSecondaryCardsFromStep,
 } from "../../../../store/slices/ui/selectors/selectors";
-import {
-  PlatformCardI,
-  ServiceCardI,
-  StepCardType,
-  StepI,
-  StepName,
-} from "../../../../store/slices/ui/type";
+import { CardI, StepI } from "../../../../store/slices/ui/type";
+import { StepName } from "../../../../utils/baseUtils";
+import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 import s from "./PrepareSection.module.scss";
-import {
-  addActiveCard,
-  removeActiveCard,
-} from "../../../../store/slices/ui/Ui.slice";
-import { Permission } from "../../../../models/permission/Permission";
-import { Application } from '../../../../models/Application'
 
-declare const permission: Permission;
-declare const app: Application;
+import { useEffect } from "react";
+import { ContentContainer } from "../ContentContainer/ContentContainer";
 
 export const PrepareSection: React.FC = () => {
-  const dispatch = useDispatch();
-  const activeStep: null | StepI<StepCardType> = useAppSelector(getActiveStep);
+  const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
+  const secondaryCards = useAppSelector(
+    getSecondaryCardsFromStep(activeStepData)
+  );
 
-  if (!activeStep || isConfiguratorStep) return null;
+  // submit event:
+  useEffect(() => {
+    if (isConfiguratorStep) return;
 
-  console.log('activeStep', activeStep);
+    getTKAnalytics().stage({ stageName: activeStepData.key });
 
-  const handleClick = (card: StepCardType) => {
-    const activeItems = permission.getActiveItems();
-    const isContain = activeItems.some(
-      (item) => item.name === card.keyPermission
-    );
-    const threekit = (card as PlatformCardI | ServiceCardI).threekit;
+    getTKAnalytics().optionsShow({
+      optionsSetId: activeStepData.key,
+      optionsType: OptionsType.Value,
+      options: Object.values(activeStepData.cards).map((card) => ({
+        optionId: card.keyPermission,
+        optionName: card.keyPermission,
+        optionValue: card.keyPermission,
+      })),
+    });
+  }, [activeStepData.key]);
 
-    if (!threekit) {
-      if(card.keyPermission) {
-        if (isContain) {
-          if (permission.canRemoveActiveItemByName(card.keyPermission)) {
-            permission.removeActiveItemByName(card.keyPermission);
-            dispatch(removeActiveCard(card));
-          }
-          return;
-        }
-        if (permission.canAddActiveElementByName(card.keyPermission)) {
-          permission.addActiveElementByName(card.keyPermission);
-          dispatch(addActiveCard(card));
-        }
-      }
-      return;
-    }
+  if (isConfiguratorStep) return null;
 
-    if (isContain && card.keyPermission) {
-      app.removeItem(threekit.key, threekit.assetId);
-      return;
-    }
-
-    app.addItemConfiguration(threekit.key, threekit.assetId);
-  };
-
-  const getCardComponent = (card: StepCardType, index: number) => {
-    const onClick = () => handleClick(card);
-    const activeItems = activeStep.activeCards;
-    const isActive = activeItems.some(
+  const getCardComponent = (
+    card: CardI,
+    index: number,
+    onSelectedAnalytics: () => void
+  ) => {
+    const isExistSecondary = secondaryCards.some(
       (item) => item.keyPermission === card.keyPermission
     );
-    const isDisabled = !!activeItems.length && !isActive;
+    if (isExistSecondary) return null;
+
     if (card.key === StepName.Platform) {
       return (
         <CardPlatform
           key={index}
-          data={card}
-          onClick={onClick}
-          active={isActive}
-          disabled={isDisabled}
+          keyItemPermission={card.keyPermission}
+          onSelectedAnalytics={onSelectedAnalytics}
         />
       );
     }
@@ -88,10 +66,8 @@ export const PrepareSection: React.FC = () => {
       return (
         <CardRoom
           key={index}
-          data={card}
-          onClick={onClick}
-          active={isActive}
-          disabled={isDisabled}
+          keyItemPermission={card.keyPermission}
+          onSelectedAnalytics={onSelectedAnalytics}
         />
       );
     }
@@ -99,18 +75,57 @@ export const PrepareSection: React.FC = () => {
       return (
         <CardService
           key={index}
-          data={card}
-          onClick={onClick}
-          active={isActive}
-          disabled={isDisabled}
+          keyItemPermission={card.keyPermission}
+          onSelectedAnalytics={onSelectedAnalytics}
         />
       );
     }
     return null;
   };
+
+  const isSecondaryCards = !!secondaryCards.length;
+
   return (
-    <div className={s.container}>
-      {activeStep.cards.map((card, index) => getCardComponent(card, index))}
-    </div>
+    <ContentContainer>
+      <div className={s.container_PrepareSection}>
+        <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
+          <div className={s.wrapperCards}>
+            <div className={s.content_cards}>
+              {Object.values(activeStepData.cards).map((card, index) =>
+                getCardComponent(card, index, () =>
+                  getTKAnalytics().optionInteraction({
+                    optionsSetId: activeStepData.key,
+                    interactionType: OptionInteractionType.Select,
+                    optionId: card.keyPermission,
+                  })
+                )
+              )}
+            </div>
+          </div>
+          {isSecondaryCards && (
+            <div className={s.secondaryWrapper}>
+              <div className={s.titleSecond}>
+                Not quite what you’re looking for?
+              </div>
+              <div className={s.secondaryWrapperCards}>
+                {secondaryCards.map((card, index) => (
+                  <PrepareSecondaryCard
+                    key={index}
+                    keyItemPermission={card.keyPermission}
+                    onSelectedAnalytics={() =>
+                      getTKAnalytics().optionInteraction({
+                        optionsSetId: activeStepData.key,
+                        interactionType: OptionInteractionType.Select,
+                        optionId: card.keyPermission,
+                      })
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </ContentContainer>
   );
 };

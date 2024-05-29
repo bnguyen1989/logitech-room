@@ -1,7 +1,8 @@
 import { Configurator } from "../configurator/Configurator";
-import { Command } from "./Command";
+import { ItemCommand } from "./ItemCommand";
+import { AddItemBehavior } from "./behavior/AddItemBehavior";
 
-export class AddItemCommand extends Command {
+export class AddItemCommand extends ItemCommand {
   public name: string = "AddItemCommand";
   public assetId: string;
   public nameProperty: string;
@@ -9,11 +10,13 @@ export class AddItemCommand extends Command {
   constructor(
     configurator: Configurator,
     nameProperty: string,
-    assetId: string
+    assetId: string,
+    keyItemPermission: string
   ) {
-    super(configurator);
+    super(configurator, keyItemPermission);
     this.assetId = assetId;
     this.nameProperty = nameProperty;
+    this.behaviors.push(new AddItemBehavior());
   }
 
   public executeCommand(): boolean {

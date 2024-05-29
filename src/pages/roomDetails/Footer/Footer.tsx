@@ -1,17 +1,31 @@
 import React from "react";
 import s from "./Footer.module.scss";
 import { Actions } from "../Actions/Actions";
+import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { useAppSelector } from "../../../hooks/redux";
 
-export const Footer: React.FC = () => {
+interface PropsI {
+  totalAmount?: string;
+}
+export const Footer: React.FC<PropsI> = (props) => {
+  const { totalAmount } = props;
+  const langPage = useAppSelector(getDetailRoomLangPage);
+
   return (
     <div className={s.container}>
-      <div className={s.divider}></div>
-      <div className={s.title}>Prices may vary by channel or reseller</div>
-      <div className={s.subtitle}>
-        *Prices listed are based on product MSRPs. Contact you local reseller or
-        a Logitech Sales Representative for more information.
+      <div className={s.desc}>
+        <div className={s.text}>{langPage.subtitle.v2}</div>
+
+        {!!totalAmount && (
+          <div className={s.total_amount}>
+            <div className={s.total}>Total</div>
+            <div className={s.amount}>
+              <div className={s.amount_value}>{totalAmount}</div>
+              <div className={s.amount_text}>MSRP</div>
+            </div>
+          </div>
+        )}
       </div>
-      <div className={s.divider}></div>
       <div className={s.buttons}>
         <Actions />
       </div>
