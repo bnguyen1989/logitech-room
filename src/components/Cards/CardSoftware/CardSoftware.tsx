@@ -76,15 +76,15 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
               )}
             </div>
             <div className={s.desc}>{description}</div>
-            {!!card.select && (
-              <div className={s.actions}>
-                <SelectItem
-                  keyItemPermission={keyItemPermission}
-                  disabled={!isActiveCard}
-                />
-              </div>
-            )}
           </div>
+          {!!card.select && (
+            <div className={s.actions}>
+              <SelectItem
+                keyItemPermission={keyItemPermission}
+                disabled={!isActiveCard}
+              />
+            </div>
+          )}
           <div className={s.info_mobile}>
             <div className={s.info_button_mobile}>INFO</div>
           </div>
