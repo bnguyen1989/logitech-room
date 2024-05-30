@@ -41,8 +41,6 @@ export const Room: React.FC<RoomProps> = (props) => {
 
     const domeLight = gltf.scene.userData.domeLight;
     const camera = gltf.scene.userData.camera as THREE.PerspectiveCamera;
-    camera.near = 0.1;
-    camera.far = 1000;
     threeScene.environment = domeLight.image;
     threeSet({ camera });
 
