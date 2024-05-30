@@ -28,11 +28,12 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 992px) {
   .container {
 
     .plyer_content {
-      height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px - 30px - 48px);
+      min-height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px - 30px - 48px);
+      height: auto;
     }
   }
 }
