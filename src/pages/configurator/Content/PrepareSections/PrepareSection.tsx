@@ -84,24 +84,58 @@ export const PrepareSection: React.FC = () => {
   };
 
   const isSecondaryCards = !!secondaryCards.length;
+  console.log("activeStepData", activeStepData);
 
   return (
     <ContentContainer>
       <div className={s.container_PrepareSection}>
         <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
-          <div className={s.wrapperCards}>
-            <div className={s.content_cards}>
-              {Object.values(activeStepData.cards).map((card, index) =>
-                getCardComponent(card, index, () =>
-                  getTKAnalytics().optionInteraction({
-                    optionsSetId: activeStepData.key,
-                    interactionType: OptionInteractionType.Select,
-                    optionId: card.keyPermission,
-                  })
-                )
-              )}
+          {activeStepData.key === StepName.RoomSize && (
+            <div className={s.wrapperCardsRoom}>
+              <div className={s.contentRoomCard}>
+                {Object.values(activeStepData.cards).map((card, index) =>
+                  getCardComponent(card, index, () =>
+                    getTKAnalytics().optionInteraction({
+                      optionsSetId: activeStepData.key,
+                      interactionType: OptionInteractionType.Select,
+                      optionId: card.keyPermission,
+                    })
+                  )
+                )}
+              </div>
             </div>
-          </div>
+          )}
+          {activeStepData.key === StepName.Services && (
+            <div className={s.wrapperCards}>
+              <div className={s.content_cards}>
+                {Object.values(activeStepData.cards).map((card, index) =>
+                  getCardComponent(card, index, () =>
+                    getTKAnalytics().optionInteraction({
+                      optionsSetId: activeStepData.key,
+                      interactionType: OptionInteractionType.Select,
+                      optionId: card.keyPermission,
+                    })
+                  )
+                )}
+              </div>
+            </div>
+          )}
+          {activeStepData.key === StepName.Platform && (
+            <div className={s.wrapperCards}>
+              <div className={s.content_cards}>
+                {Object.values(activeStepData.cards).map((card, index) =>
+                  getCardComponent(card, index, () =>
+                    getTKAnalytics().optionInteraction({
+                      optionsSetId: activeStepData.key,
+                      interactionType: OptionInteractionType.Select,
+                      optionId: card.keyPermission,
+                    })
+                  )
+                )}
+              </div>
+            </div>
+          )}
+
           {isSecondaryCards && (
             <div className={s.secondaryWrapper}>
               <div className={s.titleSecond}>

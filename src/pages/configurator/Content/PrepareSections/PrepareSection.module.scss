@@ -25,25 +25,6 @@
     width: 100%;
   }
 
-  .wrapperCards {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-
-    .content_cards {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      align-items: stretch;
-      gap: 28px;
-      min-height: 300px;
-      max-height: 390px;
-      height: 100%;
-    }
-  }
-
   .secondaryWrapper {
     display: flex;
     flex-direction: column;
@@ -65,6 +46,111 @@
   }
 }
 
+/// Room Card start
+.wrapperCardsRoom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .contentRoomCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-items: stretch;
+    gap: 28px;
+    height: 448px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .wrapperCardsRoom {
+    padding: 0 0 0 40px;
+    width: calc(100% - 40px);
+    .contentRoomCard {
+      padding: 30px 40px 30px 0;
+      gap: 15px;
+      overflow-x: auto;
+      justify-content: normal;
+      height: 380px;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .wrapperCardsRoom {
+    padding: 0 0 0 0;
+    width: calc(100%);
+    .contentRoomCard {
+      gap: 23px;
+      padding: 20px 40px;
+      height: 366px;
+    }
+  }
+
+  .wrapperCardsRoom {
+    .contentRoomCard {
+      overflow-x: auto;
+      justify-content: normal;
+    }
+  }
+
+  .wrapper_scroll > .wrapperCardsRoom > .contentRoomCard {
+    border-bottom: 1px solid #c3c6c8;
+  }
+}
+@media (max-width: 720px) {
+  .wrapperCardsRoom {
+    .contentRoomCard {
+      padding: 20px 40px 10px;
+    }
+  }
+}
+@media (max-width: 720px) {
+  .contentRoomCard {
+    height: 260px;
+  }
+}
+
+@media (max-width: 610px) {
+  .wrapperCardsRoom {
+    width: 100%;
+  }
+}
+@media (max-width: 500px) {
+  .wrapperCardsRoom {
+    .contentRoomCard {
+      height: 260px;
+    }
+  }
+}
+
+/// Room Card end
+
+/// Room service start
+ 
+.container_PrepareSection {
+  .wrapperCards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+    .content_cards {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-items: stretch;
+      gap: 28px;
+      min-height: 300px;
+      max-height: 390px;
+      height: 100%;
+    }
+  }
+}
+
 @media (max-width: 1500px) {
   .container_PrepareSection {
     .wrapperCards {
@@ -80,6 +166,7 @@
     .wrapperCards {
       padding: 0 40px;
       width: calc(100% - 80px);
+
       .content_cards {
         padding: 30px 0;
         overflow-x: auto;
@@ -91,17 +178,6 @@
 
 @media (max-width: 1000px) {
   .container_PrepareSection {
-    padding-top: 40px;
-    height: calc(100% - 40px);
-
-    .wrapper {
-      height: calc(var(--vh, 1vh) * 46.83);
-    }
-
-    .wrapper_scroll {
-      gap: 40px;
-    }
-
     .wrapperCards {
       .content_cards {
         padding: 30px 0;
@@ -109,9 +185,34 @@
         justify-content: normal;
       }
     }
+  }
+}
 
-    .wrapper_scroll > .wrapperCards > .content_cards {
-      border-bottom: 1px solid #c3c6c8;
+@media (max-width: 500px) {
+  .container_PrepareSection {
+    .wrapperCards {
+      width: calc(100% - 60px);
+      padding: 0 30px;
+    }
+  }
+}
+
+/// Room Serice end
+///
+///
+@media (max-width: 1300px) {
+  .container_PrepareSection {
+    padding-top: 30px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .container_PrepareSection {
+    padding-top: 20px;
+    height: calc(100% - 40px);
+
+    .wrapper_scroll {
+      gap: 40px;
     }
 
     .secondaryWrapper {
@@ -125,10 +226,7 @@
 
 @media (max-width: 500px) {
   .container_PrepareSection {
-    .wrapperCards {
-      width: calc(100% - 60px);
-      padding: 0 30px;
-    }
+    padding-top: 30px;
     .secondaryWrapper {
       .titleSecond {
         text-align: center;
