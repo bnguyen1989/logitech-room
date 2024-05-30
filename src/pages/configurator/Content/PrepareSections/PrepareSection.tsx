@@ -121,8 +121,8 @@ export const PrepareSection: React.FC = () => {
             </div>
           )}
           {activeStepData.key === StepName.Platform && (
-            <div className={s.wrapperCards}>
-              <div className={s.content_cards}>
+            <div className={s.wrapperCardsPlatform}>
+              <div className={s.contentCardsPlatform}>
                 {Object.values(activeStepData.cards).map((card, index) =>
                   getCardComponent(card, index, () =>
                     getTKAnalytics().optionInteraction({

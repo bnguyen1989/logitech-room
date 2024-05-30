@@ -22,7 +22,7 @@ export const CardPlatform: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer isPadding={true} keyItemPermission={keyItemPermission} onSelectedAnalytics={props.onSelectedAnalytics}>
+    <PrepareCardContainer isPadding={false} keyItemPermission={keyItemPermission} onSelectedAnalytics={props.onSelectedAnalytics}>
       <div className={s.container}>
         <div className={s.logo}>
           <img src={card.logo} alt="logo_ms" />
