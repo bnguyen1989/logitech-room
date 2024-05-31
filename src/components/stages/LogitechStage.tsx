@@ -62,14 +62,14 @@ const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
       <group rotation={[0, (Math.PI / 180) * controls.productRotation, 0]}>
         {children}
       </group>
-      <ContactShadows
+      {/* <ContactShadows
         resolution={1024}
         position={[0, -0.01, 0]}
         opacity={controls.shadows.cOpacity}
         scale={[5, 5]}
         blur={controls.shadows.cBlur}
         far={10}
-      />
+      /> */}
       <mesh
         rotation={[-0.5 * Math.PI, 0, 0]}
         position={[0, 0.0, 0]}
