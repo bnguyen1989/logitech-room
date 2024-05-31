@@ -58,18 +58,27 @@ export const FinishModal: React.FC = () => {
     setSendRequest(true);
     const threekitService = new ThreekitService();
     const assetId = orderData.metadata.configurator.assetId;
-    const snapshot = window.snapshot("blob") as Blob;
-    threekitService
-      .saveConfigurator(snapshot, assetId ?? "")
-      .then((id) => {
-        const linkSnapshot = threekitService.getSnapshotLinkById(id);
-        orderData.metadata["snapshot"] = linkSnapshot;
-
+    const snapshotFront = window.snapshot("blob", "Front") as Blob;
+    const snapshotLeft = window.snapshot("blob", "Left") as Blob;
+    Promise.all([
+      threekitService.saveConfigurator(snapshotFront, assetId ?? ""),
+      threekitService.saveConfigurator(snapshotLeft, assetId ?? ""),
+    ])
+      .then((res) => {
+        const linkSnapshotFront = threekitService.getSnapshotLinkById(res[0]);
+        const linkSnapshotLeft = threekitService.getSnapshotLinkById(res[1]);
+        orderData.metadata["snapshots"] = JSON.stringify({
+          Front: linkSnapshotFront,
+          Left: linkSnapshotLeft,
+        });
         return threekitService.createOrder(orderData).then(() => {
           dispatch(setFinishModal({ isOpen: false }));
           if (isShowSetupModal) {
             dispatch(
-              setMySetupModal({ isOpen: true, dataModal: { linkSnapshot } })
+              setMySetupModal({
+                isOpen: true,
+                dataModal: { linkSnapshot: linkSnapshotFront },
+              })
             );
           } else {
             handleNavigate("/room");

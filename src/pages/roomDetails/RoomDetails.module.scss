@@ -58,12 +58,3 @@
     height: calc(var(--vh, 1vh) * 100);
   }
 }
-
-@media (max-width: 500px) {
-  .container {
-    .wrapper {
-      // padding: 40px;
-      // width: calc(100% - 80px);
-    }
-  }
-}
