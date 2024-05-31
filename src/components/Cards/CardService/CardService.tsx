@@ -26,7 +26,11 @@ export const CardService: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer keyItemPermission={keyItemPermission} onSelectedAnalytics={props.onSelectedAnalytics}>
+    <PrepareCardContainer
+      isPadding={false}
+      keyItemPermission={keyItemPermission}
+      onSelectedAnalytics={props.onSelectedAnalytics}
+    >
       <div className={s.container}>
         <div className={s.image}>
           <img src={card.image} alt="" />
