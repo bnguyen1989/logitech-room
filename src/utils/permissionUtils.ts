@@ -6,6 +6,7 @@ import { ReferenceMountElement } from "../models/permission/elements/mounts/Refe
 import { Step } from "../models/permission/step/Step";
 import { StepName, getSeparatorItemColor } from "./baseUtils";
 import { PlacementManager } from "../models/configurator/PlacementManager";
+import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -189,25 +190,33 @@ export function createStepConferenceCamera() {
       )
     )
     .addElement(
-      new ItemElement(CameraName.RallyPlus).setAccessoryItems([
-        CameraName.RallyMountingKit,
-      ])
+      new ItemElement(CameraName.RallyPlus)
+        .setAccessoryItems([CameraName.RallyMountingKit])
+        .setDefaultMount(
+          new AttributeMountElement(
+            CameraName.RallyPlus,
+            PlacementManager.getNameNodeForCamera("TV", 2)
+          ).setAttributes({
+            Position: true,
+          })
+        )
+        .addDependenceMount(
+          new AttributeMountElement(
+            CameraName.RallyMountingKit,
+            PlacementManager.getNameNodeForCamera("TV", 2)
+          ).setAttributes({
+            Position: false,
+          })
+        )
     )
     .setRequiredOne(true);
 
-  const tempGroupMount = new GroupElement()
-    .addElement(
-      new ItemElement(CameraName.TVMountForMeetUP).addDependence(
-        "instruction-1",
-        new ItemElement(CameraName.MeetUp2)
-      )
+  const tempGroupMount = new GroupElement().addElement(
+    new ItemElement(CameraName.TVMountForMeetUP).addDependence(
+      "instruction-1",
+      new ItemElement(CameraName.MeetUp2)
     )
-    .addElement(
-      new ItemElement(CameraName.RallyMountingKit).addDependence(
-        "instruction-1",
-        new ItemElement(CameraName.RallyPlus)
-      )
-    );
+  );
 
   const groupRallyCamera = new GroupElement().addElement(
     new ItemElement(CameraName.RallyCamera).setDefaultMount(
