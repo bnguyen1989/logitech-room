@@ -17,7 +17,7 @@ export const Content: React.FC<PropsI> = () => {
           <SoftwareServiceSection />
         </div>
       )}
-      <div className={`${s.plyer_content} ${isPlayer ? s.player_visible : ""}`}>
+      <div className={`${s.plyer_content} ${isPlayer ? `${s.player_visible} ${s.fixHeight}` : ""}`}>
         <ConfiguratorSection />
       </div>
     </div>
