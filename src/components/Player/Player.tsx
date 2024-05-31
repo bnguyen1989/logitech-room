@@ -39,7 +39,8 @@ export const Player: React.FC = () => {
 
   const [effectComposerRef, setEffectComposerRef] =
     useState<EffectComposerImpl | null>(null);
-  const [snapshotCamera, setSnapshotCamera] = useState<Camera>();
+  const [snapshotCameras, setSnapshotCameras] =
+    useState<Record<string, Camera>>();
 
   const focalLengthMm = 65; // Focal length in mm
   const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
@@ -54,8 +55,12 @@ export const Player: React.FC = () => {
     },
   };
 
-  (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
+  (window as any).snapshot = (
+    type: "string" | "blob",
+    side: "Front" | "Left" = "Front"
+  ): string | Blob => {
     if (!effectComposerRef) return "";
+    const snapshotCamera = snapshotCameras?.[side];
     const dataSnapshot = snapshot(effectComposerRef, {
       size: { width: 1920, height: 1080 },
       camera: snapshotCamera,
@@ -94,7 +99,7 @@ export const Player: React.FC = () => {
             <LogitechStage>
               <Room
                 roomAssetId={assetId}
-                setSnapshotCamera={setSnapshotCamera}
+                setSnapshotCameras={setSnapshotCameras}
               />
             </LogitechStage>
             <OrbitControls

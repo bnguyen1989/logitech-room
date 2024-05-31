@@ -33,8 +33,9 @@ export const Room: React.FC = () => {
       .getOrders({ originOrgId: user.id })
       .then((res) => {
         const dataRooms = res.orders.reduce<RoomI[]>((acc, order: OrderI) => {
-          const { name, description, status, snapshot } = order.metadata;
+          const { name, description, status, snapshots } = order.metadata;
           if (status === "deleted") return acc;
+          const snapshot = snapshots ? JSON.parse(snapshots).Front : null;
           return acc.concat({
             image: snapshot ?? getImageUrl("images/pages/room/room.png"),
             title: name,
@@ -53,7 +54,7 @@ export const Room: React.FC = () => {
     new ThreekitService().deleteOrder(shortId);
     setRooms((prev) => prev.filter((room) => room.shortId !== shortId));
     getTKAnalytics().custom({ customName: "Delete Room" });
-  
+
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.delete_room,
