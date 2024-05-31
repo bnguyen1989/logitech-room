@@ -110,6 +110,7 @@
 @media (max-width: 720px) {
   .contentRoomCard {
     min-height: 260px;
+    box-sizing: content-box;
   }
 }
 
@@ -121,7 +122,8 @@
 @media (max-width: 500px) {
   .wrapperCardsRoom {
     .contentRoomCard {
-      min-height: 260px;
+      box-sizing: content-box;
+       height: 260px;
     }
   }
 }
@@ -190,7 +192,9 @@
 }
 @media (max-width: 720px) {
   .contentCardsPlatform {
-    min-height: 260px;
+    height: 260px;
+
+    box-sizing: content-box;
     padding: 20px 25px 10px;
   }
 }
@@ -203,7 +207,8 @@
 @media (max-width: 500px) {
   .wrapperCardsPlatform {
     .contentCardsPlatform {
-      min-height: 260px;
+      height: 250px;
+      box-sizing: content-box;
     }
   }
 }
@@ -256,8 +261,9 @@
   .container_PrepareSection {
     .wrapperCards {
       .content_cards {
-        // height: 366px;
-        min-height: 366px;
+        height: 366px;
+        box-sizing: content-box;
+        // min-height: 366px;
       }
     }
   }
@@ -266,8 +272,8 @@
   .container_PrepareSection {
     .wrapperCards {
       .content_cards {
-        min-height: 250px;
-
+        height: 250px;
+        box-sizing: content-box;
         padding: 30px 0;
         overflow-x: auto;
         justify-content: normal;
