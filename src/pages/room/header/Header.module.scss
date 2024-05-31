@@ -87,7 +87,35 @@
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1250px) {
+  .container {
+    .header {
+      .banner {
+        height: 500px;
+        & img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .header_content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .header_action {
+          width: 400px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          padding-top: 30px;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
   .container {
     .header {
       .banner {
