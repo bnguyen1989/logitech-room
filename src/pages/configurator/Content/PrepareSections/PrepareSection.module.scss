@@ -109,7 +109,7 @@
 }
 @media (max-width: 720px) {
   .contentRoomCard {
-    height: 260px;
+    min-height: 260px;
   }
 }
 
@@ -121,7 +121,7 @@
 @media (max-width: 500px) {
   .wrapperCardsRoom {
     .contentRoomCard {
-      height: 260px;
+      min-height: 260px;
     }
   }
 }
@@ -190,7 +190,7 @@
 }
 @media (max-width: 720px) {
   .contentCardsPlatform {
-    height: 260px;
+    min-height: 260px;
     padding: 20px 25px 10px;
   }
 }
@@ -203,7 +203,7 @@
 @media (max-width: 500px) {
   .wrapperCardsPlatform {
     .contentCardsPlatform {
-      height: 260px;
+      min-height: 260px;
     }
   }
 }
@@ -267,7 +267,7 @@
     .wrapperCards {
       .content_cards {
         min-height: 250px;
-        height: 250px;
+
         padding: 30px 0;
         overflow-x: auto;
         justify-content: normal;
