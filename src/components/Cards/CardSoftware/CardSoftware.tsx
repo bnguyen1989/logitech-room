@@ -40,8 +40,26 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
     props.onSelectedAnalytics();
 
     const { attributeName } = card.dataThreekit;
+    const isIncludeSelect = card.select;
+
     if (isActiveCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
+      if (isIncludeSelect) {
+        app.changeSelectItemConfiguration(
+          attributeName,
+          "",
+          card.keyPermission
+        );
+      }
+      return;
+    }
+
+    if (isIncludeSelect) {
+      app.changeSelectItemConfiguration(
+        attributeName,
+        threekitAsset.id,
+        card.keyPermission
+      );
       return;
     }
 
@@ -81,7 +99,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             <div className={s.actions}>
               <SelectItem
                 keyItemPermission={keyItemPermission}
-                disabled={!isActiveCard}
+                defaultLabel={"Choose Lorem Plan"}
               />
             </div>
           )}
