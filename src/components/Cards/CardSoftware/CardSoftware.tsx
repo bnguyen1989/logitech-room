@@ -18,9 +18,10 @@ interface PropsI {
   keyItemPermission: string;
   autoActive?: boolean;
   onSelectedAnalytics: () => void;
+  onClick?: () => void;
 }
 export const CardSoftware: React.FC<PropsI> = (props) => {
-  const { keyItemPermission, autoActive } = props;
+  const { keyItemPermission, autoActive, onClick } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -60,14 +61,15 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
         threekitAsset.id,
         card.keyPermission
       );
-      return;
+    } else {
+      app.addItemConfiguration(
+        attributeName,
+        threekitAsset.id,
+        card.keyPermission
+      );
     }
 
-    app.addItemConfiguration(
-      attributeName,
-      threekitAsset.id,
-      card.keyPermission
-    );
+    onClick && onClick();
   };
 
   useEffect(() => {

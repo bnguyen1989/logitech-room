@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowSelectDownSVG } from "../../../../assets";
 import { IconButton } from "../../../../components/Buttons/IconButton/IconButton";
 import { CardSoftware } from "../../../../components/Cards/CardSoftware/CardSoftware";
@@ -17,6 +17,7 @@ import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getActiveStepData } from "../../../../store/slices/ui/selectors/selectors";
 import { ContentContainer } from "../ContentContainer/ContentContainer";
+import { useAnchor } from "../../../../hooks/anchor";
 
 interface ExpressionI {
   questionIndex: number;
@@ -25,7 +26,8 @@ interface ExpressionI {
 
 export const SoftwareServiceSection: React.FC = () => {
   const dispatch = useDispatch();
-  const formAnchorRef = useRef<HTMLDivElement>(null);
+  const formAnchor = useAnchor<HTMLDivElement>();
+  const actionAnchor = useAnchor<HTMLDivElement>();
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
   );
@@ -33,7 +35,8 @@ export const SoftwareServiceSection: React.FC = () => {
 
   const cards = Object.values(activeStepData.cards);
 
-  const isSoftwareServicesStep = activeStepData.key === StepName.SoftwareServices;
+  const isSoftwareServicesStep =
+    activeStepData.key === StepName.SoftwareServices;
 
   const setStatusForm = (value: boolean) => {
     dispatch(
@@ -119,12 +122,6 @@ export const SoftwareServiceSection: React.FC = () => {
     return result.every((item) => item);
   };
 
-  const handleClick = () => {
-    if (formAnchorRef.current) {
-      formAnchorRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const getCardComponent = (card: CardI, index: number) => {
     const isSoftwareServicesCard = card.key === StepName.SoftwareServices;
     if (!isSoftwareServicesCard) return null;
@@ -141,6 +138,7 @@ export const SoftwareServiceSection: React.FC = () => {
             interactionType: OptionInteractionType.Select,
           })
         }
+        onClick={actionAnchor.handleAnchor}
       />
     );
   };
@@ -148,14 +146,14 @@ export const SoftwareServiceSection: React.FC = () => {
   if (!isSoftwareServicesStep) return null;
 
   return (
-    <ContentContainer>
+    <ContentContainer refAction={actionAnchor.ref}>
       <div className={s.container}>
         {!dataQuestionForm.isSubmit ? (
           <div className={s.button_link}>
             <div className={s.actions}>
               <IconButton
                 text={langPage.helpButton}
-                onClick={handleClick}
+                onClick={formAnchor.handleAnchor}
                 variant={"outlined"}
               >
                 <ArrowSelectDownSVG />
@@ -170,7 +168,7 @@ export const SoftwareServiceSection: React.FC = () => {
         </div>
 
         {!dataQuestionForm.isSubmit ? (
-          <div className={s.form} ref={formAnchorRef}>
+          <div className={s.form} ref={formAnchor.ref}>
             <QuestionForm
               baseData={dataQuestionForm.data}
               submitData={submitFormData}
