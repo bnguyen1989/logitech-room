@@ -19,10 +19,11 @@ interface PropsI {
   keyItemPermission: string;
   children: React.ReactNode;
   onSelectedAnalytics: () => void;
+  onClick?: () => void;
   isPadding?: boolean;
 }
 export const PrepareCardContainer: React.FC<PropsI> = (props) => {
-  const { keyItemPermission, children, isPadding } = props;
+  const { keyItemPermission, children, isPadding, onClick } = props;
   const dispatch = useDispatch();
   const activeStep = useAppSelector(getActiveStep);
   const isActiveCard = useAppSelector(
@@ -58,6 +59,8 @@ export const PrepareCardContainer: React.FC<PropsI> = (props) => {
       threekitAsset.id,
       card.keyPermission
     );
+
+    onClick && onClick();
   };
 
   const isDisabled = !!selectCards.length && !isActiveCard;
