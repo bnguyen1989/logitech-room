@@ -18,20 +18,14 @@ export const divideTextIntoSentence = (text: string) => {
 
 export const toCamelCase = (str: string): string => {
   return str
-      // Видаляємо всі пробіли
       .replace(/\s+/g, ' ')
       .trim()
-      // Ділимо строку на слова
       .split(' ')
-      // Перетворюємо слова в потрібний формат
       .map((word, index) => {
           if (index === 0) {
-              // Перше слово в нижньому регістрі
               return word.toLowerCase();
           }
-          // Перша літера у верхньому регістрі, решта в нижньому
           return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
       })
-      // Об'єднуємо слова в одну строку
       .join('');
 }

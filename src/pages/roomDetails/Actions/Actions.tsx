@@ -3,7 +3,7 @@ import s from "./Actions.module.scss";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { DownloadSVG, ListSVG } from "../../../assets";
 import { Button } from "../../../components/Buttons/Button/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Application } from "../../../models/Application";
 import { useUrl } from "../../../hooks/url";
 import { useUser } from "../../../hooks/user";
@@ -15,12 +15,14 @@ import {
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { useAppSelector } from "../../../hooks/redux";
 import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { useDispatch } from "react-redux";
+import { setRequestConsultationModal } from "../../../store/slices/modals/Modals.slice";
 
 declare const app: Application;
 
 export const Actions: React.FC = () => {
+  const dispatch = useDispatch();
   const { roomId } = useParams();
-  const navigate = useNavigate();
   const { handleNavigate } = useUrl();
   const user = useUser();
   const langPage = useAppSelector(getDetailRoomLangPage);
@@ -41,8 +43,6 @@ export const Actions: React.FC = () => {
   };
 
   const handleRequestConsultation = () => {
-    navigate("/request-consultation");
-
     getTKAnalytics().stage({ stageName: EventActionName.request_consultation });
 
     app.analyticsEvent({
@@ -50,6 +50,8 @@ export const Actions: React.FC = () => {
       action: EventActionName.request_consultation,
       value: {},
     });
+
+    dispatch(setRequestConsultationModal({ isOpen: true }));
   };
 
   const handleBack = () => {

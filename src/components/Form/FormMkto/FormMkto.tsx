@@ -1,10 +1,6 @@
 import s from "./FormMkto.module.scss";
 import { useEffect, useRef, useState } from "react";
-import "./form.css";
-import {
-  FORM_MKTO,
-  getFormIdLocale,
-} from "../../../utils/formUtils";
+import { FORM_MKTO, getFormIdLocale } from "../../../utils/formUtils";
 import { useLocale } from "../../../hooks/useLocal";
 import { toCamelCase } from "../../../utils/strUtils";
 
@@ -12,7 +8,7 @@ declare const MktoForms2: any;
 
 interface FormMktoPropsI {
   formName: FORM_MKTO;
-  buttonText: string;
+  buttonText?: string;
   initialValues?: Record<string, string>;
   onSubmit: (formData: any) => void;
 }
@@ -23,7 +19,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   initialValues,
   onSubmit,
 }: FormMktoPropsI) => {
-
+  const containerRef = useRef<HTMLDivElement>(null);
   const formLoaded = useRef(false);
   const [isRequest, setIsRequest] = useState(false);
   const locale = useLocale();
@@ -31,43 +27,39 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   const formClassName = toCamelCase(formName);
 
   useEffect(() => {
+    if (formLoaded.current) return;
 
-    if (MktoForms2.getForm(formId) === undefined && !formLoaded.current) {
+    MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
+    formLoaded.current = true;
 
-      formLoaded.current = true;
-
-      MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
-
-      MktoForms2.whenReady((form: any) => {
-  
-        if (initialValues) {
-          Object.entries(initialValues).forEach(([key, value]) => {
-            form.setValues({
-              [key]: value,
-            });
-          })
-        }
-  
-        form.onSubmit(() => {
-          if (!isRequest) {
-            setIsRequest(true);
-            onSubmit({ ...form.getValues() });
-          }
-          return false;
+    MktoForms2.whenReady((form: any) => {
+      if (initialValues) {
+        Object.entries(initialValues).forEach(([key, value]) => {
+          form.setValues({
+            [key]: value,
+          });
         });
-  
+      }
+
+      form.onSubmit(() => {
+        if (!isRequest) {
+          setIsRequest(true);
+          onSubmit({ ...form.getValues() });
+        }
+        return false;
+      });
+
+      if (buttonText) {
         const button = document.querySelector(`.${formClassName} .mktoButton`);
         if (button) {
           button.textContent = buttonText;
         }
-  
-      });
-    }
-    
+      }
+    });
   }, []);
 
   return (
-    <div className={`${s.formWrap} ${formClassName}`}>
+    <div ref={containerRef} className={`${s.formWrap} ${formClassName}`}>
       <form id={`mktoForm_${formId}`}></form>
     </div>
   );
