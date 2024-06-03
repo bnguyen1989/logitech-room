@@ -215,7 +215,7 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
 };
 
 export const getCurrencyCodeByLocale = (state: RootState) => {
-  const locale: string = getLocale(state);
-
+  const locale = getLocale(state);
+  if (!locale) return;
   return localeToCurrency[locale];
 };

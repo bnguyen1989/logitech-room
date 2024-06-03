@@ -9,9 +9,10 @@ import {
 } from "./type";
 import { getFormInitData, getInitStepData } from "./utils";
 import { FormName, StepName } from "../../../utils/baseUtils";
+import { LocaleT } from "../../../types/locale";
 
 interface UIStateI {
-  locale: string;
+  locale: LocaleT | "";
   processInitData: boolean;
   stepData: StepDataI;
   activeStep: StepName;
@@ -223,7 +224,7 @@ const uiSlice = createSlice({
     changeProcessInitData: (state, action: PayloadAction<boolean>) => {
       state.processInitData = action.payload;
     },
-    updateLocale: (state, action: PayloadAction<string>) => {
+    updateLocale: (state, action: PayloadAction<LocaleT>) => {
       state.locale = action.payload;
     },
     updateDataForm(
