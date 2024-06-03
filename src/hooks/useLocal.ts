@@ -5,6 +5,7 @@ import { getLocale } from "../store/slices/ui/selectors/selectors";
 import { useDispatch } from "react-redux";
 import { updateLocale } from "../store/slices/ui/Ui.slice";
 import { langRegionCodes } from "../utils/localeUtils";
+import { LocaleT } from "../types/locale";
 
 export const useLocale = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export const useLocale = () => {
     const localPathName = getLocaleFromPathName();
 
     if (localPathName) {
-      dispatch(updateLocale(localPathName));
+      dispatch(updateLocale(localPathName as LocaleT));
       return;
     }
     if (!localParam) {
@@ -36,7 +37,7 @@ export const useLocale = () => {
     }
     if (localParam === locale) return;
 
-    dispatch(updateLocale(localParam));
+    dispatch(updateLocale(localParam as LocaleT));
   }, [localParam, locale, dispatch]);
 
   return locale;

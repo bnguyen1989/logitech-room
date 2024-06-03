@@ -1,4 +1,6 @@
-export const langRegionCodes: Record<string, string> = {
+import { LocaleT } from "../types/locale";
+
+export const langRegionCodes: Record<string, LocaleT> = {
   en_us: "en-US",
   es_es: "es-ES",
   de_de: "de-DE",
@@ -6,7 +8,7 @@ export const langRegionCodes: Record<string, string> = {
   en_gb: "en-GB",
 };
 
-export const localeToCurrency: Record<string, string> = {
+export const localeToCurrency: Record<LocaleT, string> = {
   "en-US": "USD",
   "de-DE": "EUR",
   "es-MX": "MXN",

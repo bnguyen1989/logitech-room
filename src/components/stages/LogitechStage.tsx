@@ -1,4 +1,4 @@
-import { ContactShadows, Environment } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import CameraControls from "camera-controls";
 import type React from "react";
