@@ -43,9 +43,6 @@
           display: none;
         }
 
-        .mktoCaptchaDisclaimer {
-          display: none;
-        }
         .mktoFieldDescriptor {
           width: 100%;
           margin-bottom: 0 !important;
@@ -77,6 +74,10 @@
             }
           }
         }
+      }
+
+      & .mktoCaptchaDisclaimer {
+        grid-column: span 2 !important;
       }
 
       #captcha {
@@ -190,48 +191,6 @@
       grid-template-rows: 1fr 1fr;
       gap: 20px;
       width: 100% !important;
-    }
-
-    & .mktoFormRow {
-      padding: 0 !important;
-      font-family: var(--font-family);
-      & label {
-        display: none;
-      }
-
-      & input,
-      & textarea,
-      & select {
-        width: 100% !important;
-        background-color: #f4f4f4 !important;
-        padding: 25px 20px !important;
-        border: none !important;
-        outline: none !important;
-        color: #6f7678 !important;
-        font-size: 18px !important;
-        font-style: normal !important;
-        font-weight: 400 !important;
-        line-height: 24px !important;
-      }
-
-      & textarea {
-        height: 100px !important;
-      }
-
-      & select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236f7678" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-        background-repeat: no-repeat;
-        background-position: right 20px center;
-      }
-
-      #honeypot,
-      #lastFormURL,
-      #lastFormReferrer {
-        display: none;
-      }
     }
 
     & .mktoCaptchaDisclaimer {
