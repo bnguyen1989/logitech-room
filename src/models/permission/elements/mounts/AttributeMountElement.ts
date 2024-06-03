@@ -1,0 +1,20 @@
+import { MountElement } from "./MountElement";
+
+export class AttributeMountElement extends MountElement {
+  public attributes: Record<string, any> = {};
+
+  public setAttributes(attributes: Record<string, any>): AttributeMountElement {
+    this.attributes = attributes;
+    return this;
+  }
+
+  public getAttributes(): Record<string, any> {
+    return this.attributes;
+  }
+
+  public copy(): AttributeMountElement {
+    const mountElement = new AttributeMountElement(this.name, this.nodeName);
+    mountElement.setAttributes(this.attributes);
+    return mountElement;
+  }
+}

@@ -96,6 +96,17 @@ export const getIsConfiguratorStep = (state: RootState) => {
   );
 };
 
+export const getIsIncludePlayer = (state: RootState) => {
+  const { activeStep } = state.ui;
+
+  return ![
+    StepName.Platform,
+    StepName.RoomSize,
+    StepName.Services,
+    StepName.SoftwareServices,
+  ].includes(activeStep);
+};
+
 export const getIsProcessInitData = (state: RootState) =>
   state.ui.processInitData;
 
@@ -273,7 +284,7 @@ export const getPriceFromMetadataByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const locale = getLocale(state);
     const metadata = getMetadataByKeyPermission(stepName, keyPermission)(state);
-    const keyPrice = `Price_${locale}`;
+    const keyPrice = `Price_${locale.toLowerCase()}`;
     return metadata?.[keyPrice] || "0.000";
   };
 
@@ -451,18 +462,12 @@ export const getSubCardsKeyPermissionStep =
     const cards = Object.values(step.cards);
     const cardsKeyPermissions = cards.map((card) => card.keyPermission);
     return cards.reduce<Record<string, string[]>>((acc, card) => {
-      const isActiveCard = getIsSelectedCardByKeyPermission(
-        step.key,
-        card.keyPermission
-      )(state);
-      if (!isActiveCard) return acc;
       const currentStep = permission.getCurrentStep();
       const element = currentStep.getElementByName(card.keyPermission);
       if (!element || element instanceof MountElement) return acc;
-      const dependentMounts = element.getDependenceMount();
-      const dependentNames = dependentMounts.map((mount) => mount.name);
+      const accessItems = element.getAccessoryItems();
       acc[card.keyPermission] = cardsKeyPermissions.filter((key) =>
-        dependentNames.includes(key)
+        accessItems.includes(key)
       );
       return acc;
     }, {});

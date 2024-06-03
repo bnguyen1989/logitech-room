@@ -10,7 +10,6 @@ import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
 import { StepName } from "../../utils/baseUtils";
 import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
-import { getImageUrl } from "../../utils/browserUtils";
 import { isBundleElement } from "../../utils/permissionUtils";
 import { useAppSelector } from "../../hooks/redux";
 import { getDetailRoomLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
@@ -20,6 +19,7 @@ export const RoomDetails: React.FC = () => {
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
   const [totalAmount, setTotalAmount] = useState<string>("");
+  const [images, setImages] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
   const langPage = useAppSelector(getDetailRoomLangPage);
 
@@ -65,7 +65,16 @@ export const RoomDetails: React.FC = () => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
-        const locale = room.metadata["locale"] as any;
+
+        const snapshots = JSON.parse(room.metadata.snapshots);
+        if (snapshots) {
+          setImages([snapshots.Front, snapshots.Left]);
+        }
+
+        const locale = (room.metadata["locale"] as any) ?? {
+          currencyLocale: "en-US",
+          currency: "USD",
+        };
 
         const formatPrice = getFormatPrice(
           locale.currencyLocale,
@@ -109,9 +118,13 @@ export const RoomDetails: React.FC = () => {
           };
 
           if (card.key !== StepName.SoftwareServices) {
-            const amountInt = parseFloat(price) * parseInt(count);
-            total += amountInt;
-            const amount = formatPrice(amountInt);
+            let priceNumber = parseFloat(price);
+            if (isNaN(priceNumber)) {
+              priceNumber = 0.0;
+            }
+            const amountNumber = priceNumber * parseInt(count);
+            total += amountNumber;
+            const amount = formatPrice(priceNumber);
             const partNumber = `${color}${color ? " : " : ""}${
               isBundleCard ? sku + "*" : sku
             }`;
@@ -142,9 +155,6 @@ export const RoomDetails: React.FC = () => {
         setIsLoaded(false);
       });
   }, [roomId]);
-
-  const ImgBanner = getImageUrl("images/pages/details/room_detail_banner.png");
-  const images: string[] = [ImgBanner, ImgBanner, ImgBanner];
 
   return (
     <div className={isLoaded ? s.container_load : s.container}>

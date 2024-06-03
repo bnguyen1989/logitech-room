@@ -11,9 +11,9 @@ export interface ModalI {
 }
 
 export interface AnnotationItemModalI extends ModalI {
-  product?: string;  
-  card?: any, 
-  keyPermission?: any, 
+  product?: string;
+  card?: any;
+  keyPermission?: any;
 }
 
 export interface SelectProductModalI extends ModalI {
@@ -21,5 +21,11 @@ export interface SelectProductModalI extends ModalI {
     attributeName: string;
     editHandlerName: string;
     closeHandlerName: string;
+  };
+}
+
+export interface MySetupModalI extends ModalI {
+  dataModal?: {
+    linkSnapshot: string;
   };
 }

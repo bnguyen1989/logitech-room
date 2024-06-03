@@ -58,6 +58,7 @@ import { getRoomAssetId } from "../../../../utils/threekitUtils";
 import { StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
+import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 
 declare const app: Application;
 
@@ -218,7 +219,8 @@ function updateDataByConfiguration(
     const stepData = getDataStepByName(stepName)(state);
     const cards: Record<string, CardI> = stepData.cards;
     const activeKeys: string[] = [];
-    console.log("stepName", stepName);
+
+    getTKAnalytics().stage({ stageName: stepName });
 
     arrayAttributes.forEach((item) => {
       const [name, qtyName] = item;
@@ -550,6 +552,12 @@ function setSoftwareServicesData(configurator: Configurator) {
           }
         });
 
+        values.sort((a, b) => {
+          const aNumber = parseInt(a.label.split(" ")[0]);
+          const bNumber = parseInt(b.label.split(" ")[0]);
+          return aNumber - bNumber;
+        });
+
         softwareServicesCardData.push({
           ...baseCard,
           select: {
@@ -584,7 +592,7 @@ function setSoftwareServicesData(configurator: Configurator) {
     });
 
     softwareServicesCardData.forEach((tempCard) => {
-      if (tempCard.select) {
+      if (tempCard.select && tempCard.select.data.length) {
         store.dispatch(
           setPropertyItem({
             step: StepName.SoftwareServices,

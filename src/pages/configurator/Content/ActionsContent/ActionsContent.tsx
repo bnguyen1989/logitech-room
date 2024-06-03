@@ -58,12 +58,14 @@ export const ActionsContent = () => {
       <div className={s.button_back}>
         <Button onClick={handleBack} text="Back" />
       </div>
-      <Button
-        onClick={handleNext}
-        text={nextStep ? "Next" : "Finish"}
-        variant="contained"
-        disabled={!isCanChangeStep}
-      />
+      <div className={s.button_next}>
+        <Button
+          onClick={handleNext}
+          text={nextStep ? "Next" : "Finish"}
+          variant="contained"
+          disabled={!isCanChangeStep}
+        />
+      </div>
     </div>
   );
 };

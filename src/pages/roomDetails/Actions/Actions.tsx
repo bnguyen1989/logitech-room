@@ -12,6 +12,9 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { useAppSelector } from "../../../hooks/redux";
+import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -20,10 +23,14 @@ export const Actions: React.FC = () => {
   const navigate = useNavigate();
   const { handleNavigate } = useUrl();
   const user = useUser();
+  const langPage = useAppSelector(getDetailRoomLangPage);
 
   const handlerDownload = () => {
     if (!roomId) return;
     app.downloadRoomCSV(roomId);
+
+    getTKAnalytics().custom({ customName: EventActionName.download_room });
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.download_room,
@@ -35,6 +42,9 @@ export const Actions: React.FC = () => {
 
   const handleRequestConsultation = () => {
     navigate("/request-consultation");
+
+    getTKAnalytics().stage({ stageName: EventActionName.request_consultation });
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.request_consultation,
@@ -66,11 +76,15 @@ export const Actions: React.FC = () => {
         </IconButton>
       </div>
       <div className={s.desktop}>
-        <IconButton text={"Back"} onClick={handleBack} variant={"outlined"}>
+        <IconButton
+          text={langPage.buttons.Back}
+          onClick={handleBack}
+          variant={"outlined"}
+        >
           <ListSVG />
         </IconButton>
         <IconButton
-          text={"Download Room Guide"}
+          text={langPage.buttons.DownloadRoomGuide}
           onClick={handlerDownload}
           variant={"outlined"}
         >
@@ -80,7 +94,7 @@ export const Actions: React.FC = () => {
       {userCanReqConsultation && (
         <Button
           onClick={handleRequestConsultation}
-          text={"Request Consultation"}
+          text={langPage.buttons.RequestConsultation}
           variant={"contained"}
           style={{
             padding: "19px 40px",

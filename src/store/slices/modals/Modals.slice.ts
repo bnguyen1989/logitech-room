@@ -4,11 +4,12 @@ import {
   AnnotationItemModalI,
   ModalI,
   ModalName,
+  MySetupModalI,
   SelectProductModalI,
 } from "./type";
 
 interface ModalsStateI {
-  [ModalName.MY_SETUP]: ModalI;
+  [ModalName.MY_SETUP]: MySetupModalI;
   [ModalName.ANNOTATION_ITEM]: AnnotationItemModalI;
   [ModalName.SELECT_PRODUCT]: SelectProductModalI;
   [ModalName.SHARE_PROJECT]: ModalI;
@@ -37,7 +38,7 @@ const ModalsSlice = createSlice({
   name: "modals",
   initialState,
   reducers: {
-    setMySetupModal: (state, action: PayloadAction<ModalI>) => {
+    setMySetupModal: (state, action: PayloadAction<MySetupModalI>) => {
       state[ModalName.MY_SETUP] = action.payload;
     },
     setAnnotationItemModal: (

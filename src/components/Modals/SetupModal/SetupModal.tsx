@@ -6,33 +6,36 @@ import { getSetupModalData } from "../../../store/slices/modals/selectors/select
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
-import { useNavigate } from "react-router-dom";
-import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./form.css";
-import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
 import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { useUrl } from "../../../hooks/url";
 
 declare const MktoForms2: any;
 
 export const SetupModal: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isOpen } = useAppSelector(getSetupModalData);
+  const { isOpen, dataModal } = useAppSelector(getSetupModalData);
   const user = useUser();
-  const orderData: any = useAppSelector(getOrderData(user.id));
+  const { handleNavigate } = useUrl();
   const dataLang = useAppSelector(getSetupModalLangPage);
+  const formLoaded = useRef(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
   };
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      formLoaded.current = false;
+      return;
+    }
+    if (formLoaded.current) return;
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
+    formLoaded.current = true;
 
     MktoForms2.whenReady((form: any) => {
       const baseUrl = getParentURL();
@@ -41,37 +44,18 @@ export const SetupModal: React.FC = () => {
         editableField6: link,
       });
 
-      const threekitService = new ThreekitService();
-
-      let snapshotLink = "";
-      const assetId = orderData.metadata.configurator.assetId;
-      const snapshot = window.snapshot("blob") as Blob;
-      threekitService.saveConfigurator(snapshot, assetId ?? "").then((id) => {
-        const linkSnapshot = threekitService.getSnapshotLinkById(id);
+      if (dataModal) {
         form.setValues({
-          editableField5: linkSnapshot,
+          editableField5: dataModal.linkSnapshot,
         });
-        snapshotLink = linkSnapshot;
+      }
+
+      form.onSubmit(() => {
+        dispatch(setMySetupModal({ isOpen: false }));
+        dispatch(setUserData({ data: { ...form.getValues() } }));
+        handleNavigate("/room");
+        return true;
       });
-
-      form.onSubmit(
-        (() => {
-          let isRequest = false;
-          return () => {
-            if (!isRequest) {
-              isRequest = true;
-              orderData.metadata["snapshot"] = snapshotLink;
-              threekitService.createOrder(orderData).then(() => {
-                dispatch(setMySetupModal({ isOpen: false }));
-                dispatch(setUserData({ data: { ...form.getValues() } }));
-                navigate("/room", { replace: true });
-              });
-            }
-
-            return isRequest;
-          };
-        })()
-      );
       const button = document.querySelector(".mktoButton");
       if (button) {
         button.textContent = dataLang.btn_done;

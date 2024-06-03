@@ -8,7 +8,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { Camera, PerspectiveCamera, Vector3 } from "three";
+import { Camera, Vector3 } from "three";
 import {
   EffectComposer,
   Selection,
@@ -18,7 +18,10 @@ import {
 import { useCache } from "../../hooks/cache.ts";
 import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
-import { EffectComposer as EffectComposerImpl } from "postprocessing";
+import {
+  EffectComposer as EffectComposerImpl,
+  ToneMappingMode,
+} from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
 import { base64ToBlob } from "../../utils/browserUtils.ts";
 
@@ -36,7 +39,8 @@ export const Player: React.FC = () => {
 
   const [effectComposerRef, setEffectComposerRef] =
     useState<EffectComposerImpl | null>(null);
-  const [snapshotCamera, setSnapshotCamera] = useState<Camera>();
+  const [snapshotCameras, setSnapshotCameras] =
+    useState<Record<string, Camera>>();
 
   const focalLengthMm = 65; // Focal length in mm
   const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
@@ -51,20 +55,12 @@ export const Player: React.FC = () => {
     },
   };
 
-  useEffect(() => {
-    if (!effectComposerRef || snapshotCamera) return;
-    const oldCamera = (
-      effectComposerRef.passes.find((pass) => !!(pass as any).camera) as any
-    )?.camera as Camera | undefined;
-    if (oldCamera) {
-      const camera = new PerspectiveCamera();
-      camera.copy(oldCamera as PerspectiveCamera);
-      setSnapshotCamera(camera);
-    }
-  }, [effectComposerRef]);
-
-  (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
+  (window as any).snapshot = (
+    type: "string" | "blob",
+    side: "Front" | "Left" = "Front"
+  ): string | Blob => {
     if (!effectComposerRef) return "";
+    const snapshotCamera = snapshotCameras?.[side];
     const dataSnapshot = snapshot(effectComposerRef, {
       size: { width: 1920, height: 1080 },
       camera: snapshotCamera,
@@ -101,7 +97,10 @@ export const Player: React.FC = () => {
           <Selection>
             <Effects ref={setEffectComposerRef} />
             <LogitechStage>
-              <Room roomAssetId={assetId} />
+              <Room
+                roomAssetId={assetId}
+                setSnapshotCameras={setSnapshotCameras}
+              />
             </LogitechStage>
             <OrbitControls
               enableDamping={true}
@@ -126,6 +125,28 @@ export const Player: React.FC = () => {
 };
 
 const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
+  const [edgeStrength, setEdgeStrength] = useState(10);
+  const [fadeDirection, setFadeDirection] = useState(-1);
+
+  useEffect(() => {
+    const duration = 1200;
+    const steps = 30;
+    const intervalTime = duration / steps;
+    const changePerStep = 10 / steps;
+
+    const interval = setInterval(() => {
+      setEdgeStrength((prev) => {
+        const newStrength = prev + fadeDirection * changePerStep;
+        if (newStrength <= 0 || newStrength >= 10) {
+          setFadeDirection((prev) => -prev);
+        }
+        return Math.max(0, Math.min(10, newStrength));
+      });
+    }, intervalTime);
+
+    return () => clearInterval(interval);
+  }, [fadeDirection]);
+
   return (
     <EffectComposer
       stencilBuffer
@@ -135,12 +156,31 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
       ref={ref}
     >
       <Outline
-        visibleEdgeColor={0x47b63f}
-        hiddenEdgeColor={0x47b63f}
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
         blur={false}
-        edgeStrength={10}
+        edgeStrength={edgeStrength}
       />
-      <ToneMapping />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.75}
+      />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.5}
+      />
+      <ToneMapping
+        mode={ToneMappingMode.UNCHARTED2}
+        whitePoint={1}
+        middleGrey={0.5}
+        minLuminance={0.01}
+        maxLuminance={1}
+        averageLuminance={0.5}
+      />
     </EffectComposer>
   );
 });

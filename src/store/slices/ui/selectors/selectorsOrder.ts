@@ -28,6 +28,8 @@ import {
   getPrepareCardTitleLangByKeyPermission,
   getPrepareDescriptionLangByKeyPermission,
 } from "./selectoteLangPage";
+import { localeToCurrency } from "../../../../utils/localeUtils";
+import { deepCopy } from "../../../../utils/objUtils";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -51,6 +53,7 @@ export const getOrderData = (userId: string) => (state: RootState) => {
   );
 
   const currentLocale = getLocale(state);
+  const currencyCode = getCurrencyCodeByLocale(state);
   return {
     customerId: userId,
     originOrgId: userId,
@@ -69,7 +72,7 @@ export const getOrderData = (userId: string) => (state: RootState) => {
         configuration,
       },
       locale: {
-        currency: "USD",
+        currency: currencyCode ?? "USD",
         currencyLocale: currentLocale ?? "en-US",
       },
     },
@@ -190,7 +193,7 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
       const count = selectData?.property?.count;
       if (!count || count < 2) return acc;
 
-      const copySelectData = JSON.parse(JSON.stringify(selectData));
+      const copySelectData = deepCopy(selectData);
       copySelectData.property.count -= 1;
       return [
         ...acc,
@@ -209,4 +212,10 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
       },
     ];
   }, []);
+};
+
+export const getCurrencyCodeByLocale = (state: RootState) => {
+  const locale: string = getLocale(state);
+
+  return localeToCurrency[locale];
 };

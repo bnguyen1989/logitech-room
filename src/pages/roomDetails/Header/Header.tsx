@@ -3,6 +3,8 @@ import s from "./Header.module.scss";
 import { Actions } from "../Actions/Actions";
 import { useUser } from "../../../hooks/user";
 import { PermissionUser } from "../../../utils/userRoleUtils";
+import { useAppSelector } from "../../../hooks/redux";
+import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 interface PropsI {
   title: string;
@@ -10,6 +12,7 @@ interface PropsI {
 export const Header: React.FC<PropsI> = (props) => {
   const { title } = props;
   const user = useUser();
+  const langPage = useAppSelector(getDetailRoomLangPage);
 
   const userCanReqConsultation = user.role.can(
     PermissionUser.REQUEST_CONSULTATION
@@ -20,16 +23,7 @@ export const Header: React.FC<PropsI> = (props) => {
       <div className={s.text}>
         <div className={s.title}>{title}</div>
         <div className={s.subtitle}>
-          Configurations are for exploratory purposes only. Room guides and the
-          prices listed are based on local MSRP for the products and are not
-          formal quotes. Prices may vary by location, channel or reseller.
-          {userCanReqConsultation && (
-            <span>
-              {" "}
-              Please <u>request a consultation</u> for more information and next
-              steps.
-            </span>
-          )}
+          {userCanReqConsultation ? langPage.subtitle.v1 : langPage.subtitle.v2}
         </div>
       </div>
       <div className={s.buttons}>

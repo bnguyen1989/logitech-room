@@ -10,10 +10,12 @@ import { useAppSelector } from "../../hooks/redux.js";
 import { getKeyPermissionFromNameNode } from "../../store/slices/configurator/selectors/selectors.js";
 import { AnnotationProductContainer } from "../Annotation/AnnotationProduct/AnnotationContainer.js";
 import { StepName } from "../../utils/baseUtils.js";
+import { Configuration } from "@threekit/rest-api";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
   productAssetId: string;
+  configuration: Configuration;
   highlight?: boolean;
   callbackDisableHighlight: () => void;
   callbackOnHighlight: (nameNode: string) => void;
@@ -23,15 +25,17 @@ export type ProductProps = {
 export const Product: React.FC<ProductProps> = ({
   parentNode,
   productAssetId,
+  configuration,
   highlight = false,
   callbackDisableHighlight = () => {},
   callbackOnHighlight = () => {},
   nameNode,
 }) => {
-
   const dispatch = useDispatch();
-  const productGltf = useAsset({ assetId: productAssetId });
-  const keyPermissionObj = useAppSelector(getKeyPermissionFromNameNode(nameNode));
+  const productGltf = useAsset({ assetId: productAssetId, configuration });
+  const keyPermissionObj = useAppSelector(
+    getKeyPermissionFromNameNode(nameNode)
+  );
 
   const sizeProduct = new THREE.Box3()
     .setFromObject(productGltf.scene.clone())
@@ -43,7 +47,7 @@ export const Product: React.FC<ProductProps> = ({
     if (!productGltf) return;
     const id = setTimeout(() => {
       callbackDisableHighlight();
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(id);
   }, [productGltf]);
@@ -56,15 +60,16 @@ export const Product: React.FC<ProductProps> = ({
       rotation={parentNode.rotation}
     >
       <Select enabled={highlight} onClick={() => callbackOnHighlight(nameNode)}>
-
-        {highlight && keyPermissionObj !== undefined && Object.keys(keyPermissionObj).length > 0 && (
-          <AnnotationProductContainer
-            stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
-            keyPermission={Object.values(keyPermissionObj)[0]}
-            position={[0, sizeProduct.y + 0.4, 0]}
-            callbackDisableHighlight={callbackDisableHighlight}
-          />
-        )}
+        {highlight &&
+          keyPermissionObj !== undefined &&
+          Object.keys(keyPermissionObj).length > 0 && (
+            <AnnotationProductContainer
+              stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
+              keyPermission={Object.values(keyPermissionObj)[0]}
+              position={[0, sizeProduct.y + 0.4, 0]}
+              callbackDisableHighlight={callbackDisableHighlight}
+            />
+          )}
 
         <GLTFNode
           threeNode={productGltf.scene.clone()}

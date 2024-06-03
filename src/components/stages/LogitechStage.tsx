@@ -2,7 +2,7 @@ import { ContactShadows, Environment } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import CameraControls from "camera-controls";
 import type React from "react";
-import { type ReactNode, useState, MutableRefObject } from "react";
+import { type ReactNode, MutableRefObject } from "react";
 import { ServerApi } from "../../services/api/Server/ServerApi";
 
 const controls = {
@@ -42,13 +42,11 @@ export type LogitechStageProps = {
 };
 
 const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
-  const [radius] = useState<number>(2.0);
 
   const { gl } = useThree();
 
   gl.toneMappingExposure = controls.toneMapping.exposure;
 
-  const shadowBias = -0.002;
   return (
     <>
       <Environment
@@ -60,38 +58,18 @@ const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
         focus={controls.shadows.keyFocus}
         samples={controls.shadows.keySamples}
       /> */}
-      <group rotation={[0, (Math.PI / 180) * controls.lighting.keyRotation, 0]}>
-        <directionalLight
-          color={[1.0, 1.0, 1.0]}
-          castShadow
-          shadow-bias={shadowBias}
-          position={[
-            radius * 3,
-            radius * 3 + controls.lighting.keyOffset,
-            radius,
-          ]}
-          intensity={controls.lighting.keyIntensity}
-          shadow-mapSize={1024}
-          shadow-camera-near={0.1}
-          shadow-camera-far={10}
-        >
-          <orthographicCamera
-            attach="shadow-camera"
-            args={[-2.5, 2.5, -2.5, 2.5, 0.5, 50]}
-          />
-        </directionalLight>
-      </group>
+
       <group rotation={[0, (Math.PI / 180) * controls.productRotation, 0]}>
         {children}
       </group>
-      <ContactShadows
+      {/* <ContactShadows
         resolution={1024}
         position={[0, -0.01, 0]}
         opacity={controls.shadows.cOpacity}
         scale={[5, 5]}
         blur={controls.shadows.cBlur}
         far={10}
-      />
+      /> */}
       <mesh
         rotation={[-0.5 * Math.PI, 0, 0]}
         position={[0, 0.0, 0]}

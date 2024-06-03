@@ -12,6 +12,7 @@ import s from "./CardRoom.module.scss";
 
 interface PropsI {
   keyItemPermission: string;
+  onSelectedAnalytics: () => void;
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
   const { keyItemPermission } = props;
@@ -27,7 +28,11 @@ export const CardRoom: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer keyItemPermission={keyItemPermission}>
+    <PrepareCardContainer
+      isPadding={false}
+      keyItemPermission={keyItemPermission}
+      onSelectedAnalytics={props.onSelectedAnalytics}
+    >
       <div className={s.container}>
         <div className={s.image}>
           <img src={card.image} alt={"image"} />

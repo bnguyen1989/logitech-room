@@ -9,11 +9,17 @@ export class LanguageFileProcessor {
   private outputFilePath = path.join(__dirname, "./../dataLang/");
   private folderPage = "/page";
   private folderProduct = "/product";
+  private numberRowDivider = 227;
   private templatePage = dataTemplatePage;
   private templateProduct = dataTemplateProduct;
   private pageJson: any[] = [];
   private productJson: any[] = [];
   private lineNumber: number = 0;
+
+  public setNumberRowDivider(numberRowDivider: number): LanguageFileProcessor {
+    this.numberRowDivider = numberRowDivider;
+    return this;
+  }
 
   public setOutputFilePath(outputFilePath: string): LanguageFileProcessor {
     this.outputFilePath = outputFilePath;
@@ -37,14 +43,12 @@ export class LanguageFileProcessor {
       .pipe(csvParser({ separator: "\t", quote: "" }))
       .on("data", (data: any) => {
         this.lineNumber++;
-        if (this.lineNumber <= 116) {
-          const path = this.findKeyPathPage(this.templatePage, data["en-US"]);
-          if (path) {
+        if (this.lineNumber <= this.numberRowDivider) {
+          const paths = this.findKeyPathPage(this.templatePage, data["en-US"]);
+          paths.forEach((path) => {
             data["key"] = path;
-          } else {
-            data["key"] = "";
-          }
-          this.pageJson.push(data);
+            this.pageJson.push({ ...data });
+          });
         } else {
           if (data["en-US"]) {
             const resultPaths = this.findKeyPaths(
@@ -101,13 +105,16 @@ export class LanguageFileProcessor {
   }
 
   private findKeyPathPage(arr: any[], searchText: any, keyLang = "en-US") {
+    const newSearchText = searchText.trim().toUpperCase();
+    const resKeys = [];
     for (const item of arr) {
       const value = item[keyLang];
-      if (value === searchText) {
-        return item.key;
+      const newValue = value.trim().toUpperCase();
+      if (newValue === newSearchText) {
+        resKeys.push(item.key);
       }
     }
-    return null;
+    return resKeys;
   }
   private createLanguageFiles(translations: any) {
     const languageFiles: any = {};
@@ -179,10 +186,7 @@ export class LanguageFileProcessor {
     for (const langCode in languageJSON) {
       let dataLang = languageJSON[langCode];
       if (template) {
-        dataLang = this.updateJson(
-          template,
-          dataLang
-        );
+        dataLang = this.updateJson(template, dataLang);
       }
 
       const content = JSON.stringify(dataLang, null, 4);
@@ -193,6 +197,7 @@ export class LanguageFileProcessor {
   private updateJson(template: any, update: any) {
     const updatedJson = JSON.parse(JSON.stringify(template));
     this.recursiveUpdate(updatedJson, update);
+
     return updatedJson;
   }
 
@@ -206,9 +211,22 @@ export class LanguageFileProcessor {
             typeof target[key] === "object"
           ) {
             this.recursiveUpdate(target[key], source[key]);
+          } else if (Array.isArray(source[key]) && Array.isArray(target[key])) {
+            source[key].forEach((sourceElement: any, index: number) => {
+              if (
+                typeof sourceElement === "object" &&
+                typeof target[key][index] === "object"
+              ) {
+                this.recursiveUpdate(target[key][index], sourceElement);
+              } else {
+                target[key][index] = sourceElement;
+              }
+            });
           } else {
             target[key] = source[key];
           }
+        } else {
+          target[key] = source[key];
         }
       }
     }

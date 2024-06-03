@@ -1,13 +1,11 @@
 export enum ColumnNameCSVRoom {
 	ROOM_NAME = "room_name",
-	PRODUCT_NAME = "product_name",
 	CATEGORY = "category",
-	DESCRIPTION = "description",
-	COLOR = "color",
+	PRODUCT_NAME = "product_name",
 	PART_NUMBER = "part_number",
+	QUANTITY = "quantity",
 	MSPR = "mspr",
 	TOTAL_QUANTITY = "total_quantity",
-	TOTAL_ESTIMATED_COST = "total_estimated_cost",
 }
 
 export type RowCSVRoomI = Record<ColumnNameCSVRoom, string>;
