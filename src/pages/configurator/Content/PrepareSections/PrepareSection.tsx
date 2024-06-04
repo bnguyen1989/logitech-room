@@ -16,6 +16,7 @@ import s from "./PrepareSection.module.scss";
 
 import { useEffect } from "react";
 import { ContentContainer } from "../ContentContainer/ContentContainer";
+import { useAnchor } from "../../../../hooks/anchor";
 
 export const PrepareSection: React.FC = () => {
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -23,6 +24,7 @@ export const PrepareSection: React.FC = () => {
   const secondaryCards = useAppSelector(
     getSecondaryCardsFromStep(activeStepData)
   );
+  const actionAnchor = useAnchor<HTMLDivElement>();
 
   // submit event:
   useEffect(() => {
@@ -59,6 +61,7 @@ export const PrepareSection: React.FC = () => {
           key={index}
           keyItemPermission={card.keyPermission}
           onSelectedAnalytics={onSelectedAnalytics}
+          onClick={actionAnchor.handleAnchor}
         />
       );
     }
@@ -87,7 +90,7 @@ export const PrepareSection: React.FC = () => {
   console.log("activeStepData", activeStepData);
 
   return (
-    <ContentContainer>
+    <ContentContainer refAction={actionAnchor.ref}>
       <div className={s.container_PrepareSection}>
         <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
           {activeStepData.key === StepName.RoomSize && (

@@ -50,6 +50,7 @@ import {
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
+  getPropertySelectValueCardByKeyPermission,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -91,7 +92,13 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeSelectItemCommand) {
-      const activeStep = getActiveStep(store.getState());
+      const state = store.getState();
+      const activeStep = getActiveStep(state);
+      const selectValue = getPropertySelectValueCardByKeyPermission(
+        activeStep,
+        data.keyItemPermission
+      )(state);
+
       store.dispatch(
         setPropertyItem({
           step: activeStep,
@@ -101,6 +108,14 @@ export const getUiHandlers = (store: Store) => {
           },
         })
       );
+
+      if (!selectValue) {
+        app.addItemConfiguration(
+          data.nameProperty,
+          data.assetId,
+          data.keyItemPermission
+        );
+      }
     }
 
     if (data instanceof ChangeStepCommand) {
@@ -592,18 +607,6 @@ function setSoftwareServicesData(configurator: Configurator) {
     });
 
     softwareServicesCardData.forEach((tempCard) => {
-      if (tempCard.select && tempCard.select.data.length) {
-        store.dispatch(
-          setPropertyItem({
-            step: StepName.SoftwareServices,
-            keyItemPermission: tempCard.keyPermission,
-            property: {
-              select: tempCard.select.data[0].value,
-            },
-          })
-        );
-        return;
-      }
       store.dispatch(
         createItem({
           step: StepName.SoftwareServices,

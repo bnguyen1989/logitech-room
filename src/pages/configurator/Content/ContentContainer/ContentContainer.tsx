@@ -6,16 +6,17 @@ import { LoaderSection } from "../LoaderSection/LoaderSection";
 
 interface PropsI {
   children: React.ReactNode;
+  refAction?: React.RefObject<HTMLDivElement>;
 }
 export const ContentContainer: React.FC<PropsI> = (props) => {
-  const { children } = props;
+  const { children, refAction } = props;
 
   return (
     <div className={s.container}>
       <Heading />
       {children}
 
-      <div className={s.wrapControl}>
+      <div ref={refAction} className={s.wrapControl}>
         <ActionsContent />
       </div>
       <LoaderSection />

@@ -18,9 +18,10 @@ interface PropsI {
   keyItemPermission: string;
   autoActive?: boolean;
   onSelectedAnalytics: () => void;
+  onClick?: () => void;
 }
 export const CardSoftware: React.FC<PropsI> = (props) => {
-  const { keyItemPermission, autoActive } = props;
+  const { keyItemPermission, autoActive, onClick } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -40,16 +41,35 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
     props.onSelectedAnalytics();
 
     const { attributeName } = card.dataThreekit;
+    const isIncludeSelect = card.select;
+
     if (isActiveCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
+      if (isIncludeSelect) {
+        app.changeSelectItemConfiguration(
+          attributeName,
+          "",
+          card.keyPermission
+        );
+      }
       return;
     }
 
-    app.addItemConfiguration(
-      attributeName,
-      threekitAsset.id,
-      card.keyPermission
-    );
+    if (isIncludeSelect) {
+      app.changeSelectItemConfiguration(
+        attributeName,
+        threekitAsset.id,
+        card.keyPermission
+      );
+    } else {
+      app.addItemConfiguration(
+        attributeName,
+        threekitAsset.id,
+        card.keyPermission
+      );
+    }
+
+    onClick && onClick();
   };
 
   useEffect(() => {
@@ -81,7 +101,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             <div className={s.actions}>
               <SelectItem
                 keyItemPermission={keyItemPermission}
-                disabled={!isActiveCard}
+                defaultLabel={"Choose Lorem Plan"}
               />
             </div>
           )}

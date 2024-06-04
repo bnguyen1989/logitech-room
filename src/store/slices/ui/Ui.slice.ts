@@ -164,6 +164,9 @@ const uiSlice = createSlice({
       keys.forEach((key) => {
         const card = stepData[key];
         card.selected = [];
+        if (card?.property?.select) {
+          card.property.select = "";
+        }
         stepData[key] = card;
       });
       state.selectedData[step] = stepData;
