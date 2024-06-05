@@ -59,6 +59,11 @@
         gap: 20px;
         overflow-x: scroll;
       }
+
+      .cards::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+      }
     }
 
     .form {
