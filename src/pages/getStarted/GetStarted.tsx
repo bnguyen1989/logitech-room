@@ -4,7 +4,7 @@ import { Button } from "../../components/Buttons/Button/Button";
 import { useDispatch } from "react-redux";
 import { changeRoleUser } from "../../store/slices/user/User.slice";
 import { RoleUserName, getRoleByName } from "../../utils/userRoleUtils";
-import { copyToClipboard, getImageUrl } from "../../utils/browserUtils";
+import { copyToClipboard } from "../../utils/browserUtils";
 import { Application } from "../../models/Application";
 import {
   EventActionName,
@@ -78,16 +78,7 @@ export const GetStarted: React.FC = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.image_wrap}>
-        <div
-          className={s.image}
-          style={{
-            backgroundImage: `url(${getImageUrl(
-              "images/getStarted/banner.png"
-            )})`,
-          }}
-        ></div>
-      </div>
+      <div className={s.image}></div>
 
       <div className={s.content}>
         <div className={s.text}>
