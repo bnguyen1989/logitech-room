@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import s from "./CardSoftware.module.scss";
-import { CardContainer } from "../CardContainer/CardContainer";
 import { SelectItem } from "../../Fields/SelectItem/SelectItem";
 import { InformationSVG } from "../../../assets";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
@@ -13,6 +12,7 @@ import {
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
 import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { CardContainerSoftware } from "../CardContainerSoftware/CardContainerSoftware";
 
 interface PropsI {
   keyItemPermission: string;
@@ -80,7 +80,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   if (!card) return null;
 
   return (
-    <CardContainer
+    <CardContainerSoftware
       onClick={handleClick}
       active={isActiveCard}
       style={{ padding: "0px" }}
@@ -115,6 +115,6 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
           </IconButton>
         </div>
       </div>
-    </CardContainer>
+    </CardContainerSoftware>
   );
 };
