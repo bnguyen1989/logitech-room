@@ -1,5 +1,5 @@
 .container {
-  padding: 60px 0;
+  padding-top: 60px;
   position: relative;
 
   .close_button {
@@ -179,6 +179,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding-bottom: 60px;
     }
   }
 
@@ -250,7 +251,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 40px 0;
+    padding-top: 40px;
     .close_button {
       display: none;
     }
