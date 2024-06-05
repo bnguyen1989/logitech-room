@@ -207,10 +207,19 @@ export function createStepConferenceCamera() {
           ).setAttributes({
             Position: false,
           })
-        ).addAutoChangeItems({
+        )
+        .addAutoChangeItems({
           [AudioExtensionName.RallyMicPod]: ["color"],
           [AudioExtensionName.RallyMicPodMount]: ["color"],
         })
+        .addBundleElement(
+          new ItemElement(AudioExtensionName.RallyMicPod).setDefaultMount(
+            new CountableMountElement(
+              AudioExtensionName.RallyMicPod,
+              PlacementManager.getNameNodeForMic()
+            ).setActiveIndex(2)
+          )
+        )
     )
     .setRequiredOne(true);
 
@@ -226,7 +235,7 @@ export function createStepConferenceCamera() {
       new CountableMountElement(
         CameraName.RallyCamera,
         PlacementManager.getNameNodeForCamera("Wall")
-      ).setTemplateIndex([2, 3])
+      ).setOffsetIndex(1)
     )
   );
 

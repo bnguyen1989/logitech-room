@@ -14,9 +14,19 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private requiredDependence: PropertyDependentElement = {};
   private disabledCounterDependence: PropertyDependentElement = {};
   private disabledColorDependence: PropertyDependentElement = {};
+  private bundleElements: Array<ItemElement> = [];
 
   constructor(name: string) {
     super(name);
+  }
+
+  public addBundleElement(element: ItemElement): ItemElement {
+    this.bundleElements.push(element);
+    return this;
+  }
+
+  public getBundleElements(): Array<ItemElement> {
+    return [...this.bundleElements];
   }
 
   public setAccessoryItems(value: Array<string>): ItemElement {
