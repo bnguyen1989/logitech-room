@@ -7,7 +7,6 @@ interface PropsI {
   disabled?: boolean;
   recommended?: boolean;
   style?: React.CSSProperties;
-  isFullClick?: boolean;
   className?: string;
   isPadding?: boolean;
 }
@@ -19,18 +18,9 @@ export const CardContainerSoftware: React.FC<PropsI> = (props) => {
     onClick,
     style,
     recommended,
-    isFullClick,
     className,
     isPadding = true,
   } = props;
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isFullClick) {
-      e.stopPropagation();
-      return;
-    }
-    onClick();
-  };
 
   let containerClassName = `
   ${s.container} 
@@ -45,9 +35,9 @@ export const CardContainerSoftware: React.FC<PropsI> = (props) => {
     <div className={containerClassName} style={style}>
       <button
         className={`${s.button} ${active ? s.button_active : ""}`}
-        onClick={onClick}
+        onClick={() => onClick}
       ></button>
-      <div onClick={handleClick} className={s.wrapper}>
+      <div onClick={() => onClick()} className={s.wrapper}>
         {children}
       </div>
       {recommended && (
