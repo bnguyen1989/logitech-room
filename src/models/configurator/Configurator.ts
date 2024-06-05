@@ -14,6 +14,7 @@ export class Configurator {
   public id: string = IdGenerator.generateId();
   public attributesSequenceLevel1: Array<string> = [];
   private _assetId: string = "";
+  private _language: string = "en-US";
   private attributes: Array<AttributeI> = [];
   private configuration: ConfigurationI = {};
   private attributeState: AttributesStateI = {};
@@ -38,10 +39,10 @@ export class Configurator {
   public static CameraName = [
     [AttributeName.RoomCamera],
     [AttributeName.RoomCameraMount],
+    [AttributeName.RoomAdditionalCamera, AttributeName.QtyAdditionalCamera],
     [AttributeName.RoomCompute],
     [AttributeName.RoomComputeMount],
     [AttributeName.RoomSight],
-    [AttributeName.RoomMeetUp2ActiveCable],
   ];
 
   public static AudioExtensionName = [
@@ -66,6 +67,7 @@ export class Configurator {
     [AttributeName.RoomSwytch],
     [AttributeName.RoomExtend],
     [AttributeName.RoomUSBAtoHDMICable],
+    [AttributeName.RoomMeetUp2ActiveCable],
   ];
 
   public static SoftwareServicesName = [
@@ -115,6 +117,14 @@ export class Configurator {
 
   public set assetId(assetId: string) {
     this._assetId = assetId;
+  }
+
+  public get language(): string {
+    return this._language;
+  }
+
+  public set language(language: string) {
+    this._language = language;
   }
 
   public setAttributes(attributes: Array<AttributeI>) {
@@ -208,6 +218,7 @@ export class Configurator {
       configurator.configuration = configuration;
     }
     configurator.assetId = this.assetId;
+    configurator.language = this.language;
     configurator.attributes = [...this.attributes];
     configurator.attributesSequenceLevel1 = [...this.attributesSequenceLevel1];
     return configurator;

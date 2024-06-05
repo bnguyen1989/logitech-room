@@ -8,10 +8,10 @@ import {
 } from "../../../../../store/slices/ui/selectors/selectors";
 import { CardI, StepI } from "../../../../../store/slices/ui/type";
 import s from "./ConfigurationFormForStep.module.scss";
-import { SoftwareServiceSection } from "../SoftwareServiceSection/SoftwareServiceSection";
 import { useEffect, useRef } from "react";
-import { StepName } from "../../../../../utils/baseUtils";
 import { SubSectionCardItem } from "../SubSectionCardItem/SubSectionCardItem";
+import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
+import { StepName } from "../../../../../utils/baseUtils";
 
 export const ConfigurationFormForStep = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -21,6 +21,10 @@ export const ConfigurationFormForStep = () => {
   const subCardKeyPermissions = useAppSelector(
     getSubCardsKeyPermissionStep(activeStepData)
   );
+
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: activeStepName });
+  }, []);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -48,13 +52,15 @@ export const ConfigurationFormForStep = () => {
       </CardItem>
     );
   };
+  console.log("activeStepData", activeStepData);
 
-  if (activeStepData.key === StepName.SoftwareServices) {
-    return (
-      <SoftwareServiceSection cards={Object.values(activeStepData.cards)} />
-    );
-  }
-
+  const listIgnoreSection = [
+    StepName.RoomSize,
+    StepName.Platform,
+    StepName.Services,
+  ];
+  if (listIgnoreSection.includes(activeStepData.key)) return <></>;
+  
   return (
     <div ref={contentRef} className={s.form}>
       {Object.values(activeStepData.cards).map((card, index) =>

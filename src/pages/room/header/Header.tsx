@@ -7,7 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../hooks/user";
 import { copyToClipboard, getImageUrl } from "../../../utils/browserUtils";
 import { useDispatch } from "react-redux";
-import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
+import {
+  setRequestConsultationModal,
+  setShareProjectModal,
+} from "../../../store/slices/modals/Modals.slice";
 import { PermissionUser } from "../../../utils/userRoleUtils";
 import { useUrl } from "../../../hooks/url";
 import {
@@ -16,7 +19,8 @@ import {
 } from "../../../models/analytics/type";
 import { useAppSelector } from "../../../hooks/redux";
 import { getRoomsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
-import { divideTextIntoSentence } from "../../../utils/strUtils";
+import { useEffect } from "react";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 
 declare const app: Application;
 
@@ -27,8 +31,14 @@ export const Header: React.FC = () => {
   const { getNavLink } = useUrl();
   const langPage = useAppSelector(getRoomsLangPage);
 
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: EventCategoryName.summary_page });
+  }, []);
+
   const handleAnotherRoom = () => {
     navigate("/configurator", { replace: true });
+
+    getTKAnalytics().custom({ customName: EventActionName.add_another_room });
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.add_another_room,
@@ -38,6 +48,8 @@ export const Header: React.FC = () => {
 
   const handleDownloadAll = () => {
     app.downloadRoomsCSV(user.id);
+    getTKAnalytics().custom({ customName: EventActionName.download_room_all });
+
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.download_room_all,
@@ -52,6 +64,8 @@ export const Header: React.FC = () => {
     searchParams.set("userId", user.id);
     const url = getNavLink("/room", searchParams);
     copyToClipboard(url);
+
+    getTKAnalytics().custom({ customName: EventActionName.share_project });
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.share_project,
@@ -62,12 +76,17 @@ export const Header: React.FC = () => {
   };
 
   const handleRequestConsultation = () => {
-    navigate("/request-consultation");
+    getTKAnalytics().custom({
+      customName: EventActionName.request_consultation,
+    });
+
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.request_consultation,
       value: {},
     });
+
+    dispatch(setRequestConsultationModal({ isOpen: true }));
   };
 
   const handleShareProject = () => {
@@ -78,8 +97,6 @@ export const Header: React.FC = () => {
     PermissionUser.REQUEST_CONSULTATION
   );
   const userCanAddRoom = user.role.can(PermissionUser.ADD_ROOM);
-
-  const arrSubtileSentences = divideTextIntoSentence(langPage.header.subtitle);
 
   return (
     <div className={s.container}>
@@ -93,12 +110,10 @@ export const Header: React.FC = () => {
         <div className={s.header_content}>
           <div className={s.header_text}>
             <div className={s.header_title}>{langPage.header.name}</div>
-            <div className={s.header_subtitle}>{arrSubtileSentences[0]}</div>
+            <div className={s.header_subtitle}>{langPage.header.title}</div>
             {userCanReqConsultation && (
               <div className={s.desc}>
-                {langPage.header.subtitle
-                  .replace(arrSubtileSentences[0], "")
-                  .trim()}
+                {Object.values(langPage.header.subtitle).join(" ")}
               </div>
             )}
           </div>
@@ -115,7 +130,7 @@ export const Header: React.FC = () => {
             {userCanReqConsultation && (
               <Button
                 onClick={handleRequestConsultation}
-                text={"Request Consultation"}
+                text={langPage.header.buttons.RequestConsultation}
                 variant={"contained"}
               />
             )}
@@ -124,26 +139,28 @@ export const Header: React.FC = () => {
       </div>
       <div className={s.text}>
         <div className={s.title}>{langPage.title}</div>
-        <div className={s.subtitle}>{langPage.subtitle}</div>
+        <div className={s.subtitle}>
+          {userCanReqConsultation ? langPage.subtitle.v1 : langPage.subtitle.v2}
+        </div>
       </div>
       <div className={s.buttons}>
         {userCanAddRoom && (
           <Button
             onClick={handleAnotherRoom}
-            text={langPage.btn_1}
+            text={langPage.buttons.AddAnotherRoom}
             variant={"contained"}
           />
         )}
         <IconButton
           onClick={handleDownloadAll}
-          text={"Download Room Guide (All)"}
+          text={langPage.buttons.DownloadRoomGuideAll}
           variant={"outlined"}
         >
           <DownloadSVG />
         </IconButton>
         <IconButton
           onClick={handleShareProject}
-          text={"Share Your Project"}
+          text={langPage.buttons.ShareYourProject}
           variant={"outlined"}
         >
           <ShareSVG />

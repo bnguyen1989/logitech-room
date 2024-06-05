@@ -3,7 +3,7 @@ import s from "./Actions.module.scss";
 import { IconButton } from "../../../components/Buttons/IconButton/IconButton";
 import { DownloadSVG, ListSVG } from "../../../assets";
 import { Button } from "../../../components/Buttons/Button/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Application } from "../../../models/Application";
 import { useUrl } from "../../../hooks/url";
 import { useUser } from "../../../hooks/user";
@@ -12,18 +12,27 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { useAppSelector } from "../../../hooks/redux";
+import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { useDispatch } from "react-redux";
+import { setRequestConsultationModal } from "../../../store/slices/modals/Modals.slice";
 
 declare const app: Application;
 
 export const Actions: React.FC = () => {
+  const dispatch = useDispatch();
   const { roomId } = useParams();
-  const navigate = useNavigate();
   const { handleNavigate } = useUrl();
   const user = useUser();
+  const langPage = useAppSelector(getDetailRoomLangPage);
 
   const handlerDownload = () => {
     if (!roomId) return;
     app.downloadRoomCSV(roomId);
+
+    getTKAnalytics().custom({ customName: EventActionName.download_room });
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.download_room,
@@ -34,12 +43,15 @@ export const Actions: React.FC = () => {
   };
 
   const handleRequestConsultation = () => {
-    navigate("/request-consultation");
+    getTKAnalytics().stage({ stageName: EventActionName.request_consultation });
+
     app.analyticsEvent({
       category: EventCategoryName.room_page,
       action: EventActionName.request_consultation,
       value: {},
     });
+
+    dispatch(setRequestConsultationModal({ isOpen: true }));
   };
 
   const handleBack = () => {
@@ -66,11 +78,15 @@ export const Actions: React.FC = () => {
         </IconButton>
       </div>
       <div className={s.desktop}>
-        <IconButton text={"Back"} onClick={handleBack} variant={"outlined"}>
+        <IconButton
+          text={langPage.buttons.Back}
+          onClick={handleBack}
+          variant={"outlined"}
+        >
           <ListSVG />
         </IconButton>
         <IconButton
-          text={"Download Room Guide"}
+          text={langPage.buttons.DownloadRoomGuide}
           onClick={handlerDownload}
           variant={"outlined"}
         >
@@ -80,7 +96,7 @@ export const Actions: React.FC = () => {
       {userCanReqConsultation && (
         <Button
           onClick={handleRequestConsultation}
-          text={"Request Consultation"}
+          text={langPage.buttons.RequestConsultation}
           variant={"contained"}
           style={{
             padding: "19px 40px",

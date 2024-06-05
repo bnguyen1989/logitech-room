@@ -8,8 +8,13 @@ export class PlacementManager {
     return `Tap_Placement_${type}_${id}`;
   }
 
-  public static getNameNodeForCamera(type: "Wall" | "TV", id: number): string {
+  public static getNameNodeForCamera(type: "Wall" | "TV", id?: number): string {
+    if (!id) return `Camera_${type}_Placement`;
     return `Camera_${type}_Placement_${id}`;
+  }
+
+  public static getNameNodeForSight(): string {
+    return "Sight_Placement";
   }
 
   public static getNameNodeCommodeForCamera(
@@ -80,8 +85,14 @@ export class PlacementManager {
       );
     });
 
-    ["Wall", "TV"].forEach((type: any) => {
+    ["TV"].forEach((type: any) => {
       Array.from({ length: 2 }, (_, i) => i + 1).forEach((num) =>
+        placements.push(this.getNameNodeForCamera(type, num))
+      );
+    });
+
+    ["Wall"].forEach((type: any) => {
+      Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) =>
         placements.push(this.getNameNodeForCamera(type, num))
       );
     });
@@ -99,6 +110,7 @@ export class PlacementManager {
       this.getNameNodeTapTableMount(),
       this.getNameNodeCameraWallMount(),
       this.getNameNodeCameraTVMount(),
+      this.getNameNodeForSight(),
       this.getNameNodePodPendantMount(),
       this.getNameNodeAngleMountScheduler(),
       this.getNameNodeSideMountScheduler(),

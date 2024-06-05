@@ -1,16 +1,18 @@
 .app {
-  min-height: 100vh;
+  min-height: auto;
   background-color: var(--main-color-background);
   font-family: var(--font-family);
+  position: relative;
 }
 
 .loader {
+  height: 100vh;
   min-height: 100vh;
 }
 
 @media (max-width: 1000px) {
-  .app,
+
   .loader {
-    min-height: calc(var(--vh, 1vh) * 100);
+    height: calc(var(--vh, 1vh) * 100);
   }
 }

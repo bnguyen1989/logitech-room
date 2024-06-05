@@ -1,4 +1,4 @@
-form {
+/* form {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 1fr 1fr;
@@ -42,19 +42,10 @@ form {
 	#honeypot, #lastFormURL, #lastFormReferrer {
 		display: none;
 	}
-
-	.mktoCaptchaDisclaimer {
-		display: none;
-	
-	}
-}
-
-#captcha {
-	display: none;
 }
 
 .mktoCaptchaDisclaimer {
-	display: none;
+	grid-column: span 2 !important;
 
 }
 
@@ -81,10 +72,12 @@ form {
 	display: none;
 }
 
+.mktoFormRow:nth-child(12),
 .mktoFormRow:nth-child(13),
 .mktoFormRow:nth-child(14) {
 	grid-column: span 2 !important;
 }
+
 .mktoFormRow:nth-child(15) {
 	padding-top: 20px;
 	grid-column: span 2 !important;
@@ -138,43 +131,6 @@ form {
 			font-style: normal;
 			font-weight: 300;
 			line-height: 20px;
-		}
-	}
-}
-.mktoFormRow:nth-child(17) {
-	grid-column: span 2 !important;
-
-	& .mktoLogicalField {
-		width: 100% !important;
-		display: flex;
-		gap: 16px;
-
-		& input {
-			width: 22px !important;
-			height: 22px !important;
-			border: 1px solid #C3C6C8 !important;
-			background: #FFF !important;
-		}
-
-		& label {
-			width: 630px !important;
-			margin: 0 !important;
-			color: #2F3132;
-			font-family: "Poppins", sans-serif;
-			font-size: 14px;
-			font-style: normal;
-			font-weight: 300;
-			line-height: 20px;
-
-			& a {
-				color: #2F3132;
-				font-family:"Poppins", sans-serif;
-				font-size: 14px;
-				font-style: normal;
-				font-weight: 700;
-				line-height: 20px;
-				text-decoration-line: underline;
-			}
 		}
 	}
 }
@@ -241,4 +197,4 @@ form {
 			height: 100% !important;
 		}
 	}
-}
+} */

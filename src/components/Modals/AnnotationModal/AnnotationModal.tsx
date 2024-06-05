@@ -39,11 +39,6 @@ export const AnnotationModal: React.FC = () => {
 
   const handleClick = () => {
     const { attributeName } = card.dataThreekit;
-    if (isActiveCard && keyPermission) {
-      app.removeItem(attributeName, keyPermission);
-      return;
-    }
-
     if (!threekitAsset) return;
 
     app.addItemConfiguration(attributeName, threekitAsset.id, keyPermission);
@@ -118,13 +113,15 @@ export const AnnotationModal: React.FC = () => {
                   <ColorSwitcherItem
                     keyItemPermission={keyPermission}
                     disabled={disabledActions?.color}
+                    activeStepProp={card["key"]}
                   />
                 </div>
                 <div className={s.button}>
                   <Button
-                    text={!isActiveCard ? "Add to Room" : "Add to Room"}
+                    text={"Add to Room"}
                     onClick={() => handleClick()}
                     variant={"contained"}
+                    disabled={isActiveCard}
                   />
                 </div>
               </div>
@@ -206,9 +203,10 @@ export const AnnotationModal: React.FC = () => {
 
           <div className={s.button_add_room}>
             <Button
-              text={!isActiveCard ? "Add to Room" : "Add to Room"}
+              text={"Add to Room"}
               onClick={() => handleClick()}
               variant={"contained"}
+              disabled={isActiveCard}
             />
           </div>
         </div>

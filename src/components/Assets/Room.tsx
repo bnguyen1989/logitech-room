@@ -12,6 +12,7 @@ import { useThree } from "@react-three/fiber";
 export type RoomProps = {
   roomAssetId: string;
   attachNodeNameToAssetId?: Record<string, string>;
+  setSnapshotCameras: (cameras: Record<string, THREE.Camera>) => void;
 };
 
 export const logNode = (node: THREE.Object3D, depth = 0) => {
@@ -20,7 +21,8 @@ export const logNode = (node: THREE.Object3D, depth = 0) => {
   node.children.forEach((child) => logNode(child, depth + 1));
 };
 
-export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
+export const Room: React.FC<RoomProps> = (props) => {
+  const { roomAssetId, setSnapshotCameras } = props;
   const dispatch = useDispatch();
   const gltf = useScene({ assetId: roomAssetId });
   const threeSet = useThree(({ set }) => set);
@@ -29,11 +31,37 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
   useEffect(() => {
     if (!gltf) return;
     dispatch(changeStatusBuilding(false));
+
+    const { "1": Front, "2": Left } = gltf.cameras;
+    if (Front && Left) {
+      setSnapshotCameras({
+        Front: new THREE.PerspectiveCamera().copy(
+          Front as THREE.PerspectiveCamera
+        ),
+        Left: new THREE.PerspectiveCamera().copy(
+          Left as THREE.PerspectiveCamera
+        ),
+      });
+    }
+
+    const domeLight = gltf.scene.userData.domeLight;
     const camera = gltf.scene.userData.camera as THREE.PerspectiveCamera;
-    camera.near = 0.1;
-    camera.far = 1000;
-    threeScene.environment = gltf.scene.userData.domeLight.image;
+    threeScene.environment = domeLight.image;
     threeSet({ camera });
+
+    gltf.scene.traverse((node) => {
+      if (node instanceof THREE.Mesh && node.isMesh) {
+        const materials = Array.isArray(node.material)
+          ? node.material
+          : [node.material];
+
+        materials.forEach((material) => {
+          if (material instanceof THREE.MeshStandardMaterial) {
+            material.envMapIntensity = domeLight.intensity;
+          }
+        });
+      }
+    });
   }, [gltf]);
 
   if (!gltf) return <></>;
@@ -42,6 +70,7 @@ export const Room: React.FC<RoomProps> = ({ roomAssetId }) => {
   return (
     <>
       {camera && <primitive object={camera}></primitive>}
+      <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
     </>
   );

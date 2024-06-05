@@ -17,6 +17,7 @@ import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/
 interface PropsI {
   keyItemPermission: string;
   autoActive?: boolean;
+  onSelectedAnalytics: () => void;
 }
 export const CardSoftware: React.FC<PropsI> = (props) => {
   const { keyItemPermission, autoActive } = props;
@@ -36,6 +37,8 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   );
 
   const handleClick = () => {
+    props.onSelectedAnalytics();
+
     const { attributeName } = card.dataThreekit;
     if (isActiveCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
@@ -63,31 +66,34 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
       style={{ padding: "0px" }}
     >
       <div className={s.container}>
-        <div className={s.content}>
-          <div className={s.header} onClick={handleClick}>
-            {/* <div className={s.header_title}>{card.header_title}</div> */}
-            <div className={s.title}>{title}</div>
-            {!!card.subtitle && (
-              <div className={s.subtitle}>{card.subtitle}</div>
-            )}
+        <div className={s.wrapper}>
+          <div className={s.content}>
+            <div className={s.header} onClick={handleClick}>
+              {/* <div className={s.header_title}>{card.header_title}</div> */}
+              <div className={s.title}>{title}</div>
+              {!!card.subtitle && (
+                <div className={s.subtitle}>{card.subtitle}</div>
+              )}
+            </div>
+            <div className={s.desc}>{description}</div>
           </div>
-          <div className={s.desc}>{description}</div>
-          <div className={s.actions}>
-            {!!card.select && (
+          {!!card.select && (
+            <div className={s.actions}>
               <SelectItem
                 keyItemPermission={keyItemPermission}
                 disabled={!isActiveCard}
               />
-            )}
+            </div>
+          )}
+          <div className={s.info_mobile}>
+            <div className={s.info_button_mobile}>INFO</div>
           </div>
         </div>
-
         <div className={s.info}>
           <IconButton onClick={() => {}}>
             <InformationSVG />
           </IconButton>
         </div>
-        <div className={s.info_mobile}>INFO</div>
       </div>
     </CardContainer>
   );

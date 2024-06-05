@@ -24,7 +24,9 @@ export class Application {
   public dataTableLevel2: DataTable = new DataTable([]);
 
   public resetApplication(): void {
+    const language = this.currentConfigurator.language;
     this.currentConfigurator = new Configurator();
+    this.currentConfigurator.language = language;
     this.dataTableLevel1 = new DataTable([]);
     this.dataTableLevel2 = new DataTable([]);
   }

@@ -23,4 +23,6 @@ export enum RuleName {
   //Recommendation Rules
   reco_micPendantMount_inWhite = "reco_micPendantMount_inWhite",
   reco_micPod_micPodHub = "reco_micPod_micPodHub",
+  reco_RallyBar = "reco_RallyBar",
+  reco_RallyPlus = "reco_RallyPlus",
 }

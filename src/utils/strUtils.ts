@@ -15,3 +15,17 @@ export const divideTextIntoSentence = (text: string) => {
   if (!res) return [];
   return res;
 };
+
+export const toCamelCase = (str: string): string => {
+  return str
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ')
+      .map((word, index) => {
+          if (index === 0) {
+              return word.toLowerCase();
+          }
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join('');
+}

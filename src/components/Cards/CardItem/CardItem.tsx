@@ -24,6 +24,9 @@ import {
   getLangProductImage,
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsColorsCard";
+import { useEffect } from "react";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 
 interface PropsI {
   keyItemPermission: string;
@@ -32,7 +35,28 @@ interface PropsI {
 }
 export const CardItem: React.FC<PropsI> = (props) => {
   const { keyItemPermission, children, type } = props;
+
+  useEffect(() => {
+    getTKAnalytics().optionsShow({
+      optionsSetId: keyItemPermission + " [Checkbox]",
+      optionsType: OptionsType.Value,
+      options: [
+        {
+          optionId: "true",
+          optionName: "true",
+          optionValue: "true",
+        },
+        {
+          optionId: "false",
+          optionName: "false",
+          optionValue: "false",
+        },
+      ],
+    });
+  }, []);
+
   const activeStep = useAppSelector(getActiveStep);
+
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -46,7 +70,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
 
   const threekitAsset = useAppSelector(getAssetFromCard(card));
 
-  console.log("langProduct");
+  //console.log("langProduct");
 
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
@@ -64,7 +88,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
     getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
   );
   const availableColorsData = useAppSelector(
-    getColorsFromCard(keyItemPermission)
+    getColorsFromCard(activeStep, keyItemPermission)
   );
   const dispatch = useDispatch();
 
@@ -81,8 +105,16 @@ export const CardItem: React.FC<PropsI> = (props) => {
     );
   };
 
+  
   const handleClick = () => {
     const { attributeName } = card.dataThreekit;
+
+    getTKAnalytics().optionInteraction({
+      optionsSetId: keyItemPermission + " [Checkbox]",
+      optionId: String( !isActiveCard ),
+      interactionType: OptionInteractionType.Select
+    });
+    
     if (isActiveCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
       return;
@@ -99,12 +131,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
     card.counter || card.select || availableColorsData.length > 1;
 
   const getClassNameCardContainer = () => {
-    if (type !== "subSection")
-      return `${s.card_container} ${s.card_container_mobile}`;
+    if (type !== "subSection") return `${s.card_container}`;
 
     return `${s.card_container_sub} ${
       isActiveCard ? s.card_container_sub_active : ""
-    } ${s.card_container_mobile}`;
+    }`;
   };
 
   return (
@@ -127,11 +158,12 @@ export const CardItem: React.FC<PropsI> = (props) => {
               {langDataCard && (
                 <div className={s.title}>{langDataCard.ShortDescription}</div>
               )}
-              <div className={s.subtitle}>{subTitle}</div>
+              {!!subTitle?.length && (
+                <div className={s.subtitle}>{subTitle}</div>
+              )}
             </div>
-            <div
-              className={`${s.content} ${isAction ? s.content_actions : ""}`}
-            >
+            {isAction && <div className={s.divider}></div>}
+            <div className={s.content}>
               {isAction && (
                 <div className={s.actions}>
                   <ColorSwitcherItem
@@ -153,14 +185,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   <InformationSVG />
                 </IconButton>
               </div>
-              <div className={s.info_mobile} onClick={handleInfo}>
-                INFO
-              </div>
             </div>
           </div>
         </div>
 
-        {children}
+        {isActiveCard ? children : null}
       </div>
     </CardContainer>
   );

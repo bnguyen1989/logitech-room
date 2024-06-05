@@ -1,12 +1,13 @@
-import { PropertyDependentElement } from "../type";
+import { DependentElement, PropertyDependentElement } from "../type";
 import { BaseElement } from "./BaseElement";
 import { Element } from "./Element";
 import { MountElement } from "./mounts/MountElement";
 
 export class ItemElement extends BaseElement implements Element<ItemElement> {
-  private dependence: Array<ItemElement | Array<ItemElement>> = [];
+  private dependence: DependentElement = {};
   private dependenceMount: Array<MountElement> = [];
   private defaultMount: MountElement | null = null;
+  private accessoryItems: Array<string> = [];
   private autoChangeItems: Record<string, Array<string>> = {};
   private reservationMount: Record<string, Array<string | number>> = {};
   private recommendationDependence: PropertyDependentElement = {};
@@ -16,6 +17,15 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   constructor(name: string) {
     super(name);
+  }
+
+  public setAccessoryItems(value: Array<string>): ItemElement {
+    this.accessoryItems = value;
+    return this;
+  }
+
+  public getAccessoryItems(): Array<string> {
+    return [...this.accessoryItems];
   }
 
   public addDisabledColorDependence(
@@ -92,16 +102,23 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   }
 
   /**
-   *
+   * @param key - instruction key
    * @description
    * add dependent elements and element properties that will affect the display condition of the current element
    */
-  public addDependence(item: ItemElement | Array<ItemElement>): ItemElement {
-    this.dependence.push(item);
+  public addDependence(
+    key: string,
+    item: ItemElement | Array<ItemElement>
+  ): ItemElement {
+    const prevDependence = this.dependence[key] ?? [];
+    this.dependence = {
+      ...this.dependence,
+      [key]: [...prevDependence, item],
+    };
     return this;
   }
 
-  public getDependence(): Array<ItemElement | Array<ItemElement>> {
+  public getDependence(): DependentElement {
     return this.dependence;
   }
 
@@ -146,12 +163,18 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   public copy(): ItemElement {
     const itemElement = new ItemElement(this.name);
-    this.getDependence().forEach((dependence) => {
-      if (dependence instanceof Array) {
-        itemElement.addDependence(dependence.map((item) => item.copy()));
-      } else {
-        itemElement.addDependence(dependence.copy());
-      }
+    const dependence = this.getDependence();
+    Object.entries(dependence).forEach(([key, value]) => {
+      value.forEach((dependence) => {
+        if (dependence instanceof Array) {
+          itemElement.addDependence(
+            key,
+            dependence.map((item) => item.copy())
+          );
+        } else {
+          itemElement.addDependence(key, dependence.copy());
+        }
+      });
     });
     this.getDependenceMount().forEach((dependenceMount) => {
       itemElement.addDependenceMount(dependenceMount.copy());

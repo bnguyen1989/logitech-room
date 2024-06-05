@@ -2,9 +2,11 @@ import { Store } from "@reduxjs/toolkit";
 import { CardI } from "../../ui/type";
 import {
   changeStatusProcessing,
+  changeValueConfiguration,
   changeValueNodes,
   removeNodeByKeys,
   removeNodes,
+  removeValuesConfigurationByKeys,
   setHighlightNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
@@ -22,6 +24,8 @@ import {
 import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
 import { StepName } from "../../../../utils/baseUtils";
+import { AttributeMountElement } from "../../../../models/permission/elements/mounts/AttributeMountElement";
+import { Configuration } from "@threekit/rest-api";
 
 export const updateHighlightNodes = (nodes: Record<string, string>) => {
   return (store: Store) => {
@@ -113,6 +117,20 @@ function setElementByNameNode(assetId: string, nameNode: string) {
   };
 }
 
+function setConfiguratorByNameNode(
+  nameNode: string,
+  configuration: Configuration
+) {
+  return (store: Store) => {
+    store.dispatch(
+      changeValueConfiguration({
+        key: nameNode,
+        value: configuration,
+      })
+    );
+  };
+}
+
 export function addElement(card: CardI, stepName: StepName) {
   return (store: Store) => {
     const state = store.getState();
@@ -179,6 +197,12 @@ export function addElement(card: CardI, stepName: StepName) {
           dependentMount.getNameNode()
         )(store);
       } else if (defaultMount instanceof MountElement) {
+        if (defaultMount instanceof AttributeMountElement) {
+          setConfiguratorByNameNode(
+            defaultMount.getNameNode(),
+            defaultMount.getAttributes()
+          )(store);
+        }
         const nodes = getNodes(state);
         const existDependentMountName = element
           .getDependenceMount()
@@ -221,6 +245,12 @@ export function addElement(card: CardI, stepName: StepName) {
       const cardItemElementAsset = getAssetFromCard(cardItemElement)(state);
       const dependentMount = element.getDependentMount();
       if (!dependentMount) {
+        if (element instanceof AttributeMountElement) {
+          setConfiguratorByNameNode(
+            element.getNameNode(),
+            element.getAttributes()
+          )(store);
+        }
         store.dispatch(changeStatusProcessing(true));
         store.dispatch(removeNodes(cardItemElementAsset.id));
         store.dispatch(removeNodes(cardAsset.id));
@@ -348,9 +378,9 @@ export function removeElement(card: CardI, stepName: StepName) {
         const keysForRemove = dependenceMount.map((mount) =>
           mount.getNameNode()
         );
-        store.dispatch(
-          removeNodeByKeys([...keysForRemove, mountElement.getNameNode()])
-        );
+        const listNodes = [...keysForRemove, mountElement.getNameNode()];
+        store.dispatch(removeNodeByKeys(listNodes));
+        store.dispatch(removeValuesConfigurationByKeys(listNodes));
       }
     }
     if (element instanceof MountElement) {
@@ -363,31 +393,9 @@ export function removeElement(card: CardI, stepName: StepName) {
         itemElement.name
       )(state);
       const cardItemElementAsset = getAssetFromCard(cardItemElement)(state);
-      const dependentMount = defaultMount.getDependentMount();
-      if (!dependentMount) {
-        store.dispatch(removeNodes(cardItemElementAsset.id));
-        store.dispatch(changeStatusProcessing(true));
-        setElementByNameNode(
-          cardItemElementAsset.id,
-          defaultMount.nodeName
-        )(store);
-      } else {
-        store.dispatch(changeStatusProcessing(true));
-        const dependentCard = getCardByKeyPermission(
-          stepName,
-          dependentMount.name
-        )(state);
-        const dependentCardAsset = getAssetFromCard(dependentCard)(state);
-        store.dispatch(removeNodes(cardItemElementAsset.id));
-        setElementByNameNode(
-          dependentCardAsset.id,
-          defaultMount.getNameNode()
-        )(store);
-        setElementByNameNode(
-          cardItemElementAsset.id,
-          dependentMount.getNameNode()
-        )(store);
-      }
+      store.dispatch(removeNodes(cardItemElementAsset.id));
+      store.dispatch(removeNodes(cardAsset.id));
+      addElement(cardItemElement, stepName)(store);
     }
 
     store.dispatch(removeNodes(cardAsset.id));
@@ -533,22 +541,24 @@ export function changeCountElement(
 
     const element = step.getElementByName(card.keyPermission);
 
-    if (element instanceof MountElement && value === 0) {
+    const removeElement = () => {
+      store.dispatch(removeNodes(cardAsset.id));
       const nameProperty = card.dataThreekit.attributeName;
       app.removeItem(nameProperty, card.keyPermission);
+    };
+
+    if (element instanceof MountElement && value === 0) {
+      removeElement();
     }
 
     if (!element || !(element instanceof ItemElement)) return;
 
     const mountElement = element.getDefaultMount();
 
-    if (!mountElement) return;
-
-    const removeElement = () => {
-      store.dispatch(removeNodes(cardAsset.id));
-      const nameProperty = card.dataThreekit.attributeName;
-      app.removeItem(nameProperty, card.keyPermission);
-    };
+    if (!mountElement && value === 0) {
+      removeElement();
+      return;
+    }
 
     if (!(mountElement instanceof CountableMountElement)) return;
 

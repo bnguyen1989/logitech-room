@@ -12,22 +12,23 @@ import {
 import { Button } from "../../Buttons/Button/Button";
 import { useUser } from "../../../hooks/user";
 import { PermissionUser } from "../../../utils/userRoleUtils";
-import { useNavigate } from "react-router-dom";
 import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Application } from "../../../models/Application";
 import {
   EventActionName,
   EventCategoryName,
 } from "../../../models/analytics/type";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { useUrl } from "../../../hooks/url";
 
 declare const app: Application;
 
 export const FinishModal: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useUser();
+  const { handleNavigate } = useUrl();
   const { isOpen } = useAppSelector(getFinishModalData);
   const orderData: any = useAppSelector(getOrderData(user.id));
   const [sendRequest, setSendRequest] = useState(false);
@@ -35,35 +36,53 @@ export const FinishModal: React.FC = () => {
   const userCanShowSetupModal = user.role.can(PermissionUser.SHOW_SETUP_MODAL);
   const isShowSetupModal = userCanShowSetupModal && user.isEmptyUserData();
 
+  useEffect(() => {
+    getTKAnalytics().stage({ stageName: "Finish Modal" });
+  }, []);
+
   const handleClose = () => {
+    getTKAnalytics().custom({ customName: "Finish Modal Back" });
     dispatch(setFinishModal({ isOpen: false }));
   };
 
   const handleLetsProceed = () => {
+    getTKAnalytics().stage({
+      stageName: EventActionName.configurator_complete,
+    });
+
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,
       action: EventActionName.configurator_complete,
       value: {},
     });
-    if (isShowSetupModal) {
-      dispatch(setMySetupModal({ isOpen: true }));
-      dispatch(setFinishModal({ isOpen: false }));
-      return;
-    }
-
     setSendRequest(true);
     const threekitService = new ThreekitService();
     const assetId = orderData.metadata.configurator.assetId;
-    const snapshot = window.snapshot("blob") as Blob;
-    threekitService
-      .saveConfigurator(snapshot, assetId ?? "")
-      .then((id) => {
-        const linkSnapshot = threekitService.getSnapshotLinkById(id);
-        orderData.metadata["snapshot"] = linkSnapshot;
-
+    const snapshotFront = window.snapshot("blob", "Front") as Blob;
+    const snapshotLeft = window.snapshot("blob", "Left") as Blob;
+    Promise.all([
+      threekitService.saveConfigurator(snapshotFront, assetId ?? ""),
+      threekitService.saveConfigurator(snapshotLeft, assetId ?? ""),
+    ])
+      .then((res) => {
+        const linkSnapshotFront = threekitService.getSnapshotLinkById(res[0]);
+        const linkSnapshotLeft = threekitService.getSnapshotLinkById(res[1]);
+        orderData.metadata["snapshots"] = JSON.stringify({
+          Front: linkSnapshotFront,
+          Left: linkSnapshotLeft,
+        });
         return threekitService.createOrder(orderData).then(() => {
           dispatch(setFinishModal({ isOpen: false }));
-          navigate("/room", { replace: true });
+          if (isShowSetupModal) {
+            dispatch(
+              setMySetupModal({
+                isOpen: true,
+                dataModal: { linkSnapshot: linkSnapshotFront },
+              })
+            );
+          } else {
+            handleNavigate("/room");
+          }
         });
       })
       .finally(() => {

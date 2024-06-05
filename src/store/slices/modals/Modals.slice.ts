@@ -4,15 +4,17 @@ import {
   AnnotationItemModalI,
   ModalI,
   ModalName,
+  MySetupModalI,
   SelectProductModalI,
 } from "./type";
 
 interface ModalsStateI {
-  [ModalName.MY_SETUP]: ModalI;
+  [ModalName.MY_SETUP]: MySetupModalI;
   [ModalName.ANNOTATION_ITEM]: AnnotationItemModalI;
   [ModalName.SELECT_PRODUCT]: SelectProductModalI;
   [ModalName.SHARE_PROJECT]: ModalI;
   [ModalName.FINISH]: ModalI;
+  [ModalName.REQUEST_CONSULTATION]: ModalI;
 }
 
 const initialState: ModalsStateI = {
@@ -31,13 +33,16 @@ const initialState: ModalsStateI = {
   [ModalName.FINISH]: {
     isOpen: false,
   },
+  [ModalName.REQUEST_CONSULTATION]: {
+    isOpen: false,
+  },
 };
 
 const ModalsSlice = createSlice({
   name: "modals",
   initialState,
   reducers: {
-    setMySetupModal: (state, action: PayloadAction<ModalI>) => {
+    setMySetupModal: (state, action: PayloadAction<MySetupModalI>) => {
       state[ModalName.MY_SETUP] = action.payload;
     },
     setAnnotationItemModal: (
@@ -58,6 +63,9 @@ const ModalsSlice = createSlice({
     setFinishModal: (state, action: PayloadAction<ModalI>) => {
       state[ModalName.FINISH] = action.payload;
     },
+    setRequestConsultationModal: (state, action: PayloadAction<ModalI>) => {
+      state[ModalName.REQUEST_CONSULTATION] = action.payload;
+    },
   },
 });
 
@@ -67,6 +75,7 @@ export const {
   setSelectProductModal,
   setShareProjectModal,
   setFinishModal,
+  setRequestConsultationModal,
 } = ModalsSlice.actions;
 
 export default ModalsSlice.reducer;

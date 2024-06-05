@@ -45,9 +45,18 @@ export async function getLanguageData(req: Request, res: Response) {
   try {
     const resultDir = path.join(__dirname, "../dataLang/result");
 
+    const specificLangCode: Record<string, string> = {
+      "en-GB": "en-US",
+    };
+
+    const languageCodeToUse = specificLangCode[languageCode] || languageCode;
+
     if (fs.existsSync(resultDir)) {
-      const pagePath = path.join(resultDir, `page/${languageCode}.json`);
-      const productPath = path.join(resultDir, `product/${languageCode}.json`);
+      const pagePath = path.join(resultDir, `page/${languageCodeToUse}.json`);
+      const productPath = path.join(
+        resultDir,
+        `product/${languageCodeToUse}.json`
+      );
       const dataPage = fs.readFileSync(pagePath, "utf8");
       const dataProduct = fs.readFileSync(productPath, "utf8");
       res.json({

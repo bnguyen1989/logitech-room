@@ -35,7 +35,7 @@ export const Card: React.FC<DataSectionI> = (props) => {
             <div className={s.amount_mobile_title}>PRICE</div>
             <div className={s.amount_price}>
               <div className={s.amount_value}>{amount}</div>
-              <div className={s.amount_text}>MSRP</div>
+              <div className={s.amount_text}>MSRP per unit</div>
             </div>
           </div>
         )}

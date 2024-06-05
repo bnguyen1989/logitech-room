@@ -6,7 +6,7 @@ interface ConfiguratorStateI {
   isBuilding: boolean;
   isProcessing: boolean;
   showDimensions: boolean;
-  configuration: Configuration;
+  configuration: Record<string, Configuration>;
   nodes: Record<string, string>;
   highlightNodes: Record<string, boolean>;
 }
@@ -34,13 +34,23 @@ const configuratorSlice = createSlice({
     changeValueConfiguration: (
       state,
       action: PayloadAction<{
+        key: string;
         value: Configuration;
       }>
     ) => {
+      const { key, value } = action.payload;
       state.configuration = {
         ...state.configuration,
-        ...action.payload.value,
+        [key]: { ...value },
       };
+    },
+    removeValuesConfigurationByKeys: (
+      state,
+      action: PayloadAction<string[]>
+    ) => {
+      action.payload.forEach((key) => {
+        delete state.configuration[key];
+      });
     },
     changeValueNodes: (
       state,
@@ -87,6 +97,7 @@ export const {
   changeStatusBuilding,
   changeShowDimensions,
   changeValueConfiguration,
+  removeValuesConfigurationByKeys,
   changeValueNodes,
   changeAssetId,
   removeNodes,

@@ -52,6 +52,8 @@ export enum AttributeName {
   RoomDeployment = "Room Deployment Mode",
   RoomCamera = "Room Camera",
   RoomCameraMount = "Room Camera Mount",
+  RoomAdditionalCamera = "Room Additional Camera",
+  QtyAdditionalCamera = "Qty - Additional Camera",
   RoomCompute = "Room Compute",
   RoomComputeMount = "Room Compute Mount",
   RoomSight = "Room Sight",

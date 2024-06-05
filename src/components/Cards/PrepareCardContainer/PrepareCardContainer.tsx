@@ -18,9 +18,11 @@ declare const app: Application;
 interface PropsI {
   keyItemPermission: string;
   children: React.ReactNode;
+  onSelectedAnalytics: () => void;
+  isPadding?: boolean;
 }
 export const PrepareCardContainer: React.FC<PropsI> = (props) => {
-  const { keyItemPermission, children } = props;
+  const { keyItemPermission, children, isPadding } = props;
   const dispatch = useDispatch();
   const activeStep = useAppSelector(getActiveStep);
   const isActiveCard = useAppSelector(
@@ -34,6 +36,8 @@ export const PrepareCardContainer: React.FC<PropsI> = (props) => {
   const handleClick = () => {
     const { attributeName, threekitItems } = card.dataThreekit;
     const threekitAsset = threekitItems[card.keyPermission];
+
+    props.onSelectedAnalytics();
 
     if (!attributeName.length) {
       if (isActiveCard) {
@@ -64,6 +68,7 @@ export const PrepareCardContainer: React.FC<PropsI> = (props) => {
       active={isActiveCard}
       disabled={isDisabled}
       isFullClick
+      isPadding={isPadding}
     >
       {children}
     </CardContainer>
