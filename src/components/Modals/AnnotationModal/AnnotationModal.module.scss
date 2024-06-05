@@ -247,11 +247,11 @@
 
 @media (max-width: 1000px) {
   .container {
-    width: 100vw;
+    width: calc(100vw - 80px);
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding-top: 40px;
+
     .close_button {
       display: none;
     }
@@ -266,6 +266,7 @@
 
     .wrapper {
       width: 100%;
+      max-width: none;
       max-height: none;
       overflow-y: auto;
       gap: 60px;
@@ -278,7 +279,7 @@
 
         .left_item {
           .image {
-            width: calc(100%);
+            width: 100%;
           }
         }
 
@@ -346,6 +347,7 @@
         padding-left: 40px;
         padding-bottom: 60px;
         width: calc(100% - 40px);
+        min-height: 100%;
         overflow-x: scroll;
 
         .card {
@@ -362,6 +364,7 @@
         padding: 0;
         padding-left: 40px;
         width: calc(100% - 40px);
+        min-height: 100%;
         overflow-x: scroll;
 
         .card {
@@ -373,5 +376,11 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 100vw;
   }
 }
