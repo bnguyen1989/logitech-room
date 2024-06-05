@@ -75,6 +75,11 @@
       justify-content: normal;
       height: 380px;
     }
+
+    .contentRoomCard::-webkit-scrollbar {
+      height: 0px;
+      background: transparent;
+    }
   }
 }
 
@@ -93,6 +98,10 @@
     .contentRoomCard {
       overflow-x: auto;
       justify-content: normal;
+    }
+    .contentRoomCard::-webkit-scrollbar {
+      height: 0px;
+      background: transparent;
     }
   }
 
@@ -124,7 +133,7 @@
   .wrapperCardsRoom {
     .contentRoomCard {
       box-sizing: content-box;
-       height: 260px;
+      height: 260px;
     }
   }
 }
@@ -159,6 +168,10 @@
       justify-content: normal;
       height: 380px;
     }
+    .contentCardsPlatform::-webkit-scrollbar {
+      height: 0px;
+      background: transparent;
+    }
   }
 }
 
@@ -177,6 +190,10 @@
     .contentCardsPlatform {
       overflow-x: auto;
       justify-content: normal;
+    }
+    .contentCardsPlatform::-webkit-scrollbar {
+      height: 0px;
+      background: transparent;
     }
   }
 
@@ -255,6 +272,10 @@
         overflow-x: auto;
         justify-content: normal;
       }
+      .content_cards::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+      }
     }
   }
 }
@@ -272,7 +293,7 @@
 @media (max-width: 620px) {
   .container_PrepareSection {
     .wrapperCards {
-      padding:  0 0 0 20px;
+      padding: 0 0 0 20px;
       .content_cards {
         height: 250px;
         box-sizing: content-box;
@@ -280,6 +301,11 @@
         overflow-x: auto;
         justify-content: normal;
         padding-right: 20px;
+      }
+
+      .content_cards::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
       }
     }
   }
