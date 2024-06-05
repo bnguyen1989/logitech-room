@@ -60,6 +60,7 @@ import { StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
+import { removeElement } from "../../configurator/handlers/handlers";
 
 declare const app: Application;
 
@@ -185,6 +186,10 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
       );
       if (position === "next") return;
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
+      arr.forEach((keyCard) => {
+        const card = getCardByKeyPermission(key as StepName, keyCard)(state);
+        removeElement(card, key as StepName)(store);
+      });
     });
   };
 }
