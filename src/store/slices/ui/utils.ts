@@ -295,6 +295,8 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
       ];
     case StepName.MeetingController:
       return [
+        MeetingControllerName.LogitechTap,
+        MeetingControllerName.LogitechTapIP,
         MeetingControllerName.TapTableMount,
         MeetingControllerName.TapRiserMount,
         MeetingControllerName.TapWallMount,
