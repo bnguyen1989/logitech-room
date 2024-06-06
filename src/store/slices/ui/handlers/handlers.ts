@@ -281,7 +281,7 @@ function updateDataByConfiguration(
       setActiveCardsForStep({
         step: stepName,
         keyCards: activeKeys,
-        clear: stepName !== StepName.ConferenceCamera,
+        clear: true,
       })
     );
   };

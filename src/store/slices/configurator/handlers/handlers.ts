@@ -208,12 +208,12 @@ export function addElement(card: CardI, stepName: StepName) {
           .getDependenceMount()
           .map((mount) => mount.getDependentMount()?.getNameNode())
           .find((item) => item && nodes[item]);
-        const dependentMount = defaultMount.getDependentMount();
         if (existDependentMountName) {
           setElementByNameNode(cardAsset.id, existDependentMountName)(store);
           return;
         }
 
+        const dependentMount = defaultMount.getDependentMount();
         if (!dependentMount) {
           store.dispatch(changeStatusProcessing(true));
           setElementByNameNode(cardAsset.id, defaultMount.getNameNode())(store);
