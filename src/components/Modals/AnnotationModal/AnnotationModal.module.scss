@@ -266,7 +266,6 @@
 
     .wrapper {
       width: 100%;
-      max-width: none;
       max-height: none;
       overflow-y: auto;
       gap: 60px;
@@ -347,7 +346,6 @@
         padding-left: 40px;
         padding-bottom: 60px;
         width: calc(100% - 40px);
-        min-height: 100%;
         overflow-x: scroll;
 
         .card {
@@ -359,12 +357,16 @@
         }
       }
 
+      .cards::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+      }
+
       .gap_2_box {
         display: flex;
         padding: 0;
         padding-left: 40px;
         width: calc(100% - 40px);
-        min-height: 100%;
         overflow-x: scroll;
 
         .card {
@@ -374,6 +376,11 @@
         .card:last-child {
           padding-right: 40px;
         }
+      }
+
+      .gap_2_box::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
       }
     }
   }
