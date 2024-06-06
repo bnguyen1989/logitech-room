@@ -1,0 +1,24 @@
+.containerRequestConsultationModal {
+  padding: 35px 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  .header {
+    width: 100%;
+    .close {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+
+      & div {
+        div {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}

@@ -33,20 +33,15 @@ export class RoomService {
   private getHeaderCSV() {
     return [
       { id: ColumnNameCSVRoom.ROOM_NAME, title: "Room name" },
-      { id: ColumnNameCSVRoom.PRODUCT_NAME, title: "Product name" },
       { id: ColumnNameCSVRoom.CATEGORY, title: "Product category" },
-      { id: ColumnNameCSVRoom.DESCRIPTION, title: "Product description" },
-      { id: ColumnNameCSVRoom.COLOR, title: "Product color" },
+      { id: ColumnNameCSVRoom.PRODUCT_NAME, title: "Product name" },
       {
         id: ColumnNameCSVRoom.PART_NUMBER,
-        title: "Regionally appropriate part number",
+        title: "Part number",
       },
-      { id: ColumnNameCSVRoom.MSPR, title: "Regionally appropriate MSRP" },
-      { id: ColumnNameCSVRoom.TOTAL_QUANTITY, title: "Total quantity" },
-      {
-        id: ColumnNameCSVRoom.TOTAL_ESTIMATED_COST,
-        title: "Total estimated cost",
-      },
+      { id: ColumnNameCSVRoom.QUANTITY, title: "Quantity" },
+      { id: ColumnNameCSVRoom.MSPR, title: "MSRP" },
+      { id: ColumnNameCSVRoom.TOTAL_QUANTITY, title: "Total MSRP" },
     ];
   }
 
@@ -56,20 +51,18 @@ export class RoomService {
     return dataOrders.map((dataOrder) => {
       const { name, data } = dataOrder;
       const rows: Array<RowCSVRoomI> = data.map((dataCard, index) => {
-        const { data, color, price, count, title, description, sku } = dataCard;
+        const { data, price, count, title, sku } = dataCard;
         const card = JSON.parse(data) as CardI;
-        const amount = `$ ${parseFloat(price) * parseInt(count)}`;
+        const amount = parseFloat(price) * parseInt(count);
 
         return {
           [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
-          [ColumnNameCSVRoom.PRODUCT_NAME]: title,
           [ColumnNameCSVRoom.CATEGORY]: card.key,
-          [ColumnNameCSVRoom.DESCRIPTION]: description,
-          [ColumnNameCSVRoom.COLOR]: color,
+          [ColumnNameCSVRoom.PRODUCT_NAME]: title,
           [ColumnNameCSVRoom.PART_NUMBER]: sku,
-          [ColumnNameCSVRoom.MSPR]: price,
-          [ColumnNameCSVRoom.TOTAL_QUANTITY]: count,
-          [ColumnNameCSVRoom.TOTAL_ESTIMATED_COST]: amount,
+          [ColumnNameCSVRoom.QUANTITY]: count,
+          [ColumnNameCSVRoom.MSPR]: parseFloat(price).toFixed(2),
+          [ColumnNameCSVRoom.TOTAL_QUANTITY]: amount.toFixed(2),
         };
       });
 

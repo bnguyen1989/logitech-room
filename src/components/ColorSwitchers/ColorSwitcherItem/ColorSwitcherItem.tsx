@@ -11,6 +11,9 @@ import {
   getPropertyColorCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectorsColorsCard";
 import { StepName } from "../../../utils/baseUtils";
+import { useEffect } from "react";
+import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 
 declare const app: Application;
 
@@ -21,6 +24,7 @@ interface PropsI {
 }
 
 export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
+
   const { keyItemPermission, disabled, activeStepProp } = props;
   const activeStep = useAppSelector(getActiveStep);
   const activeStepName = activeStepProp ?? activeStep;
@@ -35,6 +39,21 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     getColorsFromCard(activeStepName, keyItemPermission)
   );
 
+  useEffect(() => {
+    if (!card) return;
+    if (availableColorsData.length < 1) return;
+
+    getTKAnalytics().optionsShow({
+      optionsSetId: keyItemPermission + " [ColorSwitcher]",
+      optionsType: OptionsType.Value,
+      options: availableColorsData.map((item) => ({
+        optionId: item.name,
+        optionName: item.name,
+        optionValue: item.value
+      }))
+    });
+  }, [ card, availableColorsData.length]);
+
   if (!card) return;
   if (availableColorsData.length < 1) return;
 
@@ -45,6 +64,12 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
       value.name,
       card.keyPermission
     );
+
+    getTKAnalytics().optionInteraction({
+      optionsSetId: keyItemPermission + " [ColorSwitcher]",
+      optionId: value.name,
+      interactionType: OptionInteractionType.Select
+    });
   };
 
   return (

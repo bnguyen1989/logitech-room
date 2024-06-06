@@ -3,17 +3,18 @@ import s from "./Button.module.scss";
 interface PropsI {
   text: string;
   onClick: () => void;
-  variant?: "outlined" | "contained";
+  variant?: "outlined" | "contained" | "based";
   style?: React.CSSProperties;
   disabled?: boolean;
 }
 export const Button: React.FC<PropsI> = (props) => {
-  const { onClick, text, variant = "outlined", style, disabled } = props;
+  const { onClick, text, variant = "based", style, disabled } = props;
   return (
     <div
+      role={"button"}
       className={`${s.button} ${s["button_" + variant]} ${
         disabled ? s.disabled : ""
-      }`}
+      } ${disabled ? s["disabled_" + variant] : ""}`}
       onClick={() => onClick()}
       style={style}
     >

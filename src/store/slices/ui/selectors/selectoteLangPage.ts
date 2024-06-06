@@ -8,10 +8,12 @@ import {
   PagesI,
   PagesIKeys,
   Platform,
+  RequestConsultation,
   RoomSize,
   Rooms,
   Services,
   SetupModal,
+  ShareModal,
   SoftwareServices,
   VideoAccessories,
 } from "../../../../types/textTypePage";
@@ -96,6 +98,16 @@ export const getDetailRoomLangPage = (state: RootState): Order => {
   return getLangPage("Order")(state) as Order;
 };
 
+export const getRequestConsultationLangPage = (
+  state: RootState
+): RequestConsultation => {
+  return getLangPage("RequestConsultation")(state) as RequestConsultation;
+};
+
+export const getShareModalLangPage = (state: RootState): ShareModal => {
+  return getLangPage("ShareModal")(state) as ShareModal;
+};
+
 export const getLangStepDataByStepName =
   (stepName: StepName) => (state: RootState) => {
     switch (stepName) {
@@ -117,7 +129,7 @@ export const getLangStepDataByStepName =
         const data = { ...getSoftwareServicesLangPage(state) };
         const { isSubmit } = getDataSoftwareQuestionsForm(state);
         if (isSubmit) {
-          data.title = "Based on your answers, we recommend:";
+          data.title = data.titleAfterForm;
         }
         return data;
       }
@@ -227,37 +239,37 @@ export const getPrepareDescriptionLangByKeyPermission =
     }
   };
 
-export const getDataQuestionFormCustomer = (
-  state: RootState
-): Array<QuestionFormI> => {
-  const langPage = getSoftwareServicesLangPage(state);
-  const { QuestionForm } = langPage;
+export const getDataQuestionFormCustomer =
+  (version: "v1" | "v2") =>
+  (state: RootState): Array<QuestionFormI> => {
+    const langPage = getSoftwareServicesLangPage(state);
+    const { QuestionForm } = langPage;
 
-  return QuestionForm.reduce<QuestionFormI[]>((acc, item, index) => {
-    const { question, ...options } = item;
+    return QuestionForm[version].reduce<QuestionFormI[]>((acc, item, index) => {
+      const { question, ...options } = item;
 
-    const copyOptions: any = { ...options };
+      const copyOptions: any = { ...options };
 
-    const keyOptions = Object.keys(copyOptions).filter((key) =>
-      key.includes("option")
-    );
-    const questionForm = {
-      question,
-      options: keyOptions.map((key) => {
-        return {
-          value: false,
-          text: copyOptions[key],
-        };
-      }),
-      active: index === 0,
-      done: false,
-    };
+      const keyOptions = Object.keys(copyOptions).filter((key) =>
+        key.includes("option")
+      );
+      const questionForm = {
+        question,
+        options: keyOptions.map((key) => {
+          return {
+            value: false,
+            text: copyOptions[key],
+          };
+        }),
+        active: index === 0,
+        done: false,
+      };
 
-    acc.push(questionForm);
+      acc.push(questionForm);
 
-    return acc;
-  }, []);
-};
+      return acc;
+    }, []);
+  };
 
 export const getLangDescriptionRoomBySize =
   (size: string) => (state: RootState) => {

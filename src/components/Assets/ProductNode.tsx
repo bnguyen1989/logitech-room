@@ -1,13 +1,17 @@
 import { FC, useState } from "react";
 import { useAppSelector } from "../../hooks/redux";
 import {
+  getConfiguration,
   getIsHighlightNode,
   getNodes,
 } from "../../store/slices/configurator/selectors/selectors";
 import { Product } from "./Product";
 import * as THREE from "three";
 import { useDispatch } from "react-redux";
-import { disabledHighlightNode, setHighlightNodes } from "../../store/slices/configurator/Configurator.slice";
+import {
+  disabledHighlightNode,
+  setHighlightNodes,
+} from "../../store/slices/configurator/Configurator.slice";
 
 type ProductProps = {
   nameNode: string;
@@ -15,12 +19,14 @@ type ProductProps = {
 };
 
 export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
-
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const dispatch = useDispatch();
 
-  const isHighlightNode = useAppSelector(getIsHighlightNode(selectedNode !== null ? selectedNode : nameNode));
+  const isHighlightNode = useAppSelector(
+    getIsHighlightNode(selectedNode !== null ? selectedNode : nameNode)
+  );
   const attachNodeNameToAssetId = useAppSelector(getNodes);
+  const configuration = useAppSelector(getConfiguration);
 
   const callbackDisableHighlight = () => {
     setSelectedNode(null);
@@ -29,7 +35,7 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
 
   const callbackOnHighlight = (nameNodeParam: string) => {
     setSelectedNode(nameNodeParam);
-    dispatch(setHighlightNodes({ [nameNodeParam]: true } ));
+    dispatch(setHighlightNodes({ [nameNodeParam]: true }));
   };
 
   if (!Object.keys(attachNodeNameToAssetId).includes(nameNode))
@@ -38,6 +44,7 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
   return (
     <Product
       parentNode={parentNode}
+      configuration={configuration[nameNode]}
       productAssetId={attachNodeNameToAssetId[nameNode]}
       highlight={isHighlightNode}
       callbackDisableHighlight={callbackDisableHighlight}

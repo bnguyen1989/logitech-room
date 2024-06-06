@@ -14,6 +14,10 @@ import { recalculateVh } from "./utils/browserUtils";
 import { LanguageService } from "./services/LanguageService/LanguageService";
 import { useLocale } from "./hooks/useLocal";
 import { Loader } from "./components/Loader/Loader";
+import { Application } from "./models/Application";
+import { MunchkinScript } from "./components/Munchkin/MunchkinScript";
+
+declare const app: Application;
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +46,8 @@ function App() {
             products: objDataProducts,
           })
         );
+
+        app.currentConfigurator.language = locale;
       })
       .catch((err) => {
         console.error(err);
@@ -70,6 +76,7 @@ function App() {
       </Routes>
 
       <Modals />
+      <MunchkinScript />
     </div>
   );
 }

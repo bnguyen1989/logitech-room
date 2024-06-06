@@ -9,6 +9,7 @@ interface PropsI {
   style?: React.CSSProperties;
   isFullClick?: boolean;
   className?: string;
+  isPadding?: boolean;
 }
 export const CardContainer: React.FC<PropsI> = (props) => {
   const {
@@ -20,6 +21,7 @@ export const CardContainer: React.FC<PropsI> = (props) => {
     recommended,
     isFullClick,
     className,
+    isPadding = true,
   } = props;
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -30,12 +32,14 @@ export const CardContainer: React.FC<PropsI> = (props) => {
     onClick();
   };
 
-  const containerClassName = `
+  let containerClassName = `
   ${s.container} 
   ${disabled ? s.container_disabled : ""}
   ${active ? s.container_active : ""}
   ${className}
   `;
+
+  if (isPadding) containerClassName += ` ${s.isPadding}`;
 
   return (
     <div className={containerClassName} style={style}>

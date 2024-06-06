@@ -6,84 +6,52 @@ import { getSetupModalData } from "../../../store/slices/modals/selectors/select
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
-import { useNavigate } from "react-router-dom";
-import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { useEffect, useRef } from "react";
-import "./form.css";
-import { getOrderData } from "../../../store/slices/ui/selectors/selectorsOrder";
 import { getParentURL } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
 import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
-
-declare const MktoForms2: any;
+import { useUrl } from "../../../hooks/url";
+import { FormMkto } from "../../Form/FormMkto/FormMkto";
+import { FORM_MKTO } from "../../../utils/formUtils";
+import { RoleUserName } from "../../../utils/userRoleUtils";
 
 export const SetupModal: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isOpen } = useAppSelector(getSetupModalData);
+  const { isOpen, dataModal } = useAppSelector(getSetupModalData);
   const user = useUser();
-  const orderData: any = useAppSelector(getOrderData(user.id));
+  const { handleNavigate } = useUrl();
   const dataLang = useAppSelector(getSetupModalLangPage);
-  const formLoaded = useRef(false);
 
   const handleClose = () => {
     dispatch(setMySetupModal({ isOpen: false }));
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      formLoaded.current = false;
-      return;
+  const getFormName = () => {
+    if (user.role.name === RoleUserName.PARTNER) {
+      return FORM_MKTO.ABRIDGE_FORM;
     }
-    if (formLoaded.current) return;
-    MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", 18414);
-    formLoaded.current = true;
 
-    MktoForms2.whenReady((form: any) => {
-      const baseUrl = getParentURL();
-      const link = `${baseUrl}/room?userId=${user.id}`;
-      form.setValues({
-        editableField6: link,
-      });
+    return FORM_MKTO.FULL_FORM;
+  };
 
-      const threekitService = new ThreekitService();
+  const getInitialValues = () => {
+    const initialValues: Record<string, string> = {};
+    const baseUrl = getParentURL();
+    const link = `${baseUrl}/room?userId=${user.id}`;
+    initialValues.editableField6 = link;
 
-      let snapshotLink = "";
-      const assetId = orderData.metadata.configurator.assetId;
-      const snapshot = window.snapshot("blob") as Blob;
-      threekitService.saveConfigurator(snapshot, assetId ?? "").then((id) => {
-        const linkSnapshot = threekitService.getSnapshotLinkById(id);
-        form.setValues({
-          editableField5: linkSnapshot,
-        });
-        snapshotLink = linkSnapshot;
-      });
+    if (dataModal) {
+      initialValues.editableField5 = dataModal.linkSnapshot;
+    }
 
-      form.onSubmit(
-        (() => {
-          let isRequest = false;
-          return () => {
-            if (!isRequest) {
-              isRequest = true;
-              orderData.metadata["snapshot"] = snapshotLink;
-              threekitService.createOrder(orderData).then(() => {
-                dispatch(setMySetupModal({ isOpen: false }));
-                dispatch(setUserData({ data: { ...form.getValues() } }));
-                navigate("/room", { replace: true });
-              });
-            }
+    return initialValues;
+  };
 
-            return isRequest;
-          };
-        })()
-      );
-      const button = document.querySelector(".mktoButton");
-      if (button) {
-        button.textContent = dataLang.btn_done;
-      }
-    });
-  }, [isOpen]);
+  const handleSubmit = (formData: any) => {
+    dispatch(setMySetupModal({ isOpen: false }));
+    dispatch(setUserData({ data: { ...formData } }));
+    handleNavigate("/room");
+  };
 
   if (!isOpen) return null;
 
@@ -102,9 +70,12 @@ export const SetupModal: React.FC = () => {
           </div>
         </div>
 
-        <div className={s.form}>
-          <form id="mktoForm_18414"></form>
-        </div>
+        <FormMkto
+          formName={getFormName()}
+          initialValues={getInitialValues()}
+          buttonText={dataLang.btn_done}
+          onSubmit={handleSubmit}
+        />
       </div>
     </ModalContainer>
   );

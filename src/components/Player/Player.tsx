@@ -8,7 +8,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { Camera, PerspectiveCamera, Vector3 } from "three";
+import { Camera, Vector3 } from "three";
 import {
   EffectComposer,
   Selection,
@@ -33,13 +33,14 @@ export const bhoustonAuth = {
 
 export const Player: React.FC = () => {
   const { cache, keyCache } = useCache();
-  const { distance } = usePlayer();
+  const { target, distance } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
   const [effectComposerRef, setEffectComposerRef] =
     useState<EffectComposerImpl | null>(null);
-  const [snapshotCamera, setSnapshotCamera] = useState<Camera>();
+  const [snapshotCameras, setSnapshotCameras] =
+    useState<Record<string, Camera>>();
 
   const focalLengthMm = 65; // Focal length in mm
   const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
@@ -54,20 +55,14 @@ export const Player: React.FC = () => {
     },
   };
 
-  useEffect(() => {
-    if (!effectComposerRef || snapshotCamera) return;
-    const oldCamera = (
-      effectComposerRef.passes.find((pass) => !!(pass as any).camera) as any
-    )?.camera as Camera | undefined;
-    if (oldCamera) {
-      const camera = new PerspectiveCamera();
-      camera.copy(oldCamera as PerspectiveCamera);
-      setSnapshotCamera(camera);
-    }
-  }, [effectComposerRef]);
+  console.log("distance = ", { distance, target });
 
-  (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
+  (window as any).snapshot = (
+    type: "string" | "blob",
+    side: "Front" | "Left" = "Front"
+  ): string | Blob => {
     if (!effectComposerRef) return "";
+    const snapshotCamera = snapshotCameras?.[side];
     const dataSnapshot = snapshot(effectComposerRef, {
       size: { width: 1920, height: 1080 },
       camera: snapshotCamera,
@@ -104,20 +99,17 @@ export const Player: React.FC = () => {
           <Selection>
             <Effects ref={setEffectComposerRef} />
             <LogitechStage>
-              <Room roomAssetId={assetId} />
+              <Room
+                roomAssetId={assetId}
+                setSnapshotCameras={setSnapshotCameras}
+              />
             </LogitechStage>
             <OrbitControls
               enableDamping={true}
               enableZoom={true}
               minDistance={distance.minDistance}
               maxDistance={distance.maxDistance}
-              target={
-                new Vector3(
-                  -3.3342790694469784,
-                  15.269443817758102,
-                  -3.999528610518013
-                )
-              }
+              target={target}
               minPolarAngle={Math.PI / 6}
               maxPolarAngle={Math.PI / 2}
             />
@@ -129,6 +121,28 @@ export const Player: React.FC = () => {
 };
 
 const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
+  const [edgeStrength, setEdgeStrength] = useState(10);
+  const [fadeDirection, setFadeDirection] = useState(-1);
+
+  useEffect(() => {
+    const duration = 1200;
+    const steps = 30;
+    const intervalTime = duration / steps;
+    const changePerStep = 10 / steps;
+
+    const interval = setInterval(() => {
+      setEdgeStrength((prev) => {
+        const newStrength = prev + fadeDirection * changePerStep;
+        if (newStrength <= 0 || newStrength >= 10) {
+          setFadeDirection((prev) => -prev);
+        }
+        return Math.max(0, Math.min(10, newStrength));
+      });
+    }, intervalTime);
+
+    return () => clearInterval(interval);
+  }, [fadeDirection]);
+
   return (
     <EffectComposer
       stencilBuffer
@@ -138,10 +152,22 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
       ref={ref}
     >
       <Outline
-        visibleEdgeColor={0x47b63f}
-        hiddenEdgeColor={0x47b63f}
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
         blur={false}
-        edgeStrength={10}
+        edgeStrength={edgeStrength}
+      />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.75}
+      />
+      <Outline
+        visibleEdgeColor={0x32156d}
+        hiddenEdgeColor={0x32156d}
+        blur={false}
+        edgeStrength={edgeStrength * 0.5}
       />
       <ToneMapping
         mode={ToneMappingMode.UNCHARTED2}

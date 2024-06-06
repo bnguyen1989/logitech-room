@@ -11,6 +11,8 @@ export interface PagesI {
   SetupModal: SetupModal;
   Rooms: Rooms;
   Order: Order;
+  ShareModal: ShareModal;
+  RequestConsultation: RequestConsultation;
 }
 
 export type PagesIKeys = keyof PagesI;
@@ -87,8 +89,8 @@ export interface Platform {
 }
 
 export interface Cards2 {
-  GoogleMeet: string;
-  MicrosoftTeams: string;
+  "Google Meet": string;
+  "Microsoft Teams": string;
   Zoom: string;
   AditionCard: AditionCard[];
 }
@@ -139,10 +141,11 @@ export interface VideoAccessories {
 }
 
 export interface SoftwareServices {
-  title: string;
   helpButton: string;
   Cards: Cards4;
-  QuestionForm: QuestionForm[];
+  QuestionForm: QuestionForm;
+  title: string;
+  titleAfterForm: string;
 }
 
 export interface Cards4 {
@@ -167,6 +170,11 @@ export interface SupportService {
 }
 
 export interface QuestionForm {
+  v1: QuestionFormData[];
+  v2: QuestionFormData[];
+}
+
+export interface QuestionFormData {
   question: string;
   option_1: string;
   option_2: string;
@@ -182,22 +190,38 @@ export interface SetupModal {
 export interface Rooms {
   header: Header;
   title: string;
-  subtitle: string;
-  btn_1: string;
+  buttons: Buttons2;
   card: Card;
-  btn_2: string;
+  subtitle: Subtitle2;
 }
 
 export interface Header {
   name: string;
-  subtitle: string;
+  title: string;
+  subtitle: Subtitle;
+  buttons: Buttons;
+}
+
+export interface Subtitle {
+  "0": string;
+  "1": string;
+  "2": string;
+}
+
+export interface Buttons {
+  RequestConsultation: string;
+}
+
+export interface Buttons2 {
+  AddAnotherRoom: string;
+  DownloadRoomGuideAll: string;
+  ShareYourProject: string;
 }
 
 export interface Card {
   templateRoomName: TemplateRoomName;
   descriptionRoomBySize: DescriptionRoomBySize;
-  btn_view: string;
-  btn_download: string;
+  buttons: Buttons3;
 }
 
 export interface TemplateRoomName {
@@ -215,21 +239,34 @@ export interface DescriptionRoomBySize {
   Small: string;
   Medium: string;
   Large: string;
+  Auditorium: string;
+}
+
+export interface Buttons3 {
+  ViewRoom: string;
+  DownloadRoomGuide: string;
+}
+
+export interface Subtitle2 {
+  v1: string;
+  v2: string;
 }
 
 export interface Order {
   TemplateRoomName: string;
-  Btn: Btn2;
-  StepName: StepNameOrder;
+  buttons: Buttons4;
+  StepName: StepName;
   Footer: Footer;
+  subtitle: Subtitle3;
 }
 
-export interface Btn2 {
+export interface Buttons4 {
   Back: string;
-  Download: string;
+  RequestConsultation: string;
+  DownloadRoomGuide: string;
 }
 
-export interface StepNameOrder {
+export interface StepName {
   "Conference Camera": string;
   "Audio Extensions & Accessories": string;
   "Meeting Controller & Add On": string;
@@ -240,4 +277,20 @@ export interface StepNameOrder {
 export interface Footer {
   title: string;
   subtitle: string;
+}
+
+export interface Subtitle3 {
+  v1: string;
+  v2: string;
+}
+
+export interface ShareModal {
+  title: string;
+  subtitle: string;
+  button: string;
+  labelAfterCopy: string;
+}
+
+export interface RequestConsultation {
+  text: string;
 }

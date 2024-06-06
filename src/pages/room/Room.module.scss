@@ -4,11 +4,13 @@
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 60px;
   padding-bottom: 60px;
 
   .rooms {
     height: 100%;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,11 +52,28 @@
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1300px) {
+  .container {
+    min-height: 100vh;
+    max-height: fit-content;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding-bottom: 60px;
+  
+    .rooms {
+      max-width: 90%;
+    }
+  }
+}
+
+@media (max-width: 992px) {
   .container {
     min-height: calc(var(--vh, 1vh) * 100);
     gap: 30px;
     .rooms {
+      max-width: none;
       padding: 0 40px;
       gap: 30px;
       .wrapper_room {

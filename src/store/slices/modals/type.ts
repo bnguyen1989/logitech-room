@@ -4,6 +4,7 @@ export enum ModalName {
   SELECT_PRODUCT = "SELECT_PRODUCT",
   SHARE_PROJECT = "SHARE_PROJECT",
   FINISH = "FINISH",
+  REQUEST_CONSULTATION = "REQUEST_CONSULTATION",
 }
 
 export interface ModalI {
@@ -11,9 +12,9 @@ export interface ModalI {
 }
 
 export interface AnnotationItemModalI extends ModalI {
-  product?: string;  
-  card?: any, 
-  keyPermission?: any, 
+  product?: string;
+  card?: any;
+  keyPermission?: any;
 }
 
 export interface SelectProductModalI extends ModalI {
@@ -21,5 +22,11 @@ export interface SelectProductModalI extends ModalI {
     attributeName: string;
     editHandlerName: string;
     closeHandlerName: string;
+  };
+}
+
+export interface MySetupModalI extends ModalI {
+  dataModal?: {
+    linkSnapshot: string;
   };
 }

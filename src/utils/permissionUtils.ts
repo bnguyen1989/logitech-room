@@ -6,6 +6,7 @@ import { ReferenceMountElement } from "../models/permission/elements/mounts/Refe
 import { Step } from "../models/permission/step/Step";
 import { StepName, getSeparatorItemColor } from "./baseUtils";
 import { PlacementManager } from "../models/configurator/PlacementManager";
+import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -39,7 +40,7 @@ export enum CameraName {
   AddCameras = "Add'l Cameras",
 
   PreConfiguredMiniPC = "Pre-Configured Mini PC",
-  RoomMate = "RoomMate",
+  RoomMate = "Logitech RoomMate",
 
   TVMountForMeetUP = "TV Mount for MeetUp",
   TVMountForVideoBars = "TV Mount for Video Bars",
@@ -138,23 +139,25 @@ export function createStepConferenceCamera() {
         new MountElement(
           CameraName.WallMountForVideoBars,
           PlacementManager.getNameNodeForCamera("Wall", 1)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.WallMountForVideoBars,
-            PlacementManager.getNameNodeCameraWallMount()
-          )
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.WallMountForVideoBars,
+        //     PlacementManager.getNameNodeCameraWallMount()
+        //   )
+        // )
       )
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
           PlacementManager.getNameNodeForCamera("TV", 2)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.TVMountForVideoBars,
-            PlacementManager.getNameNodeCameraTVMount()
-          )
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.TVMountForVideoBars,
+        //     PlacementManager.getNameNodeCameraTVMount()
+        //   )
+        // )
       )
       .setDefaultMount(
         new MountElement(
@@ -175,6 +178,12 @@ export function createStepConferenceCamera() {
         .setDefaultMount(
           new MountElement(
             CameraName.MeetUp2,
+            PlacementManager.getNameNodeCommodeForCamera("Mini")
+          )
+        )
+        .addDependenceMount(
+          new MountElement(
+            CameraName.TVMountForMeetUP,
             PlacementManager.getNameNodeForCamera("TV", 2)
           )
         )
@@ -189,23 +198,26 @@ export function createStepConferenceCamera() {
       )
     )
     .addElement(
-      new ItemElement(CameraName.RallyPlus).setAccessoryItems([
-        CameraName.RallyMountingKit,
-      ])
+      new ItemElement(CameraName.RallyPlus)
+        .setAccessoryItems([CameraName.RallyMountingKit])
+        .setDefaultMount(
+          new AttributeMountElement(
+            CameraName.RallyPlus,
+            PlacementManager.getNameNodeForCamera("TV", 2)
+          ).setAttributes({
+            Position: true,
+          })
+        )
+        .addDependenceMount(
+          new AttributeMountElement(
+            CameraName.RallyMountingKit,
+            PlacementManager.getNameNodeForCamera("TV", 2)
+          ).setAttributes({
+            Position: false,
+          })
+        )
     )
     .setRequiredOne(true);
-
-  const tempGroupMount = new GroupElement()
-    .addElement(
-      new ItemElement(CameraName.TVMountForMeetUP).addDependence(
-        new ItemElement(CameraName.MeetUp2)
-      )
-    )
-    .addElement(
-      new ItemElement(CameraName.RallyMountingKit).addDependence(
-        new ItemElement(CameraName.RallyPlus)
-      )
-    );
 
   const groupRallyCamera = new GroupElement().addElement(
     new ItemElement(CameraName.RallyCamera).setDefaultMount(
@@ -221,18 +233,74 @@ export function createStepConferenceCamera() {
       new ItemElement(CameraName.PreConfiguredMiniPC)
         .setRequired(true)
         .setAccessoryItems([CameraName.ComputeMount])
+        .addDependence("instruction-1", [
+          new ItemElement(RoomSizeName.Phonebooth),
+          new ItemElement(RoomSizeName.Huddle),
+          new ItemElement(RoomSizeName.Small),
+          new ItemElement(RoomSizeName.Medium),
+        ])
+        .addDependence("instruction-1", [new ItemElement(ServiceName.PC)])
+        .addDependence("instruction-1", [
+          new ItemElement(CameraName.MeetUp2),
+          new ItemElement(CameraName.RallyBarHuddle),
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyBarMini),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(RoomSizeName.Large),
+          new ItemElement(RoomSizeName.Auditorium),
+        ])
+        .addDependence("instruction-2", [new ItemElement(ServiceName.PC)])
+        .addDependence("instruction-2", [
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyPlus),
+        ])
     )
     .addElement(
-      new ItemElement(CameraName.ComputeMount).addDependence(
-        new ItemElement(ServiceName.PC)
-      )
+      new ItemElement(CameraName.ComputeMount)
+        .addDependence("instruction-1", [
+          new ItemElement(RoomSizeName.Phonebooth),
+          new ItemElement(RoomSizeName.Huddle),
+          new ItemElement(RoomSizeName.Small),
+          new ItemElement(RoomSizeName.Medium),
+        ])
+        .addDependence("instruction-1", [new ItemElement(ServiceName.PC)])
+        .addDependence("instruction-1", [
+          new ItemElement(CameraName.MeetUp2),
+          new ItemElement(CameraName.RallyBarHuddle),
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyBarMini),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(RoomSizeName.Large),
+          new ItemElement(RoomSizeName.Auditorium),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(ServiceName.PC),
+          new ItemElement(ServiceName.Android),
+        ])
+        .addDependence("instruction-2", [
+          new ItemElement(CameraName.RallyBar),
+          new ItemElement(CameraName.RallyPlus),
+        ])
+    )
+    .addElement(
+      new ItemElement(CameraName.RoomMate)
+        .setRequired(true)
+        .setAccessoryItems([CameraName.ComputeMount])
+        .addDependence("instruction-1", [
+          new ItemElement(RoomSizeName.Large),
+          new ItemElement(RoomSizeName.Auditorium),
+        ])
+        .addDependence("instruction-1", [new ItemElement(ServiceName.Android)])
+        .addDependence("instruction-1", [new ItemElement(CameraName.RallyPlus)])
     );
 
   const groupSight = new GroupElement().addElement(
     new ItemElement(CameraName.LogitechSight).setDefaultMount(
       new MountElement(
         CameraName.LogitechSight,
-        PlacementManager.getNameNodeForMic(3)
+        PlacementManager.getNameNodeForSight()
       )
     )
   );
@@ -241,7 +309,6 @@ export function createStepConferenceCamera() {
     group,
     groupRallyCamera,
     groupCompute,
-    tempGroupMount,
     groupSight,
   ];
   return stepConferenceCamera;
@@ -273,7 +340,10 @@ export function createStepAudioExtensions() {
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
-      .setAccessoryItems([AudioExtensionName.RallyMicPodMount])
+      .setAccessoryItems([
+        AudioExtensionName.RallyMicPodMount,
+        AudioExtensionName.RallyMicPodPendantMount,
+      ])
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)
@@ -471,6 +541,7 @@ export function createStepVideoAccessories() {
     .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter))
     .addElement(
       new ItemElement(VideoAccessoryName.MeetUp2ActiveCable).addDependence(
+        "instruction-1",
         new ItemElement(CameraName.MeetUp2)
       )
     );

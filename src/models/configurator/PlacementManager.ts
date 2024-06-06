@@ -13,6 +13,10 @@ export class PlacementManager {
     return `Camera_${type}_Placement_${id}`;
   }
 
+  public static getNameNodeForSight(): string {
+    return "Sight_Placement";
+  }
+
   public static getNameNodeCommodeForCamera(
     type: "RallyBar" | "Huddle" | "Mini"
   ): string {
@@ -106,6 +110,7 @@ export class PlacementManager {
       this.getNameNodeTapTableMount(),
       this.getNameNodeCameraWallMount(),
       this.getNameNodeCameraTVMount(),
+      this.getNameNodeForSight(),
       this.getNameNodePodPendantMount(),
       this.getNameNodeAngleMountScheduler(),
       this.getNameNodeSideMountScheduler(),
