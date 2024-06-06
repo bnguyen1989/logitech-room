@@ -139,23 +139,25 @@ export function createStepConferenceCamera() {
         new MountElement(
           CameraName.WallMountForVideoBars,
           PlacementManager.getNameNodeForCamera("Wall", 1)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.WallMountForVideoBars,
-            PlacementManager.getNameNodeCameraWallMount()
-          )
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.WallMountForVideoBars,
+        //     PlacementManager.getNameNodeCameraWallMount()
+        //   )
+        // )
       )
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
           PlacementManager.getNameNodeForCamera("TV", 2)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.TVMountForVideoBars,
-            PlacementManager.getNameNodeCameraTVMount()
-          )
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.TVMountForVideoBars,
+        //     PlacementManager.getNameNodeCameraTVMount()
+        //   )
+        // )
       )
       .setDefaultMount(
         new MountElement(
@@ -176,6 +178,12 @@ export function createStepConferenceCamera() {
         .setDefaultMount(
           new MountElement(
             CameraName.MeetUp2,
+            PlacementManager.getNameNodeCommodeForCamera("Mini")
+          )
+        )
+        .addDependenceMount(
+          new MountElement(
+            CameraName.TVMountForMeetUP,
             PlacementManager.getNameNodeForCamera("TV", 2)
           )
         )
@@ -210,13 +218,6 @@ export function createStepConferenceCamera() {
         )
     )
     .setRequiredOne(true);
-
-  const tempGroupMount = new GroupElement().addElement(
-    new ItemElement(CameraName.TVMountForMeetUP).addDependence(
-      "instruction-1",
-      new ItemElement(CameraName.MeetUp2)
-    )
-  );
 
   const groupRallyCamera = new GroupElement().addElement(
     new ItemElement(CameraName.RallyCamera).setDefaultMount(
@@ -308,7 +309,6 @@ export function createStepConferenceCamera() {
     group,
     groupRallyCamera,
     groupCompute,
-    tempGroupMount,
     groupSight,
   ];
   return stepConferenceCamera;
