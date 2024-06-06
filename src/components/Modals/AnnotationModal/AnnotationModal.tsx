@@ -163,41 +163,49 @@ export const AnnotationModal: React.FC = () => {
           )}
 
           {annotation.hasShow(featureList2A) && (
-            <div className={`${style2A} ${style2AGrey}`}>
-              {featureList2A.map((feature: any) => {
-                return (
-                  <div key={feature["HeaderFeature"]} className={s.card}>
-                    <div className={s.image}>
-                      <img src={feature["images"][0]} alt="image" />
+            <div>
+              <div className={`${style2A} ${style2AGrey}`}>
+                {featureList2A.map((feature: any) => {
+                  return (
+                    <div key={feature["HeaderFeature"]} className={s.card}>
+                      <div className={s.image}>
+                        <img src={feature["images"][0]} alt="image" />
+                      </div>
+                      <div className={s.text}>
+                        <div className={s.title}>
+                          {feature["HeaderFeature"]}
+                        </div>
+                        <div className={s.desc}>{feature["KeyFeature"]}</div>
+                      </div>
                     </div>
-                    <div className={s.text}>
-                      <div className={s.title}>{feature["HeaderFeature"]}</div>
-                      <div className={s.desc}>{feature["KeyFeature"]}</div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
           {annotation.hasShow(featureList3A) && (
-            <div className={`${style3A} ${style3AGrey}`}>
-              {featureList3A.map((feature: any) => {
-                return (
-                  <div key={feature["HeaderFeature"]} className={s.card}>
-                    <div className={s.image}>
-                      {feature["images"].length > 0 ? (
-                        <img src={feature["images"][0]} alt="image" />
-                      ) : (
-                        <VideoPlayer path={feature["videos"][0]} />
-                      )}
+            <div>
+              <div className={`${style3A} ${style3AGrey}`}>
+                {featureList3A.map((feature: any) => {
+                  return (
+                    <div key={feature["HeaderFeature"]} className={s.card}>
+                      <div className={s.image}>
+                        {feature["images"].length > 0 ? (
+                          <img src={feature["images"][0]} alt="image" />
+                        ) : (
+                          <VideoPlayer path={feature["videos"][0]} />
+                        )}
+                      </div>
+                      <div className={s.text}>
+                        <div className={s.title}>
+                          {feature["HeaderFeature"]}
+                        </div>
+                        <div className={s.desc}>{feature["KeyFeature"]}</div>
+                      </div>
                     </div>
-                    <div className={s.text}>
-                      <div className={s.title}>{feature["HeaderFeature"]}</div>
-                      <div className={s.desc}>{feature["KeyFeature"]}</div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
 
