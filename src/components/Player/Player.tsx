@@ -33,7 +33,7 @@ export const bhoustonAuth = {
 
 export const Player: React.FC = () => {
   const { cache, keyCache } = useCache();
-  const { distance } = usePlayer();
+  const { target, distance } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
@@ -54,6 +54,8 @@ export const Player: React.FC = () => {
       fov: fovDeg,
     },
   };
+
+  console.log("distance = ", { distance, target });
 
   (window as any).snapshot = (
     type: "string" | "blob",
@@ -107,13 +109,7 @@ export const Player: React.FC = () => {
               enableZoom={true}
               minDistance={distance.minDistance}
               maxDistance={distance.maxDistance}
-              target={
-                new Vector3(
-                  -3.3342790694469784,
-                  15.269443817758102,
-                  -3.999528610518013
-                )
-              }
+              target={target}
               minPolarAngle={Math.PI / 6}
               maxPolarAngle={Math.PI / 2}
             />
