@@ -11,9 +11,9 @@ export const getDistanceDataByKeyPermission = (keyPermission: string) => {
       return { minDistance: 40, maxDistance: 80 };
     case RoomSizeName.Medium:
     case RoomSizeName.Large:
-      return { minDistance: 40, maxDistance: 180 };
+      return { minDistance: 50, maxDistance: 200 };
     case RoomSizeName.Auditorium:
-      return { minDistance: 40, maxDistance: 200 };
+      return { minDistance: 50, maxDistance: 220 };
     default:
       return { minDistance: 60, maxDistance: 150 };
   }
