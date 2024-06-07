@@ -1,4 +1,5 @@
 import { RootState } from "../../../";
+import { DataCamera } from "../../../../models/R3F";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
 import { CountableMountElement } from "../../../../models/permission/elements/mounts/CountableMountElement";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
@@ -32,6 +33,11 @@ export const getIsProcessing = (state: RootState) =>
 
 export const getHighlightNodes = (state: RootState) =>
   state.configurator.highlightNodes;
+export const getDataCamera = (state: RootState): DataCamera => {
+  const dataCamera: any = state.configurator.camera;
+
+  return dataCamera;
+};
 
 export const getIsHighlightNode = (nameNode: string) => (state: RootState) => {
   const highlightNodes = getHighlightNodes(state);
@@ -44,8 +50,8 @@ export const getIsHighlightNode = (nameNode: string) => (state: RootState) => {
 export const getKeyPermissionFromNameNode =
   (nameNode: string) =>
   (state: RootState): { [key in StepName]?: string } | undefined => {
-
-    let objKeyPermission: { [key in StepName]?: string } | undefined = undefined;
+    let objKeyPermission: { [key in StepName]?: string } | undefined =
+      undefined;
     const permission = getPermission()(state);
     const permissionSteps = permission.getSteps();
 
@@ -55,7 +61,6 @@ export const getKeyPermissionFromNameNode =
       stepActiveElements.forEach((element) => {
         if (objKeyPermission !== undefined) return;
         if (element instanceof MountElement) {
-
           const nodeName = element.getNameNode();
           const dependentMount = element.getDependentMount();
           const dependentNodeName = dependentMount?.getNameNode();
@@ -74,9 +79,7 @@ export const getKeyPermissionFromNameNode =
               };
             }
           }
-
         } else if (element instanceof ItemElement) {
-          
           const defaultMount = element.getDefaultMount();
 
           if (defaultMount instanceof CountableMountElement) {
@@ -105,7 +108,6 @@ export const getKeyPermissionFromNameNode =
               [step["name"]]: card.keyPermission,
             };
           }
-
         }
       });
     });
