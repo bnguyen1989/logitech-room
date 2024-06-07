@@ -4,18 +4,18 @@ import { RoomSizeName } from "./permissionUtils";
 export const getDistanceDataByKeyPermission = (keyPermission: string) => {
   switch (keyPermission) {
     case RoomSizeName.Phonebooth:
-      return { minDistance: 35, maxDistance: 60 };
+      return { minDistance: 30, maxDistance: 60 };
     case RoomSizeName.Huddle:
-      return { minDistance: 40, maxDistance: 70 };
+      return { minDistance: 30, maxDistance: 70 };
     case RoomSizeName.Small:
-      return { minDistance: 40, maxDistance: 80 };
+      return { minDistance: 30, maxDistance: 80 };
     case RoomSizeName.Medium:
     case RoomSizeName.Large:
-      return { minDistance: 40, maxDistance: 200 };
+      return { minDistance: 30, maxDistance: 200 };
     case RoomSizeName.Auditorium:
-      return { minDistance: 40, maxDistance: 230 };
+      return { minDistance: 30, maxDistance: 230 };
     default:
-      return { minDistance: 40, maxDistance: 150 };
+      return { minDistance: 30, maxDistance: 150 };
   }
 };
 export const getTargetDataByKeyPermission = (keyPermission: string) => {
