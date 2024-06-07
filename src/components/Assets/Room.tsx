@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { changeStatusBuilding } from "../../store/slices/configurator/Configurator.slice.js";
 import { ProductsNodes } from "./ProductsNodes.js";
 import { useThree } from "@react-three/fiber";
+import { CameraRoom } from "./CameraRoom.js";
 
 export type RoomProps = {
   roomAssetId: string;
@@ -30,9 +31,11 @@ export const Room: React.FC<RoomProps> = (props) => {
 
   useEffect(() => {
     if (!gltf) return;
+
     dispatch(changeStatusBuilding(false));
 
     const { "1": Front, "2": Left } = gltf.cameras;
+
     if (Front && Left) {
       setSnapshotCameras({
         Front: new THREE.PerspectiveCamera().copy(
@@ -72,6 +75,7 @@ export const Room: React.FC<RoomProps> = (props) => {
       {camera && <primitive object={camera}></primitive>}
       <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
+      <CameraRoom gltf={gltf} camera={camera} roomAssetId={roomAssetId} />
     </>
   );
 };
