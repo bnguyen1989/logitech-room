@@ -8,7 +8,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { Camera, Vector3 } from "three";
+import { Camera } from "three";
 import {
   EffectComposer,
   Selection,
