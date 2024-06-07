@@ -821,26 +821,18 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_tapQty10_tapIp() {
-    const selectedMeetingController = this.getSelectedValue(
-      AttributeName.RoomMeetingController
-    );
-    const isSelectMeetingController =
-      typeof selectedMeetingController === "object";
-    if (!isSelectMeetingController) return;
-    const isSelectTapIP = selectedMeetingController.name.includes(
-      MeetingControllerName.LogitechTapIP
-    );
-    if (!isSelectTapIP) return;
     const attrState = this.getAttrStateDataByName(
-      AttributeName.QtyMeetingController
+      AttributeName.RoomMeetingController
     );
     if (!attrState) return;
     const values = deepCopy(attrState.values) as ValueAssetStateI[];
     values.forEach((option) => {
-      const isValue = "value" in option;
-      if (isValue && Number(option.value) <= 10) {
-        option.visible = true;
-      }
+      if (!option.name.includes(MeetingControllerName.LogitechTapIP)) return;
+      this.setDataInMetadata(
+        option,
+        "qty",
+        JSON.stringify(Array.from({ length: 10 }, (_, i) => i + 1))
+      );
     });
     this.configurator.setAttributeState(attrState.id, {
       values,
@@ -1255,8 +1247,20 @@ export class ConfigurationConstraintHandler extends Handler {
     value: ValueAttributeStateI,
     isRecommended: boolean
   ) {
+    this.setDataInMetadata(
+      value,
+      "isRecommended",
+      isRecommended ? "true" : "false"
+    );
+  }
+
+  private setDataInMetadata(
+    value: ValueAttributeStateI,
+    key: string,
+    data: string
+  ) {
     if ("value" in value) return;
-    value.metadata["isRecommended"] = isRecommended ? "true" : "false";
+    value.metadata[key] = data;
   }
 
   private getAttrStateDataByName(name: string) {
