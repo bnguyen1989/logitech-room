@@ -7,6 +7,7 @@ export class BaseElement extends Element<BaseElement> {
   private _isRequired: boolean = false;
   private _isRecommended: boolean = false;
   private isDisabledCounter: boolean = false;
+  private isHiddenColor: boolean = false;
   private isDisabledColor: boolean = false;
   private property: Record<string, any> = {};
   private _isSecondary: boolean = false;
@@ -80,6 +81,15 @@ export class BaseElement extends Element<BaseElement> {
 
   public getDisabledCounter(): boolean {
     return this.isDisabledCounter;
+  }
+
+  public setHiddenColor(value: boolean) {
+    this.isHiddenColor = value;
+    return this;
+  }
+
+  public getHiddenColor(): boolean {
+    return this.isHiddenColor;
   }
 
   public setDisabledColor(value: boolean) {

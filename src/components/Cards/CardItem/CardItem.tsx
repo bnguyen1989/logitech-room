@@ -13,6 +13,7 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDisabledActionByKeyPermission,
+  getHiddenActionByKeyPermission,
   getIsRecommendedCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
@@ -84,6 +85,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const disabledActions = useAppSelector(
     getDisabledActionByKeyPermission(activeStep, keyItemPermission)
   );
+  const hiddenActions = useAppSelector(
+    getHiddenActionByKeyPermission(activeStep, keyItemPermission)
+  );
   const recommended: boolean = useAppSelector(
     getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -105,16 +109,15 @@ export const CardItem: React.FC<PropsI> = (props) => {
     );
   };
 
-  
   const handleClick = () => {
     const { attributeName } = card.dataThreekit;
 
     getTKAnalytics().optionInteraction({
       optionsSetId: keyItemPermission + " [Checkbox]",
-      optionId: String( !isActiveCard ),
-      interactionType: OptionInteractionType.Select
+      optionId: String(!isActiveCard),
+      interactionType: OptionInteractionType.Select,
     });
-    
+
     if (isActiveCard && card.keyPermission) {
       app.removeItem(attributeName, card.keyPermission);
       return;
@@ -127,8 +130,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
     );
   };
 
-  const isAction =
-    card.counter || card.select || availableColorsData.length > 1;
+  const isShowColor = !hiddenActions.color && availableColorsData.length > 1;
+
+  const isAction = card.counter || card.select || isShowColor;
 
   const getClassNameCardContainer = () => {
     if (type !== "subSection") return `${s.card_container}`;
@@ -169,6 +173,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   <ColorSwitcherItem
                     keyItemPermission={card.keyPermission}
                     disabled={disabledActions.color}
+                    hidden={hiddenActions.color}
                   />
                   <CounterItem
                     keyItemPermission={card.keyPermission}
