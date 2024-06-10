@@ -359,6 +359,7 @@ export function createStepAudioExtensions() {
         )
       )
       .setDisabledColor(true)
+      .setHiddenColor(true)
       .addDisabledCounterDependence({
         [AudioExtensionName.RallyMicPodPendantMount]: {
           active: false,
@@ -384,6 +385,7 @@ export function createStepAudioExtensions() {
           )
         )
       )
+      .setHiddenColor(true)
       .addDisabledCounterDependence({
         [AudioExtensionName.RallyMicPodMount]: {
           active: false,
@@ -512,6 +514,7 @@ export function createStepVideoAccessories() {
             )
           )
           .setDisabledColor(true)
+          .setHiddenColor(true)
       )
       .addAutoChangeItems({
         [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],

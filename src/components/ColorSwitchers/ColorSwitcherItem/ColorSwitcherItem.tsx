@@ -20,12 +20,12 @@ declare const app: Application;
 interface PropsI {
   keyItemPermission: string;
   disabled?: boolean;
+  hidden?: boolean;
   activeStepProp?: StepName;
 }
 
 export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
-
-  const { keyItemPermission, disabled, activeStepProp } = props;
+  const { keyItemPermission, disabled, activeStepProp, hidden } = props;
   const activeStep = useAppSelector(getActiveStep);
   const activeStepName = activeStepProp ?? activeStep;
   const card = useAppSelector(
@@ -49,11 +49,16 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
       options: availableColorsData.map((item) => ({
         optionId: item.name,
         optionName: item.name,
-        optionValue: item.value
-      }))
+        optionValue: item.value,
+      })),
     });
-  }, [ card, availableColorsData.length]);
+  }, [card, availableColorsData.length]);
 
+  if (hidden) {
+    console.log("cards", card);
+  }
+
+  if (hidden) return;
   if (!card) return;
   if (availableColorsData.length < 1) return;
 
@@ -68,7 +73,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     getTKAnalytics().optionInteraction({
       optionsSetId: keyItemPermission + " [ColorSwitcher]",
       optionId: value.name,
-      interactionType: OptionInteractionType.Select
+      interactionType: OptionInteractionType.Select,
     });
   };
 

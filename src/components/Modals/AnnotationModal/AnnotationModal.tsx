@@ -31,9 +31,8 @@ export const AnnotationModal: React.FC = () => {
     getLangProductImage(product, keyPermission)
   );
 
-  const { isActiveCard, disabledActions, threekitAsset } = useAppSelector(
-    getDataForAnnotationModal(keyPermission, card)
-  );
+  const { isActiveCard, disabledActions, hiddenActions, threekitAsset } =
+    useAppSelector(getDataForAnnotationModal(keyPermission, card));
 
   if (!card) return <></>;
 
@@ -113,6 +112,7 @@ export const AnnotationModal: React.FC = () => {
                   <ColorSwitcherItem
                     keyItemPermission={keyPermission}
                     disabled={disabledActions?.color}
+                    hidden={hiddenActions?.color}
                     activeStepProp={card["key"]}
                   />
                 </div>
