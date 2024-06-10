@@ -32,11 +32,10 @@ export const SelectItem: React.FC<PropsI> = (props) => {
   );
 
   console.log("SelectItem", selectValue);
-  
 
   if (!card || !card.select) return null;
 
-  const handleSelect = (option: OptionI) => {
+  const handleSelect = (e: any, option: OptionI) => {
     const attributeName = card.dataThreekit.attributeName;
     const assetId = option.value;
     const keyPermission = card.keyPermission;
@@ -46,7 +45,9 @@ export const SelectItem: React.FC<PropsI> = (props) => {
     setIsOpen(false);
   };
 
-  const toggleSelect = () => {
+  const toggleSelect = (e: any) => {
+    e.stopPropagation();
+
     if (disabled) {
       return;
     }
@@ -110,7 +111,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
             <li
               className={`${s.li} ${isActive(option) ? s.active_li : ""}`}
               key={option.value}
-              onClick={() => handleSelect(option)}
+              onClick={(e) => handleSelect(e, option)}
             >
               <div className={s.text}>{option.label}</div>
             </li>
