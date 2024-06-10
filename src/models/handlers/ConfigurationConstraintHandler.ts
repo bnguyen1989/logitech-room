@@ -822,17 +822,15 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_tapQty10_tapIp() {
     const attrState = this.getAttrStateDataByName(
-      AttributeName.RoomMeetingController
+      AttributeName.QtyMeetingTapIp
     );
     if (!attrState) return;
     const values = deepCopy(attrState.values) as ValueAssetStateI[];
     values.forEach((option) => {
-      if (!option.name.includes(MeetingControllerName.LogitechTapIP)) return;
-      this.setDataInMetadata(
-        option,
-        "qty",
-        JSON.stringify(Array.from({ length: 10 }, (_, i) => i + 1))
-      );
+      const isValue = "value" in option;
+      if (isValue && Number(option.value) <= 10) {
+        option.visible = true;
+      }
     });
     this.configurator.setAttributeState(attrState.id, {
       values,
