@@ -26,8 +26,7 @@ export const Room: React.FC<RoomProps> = (props) => {
   const { roomAssetId, setSnapshotCameras } = props;
   const dispatch = useDispatch();
   const gltf = useScene({ assetId: roomAssetId });
-  const threeSet = useThree(({ set }) => set);
-  const threeScene = useThree(({ scene }) => scene);
+  const three = useThree();
 
   useEffect(() => {
     if (!gltf) return;
@@ -49,8 +48,10 @@ export const Room: React.FC<RoomProps> = (props) => {
 
     const domeLight = gltf.scene.userData.domeLight;
     const camera = gltf.scene.userData.camera as THREE.PerspectiveCamera;
-    threeScene.environment = domeLight.image;
-    threeSet({ camera });
+    three.scene.environment = domeLight.image;
+    camera.aspect = three.size.width / three.size.height;
+    camera.updateProjectionMatrix();
+    three.set({ camera });
 
     gltf.scene.traverse((node) => {
       if (node instanceof THREE.Mesh && node.isMesh) {
