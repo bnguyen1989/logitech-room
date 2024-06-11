@@ -3,7 +3,6 @@ import { Permission } from "../../../../models/permission/Permission";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { MetadataI } from "../../../../services/Threekit/type";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
-import { AudioExtensionName } from "../../../../utils/permissionUtils";
 import { replaceArrValues } from "../../../../utils/strUtils";
 import { CardI, StepI } from "../type";
 import { getLangProductCard } from "./selectoreLangProduct";

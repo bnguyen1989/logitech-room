@@ -31,11 +31,9 @@ export const SelectItem: React.FC<PropsI> = (props) => {
     getPropertySelectValueCardByKeyPermission(activeStep, keyItemPermission)
   );
 
-  console.log("SelectItem", selectValue);
-
   if (!card || !card.select) return null;
 
-  const handleSelect = (e: any, option: OptionI) => {
+  const handleSelect = (option: OptionI) => {
     const attributeName = card.dataThreekit.attributeName;
     const assetId = option.value;
     const keyPermission = card.keyPermission;
@@ -111,7 +109,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
             <li
               className={`${s.li} ${isActive(option) ? s.active_li : ""}`}
               key={option.value}
-              onClick={(e) => handleSelect(e, option)}
+              onClick={() => handleSelect(option)}
             >
               <div className={s.text}>{option.label}</div>
             </li>
