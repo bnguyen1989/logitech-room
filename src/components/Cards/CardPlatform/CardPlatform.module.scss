@@ -3,23 +3,32 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
-	.logo {
+  padding: 94px 46px 75px;
+  box-sizing: border-box;
+
+  .logo {
     display: flex;
     justify-content: center;
-		& img {
-      height: 30px;
-		}
+    box-sizing: content-box;
+    margin-bottom: 20px;
+    & img {
+      height: 40px;
+    }
   }
 
   .image {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+
+    box-sizing: content-box;
+    height: 226px;
+    width: 260px;
+    box-sizing: content-box;
     & img {
-      height: 40%;
-      max-height: 100px;
+      height: 100%;
+      width: 260px;
+      object-fit: contain;
     }
   }
 
@@ -33,8 +42,27 @@
   }
 }
 
+@media (max-width: 1400px) {
+  .container {
+    padding: 74px 26px 55px;
+    .logo { 
+      & img {
+        height: 30px;
+      }
+    }
+    .image { 
+      height: 186px; 
+      width: 200px; 
+      & img {
+        height: 100%;
+        width: 200px; 
+      }
+    }
+  }
+}
 @media (max-width: 1000px) {
   .container {
+
     .title {
       white-space: nowrap;
       font-size: 24px;
@@ -45,9 +73,24 @@
 
 @media (max-width: 500px) {
   .container {
+    padding: 60px 20px 40px;
+    .logo { 
+      & img {
+        height: 18px;
+      }
+    }
+    .image { 
+      height: 132px; 
+      width: 155px; 
+      & img {
+        height: 100%;
+        width: 155px; 
+      }
+    }
     .title {
+      margin-top: 20px;
       font-size: 18px;
-      line-height: 18px;
+      line-height: 1;
     }
   }
 }

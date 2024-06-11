@@ -371,7 +371,6 @@
           "sorting": "3",
           "KeyFeature": "With Logitech Sync, you can monitor and manage Tap IP along with your other meeting room devices from one single platform.",
           "LinkImgFeature": {
-            "Learn more about Logitech Sync": "https://www.logitech.com/en-us/video-collaboration/products/sync.html",
             "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-ip-simple-to-manage-with-sync-room-config.png?v=1"
           }
         }
@@ -1660,5 +1659,110 @@
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/tap-ip-appliance-based-vc-bundles/gallery/rally-bar-mini-tap-ip-gallery-1.png?v=1"
       }
     }
+  },
+  "Logitech Select": {
+    "Card": {
+      "ProductName": "Logitech Select",
+      "ShortDescription": "Includes all-in-one video bar for medium to large rooms and a touch controller with PoE connectivity."
+    },
+    "Blade_1": {
+      "ProductName": "Logitech Select",
+      "ShortDescription": "Comprehensive service and support",
+      "LongDescription": "Ensure business continuity with Select, a comprehensive service plan for all your spaces.",
+      "Colors": {
+        "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-select-intro-room-config.png?v=1"
+      }
+    },
+    "Blade_2": {
+      "Headline": "REMOVE BARRIERS TO COLLABORATION",
+      "Description": "Remove barriers to effective video collaboration and makes sure your conference rooms and shared desk spaces are always ready. We partner with you to ensure optimal uptime, simplify and centralize management, and help you get the most out of your investment.",
+      "Image|Video": {
+        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/select-whole-package-1-room-config.png?v=1"
+      }
+    },
+    "Blade_2A": {
+      "Features": [
+        {
+          "HeaderFeature": "Professional 24/7 expert assistance to ensure  business continuity",
+          "sorting": "1",
+          "KeyFeature": "Remove any barriers to efficient collaboration. Our specialists have deep expertise in video collaboration and partner ecosystems like Microsoft, Zoom, and Google for quick issue resolution to keep businesses operating seamlessly at all times.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/select-business-continuity-icon-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "Minimize disruptions with advanced hardware replacements",
+          "sorting": "2",
+          "KeyFeature": "Gain peace of mind knowing your investment is protected. Logitech Select includes product replacement for all products in a Select-enabled for the duration of your plan.  Next-business-day expedited delivery of replacements or even direct hot swaps through onsite spares minimizes downtime and keeps your business running smoothly in the event of equipment failure.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/select-minimize-disruptions-icon-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "Resolve issues before they impact your business with powerful software",
+          "sorting": "3",
+          "KeyFeature": "Leverage remote manageablity and proactive alerts through Logitech Sync to reduce the time and effort needed to set up and manage devices. Real-time alerts directly into your existing IT-workflows via Sync’s ServiceNow integration enables you to resolve issues before they impact your busines, and with Sync Remote UI Access, you can interact with devices just as if you were in the room.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/sync-insights-icon-room-config.png?v=1"
+          }
+        }
+      ]
+    }
+  },
+  "EXTENDED WARRANTY": {
+    "Card": {
+      "ProductName": "Logitech Extended Warranty",
+      "ShortDescription": "Up to 5 years of total warranty"
+    },
+    "Blade_1": {
+      "ProductName": "Logitech Extended Warranty",
+      "ShortDescription": "Up to 5 years of total warranty",
+      "LongDescription": "Add a one-year or three-year extension to the original Logitech manufacturer’s two-year warranty for additional coverage.",
+      "Colors": {
+        "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-extended-warranty-room-config.png?v=1"
+      }
+    }
+  },
+  "LOGITECH BASIC": {
+    "Card": {
+      "ProductName": "Basic services",
+      "ShortDescription": "Standard business software and support"
+    },
+    "Blade_1": {
+      "ProductName": "Basic services",
+      "ShortDescription": "Standard business software and support",
+      "LongDescription": "Manage and provision devices remotely with Sync application, and get standard business support with 2-year product warranties.",
+      "Colors": {
+        "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-extended-warranty-room-config.png?v=1"
+      }
+    },
+    "Blade_2A": {
+      "Features": [
+        {
+          "HeaderFeature": "MANAGE MEETING ROOMS AT SCALE",
+          "sorting": "1",
+          "KeyFeature": "Configure and update meeting room devices to ensure peak performance. Act quickly and minimize downtime with ServiceNow integrations* and email notifications, that provide instant alerts about room or device issues. *Requires ServiceNow license",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-sync-configure-updates-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "COMPLETE REMOTE ACCESS",
+          "sorting": "2",
+          "KeyFeature": "Remotely view and control networked devices to troubleshoot issues from afar with Remote UI Access within Sync. Diagnose from a distance to resolve problems before they impact a meeting.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-sync-remote-access-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "PRODUCT COVERAGE AND SUPPORT",
+          "sorting": "3",
+          "KeyFeature": "Access support around the world during regular business hours. Ensure products are protected against unexpected defects for 2 years.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/product-coverage-room-config.png?v=1"
+          }
+        }
+      ]
+    }
   }
-}
+  }

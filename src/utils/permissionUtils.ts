@@ -6,6 +6,7 @@ import { ReferenceMountElement } from "../models/permission/elements/mounts/Refe
 import { Step } from "../models/permission/step/Step";
 import { StepName, getSeparatorItemColor } from "./baseUtils";
 import { PlacementManager } from "../models/configurator/PlacementManager";
+import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -138,23 +139,25 @@ export function createStepConferenceCamera() {
         new MountElement(
           CameraName.WallMountForVideoBars,
           PlacementManager.getNameNodeForCamera("Wall", 1)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.WallMountForVideoBars,
-            PlacementManager.getNameNodeCameraWallMount()
-          )
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.WallMountForVideoBars,
+        //     PlacementManager.getNameNodeCameraWallMount()
+        //   )
+        // )
       )
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
           PlacementManager.getNameNodeForCamera("TV", 2)
-        ).setDependentMount(
-          new MountElement(
-            CameraName.TVMountForVideoBars,
-            PlacementManager.getNameNodeCameraTVMount()
-          )
         )
+        // .setDependentMount(
+        //   new MountElement(
+        //     CameraName.TVMountForVideoBars,
+        //     PlacementManager.getNameNodeCameraTVMount()
+        //   )
+        // )
       )
       .setDefaultMount(
         new MountElement(
@@ -175,6 +178,12 @@ export function createStepConferenceCamera() {
         .setDefaultMount(
           new MountElement(
             CameraName.MeetUp2,
+            PlacementManager.getNameNodeCommodeForCamera("Mini")
+          )
+        )
+        .addDependenceMount(
+          new MountElement(
+            CameraName.TVMountForMeetUP,
             PlacementManager.getNameNodeForCamera("TV", 2)
           )
         )
@@ -189,32 +198,45 @@ export function createStepConferenceCamera() {
       )
     )
     .addElement(
-      new ItemElement(CameraName.RallyPlus).setAccessoryItems([
-        CameraName.RallyMountingKit,
-      ])
+      new ItemElement(CameraName.RallyPlus)
+        .setAccessoryItems([CameraName.RallyMountingKit])
+        .setDefaultMount(
+          new AttributeMountElement(
+            CameraName.RallyPlus,
+            PlacementManager.getNameNodeForCamera("TV", 2)
+          ).setAttributes({
+            Position: true,
+          })
+        )
+        .addDependenceMount(
+          new AttributeMountElement(
+            CameraName.RallyMountingKit,
+            PlacementManager.getNameNodeForCamera("TV", 2)
+          ).setAttributes({
+            Position: false,
+          })
+        )
+        .addAutoChangeItems({
+          [AudioExtensionName.RallyMicPod]: ["color"],
+          [AudioExtensionName.RallyMicPodMount]: ["color"],
+        })
+        .addBundleElement(
+          new ItemElement(AudioExtensionName.RallyMicPod).setDefaultMount(
+            new CountableMountElement(
+              AudioExtensionName.RallyMicPod,
+              PlacementManager.getNameNodeForMic()
+            ).setActiveIndex(2)
+          )
+        )
     )
     .setRequiredOne(true);
-
-  const tempGroupMount = new GroupElement()
-    .addElement(
-      new ItemElement(CameraName.TVMountForMeetUP).addDependence(
-        "instruction-1",
-        new ItemElement(CameraName.MeetUp2)
-      )
-    )
-    .addElement(
-      new ItemElement(CameraName.RallyMountingKit).addDependence(
-        "instruction-1",
-        new ItemElement(CameraName.RallyPlus)
-      )
-    );
 
   const groupRallyCamera = new GroupElement().addElement(
     new ItemElement(CameraName.RallyCamera).setDefaultMount(
       new CountableMountElement(
         CameraName.RallyCamera,
         PlacementManager.getNameNodeForCamera("Wall")
-      ).setTemplateIndex([2, 3])
+      ).setOffsetIndex(1)
     )
   );
 
@@ -299,7 +321,6 @@ export function createStepConferenceCamera() {
     group,
     groupRallyCamera,
     groupCompute,
-    tempGroupMount,
     groupSight,
   ];
   return stepConferenceCamera;
@@ -350,6 +371,7 @@ export function createStepAudioExtensions() {
         )
       )
       .setDisabledColor(true)
+      .setHiddenColor(true)
       .addDisabledCounterDependence({
         [AudioExtensionName.RallyMicPodPendantMount]: {
           active: false,
@@ -375,6 +397,7 @@ export function createStepAudioExtensions() {
           )
         )
       )
+      .setHiddenColor(true)
       .addDisabledCounterDependence({
         [AudioExtensionName.RallyMicPodMount]: {
           active: false,
@@ -503,6 +526,7 @@ export function createStepVideoAccessories() {
             )
           )
           .setDisabledColor(true)
+          .setHiddenColor(true)
       )
       .addAutoChangeItems({
         [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],

@@ -14,6 +14,7 @@ import { StepName } from "../utils/baseUtils";
 import fileDownload from "js-file-download";
 import { RoomService } from "../services/RoomService/RoomService";
 import { EventDataAnalyticsI } from "./analytics/type";
+import { DataCamera } from "./R3F";
 
 declare const logger: Logger;
 
@@ -39,6 +40,9 @@ export class Application {
     this._currentConfigurator = configurator;
   }
 
+  public resetCameraEvent(dataEvent: DataCamera): void {
+    app.eventEmitter.emit("resetCamera", dataEvent);
+  }
   public analyticsEvent(dataEvent: Omit<EventDataAnalyticsI, "locale">): void {
     app.eventEmitter.emit("analyticsEvent", dataEvent);
   }

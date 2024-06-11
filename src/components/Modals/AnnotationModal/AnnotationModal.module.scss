@@ -1,5 +1,5 @@
 .container {
-  padding: 60px 0;
+  padding-top: 60px;
   position: relative;
 
   .close_button {
@@ -179,6 +179,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding-bottom: 60px;
     }
   }
 
@@ -246,11 +247,11 @@
 
 @media (max-width: 1000px) {
   .container {
-    width: 100vw;
+    width: calc(100vw - 80px);
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 40px 0;
+
     .close_button {
       display: none;
     }
@@ -277,7 +278,7 @@
 
         .left_item {
           .image {
-            width: calc(100%);
+            width: 100%;
           }
         }
 
@@ -356,6 +357,11 @@
         }
       }
 
+      .cards::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+      }
+
       .gap_2_box {
         display: flex;
         padding: 0;
@@ -371,6 +377,17 @@
           padding-right: 40px;
         }
       }
+
+      .gap_2_box::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+      }
     }
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 100vw;
   }
 }

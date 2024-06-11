@@ -8,6 +8,9 @@
   .mobile_back {
     display: none;
   }
+  .button_next {
+    display: flex;
+  }
 }
 
 @media (max-width: 500px) {
@@ -17,6 +20,35 @@
     }
     .button_back {
       display: none;
+    }
+  }
+}
+@media (max-width: 992px) {
+  .actions {
+    .button_next {
+      width: 158px;
+      & div {
+        width: 100%;
+      }
+    }
+  }
+}
+@media (max-width: 719px) {
+  .actions {
+    .button_next {
+      max-width: 164px;
+
+      & div {
+        width: 100%;
+      }
+    }
+    .mobile_back {
+      > div {
+        padding: 16px 40px;
+        * svg {
+          height: 16px;
+        }
+      }
     }
   }
 }

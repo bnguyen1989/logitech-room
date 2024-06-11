@@ -50,6 +50,7 @@ import {
   getDataStepByName,
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
+  getPropertySelectValueCardByKeyPermission,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -59,6 +60,7 @@ import { StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
+import { removeElement } from "../../configurator/handlers/handlers";
 
 declare const app: Application;
 
@@ -91,7 +93,13 @@ export const getUiHandlers = (store: Store) => {
     }
 
     if (data instanceof ChangeSelectItemCommand) {
-      const activeStep = getActiveStep(store.getState());
+      const state = store.getState();
+      const activeStep = getActiveStep(state);
+      const selectValue = getPropertySelectValueCardByKeyPermission(
+        activeStep,
+        data.keyItemPermission
+      )(state);
+
       store.dispatch(
         setPropertyItem({
           step: activeStep,
@@ -101,6 +109,14 @@ export const getUiHandlers = (store: Store) => {
           },
         })
       );
+
+      if (!selectValue) {
+        app.addItemConfiguration(
+          data.nameProperty,
+          data.assetId,
+          data.keyItemPermission
+        );
+      }
     }
 
     if (data instanceof ChangeStepCommand) {
@@ -170,6 +186,10 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
       );
       if (position === "next") return;
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
+      arr.forEach((keyCard) => {
+        const card = getCardByKeyPermission(key as StepName, keyCard)(state);
+        removeElement(card, key as StepName)(store);
+      });
     });
   };
 }
@@ -307,14 +327,25 @@ function setStepData(
       const qty = configurator.getStateAttributeByName(qtyName);
       if (!qty) return;
       temp.forEach((item) => {
-        const values = (qty.values as Array<ValueStringStateI>).filter(
-          (item) => item.visible
-        );
+        const asset = Object.values(
+          item.dataThreekit.threekitItems
+        )[0] as ValueAssetStateI;
+        const qtyAsset = asset?.metadata?.qty;
+
         let min = 0;
         let max = 0;
-        if (values.length) {
-          min = parseInt(values[0].value);
-          max = parseInt(values[values.length - 1].value);
+        if (!qtyAsset) {
+          const values = (qty.values as Array<ValueStringStateI>).filter(
+            (item) => item.visible
+          );
+          if (values.length) {
+            min = parseInt(values[0].value);
+            max = parseInt(values[values.length - 1].value);
+          }
+        } else {
+          const values = JSON.parse(qtyAsset) as Array<number>;
+          min = values[0];
+          max = values[values.length - 1];
         }
 
         item.counter = {
@@ -592,18 +623,6 @@ function setSoftwareServicesData(configurator: Configurator) {
     });
 
     softwareServicesCardData.forEach((tempCard) => {
-      if (tempCard.select && tempCard.select.data.length) {
-        store.dispatch(
-          setPropertyItem({
-            step: StepName.SoftwareServices,
-            keyItemPermission: tempCard.keyPermission,
-            property: {
-              select: tempCard.select.data[0].value,
-            },
-          })
-        );
-        return;
-      }
       store.dispatch(
         createItem({
           step: StepName.SoftwareServices,

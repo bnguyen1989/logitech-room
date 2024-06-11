@@ -6,8 +6,7 @@
   flex-direction: column;
   align-items: center;
   gap: 60px;
-
-  background-color: #f4f4f4;
+  max-width: 90%;
 
   .button_link {
   }
@@ -18,47 +17,74 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 
     .cards {
-      height: fit-content;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      align-items: stretch;
       gap: 60px;
     }
   }
 
   .form {
+    max-width: 1019px;
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1300px) {
   .container {
-    gap: 50px;
-    padding-right: 40px;
-    padding-left: 40px;
-    width: calc(100% - 80px);
+    width: 85%;
+
+    .wrapper_cards {
+      .cards {
+        gap: 30px;
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    padding-top: 10px;
+    height: calc(100% - 10px);
+    gap: 40px;
+    width: 100%;
+    max-width: 100%;
 
     .wrapper_cards {
       width: 100%;
-      display: flex;
-      justify-content: center;
 
       .cards {
-        padding-top: 20px;
+        padding: 20px 40px;
         gap: 20px;
-        justify-content: normal;
-        align-items: normal;
         overflow-x: scroll;
       }
+
+      .cards::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+      }
+    }
+
+    .form {
+      padding: 0 40px;
     }
   }
 }
 
 @media (max-width: 500px) {
   .container {
-    padding-right: 30px;
-    padding-left: 30px;
-    width: calc(100% - 60px);
+    gap: 30px;
+
+    .wrapper_cards {
+      .cards {
+        padding: 20px;
+        gap: 20px;
+      }
+    }
+
+    .form {
+      padding: 0 20px;
+    }
   }
 }

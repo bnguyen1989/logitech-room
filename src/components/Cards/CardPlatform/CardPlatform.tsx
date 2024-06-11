@@ -10,9 +10,10 @@ import s from "./CardPlatform.module.scss";
 interface PropsI {
   keyItemPermission: string;
   onSelectedAnalytics: () => void;
+  onClick?: () => void;
 }
 export const CardPlatform: React.FC<PropsI> = (props) => {
-  const { keyItemPermission } = props;
+  const { keyItemPermission, onSelectedAnalytics, onClick } = props;
   const activeStep = useAppSelector(getActiveStep);
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
@@ -22,7 +23,12 @@ export const CardPlatform: React.FC<PropsI> = (props) => {
   );
 
   return (
-    <PrepareCardContainer keyItemPermission={keyItemPermission} onSelectedAnalytics={props.onSelectedAnalytics}>
+    <PrepareCardContainer
+      isPadding={false}
+      keyItemPermission={keyItemPermission}
+      onSelectedAnalytics={onSelectedAnalytics}
+      onClick={onClick}
+    >
       <div className={s.container}>
         <div className={s.logo}>
           <img src={card.logo} alt="logo_ms" />

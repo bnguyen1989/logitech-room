@@ -7,7 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../hooks/user";
 import { copyToClipboard, getImageUrl } from "../../../utils/browserUtils";
 import { useDispatch } from "react-redux";
-import { setShareProjectModal } from "../../../store/slices/modals/Modals.slice";
+import {
+  setRequestConsultationModal,
+  setShareProjectModal,
+} from "../../../store/slices/modals/Modals.slice";
 import { PermissionUser } from "../../../utils/userRoleUtils";
 import { useUrl } from "../../../hooks/url";
 import {
@@ -73,7 +76,6 @@ export const Header: React.FC = () => {
   };
 
   const handleRequestConsultation = () => {
-    navigate("/request-consultation");
     getTKAnalytics().custom({
       customName: EventActionName.request_consultation,
     });
@@ -83,6 +85,8 @@ export const Header: React.FC = () => {
       action: EventActionName.request_consultation,
       value: {},
     });
+
+    dispatch(setRequestConsultationModal({ isOpen: true }));
   };
 
   const handleShareProject = () => {

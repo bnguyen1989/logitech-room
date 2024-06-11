@@ -15,19 +15,23 @@ import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { Application } from "../Application";
 import { ColorName, getSeparatorItemColor } from "../../utils/baseUtils";
 import { CameraName, MeetingControllerName } from "../../utils/permissionUtils";
+import { Cache } from "../Cache";
+import { deepCopy } from "../../utils/objUtils";
 
 declare const app: Application;
 
+type DataCache =
+  | {
+      [key: string]: string;
+    }
+  | string
+  | boolean
+  | undefined;
 interface CacheI {
-  [key: string]:
-    | {
-        [key: string]: string;
-      }
-    | string
-    | boolean
-    | undefined;
+  [key: string]: DataCache;
 }
-const CACHE_DATA: CacheI = {};
+
+const CACHE = new Cache<CacheI, DataCache>();
 
 export class ConfigurationConstraintHandler extends Handler {
   private dataTableLevel1: DataTable;
@@ -46,40 +50,30 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   public static clearCacheData() {
-    Object.keys(CACHE_DATA).forEach((key) => {
-      delete CACHE_DATA[key];
-    });
-  }
-
-  public static addCacheData(key: string, value: any) {
-    CACHE_DATA[key] = value;
-  }
-
-  public static getCacheData(key: string) {
-    return CACHE_DATA[key];
+    CACHE.clearCache();
   }
 
   public static getTriggeredAttribute(configurator: Configurator) {
     const attrArr = configurator.getAttributes();
     const configuration = configurator.getConfiguration();
-    const cache = CACHE_DATA;
+    const attrValCache = CACHE.get("attrValCache");
     const triggeredByAttr: Array<string> = [];
     attrArr.forEach((attr) => {
-      if (cache.attrValCache && typeof cache.attrValCache === "object") {
+      if (attrValCache && typeof attrValCache === "object") {
         let attrValue = configuration[attr.name];
         if (typeof attrValue === "object" && attrValue["assetId"]) {
           attrValue = attrValue["assetId"];
         }
-        if (cache.attrValCache[attr.name] !== attrValue) {
-          // api.cache.attrValCache[attr.name]  === 'undefined', only when loading the configurator, because the cache is not created
-
-          if (typeof cache.attrValCache[attr.name] !== "undefined") {
+        if (attrValCache[attr.name] !== attrValue) {
+          if (typeof attrValCache[attr.name] !== "undefined") {
             triggeredByAttr.push(attr.name);
           }
-          cache.attrValCache[attr.name] = attrValue as string;
+          CACHE.update("attrValCache", {
+            [attr.name]: attrValue as string,
+          });
         }
       } else {
-        cache["attrValCache"] = {};
+        CACHE.set("attrValCache", {});
       }
     });
     return triggeredByAttr;
@@ -89,7 +83,6 @@ export class ConfigurationConstraintHandler extends Handler {
     const triggeredByAttr =
       ConfigurationConstraintHandler.getTriggeredAttribute(this.configurator);
     this.triggeredByAttr = triggeredByAttr;
-    console.log("triggeredByAttr", triggeredByAttr);
 
     const locale = this.configurator.language;
     const localeTagStr = `locale_${locale.toLowerCase()}`;
@@ -135,9 +128,7 @@ export class ConfigurationConstraintHandler extends Handler {
         AttributeName.RoomAdditionalCamera
       );
       if (attrState) {
-        const values = this.copyStructure(
-          attrState.values
-        ) as ValueAssetStateI[];
+        const values = deepCopy(attrState.values) as ValueAssetStateI[];
 
         values.forEach((option) => {
           option.visible = false;
@@ -156,13 +147,10 @@ export class ConfigurationConstraintHandler extends Handler {
     const recoRulesStr = level2row.value[skipColumns[2]];
 
     let setLevel2Default_flag = false;
-    const cache = CACHE_DATA;
-    if (
-      !cache.level2datatableId ||
-      cache.level2datatableId !== level2datatableId
-    ) {
+    const cacheLevel2Id = CACHE.get("level2datatableId");
+    if (!cacheLevel2Id || cacheLevel2Id !== level2datatableId) {
       setLevel2Default_flag = true;
-      cache.level2datatableId = level2datatableId;
+      CACHE.set("level2datatableId", level2datatableId);
     }
 
     if (
@@ -234,12 +222,7 @@ export class ConfigurationConstraintHandler extends Handler {
     ////*3rd call the rule(s) based on what's selected in the level1 datatable
     this.handleRecoRules(recoRulesStr);
     this.handleAttrRules(attrRulesStr);
-
-    // this.rule_Pendant_Mount_Mic();
-    this.clearRuleCache();
   }
-
-  private clearRuleCache() {}
 
   private handleAttrRules(attrRulesStr: string) {
     const attrRulesArr = attrRulesStr
@@ -273,6 +256,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.rallyBarMini_TapIp_bundle)) {
       this.rule_rallyBarMini_TapIp_bundle();
     }
+
+    if (attrRulesArr.includes(RuleName.rallyPlus_bundle)) {
+      this.rule_rallyPlus_bundle();
+    }
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -295,6 +282,22 @@ export class ConfigurationConstraintHandler extends Handler {
     if (recoRulesArr.includes(RuleName.reco_RallyPlus)) {
       this.rule_reco_RallyPlus();
     }
+  }
+
+  private rule_rallyPlus_bundle() {
+    const isSelectRallyPlus = this.isSelectRallyPlus();
+
+    const attrDataQtyMicPod = this.getAttrStateDataByName(AttributeName.QtyMic);
+    if (!attrDataQtyMicPod) return;
+
+    const allCountMicPod = attrDataQtyMicPod.values.length - 1;
+    const availableCountMicPod = allCountMicPod - 2;
+    if (!isSelectRallyPlus) return;
+    this.limitValuesAttrByCallback(
+      attrDataQtyMicPod.values,
+      attrDataQtyMicPod.id,
+      (currentCount: number) => currentCount <= availableCountMicPod
+    );
   }
 
   private rule_rallyBar_TapIp_bundle() {
@@ -396,7 +399,6 @@ export class ConfigurationConstraintHandler extends Handler {
       });
     }
 
-    const countMic = parseInt(qtyMicPod);
     const attrDataQtyMicMount = this.getAttrStateDataByName(
       AttributeName.QtyMicMount
     );
@@ -405,32 +407,19 @@ export class ConfigurationConstraintHandler extends Handler {
     );
     if (!attrDataQtyPendantMount || !attrDataQtyMicMount) return;
 
-    const limitValuesAttrByCount = (
-      attributeValuesArr: ValueAttributeStateI[],
-      attrId: string
-    ) => {
-      return (count: number) => {
-        let tempCount = 0;
-        attributeValuesArr.forEach((option) => {
-          if (tempCount > count) {
-            option.visible = false;
-          }
-          tempCount += 1;
-        });
-        this.configurator.setAttributeState(attrId, {
-          values: attributeValuesArr,
-        });
-      };
-    };
+    const availableCountMic = this.getQtyMicForMounts();
 
-    limitValuesAttrByCount(
+    this.limitValuesAttrByCallback(
       attrDataQtyMicMount.values,
-      attrDataQtyMicMount.id
-    )(countMic);
-    limitValuesAttrByCount(
+      attrDataQtyMicMount.id,
+      (currentCount: number) => currentCount <= availableCountMic
+    );
+
+    this.limitValuesAttrByCallback(
       attrDataQtyPendantMount.values,
-      attrDataQtyPendantMount.id
-    )(countMic);
+      attrDataQtyPendantMount.id,
+      (currentCount: number) => currentCount <= availableCountMic
+    );
 
     const qtyMicMount = this.getSelectedValue(AttributeName.QtyMicMount);
     if (typeof qtyMicMount !== "string") return;
@@ -441,7 +430,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const countMicMount = parseInt(qtyMicMount);
     const countMicPendantMount = parseInt(qtyMicPendantMount);
     const countAllMount = countMicMount + countMicPendantMount;
-    if (countAllMount === countMic) return;
+    if (countAllMount === availableCountMic) return;
     if (!isSelectMicMount || !isSelectPendant) return;
     const isChangeQtyMicMount = this.triggeredByAttr.includes(
       AttributeName.QtyMicMount
@@ -452,20 +441,20 @@ export class ConfigurationConstraintHandler extends Handler {
     if (isChangeQtyMicMount && isChangeQtyMicPendantMount) return;
 
     if (
-      countMic > countAllMount &&
+      availableCountMic > countAllMount &&
       !isChangeQtyMicMount &&
       !isChangeQtyMicPendantMount
     ) {
       if (countMicMount > countMicPendantMount) {
         this.configurator.setConfiguration({
           [AttributeName.QtyMicPendantMount]: (
-            countMic - countMicMount
+            availableCountMic - countMicMount
           ).toString(),
         });
       } else {
         this.configurator.setConfiguration({
           [AttributeName.QtyMicMount]: (
-            countMic - countMicPendantMount
+            availableCountMic - countMicPendantMount
           ).toString(),
         });
       }
@@ -482,12 +471,12 @@ export class ConfigurationConstraintHandler extends Handler {
     };
 
     if (
-      countMic < countAllMount &&
+      availableCountMic < countAllMount &&
       !isChangeQtyMicMount &&
       !isChangeQtyMicPendantMount
     ) {
       if (countMicMount > countMicPendantMount) {
-        const count = countMic - countMicPendantMount;
+        const count = availableCountMic - countMicPendantMount;
         this.configurator.setConfiguration({
           [AttributeName.QtyMicMount]: count.toString(),
         });
@@ -495,7 +484,7 @@ export class ConfigurationConstraintHandler extends Handler {
           removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
         }
       } else {
-        const count = countMic - countMicMount;
+        const count = availableCountMic - countMicMount;
         this.configurator.setConfiguration({
           [AttributeName.QtyMicPendantMount]: count.toString(),
         });
@@ -509,7 +498,7 @@ export class ConfigurationConstraintHandler extends Handler {
       return;
     }
 
-    if (countAllMount > countMic) {
+    if (countAllMount > availableCountMic) {
       if (isChangeQtyMicMount) {
         const count = countMicPendantMount - 1;
         this.configurator.setConfiguration({
@@ -538,7 +527,7 @@ export class ConfigurationConstraintHandler extends Handler {
       this.configurator.setConfiguration({
         [AttributeName.QtyMicPendantMount]: count.toString(),
       });
-      if (count === countMic) {
+      if (count === availableCountMic) {
         removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
       }
     }
@@ -547,7 +536,7 @@ export class ConfigurationConstraintHandler extends Handler {
       this.configurator.setConfiguration({
         [AttributeName.QtyMicMount]: count.toString(),
       });
-      if (count === countMic) {
+      if (count === availableCountMic) {
         removeMount(
           AttributeName.RoomMicPendantMount,
           AttributeName.QtyMicPendantMount
@@ -604,15 +593,13 @@ export class ConfigurationConstraintHandler extends Handler {
   private rule_micPod_CATCoupler() {
     const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
     const isSelectMic = typeof selectedMic === "object";
-    const selectSight = this.getSelectedValue(AttributeName.RoomSight);
-    const isSelectSight = typeof selectSight === "object";
     const attribute = this.getAttribute(AttributeName.RoomMicCATCoupler);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
     const attributeValuesArr = attrState[attribute.id].values;
     if (!attributeValuesArr) return;
 
-    if (!isSelectMic || isSelectSight) {
+    if (!isSelectMic) {
       this.configurator.setConfiguration({
         [AttributeName.RoomMicCATCoupler]: {
           assetId: "",
@@ -628,9 +615,30 @@ export class ConfigurationConstraintHandler extends Handler {
       });
     }
 
+    const selectSight = this.getSelectedValue(AttributeName.RoomSight);
+    const isSelectSight = typeof selectSight === "object";
+    if (isSelectSight) {
+      attributeValuesArr.forEach((option) => {
+        this.setRecommendedInMetadata(option, false);
+      });
+    }
+
     this.configurator.setAttributeState(attribute.id, {
       values: attributeValuesArr,
     });
+
+    const cache = CACHE.get(RuleName.micPod_CATCoupler);
+    const isChangeSight = this.triggeredByAttr.includes(
+      AttributeName.RoomSight
+    );
+    if (!cache && isSelectSight && isChangeSight) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicCATCoupler]: {
+          assetId: "",
+        },
+      });
+      CACHE.set(RuleName.micPod_CATCoupler, true);
+    }
   }
 
   private rule_reco_micPendantMount_inWhite() {
@@ -638,7 +646,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const attribute = this.getAttribute(AttributeName.RoomMicPendantMount);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = this.copyStructure(
+    const attributeValuesArr = deepCopy(
       attrState[attribute.id].values
     ) as ValueAssetStateI[];
     if (!attributeValuesArr) return;
@@ -667,9 +675,7 @@ export class ConfigurationConstraintHandler extends Handler {
       values: attributeValuesArr,
     });
 
-    const cache = ConfigurationConstraintHandler.getCacheData(
-      RuleName.reco_micPendantMount_inWhite
-    );
+    const cache = CACHE.get(RuleName.reco_micPendantMount_inWhite);
 
     if (!isSelectMicWhite || cache) return;
 
@@ -693,10 +699,7 @@ export class ConfigurationConstraintHandler extends Handler {
       [AttributeName.QtyMicMount]: "0",
     });
 
-    ConfigurationConstraintHandler.addCacheData(
-      RuleName.reco_micPendantMount_inWhite,
-      true
-    );
+    CACHE.set(RuleName.reco_micPendantMount_inWhite, true);
   }
 
   private rule_reco_micPod_micPodHub() {
@@ -706,7 +709,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const attribute = this.getAttribute(AttributeName.RoomMicHub);
     if (!attribute) return;
     const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = this.copyStructure(
+    const attributeValuesArr = deepCopy(
       attrState[attribute.id].values
     ) as ValueAssetStateI[];
     if (!attributeValuesArr) return;
@@ -735,15 +738,10 @@ export class ConfigurationConstraintHandler extends Handler {
     const isChangeHub = this.triggeredByAttr.includes(AttributeName.RoomMicHub);
 
     if (!isSelectHub && isChangeHub) {
-      ConfigurationConstraintHandler.addCacheData(
-        RuleName.reco_micPod_micPodHub,
-        true
-      );
+      CACHE.set(RuleName.reco_micPod_micPodHub, true);
     }
 
-    const cache = ConfigurationConstraintHandler.getCacheData(
-      RuleName.reco_micPod_micPodHub
-    );
+    const cache = CACHE.get(RuleName.reco_micPod_micPodHub);
     if (!isNeedSetRecommended || cache) return;
 
     const visibleValue = attributeValuesArr.find(
@@ -764,7 +762,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
     if (typeof selectedCamera !== "object") return;
     const isSelectRallyBar = selectedCamera.name.includes(CameraName.RallyBar);
-    const values = this.copyStructure(attrState.values) as ValueAssetStateI[];
+    const values = deepCopy(attrState.values) as ValueAssetStateI[];
     values.forEach((option) => {
       if (!("name" in option)) return;
 
@@ -789,7 +787,7 @@ export class ConfigurationConstraintHandler extends Handler {
     );
     const attrState = this.getAttrStateDataByName(AttributeName.RoomCamera);
     if (!attrState) return;
-    const values = this.copyStructure(attrState.values) as ValueAssetStateI[];
+    const values = deepCopy(attrState.values) as ValueAssetStateI[];
     values.forEach((option) => {
       if (!("name" in option)) return;
       const isRallyBar = option.name.includes(CameraName.RallyPlus);
@@ -806,64 +804,45 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_micPodQty_sight() {
-    const sightAttrName_str = "Room Sight";
-    const micPodQtyAttrName_str = AttributeName.QtyMic;
+    const selectedSight = this.getSelectedValue(AttributeName.RoomSight);
+    const isSelectSight = typeof selectedSight === "object";
+    if (!isSelectSight) return;
 
-    const selectedSight = this.getSelectedValue(sightAttrName_str);
-
-    if (typeof selectedSight === "object") {
-      const attribute = this.getAttribute(micPodQtyAttrName_str);
-      const attrState = this.configurator.getAttributeState();
-      const attributeValuesArr = attribute
-        ? attrState[attribute.id].values
-        : undefined;
-      if (attribute && attributeValuesArr) {
-        const countVisible = attributeValuesArr.filter(
-          (option) => option.visible
-        ).length;
-        let tempCount = countVisible;
-        attributeValuesArr.forEach((option) => {
-          if (option.visible) {
-            tempCount--;
-          }
-          if (tempCount === 0) {
-            option.visible = false;
-          }
-        });
-        this.configurator.setAttributeState(attribute.id, {
-          values: attributeValuesArr,
-        });
+    const attrState = this.getAttrStateDataByName(AttributeName.QtyMic);
+    if (!attrState) return;
+    const values = deepCopy(attrState.values) as ValueAttributeStateI[];
+    const countVisible = values.filter((option) => option.visible).length;
+    let tempCount = countVisible;
+    values.forEach((option) => {
+      if (option.visible) {
+        tempCount--;
       }
-    }
+      if (tempCount === 0) {
+        option.visible = false;
+      }
+    });
+    this.configurator.setAttributeState(attrState.id, {
+      values,
+    });
   }
 
   private rule_tapQty10_tapIp() {
-    const meetingControllerAttrName_str = "Room Meeting Controller";
-    const meetingControllerQtyAttr_str = "Qty - Meeting Controller";
-
-    const selectedMeetingController = this.getSelectedValue(
-      meetingControllerAttrName_str
+    const attrState = this.getAttrStateDataByName(
+      AttributeName.RoomMeetingController
     );
-    if (
-      typeof selectedMeetingController === "object" &&
-      selectedMeetingController.name.includes("Logitech Tap IP")
-    ) {
-      const attribute = this.getAttribute(meetingControllerQtyAttr_str);
-      const attrState = this.configurator.getAttributeState();
-      const attributeValuesArr = attribute
-        ? attrState[attribute.id].values
-        : undefined;
-      if (attribute && attributeValuesArr) {
-        attributeValuesArr.forEach((option) => {
-          if ("value" in option && Number(option.value) <= 10) {
-            option.visible = true;
-          }
-        });
-        this.configurator.setAttributeState(attribute.id, {
-          values: attributeValuesArr,
-        });
-      }
-    }
+    if (!attrState) return;
+    const values = deepCopy(attrState.values) as ValueAssetStateI[];
+    values.forEach((option) => {
+      if (!option.name.includes(MeetingControllerName.LogitechTapIP)) return;
+      this.setDataInMetadata(
+        option,
+        "qty",
+        JSON.stringify(Array.from({ length: 10 }, (_, i) => i + 1))
+      );
+    });
+    this.configurator.setAttributeState(attrState.id, {
+      values,
+    });
   }
 
   private getAttribute(name: string) {
@@ -959,9 +938,9 @@ export class ConfigurationConstraintHandler extends Handler {
         : selectedValue
       : "None";
     if (theAttrValuesArr) {
-      const copyAttrValuesArr = JSON.parse(
-        JSON.stringify(theAttrValuesArr)
-      ) as Array<ValueStringStateI | ValueAssetStateI>;
+      const copyAttrValuesArr = deepCopy(theAttrValuesArr) as Array<
+        ValueStringStateI | ValueAssetStateI
+      >;
 
       copyAttrValuesArr.forEach((option) => {
         //Only show option when it's in the datatable
@@ -989,8 +968,6 @@ export class ConfigurationConstraintHandler extends Handler {
 
           attrSpec.attrType = isContainId ? "Asset" : "String";
         } else {
-          console.log("Option", option, "is not visible");
-
           option.visible = false;
           if (
             selectedValue_str &&
@@ -1017,11 +994,21 @@ export class ConfigurationConstraintHandler extends Handler {
           attrSpec.defaultValue = option.id;
         }
 
-        if (isContainName && optionRecommendation.includes(option.name)) {
+        if (!isContainName) return;
+
+        let isExist = optionRecommendation.includes(option.name);
+        if (!isExist) {
+          const name = this.getAssetNameWithoutColor(option.name);
+          const separatorColor = getSeparatorItemColor();
+          isExist = optionRecommendation.some((recoName) =>
+            recoName.includes(`${name}${separatorColor}`)
+          );
+        }
+
+        if (isExist) {
           this.setRecommendedInMetadata(option, true);
         }
       });
-      console.log("copyAttrValuesArr", copyAttrValuesArr);
 
       this.configurator.setAttributeState(theAttrId, {
         values: copyAttrValuesArr,
@@ -1106,6 +1093,11 @@ export class ConfigurationConstraintHandler extends Handler {
 
     for (let i = 0; i < validatedAttrNames.length; i++) {
       const attrName = validatedAttrNames[i];
+
+      const validateAttrSpecByAttrName = validatedAttrSpec[attrName];
+      const attrType = validateAttrSpecByAttrName.attrType;
+      const defaultValue = validateAttrSpecByAttrName.defaultValue;
+
       const currentSelectedValue = this.getSelectedValue(attrName);
       const currentSelectedValue_str = currentSelectedValue
         ? typeof currentSelectedValue === "object" && currentSelectedValue.id
@@ -1114,30 +1106,35 @@ export class ConfigurationConstraintHandler extends Handler {
         : "";
       if (setDefaults) {
         setConfig_obj[attrName] =
-          validatedAttrSpec[attrName].attrType === "Asset"
+          attrType === "Asset"
             ? {
-                assetId: validatedAttrSpec[attrName].defaultValue,
+                assetId: defaultValue,
               }
-            : validatedAttrSpec[attrName].defaultValue;
+            : defaultValue;
       }
+
+      const isAllowBlank = validateAttrSpecByAttrName.allowBlank;
+      const validOptionIds = validateAttrSpecByAttrName.validOptionIds;
+
+      const isIntegerString = (str: string) => {
+        return /^[0-9]+$/.test(str);
+      };
 
       if (
         //When not allow blank and only one option available set it to that option if it's currently not that value
-        (!validatedAttrSpec[attrName].allowBlank &&
-          validatedAttrSpec[attrName].validOptionIds &&
-          validatedAttrSpec[attrName].validOptionIds.length === 1 &&
-          currentSelectedValue_str !==
-            validatedAttrSpec[attrName].validOptionIds[0]) ||
+        (!isAllowBlank &&
+          validOptionIds &&
+          validOptionIds.length === 1 &&
+          !isIntegerString(validOptionIds[0]) &&
+          currentSelectedValue_str !== validOptionIds[0]) ||
         //When allow blank and only one option is blank, set it to blank if it's currently not blank
-        (validatedAttrSpec[attrName].allowBlank &&
-          validatedAttrSpec[attrName].validOptionIds.length === 0 &&
+        (isAllowBlank &&
+          validOptionIds.length === 0 &&
           currentSelectedValue_str)
       ) {
-        const setToVal = validatedAttrSpec[attrName].validOptionIds[0]
-          ? validatedAttrSpec[attrName].validOptionIds[0]
-          : "";
+        const setToVal = validOptionIds[0] ? validOptionIds[0] : "";
         setConfig_obj[attrName] =
-          validatedAttrSpec[attrName].attrType === "Asset"
+          attrType === "Asset"
             ? {
                 assetId: setToVal,
               }
@@ -1247,12 +1244,29 @@ export class ConfigurationConstraintHandler extends Handler {
     return color;
   }
 
+  private getAssetNameWithoutColor(name: string) {
+    const colorSeparator = getSeparatorItemColor();
+    return name.split(colorSeparator)[0];
+  }
+
   private setRecommendedInMetadata(
     value: ValueAttributeStateI,
     isRecommended: boolean
   ) {
+    this.setDataInMetadata(
+      value,
+      "isRecommended",
+      isRecommended ? "true" : "false"
+    );
+  }
+
+  private setDataInMetadata(
+    value: ValueAttributeStateI,
+    key: string,
+    data: string
+  ) {
     if ("value" in value) return;
-    value.metadata["isRecommended"] = isRecommended ? "true" : "false";
+    value.metadata[key] = data;
   }
 
   private getAttrStateDataByName(name: string) {
@@ -1267,7 +1281,35 @@ export class ConfigurationConstraintHandler extends Handler {
     };
   }
 
-  private copyStructure(obj: any) {
-    return JSON.parse(JSON.stringify(obj));
+  private limitValuesAttrByCallback = (
+    attributeValuesArr: ValueAttributeStateI[],
+    attrId: string,
+    callback: (currentCount: number, option?: ValueAttributeStateI) => boolean
+  ) => {
+    let tempCount = 0;
+    attributeValuesArr.forEach((option) => {
+      const isVisible = callback(tempCount, option);
+      option.visible = isVisible;
+      tempCount += 1;
+    });
+    this.configurator.setAttributeState(attrId, {
+      values: attributeValuesArr,
+    });
+  };
+
+  private isSelectRallyPlus() {
+    const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
+    const isSelectCamera = typeof selectedCamera === "object";
+    const isSelectRallyPlus =
+      isSelectCamera && selectedCamera.name.includes(CameraName.RallyPlus);
+    return isSelectRallyPlus;
   }
+
+  private getQtyMicForMounts = () => {
+    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
+    if (typeof qtyMicPod !== "string") return 0;
+    const count = parseInt(qtyMicPod);
+    const isSelectRallyPlus = this.isSelectRallyPlus();
+    return isSelectRallyPlus ? count + 2 : count;
+  };
 }

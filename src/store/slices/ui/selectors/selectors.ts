@@ -429,6 +429,21 @@ export const getDisabledActionByKeyPermission =
     res.color = element.getDisabledColor();
     return res;
   };
+export const getHiddenActionByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const res = {
+      color: false,
+    };
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    if (!step) return res;
+    const element = step.getElementByName(keyPermission);
+    if (!element) return res;
+
+    res.color = element.getHiddenColor();
+
+    return res;
+  };
 
 export const getAllKeyActiveCards = (state: RootState) => {
   const selectedData = getSelectData(state);

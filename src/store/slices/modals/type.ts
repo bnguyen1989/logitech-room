@@ -4,6 +4,7 @@ export enum ModalName {
   SELECT_PRODUCT = "SELECT_PRODUCT",
   SHARE_PROJECT = "SHARE_PROJECT",
   FINISH = "FINISH",
+  REQUEST_CONSULTATION = "REQUEST_CONSULTATION",
 }
 
 export interface ModalI {

@@ -2,12 +2,19 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
-  min-height: calc(var(--vh, 1vh) * 100 - 32px - 24px - 39px);
   height: 100%;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 992px) {
   .container {
-    min-height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px);
+    padding-top: 40px;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding-top: 20px;
+    gap: 30px;
   }
 }

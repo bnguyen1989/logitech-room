@@ -35,7 +35,15 @@
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1400px) {
+  .container {
+    .wrapper {
+      max-width: 90%;
+    }
+  }
+}
+
+@media (max-width: 992px) {
   .container {
     align-items: normal;
     justify-content: normal;

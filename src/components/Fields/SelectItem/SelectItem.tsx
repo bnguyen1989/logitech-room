@@ -18,9 +18,10 @@ interface OptionI {
 interface PropsI {
   keyItemPermission: string;
   disabled?: boolean;
+  defaultLabel?: string;
 }
 export const SelectItem: React.FC<PropsI> = (props) => {
-  const { disabled, keyItemPermission } = props;
+  const { disabled, keyItemPermission, defaultLabel } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
@@ -30,19 +31,21 @@ export const SelectItem: React.FC<PropsI> = (props) => {
     getPropertySelectValueCardByKeyPermission(activeStep, keyItemPermission)
   );
 
-  if (!card || !card.select || !selectValue) return null;
+  if (!card || !card.select) return null;
 
   const handleSelect = (option: OptionI) => {
     const attributeName = card.dataThreekit.attributeName;
-    app.changeSelectItemConfiguration(
-      attributeName,
-      option.value,
-      card.keyPermission
-    );
+    const assetId = option.value;
+    const keyPermission = card.keyPermission;
+
+    app.changeSelectItemConfiguration(attributeName, assetId, keyPermission);
+
     setIsOpen(false);
   };
 
-  const toggleSelect = () => {
+  const toggleSelect = (e: any) => {
+    e.stopPropagation();
+
     if (disabled) {
       return;
     }
@@ -54,6 +57,9 @@ export const SelectItem: React.FC<PropsI> = (props) => {
   };
 
   const getName = () => {
+    if (defaultLabel && !selectValue) {
+      return defaultLabel;
+    }
     return card.select?.data.find((item) => item.value === selectValue)?.label;
   };
 

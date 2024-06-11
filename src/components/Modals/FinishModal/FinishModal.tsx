@@ -22,6 +22,7 @@ import {
 } from "../../../models/analytics/type";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { useUrl } from "../../../hooks/url";
+import { getDataCamera } from "../../../store/slices/configurator/selectors/selectors";
 
 declare const app: Application;
 
@@ -32,6 +33,7 @@ export const FinishModal: React.FC = () => {
   const { isOpen } = useAppSelector(getFinishModalData);
   const orderData: any = useAppSelector(getOrderData(user.id));
   const [sendRequest, setSendRequest] = useState(false);
+  const dataCamera = useAppSelector(getDataCamera);
 
   const userCanShowSetupModal = user.role.can(PermissionUser.SHOW_SETUP_MODAL);
   const isShowSetupModal = userCanShowSetupModal && user.isEmptyUserData();
@@ -46,6 +48,10 @@ export const FinishModal: React.FC = () => {
   };
 
   const handleLetsProceed = () => {
+    if (dataCamera && dataCamera.position) {
+      app.resetCameraEvent(dataCamera);
+    }
+
     getTKAnalytics().stage({
       stageName: EventActionName.configurator_complete,
     });
@@ -58,18 +64,27 @@ export const FinishModal: React.FC = () => {
     setSendRequest(true);
     const threekitService = new ThreekitService();
     const assetId = orderData.metadata.configurator.assetId;
-    const snapshot = window.snapshot("blob") as Blob;
-    threekitService
-      .saveConfigurator(snapshot, assetId ?? "")
-      .then((id) => {
-        const linkSnapshot = threekitService.getSnapshotLinkById(id);
-        orderData.metadata["snapshot"] = linkSnapshot;
-
+    const snapshotFront = window.snapshot("blob", "Front") as Blob;
+    const snapshotLeft = window.snapshot("blob", "Left") as Blob;
+    Promise.all([
+      threekitService.saveConfigurator(snapshotFront, assetId ?? ""),
+      threekitService.saveConfigurator(snapshotLeft, assetId ?? ""),
+    ])
+      .then((res) => {
+        const linkSnapshotFront = threekitService.getSnapshotLinkById(res[0]);
+        const linkSnapshotLeft = threekitService.getSnapshotLinkById(res[1]);
+        orderData.metadata["snapshots"] = JSON.stringify({
+          Front: linkSnapshotFront,
+          Left: linkSnapshotLeft,
+        });
         return threekitService.createOrder(orderData).then(() => {
           dispatch(setFinishModal({ isOpen: false }));
           if (isShowSetupModal) {
             dispatch(
-              setMySetupModal({ isOpen: true, dataModal: { linkSnapshot } })
+              setMySetupModal({
+                isOpen: true,
+                dataModal: { linkSnapshot: linkSnapshotFront },
+              })
             );
           } else {
             handleNavigate("/room");

@@ -1,0 +1,354 @@
+.formWrap {
+  display: block;
+  :global {
+    .mktoForm {
+      .mktoFormRow {
+        padding: 0 !important;
+        font-family: var(--font-family);
+        & label {
+          display: none;
+        }
+
+        & input,
+        & textarea,
+        & select {
+          width: 100% !important;
+          background-color: #f4f4f4 !important;
+          padding: 25px 20px !important;
+          border: none !important;
+          outline: none !important;
+          color: #6f7678 !important;
+          font-size: 18px !important;
+          font-style: normal !important;
+          font-weight: 400 !important;
+          line-height: 24px !important;
+        }
+
+        & textarea {
+          height: 100px !important;
+        }
+
+        & select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236f7678" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+          background-repeat: no-repeat;
+          background-position: right 20px center;
+        }
+
+        #honeypot,
+        #lastFormURL,
+        #lastFormReferrer {
+          display: none;
+        }
+
+        .mktoFieldDescriptor {
+          width: 100%;
+          margin-bottom: 0 !important;
+          .mktoOffset,
+          .mktoGutter {
+            display: none;
+          }
+          .mktoLogicalField {
+            display: flex;
+            width: 100% !important;
+            > input {
+              width: 22px !important;
+              height: 22px !important;
+              border: 1px solid #c3c6c8 !important;
+              background: #fff !important;
+              margin: 0;
+              margin-top: 5px;
+              border-radius: 0;
+            }
+            > label {
+              flex: 1;
+              margin: 0 0 0 20px;
+              color: #2f3132;
+              font-family: "Poppins", sans-serif;
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 300;
+              line-height: 20px;
+            }
+          }
+        }
+      }
+
+      & .mktoCaptchaDisclaimer {
+        grid-column: span 2 !important;
+      }
+
+      #captcha {
+        display: none;
+      }
+
+      & .mktoButtonRow {
+        grid-column: span 2 !important;
+        padding-top: 50px !important;
+
+        & .mktoButtonWrap {
+          margin: 0 !important;
+        }
+
+        & button {
+          display: inline-block;
+          padding: 19px 60px;
+          text-decoration: none;
+          align-items: center;
+          border-radius: 40px;
+          cursor: pointer;
+
+          color: #fff;
+          text-align: center;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 26px;
+          letter-spacing: -0.25px;
+
+          background-color: var(--main-color-block);
+          box-shadow: 0px 6px 18px 0px rgba(0, 0, 0, 0.12);
+          border: 1px solid var(--main-color-block);
+        }
+
+        & button:hover {
+          color: var(--main-color-block);
+          background-color: #ffffff;
+          border: 1px solid var(--main-color-block);
+        }
+      }
+    }
+  }
+}
+
+:global {
+  .abridgeForm {
+    .mktoForm .mktoFieldWrap {
+      padding: 0 !important;
+      margin: 0 !important;
+      height: 100% !important;
+      float: none;
+    }
+
+    .mktoFormRow:nth-child(2) {
+      width: 100% !important;
+    }
+
+    & .mktoFormRow:nth-child(3) {
+      & label {
+        display: block;
+      }
+
+      & a {
+        color: var(--Logitech-Colors-Kohle, #2f3132);
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        font-style: normal;
+        line-height: 1.3;
+        text-decoration-line: underline;
+      }
+    }
+    .mktoForm {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100% !important;
+    }
+    .mktoFormRow {
+      width: 100%;
+      &:nth-of-type(n + 3) {
+        display: none;
+      }
+    }
+  }
+
+  .requestConsultation {
+    .mktoForm {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100% !important;
+    }
+    .mktoFormRow {
+      width: calc(50% - 10px);
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
+        width: 100%;
+      }
+      &:nth-of-type(n + 5) {
+        display: none;
+      }
+    }
+  }
+
+  .fullForm {
+    & form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 20px;
+      width: 100% !important;
+    }
+
+    & .mktoCaptchaDisclaimer {
+      grid-column: span 2 !important;
+    }
+
+    & .mktoFieldWrap {
+      width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      height: 100% !important;
+    }
+
+    & .mktoFieldDescriptor {
+      width: 100% !important;
+    }
+
+    & .mktoOffset {
+      display: none;
+    }
+
+    .mktoFormRow:nth-child(-n + 12) {
+      display: none;
+    }
+
+    & .mktoFormRow:nth-child(20),
+    .mktoFormRow:nth-child(22),
+    .mktoFormRow:nth-child(25),
+    .mktoFormRow:nth-child(26),
+    .mktoFormRow:nth-child(28) {
+      display: none;
+    }
+
+    & .mktoFormRow:nth-child(23),
+    .mktoFormRow:nth-child(24),
+    .mktoFormRow:nth-child(27) {
+      grid-column: span 2 !important;
+    }
+
+    // & .mktoFormRow:nth-child(16) {
+    //   padding-top: 20px;
+    //   grid-column: span 2 !important;
+
+    //   & .mktoHtmlText {
+    //     width: 100% !important;
+    //   }
+
+    //   & p {
+    //     width: fit-content;
+    //     color: #2f3132;
+    //     font-family: "Poppins", sans-serif;
+    //     font-size: 18px;
+    //     font-style: normal;
+    //     font-weight: 300;
+    //     line-height: 24px;
+
+    //     & a {
+    //       color: var(--Logitech-Colors-Kohle, #2f3132);
+    //       font-family: "Poppins", sans-serif;
+    //       font-size: 18px;
+    //       font-style: normal;
+    //       font-weight: 700;
+    //       line-height: 24px;
+    //       text-decoration-line: underline;
+    //     }
+    //   }
+    // }
+
+    // & .mktoFormRow:nth-child(17) {
+    //   padding-top: 20px;
+    //   grid-column: span 2 !important;
+
+    //   & .mktoHtmlText {
+    //     width: 100% !important;
+    //   }
+
+    //   & p {
+    //     width: fit-content;
+    //     color: #2f3132;
+    //     font-family: "Poppins", sans-serif;
+    //     font-size: 18px;
+    //     font-style: normal;
+    //     font-weight: 300;
+    //     line-height: 1.3;
+
+    //     & a {
+    //       color: var(--Logitech-Colors-Kohle, #2f3132);
+    //       font-family: "Poppins", sans-serif;
+    //       font-size: 18px;
+    //       font-style: normal;
+    //       font-weight: 400;
+    //       line-height: 1.3;
+    //       text-decoration-line: underline;
+    //     }
+    //   }
+    // }
+
+  //   & .mktoFormRow:nth-child(16) {
+  //     grid-column: span 2 !important;
+
+  //     & .mktoLogicalField {
+  //       width: 100% !important;
+  //       display: flex;
+  //       gap: 16px;
+  //       justify-content: flex-start;
+  //       align-items: center;
+
+  //       & input {
+  //         width: 22px !important;
+  //         height: 22px !important;
+  //         border: 1px solid #c3c6c8 !important;
+  //         background: #fff !important;
+  //       }
+
+  //       & label {
+  //         margin: 0 !important;
+  //         color: #2f3132;
+  //         font-family: "Poppins", sans-serif;
+  //         font-size: 14px;
+  //         font-style: normal;
+  //         font-weight: 300;
+  //         line-height: 20px;
+  //       }
+  //     }
+  //   }
+  }
+}
+
+@media (max-width: 1000px) {
+  :global {
+    .fullForm {
+      & form {
+        padding: 0 !important;
+
+        & > div {
+          grid-column: span 2 !important;
+        }
+      }
+
+      & .mktoFormRow {
+        & input {
+          padding: 25px 20px !important;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  :global {
+    .fullForm {
+      & .mktoFormRow {
+        & input,
+        & textarea,
+        & select {
+          height: 100% !important;
+        }
+      }
+    }
+  }
+}

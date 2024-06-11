@@ -11,6 +11,7 @@ import s from "./ConfigurationFormForStep.module.scss";
 import { useEffect, useRef } from "react";
 import { SubSectionCardItem } from "../SubSectionCardItem/SubSectionCardItem";
 import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
+import { StepName } from "../../../../../utils/baseUtils";
 
 export const ConfigurationFormForStep = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -24,7 +25,7 @@ export const ConfigurationFormForStep = () => {
   useEffect(() => {
     getTKAnalytics().stage({ stageName: activeStepName });
   }, []);
-  
+
   useEffect(() => {
     if (!contentRef.current) return;
     contentRef.current.scrollTop = 0;
@@ -51,7 +52,15 @@ export const ConfigurationFormForStep = () => {
       </CardItem>
     );
   };
+  console.log("activeStepData", activeStepData);
 
+  const listIgnoreSection = [
+    StepName.RoomSize,
+    StepName.Platform,
+    StepName.Services,
+  ];
+  if (listIgnoreSection.includes(activeStepData.key)) return <></>;
+  
   return (
     <div ref={contentRef} className={s.form}>
       {Object.values(activeStepData.cards).map((card, index) =>

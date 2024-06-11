@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: calc(var(--vh, 1vh) * 100 - 32px - 24px - 39px - 30px - 48px);
   height: 100%;
   position: relative;
 
@@ -23,17 +22,27 @@
   }
 
   .player_visible {
+    position: static;
     visibility: visible;
     opacity: 1;
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1920px) {
+  .fixHeight {
+    min-height: calc(31vw + 94px + 190px);
+  }
+}
+@media (max-width: 1600px) {
+  .fixHeight {
+    min-height: calc(29vw + 94px + 190px);
+  }
+}
+@media (max-width: 992px) {
   .container {
-    min-height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px - 30px - 48px);
-
     .plyer_content {
-      height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px - 30px - 48px);
+      min-height: calc(var(--vh, 1vh) * 100 - 10px - 30px - 39px - 30px - 48px);
+      height: auto;
     }
   }
 }

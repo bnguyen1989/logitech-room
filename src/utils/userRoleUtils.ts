@@ -41,4 +41,5 @@ const getRolePartner = () =>
   new Role(RoleUserName.PARTNER, [
     PermissionUser.ADD_ROOM,
     PermissionUser.REMOVE_ROOM,
+    PermissionUser.SHOW_SETUP_MODAL,
   ]);

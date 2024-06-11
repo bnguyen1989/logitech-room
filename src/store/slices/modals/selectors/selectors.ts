@@ -5,6 +5,7 @@ import {
   getAssetFromCard,
   getCardsByStep,
   getDisabledActionByKeyPermission,
+  getHiddenActionByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getNavigationStepData,
   getSelectData,
@@ -32,6 +33,10 @@ export const getFinishModalData = (state: RootState) => {
   return state.modals[ModalName.FINISH];
 };
 
+export const getRequestConsultationModalData = (state: RootState) => {
+  return state.modals[ModalName.REQUEST_CONSULTATION];
+};
+
 export const getIsShowProductModal =
   (attrName: string) => (state: RootState) => {
     const activeStep = getActiveStep(state);
@@ -45,7 +50,7 @@ export const getIsShowProductModal =
     const selectedData = getSelectData(state);
     const { nextStep } = getNavigationStepData(state);
     const selectedDataNextStep = selectedData[nextStep.key];
-    if(!selectedDataNextStep) return false;
+    if (!selectedDataNextStep) return false;
     const isActiveElements = Object.values(selectedDataNextStep).some(
       (item) => item.selected.length > 0
     );
@@ -67,8 +72,12 @@ export const getDataForAnnotationModal =
       activeStep,
       keyPermission
     )(state);
+    const hiddenActions = getHiddenActionByKeyPermission(
+      activeStep,
+      keyPermission
+    )(state);
 
     const threekitAsset = getAssetFromCard(card)(state);
 
-    return { isActiveCard, disabledActions, threekitAsset };
+    return { isActiveCard, disabledActions, hiddenActions, threekitAsset };
   };

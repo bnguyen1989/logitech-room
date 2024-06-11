@@ -13,9 +13,20 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private recommendationDependence: PropertyDependentElement = {};
   private requiredDependence: PropertyDependentElement = {};
   private disabledCounterDependence: PropertyDependentElement = {};
+  private disabledColorDependence: PropertyDependentElement = {};
+  private bundleElements: Array<ItemElement> = [];
 
   constructor(name: string) {
     super(name);
+  }
+
+  public addBundleElement(element: ItemElement): ItemElement {
+    this.bundleElements.push(element);
+    return this;
+  }
+
+  public getBundleElements(): Array<ItemElement> {
+    return [...this.bundleElements];
   }
 
   public setAccessoryItems(value: Array<string>): ItemElement {
@@ -25,6 +36,20 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   public getAccessoryItems(): Array<string> {
     return [...this.accessoryItems];
+  }
+
+  public addDisabledColorDependence(
+    value: PropertyDependentElement
+  ): ItemElement {
+    this.disabledColorDependence = {
+      ...this.disabledColorDependence,
+      ...value,
+    };
+    return this;
+  }
+
+  public getDisabledColorDependence(): PropertyDependentElement {
+    return this.disabledColorDependence;
   }
 
   public addRequiredDependence(value: PropertyDependentElement): ItemElement {

@@ -1,6 +1,10 @@
 import s from "./Player.module.scss";
 import { OrbitControls } from "@react-three/drei";
-import { ExporterResolver, Viewer } from "@threekit/react-three-fiber";
+import {
+  Background,
+  ExporterResolver,
+  Viewer,
+} from "@threekit/react-three-fiber";
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
 import LogitechStage from "../stages/LogitechStage.tsx";
@@ -8,7 +12,7 @@ import { Room } from "../Assets/Room.tsx";
 import { ConfigData } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
-import { Camera, Vector3 } from "three";
+import { Camera } from "three";
 import {
   EffectComposer,
   Selection,
@@ -20,6 +24,9 @@ import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
 import {
   EffectComposer as EffectComposerImpl,
+  EffectPass,
+  RenderPass,
+  ToneMappingEffect,
   ToneMappingMode,
 } from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
@@ -33,13 +40,14 @@ export const bhoustonAuth = {
 
 export const Player: React.FC = () => {
   const { cache, keyCache } = useCache();
-  const { distance } = usePlayer();
+  const { target, distance } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
   const [effectComposerRef, setEffectComposerRef] =
     useState<EffectComposerImpl | null>(null);
-  const [snapshotCamera, setSnapshotCamera] = useState<Camera>();
+  const [snapshotCameras, setSnapshotCameras] =
+    useState<Record<string, Camera>>();
 
   const focalLengthMm = 65; // Focal length in mm
   const sensorSizeMm = 36; // Horizontal sensor size of 35mm camera in mm
@@ -54,12 +62,44 @@ export const Player: React.FC = () => {
     },
   };
 
-  (window as any).snapshot = (type: "string" | "blob"): string | Blob => {
+  console.log("distance = ", { distance, target });
+
+  (window as any).snapshot = (
+    type: "string" | "blob",
+    side: "Front" | "Left" = "Front"
+  ): string | Blob => {
     if (!effectComposerRef) return "";
-    const dataSnapshot = snapshot(effectComposerRef, {
-      size: { width: 1920, height: 1080 },
+    const snapshotCamera = snapshotCameras?.[side];
+
+    const snapshotEC = new EffectComposerImpl(effectComposerRef.getRenderer(), {
+      stencilBuffer: true,
+      multisampling: effectComposerRef.multisampling,
+      frameBufferType: effectComposerRef.inputBuffer.texture.type,
+    });
+    snapshotEC.addPass(
+      new RenderPass((effectComposerRef.passes[0] as any).scene, snapshotCamera)
+    );
+    snapshotEC.addPass(
+      new EffectPass(
+        snapshotCamera,
+        new ToneMappingEffect({
+          mode: ToneMappingMode.UNCHARTED2,
+          whitePoint: 1,
+          middleGrey: 0.5,
+          minLuminance: 0.01,
+          maxLuminance: 1,
+          averageLuminance: 0.5,
+        })
+      )
+    );
+
+    const dataSnapshot = snapshot(snapshotEC, {
+      size: { width: 1024, height: 512 },
       camera: snapshotCamera,
     });
+
+    snapshotEC.dispose();
+
     if (type === "string") {
       return dataSnapshot;
     }
@@ -94,7 +134,7 @@ export const Player: React.FC = () => {
             <LogitechStage>
               <Room
                 roomAssetId={assetId}
-                setSnapshotCamera={setSnapshotCamera}
+                setSnapshotCameras={setSnapshotCameras}
               />
             </LogitechStage>
             <OrbitControls
@@ -102,13 +142,7 @@ export const Player: React.FC = () => {
               enableZoom={true}
               minDistance={distance.minDistance}
               maxDistance={distance.maxDistance}
-              target={
-                new Vector3(
-                  -3.3342790694469784,
-                  15.269443817758102,
-                  -3.999528610518013
-                )
-              }
+              target={target}
               minPolarAngle={Math.PI / 6}
               maxPolarAngle={Math.PI / 2}
             />
@@ -176,6 +210,7 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
         maxLuminance={1}
         averageLuminance={0.5}
       />
+      <Background color={"#f4f4f4"} />
     </EffectComposer>
   );
 });

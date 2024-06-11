@@ -1,14 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Configuration } from "@threekit/rest-api";
+import { DataCamera, CameraData } from "../../../models/R3F";
 
 interface ConfiguratorStateI {
   assetId: string | null;
   isBuilding: boolean;
   isProcessing: boolean;
   showDimensions: boolean;
-  configuration: Configuration;
+  configuration: Record<string, Configuration>;
   nodes: Record<string, string>;
   highlightNodes: Record<string, boolean>;
+  camera: DataCamera;
 }
 
 const initialState: ConfiguratorStateI = {
@@ -19,6 +21,7 @@ const initialState: ConfiguratorStateI = {
   configuration: {},
   nodes: {},
   highlightNodes: {},
+  camera: CameraData,
 };
 
 const configuratorSlice = createSlice({
@@ -34,13 +37,23 @@ const configuratorSlice = createSlice({
     changeValueConfiguration: (
       state,
       action: PayloadAction<{
+        key: string;
         value: Configuration;
       }>
     ) => {
+      const { key, value } = action.payload;
       state.configuration = {
         ...state.configuration,
-        ...action.payload.value,
+        [key]: { ...value },
       };
+    },
+    removeValuesConfigurationByKeys: (
+      state,
+      action: PayloadAction<string[]>
+    ) => {
+      action.payload.forEach((key) => {
+        delete state.configuration[key];
+      });
     },
     changeValueNodes: (
       state,
@@ -73,6 +86,9 @@ const configuratorSlice = createSlice({
     ) => {
       state.highlightNodes = action.payload;
     },
+    setDataCamera: (state, action: PayloadAction<DataCamera>) => {
+      state.camera = action.payload;
+    },
     disabledHighlightNode: (state, action: PayloadAction<string>) => {
       Object.keys(state.highlightNodes).forEach((key) => {
         if (action.payload.includes(key)) {
@@ -84,9 +100,11 @@ const configuratorSlice = createSlice({
 });
 
 export const {
+  setDataCamera,
   changeStatusBuilding,
   changeShowDimensions,
   changeValueConfiguration,
+  removeValuesConfigurationByKeys,
   changeValueNodes,
   changeAssetId,
   removeNodes,
