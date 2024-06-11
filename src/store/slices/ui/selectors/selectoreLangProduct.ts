@@ -7,7 +7,7 @@ import {
   Card,
   ProductDataType,
 } from "../../../../types/textTypeProduct";
-import { getActiveStep } from "./selectors";
+import { getStepNameByKeyPermission } from "./selectors";
 import { getPropertyColorCardByKeyPermission } from "./selectorsColorsCard";
 
 export const getAllLangProducts = (state: RootState) => {
@@ -95,9 +95,9 @@ export const getLangProductImage =
     const Blade_1 = getLangProductBlade1(keyProduct)(state);
     if (!Blade_1) return undefined;
 
-    const activeStep = getActiveStep(state);
+    const stepName = getStepNameByKeyPermission(keyItemPermission)(state);
     const activeColor = getPropertyColorCardByKeyPermission(
-      activeStep,
+      stepName,
       keyItemPermission
     )(state);
 
@@ -115,7 +115,7 @@ export const getLangProductImage =
       });
     }
 
-    // debugger
+
 
     const keyImg = Object.keys(Blade_1["Colors"])[0];
     return Blade_1["Colors"][keyImg];
