@@ -1,5 +1,5 @@
 import s from "./FormMkto.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FORM_MKTO, getFormIdLocale } from "../../../utils/formUtils";
 import { useLocale } from "../../../hooks/useLocal";
 import { toCamelCase } from "../../../utils/strUtils";
@@ -21,7 +21,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 }: FormMktoPropsI) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const formLoaded = useRef(false);
-  const [isRequest, setIsRequest] = useState(false);
+  // const [isRequest, setIsRequest] = useState(false);
   const locale = useLocale();
   const formId = getFormIdLocale(formName, locale);
   const formClassName = toCamelCase(formName);
@@ -56,11 +56,10 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
           clearTimeout(submitTimeoutRef.current);
           submitTimeoutRef.current = null;
         }
-        
-        onSubmit({ ...form.getValues() });
 
+        onSubmit({ ...form.getValues() });
       });
-      form.onSubmit((data: any) => {
+      form.onSubmit(() => {
         debugger;
         // console.log("test onSubmit data ", data);
         // onSubmit({ ...form.getValues() }); // Trigger onSubmit immediately on form submission
