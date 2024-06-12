@@ -581,11 +581,21 @@ function setSoftwareServicesData(configurator: Configurator) {
               value: asset.id,
             });
           }
-        });
+        }); 
+        
+        console.log("value setSoftwareServices", values);
 
         values.sort((a, b) => {
-          const aNumber = parseInt(a.label.split(" ")[0]);
-          const bNumber = parseInt(b.label.split(" ")[0]);
+          // Перевірка чи існують a.label та b.label і присвоєння значення '0', якщо немає
+          const aLabel = a.label || "0";
+          const bLabel = b.label || "0";
+
+          const aNumber = parseInt(aLabel.split(" ")[0]);
+          const bNumber = parseInt(bLabel.split(" ")[0]);
+
+          // const aNumber = parseInt(a.label.split(" ")[0]);
+          // const bNumber = parseInt(b.label.split(" ")[0]);
+
           return aNumber - bNumber;
         });
 
