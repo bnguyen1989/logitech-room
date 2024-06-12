@@ -40,14 +40,28 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
           });
         });
       }
+      debugger;
+      form.onValidate((data: any) => {
+        console.log("data onValidate", data);
 
-      form.onSubmit(() => {
-        if (!isRequest) {
-          setIsRequest(true);
-          onSubmit({ ...form.getValues() });
-        }
-        return false;
+        debugger;
       });
+      form.onSuccess((data: any) => {
+        debugger;
+        console.log("test onSuccess ",data);
+      });
+      form.onSubmit((data: any) => {
+        debugger;
+        console.log("test onSubmit data ", data);
+        onSubmit({ ...form.getValues() });
+      });
+      // form.onSubmit(() => {
+      //   if (!isRequest) {
+      //     setIsRequest(true);
+      //     onSubmit({ ...form.getValues() });
+      //   }
+      //   return false;
+      // });
 
       if (buttonText) {
         const button = document.querySelector(`.${formClassName} .mktoButton`);
