@@ -10,6 +10,7 @@ import {
   changeCountElement,
   deleteNodesByCards,
   removeElement,
+  setDefaultsNode,
   updateHighlightNodes,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
@@ -135,6 +136,7 @@ export const middleware: Middleware =
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card, activeStep)(store);
+        setDefaultsNode(activeStep)(store);
         break;
       }
 
@@ -144,6 +146,8 @@ export const middleware: Middleware =
         const permission = getPermission(stepName)(state);
 
         updateActiveCardsByPermissionData(permission)(store);
+
+        setDefaultsNode(stepName)(store);
 
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,

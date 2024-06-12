@@ -1,4 +1,7 @@
 export class PlacementManager {
+  public static getNameNodeForTV(): string {
+    return "Display_Placement_1";
+  }
   public static getNameNodeForMic(id?: number): string {
     if (!id) return `Mic_Placement`;
     return `Mic_Placement_${id}`;
@@ -8,9 +11,15 @@ export class PlacementManager {
     return `Tap_Placement_${type}_${id}`;
   }
 
-  public static getNameNodeForCamera(type: "Wall" | "TV", id?: number): string {
+  public static getNameNodeForCamera(
+    type: "Wall" | "TV",
+    id?: number,
+    display?: number
+  ): string {
     if (!id) return `Camera_${type}_Placement`;
-    return `Camera_${type}_Placement_${id}`;
+    let nameNode = `Camera_${type}_Placement_${id}`;
+    if (display) nameNode += `_display_${display}`;
+    return nameNode;
   }
 
   public static getNameNodeForSight(): string {
@@ -18,9 +27,12 @@ export class PlacementManager {
   }
 
   public static getNameNodeCommodeForCamera(
-    type: "RallyBar" | "Huddle" | "Mini"
+    type: "RallyBar" | "Huddle" | "Mini",
+    display?: number
   ): string {
-    return `Camera_Commode_${type}`;
+    let nameNode = `Camera_Commode_${type}`;
+    if (display) nameNode += `_display_${display}`;
+    return nameNode;
   }
 
   public static getNameNodeForScribe(): string {
@@ -86,15 +98,19 @@ export class PlacementManager {
     });
 
     ["TV"].forEach((type: any) => {
-      Array.from({ length: 2 }, (_, i) => i + 1).forEach((num) =>
-        placements.push(this.getNameNodeForCamera(type, num))
-      );
+      Array.from({ length: 2 }, (_, i) => i + 1).forEach((num) => {
+        placements.push(this.getNameNodeForCamera(type, num));
+        placements.push(this.getNameNodeForCamera(type, num, num));
+        placements.push(this.getNameNodeForCamera(type, num, num + 1));
+      });
     });
 
     ["Wall"].forEach((type: any) => {
-      Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) =>
-        placements.push(this.getNameNodeForCamera(type, num))
-      );
+      Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) => {
+        placements.push(this.getNameNodeForCamera(type, num));
+        placements.push(this.getNameNodeForCamera(type, num, num));
+        placements.push(this.getNameNodeForCamera(type, num, num + 1));
+      });
     });
 
     Array.from({ length: 3 }, (_, i) => i + 1).forEach((num) =>
@@ -115,8 +131,11 @@ export class PlacementManager {
       this.getNameNodeAngleMountScheduler(),
       this.getNameNodeSideMountScheduler(),
       this.getNameNodeCommodeForCamera("RallyBar"),
+      this.getNameNodeCommodeForCamera("RallyBar", 2),
       this.getNameNodeCommodeForCamera("Huddle"),
-      this.getNameNodeCommodeForCamera("Mini")
+      this.getNameNodeCommodeForCamera("Mini"),
+      this.getNameNodeCommodeForCamera("Mini", 1),
+      this.getNameNodeForTV()
     );
 
     return placements;
