@@ -57,6 +57,7 @@ export enum AttributeName {
   RoomCompute = "Room Compute",
   RoomComputeMount = "Room Compute Mount",
   RoomSight = "Room Sight",
+  RoomTV = "Room TV#not-ui",
   RoomMic = "Room Mic",
   QtyMic = "Qty - Micpod",
   RoomMicMount = "Room Mic Mount",

@@ -26,6 +26,8 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   const formId = getFormIdLocale(formName, locale);
   const formClassName = toCamelCase(formName);
 
+  const submitTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     if (formLoaded.current) return;
 
@@ -40,13 +42,35 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
           });
         });
       }
+      debugger;
+      form.onValidate((data: any) => {
+        console.log("data onValidate", data);
 
-      form.onSubmit(() => {
-        if (!isRequest) {
-          setIsRequest(true);
-          onSubmit({ ...form.getValues() });
+        debugger;
+      });
+      form.onSuccess((data: any) => {
+        debugger;
+        console.log("test onSuccess ", data);
+
+        if (submitTimeoutRef.current) {
+          clearTimeout(submitTimeoutRef.current);
+          submitTimeoutRef.current = null;
         }
-        return false;
+        
+        onSubmit({ ...form.getValues() });
+
+      });
+      form.onSubmit((data: any) => {
+        debugger;
+        // console.log("test onSubmit data ", data);
+        // onSubmit({ ...form.getValues() }); // Trigger onSubmit immediately on form submission
+        submitTimeoutRef.current = setTimeout(() => {
+          if (!submitTimeoutRef.current) return; // Check if it's already cleared by onSuccess
+          console.log(
+            "onSuccess did not fire within 15 seconds. Submitting form."
+          );
+          onSubmit({ ...form.getValues() });
+        }, 20000); // 15000 milliseconds equals 15 seconds
       });
 
       if (buttonText) {

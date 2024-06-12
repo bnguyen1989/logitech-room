@@ -6,6 +6,7 @@ import { MountElement } from "./mounts/MountElement";
 export class ItemElement extends BaseElement implements Element<ItemElement> {
   private dependence: DependentElement = {};
   private dependenceMount: Array<MountElement> = [];
+  private bundleMount: Array<MountElement> = [];
   private defaultMount: MountElement | null = null;
   private accessoryItems: Array<string> = [];
   private autoChangeItems: Record<string, Array<string>> = {};
@@ -27,6 +28,15 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   public getBundleElements(): Array<ItemElement> {
     return [...this.bundleElements];
+  }
+
+  public addBundleMount(value: MountElement): ItemElement {
+    this.bundleMount.push(value);
+    return this;
+  }
+
+  public getBundleMount(): Array<MountElement> {
+    return [...this.bundleMount];
   }
 
   public setAccessoryItems(value: Array<string>): ItemElement {
