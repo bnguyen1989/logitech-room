@@ -23,6 +23,7 @@ import {
   getPositionStepNameBasedOnActiveStep,
   getPrevNextStepByStepName,
   getPropertyCounterCardByKeyPermission,
+  getStepNameByKeyPermission,
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
 import {
@@ -222,9 +223,11 @@ export const middleware: Middleware =
           ([key, arr]) => {
             const color = arr.includes("color");
             if (!color) return;
+            const stepElement = getStepNameByKeyPermission(key)(state);
+            if (!stepElement) return;
             store.dispatch(
               setPropertyItem({
-                step: activeStep,
+                step: stepElement,
                 keyItemPermission: key,
                 property: {
                   color: value,
