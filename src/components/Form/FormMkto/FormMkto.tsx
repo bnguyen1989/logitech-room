@@ -100,9 +100,6 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 
   return (
     <div key={uuidv4()} className="div">
-      <div key={uuidv4()} className="div">
-        <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
-      </div>
       <div key={uuidv4()} className={`${s.formWrap} ${formClassName}`}>
         <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
       </div>
