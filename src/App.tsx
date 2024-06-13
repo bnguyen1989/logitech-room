@@ -16,6 +16,7 @@ import { useLocale } from "./hooks/useLocal";
 import { Loader } from "./components/Loader/Loader";
 import { Application } from "./models/Application";
 import { MunchkinScript } from "./components/Munchkin/MunchkinScript";
+import MarketoForm from "./components/Form/MarketoForm/MarketoForm";
 
 declare const app: Application;
 
@@ -72,6 +73,8 @@ function App() {
         <Route path="/room" element={<Room />} />
         <Route path="/room/:roomId" element={<RoomDetails />} />
         <Route path="/request-consultation" element={<RequestConsultation />} />
+        <Route path="/Marketo/:idForm" element={<MarketoForm />} />
+
         <Route path="*" element={<GetStarted />} />
       </Routes>
 
