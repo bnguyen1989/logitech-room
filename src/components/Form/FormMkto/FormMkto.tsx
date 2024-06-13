@@ -56,6 +56,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
           if (!isRequest) {
             setIsRequest(true);
             onSubmit({ ...form.getValues() });
+            return false;
           }
         });
 
