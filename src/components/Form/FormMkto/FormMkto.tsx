@@ -36,6 +36,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
       MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
 
       MktoForms2.whenReady((form: any) => {
+        console.log("Logger::Mkto:whenReady");
         if (initialValues) {
           Object.entries(initialValues).forEach(([key, value]) => {
             form.setValues({
@@ -44,10 +45,8 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
           });
         }
 
-        debugger;
         form.onSuccess((data: any) => {
-          debugger;
-          console.log("test onSuccess ", data);
+          console.log("Logger::Mkto:onSuccess", data);
 
           if (submitTimeoutRef.current) {
             clearTimeout(submitTimeoutRef.current);
@@ -61,14 +60,10 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
         });
 
         form.onSubmit(() => {
-          debugger;
-          // console.log("test onSubmit data ", data);
-          // onSubmit({ ...form.getValues() }); // Trigger onSubmit immediately on form submission
+          console.log("Logger::Mkto:onSubmit");
           submitTimeoutRef.current = setTimeout(() => {
             if (!submitTimeoutRef.current) return; // Check if it's already cleared by onSuccess
-            console.log(
-              "onSuccess did not fire within 15 seconds. Submitting form."
-            );
+
             onSubmit({ ...form.getValues() });
           }, 25000); // 15000 milliseconds equals 15 seconds
         });

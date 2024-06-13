@@ -6,10 +6,7 @@ const MarketoForm = () => {
   useEffect(() => {
     // Initialize Munchkin
     const initMunchkin = () => {
-      debugger;
-      //@ts-ignore
       if (window.Munchkin) {
-        //@ts-ignore
         window.Munchkin.init("201-WGH-889");
       }
     };
@@ -17,9 +14,7 @@ const MarketoForm = () => {
 
     MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", idForm);
     MktoForms2.whenReady((form: any) => {
-      debugger;
       form.onSuccess((values: any, followUpUrl: any) => {
-        debugger;
         console.log("values = ", values);
         console.log("followUpUrl = ", followUpUrl);
 
@@ -27,7 +22,6 @@ const MarketoForm = () => {
         return false;
       });
     });
- 
   }, []);
 
   return <form id={`mktoForm_${idForm}`}></form>;
