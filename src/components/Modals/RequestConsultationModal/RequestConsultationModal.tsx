@@ -20,7 +20,6 @@ export const RequestConsultationModal: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    debugger
     handleClose();
     navigate("/request-consultation", { replace: true });
   };

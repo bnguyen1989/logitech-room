@@ -48,7 +48,6 @@ export const SetupModal: React.FC = () => {
   };
 
   const handleSubmit = (formData: any) => {
-    debugger
     dispatch(setMySetupModal({ isOpen: false }));
     dispatch(setUserData({ data: { ...formData } }));
     handleNavigate("/room");
