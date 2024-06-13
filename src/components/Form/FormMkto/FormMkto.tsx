@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { FORM_MKTO, getFormIdLocale } from "../../../utils/formUtils";
 import { useLocale } from "../../../hooks/useLocal";
 import { toCamelCase } from "../../../utils/strUtils";
-import MarketoForm from "../MarketoForm/MarketoForm";
 import { v4 as uuidv4 } from "uuid";
 
 declare const MktoForms2: any;
@@ -34,9 +33,9 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 
   const submitTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   //
- 
+
   useEffect(() => {
-    debugger
+    debugger;
     if (formLoaded.current) return;
     //@ts-ignore
     if (window.formLoadedMarketo) return;
@@ -52,7 +51,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 
     MktoForms2.whenReady((form: any) => {
       console.log("Logger::Mkto:whenReady");
-      debugger
+      debugger;
       if (initialValues) {
         Object.entries(initialValues).forEach(([key, value]) => {
           form.setValues({
@@ -102,7 +101,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   return (
     <div key={uuidv4()} className="div">
       <div key={uuidv4()} className="div">
-      <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
+        <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
       </div>
       <div key={uuidv4()} className={`${s.formWrap} ${formClassName}`}>
         <form key={uuidv4()} id={`mktoForm_${formId}`}></form>

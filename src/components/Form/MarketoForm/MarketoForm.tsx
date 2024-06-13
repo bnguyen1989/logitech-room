@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-const MarketoForm = () => {
+const MarketoForm = (props: any) => {
+  const idFormProps = props.formId;
+
   const { idForm } = useParams();
+
+  const FormID = idFormProps ? idFormProps : idForm;
   useEffect(() => {
     // Initialize Munchkin
     const initMunchkin = () => {
@@ -12,7 +16,7 @@ const MarketoForm = () => {
     };
     initMunchkin();
 
-    MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", idForm);
+    MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", FormID);
     MktoForms2.whenReady((form: any) => {
       form.onSuccess((values: any, followUpUrl: any) => {
         console.log("values = ", values);
@@ -24,7 +28,7 @@ const MarketoForm = () => {
     });
   }, []);
 
-  return <form id={`mktoForm_${idForm}`}></form>;
+  return <form id={`mktoForm_${FormID}`}></form>;
 };
 
 export default MarketoForm;
