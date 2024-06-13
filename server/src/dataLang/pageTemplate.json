@@ -315,10 +315,10 @@
     "key": "Video Accessories#subtitle"
   },
   {
-    "en-US": "Finish up by adding services and tools to ensure the deployment is always up and running.",
-    "de-DE": "Fügen Sie abschließend Dienste und Tools hinzu, um sicherzustellen, dass Ihre Bereitstellung immer betriebsbereit ist.",
+    "en-US": "Finish by adding services and tools to ensure the deployment is always up and running.",
+    "de-DE": "Zum Abschluss fügen Sie Dienste und Tools hinzu, um sicherzustellen, dass die Bereitstellung immer einsatzbereit ist.",
     "es-ES": "Para terminar, añada servicios y herramientas para asegurarse de que su implementación esté siempre en funcionamiento.",
-    "es-MX": "Finaliza agregando servicios y herramientas para garantizar que tu implementación siempre esté en funcionamiento.",
+    "es-MX": "Finaliza agregando servicios y herramientas para garantizar que la implementación siempre esté en funcionamiento.",
     "key": "Software & Services#title"
   },
   {
@@ -336,11 +336,88 @@
     "key": "Software & Services#helpButton"
   },
   {
+    "en-US": "ESSENTIAL SERVICE PLAN",
+    "de-DE": "ESSENTIAL SERVICEPLAN",
+    "es-ES": "PLAN DE SERVICIO ESSENTIAL",
+    "es-MX": "PLAN DE SERVICIO ESSENCIAL",
+    "key": "Software & Services#Cards#Essential Service Plan#title"
+  },
+  {
+    "en-US": "Advanced software and tools for proactive management. Everything in Basic, plus:",
+    "de-DE": "Fortschrittliche Software und Tools für proaktives Management. Alles in Basic, plus:",
+    "es-ES": "Software y herramientas avanzados para una administración proactiva. Todas las funciones del plan Basic, más:",
+    "es-MX": "Software y herramientas avanzados para obtener una administración proactiva. Todo lo que incluye el plan Basic, más:",
+    "key": "Software & Services#Cards#Essential Service Plan#list#title"
+  },
+  {
+    "en-US": "Remote UI Access",
+    "de-DE": "Remote-Zugriff auf Benutzeroberfläche",
+    "es-ES": "Acceso remoto a la IU",
+    "es-MX": "Acceso a la IU remota",
+    "key": "Software & Services#Cards#Essential Service Plan#list#values#0"
+  },
+  {
+    "en-US": "Real-time alerts and room insights",
+    "de-DE": "Echtzeit-Benachrichtigungen und Rauminformationen",
+    "es-ES": "Alertas en tiempo real y análisis de salas",
+    "es-MX": "Alertas en tiempo real e información de las salas",
+    "key": "Software & Services#Cards#Essential Service Plan#list#values#1"
+  },
+  {
+    "en-US": "Room booking and usage insights",
+    "de-DE": "Einblicke in Raumbuchung und -nutzung",
+    "es-ES": "Datos de reserva y uso de salas",
+    "es-MX": "Información sobre reservaciones y uso de las salas",
+    "key": "Software & Services#Cards#Essential Service Plan#list#values#2"
+  },
+  {
+    "en-US": "Coming soon!",
+    "de-DE": "Demnächst erhältlich",
+    "es-ES": "¡Próximamente!",
+    "es-MX": "¡Próximamente!",
+    "key": "Software & Services#Cards#Essential Service Plan#list#values#3"
+  },
+  {
     "en-US": "BASIC SERVICES",
-    "de-DE": "STANDARDDIENSTE",
+    "de-DE": "BASIC SERVICES",
     "es-ES": "SERVICIOS BÁSICOS",
-    "es-MX": "SERVICIOS BÁSICOS",
+    "es-MX": "SERVICIOS DEL PLAN BASIC",
     "key": "Software & Services#Cards#Logitech Sync#title"
+  },
+  {
+    "en-US": "Always included with hardware purchase:",
+    "de-DE": "Immer im Lieferumfang enthalten:",
+    "es-ES": "Siempre incluido con la compra de hardware:",
+    "es-MX": "Siempre incluido con la compra del hardware:",
+    "key": "Software & Services#Cards#Logitech Sync#list#title"
+  },
+  {
+    "en-US": "Sync device management",
+    "de-DE": "Sync Geräteverwaltung",
+    "es-ES": "Administración de dispositivos Sync",
+    "es-MX": "Administración de dispositivos con Sync",
+    "key": "Software & Services#Cards#Logitech Sync#list#values#0"
+  },
+  {
+    "en-US": "Ongoing software updates",
+    "de-DE": "Laufende Software-Updates",
+    "es-ES": "Actualizaciones de software continuas",
+    "es-MX": "Actualizaciones de software continuas",
+    "key": "Software & Services#Cards#Logitech Sync#list#values#1"
+  },
+  {
+    "en-US": "2-yr standard product warranty",
+    "de-DE": "2 Jahre Standard-Produktgarantie",
+    "es-ES": "Garantía de producto estándar de 2 años",
+    "es-MX": "Garantía estándar de 2 años en el producto",
+    "key": "Software & Services#Cards#Logitech Sync#list#values#2"
+  },
+  {
+    "en-US": "Global, business hours support",
+    "de-DE": "Weltweiter Support während der Geschäftszeiten",
+    "es-ES": "Asistencia global en horario laboral",
+    "es-MX": "Asistencia global en horario laboral",
+    "key": "Software & Services#Cards#Logitech Sync#list#values#3"
   },
   {
     "en-US": "Always included with hardware purchase. Global, business-hours support and 2-year standard warranty, as well as Sync management platform to better manage and maintain the deployment.",
@@ -369,6 +446,41 @@
     "es-ES": "PLAN DE SERVICIO SELECT",
     "es-MX": "SELECCIONA EL PLAN DE SERVICIO",
     "key": "Software & Services#Cards#Support Service#title"
+  },
+  {
+    "en-US": "Comprehensive service and support with advanced software. Everything in Essential, plus:",
+    "de-DE": "Umfassender Service und Support mit fortschrittlicher Software. Alle Funktionen von Essentials sowie:",
+    "es-ES": "Servicio y asistencia integrales con software avanzado. Todas las funciones del plan Essential, más:",
+    "es-MX": "Servicio y asistencia integrales con software avanzado. Todo lo que incluye el plan Essential, más:",
+    "key": "Software & Services#Cards#Support Service#list#title"
+  },
+  {
+    "en-US": "24/7 technical assistance",
+    "de-DE": "Technischer Support rund um die Uhr",
+    "es-ES": "Asistencia técnica 24 horas al día, 7 días a la semana",
+    "es-MX": "Asistencia técnica las 24 horas del día, los 7 días de la semana",
+    "key": "Software & Services#Cards#Support Service#list#values#0"
+  },
+  {
+    "en-US": "Advanced replacements (next business day)",
+    "de-DE": "Erweiterte Ersatzlieferung (nächster Werktag)",
+    "es-ES": "Sustituciones avanzadas (al siguiente día laborable)",
+    "es-MX": "Reemplazos avanzados (el siguiente día hábil)",
+    "key": "Software & Services#Cards#Support Service#list#values#1"
+  },
+  {
+    "en-US": "Product warranty up to 5 years",
+    "de-DE": "Bis zu 5 Jahre Produktgarantie",
+    "es-ES": "Garantía de producto de hasta 5 años",
+    "es-MX": "Garantía de hasta 5 años en el producto",
+    "key": "Software & Services#Cards#Support Service#list#values#2"
+  },
+  {
+    "en-US": "1 yr, 2 yr, 3 yr, 4 yr, 5 yr",
+    "de-DE": "1 Jahr, 2 Jahre, 3 Jahre, 4 Jahre, 5 Jahre",
+    "es-ES": "1 año, 2 años, 3 años, 4 años, 5 años",
+    "es-MX": "1 año, 2 años, 3 años, 4 años, 5 años",
+    "key": "Software & Services#Cards#Support Service#valuesTemplate"
   },
   {
     "en-US": "Comprehensive 24/7 support, advanced product replacements, and proactive software and insights to ensure business continuity.",
@@ -644,10 +756,10 @@
     "key": "SetupModal#btn_done"
   },
   {
-    "en-US": "Project Summary Page",
-    "de-DE": "Projekt-Übersichtsseite",
-    "es-ES": "Página de resumen del proyecto",
-    "es-MX": "Página de resumen del proyecto",
+    "en-US": "PROJECT SUMMARY",
+    "de-DE": "PROJEKTÜBERSICHT",
+    "es-ES": "RESUMEN DEL PROYECTO",
+    "es-MX": "RESUMEN DEL PROYECTO",
     "key": "Rooms#header#name"
   },
   {
@@ -686,8 +798,15 @@
     "key": "Rooms#header#buttons#RequestConsultation"
   },
   {
-    "en-US": "Explore Your Finished Room(s)",
-    "de-DE": "Fertig eingerichtete Räume ansehen",
+    "en-US": "Copy Your Custom URL",
+    "de-DE": "Benutzerdefinierte URL kopieren",
+    "es-ES": "Copie su URL personalizada",
+    "es-MX": "Copia tu URL personalizada",
+    "key": "Rooms#header#buttons#CopyYourCustomURL"
+  },
+  {
+    "en-US": "Explore Your Finished Rooms",
+    "de-DE": "Fertig eingerichtete Räume erkunden",
     "es-ES": "Explore sus salas terminadas",
     "es-MX": "Explora tus salas finalizadas",
     "key": "Rooms#title"
@@ -810,6 +929,48 @@
     "es-ES": "Las salas grandes con formas tradicionales suelen requerir productos adicionales para ampliar la cobertura y garantizar que se pueda ver y oír a todos con claridad.",
     "es-MX": "Las salas grandes con formas tradicionales suelen requerir productos adicionales para ampliar la cobertura y garantizar que se pueda ver y oír a todos con claridad.",
     "key": "Rooms#card#descriptionRoomBySize#Auditorium"
+  },
+  {
+    "en-US": "Phone Booth Bring Your Own Device",
+    "de-DE": "Telefonzelle Eigenes Gerät mitbringen",
+    "es-ES": "Cabina telefónica Trae Tu Propio Dispositivo",
+    "es-MX": "Cabina telefónica Trae Tu Propio Dispositivo",
+    "key": "Rooms#card#templateRoomNameByPlatform#BYOD#Phonebooth"
+  },
+  {
+    "en-US": "Huddle Room Bring Your Own Device",
+    "de-DE": "Huddle Room Eigenes Gerät mitbringen",
+    "es-ES": "Sala de reuniones Trae Tu Propio Dispositivo",
+    "es-MX": "Sala de reuniones Trae Tu Propio Dispositivo",
+    "key": "Rooms#card#templateRoomNameByPlatform#BYOD#Huddle"
+  },
+  {
+    "en-US": "Small Room Bring Your Own Device",
+    "de-DE": "Kleiner Raum Eigenes Gerät mitbringen",
+    "es-ES": "Sala pequeña Trae Tu Propio Dispositivo",
+    "es-MX": "Sala pequeña Trae Tu Propio Dispositivo",
+    "key": "Rooms#card#templateRoomNameByPlatform#BYOD#Small"
+  },
+  {
+    "en-US": "Medium Room Bring Your Own Device",
+    "de-DE": "Mittlerer Raum Eigenes Gerät mitbringen",
+    "es-ES": "Sala mediana Trae Tu Propio Dispositivo",
+    "es-MX": "Sala mediana Trae Tu Propio Dispositivo",
+    "key": "Rooms#card#templateRoomNameByPlatform#BYOD#Medium"
+  },
+  {
+    "en-US": "Large Room Bring Your Own Device",
+    "de-DE": "Großer Raum Eigenes Gerät mitbringen",
+    "es-ES": "Sala grande Trae Tu Propio Dispositivo",
+    "es-MX": "Sala grande Trae Tu Propio Dispositivo",
+    "key": "Rooms#card#templateRoomNameByPlatform#BYOD#Large"
+  },
+  {
+    "en-US": "Alternative Room Bring Your Own Device",
+    "de-DE": "Alternativer Raum Eigenes Gerät mitbringen",
+    "es-ES": "Sala alternativa Trae Tu Propio Dispositivo",
+    "es-MX": "Sala alternativa Trae Tu Propio Dispositivo",
+    "key": "Rooms#card#templateRoomNameByPlatform#BYOD#Alternative"
   },
   {
     "en-US": "View Your Room",
@@ -950,5 +1111,12 @@
     "es-ES": "¡Gracias por su solicitud! Nos pondremos en contacto en breve para analizar cualquier necesidad restante para finalizar su presupuesto y los próximos pasos.",
     "es-MX": "¡Gracias por su solicitud! Nos pondremos en contacto en breve para analizar cualquier necesidad restante para finalizar su presupuesto y dar los próximos pasos.",
     "key": "RequestConsultation#text"
+  },
+  {
+    "en-US": "You will have to re-select other products if you change your conference camera.",
+    "de-DE": "Sie müssen andere Produkte erneut auswählen, wenn Sie Ihre Konferenzkamera ändern",
+    "es-ES": "Tendrás que volver a seleccionar otros productos si cambias tu cámara de conferencias.",
+    "es-MX": "Tendrás que volver a seleccionar otros productos si cambias tu cámara de conferencia.",
+    "key": "RemoveRoomModal#text"
   }
 ]
