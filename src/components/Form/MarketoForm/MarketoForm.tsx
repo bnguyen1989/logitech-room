@@ -28,7 +28,7 @@ const MarketoForm = () => {
           idForm,
           (form: any) => {
             debugger;
-            form.onSuccess((values, followUpUrl) => {
+            form.onSuccess((values: any, followUpUrl: any) => {
               form.getFormElem().hide();
               return false;
             });
@@ -40,8 +40,9 @@ const MarketoForm = () => {
     // Initialize Munchkin
     const initMunchkin = () => {
       debugger;
+      //@ts-ignore
       if (window.Munchkin) {
-        Munchkin.init("201-WGH-889");
+        window.Munchkin.init("201-WGH-889");
       }
     };
     debugger;
