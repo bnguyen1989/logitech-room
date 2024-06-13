@@ -13,6 +13,7 @@ export interface PagesI {
   Order: Order;
   ShareModal: ShareModal;
   RequestConsultation: RequestConsultation;
+  RemoveRoomModal: RemoveRoomModal;
 }
 
 export type PagesIKeys = keyof PagesI;
@@ -144,19 +145,33 @@ export interface SoftwareServices {
   helpButton: string;
   Cards: Cards4;
   QuestionForm: QuestionForm;
-  title: string;
   titleAfterForm: string;
+  title: string;
 }
 
 export interface Cards4 {
   "Logitech Sync": LogitechSync;
   "Logitech Extended Warranty": LogitechExtendedWarranty;
   "Support Service": SupportService;
+  "Essential Service Plan": EssentialServicePlan;
 }
 
 export interface LogitechSync {
   title: string;
   description: string;
+  list: List2;
+}
+
+export interface List2 {
+  title: string;
+  values: Values;
+}
+
+export interface Values {
+  "0": string;
+  "1": string;
+  "2": string;
+  "3": string;
 }
 
 export interface LogitechExtendedWarranty {
@@ -167,6 +182,36 @@ export interface LogitechExtendedWarranty {
 export interface SupportService {
   title: string;
   description: string;
+  list: List3;
+  valuesTemplate: string;
+}
+
+export interface List3 {
+  title: string;
+  values: Values2;
+}
+
+export interface Values2 {
+  "0": string;
+  "1": string;
+  "2": string;
+}
+
+export interface EssentialServicePlan {
+  title: string;
+  list: List4;
+}
+
+export interface List4 {
+  title: string;
+  values: Values3;
+}
+
+export interface Values3 {
+  "0": string;
+  "1": string;
+  "2": string;
+  "3": string;
 }
 
 export interface QuestionForm {
@@ -188,31 +233,14 @@ export interface SetupModal {
 }
 
 export interface Rooms {
-  header: Header;
-  title: string;
-  buttons: Buttons2;
-  card: Card;
-  subtitle: Subtitle2;
-}
-
-export interface Header {
-  name: string;
-  title: string;
-  subtitle: Subtitle;
   buttons: Buttons;
-}
-
-export interface Subtitle {
-  "0": string;
-  "1": string;
-  "2": string;
+  card: Card;
+  header: Header;
+  subtitle: Subtitle2;
+  title: string;
 }
 
 export interface Buttons {
-  RequestConsultation: string;
-}
-
-export interface Buttons2 {
   AddAnotherRoom: string;
   DownloadRoomGuideAll: string;
   ShareYourProject: string;
@@ -221,7 +249,8 @@ export interface Buttons2 {
 export interface Card {
   templateRoomName: TemplateRoomName;
   descriptionRoomBySize: DescriptionRoomBySize;
-  buttons: Buttons3;
+  buttons: Buttons2;
+  templateRoomNameByPlatform: TemplateRoomNameByPlatform;
 }
 
 export interface TemplateRoomName {
@@ -242,9 +271,40 @@ export interface DescriptionRoomBySize {
   Auditorium: string;
 }
 
-export interface Buttons3 {
+export interface Buttons2 {
   ViewRoom: string;
   DownloadRoomGuide: string;
+}
+
+export interface TemplateRoomNameByPlatform {
+  BYOD: Byod;
+}
+
+export interface Byod {
+  Phonebooth: string;
+  Huddle: string;
+  Small: string;
+  Medium: string;
+  Large: string;
+  Alternative: string;
+}
+
+export interface Header {
+  title: string;
+  subtitle: Subtitle;
+  buttons: Buttons3;
+  name: string;
+}
+
+export interface Subtitle {
+  "0": string;
+  "1": string;
+  "2": string;
+}
+
+export interface Buttons3 {
+  RequestConsultation: string;
+  CopyYourCustomURL: string;
 }
 
 export interface Subtitle2 {
@@ -292,5 +352,9 @@ export interface ShareModal {
 }
 
 export interface RequestConsultation {
+  text: string;
+}
+
+export interface RemoveRoomModal {
   text: string;
 }

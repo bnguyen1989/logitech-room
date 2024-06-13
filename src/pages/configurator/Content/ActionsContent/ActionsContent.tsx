@@ -15,6 +15,7 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../../models/analytics/type";
+import { DirectionStep } from "../../../../utils/baseUtils";
 
 declare const app: Application;
 
@@ -36,7 +37,7 @@ export const ActionsContent = () => {
       value: {},
     });
 
-    app.changeStep(nextStep.key);
+    app.changeStep(nextStep.key, DirectionStep.Next);
   };
 
   const handleBack = () => {
@@ -45,7 +46,7 @@ export const ActionsContent = () => {
       return;
     }
 
-    app.changeStep(prevStep.key);
+    app.changeStep(prevStep.key, DirectionStep.Prev);
   };
 
   return (

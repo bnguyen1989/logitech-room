@@ -1,6 +1,7 @@
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { StepName } from "../../../utils/baseUtils";
+import { DirectionStep, StepName } from "../../../utils/baseUtils";
 import { Application } from "../../Application";
+import { Configurator } from "../../configurator/Configurator";
 import { AttributeI } from "../../configurator/type";
 import { DataTable } from "../../dataTable/DataTable";
 import { ConfigurationConstraintHandler } from "../../handlers/ConfigurationConstraintHandler";
@@ -48,6 +49,32 @@ export class ChangeStepBehavior extends Behavior {
           });
       }
 
+      const prepareStepNames = this.getPrepareStepNames();
+      if (
+        command.direction === DirectionStep.Prev &&
+        prepareStepNames.includes(command.stepName)
+      ) {
+        const arrayStepName = this.getArrayStepNames();
+        const index = arrayStepName.indexOf(command.stepName);
+        arrayStepName.forEach((stepName, i) => {
+          if (i <= index) return;
+          const attributesStep = Configurator.getNamesAttrByStepName(stepName);
+          const objects: Record<string, any> = {};
+          attributesStep.forEach((attr) => {
+            const { 0: attrName, 1: qtyName } = attr;
+            if (attrName) {
+              objects[attrName] = {
+                assetId: "",
+              };
+            }
+            if (qtyName) {
+              objects[qtyName] = "0";
+            }
+          });
+          app.currentConfigurator.setConfiguration(objects);
+        });
+      }
+
       return new ConfigurationConstraintHandler(
         app.currentConfigurator,
         app.dataTableLevel1,
@@ -58,5 +85,22 @@ export class ChangeStepBehavior extends Behavior {
           return resolve(true);
         });
     });
+  }
+
+  private getArrayStepNames() {
+    return [
+      StepName.RoomSize,
+      StepName.Platform,
+      StepName.Services,
+      StepName.ConferenceCamera,
+      StepName.AudioExtensions,
+      StepName.MeetingController,
+      StepName.VideoAccessories,
+      StepName.SoftwareServices,
+    ];
+  }
+
+  private getPrepareStepNames() {
+    return [StepName.RoomSize, StepName.Platform, StepName.Services];
   }
 }
