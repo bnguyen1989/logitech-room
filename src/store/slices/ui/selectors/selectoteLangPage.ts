@@ -8,6 +8,7 @@ import {
   PagesI,
   PagesIKeys,
   Platform,
+  RemoveRoomModal,
   RequestConsultation,
   RoomSize,
   Rooms,
@@ -107,6 +108,10 @@ export const getRequestConsultationLangPage = (
 export const getShareModalLangPage = (state: RootState): ShareModal => {
   return getLangPage("ShareModal")(state) as ShareModal;
 };
+
+export const getSelectProductModalLangPage = (state: RootState) => {
+  return getLangPage("RemoveRoomModal")(state) as RemoveRoomModal;
+}
 
 export const getLangStepDataByStepName =
   (stepName: StepName) => (state: RootState) => {

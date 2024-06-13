@@ -1,75 +1,74 @@
 .container {
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: var(--main-color-text);
-    padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 35px 25px;
 
-    .text {
-      color: #fff;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal;
-      text-transform: uppercase;
+  width: 790px;
+  height: 457px;
+
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    .close {
+      display: flex;
     }
   }
 
-  .title {
+  .content {
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 11px;
-    padding: 20px 30px;
+    gap: 30px;
 
-    .icon {
-    }
-
-    .text {
-      max-width: 400px;
-      color: #000;
+    .title {
       text-align: center;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 300;
-      line-height: 26px;
-    }
-  }
+      max-width: 600px;
+      font-size: 36px;
+      line-height: 46px;
+      font-weight: 700;
 
-  .cards {
-    height: calc(100vh - 245px);
-    overflow-y: auto;
+      color: #000000;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
   }
 }
 
 @media (max-width: 1000px) {
   .container {
-    .header {
-      .text {
-        font-size: 24px;
-      }
-    }
+    padding: 40px 25px;
+    width: calc(100% - 50px);
 
-    .title {
-      .text {
-        font-size: 18px;
-        line-height: 24px;
-        color: #697172;
+    .content {
+      width: 100%;
+      .title {
+        font-size: 26px;
+        line-height: 34px;
       }
-    }
-
-    .cards {
-      height: calc((var(--vh, 1vh) * 100) - 246px);
-      overflow-y: auto;
     }
   }
 }
 
 @media (max-width: 500px) {
   .container {
-    .title {
-      padding: 20px 15px;
+    .content {
+      .actions {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        justify-content: normal;
+        align-items: normal;
+      }
     }
   }
 }

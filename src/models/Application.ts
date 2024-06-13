@@ -10,7 +10,7 @@ import { ChangeStepCommand } from "./command/ChangeStepCommand";
 import { DataTable } from "./dataTable/DataTable";
 import { ChangeSelectItemCommand } from "./command/ChangeSelectItemCommand";
 import { ConfigurationConstraintHandler } from "./handlers/ConfigurationConstraintHandler";
-import { StepName } from "../utils/baseUtils";
+import { DirectionStep, StepName } from "../utils/baseUtils";
 import fileDownload from "js-file-download";
 import { RoomService } from "../services/RoomService/RoomService";
 import { EventDataAnalyticsI } from "./analytics/type";
@@ -133,9 +133,9 @@ export class Application {
     );
   }
 
-  public changeStep(stepName: StepName): Promise<boolean> {
+  public changeStep(stepName: StepName, direction: DirectionStep): Promise<boolean> {
     return this.executeCommand(
-      new ChangeStepCommand(this.currentConfigurator, stepName)
+      new ChangeStepCommand(this.currentConfigurator, stepName, direction)
     );
   }
 
