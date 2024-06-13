@@ -2,7 +2,7 @@
   "Rally Bar": {
     "Card": {
       "ProductName": "Rally Bar",
-      "ShortDescription": "Video bar for medium to large rooms"
+      "ShortDescription": "Video bar for medium to large rooms with built-in AI"
     },
     "Blade_1": {
       "ProductName": "Rally Bar",
@@ -78,7 +78,7 @@
   "Rally Bar Mini": {
     "Card": {
       "ProductName": "Rally Bar Mini",
-      "ShortDescription": "Video bar for small to medium rooms"
+      "ShortDescription": "Video bar for small to medium rooms with built-in AI"
     },
     "Blade_1": {
       "ProductName": "Rally Bar Mini",
@@ -227,7 +227,7 @@
   "LOGITECH TAP": {
     "Card": {
       "ProductName": "Logitech Tap",
-      "ShortDescription": "Tethered room controller with Cat5e kit"
+      "ShortDescription": "USB-connected room controller with Cat5e kit"
     },
     "Blade_1": {
       "ProductName": "LOGITECH TAP",
@@ -831,7 +831,7 @@
       "ShortDescription": "Enables single-cable BYOD connection for MeetUp 2.",
       "LongDescription": "Logitech Active USB Cable allows a single-cable connection between MeetUp 2 and laptops for BYOD meetings.",
       "Colors": {
-        "Off white": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/mic-pod-extension-cable/gallery-1.png?v=1"
+        "Off white": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/active-usb-cable/active-usb-cable-01.png?v=1"
       }
     },
     "Blade_2": {
@@ -1607,7 +1607,7 @@
   "TV MOUNT FOR MEETUP": {
     "Card": {
       "ProductName": "TV Mount for MeetUp",
-      "ShortDescription": "Mount MeetUp 2 to TVs"
+      "ShortDescription": "Mount MeetUp 2 to a TV"
     },
     "Blade_1": {
       "ProductName": "TV MOUNT FOR MEETUP",

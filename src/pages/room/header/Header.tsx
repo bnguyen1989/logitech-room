@@ -120,7 +120,7 @@ export const Header: React.FC = () => {
           <div className={s.header_action}>
             <IconButton
               onClick={handleShareUserRooms}
-              text={"Copy Your Custom URL"}
+              text={langPage.header.buttons.CopyYourCustomURL}
               variant={userCanReqConsultation ? "outlined" : "contained"}
             >
               <ChainLinkSVG

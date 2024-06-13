@@ -19,6 +19,7 @@ import {
   getTitleCardByKeyPermission,
 } from "./selectors";
 import {
+  PlatformName,
   isBundleElement,
   isCameraElement,
   isTapElement,
@@ -27,9 +28,11 @@ import {
   getLangDescriptionRoomBySize,
   getPrepareCardTitleLangByKeyPermission,
   getPrepareDescriptionLangByKeyPermission,
+  getRoomsLangPage,
 } from "./selectoteLangPage";
 import { localeToCurrency } from "../../../../utils/localeUtils";
 import { deepCopy } from "../../../../utils/objUtils";
+import { Byod } from "../../../../types/textTypePage";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -91,6 +94,16 @@ const getSelectValueBySelectData = (data: any, card: CardI) => {
 
 const getNameOrder = (state: RootState) => {
   const selectedPrepareCards = getSelectedPrepareCards(state);
+  const platform = selectedPrepareCards.find(
+    (card) => card.key === StepName.Platform
+  )?.keyPermission;
+  const roomSize = selectedPrepareCards.find(
+    (card) => card.key === StepName.RoomSize
+  )?.keyPermission as keyof Byod;
+  if (platform === PlatformName.BYOD && roomSize) {
+    const langRoom = getRoomsLangPage(state);
+    return langRoom.card.templateRoomNameByPlatform.BYOD[roomSize];
+  }
   const name = selectedPrepareCards.reduce<string>((acc, item) => {
     const titleCard = getPrepareCardTitleLangByKeyPermission(
       item.keyPermission
