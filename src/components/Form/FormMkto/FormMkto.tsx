@@ -1,5 +1,5 @@
 import s from "./FormMkto.module.scss";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { FORM_MKTO, getFormIdLocale } from "../../../utils/formUtils";
 import { useLocale } from "../../../hooks/useLocal";
 import { toCamelCase } from "../../../utils/strUtils";
@@ -16,7 +16,7 @@ interface FormMktoPropsI {
 export const FormMkto: React.FC<FormMktoPropsI> = memo(
   ({ formName, buttonText, initialValues, onSubmit }: FormMktoPropsI) => {
     const formLoaded = useRef(false);
-    // const [isRequest, setIsRequest] = useState(false);
+    const [isRequest, setIsRequest] = useState(false);
     const locale = useLocale();
     const formId = getFormIdLocale(formName, locale);
     const formClassName = toCamelCase(formName);
@@ -25,7 +25,6 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
     //
     useEffect(() => {
       if (formLoaded.current) return;
-      debugger;
 
       const initMunchkin = () => {
         if (window.Munchkin) {
@@ -33,10 +32,9 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
         }
       };
       initMunchkin();
-      console.log("formId", formId);
 
       MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
-      debugger;
+
       MktoForms2.whenReady((form: any) => {
         if (initialValues) {
           Object.entries(initialValues).forEach(([key, value]) => {
@@ -55,8 +53,10 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
             clearTimeout(submitTimeoutRef.current);
             submitTimeoutRef.current = null;
           }
-
-          onSubmit({ ...form.getValues() });
+          if (!isRequest) {
+            setIsRequest(true);
+            onSubmit({ ...form.getValues() });
+          }
         });
 
         form.onSubmit(() => {
@@ -69,7 +69,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
               "onSuccess did not fire within 15 seconds. Submitting form."
             );
             onSubmit({ ...form.getValues() });
-          }, 20000); // 15000 milliseconds equals 15 seconds
+          }, 2000); // 15000 milliseconds equals 15 seconds
         });
 
         if (buttonText) {
