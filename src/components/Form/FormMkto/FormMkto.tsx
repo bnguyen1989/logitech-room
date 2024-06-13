@@ -1,8 +1,10 @@
 import s from "./FormMkto.module.scss";
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FORM_MKTO, getFormIdLocale } from "../../../utils/formUtils";
 import { useLocale } from "../../../hooks/useLocal";
 import { toCamelCase } from "../../../utils/strUtils";
+import MarketoForm from "../MarketoForm/MarketoForm";
+import { v4 as uuidv4 } from "uuid";
 
 declare const MktoForms2: any;
 
@@ -13,81 +15,98 @@ interface FormMktoPropsI {
   onSubmit: (formData: any) => void;
 }
 
-export const FormMkto: React.FC<FormMktoPropsI> = memo(
-  ({ formName, buttonText, initialValues, onSubmit }: FormMktoPropsI) => {
-    const formLoaded = useRef(false);
-    const [isRequest, setIsRequest] = useState(false);
-    const locale = useLocale();
-    const formId = getFormIdLocale(formName, locale);
-    const formClassName = toCamelCase(formName);
+const setMarketoForm = (value: any) => {
+  //@ts-ignore
+  window.formLoadedMarketo = value;
+};
 
-    const submitTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    //
-    useEffect(() => {
-      if (formLoaded.current) return;
+export const FormMkto: React.FC<FormMktoPropsI> = ({
+  formName,
+  buttonText,
+  initialValues,
+  onSubmit,
+}: FormMktoPropsI) => {
+  const formLoaded = useRef(false);
+  const [isRequest, setIsRequest] = useState(false);
+  const locale = useLocale();
+  const formId = getFormIdLocale(formName, locale);
+  const formClassName = toCamelCase(formName);
 
-      const initMunchkin = () => {
-        if (window.Munchkin) {
-          window.Munchkin.init("201-WGH-889");
-        }
-      };
-      initMunchkin();
+  const submitTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  //
+ 
+  useEffect(() => {
+    debugger
+    if (formLoaded.current) return;
+    //@ts-ignore
+    if (window.formLoadedMarketo) return;
 
-      MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
+    const initMunchkin = () => {
+      if (window.Munchkin) {
+        window.Munchkin.init("201-WGH-889");
+      }
+    };
+    initMunchkin();
 
-      MktoForms2.whenReady((form: any) => {
-        console.log("Logger::Mkto:whenReady");
-        if (initialValues) {
-          Object.entries(initialValues).forEach(([key, value]) => {
-            form.setValues({
-              [key]: value,
-            });
+    MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
+
+    MktoForms2.whenReady((form: any) => {
+      console.log("Logger::Mkto:whenReady");
+      debugger
+      if (initialValues) {
+        Object.entries(initialValues).forEach(([key, value]) => {
+          form.setValues({
+            [key]: value,
           });
+        });
+      }
+
+      form.onSuccess((data: any) => {
+        console.log("Logger::Mkto:onSuccess", data);
+
+        if (submitTimeoutRef.current) {
+          clearTimeout(submitTimeoutRef.current);
+          submitTimeoutRef.current = null;
         }
-
-        form.onSuccess((data: any) => {
-          console.log("Logger::Mkto:onSuccess", data);
-
-          if (submitTimeoutRef.current) {
-            clearTimeout(submitTimeoutRef.current);
-            submitTimeoutRef.current = null;
-          }
-          if (!isRequest) {
-            setIsRequest(true);
-            onSubmit({ ...form.getValues() });
-            return false;
-          }
-        });
-
-        form.onSubmit(() => {
-          console.log("Logger::Mkto:onSubmit");
-          submitTimeoutRef.current = setTimeout(() => {
-            if (!submitTimeoutRef.current) return; // Check if it's already cleared by onSuccess
-
-            onSubmit({ ...form.getValues() });
-          }, 25000); // 15000 milliseconds equals 15 seconds
-        });
-
-        if (buttonText) {
-          const button = document.querySelector(
-            `.${formClassName} .mktoButton`
-          );
-          if (button) {
-            button.textContent = buttonText;
-          }
+        if (!isRequest) {
+          setIsRequest(true);
+          onSubmit({ ...form.getValues() });
+          setMarketoForm(false);
+          return false;
         }
       });
 
-      // MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
-      formLoaded.current = true;
+      form.onSubmit(() => {
+        console.log("Logger::Mkto:onSubmit");
+        submitTimeoutRef.current = setTimeout(() => {
+          if (!submitTimeoutRef.current) return; // Check if it's already cleared by onSuccess
+          setMarketoForm(false);
+          onSubmit({ ...form.getValues() });
+        }, 25000); // 15000 milliseconds equals 15 seconds
+      });
 
-      // MktoForms2.whenReady((form: any) => {});
-    }, []);
+      if (buttonText) {
+        const button = document.querySelector(`.${formClassName} .mktoButton`);
+        if (button) {
+          button.textContent = buttonText;
+        }
+      }
+    });
 
-    return (
-      <div className={`${s.formWrap} ${formClassName}`}>
-        <form id={`mktoForm_${formId}`}></form>
+    // MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
+    formLoaded.current = true;
+    setMarketoForm(true);
+    // MktoForms2.whenReady((form: any) => {});
+  }, []);
+
+  return (
+    <div key={uuidv4()} className="div">
+      <div key={uuidv4()} className="div">
+      <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
       </div>
-    );
-  }
-);
+      <div key={uuidv4()} className={`${s.formWrap} ${formClassName}`}>
+        <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
+      </div>
+    </div>
+  );
+};
