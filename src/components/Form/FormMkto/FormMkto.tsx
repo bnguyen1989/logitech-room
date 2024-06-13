@@ -70,7 +70,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = memo(
               "onSuccess did not fire within 15 seconds. Submitting form."
             );
             onSubmit({ ...form.getValues() });
-          }, 2000); // 15000 milliseconds equals 15 seconds
+          }, 25000); // 15000 milliseconds equals 15 seconds
         });
 
         if (buttonText) {
