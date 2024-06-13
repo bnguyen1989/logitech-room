@@ -35,7 +35,6 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   //
 
   useEffect(() => {
-    debugger;
     if (formLoaded.current) return;
     //@ts-ignore
     if (window.formLoadedMarketo) return;
@@ -51,7 +50,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 
     MktoForms2.whenReady((form: any) => {
       console.log("Logger::Mkto:whenReady");
-      debugger;
+      // debugger;
       if (initialValues) {
         Object.entries(initialValues).forEach(([key, value]) => {
           form.setValues({
@@ -92,17 +91,12 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
       }
     });
 
-    // MktoForms2.loadForm("//info.logitech.com", "201-WGH-889", formId);
     formLoaded.current = true;
     setMarketoForm(true);
-    // MktoForms2.whenReady((form: any) => {});
   }, []);
 
   return (
     <div key={uuidv4()} className="div">
-      <div key={uuidv4()} className="div">
-        <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
-      </div>
       <div key={uuidv4()} className={`${s.formWrap} ${formClassName}`}>
         <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
       </div>
