@@ -22,19 +22,22 @@ const MarketoForm = () => {
       "mktoFormsScript",
       () => {
         debugger;
-        MktoForms2.loadForm(
+
+        window.MktoForms2.loadForm(
           "//info.logitech.com",
           "201-WGH-889",
           idForm,
-          (form: any) => {
-            debugger;
-            form.onSuccess((values: any, followUpUrl: any) => {
-              debugger
-              console.log('values = ',values);
-              console.log('followUpUrl = ',followUpUrl);
-              
-              form.getFormElem().hide();
-              return false;
+          () => {
+            MktoForms2.whenReady((form: any) => {
+              debugger;
+              form.onSuccess((values: any, followUpUrl: any) => {
+                debugger;
+                console.log("values = ", values);
+                console.log("followUpUrl = ", followUpUrl);
+
+                form.getFormElem().hide();
+                return false;
+              });
             });
           }
         );
@@ -46,6 +49,7 @@ const MarketoForm = () => {
       debugger;
       //@ts-ignore
       if (window.Munchkin) {
+        //@ts-ignore
         window.Munchkin.init("201-WGH-889");
       }
     };
