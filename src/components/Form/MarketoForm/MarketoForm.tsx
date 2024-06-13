@@ -29,6 +29,10 @@ const MarketoForm = () => {
           (form: any) => {
             debugger;
             form.onSuccess((values: any, followUpUrl: any) => {
+              debugger
+              console.log('values = ',values);
+              console.log('followUpUrl = ',followUpUrl);
+              
               form.getFormElem().hide();
               return false;
             });
