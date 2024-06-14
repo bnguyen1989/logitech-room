@@ -327,25 +327,14 @@ function setStepData(
       const qty = configurator.getStateAttributeByName(qtyName);
       if (!qty) return;
       temp.forEach((item) => {
-        const asset = Object.values(
-          item.dataThreekit.threekitItems
-        )[0] as ValueAssetStateI;
-        const qtyAsset = asset?.metadata?.qty;
-
         let min = 0;
         let max = 0;
-        if (!qtyAsset) {
-          const values = (qty.values as Array<ValueStringStateI>).filter(
-            (item) => item.visible
-          );
-          if (values.length) {
-            min = parseInt(values[0].value);
-            max = parseInt(values[values.length - 1].value);
-          }
-        } else {
-          const values = JSON.parse(qtyAsset) as Array<number>;
-          min = values[0];
-          max = values[values.length - 1];
+        const values = (qty.values as Array<ValueStringStateI>).filter(
+          (item) => item.visible
+        );
+        if (values.length) {
+          min = parseInt(values[0].value);
+          max = parseInt(values[values.length - 1].value);
         }
 
         item.counter = {
