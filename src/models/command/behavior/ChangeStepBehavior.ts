@@ -1,5 +1,10 @@
 import { ThreekitService } from "../../../services/Threekit/ThreekitService";
-import { DirectionStep, StepName } from "../../../utils/baseUtils";
+import {
+  DirectionStep,
+  StepName,
+  getArrayStepNames,
+  getPrepareStepNames,
+} from "../../../utils/baseUtils";
 import { Application } from "../../Application";
 import { Configurator } from "../../configurator/Configurator";
 import { AttributeI } from "../../configurator/type";
@@ -49,12 +54,12 @@ export class ChangeStepBehavior extends Behavior {
           });
       }
 
-      const prepareStepNames = this.getPrepareStepNames();
+      const prepareStepNames = getPrepareStepNames();
       if (
         command.direction === DirectionStep.Prev &&
         prepareStepNames.includes(command.stepName)
       ) {
-        const arrayStepName = this.getArrayStepNames();
+        const arrayStepName = getArrayStepNames();
         const index = arrayStepName.indexOf(command.stepName);
         arrayStepName.forEach((stepName, i) => {
           if (i <= index) return;
@@ -85,22 +90,5 @@ export class ChangeStepBehavior extends Behavior {
           return resolve(true);
         });
     });
-  }
-
-  private getArrayStepNames() {
-    return [
-      StepName.RoomSize,
-      StepName.Platform,
-      StepName.Services,
-      StepName.ConferenceCamera,
-      StepName.AudioExtensions,
-      StepName.MeetingController,
-      StepName.VideoAccessories,
-      StepName.SoftwareServices,
-    ];
-  }
-
-  private getPrepareStepNames() {
-    return [StepName.RoomSize, StepName.Platform, StepName.Services];
   }
 }

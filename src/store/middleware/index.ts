@@ -34,7 +34,11 @@ import {
 } from "../slices/ui/Ui.slice";
 import { CUSTOM_UI_ACTION_NAME, UI_ACTION_NAME } from "../slices/ui/utils";
 import { getAutoChangeDataByKeyPermission } from "../slices/ui/selectors/selectorsPermission";
-import { StepName } from "../../utils/baseUtils";
+import {
+  StepName,
+  getArrayStepNames,
+  getPrepareStepNames,
+} from "../../utils/baseUtils";
 import { CONFIGURATOR_ACTION_NAME } from "../slices/configurator/utils";
 
 declare const app: Application;
@@ -77,17 +81,34 @@ export const middleware: Middleware =
         state = store.getState();
         const stepData = getDataStepByName(stepName)(state);
         const isExistCards = Object.keys(stepData.cards).length > 0;
+        const positionNewStep =
+          getPositionStepNameBasedOnActiveStep(stepName)(state);
         if (!isExistCards) {
           const { prevStep, nextStep } =
             getPrevNextStepByStepName(stepName)(state);
-          const positionNewStep =
-            getPositionStepNameBasedOnActiveStep(stepName)(state);
           if (positionNewStep === "next" && nextStep) {
             return store.dispatch(changeActiveStep(nextStep.key));
           }
           if (positionNewStep === "prev" && prevStep) {
             return store.dispatch(changeActiveStep(prevStep.key));
           }
+        }
+        const prepareStepNames = getPrepareStepNames();
+        if (positionNewStep === "prev" && prepareStepNames.includes(stepName)) {
+          const stepIndex = prepareStepNames.indexOf(stepName);
+          const arrStepNames = getArrayStepNames();
+          arrStepNames.forEach((step, index) => {
+            if (index <= stepIndex) return;
+            const stepData = getDataStepByName(step)(state);
+            deleteNodesByCards(Object.values(stepData.cards))(store);
+          });
+
+          const stepsToInclude = prepareStepNames.slice(0, stepIndex + 1);
+          store.dispatch(
+            clearAllActiveCardsSteps({
+              ignoreSteps: stepsToInclude,
+            })
+          );
         }
         break;
       }
