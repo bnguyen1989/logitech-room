@@ -31,9 +31,6 @@ export const SelectItem: React.FC<PropsI> = (props) => {
     getPropertySelectValueCardByKeyPermission(activeStep, keyItemPermission)
   );
 
-  console.log("SelectItem", selectValue);
-  
-
   if (!card || !card.select) return null;
 
   const handleSelect = (option: OptionI) => {
@@ -46,7 +43,9 @@ export const SelectItem: React.FC<PropsI> = (props) => {
     setIsOpen(false);
   };
 
-  const toggleSelect = () => {
+  const toggleSelect = (e: any) => {
+    e.stopPropagation();
+
     if (disabled) {
       return;
     }

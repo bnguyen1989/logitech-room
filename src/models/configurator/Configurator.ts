@@ -45,6 +45,7 @@ export class Configurator {
     [AttributeName.RoomCompute],
     [AttributeName.RoomComputeMount],
     [AttributeName.RoomSight],
+    [AttributeName.RoomTV],
   ];
 
   public static AudioExtensionName = [

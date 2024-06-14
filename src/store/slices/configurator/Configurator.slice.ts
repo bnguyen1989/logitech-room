@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Configuration } from "@threekit/rest-api";
+import { DataCamera, CameraData } from "../../../models/R3F";
 
 interface ConfiguratorStateI {
   assetId: string | null;
@@ -9,6 +10,7 @@ interface ConfiguratorStateI {
   configuration: Record<string, Configuration>;
   nodes: Record<string, string>;
   highlightNodes: Record<string, boolean>;
+  camera: DataCamera;
 }
 
 const initialState: ConfiguratorStateI = {
@@ -19,6 +21,7 @@ const initialState: ConfiguratorStateI = {
   configuration: {},
   nodes: {},
   highlightNodes: {},
+  camera: CameraData,
 };
 
 const configuratorSlice = createSlice({
@@ -83,6 +86,9 @@ const configuratorSlice = createSlice({
     ) => {
       state.highlightNodes = action.payload;
     },
+    setDataCamera: (state, action: PayloadAction<DataCamera>) => {
+      state.camera = action.payload;
+    },
     disabledHighlightNode: (state, action: PayloadAction<string>) => {
       Object.keys(state.highlightNodes).forEach((key) => {
         if (action.payload.includes(key)) {
@@ -94,6 +100,7 @@ const configuratorSlice = createSlice({
 });
 
 export const {
+  setDataCamera,
   changeStatusBuilding,
   changeShowDimensions,
   changeValueConfiguration,

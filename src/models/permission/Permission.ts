@@ -27,6 +27,7 @@ import { DependentMountHandler } from "./handlers/mounts/DependentMountHandler";
 import { DisabledCounterElementHandler } from "./handlers/property/DisabledCounterElementHandler";
 import { DirectionStep, StepName } from "../../utils/baseUtils";
 import { AvailableStepHandler } from "./handlers/property/AvailableStepHandler";
+import { DisabledColorElementHandler } from "./handlers/property/DisabledColorElementHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName;
@@ -102,6 +103,7 @@ export class Permission {
     new RecommendationElementHandler().handle(step);
     new RequiredElementHandler().handle(step);
     new DisabledCounterElementHandler().handle(step);
+    new DisabledColorElementHandler().handle(step);
   }
 
   public addStep(step: Step): Permission {

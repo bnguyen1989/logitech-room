@@ -90,6 +90,11 @@ export enum SoftwareServicesName {
   ExtendedWarranty = "Logitech Extended Warranty",
 }
 
+export enum TVName {
+  LogitechTVOne = "Logitech TV One",
+  LogitechTVTwo = "Logitech TV Two",
+}
+
 export function createStepRoomSize() {
   const stepRoomSize = new Step(StepName.RoomSize);
   const group = new GroupElement()
@@ -138,7 +143,7 @@ export function createStepConferenceCamera() {
       .addDependenceMount(
         new MountElement(
           CameraName.WallMountForVideoBars,
-          PlacementManager.getNameNodeForCamera("Wall", 1)
+          PlacementManager.getNameNodeForCamera("Wall", 1, 2)
         )
         // .setDependentMount(
         //   new MountElement(
@@ -162,13 +167,19 @@ export function createStepConferenceCamera() {
       .setDefaultMount(
         new MountElement(
           item.name,
-          PlacementManager.getNameNodeCommodeForCamera("RallyBar")
+          PlacementManager.getNameNodeCommodeForCamera("RallyBar", 2)
         )
       )
       .setAccessoryItems([
         CameraName.WallMountForVideoBars,
         CameraName.TVMountForVideoBars,
-      ]);
+      ])
+      .addBundleMount(
+        new MountElement(
+          TVName.LogitechTVTwo,
+          PlacementManager.getNameNodeForTV()
+        )
+      );
   };
   const group = new GroupElement()
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
@@ -178,24 +189,37 @@ export function createStepConferenceCamera() {
         .setDefaultMount(
           new MountElement(
             CameraName.MeetUp2,
-            PlacementManager.getNameNodeCommodeForCamera("Mini")
+            PlacementManager.getNameNodeCommodeForCamera("Mini", 1)
           )
         )
         .addDependenceMount(
           new MountElement(
             CameraName.TVMountForMeetUP,
-            PlacementManager.getNameNodeForCamera("TV", 2)
+            PlacementManager.getNameNodeForCamera("TV", 1, 1)
           )
         )
         .setAccessoryItems([CameraName.TVMountForMeetUP])
+        .addBundleMount(
+          new MountElement(
+            TVName.LogitechTVOne,
+            PlacementManager.getNameNodeForTV()
+          )
+        )
     )
     .addElement(
-      new ItemElement(CameraName.RallyBarHuddle).setDefaultMount(
-        new MountElement(
-          CameraName.RallyBarHuddle,
-          PlacementManager.getNameNodeForCamera("TV", 2)
+      new ItemElement(CameraName.RallyBarHuddle)
+        .setDefaultMount(
+          new MountElement(
+            CameraName.RallyBarHuddle,
+            PlacementManager.getNameNodeForCamera("TV", 1, 1)
+          )
         )
-      )
+        .addBundleMount(
+          new MountElement(
+            TVName.LogitechTVOne,
+            PlacementManager.getNameNodeForTV()
+          )
+        )
     )
     .addElement(
       new ItemElement(CameraName.RallyPlus)
@@ -216,6 +240,24 @@ export function createStepConferenceCamera() {
             Position: false,
           })
         )
+        .addAutoChangeItems({
+          [AudioExtensionName.RallyMicPod]: ["color"],
+          [AudioExtensionName.RallyMicPodMount]: ["color"],
+        })
+        .addBundleElement(
+          new ItemElement(AudioExtensionName.RallyMicPod).setDefaultMount(
+            new CountableMountElement(
+              AudioExtensionName.RallyMicPod,
+              PlacementManager.getNameNodeForMic()
+            ).setActiveIndex(2)
+          )
+        )
+        .addBundleMount(
+          new MountElement(
+            TVName.LogitechTVTwo,
+            PlacementManager.getNameNodeForTV()
+          )
+        )
     )
     .setRequiredOne(true);
 
@@ -224,7 +266,7 @@ export function createStepConferenceCamera() {
       new CountableMountElement(
         CameraName.RallyCamera,
         PlacementManager.getNameNodeForCamera("Wall")
-      ).setTemplateIndex([2, 3])
+      ).setOffsetIndex(1)
     )
   );
 
@@ -359,6 +401,7 @@ export function createStepAudioExtensions() {
         )
       )
       .setDisabledColor(true)
+      .setHiddenColor(true)
       .addDisabledCounterDependence({
         [AudioExtensionName.RallyMicPodPendantMount]: {
           active: false,
@@ -384,6 +427,7 @@ export function createStepAudioExtensions() {
           )
         )
       )
+      .setHiddenColor(true)
       .addDisabledCounterDependence({
         [AudioExtensionName.RallyMicPodMount]: {
           active: false,
@@ -512,6 +556,7 @@ export function createStepVideoAccessories() {
             )
           )
           .setDisabledColor(true)
+          .setHiddenColor(true)
       )
       .addAutoChangeItems({
         [VideoAccessoryName.LogitechTapSchedulerAngleMount]: ["color"],
@@ -573,6 +618,7 @@ export const getPermissionNameByItemName = (
     ...Object.values(MeetingControllerName),
     ...Object.values(VideoAccessoryName),
     ...Object.values(SoftwareServicesName),
+    ...Object.values(TVName),
   ];
 
   const isItemNameMatching =
@@ -598,6 +644,30 @@ export const getPermissionNameByItemName = (
       isItemNameMatching(threekitItemName)(permissionName) ||
       isColorItemNameMatching(threekitItemName)(permissionName)
   );
+};
+
+export const getTVMountByRoomSize = (roomSize: string) => {
+  switch (roomSize) {
+    case RoomSizeName.Phonebooth:
+    case RoomSizeName.Huddle:
+    case RoomSizeName.Small:
+      return new MountElement(
+        TVName.LogitechTVOne,
+        PlacementManager.getNameNodeForTV()
+      );
+    case RoomSizeName.Medium:
+    case RoomSizeName.Large:
+    case RoomSizeName.Auditorium:
+      return new MountElement(
+        TVName.LogitechTVTwo,
+        PlacementManager.getNameNodeForTV()
+      );
+    default:
+      return new MountElement(
+        TVName.LogitechTVOne,
+        PlacementManager.getNameNodeForTV()
+      );
+  }
 };
 
 export const isCamera = (name: string) => {

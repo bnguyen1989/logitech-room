@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { changeStatusBuilding } from "../../store/slices/configurator/Configurator.slice.js";
 import { ProductsNodes } from "./ProductsNodes.js";
 import { useThree } from "@react-three/fiber";
+import { CameraRoom } from "./CameraRoom.js";
 
 export type RoomProps = {
   roomAssetId: string;
@@ -25,14 +26,15 @@ export const Room: React.FC<RoomProps> = (props) => {
   const { roomAssetId, setSnapshotCameras } = props;
   const dispatch = useDispatch();
   const gltf = useScene({ assetId: roomAssetId });
-  const threeSet = useThree(({ set }) => set);
-  const threeScene = useThree(({ scene }) => scene);
+  const three = useThree();
 
   useEffect(() => {
     if (!gltf) return;
+
     dispatch(changeStatusBuilding(false));
 
     const { "1": Front, "2": Left } = gltf.cameras;
+
     if (Front && Left) {
       setSnapshotCameras({
         Front: new THREE.PerspectiveCamera().copy(
@@ -46,8 +48,10 @@ export const Room: React.FC<RoomProps> = (props) => {
 
     const domeLight = gltf.scene.userData.domeLight;
     const camera = gltf.scene.userData.camera as THREE.PerspectiveCamera;
-    threeScene.environment = domeLight.image;
-    threeSet({ camera });
+    three.scene.environment = domeLight.image;
+    camera.aspect = three.size.width / three.size.height;
+    camera.updateProjectionMatrix();
+    three.set({ camera });
 
     gltf.scene.traverse((node) => {
       if (node instanceof THREE.Mesh && node.isMesh) {
@@ -72,6 +76,7 @@ export const Room: React.FC<RoomProps> = (props) => {
       {camera && <primitive object={camera}></primitive>}
       <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
+      <CameraRoom gltf={gltf} camera={camera} roomAssetId={roomAssetId} />
     </>
   );
 };

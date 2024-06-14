@@ -1,6 +1,10 @@
 import s from "./Player.module.scss";
 import { OrbitControls } from "@react-three/drei";
-import { ExporterResolver, Viewer } from "@threekit/react-three-fiber";
+import {
+  Background,
+  ExporterResolver,
+  Viewer,
+} from "@threekit/react-three-fiber";
 import type React from "react";
 import { Helmet as Head } from "react-helmet";
 import LogitechStage from "../stages/LogitechStage.tsx";
@@ -20,6 +24,9 @@ import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
 import {
   EffectComposer as EffectComposerImpl,
+  EffectPass,
+  RenderPass,
+  ToneMappingEffect,
   ToneMappingMode,
 } from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
@@ -63,10 +70,36 @@ export const Player: React.FC = () => {
   ): string | Blob => {
     if (!effectComposerRef) return "";
     const snapshotCamera = snapshotCameras?.[side];
-    const dataSnapshot = snapshot(effectComposerRef, {
-      size: { width: 1920, height: 1080 },
+
+    const snapshotEC = new EffectComposerImpl(effectComposerRef.getRenderer(), {
+      stencilBuffer: true,
+      multisampling: effectComposerRef.multisampling,
+      frameBufferType: effectComposerRef.inputBuffer.texture.type,
+    });
+    snapshotEC.addPass(
+      new RenderPass((effectComposerRef.passes[0] as any).scene, snapshotCamera)
+    );
+    snapshotEC.addPass(
+      new EffectPass(
+        snapshotCamera,
+        new ToneMappingEffect({
+          mode: ToneMappingMode.UNCHARTED2,
+          whitePoint: 1,
+          middleGrey: 0.5,
+          minLuminance: 0.01,
+          maxLuminance: 1,
+          averageLuminance: 0.5,
+        })
+      )
+    );
+
+    const dataSnapshot = snapshot(snapshotEC, {
+      size: { width: 1024, height: 512 },
       camera: snapshotCamera,
     });
+
+    snapshotEC.dispose();
+
     if (type === "string") {
       return dataSnapshot;
     }
@@ -177,6 +210,7 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
         maxLuminance={1}
         averageLuminance={0.5}
       />
+      <Background color={"#f4f4f4"} />
     </EffectComposer>
   );
 });

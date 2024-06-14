@@ -10,6 +10,7 @@ import {
   changeCountElement,
   deleteNodesByCards,
   removeElement,
+  setDefaultsNode,
   updateHighlightNodes,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
@@ -22,6 +23,7 @@ import {
   getPositionStepNameBasedOnActiveStep,
   getPrevNextStepByStepName,
   getPropertyCounterCardByKeyPermission,
+  getStepNameByKeyPermission,
 } from "../slices/ui/selectors/selectors";
 import { Configurator } from "../../models/configurator/Configurator";
 import {
@@ -135,6 +137,7 @@ export const middleware: Middleware =
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card, activeStep)(store);
+        setDefaultsNode(activeStep)(store);
         break;
       }
 
@@ -144,6 +147,8 @@ export const middleware: Middleware =
         const permission = getPermission(stepName)(state);
 
         updateActiveCardsByPermissionData(permission)(store);
+
+        setDefaultsNode(stepName)(store);
 
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
@@ -218,9 +223,11 @@ export const middleware: Middleware =
           ([key, arr]) => {
             const color = arr.includes("color");
             if (!color) return;
+            const stepElement = getStepNameByKeyPermission(key)(state);
+            if (!stepElement) return;
             store.dispatch(
               setPropertyItem({
-                step: activeStep,
+                step: stepElement,
                 keyItemPermission: key,
                 property: {
                   color: value,

@@ -22,6 +22,7 @@ import {
 } from "../../../models/analytics/type";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { useUrl } from "../../../hooks/url";
+import { getDataCamera } from "../../../store/slices/configurator/selectors/selectors";
 
 declare const app: Application;
 
@@ -32,6 +33,7 @@ export const FinishModal: React.FC = () => {
   const { isOpen } = useAppSelector(getFinishModalData);
   const orderData: any = useAppSelector(getOrderData(user.id));
   const [sendRequest, setSendRequest] = useState(false);
+  const dataCamera = useAppSelector(getDataCamera);
 
   const userCanShowSetupModal = user.role.can(PermissionUser.SHOW_SETUP_MODAL);
   const isShowSetupModal = userCanShowSetupModal && user.isEmptyUserData();
@@ -46,6 +48,10 @@ export const FinishModal: React.FC = () => {
   };
 
   const handleLetsProceed = () => {
+    if (dataCamera && dataCamera.position) {
+      app.resetCameraEvent(dataCamera);
+    }
+
     getTKAnalytics().stage({
       stageName: EventActionName.configurator_complete,
     });

@@ -9,7 +9,7 @@ export class LanguageFileProcessor {
   private outputFilePath = path.join(__dirname, "./../dataLang/");
   private folderPage = "/page";
   private folderProduct = "/product";
-  private numberRowDivider = 227;
+  private numberRowDivider = 358;
   private templatePage = dataTemplatePage;
   private templateProduct = dataTemplateProduct;
   private pageJson: any[] = [];

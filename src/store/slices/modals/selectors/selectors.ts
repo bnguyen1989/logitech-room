@@ -5,6 +5,7 @@ import {
   getAssetFromCard,
   getCardsByStep,
   getDisabledActionByKeyPermission,
+  getHiddenActionByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getNavigationStepData,
   getSelectData,
@@ -71,8 +72,12 @@ export const getDataForAnnotationModal =
       activeStep,
       keyPermission
     )(state);
+    const hiddenActions = getHiddenActionByKeyPermission(
+      activeStep,
+      keyPermission
+    )(state);
 
     const threekitAsset = getAssetFromCard(card)(state);
 
-    return { isActiveCard, disabledActions, threekitAsset };
+    return { isActiveCard, disabledActions, hiddenActions, threekitAsset };
   };

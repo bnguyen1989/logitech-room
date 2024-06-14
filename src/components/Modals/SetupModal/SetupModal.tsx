@@ -14,6 +14,7 @@ import { useUrl } from "../../../hooks/url";
 import { FormMkto } from "../../Form/FormMkto/FormMkto";
 import { FORM_MKTO } from "../../../utils/formUtils";
 import { RoleUserName } from "../../../utils/userRoleUtils";
+import { useCallback } from "react";
 
 export const SetupModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -47,11 +48,15 @@ export const SetupModal: React.FC = () => {
     return initialValues;
   };
 
-  const handleSubmit = (formData: any) => {
-    dispatch(setMySetupModal({ isOpen: false }));
-    dispatch(setUserData({ data: { ...formData } }));
-    handleNavigate("/room");
-  };
+  const handleSubmit = useCallback(
+    (formData: any) => {
+      dispatch(setMySetupModal({ isOpen: false }));
+      dispatch(setUserData({ data: { ...formData } }));
+      handleNavigate("/room");
+      console.log("loger::handleSubmit");
+    },
+    [dispatch, handleNavigate]
+  );
 
   if (!isOpen) return null;
 

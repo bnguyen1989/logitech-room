@@ -3,6 +3,7 @@ import { Permission } from "../../../../models/permission/Permission";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { MetadataI } from "../../../../services/Threekit/type";
 import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { PlatformName } from "../../../../utils/permissionUtils";
 import { replaceArrValues } from "../../../../utils/strUtils";
 import { CardI, StepI } from "../type";
 import { getLangProductCard } from "./selectoreLangProduct";
@@ -399,6 +400,10 @@ export const getFormattingSubtitleByState =
         platformCard.keyPermission
       )(state);
       arrValues.push(getName(platformTile));
+
+      if (platformCard?.keyPermission === PlatformName.BYOD) {
+        arrValues.push(getName(platformTile));
+      }
     }
 
     if (serviceCard) {
@@ -427,6 +432,21 @@ export const getDisabledActionByKeyPermission =
     if (!element) return res;
     res.counter = element.getDisabledCounter();
     res.color = element.getDisabledColor();
+    return res;
+  };
+export const getHiddenActionByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const res = {
+      color: false,
+    };
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    if (!step) return res;
+    const element = step.getElementByName(keyPermission);
+    if (!element) return res;
+
+    res.color = element.getHiddenColor();
+
     return res;
   };
 
