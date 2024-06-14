@@ -227,23 +227,26 @@ export function createStepConferenceCamera() {
         .setDefaultMount(
           new AttributeMountElement(
             CameraName.RallyPlus,
-            PlacementManager.getNameNodeForCamera("TV", 2)
+            PlacementManager.getNameNodeCameraRalyPlus()
           ).setAttributes({
             Position: true,
+            Alternative_rally_plus: false,
           })
         )
         .addDependenceMount(
           new AttributeMountElement(
             CameraName.RallyMountingKit,
-            PlacementManager.getNameNodeForCamera("TV", 2)
+            PlacementManager.getNameNodeCameraRalyPlus()
           ).setAttributes({
             Position: false,
+            Alternative_rally_plus: true,
           })
         )
         .addAutoChangeItems({
           [AudioExtensionName.RallyMicPod]: ["color"],
           [AudioExtensionName.RallyMicPodMount]: ["color"],
         })
+
         .addBundleElement(
           new ItemElement(AudioExtensionName.RallyMicPod).setDefaultMount(
             new CountableMountElement(
@@ -382,6 +385,10 @@ export function createStepAudioExtensions() {
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
+      .addReservationMount({
+        [CameraName.RallyPlus]: [1, 2],
+      })
+
       .setAccessoryItems([
         AudioExtensionName.RallyMicPodMount,
         AudioExtensionName.RallyMicPodPendantMount,
