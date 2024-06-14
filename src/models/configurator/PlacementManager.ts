@@ -83,6 +83,9 @@ export class PlacementManager {
   public static getNameNodeSideMountScheduler(): string {
     return "Side_Mount_scheduler_point";
   }
+  public static getNameNodeCameraRalyPlus(): string {
+    return "Camera_Placement_RalyPlus";
+  }
 
   static getAllPlacement(): string[] {
     const placements: string[] = [];
@@ -135,7 +138,8 @@ export class PlacementManager {
       this.getNameNodeCommodeForCamera("Huddle"),
       this.getNameNodeCommodeForCamera("Mini"),
       this.getNameNodeCommodeForCamera("Mini", 1),
-      this.getNameNodeForTV()
+      this.getNameNodeForTV(),
+      this.getNameNodeCameraRalyPlus()
     );
 
     return placements;
