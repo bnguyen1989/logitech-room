@@ -71,7 +71,7 @@ export enum AttributeName {
   QtyMeetingController = "Qty - Meeting Controller",
   RoomMeetingTap = "Room Meeting Tap",
   QtyMeetingTap = "Qty - Meeting Tap",
-  RoomMeetingTapIp = "Room Meeting TapIP",
+  RoomMeetingTapIp = "Room Meeting TapIp",
   QtyMeetingTapIp = "Qty - Meeting TapIp",
   RoomTapMount = "Room Tap Mount",
   QtyTapMount = "Qty - Tap Mount",
