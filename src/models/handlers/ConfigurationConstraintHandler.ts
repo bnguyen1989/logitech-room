@@ -827,20 +827,85 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_tapQty10_tapIp() {
-    const attrState = this.getAttrStateDataByName(
-      AttributeName.QtyMeetingTapIp
-    );
-    if (!attrState) return;
-    const values = deepCopy(attrState.values) as ValueAssetStateI[];
-    values.forEach((option) => {
-      const isValue = "value" in option;
-      if (isValue && Number(option.value) <= 10) {
-        option.visible = true;
+    const selectedTapIp = this.getSelectedValue(AttributeName.RoomMeetingTapIp);
+    const isSelectedTapIp = typeof selectedTapIp === "object";
+    if (!isSelectedTapIp) return;
+
+    const qtyTapIp = this.getSelectedValue(AttributeName.QtyMeetingTapIp);
+    if (typeof qtyTapIp !== "string") return;
+    const countTapIp = parseInt(qtyTapIp);
+    const objMounts = {
+      [AttributeName.RoomTapTableMount]: AttributeName.QtyTapTableMount,
+      [AttributeName.RoomTapRiserMount]: AttributeName.QtyTapRiserMount,
+      [AttributeName.RoomTapWallMount]: AttributeName.QtyTapWallMount,
+    };
+    const selectedMountsData = Object.entries(objMounts).reduce<
+      Record<string, number>
+    >((acc, currentValue) => {
+      const { 0: attrName, 1: qtyName } = currentValue;
+      const selectedDataMount = this.getSelectedValue(attrName);
+      if (typeof selectedDataMount !== "object") return acc;
+      const selectedDataQty = this.getSelectedValue(qtyName);
+      if (typeof selectedDataQty !== "string") return acc;
+
+      const attrStateQty = this.getAttrStateDataByName(qtyName);
+      if (!attrStateQty) return acc;
+      const values = deepCopy(attrStateQty.values) as ValueAssetStateI[];
+      values.forEach((option) => {
+        const isValue = "value" in option;
+        if (isValue && Number(option.value) <= countTapIp) {
+          option.visible = true;
+        }
+      });
+      this.configurator.setAttributeState(attrStateQty.id, {
+        values,
+      });
+
+      acc = {
+        ...acc,
+        [qtyName]: parseInt(selectedDataQty),
+      };
+
+      return acc;
+    }, {});
+
+    const changeQtyMount = Object.values(objMounts).find((value) =>
+      this.triggeredByAttr.includes(value)
+    ) as string;
+
+    const countChangeQtyMount = selectedMountsData[changeQtyMount];
+    delete selectedMountsData[changeQtyMount];
+
+    const availableCount = countTapIp - countChangeQtyMount;
+
+    const keys = Object.keys(selectedMountsData);
+    if (!keys.length) return;
+    if (keys.length === 1) {
+      const qtyName = keys[0];
+      const count = selectedMountsData[qtyName];
+      if (count > availableCount) {
+        this.configurator.setConfiguration({
+          [qtyName]: availableCount.toString(),
+        });
       }
-    });
-    this.configurator.setAttributeState(attrState.id, {
-      values,
-    });
+      return;
+    }
+
+    const selectedMountsDataArr = Object.entries(selectedMountsData);
+    const selectedMountsDataArrLength = selectedMountsDataArr.length;
+    const selectedMountsDataArrCopy = deepCopy(selectedMountsDataArr);
+    let countAllMount = 0;
+    for (let i = 0; i < selectedMountsDataArrLength; i++) {
+      const [qtyName, count] = selectedMountsDataArrCopy[i];
+      countAllMount += count;
+      if (countAllMount > availableCount) {
+        const newCount = availableCount - (countAllMount - count);
+        this.configurator.setConfiguration({
+          [qtyName]: newCount.toString(),
+        });
+        break;
+      }
+    }
   }
 
   private getAttribute(name: string) {
