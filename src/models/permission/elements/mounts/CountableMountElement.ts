@@ -1,3 +1,7 @@
+import {
+  ConditionMountType,
+  ruleMountsType,
+} from "../../../configurator/RulleManagerMount";
 import { MountElement } from "./MountElement";
 
 export class CountableMountElement extends MountElement {
@@ -6,6 +10,7 @@ export class CountableMountElement extends MountElement {
   public activeIndex: number = 0;
   public notAvailableIndex: Array<number> = [];
   public offsetIndex: number = 0;
+  public mountLogic: ruleMountsType[] = [];
 
   constructor(name: string, nodeName: string) {
     super(name, nodeName);
@@ -49,6 +54,31 @@ export class CountableMountElement extends MountElement {
       range.push(`${this.nodeName}_${index + this.offsetIndex}`);
     }
     return range;
+  }
+
+  public setMountLogic(mountLogicType: ruleMountsType[]) {
+    this.mountLogic = this.mountLogic.concat(mountLogicType);
+
+    return this;
+  }
+
+  public getMatchingMountRulse(
+    datacondition: ConditionMountType
+  ): ruleMountsType | undefined {
+    if (datacondition.count) {
+      const mountRulse = this.getMountLogic();
+      const matchingRulse = mountRulse
+        .reverse()
+        .find((rule) => rule.condition.count === datacondition.count);
+
+      return matchingRulse;
+    }
+
+    return undefined;
+  }
+
+  public getMountLogic() {
+    return this.mountLogic;
   }
 
   public addNotAvailableIndex(index: number): void {
