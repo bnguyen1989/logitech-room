@@ -25,9 +25,16 @@ export class Configurator {
       AttributeName.RoomMicMount,
       AttributeName.RoomMicPendantMount,
     ],
-    // [AttributeName.RoomMeetingController]: [AttributeName.RoomTapMount],
-    [AttributeName.RoomMeetingTap]: [AttributeName.RoomTapMount],
-    [AttributeName.RoomMeetingTapIp]: [AttributeName.RoomTapMount],
+    [AttributeName.RoomMeetingTap]: [
+      AttributeName.RoomTapTableMount,
+      AttributeName.RoomTapRiserMount,
+      AttributeName.RoomTapWallMount,
+    ],
+    [AttributeName.RoomMeetingTapIp]: [
+      AttributeName.RoomTapTableMount,
+      AttributeName.RoomTapRiserMount,
+      AttributeName.RoomTapWallMount,
+    ],
     [AttributeName.RoomTapScheduler]: [
       AttributeName.RoomTapSchedulerAngleMount,
       AttributeName.RoomTapSchedulerSideMount,
@@ -57,10 +64,11 @@ export class Configurator {
   ];
 
   public static MeetingControllerName = [
-    // [AttributeName.RoomMeetingController, AttributeName.QtyMeetingController],
     [AttributeName.RoomMeetingTap, AttributeName.QtyMeetingTap],
     [AttributeName.RoomMeetingTapIp, AttributeName.QtyMeetingTapIp],
-    [AttributeName.RoomTapMount, AttributeName.QtyTapMount],
+    [AttributeName.RoomTapTableMount, AttributeName.QtyTapTableMount],
+    [AttributeName.RoomTapRiserMount, AttributeName.QtyTapRiserMount],
+    [AttributeName.RoomTapWallMount, AttributeName.QtyTapWallMount],
     [AttributeName.RoomProductBundle],
   ];
 
