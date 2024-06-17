@@ -634,7 +634,7 @@ export function changeCountElement(
 
     if (!(mountElement instanceof CountableMountElement)) return;
 
-    if (value && keyItemPermission === CameraName.RallyCamera) {
+    if (value) {
       const matchingMountRulse = mountElement.getMatchingMountRulse({
         count: value,
       });
