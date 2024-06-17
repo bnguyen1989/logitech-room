@@ -90,6 +90,7 @@ export class PropertyHandler extends Handler {
         if (count) {
           const defaultMount = elementDepend.getDefaultMount();
           if (!(defaultMount instanceof CountableMountElement)) return false;
+ 
           res = defaultMount.activeIndex === count;
         }
         return res;

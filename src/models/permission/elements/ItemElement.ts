@@ -3,6 +3,21 @@ import { BaseElement } from "./BaseElement";
 import { Element } from "./Element";
 import { MountElement } from "./mounts/MountElement";
 
+// type nameAttributeType = string
+// type ConditionMountType = Record<nameAttributeType,number>
+// type ActionType = 'point'
+// type ActionMountType = Record<nameAttributeType,number>
+
+// type ruleMount = {
+//   condition: ConditionMountType;
+//   action: {
+//     point: string;
+//   };
+// };
+
+// interface Actio {
+//   point: string; // ідентифікатор або назва точки монтування
+// }
 export class ItemElement extends BaseElement implements Element<ItemElement> {
   private dependence: DependentElement = {};
   private dependenceMount: Array<MountElement> = [];

@@ -27,3 +27,22 @@ export enum ColorName {
 export enum FormName {
   QuestionFormSoftware = "QuestionFormSoftware",
 }
+
+export const getPrepareStepNames = () => [
+  StepName.RoomSize,
+  StepName.Platform,
+  StepName.Services,
+];
+
+export const getArrayStepNames = () => {
+  return [
+    StepName.RoomSize,
+    StepName.Platform,
+    StepName.Services,
+    StepName.ConferenceCamera,
+    StepName.AudioExtensions,
+    StepName.MeetingController,
+    StepName.VideoAccessories,
+    StepName.SoftwareServices,
+  ];
+};

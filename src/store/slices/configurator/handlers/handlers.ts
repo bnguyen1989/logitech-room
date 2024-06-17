@@ -102,6 +102,7 @@ export function updateNodesByConfiguration(
     const state = store.getState();
     const configuration = configurator.getConfiguration();
     const step = getDataStepByName(stepName)(state);
+    // const selectedCardsByStep = getSelectedCardsByStep(stepName)(state);
     arrayAttributes.forEach((item) => {
       const [name] = item;
       const value = configuration[name];
@@ -124,7 +125,7 @@ export function updateNodesByConfiguration(
         const keys = Object.keys(nodes);
         const key = keys.find((key) => nodes[key] === value.assetId);
         if (key) return;
-        addElement(card, stepName)(store);
+        addElement(card, stepName, count)(store);
         if (count && count > 1) {
           changeCountElement(card.keyPermission, stepName, count, {
             [card.keyPermission]: 1,
@@ -159,7 +160,11 @@ function setConfiguratorByNameNode(
   };
 }
 
-export function addElement(card: CardI, stepName: StepName) {
+export function addElement(
+  card: CardI,
+  stepName: StepName,
+  countValue?: number
+) {
   return (store: Store) => {
     const state = store.getState();
     const permission = getPermission(stepName)(state);
@@ -185,8 +190,30 @@ export function addElement(card: CardI, stepName: StepName) {
         if (!card.counter) return;
         const dependentMount = defaultMount.getDependentMount();
         if (!dependentMount) {
+          if (countValue) {
+            const matchingMountRulse = defaultMount.getMatchingMountRulse({
+              count: countValue,
+            });
+
+            if (matchingMountRulse && matchingMountRulse.action) {
+              const action = matchingMountRulse.action;
+
+              if (action.add && action.add.nameNodes) {
+                action.add.nameNodes.forEach((nameNode) => {
+                  setElementByNameNode(cardAsset.id, nameNode)(store);
+                });
+              }
+              if (action.remove && action.remove.nameNodes) {
+                store.dispatch(removeNodeByKeys(action.remove.nameNodes));
+              }
+
+              return;
+            }
+          }
+
           defaultMount.setActiveIndex(0);
           const nodeName = defaultMount.next().getNameNode();
+
           setElementByNameNode(cardAsset.id, nodeName)(store);
           return;
         }
@@ -324,6 +351,7 @@ export function removeElement(card: CardI, stepName: StepName) {
     if (!card || !step) return;
 
     const cardAsset = getAssetFromCard(card)(state);
+    if (!cardAsset) return;
 
     const element = step.getElementByName(card.keyPermission);
 
@@ -611,6 +639,27 @@ export function changeCountElement(
 
     if (!isCountableMountElement) return;
 
+    if (value) {
+      const matchingMountRulse = mountElement.getMatchingMountRulse({
+        count: value,
+      });
+
+      if (matchingMountRulse && matchingMountRulse.action) {
+        const action = matchingMountRulse.action;
+
+        if (action.add && action.add.nameNodes) {
+          action.add.nameNodes.map((nameNode) => {
+            return setElementByNameNode(cardAsset.id, nameNode)(store);
+          });
+        }
+        if (action.remove && action.remove.nameNodes) {
+          store.dispatch(removeNodeByKeys(action.remove.nameNodes));
+        }
+
+        return;
+      }
+    }
+
     const prevValueAutoChangeItems: Record<string, number> = {};
     const autoChangeItems = element.getAutoChangeItems();
     Object.keys(autoChangeItems).forEach((key) => {
@@ -622,6 +671,7 @@ export function changeCountElement(
     if (!isChangeAutoItems) {
       if (isIncrease) {
         const nodeName = mountElement.getNameNode();
+
         setElementByNameNode(cardAsset.id, nodeName)(store);
       } else {
         mountElement.setActiveIndex(prevValue);
@@ -667,6 +717,7 @@ export function changeCountElement(
         const defaultMount = element.getDefaultMount();
         if (!(defaultMount instanceof CountableMountElement)) return;
         const dependentMount = defaultMount.getDependentMount();
+
         if (!(dependentMount instanceof ReferenceMountElement)) return;
 
         if (isIncrease) {
