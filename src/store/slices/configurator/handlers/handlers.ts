@@ -602,7 +602,15 @@ export function changeCountElement(
       return;
     }
 
-    if (!(mountElement instanceof CountableMountElement)) return;
+    const isCountableMountElement =
+      mountElement instanceof CountableMountElement;
+
+    if (!isCountableMountElement && value === 0) {
+      removeElement();
+      return;
+    }
+
+    if (!isCountableMountElement) return;
 
     const prevValueAutoChangeItems: Record<string, number> = {};
     const autoChangeItems = element.getAutoChangeItems();
