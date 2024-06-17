@@ -324,6 +324,7 @@ export function removeElement(card: CardI, stepName: StepName) {
     if (!card || !step) return;
 
     const cardAsset = getAssetFromCard(card)(state);
+    if(!cardAsset) return;
 
     const element = step.getElementByName(card.keyPermission);
 
