@@ -22,17 +22,13 @@ import {
   getPermission,
   getPropertyCounterCardByKeyPermission,
   getSelectData,
-  getSelectedCardsByStep,
 } from "../../ui/selectors/selectors";
 import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
 import { StepName } from "../../../../utils/baseUtils";
 import { AttributeMountElement } from "../../../../models/permission/elements/mounts/AttributeMountElement";
 import { Configuration } from "@threekit/rest-api";
-import {
-  CameraName,
-  getTVMountByRoomSize,
-} from "../../../../utils/permissionUtils";
+import { getTVMountByRoomSize } from "../../../../utils/permissionUtils";
 
 export const setDefaultsNode = (stepName: StepName) => {
   return (store: Store) => {
@@ -106,7 +102,7 @@ export function updateNodesByConfiguration(
     const state = store.getState();
     const configuration = configurator.getConfiguration();
     const step = getDataStepByName(stepName)(state);
-    const selectedCardsByStep = getSelectedCardsByStep(stepName)(state);
+    // const selectedCardsByStep = getSelectedCardsByStep(stepName)(state);
     arrayAttributes.forEach((item) => {
       const [name] = item;
       const value = configuration[name];
@@ -355,7 +351,7 @@ export function removeElement(card: CardI, stepName: StepName) {
     if (!card || !step) return;
 
     const cardAsset = getAssetFromCard(card)(state);
-    if(!cardAsset) return;
+    if (!cardAsset) return;
 
     const element = step.getElementByName(card.keyPermission);
 
