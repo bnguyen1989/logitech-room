@@ -1,8 +1,4 @@
-import {
-  DependentElement,
-  PropertyDependentElement,
-  ruleMountsType,
-} from "../type";
+import { DependentElement, PropertyDependentElement } from "../type";
 import { BaseElement } from "./BaseElement";
 import { Element } from "./Element";
 import { MountElement } from "./mounts/MountElement";
@@ -35,7 +31,6 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private disabledCounterDependence: PropertyDependentElement = {};
   private disabledColorDependence: PropertyDependentElement = {};
   private bundleElements: Array<ItemElement> = [];
-  private mountLogic: Array<ruleMountsType> = [];
 
   constructor(name: string) {
     super(name);
@@ -200,8 +195,6 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   public getSimpleElements(): Array<ItemElement> {
     return [this];
   }
-
- 
 
   public copy(): ItemElement {
     const itemElement = new ItemElement(this.name);
