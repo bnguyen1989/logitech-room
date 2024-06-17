@@ -1,8 +1,27 @@
-import { DependentElement, PropertyDependentElement } from "../type";
+import {
+  DependentElement,
+  PropertyDependentElement,
+  ruleMountsType,
+} from "../type";
 import { BaseElement } from "./BaseElement";
 import { Element } from "./Element";
 import { MountElement } from "./mounts/MountElement";
 
+// type nameAttributeType = string
+// type ConditionMountType = Record<nameAttributeType,number>
+// type ActionType = 'point'
+// type ActionMountType = Record<nameAttributeType,number>
+
+// type ruleMount = {
+//   condition: ConditionMountType;
+//   action: {
+//     point: string;
+//   };
+// };
+
+// interface Actio {
+//   point: string; // ідентифікатор або назва точки монтування
+// }
 export class ItemElement extends BaseElement implements Element<ItemElement> {
   private dependence: DependentElement = {};
   private dependenceMount: Array<MountElement> = [];
@@ -16,6 +35,7 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private disabledCounterDependence: PropertyDependentElement = {};
   private disabledColorDependence: PropertyDependentElement = {};
   private bundleElements: Array<ItemElement> = [];
+  private mountLogic: Array<ruleMountsType> = [];
 
   constructor(name: string) {
     super(name);
@@ -180,6 +200,8 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   public getSimpleElements(): Array<ItemElement> {
     return [this];
   }
+
+ 
 
   public copy(): ItemElement {
     const itemElement = new ItemElement(this.name);

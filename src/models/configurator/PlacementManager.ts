@@ -87,6 +87,16 @@ export class PlacementManager {
     return "Camera_Placement_RalyPlus";
   }
 
+  public static getNameNodeCameraRallyPlusBackWall(): string[] {
+    return [PlacementManager.getNameNodeForCamera("Wall", 4)];
+  }
+  public static getNameNodeCameraRallyPlusAboveTV(): string[] {
+    return [
+      PlacementManager.getNameNodeForCamera("Wall", 2),
+      PlacementManager.getNameNodeForCamera("Wall", 3),
+    ];
+  }
+
   static getAllPlacement(): string[] {
     const placements: string[] = [];
 
