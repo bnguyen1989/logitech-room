@@ -185,6 +185,7 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
         state
       );
       if (position === "next") return;
+      // debugger
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
       arr.forEach((keyCard) => {
         const card = getCardByKeyPermission(key as StepName, keyCard)(state);
