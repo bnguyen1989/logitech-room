@@ -28,6 +28,7 @@ import { DisabledCounterElementHandler } from "./handlers/property/DisabledCount
 import { DirectionStep, StepName } from "../../utils/baseUtils";
 import { AvailableStepHandler } from "./handlers/property/AvailableStepHandler";
 import { DisabledColorElementHandler } from "./handlers/property/DisabledColorElementHandler";
+import { BundleMountElementRule } from "./rules/BundleMountElementRule";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName;
@@ -226,6 +227,18 @@ export class Permission {
     const element = currentStep.getElementByName(itemName);
     let res = false;
     if (element) res = element.getSecondary();
+    return res;
+  }
+
+  public getBundleMountElementsByName(itemName: string): Array<MountElement> {
+    const currentStep = this.getCurrentStep();
+    const element = currentStep.getElementByName(itemName);
+    let res: Array<MountElement> = [];
+    if (element instanceof ItemElement) {
+      res = element.getBundleMount().filter((mount) => {
+        return new BundleMountElementRule(element, mount).validate(currentStep);
+      });
+    }
     return res;
   }
 
