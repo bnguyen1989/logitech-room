@@ -8,7 +8,7 @@
 
 .mktoFormRow {
 	padding: 0 !important;
-	font-family: var(--font-family);
+	font-family: var(--p-font-family);
 	& label {
 		display: none;
 	}
