@@ -65,6 +65,7 @@ export const SelectProductModal: React.FC = () => {
               variant={"outlined"}
               position={"left"}
               text={"Back"}
+              dataAnalytics={"select-product-modal-back"}
             >
               <ArrowLeftSVG />
             </IconButton>
@@ -72,6 +73,7 @@ export const SelectProductModal: React.FC = () => {
               onClick={() => handleEdit()}
               text={"Yes, Let's Proceed"}
               variant={"contained"}
+              dataAnalytics={"select-product-modal-lets-proceed"}
             />
           </div>
         </div>

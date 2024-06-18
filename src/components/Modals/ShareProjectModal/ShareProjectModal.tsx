@@ -86,7 +86,11 @@ export const ShareProjectModal: React.FC = () => {
           <div className={`${s.input} ${isCopied ? s.copied : ""}`}>
             <input type="text" value={link} readOnly />
 
-            <div className={s.button} onClick={handleCopy}>
+            <div
+              className={s.button}
+              onClick={handleCopy}
+              data-analytics-title={"share-project-modal-copy-url"}
+            >
               <div className={s.button_text}>{langPage.button}</div>
               <div className={s.button_icon}>
                 <ChainLinkSVG color={"white"} />

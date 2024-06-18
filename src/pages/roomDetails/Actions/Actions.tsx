@@ -70,10 +70,18 @@ export const Actions: React.FC = () => {
   return (
     <div className={s.container}>
       <div className={s.mobile}>
-        <IconButton onClick={handleBack} variant={"outlined"}>
+        <IconButton
+          onClick={handleBack}
+          variant={"outlined"}
+          dataAnalytics={"room-details-back"}
+        >
           <ListSVG />
         </IconButton>
-        <IconButton onClick={handlerDownload} variant={"outlined"}>
+        <IconButton
+          onClick={handlerDownload}
+          variant={"outlined"}
+          dataAnalytics={"room-details-download"}
+        >
           <DownloadSVG />
         </IconButton>
       </div>
@@ -82,6 +90,7 @@ export const Actions: React.FC = () => {
           text={langPage.buttons.Back}
           onClick={handleBack}
           variant={"outlined"}
+          dataAnalytics={"room-details-back"}
         >
           <ListSVG />
         </IconButton>
@@ -89,6 +98,7 @@ export const Actions: React.FC = () => {
           text={langPage.buttons.DownloadRoomGuide}
           onClick={handlerDownload}
           variant={"outlined"}
+          dataAnalytics={"room-details-download"}
         >
           <DownloadSVG />
         </IconButton>
@@ -101,6 +111,7 @@ export const Actions: React.FC = () => {
           style={{
             padding: "19px 40px",
           }}
+          dataAnalytics={"room-details-request-consultation"}
         />
       )}
     </div>

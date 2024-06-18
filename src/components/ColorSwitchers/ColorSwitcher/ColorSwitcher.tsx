@@ -6,9 +6,16 @@ interface PropsI {
   onChange: (value: ColorItemI) => void;
   listColors: ColorItemI[];
   disabled?: boolean;
+  dataAnalytics?: string;
 }
 export const ColorSwitcher: React.FC<PropsI> = (props) => {
-  const { onChange, value, listColors, disabled = false } = props;
+  const {
+    onChange,
+    value,
+    listColors,
+    disabled = false,
+    dataAnalytics,
+  } = props;
 
   const handleChange = (value: ColorItemI) => {
     if (disabled) return;
@@ -25,6 +32,7 @@ export const ColorSwitcher: React.FC<PropsI> = (props) => {
             key={index}
             className={classItem}
             onClick={() => handleChange(color)}
+            data-analytics-title={dataAnalytics + "-" + value}
           >
             <img src={color.value} alt={color.name} />
           </div>

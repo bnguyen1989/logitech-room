@@ -14,9 +14,10 @@ declare const app: Application;
 interface PropsI {
   keyItemPermission: string;
   disabled?: boolean;
+  dataAnalytics?: string;
 }
 export const CounterItem: React.FC<PropsI> = (props) => {
-  const { disabled, keyItemPermission } = props;
+  const { disabled, keyItemPermission, dataAnalytics } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -53,7 +54,13 @@ export const CounterItem: React.FC<PropsI> = (props) => {
 
   return (
     <div className={s.container}>
-      <Counter min={min} max={max} onChange={handleChange} value={count} />
+      <Counter
+        min={min}
+        max={max}
+        onChange={handleChange}
+        value={count}
+        dataAnalytics={dataAnalytics}
+      />
       <div className={s.text}>Max ({max})</div>
     </div>
   );

@@ -104,11 +104,13 @@ export const GetStarted: React.FC = () => {
               text={langPage.Btn.customer}
               variant="contained"
               onClick={handleCustomerClick}
+              dataAnalytics={"room-configurator-get-started-customer"}
             />
             <Button
               text={langPage.Btn.partner}
               variant="outlined"
               onClick={handlePartnerClick}
+              dataAnalytics={"room-configurator-get-started-partner"}
             />
           </div>
         </div>
@@ -121,6 +123,7 @@ export const GetStarted: React.FC = () => {
             onClick={handleCopyUrl}
             text={"COPY URL"}
             position={"left"}
+            dataAnalytics={"room-configurator-get-started-copy-url"}
           >
             <CopyMarkSVG />
           </IconButton>

@@ -8,6 +8,7 @@ export enum EventCategoryName {
 export enum EventActionName {
   chose_type_user = "chose_type_user",
   step_complete = "step_complete",
+  back_step = "back_step",
   configurator_complete = "configurator_complete",
   add_another_room = "add_another_room",
   download_room_all = "download_room_all",
