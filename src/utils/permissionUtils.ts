@@ -7,6 +7,8 @@ import { Step } from "../models/permission/step/Step";
 import { StepName, getSeparatorItemColor } from "./baseUtils";
 import { PlacementManager } from "../models/configurator/PlacementManager";
 import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
+import { RulleManagerMount } from "../models/configurator/RulleManagerMount";
+import { RuleBuilder } from "../models/configurator/RuleBuilder";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -293,7 +295,31 @@ export function createStepConferenceCamera() {
       new CountableMountElement(
         CameraName.RallyCamera,
         PlacementManager.getNameNodeForCamera("Wall")
-      ).setOffsetIndex(1)
+      )
+        .setOffsetIndex(1)
+        .setMountLogic([
+          RulleManagerMount.createRuleObject({
+            condition: RuleBuilder.newRule()
+              .ruleFor("count")
+              .equalTo(1)
+              .build(),
+            action: RulleManagerMount.generateActionAddNodesAndRemoveNodes({
+              setNodes: PlacementManager.getNameNodeCameraRallyPlusBackWall(),
+              remoteNodes: PlacementManager.getNameNodeCameraRallyPlusAboveTV(),
+            }),
+          }),
+          RulleManagerMount.createRuleObject({
+            condition: RuleBuilder.newRule()
+              .ruleFor("count")
+              .equalTo(2)
+              .build(),
+            action: RulleManagerMount.generateActionAddNodesAndRemoveNodes({
+              setNodes: PlacementManager.getNameNodeCameraRallyPlusAboveTV(),
+              remoteNodes:
+                PlacementManager.getNameNodeCameraRallyPlusBackWall(),
+            }),
+          }),
+        ])
     )
   );
 
@@ -406,13 +432,13 @@ export function createStepAudioExtensions() {
         [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
         [AudioExtensionName.RallyMicPodPendantMount]: ["count"],
       })
+
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
       .addReservationMount({
         [CameraName.RallyPlus]: [1, 2],
       })
-
       .setAccessoryItems([
         AudioExtensionName.RallyMicPodMount,
         AudioExtensionName.RallyMicPodPendantMount,
