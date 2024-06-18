@@ -95,7 +95,7 @@
 
         .title_video {
           color: var(--Logitech-Colors-Black, #000);
-          font-family: "Poppins", sans-serif;
+          font-family: var(--p-font-family);
           font-size: 46px;
           font-style: normal;
           font-weight: 700;
@@ -106,7 +106,7 @@
 
         .decs_video {
           color: var(--Logitech-Colors-Kohle, #2f3132);
-          font-family: "Poppins", sans-serif;
+          font-family: var(--p-font-family);
           font-size: 16px;
           font-style: normal;
           font-weight: 300;
