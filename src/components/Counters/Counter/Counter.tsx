@@ -6,26 +6,31 @@ interface PropsI {
   max: number;
   onChange: (value: number) => void;
   disabled?: boolean;
+  dataAnalytics?: string;
 }
 export const Counter: React.FC<PropsI> = (props) => {
-  const { min, max, onChange, value, disabled } = props;
+  const { min, max, onChange, value, disabled, dataAnalytics } = props;
 
   const handleDecrement = () => {
-    if(disabled) return;
+    if (disabled) return;
     if (value > min) {
       onChange(value - 1);
     }
   };
 
   const handleIncrement = () => {
-    if(disabled) return;
+    if (disabled) return;
     if (value < max) {
       onChange(value + 1);
     }
   };
   return (
     <div className={`${s.container} ${disabled ? s.container_disabled : ""}`}>
-      <div className={s.decrement} onClick={handleDecrement}>
+      <div
+        className={s.decrement}
+        onClick={handleDecrement}
+        data-analytics-title={dataAnalytics + "-decrement"}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="10"
@@ -42,7 +47,11 @@ export const Counter: React.FC<PropsI> = (props) => {
         </svg>
       </div>
       <div className={s.value}>{value}</div>
-      <div className={s.increment} onClick={handleIncrement}>
+      <div
+        className={s.increment}
+        onClick={handleIncrement}
+        data-analytics-title={dataAnalytics + "-increment"}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="10"

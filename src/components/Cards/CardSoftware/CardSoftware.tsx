@@ -119,17 +119,25 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
               <SelectItem
                 keyItemPermission={keyItemPermission}
                 defaultLabel={"Choose Lorem Plan"}
+                dataAnalytics="card-choose-lorem-plan"
               />
             </div>
           )}
           <div className={s.info_mobile}>
-            <div className={s.info_button_mobile} onClick={handleInfo}>
+            <div
+              className={s.info_button_mobile}
+              onClick={handleInfo}
+              data-analytics-title={"card-show-annotation-modal"}
+            >
               INFO
             </div>
           </div>
         </div>
         <div className={s.info}>
-          <IconButton onClick={handleInfo}>
+          <IconButton
+            onClick={handleInfo}
+            dataAnalytics={"card-show-annotation-modal"}
+          >
             <InformationSVG />
           </IconButton>
         </div>

@@ -121,6 +121,7 @@ export const FinishModal: React.FC = () => {
               variant={"outlined"}
               position={"left"}
               text={"Back"}
+              dataAnalytics={"finish-modal-back"}
             >
               <ArrowLeftSVG />
             </IconButton>
@@ -129,6 +130,7 @@ export const FinishModal: React.FC = () => {
               text={"Yes, Let's Proceed"}
               variant={"contained"}
               disabled={sendRequest}
+              dataAnalytics={"finish-modal-lets-proceed"}
             />
           </div>
         </div>

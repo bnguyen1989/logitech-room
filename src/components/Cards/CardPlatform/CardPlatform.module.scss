@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   padding: 94px 46px 75px;
   box-sizing: border-box;
 
@@ -45,24 +46,23 @@
 @media (max-width: 1400px) {
   .container {
     padding: 74px 26px 55px;
-    .logo { 
+    .logo {
       & img {
         height: 30px;
       }
     }
-    .image { 
-      height: 186px; 
-      width: 200px; 
+    .image {
+      height: 186px;
+      width: 200px;
       & img {
         height: 100%;
-        width: 200px; 
+        width: 200px;
       }
     }
   }
 }
 @media (max-width: 1000px) {
   .container {
-
     .title {
       white-space: nowrap;
       font-size: 24px;
@@ -74,17 +74,17 @@
 @media (max-width: 500px) {
   .container {
     padding: 60px 20px 40px;
-    .logo { 
+    .logo {
       & img {
         height: 18px;
       }
     }
-    .image { 
-      height: 132px; 
-      width: 155px; 
+    .image {
+      height: 132px;
+      width: 155px;
       & img {
         height: 100%;
-        width: 155px; 
+        width: 155px;
       }
     }
     .title {

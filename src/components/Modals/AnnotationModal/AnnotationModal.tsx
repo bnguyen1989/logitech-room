@@ -114,6 +114,7 @@ export const AnnotationModal: React.FC = () => {
                     disabled={disabledActions?.color}
                     hidden={hiddenActions?.color}
                     activeStepProp={card["key"]}
+                    dataAnalytics={"annotation-modal-change-color"}
                   />
                 </div>
                 <div className={s.button}>
@@ -122,6 +123,7 @@ export const AnnotationModal: React.FC = () => {
                     onClick={() => handleClick()}
                     variant={"contained"}
                     disabled={isActiveCard}
+                    dataAnalytics={"annotation-modal-add-to-room"}
                   />
                 </div>
               </div>
@@ -215,6 +217,7 @@ export const AnnotationModal: React.FC = () => {
               onClick={() => handleClick()}
               variant={"contained"}
               disabled={isActiveCard}
+              dataAnalytics={"annotation-modal-add-to-room"}
             />
           </div>
         </div>

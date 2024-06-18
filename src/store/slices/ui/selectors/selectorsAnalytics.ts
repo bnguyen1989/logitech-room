@@ -4,6 +4,7 @@ import {
   EventCategoryName,
   EventDataAnalyticsI,
 } from "../../../../models/analytics/type";
+import { getArrayStepNames } from "../../../../utils/baseUtils";
 import { getRoleData } from "../../user/selectors/selectors";
 
 import {
@@ -12,7 +13,6 @@ import {
   getSelectedCardsByStep,
   getSelectedConfiguratorCards,
   getSelectedPrepareCards,
-  getStepData,
 } from "./selectors";
 
 export const getDataEvent =
@@ -58,10 +58,10 @@ export const getDataEvent =
         };
 
         switch (actionName) {
+          case EventActionName.back_step:
           case EventActionName.step_complete: {
-            const stepData = getStepData(state);
-            const keysStep = Object.keys(stepData);
-            const index = keysStep.indexOf(activeStep);
+            const stepNames = getArrayStepNames();
+            const index = stepNames.indexOf(activeStep) + 1;
             const selected_step_cards =
               getSelectedCardsByStep(activeStep)(state);
             return {
