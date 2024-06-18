@@ -31,9 +31,22 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private disabledCounterDependence: PropertyDependentElement = {};
   private disabledColorDependence: PropertyDependentElement = {};
   private bundleElements: Array<ItemElement> = [];
+  private bundleMountsDependence: Record<string, Array<string>> = {};
 
   constructor(name: string) {
     super(name);
+  }
+
+  public addBundleMountsDependence(
+    key: string,
+    value: Array<string>
+  ): ItemElement {
+    this.bundleMountsDependence[key] = value;
+    return this;
+  }
+
+  public getBundleMountsDependence(): Record<string, Array<string>> {
+    return { ...this.bundleMountsDependence };
   }
 
   public addBundleElement(element: ItemElement): ItemElement {
