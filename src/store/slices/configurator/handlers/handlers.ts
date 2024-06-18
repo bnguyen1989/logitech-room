@@ -28,7 +28,7 @@ import { ReferenceMountElement } from "../../../../models/permission/elements/mo
 import { StepName } from "../../../../utils/baseUtils";
 import { AttributeMountElement } from "../../../../models/permission/elements/mounts/AttributeMountElement";
 import { Configuration } from "@threekit/rest-api";
-import { getTVMountByRoomSize } from "../../../../utils/permissionUtils";
+import { getTVMountBySettings } from "../../../../utils/permissionUtils";
 
 export const setDefaultsNode = (stepName: StepName) => {
   return (store: Store) => {
@@ -36,12 +36,17 @@ export const setDefaultsNode = (stepName: StepName) => {
     if (stepName !== StepName.ConferenceCamera) return;
 
     const selectData = getSelectData(state);
-    const roomSize = selectData[StepName.RoomSize];
-    const keyPermission = Object.values(roomSize).find(
-      (item) => item.selected.length > 0
-    )?.selected[0];
-    if (!keyPermission) return;
-    const tvMount = getTVMountByRoomSize(keyPermission);
+    const keyPermissions = [StepName.RoomSize, StepName.Platform].map((key) => {
+      const data = selectData[key];
+      return Object.values(data).find((item) => item.selected.length > 0)
+        ?.selected[0];
+    });
+    const { 0: keyPermissionRoom, 1: keyPermissionPlatform } = keyPermissions;
+    if (!keyPermissionRoom || !keyPermissionPlatform) return;
+    const tvMount = getTVMountBySettings(
+      keyPermissionRoom,
+      keyPermissionPlatform
+    );
 
     const nameNode = tvMount.getNameNode();
     const nodes = getNodes(state);
@@ -171,7 +176,7 @@ export function addElement(card: CardI, stepName: StepName) {
     const element = step.getElementByName(card.keyPermission);
 
     if (element instanceof ItemElement) {
-      const bundleMount = element.getBundleMount();
+      const bundleMount = permission.getBundleMountElementsByName(element.name);
       bundleMount.forEach((mount) => {
         const card = getCardByKeyPermission(stepName, mount.name)(state);
         if (!card) return;
@@ -324,12 +329,12 @@ export function removeElement(card: CardI, stepName: StepName) {
     if (!card || !step) return;
 
     const cardAsset = getAssetFromCard(card)(state);
-    if(!cardAsset) return;
+    if (!cardAsset) return;
 
     const element = step.getElementByName(card.keyPermission);
 
     if (element instanceof ItemElement) {
-      const bundleMount = element.getBundleMount();
+      const bundleMount = permission.getBundleMountElementsByName(element.name);
       store.dispatch(
         removeNodeByKeys([...bundleMount.map((mount) => mount.getNameNode())])
       );

@@ -179,7 +179,19 @@ export function createStepConferenceCamera() {
           TVName.LogitechTVTwo,
           PlacementManager.getNameNodeForTV()
         )
-      );
+      )
+      .addBundleMount(
+        new MountElement(
+          TVName.LogitechTVOne,
+          PlacementManager.getNameNodeForTV()
+        )
+      )
+      .addBundleMountsDependence(TVName.LogitechTVTwo, [
+        PlatformName.GoogleMeet,
+        PlatformName.MicrosoftTeams,
+        PlatformName.Zoom,
+      ])
+      .addBundleMountsDependence(TVName.LogitechTVOne, [PlatformName.BYOD]);
   };
   const group = new GroupElement()
     .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
@@ -261,6 +273,18 @@ export function createStepConferenceCamera() {
             PlacementManager.getNameNodeForTV()
           )
         )
+        .addBundleMount(
+          new MountElement(
+            TVName.LogitechTVOne,
+            PlacementManager.getNameNodeForTV()
+          )
+        )
+        .addBundleMountsDependence(TVName.LogitechTVTwo, [
+          PlatformName.GoogleMeet,
+          PlatformName.MicrosoftTeams,
+          PlatformName.Zoom,
+        ])
+        .addBundleMountsDependence(TVName.LogitechTVOne, [PlatformName.BYOD])
     )
     .setRequiredOne(true);
 
@@ -653,7 +677,13 @@ export const getPermissionNameByItemName = (
   );
 };
 
-export const getTVMountByRoomSize = (roomSize: string) => {
+export const getTVMountBySettings = (roomSize: string, platform: string) => {
+  if (platform === PlatformName.BYOD) {
+    return new MountElement(
+      TVName.LogitechTVOne,
+      PlacementManager.getNameNodeForTV()
+    );
+  }
   switch (roomSize) {
     case RoomSizeName.Phonebooth:
     case RoomSizeName.Huddle:
