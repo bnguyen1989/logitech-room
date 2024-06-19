@@ -774,6 +774,10 @@ export const isSupportService = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.SupportService]);
 };
 
+export const isExtendWarranty = (name: string) => {
+  return isCompareName(name)([SoftwareServicesName.ExtendedWarranty]);
+};
+
 export const isBundleElement = (name: string) => {
   return isCompareName(name)([
     MeetingControllerName.RallyBarTapIP,
