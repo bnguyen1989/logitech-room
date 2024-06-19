@@ -30,6 +30,7 @@ import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountIt
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import {
   getPermissionNameByItemName,
+  isExtendWarranty,
   isSupportService,
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
@@ -545,14 +546,10 @@ function setSoftwareServicesData(configurator: Configurator) {
         return;
       }
 
-      const isSupport = (name: string) => name.includes("Support");
-      if (isSupport(name)) {
-        const baseCard = softwareServicesBaseData.find((item) =>
-          isSupportService(item.keyPermission)
-        );
-
-        if (!baseCard) return;
-
+      const setSelectCards = (
+        baseCard: Omit<CardI, "dataThreekit">,
+        value: AttributeStateI
+      ) => {
         const values: Array<SelectDataI> = [];
         let threekitItems: Record<string, ValueAssetStateI> = {};
         value.values.forEach((item: ValueAttributeStateI) => {
@@ -571,9 +568,7 @@ function setSoftwareServicesData(configurator: Configurator) {
               value: asset.id,
             });
           }
-        }); 
-        
-        console.log("value setSoftwareServices", values);
+        });
 
         values.sort((a, b) => {
           // Перевірка чи існують a.label та b.label і присвоєння значення '0', якщо немає
@@ -599,6 +594,29 @@ function setSoftwareServicesData(configurator: Configurator) {
             threekitItems,
           },
         });
+        return;
+      };
+
+      const isExtended = (name: string) => name.includes("Extended");
+      if (isExtended(name)) {
+        const baseCard = softwareServicesBaseData.find((item) =>
+          isExtendWarranty(item.keyPermission)
+        );
+        if (!baseCard) return;
+
+        setSelectCards(baseCard, value);
+        return;
+      }
+
+      const isSupport = (name: string) => name.includes("Support");
+      if (isSupport(name)) {
+        const baseCard = softwareServicesBaseData.find((item) =>
+          isSupportService(item.keyPermission)
+        );
+
+        if (!baseCard) return;
+
+        setSelectCards(baseCard, value);
         return;
       }
 
