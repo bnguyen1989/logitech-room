@@ -42,7 +42,9 @@ export const SetupModal: React.FC = () => {
     initialValues.editableField6 = link;
 
     if (dataModal) {
-      initialValues.editableField5 = dataModal.linkSnapshot;
+      initialValues.editableField5 = JSON.stringify({
+        link: dataModal.linkSnapshot,
+      });
     }
 
     return initialValues;
