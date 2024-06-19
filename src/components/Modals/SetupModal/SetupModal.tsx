@@ -38,11 +38,13 @@ export const SetupModal: React.FC = () => {
   const getInitialValues = () => {
     const initialValues: Record<string, string> = {};
     const baseUrl = getParentURL();
-    const link = `${baseUrl}/room?userId=${user.id}`;
+    const link = `${baseUrl}#/room?userId=${user.id}`;
     initialValues.editableField6 = link;
 
     if (dataModal) {
-      initialValues.editableField5 = dataModal.linkSnapshot;
+      initialValues.editableField5 = JSON.stringify({
+        link: dataModal.linkSnapshot,
+      });
     }
 
     return initialValues;
