@@ -22,10 +22,12 @@ interface PropsI {
   disabled?: boolean;
   hidden?: boolean;
   activeStepProp?: StepName;
+  dataAnalytics?: string;
 }
 
 export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
-  const { keyItemPermission, disabled, activeStepProp, hidden } = props;
+  const { keyItemPermission, disabled, activeStepProp, hidden, dataAnalytics } =
+    props;
   const activeStep = useAppSelector(getActiveStep);
   const activeStepName = activeStepProp ?? activeStep;
   const card = useAppSelector(
@@ -83,6 +85,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
       onChange={handleChange}
       listColors={availableColorsData}
       disabled={disabled}
+      dataAnalytics={dataAnalytics}
     />
   );
 };

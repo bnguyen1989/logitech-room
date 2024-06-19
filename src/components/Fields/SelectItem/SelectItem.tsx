@@ -19,9 +19,10 @@ interface PropsI {
   keyItemPermission: string;
   disabled?: boolean;
   defaultLabel?: string;
+  dataAnalytics?: string;
 }
 export const SelectItem: React.FC<PropsI> = (props) => {
-  const { disabled, keyItemPermission, defaultLabel } = props;
+  const { disabled, keyItemPermission, defaultLabel, dataAnalytics } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
@@ -69,6 +70,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
         disabled ? s.container_disabled : ""
       }`}
       onClick={toggleSelect}
+      data-analytics-title={dataAnalytics}
     >
       <div className={s.value}>{getName()}</div>
       <div className={s.icon}>

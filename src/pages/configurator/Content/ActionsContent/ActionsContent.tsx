@@ -26,21 +26,27 @@ export const ActionsContent = () => {
   const isCanChangeStep = useAppSelector(getIsCanChangeStep);
 
   const handleNext = () => {
-    if (!nextStep) {
-      dispatch(setFinishModal({ isOpen: true }));
-      return;
-    }
-
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,
       action: EventActionName.step_complete,
       value: {},
     });
 
+    if (!nextStep) {
+      dispatch(setFinishModal({ isOpen: true }));
+      return;
+    }
+
     app.changeStep(nextStep.key, DirectionStep.Next);
   };
 
   const handleBack = () => {
+    app.analyticsEvent({
+      category: EventCategoryName.threekit_configurator,
+      action: EventActionName.back_step,
+      value: {},
+    });
+
     if (!prevStep) {
       navigate("/", { replace: true });
       return;
@@ -57,7 +63,7 @@ export const ActionsContent = () => {
         </IconButton>
       </div>
       <div className={s.button_back}>
-        <Button onClick={handleBack} text="Back" />
+        <Button onClick={handleBack} text="Back" dataAnalytics={"back"} />
       </div>
       <div className={s.button_next}>
         <Button
@@ -65,6 +71,7 @@ export const ActionsContent = () => {
           text={nextStep ? "Next" : "Finish"}
           variant="contained"
           disabled={!isCanChangeStep}
+          dataAnalytics={"next"}
         />
       </div>
     </div>

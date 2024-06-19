@@ -174,10 +174,12 @@ export const CardItem: React.FC<PropsI> = (props) => {
                     keyItemPermission={card.keyPermission}
                     disabled={disabledActions.color}
                     hidden={hiddenActions.color}
+                    dataAnalytics={"card-change-color"}
                   />
                   <CounterItem
                     keyItemPermission={card.keyPermission}
                     disabled={disabledActions.counter}
+                    dataAnalytics={"card-change-counter"}
                   />
                   <SelectItem
                     keyItemPermission={card.keyPermission}
@@ -186,7 +188,10 @@ export const CardItem: React.FC<PropsI> = (props) => {
                 </div>
               )}
               <div className={s.info}>
-                <IconButton onClick={handleInfo}>
+                <IconButton
+                  onClick={handleInfo}
+                  dataAnalytics={"card-show-annotation-modal"}
+                >
                   <InformationSVG />
                 </IconButton>
               </div>

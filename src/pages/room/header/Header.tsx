@@ -122,6 +122,7 @@ export const Header: React.FC = () => {
               onClick={handleShareUserRooms}
               text={langPage.header.buttons.CopyYourCustomURL}
               variant={userCanReqConsultation ? "outlined" : "contained"}
+              dataAnalytics={"room-summary-copy-url"}
             >
               <ChainLinkSVG
                 color={userCanReqConsultation ? "black" : "white"}
@@ -132,6 +133,7 @@ export const Header: React.FC = () => {
                 onClick={handleRequestConsultation}
                 text={langPage.header.buttons.RequestConsultation}
                 variant={"contained"}
+                dataAnalytics={"room-summary-request-consultation"}
               />
             )}
           </div>
@@ -149,12 +151,14 @@ export const Header: React.FC = () => {
             onClick={handleAnotherRoom}
             text={langPage.buttons.AddAnotherRoom}
             variant={"contained"}
+            dataAnalytics={"room-summary-add-another-room"}
           />
         )}
         <IconButton
           onClick={handleDownloadAll}
           text={langPage.buttons.DownloadRoomGuideAll}
           variant={"outlined"}
+          dataAnalytics={"room-summary-download-all"}
         >
           <DownloadSVG />
         </IconButton>
@@ -162,6 +166,7 @@ export const Header: React.FC = () => {
           onClick={handleShareProject}
           text={langPage.buttons.ShareYourProject}
           variant={"outlined"}
+          dataAnalytics={"room-summary-share-project"}
         >
           <ShareSVG />
         </IconButton>
