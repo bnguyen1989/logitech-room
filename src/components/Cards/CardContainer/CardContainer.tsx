@@ -46,6 +46,7 @@ export const CardContainer: React.FC<PropsI> = (props) => {
       <button
         className={`${s.button} ${active ? s.button_active : ""}`}
         onClick={onClick}
+        data-analytics-title={"select-card"}
       ></button>
       <div onClick={handleClick} className={s.wrapper}>
         {children}

@@ -65,7 +65,10 @@ export const CardRoom: React.FC<PropsI> = (props) => {
           <div className={s.title}>{title}</div>
           {userCanRemoveRoom && (
             <div className={s.button_remove}>
-              <IconButton onClick={() => removeRoom(shortId)}>
+              <IconButton
+                onClick={() => removeRoom(shortId)}
+                dataAnalytics={"card-room-remove"}
+              >
                 <RemoveSVG />
               </IconButton>
             </div>
@@ -77,6 +80,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
             onClick={handleDownload}
             text={langPage.card.buttons.DownloadRoomGuide}
             variant={"outlined"}
+            dataAnalytics={"card-room-download"}
           >
             <DownloadSVG />
           </IconButton>
@@ -84,6 +88,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
             onClick={handleViewRoom}
             text={langPage.card.buttons.ViewRoom}
             variant={"contained"}
+            dataAnalytics={"card-room-view"}
           />
         </div>
       </div>

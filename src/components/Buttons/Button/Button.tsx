@@ -6,11 +6,20 @@ interface PropsI {
   variant?: "outlined" | "contained" | "based";
   style?: React.CSSProperties;
   disabled?: boolean;
+  dataAnalytics?: string;
 }
 export const Button: React.FC<PropsI> = (props) => {
-  const { onClick, text, variant = "based", style, disabled } = props;
+  const {
+    onClick,
+    text,
+    variant = "based",
+    style,
+    disabled,
+    dataAnalytics,
+  } = props;
   return (
     <div
+      data-analytics-title={dataAnalytics}
       role={"button"}
       className={`${s.button} ${s["button_" + variant]} ${
         disabled ? s.disabled : ""

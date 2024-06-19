@@ -9,6 +9,7 @@ interface PropsI {
   variant?: "text" | "outlined" | "contained";
   position?: "left" | "right";
   disabled?: boolean;
+  dataAnalytics?: string;
 }
 export const IconButton: React.FC<PropsI> = (props) => {
   const {
@@ -19,10 +20,12 @@ export const IconButton: React.FC<PropsI> = (props) => {
     variant = "text",
     position = "right",
     disabled,
+    dataAnalytics,
   } = props;
 
   return (
     <div
+      data-analytics-title={dataAnalytics}
       style={style}
       className={`${s.container} ${s["button_" + variant]} ${
         disabled ? s.disabled : ""

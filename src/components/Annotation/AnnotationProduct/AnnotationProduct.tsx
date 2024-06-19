@@ -15,7 +15,10 @@ export const AnnotationProduct: React.FC<AnnotationProductPropsI> = (
     <div className={s.annotationWrap}>
       <div className={s.labelText}>{annotationText}</div>
       <div className={s.info}>
-        <IconButton onClick={onHandleInfo}>
+        <IconButton
+          onClick={onHandleInfo}
+          dataAnalytics={"annotation-product-show-annotation-modal"}
+        >
           <InformationSVG />
         </IconButton>
       </div>

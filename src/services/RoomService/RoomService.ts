@@ -1,5 +1,7 @@
 import { CardI } from "../../store/slices/ui/type";
 import { getDisclaimerCSV } from "../../store/slices/ui/utils";
+import { SoftwareServicesName } from "../../utils/permissionUtils";
+import { getSKUProductByExtendedWarranty } from "../../utils/productUtils";
 import { ThreekitService } from "../Threekit/ThreekitService";
 import { OrdersI } from "../Threekit/type";
 import { RoomApi } from "../api/Server/RoomApi/RoomApi";
@@ -20,7 +22,6 @@ export class RoomService {
   private async generateCSVByOrders(orders: OrdersI) {
     const header = this.getHeaderCSV();
     const formattedData = this.formatOrdersToDataCSV(orders);
-    console.log(formattedData);
 
     const response = await this.roomApi.createCSV({
       header,
@@ -50,16 +51,29 @@ export class RoomService {
 
     return dataOrders.map((dataOrder) => {
       const { name, data } = dataOrder;
+      const softwareCardData = data.find((item: any) => {
+        const card = JSON.parse(item.data) as CardI;
+        return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
+      });
       const rows: Array<RowCSVRoomI> = data.map((dataCard, index) => {
-        const { data, price, count, title, sku } = dataCard;
+        const { data, price, count, title, sku, color } = dataCard;
         const card = JSON.parse(data) as CardI;
         const amount = parseFloat(price) * parseInt(count);
+
+        let newSKU;
+        if (softwareCardData) {
+          const year = softwareCardData?.selectValue;
+          const productName = color
+            ? `${card.keyPermission} - ${color}`
+            : card.keyPermission;
+          newSKU = getSKUProductByExtendedWarranty(productName, year ?? "");
+        }
 
         return {
           [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
           [ColumnNameCSVRoom.CATEGORY]: card.key,
           [ColumnNameCSVRoom.PRODUCT_NAME]: title,
-          [ColumnNameCSVRoom.PART_NUMBER]: sku,
+          [ColumnNameCSVRoom.PART_NUMBER]: newSKU ?? sku,
           [ColumnNameCSVRoom.QUANTITY]: count,
           [ColumnNameCSVRoom.MSPR]: parseFloat(price).toFixed(2),
           [ColumnNameCSVRoom.TOTAL_QUANTITY]: amount.toFixed(2),
