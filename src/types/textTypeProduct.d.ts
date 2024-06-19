@@ -22,7 +22,7 @@ type ProductFeature = {
 
 export type Card = {
   ProductName: string;
-  ShortDescription: string;
+  ShortDescription: string[];
 }
 
 export type Blade_1 = {
