@@ -7,7 +7,17 @@ import {
   Card,
   ProductDataType,
 } from "../../../../types/textTypeProduct";
-import { getStepNameByKeyPermission } from "./selectors";
+import {
+  CameraName,
+  PlatformName,
+  ServiceName,
+} from "../../../../utils/permissionUtils";
+import { CardI } from "../type";
+import {
+  getMetadataProductNameAssetFromCard,
+  getSelectedPrepareCards,
+  getStepNameByKeyPermission,
+} from "./selectors";
 import { getPropertyColorCardByKeyPermission } from "./selectorsColorsCard";
 
 export const getAllLangProducts = (state: RootState) => {
@@ -115,8 +125,6 @@ export const getLangProductImage =
       });
     }
 
-
-
     const keyImg = Object.keys(Blade_1["Colors"])[0];
     return Blade_1["Colors"][keyImg];
   };
@@ -175,4 +183,25 @@ export const getLangForModalProduct =
     }
 
     return objData;
+  };
+
+export const getLangDescriptionForCard =
+  (card: CardI) => (state: RootState) => {
+    const productName = getMetadataProductNameAssetFromCard(card)(state);
+    const langDataCard = getLangProductCard(productName)(state);
+    if (card.keyPermission === CameraName.RallyBarHuddle) {
+      const prepareSelectCards = getSelectedPrepareCards(state);
+      const isGoogle = prepareSelectCards.some(
+        (item) => item.keyPermission === PlatformName.GoogleMeet
+      );
+      const isAppliance = prepareSelectCards.some(
+        (item) => item.keyPermission === ServiceName.Android
+      );
+
+      if (isGoogle && isAppliance) {
+        return langDataCard?.ShortDescription[1];
+      }
+    }
+
+    return langDataCard?.ShortDescription[0];
   };
