@@ -2,6 +2,10 @@ export class PlacementManager {
   public static getNameNodeForTV(): string {
     return "Display_Placement_1";
   }
+  public static getNameNodeWithoutInteraction(): string[] {
+    return [this.getNameNodeForTV()];
+  }
+
   public static getNameNodeForMic(id?: number): string {
     if (!id) return `Mic_Placement`;
     return `Mic_Placement_${id}`;
