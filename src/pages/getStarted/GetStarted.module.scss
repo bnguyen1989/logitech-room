@@ -150,9 +150,10 @@
 @media (max-width: 768px) {
   .container {
     .image {
-      background-image: url(https://cdn.spectrumcustomizer.com/logitech/room/frontend/img/intro-tablet.jpg);
+    flex-basis: calc(46vh - 30px);
+      background-image: url(https://logitech-staging.3kit.com/images/getStarted/banner-mobile.png);
       background-size: contain;
-      background-position: 100% 100%;
+      background-position: 100% 50%;
     }
   }
 }
@@ -259,7 +260,8 @@
 @media (max-width: 479px) {
   .container {
     .image {
-      background-image: url(https://cdn.spectrumcustomizer.com/logitech/room/frontend/img/intro-mobile.jpg);
+        flex-basis: calc(42vh - 30px);
+      background-image: url(https://logitech-staging.3kit.com/images/getStarted/banner-mobile-2.png);
     }
   }
 }
