@@ -11,6 +11,7 @@ import { getKeyPermissionFromNameNode } from "../../store/slices/configurator/se
 import { AnnotationProductContainer } from "../Annotation/AnnotationProduct/AnnotationContainer.js";
 import { StepName } from "../../utils/baseUtils.js";
 import { Configuration } from "@threekit/rest-api";
+import { PlacementManager } from "../../models/configurator/PlacementManager.js";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
@@ -20,6 +21,10 @@ export type ProductProps = {
   callbackDisableHighlight: () => void;
   callbackOnHighlight: (nameNode: string) => void;
   nameNode: string;
+};
+
+const generateName = (nameNode: string, parentNode: THREE.Object3D): string => {
+  return `${nameNode}-${parentNode.uuid}-group`;
 };
 
 export const Product: React.FC<ProductProps> = ({
@@ -55,27 +60,37 @@ export const Product: React.FC<ProductProps> = ({
   return (
     <group
       key={parentNode.uuid + `-group`}
+      name={generateName(nameNode, parentNode)}
       position={parentNode.position}
       scale={parentNode.scale}
       rotation={parentNode.rotation}
     >
-      <Select enabled={highlight} onClick={() => callbackOnHighlight(nameNode)}>
-        {highlight &&
-          keyPermissionObj !== undefined &&
-          Object.keys(keyPermissionObj).length > 0 && (
-            <AnnotationProductContainer
-              stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
-              keyPermission={Object.values(keyPermissionObj)[0]}
-              position={[0, sizeProduct.y + 0.4, 0]}
-              callbackDisableHighlight={callbackDisableHighlight}
-            />
-          )}
-
+      {PlacementManager.getNameNodeWithoutInteraction().includes(nameNode) ? (
         <GLTFNode
           threeNode={productGltf.scene.clone()}
           nodeMatchers={ProductsNodes()}
         />
-      </Select>
+      ) : (
+        <Select
+          enabled={highlight}
+          onClick={() => callbackOnHighlight(nameNode)}
+        >
+          {highlight &&
+            keyPermissionObj !== undefined &&
+            Object.keys(keyPermissionObj).length > 0 && (
+              <AnnotationProductContainer
+                stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
+                keyPermission={Object.values(keyPermissionObj)[0]}
+                position={[0, sizeProduct.y + 0.4, 0]}
+                callbackDisableHighlight={callbackDisableHighlight}
+              />
+            )}
+          <GLTFNode
+            threeNode={productGltf.scene.clone()}
+            nodeMatchers={ProductsNodes()}
+          />
+        </Select>
+      )}
     </group>
   );
 };
