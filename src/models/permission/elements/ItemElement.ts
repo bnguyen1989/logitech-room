@@ -30,7 +30,6 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private requiredDependence: PropertyDependentElement = {};
   private disabledCounterDependence: PropertyDependentElement = {};
   private disabledColorDependence: PropertyDependentElement = {};
-  private bundleElements: Array<ItemElement> = [];
   private bundleMountsDependence: Record<string, Array<string>> = {};
 
   constructor(name: string) {
@@ -47,15 +46,6 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   public getBundleMountsDependence(): Record<string, Array<string>> {
     return { ...this.bundleMountsDependence };
-  }
-
-  public addBundleElement(element: ItemElement): ItemElement {
-    this.bundleElements.push(element);
-    return this;
-  }
-
-  public getBundleElements(): Array<ItemElement> {
-    return [...this.bundleElements];
   }
 
   public addBundleMount(value: MountElement): ItemElement {

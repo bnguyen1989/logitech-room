@@ -49,7 +49,7 @@ export class CountableMountElement extends MountElement {
   public getAvailableNameNode(): string[] {
     const range = [];
     const rangeAvailableIndex = this.getRangeAvailableIndex();
-    for (let i = 1; i <= this.activeIndex; i++) {
+    for (let i = this.min + 1; i <= this.activeIndex; i++) {
       const index = rangeAvailableIndex[i - 1];
       range.push(`${this.nodeName}_${index + this.offsetIndex}`);
     }
@@ -97,12 +97,14 @@ export class CountableMountElement extends MountElement {
     return this;
   }
 
-  public setMin(min: number): void {
+  public setMin(min: number): CountableMountElement {
     this.min = min;
+    return this;
   }
 
-  public setMax(max: number): void {
+  public setMax(max: number): CountableMountElement {
     this.max = max;
+    return this;
   }
 
   public copy(): CountableMountElement {

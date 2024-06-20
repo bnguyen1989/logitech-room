@@ -291,13 +291,27 @@ export class ConfigurationConstraintHandler extends Handler {
     if (!attrDataQtyMicPod) return;
 
     const allCountMicPod = attrDataQtyMicPod.values.length - 1;
-    const availableCountMicPod = allCountMicPod - 2;
-    if (!isSelectRallyPlus) return;
+    const minMicPod = 2;
+    if (!isSelectRallyPlus) {
+      this.limitValuesAttrByCallback(
+        attrDataQtyMicPod.values,
+        attrDataQtyMicPod.id,
+        (currentCount: number) => currentCount <= allCountMicPod
+      );
+      return;
+    }
     this.limitValuesAttrByCallback(
       attrDataQtyMicPod.values,
       attrDataQtyMicPod.id,
-      (currentCount: number) => currentCount <= availableCountMicPod
+      (currentCount: number) => currentCount >= minMicPod
     );
+    const isChangeRallyPlus = this.triggeredByAttr.includes(
+      AttributeName.RoomCamera
+    );
+    if (!isChangeRallyPlus) return;
+    this.configurator.setConfiguration({
+      [AttributeName.QtyMic]: minMicPod.toString(),
+    });
   }
 
   private rule_rallyBar_TapIp_bundle() {
@@ -323,19 +337,12 @@ export class ConfigurationConstraintHandler extends Handler {
       isSelectRallyBar && this.getColorFromAssetName(selectedCamera.name);
     const isCameraGraphite = colorSelectCamera === ColorName.Graphite;
 
-    const selectedMeetingController = this.getSelectedValue(
-      AttributeName.RoomMeetingController
-    );
-    const isSelectedMeetingController =
-      typeof selectedMeetingController === "object";
-    const isSelectedTapIP =
-      isSelectedMeetingController &&
-      selectedMeetingController.name.includes(
-        MeetingControllerName.LogitechTapIP
-      );
+    const selectTapIp = this.getSelectedValue(AttributeName.RoomMeetingTapIp);
+
+    const isSelectTapIp = typeof selectTapIp === "object";
+
     const colorSelectTapIP =
-      isSelectedTapIP &&
-      this.getColorFromAssetName(selectedMeetingController.name);
+      isSelectTapIp && this.getColorFromAssetName(selectTapIp.name);
     const isSelectTapIPGraphite = colorSelectTapIP === ColorName.Graphite;
 
     if (!isCameraGraphite || !isSelectTapIPGraphite) {
@@ -1372,7 +1379,6 @@ export class ConfigurationConstraintHandler extends Handler {
     const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
     if (typeof qtyMicPod !== "string") return 0;
     const count = parseInt(qtyMicPod);
-    const isSelectRallyPlus = this.isSelectRallyPlus();
-    return isSelectRallyPlus ? count + 2 : count;
+    return count;
   };
 }

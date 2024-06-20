@@ -260,15 +260,6 @@ export function createStepConferenceCamera() {
           [AudioExtensionName.RallyMicPod]: ["color"],
           [AudioExtensionName.RallyMicPodMount]: ["color"],
         })
-
-        .addBundleElement(
-          new ItemElement(AudioExtensionName.RallyMicPod).setDefaultMount(
-            new CountableMountElement(
-              AudioExtensionName.RallyMicPod,
-              PlacementManager.getNameNodeForMic()
-            ).setActiveIndex(2)
-          )
-        )
         .addBundleMount(
           new MountElement(
             TVName.LogitechTVTwo,
@@ -287,6 +278,15 @@ export function createStepConferenceCamera() {
           PlatformName.Zoom,
         ])
         .addBundleMountsDependence(TVName.LogitechTVOne, [PlatformName.BYOD])
+        .addBundleMount(
+          new CountableMountElement(
+            AudioExtensionName.RallyMicPod,
+            PlacementManager.getNameNodeForMic()
+          )
+            .setMin(0)
+            .setMax(2)
+            .setActiveIndex(2)
+        )
     )
     .setRequiredOne(true);
 
