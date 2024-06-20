@@ -284,9 +284,9 @@ export const middleware: Middleware =
         break;
       }
       case CONFIGURATOR_ACTION_NAME.CHANGE_VALUE_NODES: {
-        const updatedNodes = action.payload;
+        // const updatedNodes = action.payload;
 
-        updateHighlightNodes(updatedNodes)(store);
+        // updateHighlightNodes(updatedNodes)(store);
         break;
       }
       default:
