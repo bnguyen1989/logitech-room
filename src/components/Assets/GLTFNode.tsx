@@ -1,6 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 import * as THREE from "three";
 import type { Mesh, Object3D } from "three";
+import { PlacementManager } from "../../models/configurator/PlacementManager";
 
 export type ThreeNodeProps = {
   nodeMatchers?: NodeMatcher[];
@@ -20,12 +21,25 @@ export type ThreeNodeRendererProps = {
   props?: object;
 };
 
+const getParentNames = (object: THREE.Object3D): string[] => {
+  const parentNames: string[] = [];
+  let currentObject: THREE.Object3D | null = object;
+
+  while (currentObject.parent) {
+    if (currentObject.parent.name) {
+      parentNames.push(currentObject.parent.name);
+    }
+    currentObject = currentObject.parent;
+  }
+
+  return parentNames;
+};
+
 export const GLTFNode = ({
   nodeMatchers,
   threeNode,
   props,
 }: ThreeNodeRendererProps): ReactNode => {
-
   if (nodeMatchers) {
     for (let i = 0; i < nodeMatchers.length; i++) {
       const jsx = nodeMatchers[i](threeNode, nodeMatchers);
@@ -57,6 +71,21 @@ export const GLTFNode = ({
         scale={threeNode.scale}
         rotation={threeNode.rotation}
         {...props}
+        onPointerMove={(e) => {
+          const intersections = e.intersections;
+
+          const parentNames = getParentNames(intersections[0].object)
+            .flat()
+            .filter(
+              (name, index, self) => name !== "" && self.indexOf(name) === index
+            )
+            .filter(
+              (name) => !name.includes(PlacementManager.getNameNodeForTV())
+            );
+
+          document.body.style.cursor =
+            parentNames.length > 0 ? "pointer" : "default";
+        }}
       >
         {children}
       </mesh>
