@@ -11,7 +11,6 @@ import {
   deleteNodesByCards,
   removeElement,
   setDefaultsNode,
-  updateHighlightNodes,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
 import {
