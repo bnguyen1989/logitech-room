@@ -12,7 +12,10 @@ import {
   getMetadataProductNameAssetFromCard,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
-import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import {
+  getListSoftwareCardLangByKeyPermission,
+  getPrepareDescriptionLangByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { CardContainerSoftware } from "../CardContainerSoftware/CardContainerSoftware";
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
@@ -37,6 +40,9 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   );
   const description = useAppSelector(
     getPrepareDescriptionLangByKeyPermission(keyItemPermission)
+  );
+  const list = useAppSelector(
+    getListSoftwareCardLangByKeyPermission(keyItemPermission)
   );
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
@@ -112,7 +118,20 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
                 <div className={s.subtitle}>{card.subtitle}</div>
               )}
             </div>
-            <div className={s.desc}>{description}</div>
+            {list ? (
+              <div className={s.list}>
+                <div className={s.title_list}>{list.title}</div>
+                <ul className={s.items_list}>
+                  {Object.values(list.values).map((item, index) => (
+                    <li key={index} className={s.item_list}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div className={s.desc}>{description}</div>
+            )}
           </div>
           {!!card.select && (
             <div className={s.actions}>
