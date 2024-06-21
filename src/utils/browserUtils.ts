@@ -10,6 +10,16 @@ export const getParentURL = () => {
     return document.location.origin;
   }
 };
+export const getParentURLForRevert = () => {
+  if (typeof window !== "undefined" && typeof document !== "undefined") {
+    if (window.location !== window.parent.location) {
+      const baseUrl = document.referrer;
+      return baseUrl;
+    }
+
+    return `${document.location.origin}${document.location.pathname}${document.location.search}`;
+  }
+};
 
 export const copyToClipboard = (data: string | object | number) => {
   if (!data) return;
