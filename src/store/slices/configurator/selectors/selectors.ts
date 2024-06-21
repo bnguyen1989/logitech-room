@@ -113,9 +113,12 @@ export const getKeyPermissionFromNameNode =
               step["name"],
               element.name
             )(state);
-            objKeyPermission = {
-              [step["name"]]: card.keyPermission,
-            };
+
+            if (card) {
+              objKeyPermission = {
+                [step["name"]]: card.keyPermission,
+              };
+            }
           }
         }
       });
