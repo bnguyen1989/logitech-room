@@ -1,4 +1,5 @@
 import { Configurator } from "../configurator/Configurator";
+import { ValueStringStateI } from "../configurator/type";
 import { ItemCommand } from "./ItemCommand";
 import { AddItemBehavior } from "./behavior/AddItemBehavior";
 
@@ -22,10 +23,17 @@ export class AddItemCommand extends ItemCommand {
   public executeCommand(): boolean {
     const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
     if (qtyName) {
-      this.configurator.setConfiguration({
-        [qtyName]: "1",
-      });
-      this.changeProperties.push(qtyName);
+      const stateQty = this.configurator.getStateAttributeByName(qtyName);
+      if (stateQty) {
+        const qty = (stateQty.values as ValueStringStateI[])
+          .filter((i) => i.visible)
+          .map((i: ValueStringStateI) => i.value);
+        const min = Math.min(...qty.map((i: string) => parseInt(i)));
+        this.configurator.setConfiguration({
+          [qtyName]: (min + 1).toString(),
+        });
+        this.changeProperties.push(qtyName);
+      }
     }
     this.configurator.setConfiguration({
       [this.nameProperty]: {

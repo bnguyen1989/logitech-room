@@ -10,10 +10,11 @@ import {
   getColorsFromCard,
   getPropertyColorCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectorsColorsCard";
-import { StepName } from "../../../utils/baseUtils";
+import { ColorName, StepName } from "../../../utils/baseUtils";
 import { useEffect } from "react";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
+import { getColorsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -40,6 +41,8 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
   const availableColorsData = useAppSelector(
     getColorsFromCard(activeStepName, keyItemPermission)
   );
+
+  const langPage = useAppSelector(getColorsLangPage);
 
   useEffect(() => {
     if (!card) return;
@@ -79,6 +82,12 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     });
   };
 
+  const getFormattingName = () => {
+    if (colorValue === ColorName.Graphite) return langPage.Graphite;
+    if (colorValue === ColorName.White) return langPage.White;
+    return;
+  };
+
   return (
     <ColorSwitcher
       value={colorValue}
@@ -86,6 +95,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
       listColors={availableColorsData}
       disabled={disabled}
       dataAnalytics={dataAnalytics}
+      formattingName={getFormattingName()}
     />
   );
 };

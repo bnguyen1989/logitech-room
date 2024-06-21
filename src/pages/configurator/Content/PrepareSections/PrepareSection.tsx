@@ -17,6 +17,7 @@ import s from "./PrepareSection.module.scss";
 import { useEffect } from "react";
 import { ContentContainer } from "../ContentContainer/ContentContainer";
 import { useAnchor } from "../../../../hooks/anchor";
+import { getPlatformLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const PrepareSection: React.FC = () => {
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -25,6 +26,7 @@ export const PrepareSection: React.FC = () => {
     getSecondaryCardsFromStep(activeStepData)
   );
   const actionAnchor = useAnchor<HTMLDivElement>();
+  const langPage = useAppSelector(getPlatformLangPage);
 
   // submit event:
   useEffect(() => {
@@ -141,9 +143,7 @@ export const PrepareSection: React.FC = () => {
 
           {isSecondaryCards && (
             <div className={s.secondaryWrapper}>
-              <div className={s.titleSecond}>
-                Not quite what you’re looking for?
-              </div>
+              <div className={s.titleSecond}>{langPage.titleAditions}</div>
               <div className={s.secondaryWrapperCards}>
                 {secondaryCards.map((card, index) => (
                   <PrepareSecondaryCard

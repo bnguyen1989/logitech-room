@@ -1,17 +1,23 @@
 import { RootState } from "../../..";
 import {
   AudioExtensionsAccessories,
+  Colors,
   ConferenceCamera,
+  Csv,
+  FinishModal,
+  Loader,
   MainPage,
   MeetingControllerAddOn,
+  Navigation,
   Order,
   PagesI,
   PagesIKeys,
   Platform,
-  RemoveRoomModal,
+  RemoveModal,
   RequestConsultation,
   RoomSize,
   Rooms,
+  SelectProductModal,
   Services,
   SetupModal,
   ShareModal,
@@ -110,8 +116,32 @@ export const getShareModalLangPage = (state: RootState): ShareModal => {
 };
 
 export const getSelectProductModalLangPage = (state: RootState) => {
-  return getLangPage("RemoveRoomModal")(state) as RemoveRoomModal;
-}
+  return getLangPage("SelectProductModal")(state) as SelectProductModal;
+};
+
+export const getFinishModalLangPage = (state: RootState) => {
+  return getLangPage("FinishModal")(state) as FinishModal;
+};
+
+export const getRemoveModalLangPage = (state: RootState) => {
+  return getLangPage("RemoveModal")(state) as RemoveModal;
+};
+
+export const getColorsLangPage = (state: RootState) => {
+  return getLangPage("Colors")(state) as Colors;
+};
+
+export const getNavigationLangPage = (state: RootState) => {
+  return getLangPage("Navigation")(state) as Navigation;
+};
+
+export const getLoaderLangPage = (state: RootState) => {
+  return getLangPage("Loader")(state) as Loader;
+};
+
+export const getCSVLangPage = (state: RootState) => {
+  return getLangPage("CSV")(state) as Csv;
+};
 
 export const getLangStepDataByStepName =
   (stepName: StepName) => (state: RootState) => {
@@ -147,6 +177,12 @@ export const getTitleStepByStepName =
   (stepName: StepName) => (state: RootState) => {
     const langStepData = getLangStepDataByStepName(stepName)(state);
     return langStepData.title;
+  };
+
+export const getNameStepByStepName =
+  (stepName: StepName) => (state: RootState) => {
+    const langStepData = getLangStepDataByStepName(stepName)(state);
+    return langStepData.name;
   };
 
 export const getSubTitleStepByStepName =

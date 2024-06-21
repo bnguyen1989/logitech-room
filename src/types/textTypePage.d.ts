@@ -1,6 +1,6 @@
 export interface PagesI {
-  "Room Size": RoomSize;
   mainPage: MainPage;
+  "Room Size": RoomSize;
   Platform: Platform;
   Services: Services;
   "Conference Camera": ConferenceCamera;
@@ -13,10 +13,434 @@ export interface PagesI {
   Order: Order;
   ShareModal: ShareModal;
   RequestConsultation: RequestConsultation;
-  RemoveRoomModal: RemoveRoomModal;
+  SelectProductModal: SelectProductModal;
+  FinishModal: FinishModal;
+  RemoveModal: RemoveModal;
+  Colors: Colors;
+  Navigation: Navigation;
+  Loader: Loader;
+  CSV: Csv;
 }
 
 export type PagesIKeys = keyof PagesI;
+
+export interface MainPage {
+  subtitle: string;
+  title: string;
+  list: List;
+  Btn: Btn;
+}
+
+export interface List {
+  "0": string;
+  "1": string;
+  "2": string;
+  title: string;
+}
+
+export interface Btn {
+  customer: string;
+  partner: string;
+}
+
+export interface RoomSize {
+  name: string;
+  title: string;
+  subtitle: string;
+  Cards: Cards;
+}
+
+export interface Cards {
+  Phonebooth: Phonebooth;
+  Huddle: Huddle;
+  Small: Small;
+  Medium: Medium;
+  Large: Large;
+  Auditorium: Auditorium;
+}
+
+export interface Phonebooth {
+  subtitle: string;
+  title: string;
+}
+
+export interface Huddle {
+  subtitle: string;
+  title: string;
+}
+
+export interface Small {
+  subtitle: string;
+  title: string;
+}
+
+export interface Medium {
+  subtitle: string;
+  title: string;
+}
+
+export interface Large {
+  subtitle: string;
+  title: string;
+}
+
+export interface Auditorium {
+  subtitle: string;
+  title: string;
+}
+
+export interface Platform {
+  name: string;
+  title: string;
+  subtitle: string;
+  Cards: Cards2;
+  titleAditions: string;
+}
+
+export interface Cards2 {
+  "Google Meet": string;
+  "Microsoft Teams": string;
+  Zoom: string;
+  AditionCard: AditionCard[];
+}
+
+export interface AditionCard {
+  title: string;
+}
+
+export interface Services {
+  name: string;
+  title: string;
+  Cards: Cards3;
+}
+
+export interface Cards3 {
+  Appliance: Appliance;
+  "PC based": PcBased;
+}
+
+export interface Appliance {
+  title: string;
+  descriptions: string;
+}
+
+export interface PcBased {
+  title: string;
+  descriptions: string;
+}
+
+export interface ConferenceCamera {
+  name: string;
+  title: string;
+  subtitle1: string;
+  subtitle2: string;
+}
+
+export interface AudioExtensionsAccessories {
+  name: string;
+  title: string;
+  subtitle: string;
+}
+export interface MeetingControllerAddOn {
+  name: string;
+  title: string;
+  subtitle: string;
+}
+
+export interface VideoAccessories {
+  name: string;
+  title: string;
+  subtitle: string;
+}
+
+export interface SoftwareServices {
+  name: string;
+  title: string;
+  titleAfterForm: string;
+  helpButton: string;
+  Cards: Cards4;
+  QuestionForm: QuestionForm;
+}
+
+export interface Cards4 {
+  "Essential Service Plan": EssentialServicePlan;
+  "Logitech Sync": LogitechSync;
+  "Logitech Extended Warranty": LogitechExtendedWarranty;
+  "Support Service": SupportService;
+}
+
+export interface EssentialServicePlan {
+  title: string;
+  list: List2;
+}
+
+export interface List2 {
+  title: string;
+  values: Values;
+}
+
+export interface Values {
+  "0": string;
+  "1": string;
+  "2": string;
+  "3": string;
+}
+
+export interface LogitechSync {
+  title: string;
+  list: List3;
+  description: string;
+}
+
+export interface List3 {
+  title: string;
+  values: Values2;
+}
+
+export interface Values2 {
+  "0": string;
+  "1": string;
+  "2": string;
+  "3": string;
+}
+
+export interface LogitechExtendedWarranty {
+  title: string;
+  description: string;
+}
+
+export interface SupportService {
+  title: string;
+  list: List4;
+  valuesTemplate: string;
+  description: string;
+}
+
+export interface List4 {
+  title: string;
+  values: Values3;
+}
+
+export interface Values3 {
+  "0": string;
+  "1": string;
+  "2": string;
+}
+
+export interface QuestionForm {
+  v1: V1[];
+  v2: V2[];
+}
+
+export interface V1 {
+  question: string;
+  option_1: string;
+  option_2: string;
+  option_3?: string;
+}
+
+export interface V2 {
+  question: string;
+  option_1: string;
+  option_2: string;
+  option_3?: string;
+}
+
+export interface SetupModal {
+  title: string;
+  subtitle: string;
+  btn_done: string;
+}
+
+export interface Rooms {
+  header: Header;
+  title: string;
+  subtitle: Subtitle2;
+  buttons: Buttons2;
+  card: Card;
+}
+
+export interface Header {
+  name: string;
+  title: string;
+  subtitle: Subtitle;
+  buttons: Buttons;
+}
+
+export interface Subtitle {
+  "0": string;
+  "1": string;
+  "2": string;
+}
+
+export interface Buttons {
+  RequestConsultation: string;
+  CopyYourCustomURL: string;
+}
+
+export interface Subtitle2 {
+  v1: string;
+  v2: string;
+}
+
+export interface Buttons2 {
+  AddAnotherRoom: string;
+  DownloadRoomGuideAll: string;
+  ShareYourProject: string;
+}
+
+export interface Card {
+  templateRoomName: TemplateRoomName;
+  descriptionRoomBySize: DescriptionRoomBySize;
+  templateRoomNameByPlatform: TemplateRoomNameByPlatform;
+  buttons: Buttons3;
+}
+
+export interface TemplateRoomName {
+  Phonebooth: string;
+  Huddle: string;
+  Small: string;
+  Medium: string;
+  Large: string;
+  Auditorium: string;
+}
+
+export interface DescriptionRoomBySize {
+  Phonebooth: string;
+  Huddle: string;
+  Small: string;
+  Medium: string;
+  Large: string;
+  Auditorium: string;
+}
+
+export interface TemplateRoomNameByPlatform {
+  BYOD: Byod;
+}
+
+export interface Byod {
+  Phonebooth: string;
+  Huddle: string;
+  Small: string;
+  Medium: string;
+  Large: string;
+  Alternative: string;
+}
+
+export interface Buttons3 {
+  ViewRoom: string;
+  DownloadRoomGuide: string;
+}
+
+export interface Order {
+  TemplateRoomName: string;
+  subtitle: Subtitle3;
+  buttons: Buttons4;
+  StepName: StepName;
+  Footer: Footer;
+}
+
+export interface Subtitle3 {
+  v1: string;
+  v2: string;
+}
+
+export interface Buttons4 {
+  Back: string;
+  DownloadRoomGuide: string;
+  RequestConsultation: string;
+}
+
+export interface StepName {
+  "Room Solution Bundles": string;
+  "Conference Camera": string;
+  "Audio Extensions & Accessories": string;
+  "Meeting Controller & Add On": string;
+  "Video Accessories": string;
+  "Software & Services": string;
+}
+
+export interface Footer {
+  title: string;
+  subtitle: string;
+}
+
+export interface ShareModal {
+  title: string;
+  subtitle: string;
+  button: string;
+  labelAfterCopy: string;
+}
+
+export interface RequestConsultation {
+  text: string;
+}
+
+export interface SelectProductModal {
+  text: string;
+  action: Action;
+}
+
+export interface Action {
+  Yes: string;
+  Back: string;
+}
+
+export interface FinishModal {
+  text: string;
+  action: Action2;
+}
+
+export interface Action2 {
+  Yes: string;
+  Back: string;
+}
+
+export interface RemoveModal {
+  text: string;
+  actions: Actions;
+}
+
+export interface Actions {
+  Cancel: string;
+  Delete: string;
+}
+
+export interface Colors {
+  Graphite: string;
+  White: string;
+}
+
+export interface Navigation {
+  Back: string;
+  Next: string;
+  Finish: string;
+}
+
+export interface Loader {
+  Room: Room
+  Player: Player
+}
+
+export interface Room {
+  title: string
+  subtitle: string
+}
+
+export interface Player {
+  title: string
+}
+
+export interface Csv {
+  Annotation: string;
+  Header: Header2;
+}
+
+export interface Header2 {
+  RoomName: string;
+  ProductName: string;
+  ProductCategory: string;
+}
 
 export interface RoomSize {
   title: string;

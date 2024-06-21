@@ -34,7 +34,7 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   const handleChange = (value: number) => {
     const attributeName = card.dataThreekit.attributeName;
     const isIncrement = value > count;
-    if (isIncrement && value === 1) {
+    if (isIncrement && value === min + 1) {
       app.addItemConfiguration(attributeName, cardAsset.id, card.keyPermission);
       return;
     }
