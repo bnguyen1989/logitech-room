@@ -18,8 +18,11 @@ export type ProductProps = {
   productAssetId: string;
   configuration: Configuration;
   highlight?: boolean;
+  popuptNode?: boolean;
   callbackDisableHighlight: () => void;
   callbackOnHighlight: (nameNode: string) => void;
+  callbackDisablePopuptNodes: () => void;
+  callbackOnPopuptNodes: (nameNode: string) => void;
   nameNode: string;
 };
 
@@ -32,8 +35,11 @@ export const Product: React.FC<ProductProps> = ({
   productAssetId,
   configuration,
   highlight = false,
+  popuptNode = false,
   callbackDisableHighlight = () => {},
   callbackOnHighlight = () => {},
+  callbackDisablePopuptNodes = () => {},
+  callbackOnPopuptNodes = () => {},
   nameNode,
 }) => {
   const dispatch = useDispatch();
@@ -73,16 +79,19 @@ export const Product: React.FC<ProductProps> = ({
       ) : (
         <Select
           enabled={highlight}
-          onClick={() => callbackOnHighlight(nameNode)}
+          onClick={() => {
+            callbackOnHighlight(nameNode);
+            callbackOnPopuptNodes(nameNode);
+          }}
         >
-          {highlight &&
+          {popuptNode &&
             keyPermissionObj !== undefined &&
             Object.keys(keyPermissionObj).length > 0 && (
               <AnnotationProductContainer
                 stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
                 keyPermission={Object.values(keyPermissionObj)[0]}
                 position={[0, sizeProduct.y + 0.4, 0]}
-                callbackDisableHighlight={callbackDisableHighlight}
+                callbackDisablePopuptNodes={callbackDisablePopuptNodes}
               />
             )}
           <GLTFNode

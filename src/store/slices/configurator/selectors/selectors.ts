@@ -33,6 +33,8 @@ export const getIsProcessing = (state: RootState) =>
 
 export const getHighlightNodes = (state: RootState) =>
   state.configurator.highlightNodes;
+export const getPopuptNodes = (state: RootState) =>
+  state.configurator.popuptNodes;
 export const getDataCamera = (state: RootState): DataCamera => {
   const dataCamera: any = state.configurator.camera;
 
@@ -41,6 +43,13 @@ export const getDataCamera = (state: RootState): DataCamera => {
 
 export const getIsHighlightNode = (nameNode: string) => (state: RootState) => {
   const highlightNodes = getHighlightNodes(state);
+  return Object.entries(highlightNodes).some(([key, value]) => {
+    if (!nameNode.includes(key)) return false;
+    return value;
+  });
+};
+export const getIsPopuptNodes = (nameNode: string) => (state: RootState) => {
+  const highlightNodes = getPopuptNodes(state);
   return Object.entries(highlightNodes).some(([key, value]) => {
     if (!nameNode.includes(key)) return false;
     return value;

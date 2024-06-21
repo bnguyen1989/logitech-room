@@ -10,6 +10,7 @@ interface ConfiguratorStateI {
   configuration: Record<string, Configuration>;
   nodes: Record<string, string>;
   highlightNodes: Record<string, boolean>;
+  popuptNodes: Record<string, boolean>;
   camera: DataCamera;
 }
 
@@ -21,6 +22,7 @@ const initialState: ConfiguratorStateI = {
   configuration: {},
   nodes: {},
   highlightNodes: {},
+  popuptNodes: {},
   camera: CameraData,
 };
 
@@ -86,6 +88,9 @@ const configuratorSlice = createSlice({
     ) => {
       state.highlightNodes = action.payload;
     },
+    setPopuptNodes: (state, action: PayloadAction<Record<string, boolean>>) => {
+      state.popuptNodes = action.payload;
+    },
     setDataCamera: (state, action: PayloadAction<DataCamera>) => {
       state.camera = action.payload;
     },
@@ -93,6 +98,13 @@ const configuratorSlice = createSlice({
       Object.keys(state.highlightNodes).forEach((key) => {
         if (action.payload.includes(key)) {
           state.highlightNodes[key] = false;
+        }
+      });
+    },
+    disabledPopuptNodes: (state, action: PayloadAction<string>) => {
+      Object.keys(state.popuptNodes).forEach((key) => {
+        if (action.payload.includes(key)) {
+          state.popuptNodes[key] = false;
         }
       });
     },
@@ -112,5 +124,7 @@ export const {
   changeStatusProcessing,
   setHighlightNodes,
   disabledHighlightNode,
+  setPopuptNodes,
+  disabledPopuptNodes,
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;
