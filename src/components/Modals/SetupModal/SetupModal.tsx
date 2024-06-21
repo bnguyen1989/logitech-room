@@ -6,10 +6,7 @@ import { getSetupModalData } from "../../../store/slices/modals/selectors/select
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
-import {
-  getParentURL,
-  getParentURLForRevert,
-} from "../../../utils/browserUtils";
+import { getParentURLForRevert } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
 import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
