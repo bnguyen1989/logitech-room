@@ -90,6 +90,7 @@ export enum SoftwareServicesName {
   LogitechSync = "Logitech Sync",
   SupportService = "Support Service",
   ExtendedWarranty = "Logitech Extended Warranty",
+  EssentialServicePlan = "Essential Service Plan",
 }
 
 export enum TVName {
@@ -657,7 +658,8 @@ export function createStepSoftwareServices() {
   const group = new GroupElement()
     .addElement(new ItemElement(SoftwareServicesName.LogitechSync))
     .addElement(new ItemElement(SoftwareServicesName.SupportService))
-    .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty));
+    .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty))
+    .addElement(new ItemElement(SoftwareServicesName.EssentialServicePlan));
   group.setRequiredOne(true);
   stepSoftwareServices.allElements = [group];
   return stepSoftwareServices;

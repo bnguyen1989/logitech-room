@@ -220,6 +220,11 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
       image: getImageUrl("images/items/service.jpg"),
       keyPermission: SoftwareServicesName.ExtendedWarranty,
     },
+    [SoftwareServicesName.EssentialServicePlan]: {
+      key: StepName.SoftwareServices,
+      image: getImageUrl("images/items/service.jpg"),
+      keyPermission: SoftwareServicesName.EssentialServicePlan,
+    },
   };
 }
 

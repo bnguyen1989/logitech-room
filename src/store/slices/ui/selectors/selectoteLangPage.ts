@@ -260,6 +260,18 @@ export const getPrepareSubTitleLangByKeyPermission =
     }
   };
 
+export const getListSoftwareCardLangByKeyPermission =
+  (keyPermission: string) => (state: RootState) => {
+    switch (keyPermission) {
+      case SoftwareServicesName.SupportService:
+      case SoftwareServicesName.EssentialServicePlan:
+      case SoftwareServicesName.LogitechSync: {
+        const softwareServices = getSoftwareServicesLangPage(state);
+        return softwareServices.Cards[keyPermission].list;
+      }
+    }
+  };
+
 export const getPrepareDescriptionLangByKeyPermission =
   (keyPermission: string) => (state: RootState) => {
     switch (keyPermission) {
