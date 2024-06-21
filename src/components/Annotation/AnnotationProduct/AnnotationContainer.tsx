@@ -16,13 +16,13 @@ interface AnnotationProductPropsI {
   stepPermission: StepName;
   keyPermission: string;
   position: [number, number, number],
-  callbackDisableHighlight: () => void;
+  callbackDisablePopuptNodes: () => void;
 }
 
 export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
   props: AnnotationProductPropsI
 ) => {
-  const { stepPermission, keyPermission, position, callbackDisableHighlight } = props;
+  const { stepPermission, keyPermission, position, callbackDisablePopuptNodes } = props;
   const htmlRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const title = useAppSelector(
@@ -49,7 +49,7 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
 
   const handleClickOutside = (event: MouseEvent) => {
     if (htmlRef.current && !htmlRef.current.contains(event.target as Node)) {
-      callbackDisableHighlight();
+      callbackDisablePopuptNodes();
     }
   };
 
