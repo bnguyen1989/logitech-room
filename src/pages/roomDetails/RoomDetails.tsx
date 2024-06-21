@@ -23,7 +23,9 @@ export const RoomDetails: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(true);
   const langPage = useAppSelector(getDetailRoomLangPage);
 
-  const getTitleSectionOrderByStepName = (stepName: StepName) => {
+  const getTitleSectionOrderByStepName = (
+    stepName: StepName | "Room Solution Bundle"
+  ) => {
     switch (stepName) {
       case StepName.ConferenceCamera:
       case StepName.AudioExtensions:
@@ -35,8 +37,6 @@ export const RoomDetails: React.FC = () => {
         return "";
     }
   };
-
-  const titleSectionBundle = "Room Solution Bundle";
 
   const getFormatPrice =
     (locale: string, currency: string) => (price: number) => {
@@ -98,7 +98,9 @@ export const RoomDetails: React.FC = () => {
           let titleSection = getTitleSectionOrderByStepName(card.key);
           const isBundleCard = isBundleElement(card.keyPermission);
           if (isBundleCard) {
-            titleSection = titleSectionBundle;
+            titleSection = getTitleSectionOrderByStepName(
+              "Room Solution Bundle"
+            );
           }
 
           const sectionId = dataSections.findIndex(

@@ -56,6 +56,13 @@
     "key": "mainPage#Btn#partner"
   },
   {
+    "en-US": "Choose Room Size",
+    "de-DE": "Raumgröße auswählen",
+    "es-ES": "Elegir tamaño de sala",
+    "es-MX": "Elegir tamaño de la sala",
+    "key": "Room Size#name"
+  },
+  {
     "en-US": "What size room are you setting up? ",
     "de-DE": "Wie groß ist der Raum, den Sie einrichten?",
     "es-ES": "¿Qué tamaño de sala va a configurar?",
@@ -154,6 +161,13 @@
     "key": "Room Size#Cards#Auditorium#title"
   },
   {
+    "en-US": "Choose Platform",
+    "de-DE": "Plattform auswählen",
+    "es-ES": "Elegir plataforma",
+    "es-MX": "Elegir plataforma",
+    "key": "Platform#name"
+  },
+  {
     "en-US": "What is your primary video conferencing platform?",
     "de-DE": "Was ist Ihre primäre Videokonferenzplattform?",
     "es-ES": "¿Cuál es su principal plataforma de videoconferencia?",
@@ -189,10 +203,10 @@
     "key": "Platform#Cards#Zoom"
   },
   {
-    "en-US": "Looking for another solution?",
-    "de-DE": "Sie suchen nach einer anderen Lösung?",
-    "es-ES": "¿Busca otra solución?",
-    "es-MX": "¿Buscas otra solución?",
+    "en-US": "Not quite what you’re looking for?",
+    "de-DE": "Nicht das, was Sie suchen?",
+    "es-ES": "¿No es exactamente lo que busca?",
+    "es-MX": "¿No es exactamente lo que busca?",
     "key": "Platform#titleAditions"
   },
   {
@@ -201,6 +215,13 @@
     "es-ES": "Elija el modo de dispositivo propio.",
     "es-MX": "Elige una configuración de “Trae tu propio dispositivo”.",
     "key": "Platform#Cards#AditionCard#0#title"
+  },
+  {
+    "en-US": "Deployment Type",
+    "de-DE": "Bereitstellungstyp",
+    "es-ES": "Tipo de implementación",
+    "es-MX": "Tipo de implementación",
+    "key": "Services#name"
   },
   {
     "en-US": "Do you prefer a video conferencing appliance, or having a dedicated computing device?",
@@ -238,6 +259,13 @@
     "key": "Services#Cards#PC based#descriptions"
   },
   {
+    "en-US": "Conference Camera",
+    "de-DE": "Konferenzkamera",
+    "es-ES": "Cámara de conferencias",
+    "es-MX": "Cámara de conferencia",
+    "key": "Conference Camera#name"
+  },
+  {
     "en-US": "Choose your conferencing camera(s).",
     "de-DE": "Wählen Sie Ihre Konferenzkamera(s) aus.",
     "es-ES": "Elija sus cámaras para conferencias.",
@@ -257,6 +285,13 @@
     "es-ES": "[3. implementación] que ejecuta [2. plataforma] en una sala [1. sala].",
     "es-MX": "[3. implementación] en ejecución [2. plataforma] en una [1. sala] sala.",
     "key": "Conference Camera#subtitle2"
+  },
+  {
+    "en-US": "Audio Extensions & Accessories",
+    "de-DE": "Audioerweiterungen & Zubehör",
+    "es-ES": "Extensiones de audio y accesorios",
+    "es-MX": "Extensiones de audio y accesorios",
+    "key": "Audio Extensions & Accessories#name"
   },
   {
     "en-US": "Add room-filling audio.",
@@ -287,6 +322,13 @@
     "key": "unknown#o2"
   },
   {
+    "en-US": "Meeting Controller",
+    "de-DE": "Meeting-Controller",
+    "es-ES": "Controlador de reuniones",
+    "es-MX": "Controlador de reuniones",
+    "key": "Meeting Controller & Add On#name"
+  },
+  {
     "en-US": "Choose your meeting controller.",
     "de-DE": "Wählen Sie Ihren Meeting-Controller aus.",
     "es-ES": "Elija un controlador para sus reuniones.",
@@ -301,6 +343,13 @@
     "key": "Meeting Controller & Add On#subtitle"
   },
   {
+    "en-US": "Additional Add-Ons",
+    "de-DE": "Zusätzliche Erweiterungen",
+    "es-ES": "Complementos adicionales",
+    "es-MX": "Complementos adicionales",
+    "key": "Video Accessories#name"
+  },
+  {
     "en-US": "Choose your add-ons.",
     "de-DE": "Wählen Sie Ihre Erweiterungen aus.",
     "es-ES": "Elija sus complementos.",
@@ -313,6 +362,13 @@
     "es-ES": "Mejore la experiencia de la reunión con complementos.",
     "es-MX": "Mejora la experiencia de la reunión con complementos.",
     "key": "Video Accessories#subtitle"
+  },
+  {
+    "en-US": "Software and Services",
+    "de-DE": "Software und Dienste",
+    "es-ES": "Software y servicios",
+    "es-MX": "Software y servicios",
+    "key": "Software & Services#name"
   },
   {
     "en-US": "Finish by adding services and tools to ensure the deployment is always up and running.",
@@ -1029,6 +1085,13 @@
     "key": "Order#buttons#RequestConsultation"
   },
   {
+    "en-US": "Room Solution Bundles",
+    "de-DE": "Raumlösungspakete",
+    "es-ES": "Paquetes de soluciones para salas",
+    "es-MX": "Paquetes de soluciones para salas",
+    "key": "Order#StepName#Room Solution Bundles"
+  },
+  {
     "en-US": "Conferencing Cameras",
     "de-DE": "Konferenzkameras",
     "es-ES": "Cámaras para conferencias",
@@ -1043,14 +1106,14 @@
     "key": "Order#StepName#Audio Extensions & Accessories"
   },
   {
-    "en-US": "Audio Accessories",
+    "en-US": "Meeting Controller",
     "de-DE": "Audiozubehör",
     "es-ES": "Accesorios de audio",
     "es-MX": "Accesorios de audio",
     "key": "Order#StepName#Meeting Controller & Add On"
   },
   {
-    "en-US": "Video Conferencing Add-Ons",
+    "en-US": "Additional Add-Ons",
     "de-DE": "Erweiterungen für Videokonferenzen",
     "es-ES": "Complementos de videoconferencia",
     "es-MX": "Complementos para videoconferencias",
@@ -1117,6 +1180,146 @@
     "de-DE": "Sie müssen andere Produkte erneut auswählen, wenn Sie Ihre Konferenzkamera ändern",
     "es-ES": "Tendrás que volver a seleccionar otros productos si cambias tu cámara de conferencias.",
     "es-MX": "Tendrás que volver a seleccionar otros productos si cambias tu cámara de conferencia.",
-    "key": "RemoveRoomModal#text"
+    "key": "SelectProductModal#text"
+  },
+  {
+    "en-US": "Yes, Let's Proceed",
+    "de-DE": "Yes, Let's Proceed",
+    "es-ES": "Yes, Let's Proceed",
+    "es-MX": "Yes, Let's Proceed",
+    "key": "SelectProductModal#action#Yes"
+  },
+  {
+    "en-US": "Back",
+    "de-DE": "Zurück",
+    "es-ES": "Atrás",
+    "es-MX": "Atrás",
+    "key": "SelectProductModal#action#Back"
+  },
+  {
+    "en-US": "This is the final product step! Ready to lock in your selections?",
+    "de-DE": "Dies ist der letzte Produktschritt! Sind Sie bereit, Ihre Auswahl zu übernehmen?",
+    "es-ES": "¡Este es el paso final del producto! ¿Listo para confirmar sus selecciones?",
+    "es-MX": "¡Este es el paso final del producto! ¿Listo para confirmar sus selecciones?",
+    "key": "FinishModal#text"
+  },
+  {
+    "en-US": "Are you sure you want to delete this room?",
+    "de-DE": "Soll dieser Raum wirklich gelöscht werden?",
+    "es-ES": "¿Confirma que desea eliminar esta sala?",
+    "es-MX": "¿Seguro que deseas eliminar esta sala?",
+    "key": "RemoveModal#text"
+  },
+  {
+    "en-US": "Cancel",
+    "de-DE": "Abbrechen",
+    "es-ES": "Cancelar",
+    "es-MX": "Cancelar",
+    "key": "RemoveModal#actions#Cancel"
+  },
+  {
+    "en-US": "Delete",
+    "de-DE": "Löschen",
+    "es-ES": "Eliminar",
+    "es-MX": "Eliminar",
+    "key": "RemoveModal#actions#Delete"
+  },
+  {
+    "en-US": "Yes, Let's Proceed",
+    "de-DE": "Yes, Let's Proceed",
+    "es-ES": "Yes, Let's Proceed",
+    "es-MX": "Yes, Let's Proceed",
+    "key": "FinishModal#action#Yes"
+  },
+  {
+    "en-US": "Back",
+    "de-DE": "Zurück",
+    "es-ES": "Atrás",
+    "es-MX": "Atrás",
+    "key": "FinishModal#action#Back"
+  },
+  {
+    "en-US": "Graphite",
+    "de-DE": "Grafit",
+    "es-ES": "Grafito",
+    "es-MX": "Grafito",
+    "key": "Colors#Graphite"
+  },
+  {
+    "en-US": "White",
+    "de-DE": "Weiß",
+    "es-ES": "Blanco",
+    "es-MX": "Blanco",
+    "key": "Colors#White"
+  },
+  {
+    "en-US": "Back",
+    "de-DE": "Zurück",
+    "es-ES": "Atrás",
+    "es-MX": "Atrás",
+    "key": "Navigation#Back"
+  },
+  {
+    "en-US": "Next",
+    "de-DE": "Weiter",
+    "es-ES": "Siguiente",
+    "es-MX": "Siguiente",
+    "key": "Navigation#Next"
+  },
+  {
+    "en-US": "Finish",
+    "de-DE": "Fertig stellen",
+    "es-ES": "Terminar",
+    "es-MX": "Finalizar",
+    "key": "Navigation#Finish"
+  },
+  {
+    "en-US": "Loading Your Room",
+    "de-DE": "Ihr Raum wird geladen",
+    "es-ES": "Cargando Su sala",
+    "es-MX": "Cargando su sala",
+    "key": "Loader#Room#title"
+  },
+  {
+    "en-US": "You Selected",
+    "de-DE": "Sie haben ausgewählt",
+    "es-ES": "Ha seleccionado",
+    "es-MX": "Ha seleccionado",
+    "key": "Loader#Room#subtitle"
+  },
+  {
+    "en-US": "Loading Your Player",
+    "de-DE": "Ihr Player wird geladen",
+    "es-ES": "Cargando Su reproductor",
+    "es-MX": "Cargando su reproductor",
+    "key": "Loader#Player#title"
+  },
+  {
+    "en-US": "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.",
+    "de-DE": "Die Konfigurationen dienen nur zu Testzwecken. Raum-Guides und die aufgeführten Preise basieren auf der unverbindlichen Preisempfehlung (UVP) vor Ort für die Produkte und stellen keine formellen Angebote dar. Die Preise können je nach Standort, Vertriebsweg oder Händler variieren. Bitte fordern Sie eine Beratung an, um weitere Informationen und die nächsten Schritte zu erhalten.",
+    "es-ES": "Las configuraciones son solo para fines exploratorios. Las guías de sala y los precios enumerados se basan en el MSRP local de los productos y no son cotizaciones formales. Los precios pueden variar según la ubicación, el canal o el revendedor. Solicite una consulta para obtener más información y próximos pasos.",
+    "es-MX": "Las configuraciones son solo para fines exploratorios. Las guías de sala y los precios listados se basan en el MSRP local de los productos y no son cotizaciones formales. Los precios pueden variar según la ubicación, el canal o el distribuidor. Solicite una consulta para obtener más información y próximos pasos.",
+    "key": "CSV#Annotation"
+  },
+  {
+    "en-US": "Room name",
+    "de-DE": "Raumname",
+    "es-ES": "Nombre de la sala",
+    "es-MX": "Nombre de la sala",
+    "key": "CSV#Header#RoomName"
+  },
+  {
+    "en-US": "Product name",
+    "de-DE": "Produktname",
+    "es-ES": "Nombre del producto",
+    "es-MX": "Nombre del producto",
+    "key": "CSV#Header#ProductName"
+  },
+  {
+    "en-US": "Product category",
+    "de-DE": "Produktkategorie",
+    "es-ES": "Categoría del producto",
+    "es-MX": "Categoría del producto",
+    "key": "CSV#Header#ProductCategory"
   }
 ]
