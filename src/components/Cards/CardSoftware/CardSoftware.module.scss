@@ -10,6 +10,7 @@
 
   .content {
     max-width: 357px;
+    min-width: 357px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -96,6 +97,11 @@
   .container {
     .wrapper {
       padding: 30px 20px;
+    }
+
+    .content {
+      max-width: 317px;
+      min-width: 317px;
     }
   }
 }
