@@ -22,7 +22,9 @@
     .cards {
       display: flex;
       align-items: stretch;
+      flex-wrap: wrap;
       gap: 60px;
+      justify-content: center;
     }
   }
 
@@ -55,6 +57,8 @@
       width: 100%;
 
       .cards {
+        flex-wrap: nowrap;
+        justify-content: normal;
         padding: 20px 40px;
         gap: 20px;
         overflow-x: scroll;

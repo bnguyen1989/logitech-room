@@ -294,8 +294,9 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
       ];
     case StepName.SoftwareServices:
       return [
-        SoftwareServicesName.LogitechSync,
         SoftwareServicesName.SupportService,
+        SoftwareServicesName.EssentialServicePlan,
+        SoftwareServicesName.LogitechSync,
         SoftwareServicesName.ExtendedWarranty,
       ];
     case StepName.MeetingController:
