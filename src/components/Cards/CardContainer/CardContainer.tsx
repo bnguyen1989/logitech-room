@@ -1,3 +1,5 @@
+import { useAppSelector } from "../../../hooks/redux";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import s from "./CardContainer.module.scss";
 
 interface PropsI {
@@ -23,6 +25,8 @@ export const CardContainer: React.FC<PropsI> = (props) => {
     className,
     isPadding = true,
   } = props;
+
+  const langCard = useAppSelector(getCardLangPage);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isFullClick) {
@@ -53,7 +57,7 @@ export const CardContainer: React.FC<PropsI> = (props) => {
       </div>
       {recommended && (
         <div className={s.recommended}>
-          <div className={s.text}>recommended</div>
+          <div className={s.text}>{langCard.Text.Recommended}</div>
         </div>
       )}
     </div>

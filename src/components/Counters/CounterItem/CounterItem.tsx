@@ -6,6 +6,7 @@ import {
   getCardByKeyPermission,
   getPropertyCounterCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { Counter } from "../Counter/Counter";
 import s from "./CounterItem.module.scss";
 
@@ -26,6 +27,8 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   const count = useAppSelector(
     getPropertyCounterCardByKeyPermission(activeStep, keyItemPermission)
   );
+
+  const langCard = useAppSelector(getCardLangPage);
 
   if (!card || !card.counter || count === undefined) return null;
 
@@ -61,7 +64,9 @@ export const CounterItem: React.FC<PropsI> = (props) => {
         value={count}
         dataAnalytics={dataAnalytics}
       />
-      <div className={s.text}>Max ({max})</div>
+      <div className={s.text}>
+        {langCard.Counter.Max} ({max})
+      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
 } from "../../../models/analytics/type";
 import { useAppSelector } from "../../../hooks/redux";
 import { getRoomsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { getLocale } from "../../../store/slices/ui/selectors/selectors";
 
 declare const app: Application;
 
@@ -26,10 +27,11 @@ export const CardRoom: React.FC<PropsI> = (props) => {
   const { image, title, desc, shortId, removeRoom } = props;
   const { handleNavigate } = useUrl();
   const user = useUser();
+  const locale = useAppSelector(getLocale);
   const langPage = useAppSelector(getRoomsLangPage);
 
   const handleDownload = () => {
-    app.downloadRoomCSV(shortId);
+    app.downloadRoomCSV(shortId, locale || undefined);
     app.analyticsEvent({
       category: EventCategoryName.summary_page,
       action: EventActionName.download_room,

@@ -1127,6 +1127,13 @@
     "key": "Order#StepName#Software & Services"
   },
   {
+    "en-US": "Part Number",
+    "de-DE": "Teilenummer",
+    "es-ES": "Número de parte",
+    "es-MX": "Número de parte",
+    "key": "Order#Card#PartNumber"
+  },
+  {
     "en-US": "Prices may vary by channel or reseller",
     "de-DE": "Die Preise können je nach Kanal oder Händler variieren",
     "es-ES": "Los precios pueden variar según el canal o el distribuidor",
@@ -1239,20 +1246,6 @@
     "key": "FinishModal#action#Back"
   },
   {
-    "en-US": "Graphite",
-    "de-DE": "Grafit",
-    "es-ES": "Grafito",
-    "es-MX": "Grafito",
-    "key": "Colors#Graphite"
-  },
-  {
-    "en-US": "White",
-    "de-DE": "Weiß",
-    "es-ES": "Blanco",
-    "es-MX": "Blanco",
-    "key": "Colors#White"
-  },
-  {
     "en-US": "Back",
     "de-DE": "Zurück",
     "es-ES": "Atrás",
@@ -1321,5 +1314,89 @@
     "es-ES": "Categoría del producto",
     "es-MX": "Categoría del producto",
     "key": "CSV#Header#ProductCategory"
+  },
+  {
+    "en-US": "Part Number",
+    "de-DE": "Teilenummer",
+    "es-ES": "Número de parte",
+    "es-MX": "Número de parte",
+    "key": "CSV#Header#PartNumber"
+  },
+  {
+    "en-US": "Quantity",
+    "de-DE": "Menge",
+    "es-ES": "Cantidad",
+    "es-MX": "Cantidad",
+    "key": "CSV#Header#Quantity"
+  },
+  {
+    "en-US": "MSRP",
+    "de-DE": "UVP",
+    "es-ES": "Precio recomendado",
+    "es-MX": "Precio de lista",
+    "key": "CSV#Header#MSRP"
+  },
+  {
+    "en-US": "Total MSRP",
+    "de-DE": "Gesamt-UVP",
+    "es-ES": "Precio Recomendado de Venta",
+    "es-MX": "Precio Sugerido de Venta",
+    "key": "CSV#Header#TotalMSRP"
+  },
+  {
+    "en-US": "Graphite",
+    "de-DE": "Grafit",
+    "es-ES": "Grafito",
+    "es-MX": "Grafito",
+    "key": "Card#Colors#Graphite"
+  },
+  {
+    "en-US": "White",
+    "de-DE": "Weiß",
+    "es-ES": "Blanco",
+    "es-MX": "Blanco",
+    "key": "Card#Colors#White"
+  },
+  {
+    "en-US": "Min",
+    "de-DE": "Min",
+    "es-ES": "Mín",
+    "es-MX": "Mín",
+    "key": "Card#Counter#Min"
+  },
+  {
+    "en-US": "Max",
+    "de-DE": "Max",
+    "es-ES": "Máx",
+    "es-MX": "Máx",
+    "key": "Card#Counter#Max"
+  },
+  {
+    "en-US": "Accessories",
+    "de-DE": "Zubehör",
+    "es-ES": "Accesorios",
+    "es-MX": "Accesorios",
+    "key": "Card#Text#Accessories"
+  },
+  {
+    "en-US": "Recommended",
+    "de-DE": "Empfohlen",
+    "es-ES": "Recomendado",
+    "es-MX": "Recomendado",
+    "key": "Card#Text#Recommended"
+  },
+  {
+    "en-US": "Choose number of years",
+    "de-DE": "Anzahl der Jahre wählen",
+    "es-ES": "Elija el número de años",
+    "es-MX": "Elige el número de años",
+    "key": "Card#Text#ChooseNumberOfYears"
+  },
+  {
+    "en-US": "1 yr, 2 yr, 3 yr, 4 yr, 5 yr",
+    "de-DE": "1 Jahr, 2 Jahre, 3 Jahre, 4 Jahre, 5 Jahre",
+    "es-ES": "1 año, 2 años, 3 años, 4 años, 5 años",
+    "es-MX": "1 año, 2 años, 3 años, 4 años, 5 años",
+    "key": "Card#Text#Years"
   }
 ]

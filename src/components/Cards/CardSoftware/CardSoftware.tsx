@@ -13,6 +13,7 @@ import {
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
 import {
+  getCardLangPage,
   getListSoftwareCardLangByKeyPermission,
   getPrepareDescriptionLangByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectoteLangPage";
@@ -47,6 +48,8 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
+
+  const langCard = useAppSelector(getCardLangPage);
 
   const handleInfo = () => {
     const name = productName.split("-")[0];
@@ -95,6 +98,19 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
     onClick && onClick();
   };
 
+  const getFormatName = (name: string) => {
+    const arr = name.split(" ");
+    const number = parseInt(arr[0]);
+    if (isNaN(number)) {
+      return name;
+    }
+
+    const arrLang = langCard.Text.Years.split(",");
+    const nameFormat = arrLang[number - 1]?.trim();
+    if (!nameFormat) return name;
+    return nameFormat;
+  };
+
   useEffect(() => {
     if (isActiveCard) return;
     if (autoActive) handleClick();
@@ -137,8 +153,9 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             <div className={s.actions}>
               <SelectItem
                 keyItemPermission={keyItemPermission}
-                defaultLabel={"Choose Lorem Plan"}
+                defaultLabel={langCard.Text.ChooseNumberOfYears}
                 dataAnalytics="card-choose-lorem-plan"
+                getFormatName={getFormatName}
               />
             </div>
           )}

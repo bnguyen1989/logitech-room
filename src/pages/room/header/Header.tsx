@@ -21,6 +21,7 @@ import { useAppSelector } from "../../../hooks/redux";
 import { getRoomsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { useEffect } from "react";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { getLocale } from "../../../store/slices/ui/selectors/selectors";
 
 declare const app: Application;
 
@@ -30,6 +31,7 @@ export const Header: React.FC = () => {
   const user = useUser();
   const { getNavLink } = useUrl();
   const langPage = useAppSelector(getRoomsLangPage);
+  const locale = useAppSelector(getLocale);
 
   useEffect(() => {
     getTKAnalytics().stage({ stageName: EventCategoryName.summary_page });
@@ -47,7 +49,7 @@ export const Header: React.FC = () => {
   };
 
   const handleDownloadAll = () => {
-    app.downloadRoomsCSV(user.id);
+    app.downloadRoomsCSV(user.id, locale || undefined);
     getTKAnalytics().custom({ customName: EventActionName.download_room_all });
 
     app.analyticsEvent({

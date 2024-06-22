@@ -15,6 +15,7 @@ import fileDownload from "js-file-download";
 import { RoomService } from "../services/RoomService/RoomService";
 import { EventDataAnalyticsI } from "./analytics/type";
 import { DataCamera } from "./R3F";
+import { LocaleT } from "../types/locale";
 
 declare const logger: Logger;
 
@@ -47,23 +48,28 @@ export class Application {
     app.eventEmitter.emit("analyticsEvent", dataEvent);
   }
 
-  public downloadRoomCSV(shortId: string): Promise<boolean> {
+  public downloadRoomCSV(shortId: string, locale?: LocaleT): Promise<boolean> {
     return new Promise((resolve) => {
-      return new RoomService().generateRoomCSV({ shortId }).then((res: any) => {
-        if (!res) {
-          return resolve(false);
-        }
-        fileDownload(res, `order-room-${shortId}.csv`);
-        logger.log("Download Room CSV", { shortId });
-        return resolve(true);
-      });
+      return new RoomService()
+        .generateRoomCSV({ shortId }, locale)
+        .then((res: any) => {
+          if (!res) {
+            return resolve(false);
+          }
+          fileDownload(res, `order-room-${shortId}.csv`);
+          logger.log("Download Room CSV", { shortId });
+          return resolve(true);
+        });
     });
   }
 
-  public downloadRoomsCSV(originOrgId: string): Promise<boolean> {
+  public downloadRoomsCSV(
+    originOrgId: string,
+    locale?: LocaleT
+  ): Promise<boolean> {
     return new Promise((resolve) => {
       return new RoomService()
-        .generateRoomCSV({ originOrgId })
+        .generateRoomCSV({ originOrgId }, locale)
         .then((res: any) => {
           if (!res) {
             return resolve(false);
@@ -133,7 +139,10 @@ export class Application {
     );
   }
 
-  public changeStep(stepName: StepName, direction: DirectionStep): Promise<boolean> {
+  public changeStep(
+    stepName: StepName,
+    direction: DirectionStep
+  ): Promise<boolean> {
     return this.executeCommand(
       new ChangeStepCommand(this.currentConfigurator, stepName, direction)
     );

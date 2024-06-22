@@ -310,7 +310,3 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
       return [];
   }
 };
-
-export const getDisclaimerCSV = () => {
-  return "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.";
-};
