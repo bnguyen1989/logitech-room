@@ -1,7 +1,7 @@
 import { RootState } from "../../..";
 import {
   AudioExtensionsAccessories,
-  Colors,
+  CardPageI,
   ConferenceCamera,
   Csv,
   FinishModal,
@@ -127,8 +127,8 @@ export const getRemoveModalLangPage = (state: RootState) => {
   return getLangPage("RemoveModal")(state) as RemoveModal;
 };
 
-export const getColorsLangPage = (state: RootState) => {
-  return getLangPage("Colors")(state) as Colors;
+export const getCardLangPage = (state: RootState) => {
+  return getLangPage("Card")(state) as CardPageI;
 };
 
 export const getNavigationLangPage = (state: RootState) => {

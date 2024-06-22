@@ -14,7 +14,7 @@ import { ColorName, StepName } from "../../../utils/baseUtils";
 import { useEffect } from "react";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
-import { getColorsLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -42,7 +42,7 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
     getColorsFromCard(activeStepName, keyItemPermission)
   );
 
-  const langPage = useAppSelector(getColorsLangPage);
+  const langCard = useAppSelector(getCardLangPage);
 
   useEffect(() => {
     if (!card) return;
@@ -83,8 +83,8 @@ export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
   };
 
   const getFormattingName = () => {
-    if (colorValue === ColorName.Graphite) return langPage.Graphite;
-    if (colorValue === ColorName.White) return langPage.White;
+    if (colorValue === ColorName.Graphite) return langCard.Colors.Graphite;
+    if (colorValue === ColorName.White) return langCard.Colors.White;
     return;
   };
 
