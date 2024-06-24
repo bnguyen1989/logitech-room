@@ -10,6 +10,7 @@
         }
         & #Lblz-MKTDATA-OptIn{
           display: block;
+          width: auto !important;
         }
 
         & input,
@@ -84,7 +85,7 @@
       }
 
       #captcha {
-        // display: none;
+        display: none;
       }
 
       & .mktoButtonRow {

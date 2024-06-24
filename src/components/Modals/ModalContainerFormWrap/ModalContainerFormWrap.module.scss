@@ -1,0 +1,61 @@
+.container_screen {
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 900;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+
+  .container_modal_center {
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .FULL_FORM {
+    max-height: 90%;
+    height: 700px;
+  }
+
+  .container_modal_right {
+    background: #fff;
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    bottom: 0;
+    z-index: 999;
+  }
+}
+
+@media (max-width: 1000px) {
+  .container_screen {
+    .container_modal_center {
+      width: calc(100% - 80px);
+    }
+    .container_modal_right {
+      right: auto;
+      left: auto;
+      top: auto;
+      transform: none;
+      width: 100vw;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .container_screen {
+    .container_modal_center {
+      width: 100%;
+    }
+  }
+}
