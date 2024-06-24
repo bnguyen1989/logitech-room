@@ -6,30 +6,40 @@
   flex-direction: column;
   align-items: center;
   gap: 60px;
-  max-width: 90%;
+  width: 100%;
 
-  .button_link {
+  .cards {
+    display: flex;
+    align-items: stretch;
+    // flex-wrap: wrap;
+    gap: 60px;
+    // justify-content: center;
+    overflow-x: auto;
+    // width: 90%;
+    padding-top: 20px;
   }
 
-  .wrapper_cards {
-    flex: 1;
-    height: 100%;
+  .secondaryCards {
     display: flex;
+    align-items: stretch;
     justify-content: center;
-    align-items: center;
-    width: 100%;
+    width: 90%;
+  }
+
+  .cards::-webkit-scrollbar {
+    height: 0px;
+    background: transparent;
+  }
+}
+
+@media (max-width: 1700px) {
+  .container {
+    width: 85%;
 
     .cards {
-      display: flex;
-      align-items: stretch;
-      flex-wrap: wrap;
-      gap: 60px;
-      justify-content: center;
+      gap: 30px;
+      width: 99%;
     }
-  }
-
-  .form {
-    max-width: 1019px;
   }
 }
 
@@ -37,10 +47,8 @@
   .container {
     width: 85%;
 
-    .wrapper_cards {
-      .cards {
-        gap: 30px;
-      }
+    .cards {
+      gap: 30px;
     }
   }
 }
@@ -53,25 +61,22 @@
     width: 100%;
     max-width: 100%;
 
-    .wrapper_cards {
-      width: 100%;
-
-      .cards {
-        flex-wrap: nowrap;
-        justify-content: normal;
-        padding: 20px 40px;
-        gap: 20px;
-        overflow-x: scroll;
-      }
-
-      .cards::-webkit-scrollbar {
-        height: 0px;
-        background: transparent;
-      }
+    .cards {
+      flex-wrap: nowrap;
+      justify-content: normal;
+      padding: 20px 40px;
+      gap: 20px;
+      overflow-x: scroll;
+      width: 90%;
     }
 
-    .form {
-      padding: 0 40px;
+    .cards::-webkit-scrollbar {
+      height: 0px;
+      background: transparent;
+    }
+
+    .secondaryCards {
+      width: 100%;
     }
   }
 }
@@ -80,15 +85,9 @@
   .container {
     gap: 30px;
 
-    .wrapper_cards {
-      .cards {
-        padding: 20px;
-        gap: 20px;
-      }
-    }
-
-    .form {
-      padding: 0 20px;
+    .cards {
+      padding: 20px;
+      gap: 20px;
     }
   }
 }
