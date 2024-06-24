@@ -6,7 +6,7 @@ import { getSetupModalData } from "../../../store/slices/modals/selectors/select
 import { IconButton } from "../../Buttons/IconButton/IconButton";
 import { ModalContainer } from "../ModalContainer/ModalContainer";
 import s from "./SetupModal.module.scss";
-import { getParentURL } from "../../../utils/browserUtils";
+import { getParentURLForRevert } from "../../../utils/browserUtils";
 import { useUser } from "../../../hooks/user";
 import { setUserData } from "../../../store/slices/user/User.slice";
 import { getSetupModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
@@ -18,7 +18,7 @@ import { useCallback } from "react";
 
 export const SetupModal: React.FC = () => {
   const dispatch = useDispatch();
-  const { isOpen, dataModal } = useAppSelector(getSetupModalData);
+  const { isOpen } = useAppSelector(getSetupModalData);
   const user = useUser();
   const { handleNavigate } = useUrl();
   const dataLang = useAppSelector(getSetupModalLangPage);
@@ -37,15 +37,21 @@ export const SetupModal: React.FC = () => {
 
   const getInitialValues = () => {
     const initialValues: Record<string, string> = {};
-    const baseUrl = getParentURL();
-    const link = `${baseUrl}#/room?userId=${user.id}`;
-    initialValues.editableField6 = link;
+    const baseUrl = getParentURLForRevert();
 
-    if (dataModal) {
-      initialValues.editableField5 = JSON.stringify({
-        link: dataModal.linkSnapshot,
-      });
-    }
+    const link = `${baseUrl}#/room?userId=${user.id}`;
+
+    initialValues.editableField5 = link;
+
+    // if (dataModal) {
+    //   initialValues.editableField6 = JSON.stringify({
+    //     resumableLink: link,
+    //     linkSnapshot: dataModal.linkSnapshot,
+    //   });
+    //   initialValues.editableField5 = JSON.stringify({
+    //     linkSnapshot: dataModal.linkSnapshot,
+    //   });
+    // }
 
     return initialValues;
   };

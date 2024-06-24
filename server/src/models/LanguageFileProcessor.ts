@@ -163,7 +163,12 @@ export class LanguageFileProcessor {
     if (!this.isExist()) {
       mkdirSync(this.outputFilePath, { recursive: true });
     }
-    await this.saveLanguageFiles(this.pageJson, this.folderPage);
+    const templatePage = this.createLanguageFiles(this.templatePage);
+    await this.saveLanguageFiles(
+      this.pageJson,
+      this.folderPage,
+      templatePage["en-US"]
+    );
     await this.saveLanguageFiles(
       this.productJson,
       this.folderProduct,

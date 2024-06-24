@@ -6,6 +6,7 @@ import {
   getCardByKeyPermission,
   getPropertyCounterCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { Counter } from "../Counter/Counter";
 import s from "./CounterItem.module.scss";
 
@@ -27,6 +28,8 @@ export const CounterItem: React.FC<PropsI> = (props) => {
     getPropertyCounterCardByKeyPermission(activeStep, keyItemPermission)
   );
 
+  const langCard = useAppSelector(getCardLangPage);
+
   if (!card || !card.counter || count === undefined) return null;
 
   const { min, max, threekit } = card.counter;
@@ -34,7 +37,7 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   const handleChange = (value: number) => {
     const attributeName = card.dataThreekit.attributeName;
     const isIncrement = value > count;
-    if (isIncrement && value === 1) {
+    if (isIncrement && value === min + 1) {
       app.addItemConfiguration(attributeName, cardAsset.id, card.keyPermission);
       return;
     }
@@ -61,7 +64,9 @@ export const CounterItem: React.FC<PropsI> = (props) => {
         value={count}
         dataAnalytics={dataAnalytics}
       />
-      <div className={s.text}>Max ({max})</div>
+      <div className={s.text}>
+        {langCard.Counter.Max} ({max})
+      </div>
     </div>
   );
 };

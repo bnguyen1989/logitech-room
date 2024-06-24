@@ -22,6 +22,7 @@ import {
   getPermission,
   getPropertyCounterCardByKeyPermission,
   getSelectData,
+  getStepNameByKeyPermission,
 } from "../../ui/selectors/selectors";
 import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
@@ -131,10 +132,14 @@ export function updateNodesByConfiguration(
         const key = keys.find((key) => nodes[key] === value.assetId);
         if (key) return;
         addElement(card, stepName, count)(store);
-        if (count && count > 1) {
-          changeCountElement(card.keyPermission, stepName, count, {
-            [card.keyPermission]: 1,
-          })(store);
+
+        const minCount = card.counter?.min;
+        if (minCount && count && count > minCount + 1) {
+          for (let i = minCount + 1; i < count; i++) {
+            changeCountElement(card.keyPermission, stepName, i + 1, {
+              [card.keyPermission]: i,
+            })(store);
+          }
         }
       }
     });
@@ -183,9 +188,21 @@ export function addElement(
     if (element instanceof ItemElement) {
       const bundleMount = permission.getBundleMountElementsByName(element.name);
       bundleMount.forEach((mount) => {
-        const card = getCardByKeyPermission(stepName, mount.name)(state);
+        const stepNameCard = getStepNameByKeyPermission(mount.name)(state);
+        const card = getCardByKeyPermission(
+          stepNameCard ?? stepName,
+          mount.name
+        )(state);
         if (!card) return;
         const cardAsset = getAssetFromCard(card)(state);
+
+        if (mount instanceof CountableMountElement) {
+          mount.getAvailableNameNode().forEach((nameNode) => {
+            setElementByNameNode(cardAsset.id, nameNode)(store);
+          });
+          return;
+        }
+
         setElementByNameNode(cardAsset.id, mount.getNameNode())(store);
       });
 
@@ -362,9 +379,14 @@ export function removeElement(card: CardI, stepName: StepName) {
 
     if (element instanceof ItemElement) {
       const bundleMount = permission.getBundleMountElementsByName(element.name);
-      store.dispatch(
-        removeNodeByKeys([...bundleMount.map((mount) => mount.getNameNode())])
-      );
+      const nameNodesBundle = bundleMount.map((mount) => {
+        if (mount instanceof CountableMountElement) {
+          return mount.getAvailableNameNode();
+        }
+
+        return mount.getNameNode();
+      });
+      store.dispatch(removeNodeByKeys([...nameNodesBundle.flat()]));
 
       const mountElement = element.getDefaultMount();
       if (mountElement instanceof CountableMountElement) {
@@ -374,8 +396,8 @@ export function removeElement(card: CardI, stepName: StepName) {
         if (!dependentMount) {
           mountElement.setMin(card.counter.min);
           mountElement.setMax(card.counter.max);
-          store.dispatch(removeNodes(cardAsset.id));
-          const names = mountElement.getRangeNameNode();
+          // store.dispatch(removeNodes(cardAsset.id));
+          const names = mountElement.getAvailableNameNode();
           store.dispatch(removeNodeByKeys(names));
           const autoChangeItems = element.getAutoChangeItems();
           Object.entries(autoChangeItems).forEach(([key, arr]) => {
@@ -616,12 +638,11 @@ export function changeCountElement(
     const element = step.getElementByName(card.keyPermission);
 
     const removeElement = () => {
-      store.dispatch(removeNodes(cardAsset.id));
       const nameProperty = card.dataThreekit.attributeName;
       app.removeItem(nameProperty, card.keyPermission);
     };
 
-    if (element instanceof MountElement && value === 0) {
+    if (element instanceof MountElement && value === card.counter.min) {
       removeElement();
     }
 
@@ -629,7 +650,7 @@ export function changeCountElement(
 
     const mountElement = element.getDefaultMount();
 
-    if (!mountElement && value === 0) {
+    if (!mountElement && value === card.counter.min) {
       removeElement();
       return;
     }
@@ -637,7 +658,7 @@ export function changeCountElement(
     const isCountableMountElement =
       mountElement instanceof CountableMountElement;
 
-    if (!isCountableMountElement && value === 0) {
+    if (!isCountableMountElement && value === card.counter.min) {
       removeElement();
       return;
     }
@@ -683,7 +704,7 @@ export function changeCountElement(
         const nodeName = mountElement.getNameNode();
         store.dispatch(removeNodeByKeys([nodeName]));
       }
-      if (value === 0) {
+      if (value === card.counter.min) {
         removeElement();
       }
       return;
@@ -856,7 +877,7 @@ export function changeCountElement(
       }
     }
 
-    if (value === 0) {
+    if (value === card.counter.min) {
       removeElement();
     }
   };

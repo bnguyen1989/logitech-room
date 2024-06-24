@@ -12,6 +12,7 @@ import { useEffect, useRef } from "react";
 import { SubSectionCardItem } from "../SubSectionCardItem/SubSectionCardItem";
 import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
 import { StepName } from "../../../../../utils/baseUtils";
+import { getCardLangPage } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const ConfigurationFormForStep = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -21,6 +22,8 @@ export const ConfigurationFormForStep = () => {
   const subCardKeyPermissions = useAppSelector(
     getSubCardsKeyPermissionStep(activeStepData)
   );
+
+  const langCard = useAppSelector(getCardLangPage);
 
   useEffect(() => {
     getTKAnalytics().stage({ stageName: activeStepName });
@@ -46,7 +49,7 @@ export const ConfigurationFormForStep = () => {
     return (
       <CardItem key={index} keyItemPermission={card.keyPermission}>
         <SubSectionCardItem
-          name={"Accessories"}
+          name={langCard.Text.Accessories}
           keyPermissionCards={subKeyPermissions}
         />
       </CardItem>
@@ -60,7 +63,7 @@ export const ConfigurationFormForStep = () => {
     StepName.Services,
   ];
   if (listIgnoreSection.includes(activeStepData.key)) return <></>;
-  
+
   return (
     <div ref={contentRef} className={s.form}>
       {Object.values(activeStepData.cards).map((card, index) =>

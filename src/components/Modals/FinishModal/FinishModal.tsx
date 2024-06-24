@@ -23,6 +23,7 @@ import {
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { useUrl } from "../../../hooks/url";
 import { getDataCamera } from "../../../store/slices/configurator/selectors/selectors";
+import { getFinishModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -34,6 +35,8 @@ export const FinishModal: React.FC = () => {
   const orderData: any = useAppSelector(getOrderData(user.id));
   const [sendRequest, setSendRequest] = useState(false);
   const dataCamera = useAppSelector(getDataCamera);
+
+  const langPage = useAppSelector(getFinishModalLangPage);
 
   const userCanShowSetupModal = user.role.can(PermissionUser.SHOW_SETUP_MODAL);
   const isShowSetupModal = userCanShowSetupModal && user.isEmptyUserData();
@@ -112,22 +115,20 @@ export const FinishModal: React.FC = () => {
           <div className={s.icon}>
             <CheckMarkSVG />
           </div>
-          <div className={s.title}>
-            This is the final product step! Ready to lock in your selections?
-          </div>
+          <div className={s.title}>{langPage.text}</div>
           <div className={s.actions}>
             <IconButton
               onClick={handleClose}
               variant={"outlined"}
               position={"left"}
-              text={"Back"}
+              text={langPage.action.Back}
               dataAnalytics={"finish-modal-back"}
             >
               <ArrowLeftSVG />
             </IconButton>
             <Button
               onClick={handleLetsProceed}
-              text={"Yes, Let's Proceed"}
+              text={langPage.action.Yes}
               variant={"contained"}
               disabled={sendRequest}
               dataAnalytics={"finish-modal-lets-proceed"}

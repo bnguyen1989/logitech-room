@@ -16,6 +16,7 @@ import {
   EventCategoryName,
 } from "../../../../models/analytics/type";
 import { DirectionStep } from "../../../../utils/baseUtils";
+import { getNavigationLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -24,6 +25,8 @@ export const ActionsContent = () => {
   const dispatch = useDispatch();
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
   const isCanChangeStep = useAppSelector(getIsCanChangeStep);
+
+  const langPage = useAppSelector(getNavigationLangPage);
 
   const handleNext = () => {
     app.analyticsEvent({
@@ -63,12 +66,16 @@ export const ActionsContent = () => {
         </IconButton>
       </div>
       <div className={s.button_back}>
-        <Button onClick={handleBack} text="Back" dataAnalytics={"back"} />
+        <Button
+          onClick={handleBack}
+          text={langPage.Back}
+          dataAnalytics={"back"}
+        />
       </div>
       <div className={s.button_next}>
         <Button
           onClick={handleNext}
-          text={nextStep ? "Next" : "Finish"}
+          text={nextStep ? langPage.Next : langPage.Finish}
           variant="contained"
           disabled={!isCanChangeStep}
           dataAnalytics={"next"}

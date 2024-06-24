@@ -20,9 +20,16 @@ interface PropsI {
   disabled?: boolean;
   defaultLabel?: string;
   dataAnalytics?: string;
+  getFormatName?: (name: string) => string;
 }
 export const SelectItem: React.FC<PropsI> = (props) => {
-  const { disabled, keyItemPermission, defaultLabel, dataAnalytics } = props;
+  const {
+    disabled,
+    keyItemPermission,
+    defaultLabel,
+    dataAnalytics,
+    getFormatName,
+  } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
@@ -61,7 +68,10 @@ export const SelectItem: React.FC<PropsI> = (props) => {
     if (defaultLabel && !selectValue) {
       return defaultLabel;
     }
-    return card.select?.data.find((item) => item.value === selectValue)?.label;
+    const label = card.select?.data.find(
+      (item) => item.value === selectValue
+    )?.label;
+    return getFormatName && label ? getFormatName(label) : label;
   };
 
   return (
@@ -113,7 +123,9 @@ export const SelectItem: React.FC<PropsI> = (props) => {
               key={option.value}
               onClick={() => handleSelect(option)}
             >
-              <div className={s.text}>{option.label}</div>
+              <div className={s.text}>
+                {getFormatName ? getFormatName(option.label) : option.label}
+              </div>
             </li>
           ))}
         </ul>

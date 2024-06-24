@@ -11,6 +11,16 @@ export class PlacementManager {
     return `Mic_Placement_${id}`;
   }
 
+  public static getNameNodeForMicWithMount(id?: number): string {
+    if (!id) return `Mic_Placement_Withmount`;
+    return `Mic_Placement_Withmount_${id}`;
+  }
+
+  public static getNameNodeForMicWithoutMount(id?: number): string {
+    if (!id) return `Mic_Placement_Mount`;
+    return `Mic_Placement_Mount_${id}`;
+  }
+
   public static getNameNodeForTap(type: "Wall" | "Table", id: number): string {
     return `Tap_Placement_${type}_${id}`;
   }
@@ -133,6 +143,11 @@ export class PlacementManager {
     Array.from({ length: 3 }, (_, i) => i + 1).forEach((num) =>
       placements.push(this.getNameNodePendantMount(num))
     );
+
+    Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) => {
+      placements.push(this.getNameNodeForMicWithMount(num));
+      placements.push(this.getNameNodeForMicWithoutMount(num));
+    });
 
     placements.push(
       this.getNameNodeForScribe(),

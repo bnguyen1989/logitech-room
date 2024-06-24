@@ -12,7 +12,11 @@ import {
   getMetadataProductNameAssetFromCard,
   getTitleCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
-import { getPrepareDescriptionLangByKeyPermission } from "../../../store/slices/ui/selectors/selectoteLangPage";
+import {
+  getCardLangPage,
+  getListSoftwareCardLangByKeyPermission,
+  getPrepareDescriptionLangByKeyPermission,
+} from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { CardContainerSoftware } from "../CardContainerSoftware/CardContainerSoftware";
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
@@ -38,9 +42,14 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   const description = useAppSelector(
     getPrepareDescriptionLangByKeyPermission(keyItemPermission)
   );
+  const list = useAppSelector(
+    getListSoftwareCardLangByKeyPermission(keyItemPermission)
+  );
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
+
+  const langCard = useAppSelector(getCardLangPage);
 
   const handleInfo = () => {
     const name = productName.split("-")[0];
@@ -89,6 +98,19 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
     onClick && onClick();
   };
 
+  const getFormatName = (name: string) => {
+    const arr = name.split(" ");
+    const number = parseInt(arr[0]);
+    if (isNaN(number)) {
+      return name;
+    }
+
+    const arrLang = langCard.Text.Years.split(",");
+    const nameFormat = arrLang[number - 1]?.trim();
+    if (!nameFormat) return name;
+    return nameFormat;
+  };
+
   useEffect(() => {
     if (isActiveCard) return;
     if (autoActive) handleClick();
@@ -112,14 +134,28 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
                 <div className={s.subtitle}>{card.subtitle}</div>
               )}
             </div>
-            <div className={s.desc}>{description}</div>
+            {list ? (
+              <div className={s.list}>
+                <div className={s.title_list}>{list.title}</div>
+                <ul className={s.items_list}>
+                  {Object.values(list.values).map((item, index) => (
+                    <li key={index} className={s.item_list}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div className={s.desc}>{description}</div>
+            )}
           </div>
           {!!card.select && (
             <div className={s.actions}>
               <SelectItem
                 keyItemPermission={keyItemPermission}
-                defaultLabel={"Choose Lorem Plan"}
+                defaultLabel={langCard.Text.ChooseNumberOfYears}
                 dataAnalytics="card-choose-lorem-plan"
+                getFormatName={getFormatName}
               />
             </div>
           )}
