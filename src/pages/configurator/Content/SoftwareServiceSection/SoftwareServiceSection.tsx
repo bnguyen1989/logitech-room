@@ -58,8 +58,6 @@ export const SoftwareServiceSection: React.FC = () => {
   }, [isSoftwareServicesStep]);
 
   const getCardComponent = (card: CardI, index: number) => {
-    const isSoftwareServicesCard = card.key === StepName.SoftwareServices;
-    if (!isSoftwareServicesCard) return null;
     return (
       <CardSoftware
         key={index}
@@ -78,14 +76,27 @@ export const SoftwareServiceSection: React.FC = () => {
 
   if (!isSoftwareServicesStep) return null;
 
+  const cardsSoftwareServices = cards.filter(
+    (card) => card.key === StepName.SoftwareServices
+  );
+
   return (
     <ContentContainer refAction={actionAnchor.ref}>
       <div className={s.container}>
-        <div className={s.wrapper_cards}>
-          <div className={s.cards}>
-            {cards.map((card, index) => getCardComponent(card, index))}
-          </div>
+        <div className={s.cards}>
+          {cardsSoftwareServices.map((card, index) => {
+            if (index > 2) return null;
+            return getCardComponent(card, index);
+          })}
         </div>
+        {cardsSoftwareServices.length > 3 && (
+          <div className={s.secondaryCards}>
+            {cardsSoftwareServices.map((card, index) => {
+              if (index < 3) return null;
+              return getCardComponent(card, index);
+            })}
+          </div>
+        )}
       </div>
     </ContentContainer>
   );
