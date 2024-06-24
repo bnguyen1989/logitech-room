@@ -66,15 +66,16 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
         }
       }
 
-      const parentFromRow = label.closest(".mktoFormRow");
+      const parentFromRow = label.closest<HTMLDivElement>(".mktoFormRow");
 
       if (parentFromRow) {
         parentFromRow.style.setProperty("grid-column", "span 2", "important");
-      }
-      const mktoLogicalField =
-      parentFromRow.querySelector(".mktoLogicalField");
-      if (mktoLogicalField) {
-        mktoLogicalField.style.setProperty("width", "auto", "important");
+
+        const mktoLogicalField =
+          parentFromRow.querySelector<HTMLDivElement>(".mktoLogicalField");
+        if (mktoLogicalField) {
+          mktoLogicalField.style.setProperty("width", "auto", "important");
+        }
       }
     }
 
