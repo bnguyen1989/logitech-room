@@ -10,6 +10,7 @@ declare const MktoForms2: any;
 interface FormMktoPropsI {
   formName: FORM_MKTO;
   buttonText?: string;
+  isDefault?: boolean;
   initialValues?: Record<string, string>;
   onSubmit: (formData: any) => void;
 }
@@ -23,6 +24,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   formName,
   buttonText,
   initialValues,
+  isDefault = false,
   onSubmit,
 }: FormMktoPropsI) => {
   const formLoaded = useRef(false);
@@ -154,8 +156,9 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
           });
         });
       }
-
-      startCheckAndToggleDisplay();
+      if (!isDefault) {
+        startCheckAndToggleDisplay();
+      }
 
       form.onSuccess((data: any) => {
         console.log("Logger::Mkto:onSuccess", data);
@@ -165,7 +168,9 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
           submitTimeoutRef.current = null;
         }
         if (!isRequest) {
-          stopCheckAndToggleDisplay();
+          if (!isDefault) {
+            stopCheckAndToggleDisplay();
+          }
           setIsRequest(true);
           onSubmit({ ...form.getValues() });
           setMarketoForm(false);
@@ -199,9 +204,13 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
     };
   }, []);
 
+  let clasFormWrap = `${s.formWrap} ${formClassName}`;
+
+  if (isDefault) clasFormWrap = "";
+
   return (
     <div key={uuidv4()} className="div">
-      <div key={uuidv4()} className={`${s.formWrap} ${formClassName}`}>
+      <div key={uuidv4()} className={clasFormWrap}>
         <form key={uuidv4()} id={`mktoForm_${formId}`}></form>
       </div>
     </div>
