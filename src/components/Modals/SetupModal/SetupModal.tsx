@@ -15,6 +15,7 @@ import { FormMkto } from "../../Form/FormMkto/FormMkto";
 import { FORM_MKTO } from "../../../utils/formUtils";
 import { RoleUserName } from "../../../utils/userRoleUtils";
 import { useCallback } from "react";
+import { ModalContainerFormWrap } from "../ModalContainerFormWrap/ModalContainerFormWrap";
 
 export const SetupModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ export const SetupModal: React.FC = () => {
   if (!isOpen) return null;
 
   return (
-    <ModalContainer>
+    <ModalContainerFormWrap formName={getFormName()}>
       <div className={s.container}>
         <div className={s.header}>
           <div className={s.close}>
@@ -90,6 +91,6 @@ export const SetupModal: React.FC = () => {
           onSubmit={handleSubmit}
         />
       </div>
-    </ModalContainer>
+    </ModalContainerFormWrap>
   );
 };
