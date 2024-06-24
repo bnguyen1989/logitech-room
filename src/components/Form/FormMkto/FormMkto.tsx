@@ -65,6 +65,18 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
           mktoFieldWrap.style.flexDirection = "row-reverse";
         }
       }
+
+      const parentFromRow = label.closest<HTMLDivElement>(".mktoFormRow");
+
+      if (parentFromRow) {
+        parentFromRow.style.setProperty("grid-column", "span 2", "important");
+
+        const mktoLogicalField =
+          parentFromRow.querySelector<HTMLDivElement>(".mktoLogicalField");
+        if (mktoLogicalField) {
+          mktoLogicalField.style.setProperty("width", "auto", "important");
+        }
+      }
     }
 
     // Iterate over each 'mktoFormRow' element
@@ -93,18 +105,6 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
       } else {
         row.style.display = "";
       }
-
-      // const label = row.querySelector<HTMLLabelElement>("label");
-
-      // if (hiddenInput || honeypotInput || noSelectFields || noInputFields) {
-      //   if (label) {
-      //     label.style.display = "none";
-      //   }
-      // } else {
-      //   if (label) {
-      //     label.style.display = "";
-      //   }
-      // }
     });
 
     // Request the next animation frame if running
