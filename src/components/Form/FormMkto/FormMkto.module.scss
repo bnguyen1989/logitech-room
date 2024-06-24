@@ -8,6 +8,9 @@
         & label {
           display: none;
         }
+        & #Lblz-MKTDATA-OptIn{
+          display: block;
+        }
 
         & input,
         & textarea,
@@ -81,7 +84,7 @@
       }
 
       #captcha {
-        display: none;
+        // display: none;
       }
 
       & .mktoButtonRow {
@@ -160,7 +163,7 @@
     .mktoFormRow {
       width: 100%;
       &:nth-of-type(n + 3) {
-        display: none;
+        // display: none;
       }
     }
   }
@@ -179,7 +182,7 @@
         width: 100%;
       }
       &:nth-of-type(n + 5) {
-        display: none;
+        // display: none;
       }
     }
   }
@@ -209,11 +212,11 @@
     }
 
     & .mktoOffset {
-      display: none;
+      // display: none;
     }
 
     .mktoFormRow:nth-child(-n + 12) {
-      display: none;
+      // display: none;
     }
 
     & .mktoFormRow:nth-child(20),
@@ -221,7 +224,7 @@
     .mktoFormRow:nth-child(25),
     .mktoFormRow:nth-child(26),
     .mktoFormRow:nth-child(28) {
-      display: none;
+      // display: none;
     }
 
     & .mktoFormRow:nth-child(23),

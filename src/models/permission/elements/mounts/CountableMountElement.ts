@@ -49,7 +49,7 @@ export class CountableMountElement extends MountElement {
   public getAvailableNameNode(): string[] {
     const range = [];
     const rangeAvailableIndex = this.getRangeAvailableIndex();
-    for (let i = this.min + 1; i <= this.activeIndex; i++) {
+    for (let i = 1; i <= this.activeIndex; i++) {
       const index = rangeAvailableIndex[i - 1];
       range.push(`${this.nodeName}_${index + this.offsetIndex}`);
     }

@@ -57,6 +57,13 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
     return [...this.bundleMount];
   }
 
+  public removeBundleMount(value: MountElement): ItemElement {
+    this.bundleMount = this.bundleMount.filter(
+      (element) => element.name !== value.name
+    );
+    return this;
+  }
+
   public setAccessoryItems(value: Array<string>): ItemElement {
     this.accessoryItems = value;
     return this;

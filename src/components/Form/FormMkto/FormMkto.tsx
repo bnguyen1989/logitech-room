@@ -1,5 +1,5 @@
 import s from "./FormMkto.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FORM_MKTO, getFormIdLocale } from "../../../utils/formUtils";
 import { useLocale } from "../../../hooks/useLocal";
 import { toCamelCase } from "../../../utils/strUtils";
@@ -31,8 +31,104 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   const formId = getFormIdLocale(formName, locale);
   const formClassName = toCamelCase(formName);
 
+  const isRunning = useRef(false);
+  const animationFrameId = useRef<number | null>(null);
+
   const submitTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  //
+
+  const checkAndToggleDisplay = useCallback((): void => {
+    // Get all elements with the class 'mktoFormRow'
+    const formRows = document.querySelectorAll<HTMLDivElement>(".mktoFormRow");
+
+    const label = document.getElementById("Lblz-MKTDATA-OptIn");
+
+    if (label) {
+      // Find the parent element
+      const parent = label.parentElement;
+
+      if (parent) {
+        // Find the element with class 'mktoFieldWrap'
+
+        // let mktoFieldWrap =
+        //   parent.querySelector<HTMLDivElement>(".mktoFieldWrap");
+
+        const mktoFieldWrap = parent;
+
+        // if (parent && parent.className.includes("mktoFieldWrap")) {
+        //   mktoFieldWrap = parent;
+        // }
+
+        if (mktoFieldWrap) {
+          // Add the specific styles
+          mktoFieldWrap.style.display = "inline-flex";
+          mktoFieldWrap.style.alignItems = "center";
+          mktoFieldWrap.style.flexDirection = "row-reverse";
+        }
+      }
+    }
+
+    // Iterate over each 'mktoFormRow' element
+    formRows.forEach((row: HTMLDivElement) => {
+      // Check if there is an input element with type 'hidden' within the current 'mktoFormRow' element
+
+      const hiddenInput = row.querySelector<HTMLInputElement>(
+        'input[type="hidden"]'
+      );
+
+      const honeypotInput =
+        row.querySelector<HTMLInputElement>("input#honeypot");
+
+      const noInputFields =
+        row.querySelectorAll<HTMLInputElement>("input").length === 0;
+      const noSelectFields =
+        row.querySelectorAll<HTMLInputElement>("select").length === 0;
+      const noTextareaFields =
+        row.querySelectorAll<HTMLInputElement>("textarea").length === 0;
+
+      const notFields = noInputFields && noSelectFields && noTextareaFields;
+
+      // If a hidden input is found, set display to none; otherwise, remove display property
+      if (hiddenInput || honeypotInput || notFields) {
+        row.style.display = "none";
+      } else {
+        row.style.display = "";
+      }
+
+      // const label = row.querySelector<HTMLLabelElement>("label");
+
+      // if (hiddenInput || honeypotInput || noSelectFields || noInputFields) {
+      //   if (label) {
+      //     label.style.display = "none";
+      //   }
+      // } else {
+      //   if (label) {
+      //     label.style.display = "";
+      //   }
+      // }
+    });
+
+    // Request the next animation frame if running
+    if (isRunning.current) {
+      animationFrameId.current = requestAnimationFrame(checkAndToggleDisplay);
+    }
+  }, []);
+
+  const startCheckAndToggleDisplay = useCallback((): void => {
+    if (!isRunning.current) {
+      isRunning.current = true;
+      checkAndToggleDisplay();
+    }
+  }, [checkAndToggleDisplay]);
+
+  const stopCheckAndToggleDisplay = useCallback((): void => {
+    if (isRunning.current) {
+      isRunning.current = false;
+      if (animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+        animationFrameId.current = null;
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (formLoaded.current) return;
@@ -59,6 +155,8 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
         });
       }
 
+      startCheckAndToggleDisplay();
+
       form.onSuccess((data: any) => {
         console.log("Logger::Mkto:onSuccess", data);
 
@@ -67,6 +165,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
           submitTimeoutRef.current = null;
         }
         if (!isRequest) {
+          stopCheckAndToggleDisplay();
           setIsRequest(true);
           onSubmit({ ...form.getValues() });
           setMarketoForm(false);
@@ -78,6 +177,7 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
         console.log("Logger::Mkto:onSubmit");
         submitTimeoutRef.current = setTimeout(() => {
           if (!submitTimeoutRef.current) return; // Check if it's already cleared by onSuccess
+          stopCheckAndToggleDisplay();
           setMarketoForm(false);
           onSubmit({ ...form.getValues() });
         }, 25000); // 15000 milliseconds equals 15 seconds
@@ -93,6 +193,10 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 
     formLoaded.current = true;
     setMarketoForm(true);
+
+    return () => {
+      stopCheckAndToggleDisplay();
+    };
   }, []);
 
   return (
