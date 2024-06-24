@@ -220,6 +220,11 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
       image: getImageUrl("images/items/service.jpg"),
       keyPermission: SoftwareServicesName.ExtendedWarranty,
     },
+    [SoftwareServicesName.EssentialServicePlan]: {
+      key: StepName.SoftwareServices,
+      image: getImageUrl("images/items/service.jpg"),
+      keyPermission: SoftwareServicesName.EssentialServicePlan,
+    },
   };
 }
 
@@ -289,8 +294,9 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
       ];
     case StepName.SoftwareServices:
       return [
-        SoftwareServicesName.LogitechSync,
         SoftwareServicesName.SupportService,
+        SoftwareServicesName.EssentialServicePlan,
+        SoftwareServicesName.LogitechSync,
         SoftwareServicesName.ExtendedWarranty,
       ];
     case StepName.MeetingController:
@@ -304,8 +310,4 @@ export const getSortedKeyPermissionsByStep = (stepName: StepName) => {
     default:
       return [];
   }
-};
-
-export const getDisclaimerCSV = () => {
-  return "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.";
 };

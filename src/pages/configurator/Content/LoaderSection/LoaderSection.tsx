@@ -9,9 +9,12 @@ import {
 } from "../../../../store/slices/ui/selectors/selectors";
 import { Card } from "./Card/Card";
 import { getIsBuilding } from "../../../../store/slices/configurator/selectors/selectors";
+import { getLoaderLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const LoaderSection: React.FC = () => {
   const selectedCards = useAppSelector(getSelectedPrepareCards);
+
+  const langPage = useAppSelector(getLoaderLangPage);
 
   const activeStepData = useAppSelector(getActiveStepData);
   const isBuilding = useAppSelector(getIsBuilding);
@@ -26,13 +29,13 @@ export const LoaderSection: React.FC = () => {
       <div className={s.loader}>
         <div className={s.container}>
           <div className={s.load}>
-            <Loader text="Building Your Room" />
+            <Loader text={langPage.Room.title} />
           </div>
 
           <div className={s.selected_cards}>
             <div className={s.text}>
               <div className={s.divider}></div>
-              <div className={s.title}>You Selected:</div>
+              <div className={s.title}>{langPage.Room.subtitle}:</div>
               <div className={s.divider}></div>
             </div>
             <div className={s.cards}>
@@ -49,7 +52,7 @@ export const LoaderSection: React.FC = () => {
     return (
       <div className={s.loader}>
         <div className={s.container_simple}>
-          <Loader text="Loading Your Room" />
+          <Loader text={langPage.Room.title} />
         </div>
       </div>
     );

@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getParentURL } from "../utils/browserUtils";
+import { getParentURLForRevert } from "../utils/browserUtils";
 
 export const useUrl = () => {
   const navigate = useNavigate();
@@ -13,7 +13,9 @@ export const useUrl = () => {
   };
 
   const getNavLink = (path: string, params?: URLSearchParams) => {
-    return `${getParentURL()}/#${path}${params ? `?${params.toString()}` : ""}`;
+    return `${getParentURLForRevert()}/#${path}${
+      params ? `?${params.toString()}` : ""
+    }`;
   };
 
   return { handleNavigate, getNavLink };

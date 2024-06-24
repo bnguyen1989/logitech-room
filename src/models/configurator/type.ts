@@ -67,8 +67,6 @@ export enum AttributeName {
   RoomMicHub = "Room Mic Pod Hub",
   QtyMicHub = "Qty - Mic Pod Hub",
   RoomMicCATCoupler = "Room Mic Pod CAT Coupler",
-  RoomMeetingController = "Room Meeting Controller",
-  QtyMeetingController = "Qty - Meeting Controller",
   RoomMeetingTap = "Room Meeting Tap",
   QtyMeetingTap = "Qty - Meeting Tap",
   RoomMeetingTapIp = "Room Meeting TapIp",

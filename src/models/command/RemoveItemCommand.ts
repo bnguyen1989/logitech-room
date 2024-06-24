@@ -1,4 +1,5 @@
 import { Configurator } from "../configurator/Configurator";
+import { ValueStringStateI } from "../configurator/type";
 import { ItemCommand } from "./ItemCommand";
 
 export class RemoveItemCommand extends ItemCommand {
@@ -30,10 +31,17 @@ export class RemoveItemCommand extends ItemCommand {
 
       const qtyName = Configurator.getQtyNameByAttrName(this.nameProperty);
       if (qtyName) {
-        this.configurator.setConfiguration({
-          [qtyName]: "0",
-        });
-        this.changeProperties.push(qtyName);
+        const stateQty = this.configurator.getStateAttributeByName(qtyName);
+        if (stateQty) {
+          const qty = (stateQty.values as ValueStringStateI[])
+            .filter((i) => i.visible)
+            .map((i: ValueStringStateI) => i.value);
+          const min = Math.min(...qty.map((i: string) => parseInt(i)));
+          this.configurator.setConfiguration({
+            [qtyName]: min.toString(),
+          });
+          this.changeProperties.push(qtyName);
+        }
       }
     });
 

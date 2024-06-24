@@ -7,6 +7,7 @@ interface PropsI {
   listColors: ColorItemI[];
   disabled?: boolean;
   dataAnalytics?: string;
+  formattingName?: string;
 }
 export const ColorSwitcher: React.FC<PropsI> = (props) => {
   const {
@@ -15,6 +16,7 @@ export const ColorSwitcher: React.FC<PropsI> = (props) => {
     listColors,
     disabled = false,
     dataAnalytics,
+    formattingName,
   } = props;
 
   const handleChange = (value: ColorItemI) => {
@@ -38,7 +40,7 @@ export const ColorSwitcher: React.FC<PropsI> = (props) => {
           </div>
         );
       })}
-      <div className={s.text}>{value}</div>
+      <div className={s.text}>{formattingName ?? value}</div>
     </div>
   );
 };

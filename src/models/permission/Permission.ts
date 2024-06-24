@@ -29,6 +29,7 @@ import { DirectionStep, StepName } from "../../utils/baseUtils";
 import { AvailableStepHandler } from "./handlers/property/AvailableStepHandler";
 import { DisabledColorElementHandler } from "./handlers/property/DisabledColorElementHandler";
 import { BundleMountElementRule } from "./rules/BundleMountElementRule";
+import { NameNodeHandler } from "./handlers/NameNodeHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName;
@@ -105,6 +106,7 @@ export class Permission {
     new RequiredElementHandler().handle(step);
     new DisabledCounterElementHandler().handle(step);
     new DisabledColorElementHandler().handle(step);
+    new NameNodeHandler().handle(step);
   }
 
   public addStep(step: Step): Permission {

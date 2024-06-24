@@ -17,6 +17,7 @@ import { useAppSelector } from "../../../hooks/redux";
 import { getDetailRoomLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { useDispatch } from "react-redux";
 import { setRequestConsultationModal } from "../../../store/slices/modals/Modals.slice";
+import { getLocale } from "../../../store/slices/ui/selectors/selectors";
 
 declare const app: Application;
 
@@ -26,10 +27,11 @@ export const Actions: React.FC = () => {
   const { handleNavigate } = useUrl();
   const user = useUser();
   const langPage = useAppSelector(getDetailRoomLangPage);
+  const locale = useAppSelector(getLocale);
 
   const handlerDownload = () => {
     if (!roomId) return;
-    app.downloadRoomCSV(roomId);
+    app.downloadRoomCSV(roomId, locale || undefined);
 
     getTKAnalytics().custom({ customName: EventActionName.download_room });
 

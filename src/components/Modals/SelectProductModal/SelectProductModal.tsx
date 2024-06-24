@@ -64,14 +64,14 @@ export const SelectProductModal: React.FC = () => {
               onClick={handleClose}
               variant={"outlined"}
               position={"left"}
-              text={"Back"}
+              text={langPage.action.Back}
               dataAnalytics={"select-product-modal-back"}
             >
               <ArrowLeftSVG />
             </IconButton>
             <Button
               onClick={() => handleEdit()}
-              text={"Yes, Let's Proceed"}
+              text={langPage.action.Yes}
               variant={"contained"}
               dataAnalytics={"select-product-modal-lets-proceed"}
             />

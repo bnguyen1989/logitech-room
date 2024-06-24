@@ -90,6 +90,7 @@ export enum SoftwareServicesName {
   LogitechSync = "Logitech Sync",
   SupportService = "Support Service",
   ExtendedWarranty = "Logitech Extended Warranty",
+  EssentialServicePlan = "Essential Service Plan",
 }
 
 export enum TVName {
@@ -260,15 +261,6 @@ export function createStepConferenceCamera() {
           [AudioExtensionName.RallyMicPod]: ["color"],
           [AudioExtensionName.RallyMicPodMount]: ["color"],
         })
-
-        .addBundleElement(
-          new ItemElement(AudioExtensionName.RallyMicPod).setDefaultMount(
-            new CountableMountElement(
-              AudioExtensionName.RallyMicPod,
-              PlacementManager.getNameNodeForMic()
-            ).setActiveIndex(2)
-          )
-        )
         .addBundleMount(
           new MountElement(
             TVName.LogitechTVTwo,
@@ -287,6 +279,15 @@ export function createStepConferenceCamera() {
           PlatformName.Zoom,
         ])
         .addBundleMountsDependence(TVName.LogitechTVOne, [PlatformName.BYOD])
+        .addBundleMount(
+          new CountableMountElement(
+            AudioExtensionName.RallyMicPod,
+            PlacementManager.getNameNodeForMic()
+          )
+            .setMin(0)
+            .setMax(2)
+            .setActiveIndex(2)
+        )
     )
     .setRequiredOne(true);
 
@@ -657,7 +658,8 @@ export function createStepSoftwareServices() {
   const group = new GroupElement()
     .addElement(new ItemElement(SoftwareServicesName.LogitechSync))
     .addElement(new ItemElement(SoftwareServicesName.SupportService))
-    .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty));
+    .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty))
+    .addElement(new ItemElement(SoftwareServicesName.EssentialServicePlan));
   group.setRequiredOne(true);
   stepSoftwareServices.allElements = [group];
   return stepSoftwareServices;

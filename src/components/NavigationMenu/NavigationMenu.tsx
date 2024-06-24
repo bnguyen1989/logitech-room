@@ -5,10 +5,14 @@ import {
   getStepData,
 } from "../../store/slices/ui/selectors/selectors";
 import { StepI } from "../../store/slices/ui/type";
+import { getNameStepByStepName } from "../../store/slices/ui/selectors/selectoteLangPage";
 
 export const NavigationMenu: React.FC = () => {
   const dataStep = useAppSelector(getStepData);
   const activeStepData = useAppSelector(getActiveStepData);
+  const langNameStep = useAppSelector(
+    getNameStepByStepName(activeStepData.key)
+  );
 
   const isActive = (step: StepI) => {
     return step.name === activeStepData.name;
@@ -18,7 +22,7 @@ export const NavigationMenu: React.FC = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.name}>{activeStepData.name}</div>
+      <div className={s.name}>{langNameStep}</div>
       <div className={s.menu}>
         {listDataStep.map((item, index) => (
           <div key={index} className={s.wrapper}>
