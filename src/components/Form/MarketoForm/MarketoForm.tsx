@@ -32,7 +32,7 @@ const MarketoForm = () => {
 
   // return <form id={`mktoForm_${FormID}`}></form>;
 
-  return <FormMkto formName={FORM_MKTO.FULL_FORM} onSubmit={() => {}} />;
+  return <FormMkto isDefault={true} formName={FORM_MKTO.FULL_FORM} onSubmit={() => {}} />;
 };
 
 export default MarketoForm;
