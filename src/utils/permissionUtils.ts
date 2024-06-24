@@ -437,9 +437,9 @@ export function createStepAudioExtensions() {
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
-      .addReservationMount({
-        [CameraName.RallyPlus]: [1, 2],
-      })
+      // .addReservationMount({
+      //   [CameraName.RallyPlus]: [1, 2],
+      // })
       .setAccessoryItems([
         AudioExtensionName.RallyMicPodMount,
         AudioExtensionName.RallyMicPodPendantMount,
