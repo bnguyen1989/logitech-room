@@ -363,6 +363,8 @@ export interface StepName {
 
 export interface Card2 {
   PartNumber: string;
+  PerUnit: string;
+  MSRP: string;
 }
 
 export interface Footer {

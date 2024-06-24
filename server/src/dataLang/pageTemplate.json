@@ -1134,6 +1134,20 @@
     "key": "Order#Card#PartNumber"
   },
   {
+    "en-US": "per unit",
+    "de-DE": "pro Einheit",
+    "es-ES": "por unidad",
+    "es-MX": "por unidad",
+    "key": "Order#Card#PerUnit"
+  },
+  {
+    "en-US": "MSRP",
+    "de-DE": "UVP",
+    "es-ES": "Precio recomendado",
+    "es-MX": "Precio de lista",
+    "key": "Order#Card#MSRP"
+  },
+  {
     "en-US": "Prices may vary by channel or reseller",
     "de-DE": "Die Preise können je nach Kanal oder Händler variieren",
     "es-ES": "Los precios pueden variar según el canal o el distribuidor",

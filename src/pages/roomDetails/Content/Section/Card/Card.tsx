@@ -1,10 +1,14 @@
 import React from "react";
 import s from "./Card.module.scss";
 import { DataSectionI } from "../../../type";
+import { useAppSelector } from "../../../../../hooks/redux";
+import { getDetailRoomLangPage } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const Card: React.FC<DataSectionI> = (props) => {
   const { image, title, subtitle, partNumber, count, amount, selectValue } =
     props;
+  const langPage = useAppSelector(getDetailRoomLangPage);
+
   return (
     <div className={s.container}>
       <div className={s.left_content}>
@@ -19,7 +23,7 @@ export const Card: React.FC<DataSectionI> = (props) => {
         </div>
         {!!partNumber && (
           <div className={s.part_number}>
-            <div className={s.part_number_text}>PART NUMBER</div>
+            <div className={s.part_number_text}>{langPage.Card.PartNumber}</div>
             <div className={s.part_number_value}>{partNumber}</div>
           </div>
         )}
@@ -35,7 +39,7 @@ export const Card: React.FC<DataSectionI> = (props) => {
             <div className={s.amount_mobile_title}>PRICE</div>
             <div className={s.amount_price}>
               <div className={s.amount_value}>{amount}</div>
-              <div className={s.amount_text}>MSRP per unit</div>
+              <div className={s.amount_text}>MSRP {langPage.Card.PerUnit}</div>
             </div>
           </div>
         )}
