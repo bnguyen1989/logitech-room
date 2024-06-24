@@ -19,30 +19,6 @@ const setMarketoForm = (value: any) => {
   window.formLoadedMarketo = value;
 };
 
-function checkAndToggleDisplay(): void {
-  // Get all elements with the class 'mktoFormRow'
-  const formRows: NodeListOf<HTMLDivElement> =
-    document.querySelectorAll(".mktoFormRow");
-
-  // Iterate over each 'mktoFormRow' element
-  formRows.forEach((row: HTMLDivElement) => {
-    // Check if there is an input element with type 'hidden' within the current 'mktoFormRow' element
-    const hiddenInput: HTMLInputElement | null = row.querySelector(
-      'input[type="hidden"]'
-    );
-
-    // If a hidden input is found, set display to none; otherwise, remove display property
-    if (hiddenInput) {
-      row.style.display = "none";
-    } else {
-      row.style.display = "";
-    }
-  });
-
-  // Request the next animation frame
-  requestAnimationFrame(checkAndToggleDisplay);
-}
-
 export const FormMkto: React.FC<FormMktoPropsI> = ({
   formName,
   buttonText,
@@ -63,6 +39,33 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
   const checkAndToggleDisplay = useCallback((): void => {
     // Get all elements with the class 'mktoFormRow'
     const formRows = document.querySelectorAll<HTMLDivElement>(".mktoFormRow");
+
+    const label = document.getElementById("Lblz-MKTDATA-OptIn");
+
+    if (label) {
+      // Find the parent element
+      const parent = label.parentElement;
+
+      if (parent) {
+        // Find the element with class 'mktoFieldWrap'
+
+        // let mktoFieldWrap =
+        //   parent.querySelector<HTMLDivElement>(".mktoFieldWrap");
+
+        const mktoFieldWrap = parent;
+
+        // if (parent && parent.className.includes("mktoFieldWrap")) {
+        //   mktoFieldWrap = parent;
+        // }
+
+        if (mktoFieldWrap) {
+          // Add the specific styles
+          mktoFieldWrap.style.display = "inline-flex";
+          mktoFieldWrap.style.alignItems = "center";
+          mktoFieldWrap.style.flexDirection = "row-reverse";
+        }
+      }
+    }
 
     // Iterate over each 'mktoFormRow' element
     formRows.forEach((row: HTMLDivElement) => {
@@ -90,6 +93,18 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
       } else {
         row.style.display = "";
       }
+
+      // const label = row.querySelector<HTMLLabelElement>("label");
+
+      // if (hiddenInput || honeypotInput || noSelectFields || noInputFields) {
+      //   if (label) {
+      //     label.style.display = "none";
+      //   }
+      // } else {
+      //   if (label) {
+      //     label.style.display = "";
+      //   }
+      // }
     });
 
     // Request the next animation frame if running
