@@ -71,13 +71,10 @@ export class RoomService {
       if (softwareCardData) {
         const year = softwareCardData?.selectValue;
         data.forEach((dataCard) => {
-          const { data, color } = dataCard;
+          const { data } = dataCard;
           const card = JSON.parse(data) as CardI;
-          const productName = color
-            ? `${card.keyPermission} - ${color}`
-            : card.keyPermission;
           const newSKU = getSKUProductByExtendedWarranty(
-            productName,
+            card.keyPermission,
             year ?? ""
           );
           if (!newSKU) return;
@@ -87,7 +84,12 @@ export class RoomService {
           });
         });
       }
-      const rows: Array<RowCSVRoomI> = [...data, ...additional].map(
+
+      const cardsData = data.filter((item: any) => {
+        const card = JSON.parse(item.data) as CardI;
+        return card.keyPermission !== SoftwareServicesName.ExtendedWarranty;
+      });
+      const rows: Array<RowCSVRoomI> = [...cardsData, ...additional].map(
         (dataCard, index) => {
           const { data, price, count, title, sku } = dataCard;
           const card = JSON.parse(data) as CardI;
