@@ -286,7 +286,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_rallyPlus_bundle() {
     const isSelectRallyPlus = this.isSelectRallyPlus();
-    if(!isSelectRallyPlus) return;
+    if (!isSelectRallyPlus) return;
 
     const attrDataQtyMicPod = this.getAttrStateDataByName(AttributeName.QtyMic);
     if (!attrDataQtyMicPod) return;
@@ -310,6 +310,12 @@ export class ConfigurationConstraintHandler extends Handler {
     //   AttributeName.RoomCamera
     // );
     // if (!isChangeRallyPlus) return;
+
+    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
+    if (typeof qtyMicPod !== "string") return;
+    const count = parseInt(qtyMicPod);
+    if (count > minMicPod) return;
+
     this.configurator.setConfiguration({
       [AttributeName.QtyMic]: minMicPod.toString(),
     });
