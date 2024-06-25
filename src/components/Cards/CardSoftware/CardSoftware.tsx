@@ -21,6 +21,7 @@ import {
 import { CardContainerSoftware } from "../CardContainerSoftware/CardContainerSoftware";
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
+import { SoftwareServicesName } from "../../../utils/permissionUtils";
 
 interface PropsI {
   keyItemPermission: string;
@@ -30,9 +31,9 @@ interface PropsI {
 }
 
 const dataLinkMetadataIfMissing: Record<string, string> = {
-  "Essential Service Plan":
+  [SoftwareServicesName.EssentialServicePlan]:
     "https://www.logitech.com/business/services-and-software.html#compare-plans",
-  "Logitech Sync":
+  [SoftwareServicesName.LogitechSync]:
     "https://www.logitech.com/business/services-and-software.html#compare-plans",
 };
 
@@ -198,14 +199,16 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             </div>
           </div>
         </div>
-        <div className={s.info}>
-          <IconButton
-            onClick={handleInfo}
-            dataAnalytics={"card-show-annotation-modal"}
-          >
-            <InformationSVG />
-          </IconButton>
-        </div>
+        {keyItemPermission !== SoftwareServicesName.ExtendedWarranty && (
+          <div className={s.info}>
+            <IconButton
+              onClick={handleInfo}
+              dataAnalytics={"card-show-annotation-modal"}
+            >
+              <InformationSVG />
+            </IconButton>
+          </div>
+        )}
       </div>
     </CardContainerSoftware>
   );
