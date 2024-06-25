@@ -27,6 +27,14 @@ interface PropsI {
   onSelectedAnalytics: () => void;
   onClick?: () => void;
 }
+
+const dataLinkMetadataIfMissing: Record<string, string> = {
+  "Essential Service Plan":
+    "https://www.logitech.com/business/services-and-software.html#compare-plans",
+  "Logitech Sync":
+    "https://www.logitech.com/business/services-and-software.html#compare-plans",
+};
+
 export const CardSoftware: React.FC<PropsI> = (props) => {
   const dispatch = useDispatch();
   const { keyItemPermission, autoActive, onClick } = props;
@@ -52,15 +60,23 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   const langCard = useAppSelector(getCardLangPage);
 
   const handleInfo = () => {
-    const name = productName.split("-")[0];
-    dispatch(
-      setAnnotationItemModal({
-        isOpen: true,
-        product: name?.trim() || "",
-        keyPermission: keyItemPermission,
-        card: card,
-      })
-    );
+    const linkInfo = threekitAsset["metadata"]["linkInfo"];
+
+    if (linkInfo) {
+      window.open(linkInfo, "_blank");
+    } else if (dataLinkMetadataIfMissing[keyItemPermission]) {
+      window.open(dataLinkMetadataIfMissing[keyItemPermission], "_blank");
+    } else {
+      const name = productName.split("-")[0];
+      dispatch(
+        setAnnotationItemModal({
+          isOpen: true,
+          product: name?.trim() || "",
+          keyPermission: keyItemPermission,
+          card: card,
+        })
+      );
+    }
   };
 
   const handleClick = () => {
