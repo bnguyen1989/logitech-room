@@ -8,6 +8,7 @@ import {
   getActiveStep,
   getAssetFromCard,
   getCardByKeyPermission,
+  getIsRecommendedCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
   getTitleCardByKeyPermission,
@@ -47,6 +48,10 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   );
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
+  );
+
+  const recommended: boolean = useAppSelector(
+    getIsRecommendedCardByKeyPermission(activeStep, keyItemPermission)
   );
 
   const langCard = useAppSelector(getCardLangPage);
@@ -123,9 +128,17 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
       onClick={handleClick}
       active={isActiveCard}
       style={{ padding: "0px" }}
+      recommended={recommended}
     >
       <div className={s.container}>
         <div className={s.wrapper}>
+          {recommended && (
+            <div className={s.wrapper_recommended}>
+              <div className={s.recommended}>
+                <div className={s.text}>recommended</div>
+              </div>
+            </div>
+          )}
           <div className={s.content}>
             <div className={s.header} onClick={handleClick}>
               {/* <div className={s.header_title}>{card.header_title}</div> */}
