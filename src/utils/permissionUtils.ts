@@ -657,7 +657,9 @@ export function createStepSoftwareServices() {
   const stepSoftwareServices = new Step(StepName.SoftwareServices);
   const group = new GroupElement()
     .addElement(new ItemElement(SoftwareServicesName.LogitechSync))
-    .addElement(new ItemElement(SoftwareServicesName.SupportService))
+    .addElement(
+      new ItemElement(SoftwareServicesName.SupportService).setRecommended(true)
+    )
     .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty))
     .addElement(new ItemElement(SoftwareServicesName.EssentialServicePlan));
   group.setRequiredOne(true);
