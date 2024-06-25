@@ -18,6 +18,7 @@ import {
 } from "../../../store/slices/ui/selectors/selectoreLangProduct";
 import { ColorSwitcherItem } from "../../ColorSwitchers/ColorSwitcherItem/ColorSwitcherItem";
 import { Annotation } from "./AnnotationDataProcces";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const AnnotationModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ export const AnnotationModal: React.FC = () => {
 
   const { isActiveCard, disabledActions, hiddenActions, threekitAsset } =
     useAppSelector(getDataForAnnotationModal(keyPermission, card));
+
+  const langCard = useAppSelector(getCardLangPage);
 
   if (!card) return <></>;
 
@@ -119,7 +122,7 @@ export const AnnotationModal: React.FC = () => {
                 </div>
                 <div className={s.button}>
                   <Button
-                    text={"Add to Room"}
+                    text={langCard.Text.AddToRoom}
                     onClick={() => handleClick()}
                     variant={"contained"}
                     disabled={isActiveCard}
@@ -213,7 +216,7 @@ export const AnnotationModal: React.FC = () => {
 
           <div className={s.button_add_room}>
             <Button
-              text={"Add to Room"}
+              text={langCard.Text.AddToRoom}
               onClick={() => handleClick()}
               variant={"contained"}
               disabled={isActiveCard}

@@ -1162,6 +1162,13 @@
     "key": "Order#Footer#subtitle"
   },
   {
+    "en-US": "Total",
+    "de-DE": "Gesamt",
+    "es-ES": "Total",
+    "es-MX": "Total",
+    "key": "Order#Footer#Total"
+  },
+  {
     "en-US": "Share Your Project",
     "de-DE": "Teilen Sie Ihr Projekt",
     "es-ES": "Comparta su proyecto",
@@ -1412,5 +1419,12 @@
     "es-ES": "1 año, 2 años, 3 años, 4 años, 5 años",
     "es-MX": "1 año, 2 años, 3 años, 4 años, 5 años",
     "key": "Card#Text#Years"
+  },
+  {
+    "en-US": "Add to room",
+    "de-DE": "Zum Raum hinzufügen",
+    "es-ES": "Añadir a la habitación",
+    "es-MX": "Añadir a la habitación",
+    "key": "Card#Text#AddToRoom"
   }
 ]
