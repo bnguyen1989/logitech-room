@@ -370,6 +370,7 @@ export interface Card2 {
 export interface Footer {
   title: string;
   subtitle: string;
+  Total: string;
 }
 
 export interface ShareModal {
@@ -469,4 +470,5 @@ export interface Text {
   Recommended: string;
   ChooseNumberOfYears: string;
   Years: string;
+  AddToRoom: string;
 }
