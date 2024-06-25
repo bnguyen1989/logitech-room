@@ -63,7 +63,7 @@ export const PrepareSection: React.FC = () => {
           key={index}
           keyItemPermission={card.keyPermission}
           onSelectedAnalytics={onSelectedAnalytics}
-          onClick={actionAnchor.handleAnchor}
+          onClick={()=>{}}
         />
       );
     }
