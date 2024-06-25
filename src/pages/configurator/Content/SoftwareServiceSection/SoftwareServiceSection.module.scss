@@ -11,12 +11,12 @@
   .cards {
     display: flex;
     align-items: stretch;
-    // flex-wrap: wrap;
     gap: 60px;
-    // justify-content: center;
-    overflow-x: auto;
-    // width: 90%;
     padding-top: 20px;
+  }
+
+  .cards > div {
+    flex: 1;
   }
 
   .secondaryCards {

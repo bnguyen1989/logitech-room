@@ -26,6 +26,7 @@ export const CardContainerSoftware: React.FC<PropsI> = (props) => {
   ${s.container} 
   ${disabled ? s.container_disabled : ""}
   ${active ? s.container_active : ""}
+  ${recommended ? s.container_recommended : ""}
   ${className}
   `;
 
@@ -40,11 +41,6 @@ export const CardContainerSoftware: React.FC<PropsI> = (props) => {
       <div onClick={() => onClick()} className={s.wrapper}>
         {children}
       </div>
-      {recommended && (
-        <div className={s.recommended}>
-          <div className={s.text}>recommended</div>
-        </div>
-      )}
     </div>
   );
 };
