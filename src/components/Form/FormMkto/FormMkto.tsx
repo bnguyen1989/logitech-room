@@ -81,6 +81,8 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
       }
     }
 
+    const countryInput = document.querySelector<HTMLInputElement>("#Country");
+
     // Iterate over each 'mktoFormRow' element
     formRows.forEach((row: HTMLDivElement) => {
       // Check if there is an input element with type 'hidden' within the current 'mktoFormRow' element
@@ -96,10 +98,30 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
         row.querySelectorAll<HTMLInputElement>("input").length === 0;
       const noSelectFields =
         row.querySelectorAll<HTMLInputElement>("select").length === 0;
+
       const noTextareaFields =
         row.querySelectorAll<HTMLInputElement>("textarea").length === 0;
 
-      const notFields = noInputFields && noSelectFields && noTextareaFields;
+      const hasDivPrivacyPolicy = row.innerHTML.includes(
+        "web-privacy-policy.html"
+      );
+
+      const isShowLabelPoliticUSA =
+        hasDivPrivacyPolicy && countryInput?.value === "United States";
+
+      if (isShowLabelPoliticUSA) {
+        row.style.setProperty("grid-column", "span 2", "important");
+        const wrapLabelMktoFiels = row.querySelector<HTMLDivElement>(".mktoHtmlText");
+        if (wrapLabelMktoFiels) {
+          wrapLabelMktoFiels.style.setProperty("width", "auto", "important");
+        }
+      }
+
+      const notFields =
+        noInputFields &&
+        noSelectFields &&
+        noTextareaFields &&
+        !isShowLabelPoliticUSA;
 
       // If a hidden input is found, set display to none; otherwise, remove display property
       if (hiddenInput || honeypotInput || notFields) {
