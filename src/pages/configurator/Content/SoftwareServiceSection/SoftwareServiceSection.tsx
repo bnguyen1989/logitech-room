@@ -69,7 +69,7 @@ export const SoftwareServiceSection: React.FC = () => {
             interactionType: OptionInteractionType.Select,
           })
         }
-        onClick={actionAnchor.handleAnchor}
+        onClick={()=>{}}
       />
     );
   };
