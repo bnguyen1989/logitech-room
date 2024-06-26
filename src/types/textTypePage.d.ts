@@ -365,6 +365,7 @@ export interface Card2 {
   PartNumber: string;
   PerUnit: string;
   MSRP: string;
+  Price: string;
 }
 
 export interface Footer {

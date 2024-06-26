@@ -22,6 +22,7 @@ import { CardContainerSoftware } from "../CardContainerSoftware/CardContainerSof
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
 import { SoftwareServicesName } from "../../../utils/permissionUtils";
+import { CardPageI } from "../../../types/textTypePage";
 
 interface PropsI {
   keyItemPermission: string;
@@ -35,6 +36,19 @@ const dataLinkMetadataIfMissing: Record<string, string> = {
     "https://www.logitech.com/business/services-and-software.html#compare-plans",
   [SoftwareServicesName.LogitechSync]:
     "https://www.logitech.com/business/services-and-software.html#compare-plans",
+};
+
+export const getFormatName = (langCard: CardPageI) => (name: string) => {
+  const arr = name.split(" ");
+  const number = parseInt(arr[0]);
+  if (isNaN(number)) {
+    return name;
+  }
+
+  const arrLang = langCard.Text.Years.split(",");
+  const nameFormat = arrLang[number - 1]?.trim();
+  if (!nameFormat) return name;
+  return nameFormat;
 };
 
 export const CardSoftware: React.FC<PropsI> = (props) => {
@@ -120,19 +134,6 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
     onClick && onClick();
   };
 
-  const getFormatName = (name: string) => {
-    const arr = name.split(" ");
-    const number = parseInt(arr[0]);
-    if (isNaN(number)) {
-      return name;
-    }
-
-    const arrLang = langCard.Text.Years.split(",");
-    const nameFormat = arrLang[number - 1]?.trim();
-    if (!nameFormat) return name;
-    return nameFormat;
-  };
-
   useEffect(() => {
     if (isActiveCard) return;
     if (autoActive) handleClick();
@@ -185,7 +186,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
                 keyItemPermission={keyItemPermission}
                 defaultLabel={langCard.Text.ChooseNumberOfYears}
                 dataAnalytics="card-choose-lorem-plan"
-                getFormatName={getFormatName}
+                getFormatName={getFormatName(langCard)}
               />
             </div>
           )}
