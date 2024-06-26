@@ -8,16 +8,8 @@ import {
 } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const Card: React.FC<DataSectionI> = (props) => {
-  const {
-    image,
-    title,
-    subtitle,
-    partNumber,
-    count,
-    amount,
-    selectValue,
-    labelValue,
-  } = props;
+  const { image, title, subtitle, partNumber, count, amount, labelValue } =
+    props;
   const langPage = useAppSelector(getDetailRoomLangPage);
   const langPageCSV = useAppSelector(getCSVLangPage);
 
