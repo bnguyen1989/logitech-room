@@ -84,10 +84,10 @@
     "key": "Room Size#Phonebooth#title"
   },
   {
-    "en-us": "Up to 6",
-    "de": "Bis zu 6",
-    "es-ES": "Hasta 6",
-    "es-MX": "Hasta 6",
+    "en-us": "Up to 4",
+    "de": "Bis zu 4",
+    "es-ES": "Hasta 4",
+    "es-MX": "Hasta 4",
     "key": "Room Size#Huddle#subtitle"
   },
   {
@@ -98,10 +98,10 @@
     "key": "Room Size#Huddle#title"
   },
   {
-    "en-us": "Up to 8",
-    "de": "Bis zu 8",
-    "es-ES": "Hasta 8",
-    "es-MX": "Hasta 8",
+    "en-us": "Up to 6",
+    "de": "Bis zu 6",
+    "es-ES": "Hasta 6",
+    "es-MX": "Hasta 6",
     "key": "Room Size#titleRoom8"
   },
   {
