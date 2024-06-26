@@ -1132,6 +1132,10 @@
     "key": "Order#Card#PartNumber"
   },
   {
+    "en-US": "PRICE",
+    "key": "Order#Card#Price"
+  },
+  {
     "en-US": "per unit",
     "de-DE": "pro Einheit",
     "es-ES": "por unidad",
