@@ -260,6 +260,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.rallyPlus_bundle)) {
       this.rule_rallyPlus_bundle();
     }
+
+    if (attrRulesArr.includes(RuleName.byod_reqOneAddon)) {
+      this.rule_byod_reqOneAddon();
+    }
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -646,6 +650,34 @@ export class ConfigurationConstraintHandler extends Handler {
         },
       });
       CACHE.set(RuleName.micPod_CATCoupler, true);
+    }
+  }
+
+  private rule_byod_reqOneAddon() {
+    const arrAttrName = [
+      AttributeName.RoomSwytch,
+      AttributeName.RoomExtend,
+      AttributeName.RoomUSBAtoHDMICable,
+    ];
+    const isSelectOne = arrAttrName.some(
+      (attrName) => typeof this.getSelectedValue(attrName) === "object"
+    );
+    if (isSelectOne) return;
+
+    for (const attrName of arrAttrName) {
+      const attrState = this.getAttrStateDataByName(attrName);
+      if (!attrState) continue;
+      const values = deepCopy(attrState.values) as ValueAssetStateI[];
+      const visibleOption = values.find((option) => option.visible);
+
+      if (!visibleOption) continue;
+
+      this.configurator.setConfiguration({
+        [attrName]: {
+          assetId: visibleOption.id,
+        },
+      });
+      break;
     }
   }
 
