@@ -198,9 +198,6 @@ export const getSubTitleStepByStepName =
 
     if ("subtitle" in langStepData) return langStepData.subtitle;
 
-    // if (stepName === StepName.ConferenceCamera) {
-    //   debugger;
-    // }
     if (platformCard && platformCard.keyPermission === PlatformName.BYOD) {
       if ("subtitle1" in langStepData && "subtitleBYOD" in langStepData) {
         return `${langStepData.subtitle1} ${langStepData.subtitleBYOD}`;
