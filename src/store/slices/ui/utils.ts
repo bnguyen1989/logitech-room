@@ -207,22 +207,22 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
   return {
     [SoftwareServicesName.LogitechSync]: {
       key: StepName.SoftwareServices,
-      image: getImageUrl("images/items/service.jpg"),
+      image: getImageUrl("images/items/LogitechSync.png"),
       keyPermission: SoftwareServicesName.LogitechSync,
     },
     [SoftwareServicesName.SupportService]: {
       key: StepName.SoftwareServices,
-      image: getImageUrl("images/items/service.jpg"),
+      image: getImageUrl("images/items/SupportService.png"),
       keyPermission: SoftwareServicesName.SupportService,
     },
     [SoftwareServicesName.ExtendedWarranty]: {
       key: StepName.SoftwareServices,
-      image: getImageUrl("images/items/service.jpg"),
+      image: getImageUrl("images/items/ExtendedWarranty.png"),
       keyPermission: SoftwareServicesName.ExtendedWarranty,
     },
     [SoftwareServicesName.EssentialServicePlan]: {
       key: StepName.SoftwareServices,
-      image: getImageUrl("images/items/service.jpg"),
+      image: getImageUrl("images/items/EssentialServicePlan.png"),
       keyPermission: SoftwareServicesName.EssentialServicePlan,
     },
   };
