@@ -800,3 +800,48 @@ function isCompareName(name: string) {
     return arrayNames.some((item) => item.toLowerCase() === name.toLowerCase());
   };
 }
+
+export const getSortedKeyPermissions = (
+  stepName: StepName,
+  activeKeyPermissions: string[]
+) => {
+  switch (stepName) {
+    case StepName.Services:
+      return [ServiceName.Android, ServiceName.PC];
+    case StepName.ConferenceCamera:
+      return [
+        CameraName.RallyBar,
+        CameraName.RallyBarMini,
+        CameraName.RallyBarHuddle,
+        CameraName.MeetUp2,
+        CameraName.RallyPlus,
+        CameraName.LogitechSight,
+      ];
+    case StepName.SoftwareServices:
+      return [
+        SoftwareServicesName.SupportService,
+        SoftwareServicesName.EssentialServicePlan,
+        SoftwareServicesName.LogitechSync,
+        SoftwareServicesName.ExtendedWarranty,
+      ];
+    case StepName.MeetingController:
+      if (activeKeyPermissions.includes(ServiceName.PC)) {
+        return [
+          MeetingControllerName.LogitechTap,
+          MeetingControllerName.LogitechTapIP,
+          MeetingControllerName.TapTableMount,
+          MeetingControllerName.TapRiserMount,
+          MeetingControllerName.TapWallMount,
+        ];
+      }
+      return [
+        MeetingControllerName.LogitechTapIP,
+        MeetingControllerName.LogitechTap,
+        MeetingControllerName.TapTableMount,
+        MeetingControllerName.TapRiserMount,
+        MeetingControllerName.TapWallMount,
+      ];
+    default:
+      return [];
+  }
+};
