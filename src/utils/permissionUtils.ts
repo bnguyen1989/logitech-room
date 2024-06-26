@@ -433,13 +433,12 @@ export function createStepAudioExtensions() {
         [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
         [AudioExtensionName.RallyMicPodPendantMount]: ["count"],
       })
-
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
-      // .addReservationMount({
-      //   [CameraName.RallyPlus]: [1, 2],
-      // })
+      .addSecondaryMount({
+        [CameraName.RallyPlus]: [1, 2],
+      })
       .setAccessoryItems([
         AudioExtensionName.RallyMicPodMount,
         AudioExtensionName.RallyMicPodPendantMount,
@@ -467,9 +466,6 @@ export function createStepAudioExtensions() {
       })
       .addAutoChangeItems({
         [AudioExtensionName.RallyMicPodPendantMount]: ["count"],
-      })
-      .addReservationMount({
-        [CameraName.LogitechSight]: [3],
       })
   );
   const group3 = new GroupElement().addElement(
