@@ -286,35 +286,29 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_rallyPlus_bundle() {
     const isSelectRallyPlus = this.isSelectRallyPlus();
-    if (!isSelectRallyPlus) return;
 
     const attrDataQtyMicPod = this.getAttrStateDataByName(AttributeName.QtyMic);
     if (!attrDataQtyMicPod) return;
 
-    // const allCountMicPod = attrDataQtyMicPod.values.length - 1;
+    const allCountMicPod = attrDataQtyMicPod.values.length - 1;
     const minMicPod = 2;
-    // if (!isSelectRallyPlus) {
-    //   this.limitValuesAttrByCallback(
-    //     attrDataQtyMicPod.values,
-    //     attrDataQtyMicPod.id,
-    //     (currentCount: number) => currentCount <= allCountMicPod
-    //   );
-    //   return;
-    // }
-    // this.limitValuesAttrByCallback(
-    //   attrDataQtyMicPod.values,
-    //   attrDataQtyMicPod.id,
-    //   (currentCount: number) => currentCount >= minMicPod
-    // );
-    // const isChangeRallyPlus = this.triggeredByAttr.includes(
-    //   AttributeName.RoomCamera
-    // );
-    // if (!isChangeRallyPlus) return;
-
-    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
-    if (typeof qtyMicPod !== "string") return;
-    const count = parseInt(qtyMicPod);
-    if (count > minMicPod) return;
+    if (!isSelectRallyPlus) {
+      this.limitValuesAttrByCallback(
+        attrDataQtyMicPod.values,
+        attrDataQtyMicPod.id,
+        (currentCount: number) => currentCount <= allCountMicPod
+      );
+      return;
+    }
+    this.limitValuesAttrByCallback(
+      attrDataQtyMicPod.values,
+      attrDataQtyMicPod.id,
+      (currentCount: number) => currentCount >= minMicPod
+    );
+    const isChangeRallyPlus = this.triggeredByAttr.includes(
+      AttributeName.RoomCamera
+    );
+    if (!isChangeRallyPlus) return;
 
     this.configurator.setConfiguration({
       [AttributeName.QtyMic]: minMicPod.toString(),
