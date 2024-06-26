@@ -287,6 +287,13 @@
     "key": "Conference Camera#subtitle2"
   },
   {
+    "en-US": "[2. platform] in a [1. room] room.",
+    "de-DE": "[2. Plattform] in einem Raum [1. Raum].",
+    "es-ES": "[2. plataforma] en una sala [1. sala].",
+    "es-MX": "[2. plataforma] en una [1. sala] sala.",
+    "key": "Conference Camera#subtitleBYOD"
+  },
+  {
     "en-US": "Audio Extensions & Accessories",
     "de-DE": "Audioerweiterungen & Zubehör",
     "es-ES": "Extensiones de audio y accesorios",

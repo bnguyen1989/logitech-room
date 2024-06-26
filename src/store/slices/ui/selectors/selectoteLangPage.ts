@@ -32,6 +32,7 @@ import {
   SoftwareServicesName,
 } from "../../../../utils/permissionUtils";
 import { QuestionFormI } from "../type";
+import { getSelectedPrepareCards } from "./selectors";
 import { getDataSoftwareQuestionsForm } from "./selectorsForm";
 
 export const getAllLangPage = (state: RootState) =>
@@ -188,10 +189,28 @@ export const getNameStepByStepName =
 export const getSubTitleStepByStepName =
   (stepName: StepName) => (state: RootState) => {
     const langStepData = getLangStepDataByStepName(stepName)(state);
+
+    const selectedPrepareCards = getSelectedPrepareCards(state);
+
+    const platformCard = selectedPrepareCards.find(
+      (card: { key: string }) => card.key === StepName.Platform
+    );
+
     if ("subtitle" in langStepData) return langStepData.subtitle;
+
+    // if (stepName === StepName.ConferenceCamera) {
+    //   debugger;
+    // }
+    if (platformCard && platformCard.keyPermission === PlatformName.BYOD) {
+      if ("subtitle1" in langStepData && "subtitleBYOD" in langStepData) {
+        return `${langStepData.subtitle1} ${langStepData.subtitleBYOD}`;
+      }
+    }
+
     if ("subtitle1" in langStepData && "subtitle2" in langStepData) {
       return `${langStepData.subtitle1} ${langStepData.subtitle2}`;
     }
+
     return "";
   };
 
