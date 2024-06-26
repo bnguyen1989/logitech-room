@@ -11,4 +11,5 @@ export interface DataSectionI {
   count?: string;
   amount?: string;
   selectValue?: string;
+  labelValue?: string;
 }

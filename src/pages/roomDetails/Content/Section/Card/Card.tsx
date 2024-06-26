@@ -59,7 +59,7 @@ export const Card: React.FC<DataSectionI> = (props) => {
             </div>
           </div>
         )}
-        {!!selectValue && <div className={s.value}>{labelValue}</div>}
+        {!!labelValue && <div className={s.value}>{labelValue}</div>}
       </div>
     </div>
   );
