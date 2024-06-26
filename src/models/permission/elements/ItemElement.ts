@@ -26,6 +26,7 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private accessoryItems: Array<string> = [];
   private autoChangeItems: Record<string, Array<string>> = {};
   private reservationMount: Record<string, Array<string | number>> = {};
+  private secondaryMount: Record<string, Array<string | number>> = {};
   private recommendationDependence: PropertyDependentElement = {};
   private requiredDependence: PropertyDependentElement = {};
   private disabledCounterDependence: PropertyDependentElement = {};
@@ -125,6 +126,27 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
 
   public getRecommendationDependence(): PropertyDependentElement {
     return this.recommendationDependence;
+  }
+
+  /**
+   * @description
+   * key is name item element;
+   * value is array of mount name or mount id
+   * 
+   * The method allows you to add secondary nameNodes 
+   */
+  public addSecondaryMount(
+    value: Record<string, Array<string | number>>
+  ): ItemElement {
+    this.secondaryMount = {
+      ...this.secondaryMount,
+      ...value,
+    };
+    return this;
+  }
+
+  public getSecondaryMount(): Record<string, Array<string | number>> {
+    return this.secondaryMount;
   }
 
   /**
