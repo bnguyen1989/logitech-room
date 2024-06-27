@@ -140,7 +140,7 @@ export class PlacementManager {
       });
     });
 
-    Array.from({ length: 3 }, (_, i) => i + 1).forEach((num) =>
+    Array.from({ length: 8 }, (_, i) => i + 1).forEach((num) =>
       placements.push(this.getNameNodePendantMount(num))
     );
 

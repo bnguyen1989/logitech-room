@@ -134,7 +134,7 @@ export function updateNodesByConfiguration(
         addElement(card, stepName, count)(store);
 
         const minCount = card.counter?.min;
-        if (minCount && count && count > minCount + 1) {
+        if (minCount !== undefined && count && count > minCount + 1) {
           for (let i = minCount + 1; i < count; i++) {
             changeCountElement(card.keyPermission, stepName, i + 1, {
               [card.keyPermission]: i,
@@ -759,7 +759,9 @@ export function changeCountElement(
             dependentMount.getNameNode()
           )(store);
         } else {
-          defaultMount.next();
+          defaultMount.setMin(card.counter.min);
+          defaultMount.setMax(card.counter.max);
+          defaultMount.setActiveIndex(prevValue);
           const nodeName = defaultMount.getNameNode();
           store.dispatch(removeNodeByKeys([nodeName]));
         }
