@@ -660,25 +660,20 @@ export class ConfigurationConstraintHandler extends Handler {
       AttributeName.RoomExtend,
       AttributeName.RoomUSBAtoHDMICable,
     ];
-    const isSelectOne = arrAttrName.some(
-      (attrName) => typeof this.getSelectedValue(attrName) === "object"
-    );
-    if (isSelectOne) return;
 
     for (const attrName of arrAttrName) {
       const attrState = this.getAttrStateDataByName(attrName);
       if (!attrState) continue;
       const values = deepCopy(attrState.values) as ValueAssetStateI[];
-      const visibleOption = values.find((option) => option.visible);
 
-      if (!visibleOption) continue;
-
-      this.configurator.setConfiguration({
-        [attrName]: {
-          assetId: visibleOption.id,
-        },
+      values.forEach((option) => {
+        if (!option.visible) return;
+        this.setDataInMetadata(option, "Required", "true");
       });
-      break;
+
+      this.configurator.setAttributeState(attrState.id, {
+        values,
+      });
     }
   }
 
