@@ -124,20 +124,21 @@ export class ConfigurationConstraintHandler extends Handler {
     if (!level2row || !level2row.value) {
       //disabled all options in the level 2 attributes if the level 1 attributes are not all selected
       //todo: Temp solution
-      const attrState = this.getAttrStateDataByName(
-        AttributeName.RoomAdditionalCamera
+      [AttributeName.RoomAdditionalCamera, AttributeName.RoomSight].forEach(
+        (nameAttr) => {
+          const attrState = this.getAttrStateDataByName(nameAttr);
+          if (!attrState) return;
+          const values = deepCopy(attrState.values) as ValueAssetStateI[];
+
+          values.forEach((option) => {
+            option.visible = false;
+          });
+
+          this.configurator.setAttributeState(attrState.id, {
+            values: values,
+          });
+        }
       );
-      if (attrState) {
-        const values = deepCopy(attrState.values) as ValueAssetStateI[];
-
-        values.forEach((option) => {
-          option.visible = false;
-        });
-
-        this.configurator.setAttributeState(attrState.id, {
-          values: values,
-        });
-      }
 
       return true;
     }
