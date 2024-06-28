@@ -382,7 +382,94 @@ export class ConfigurationConstraintHandler extends Handler {
     });
   }
 
+  //Made to make independent mounting options for MicPods and Pendant cards
   private rule_micPod_micMount_inWhite() {
+    const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
+    const isSelectMic = typeof selectedMic === "object";
+    const colorSelectMic =
+      isSelectMic && this.getColorFromAssetName(selectedMic.name);
+    if (colorSelectMic !== "White") return;
+
+    const selectedMicMount = this.getSelectedValue(AttributeName.RoomMicMount);
+    const isSelectMicMount = typeof selectedMicMount === "object";
+
+    const selectedPendant = this.getSelectedValue(
+      AttributeName.RoomMicPendantMount
+    );
+    const isSelectPendant = typeof selectedPendant === "object";
+
+    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
+    if (typeof qtyMicPod !== "string") return;
+
+    if (!isSelectMicMount && isSelectPendant) {
+      this.configurator.setConfiguration({
+        [AttributeName.QtyMicPendantMount]: qtyMicPod,
+      });
+    }
+
+    if (isSelectMicMount && !isSelectPendant) {
+      this.configurator.setConfiguration({
+        [AttributeName.QtyMicMount]: qtyMicPod,
+      });
+    }
+
+    if (isSelectMicMount && isSelectPendant) {
+      const removeMount = (attrName: string, qtyName: string) => {
+        this.configurator.setConfiguration({
+          [attrName]: {
+            assetId: "",
+          },
+          [qtyName]: "0",
+        });
+      };
+      const isChangeQtyMicMount = this.triggeredByAttr.includes(
+        AttributeName.QtyMicMount
+      );
+      const isChangeQtyMicPendantMount = this.triggeredByAttr.includes(
+        AttributeName.QtyMicPendantMount
+      );
+      if (isChangeQtyMicMount) {
+        removeMount(
+          AttributeName.RoomMicPendantMount,
+          AttributeName.QtyMicPendantMount
+        );
+        this.configurator.setConfiguration({
+          [AttributeName.QtyMicMount]: qtyMicPod,
+        });
+      }
+      if (isChangeQtyMicPendantMount) {
+        removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
+        this.configurator.setConfiguration({
+          [AttributeName.QtyMicPendantMount]: qtyMicPod,
+        });
+      }
+    }
+
+    const attrDataQtyMicMount = this.getAttrStateDataByName(
+      AttributeName.QtyMicMount
+    );
+    const attrDataQtyPendantMount = this.getAttrStateDataByName(
+      AttributeName.QtyMicPendantMount
+    );
+    if (!attrDataQtyPendantMount || !attrDataQtyMicMount) return;
+
+    const availableCountMic = this.getQtyMicForMounts();
+
+    this.limitValuesAttrByCallback(
+      attrDataQtyMicMount.values,
+      attrDataQtyMicMount.id,
+      (currentCount: number) => currentCount <= availableCountMic
+    );
+
+    this.limitValuesAttrByCallback(
+      attrDataQtyPendantMount.values,
+      attrDataQtyPendantMount.id,
+      (currentCount: number) => currentCount <= availableCountMic
+    );
+  }
+
+  //this solution was implemented so that different mounting options for MicPods and Pendants could mix in place
+  private rule_micPod_micMount_inWhit1() {
     const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
     const isSelectMic = typeof selectedMic === "object";
     const colorSelectMic =
