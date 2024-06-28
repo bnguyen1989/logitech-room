@@ -129,8 +129,12 @@ export function updateNodesByConfiguration(
 
         const nodes = getNodes(state);
         const keys = Object.keys(nodes);
-        const key = keys.find((key) => nodes[key] === value.assetId);
-        if (key) return;
+        const keyNodes = keys.filter((key) => nodes[key] === value.assetId);
+        if (
+          keyNodes.length &&
+          (count === undefined || count === keyNodes.length)
+        )
+          return;
         addElement(card, stepName, count)(store);
 
         const minCount = card.counter?.min;
@@ -233,7 +237,7 @@ export function addElement(
             }
           }
 
-          defaultMount.setActiveIndex(0);
+          defaultMount.setActiveIndex(card.counter.min);
           const nodeName = defaultMount.next().getNameNode();
 
           setElementByNameNode(cardAsset.id, nodeName)(store);

@@ -134,7 +134,6 @@ const getDescriptionRoom = (state: RootState) => {
 
 const getCardData = (state: RootState) => {
   const selectedCards = getSelectedConfiguratorCards(state);
-  debugger;
   return processCards(selectedCards)(state).map(({ card, selectData }) => {
     const copyCard = JSON.parse(JSON.stringify(card)) as CardI;
     const cardAsset = getAssetFromCard(copyCard)(state);
@@ -146,9 +145,6 @@ const getCardData = (state: RootState) => {
       copyCard.key,
       copyCard.keyPermission
     )(state);
-    if (copyCard.keyPermission === "Logitech Sync") {
-      debugger;
-    }
 
     const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
     const langProduct = getLangProductBlade1(productName)(state);
@@ -175,10 +171,6 @@ const getCardData = (state: RootState) => {
     const prepareCardDescription = getPrepareDescriptionLangByKeyPermission(
       copyCard.keyPermission
     )(state);
-
-    if (copyCard.keyPermission === "Logitech Sync") {
-      debugger;
-    }
 
     return {
       metadata: {
