@@ -168,8 +168,6 @@ export const RoomDetails: React.FC = () => {
           dataSections[sectionId].data.push(itemSection.data[0]);
         });
 
-        debugger;
-
         setSections(dataSections);
         setTotalAmount(formatPrice(total));
       })
