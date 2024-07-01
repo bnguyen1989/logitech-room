@@ -30,6 +30,7 @@ import { ChangeCountItemCommand } from "../../../../models/command/ChangeCountIt
 import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorItemCommand";
 import {
   getPermissionNameByItemName,
+  getSortedKeyPermissions,
   isExtendWarranty,
   isSupportService,
 } from "../../../../utils/permissionUtils";
@@ -39,7 +40,6 @@ import {
   getPlatformCardData,
   getServicesCardData,
   getSoftwareServicesCardData,
-  getSortedKeyPermissionsByStep,
 } from "../utils";
 import { changeAssetId } from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
@@ -49,6 +49,7 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
+  getPermission,
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
   getPropertySelectValueCardByKeyPermission,
@@ -185,10 +186,10 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
         state
       );
       if (position === "next") return;
-      // debugger
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
       arr.forEach((keyCard) => {
         const card = getCardByKeyPermission(key as StepName, keyCard)(state);
+        if(!card) return;
         const { attributeName } = card.dataThreekit;
         app.removeItem(attributeName, card.keyPermission);
       });
@@ -405,7 +406,7 @@ function setStepData(
     }
   });
 
-  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName)(store);
   const sortedCards = sortedCardsByArrTemplate(
     stepCardData,
     sortedKeyPermissions
@@ -503,7 +504,7 @@ function setStepDataPrepareCard(
     );
   });
 
-  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName);
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(stepName)(store);
   const sortedCards = sortedCardsByArrTemplate(cardData, sortedKeyPermissions);
 
   setDataCard(sortedCards, stepName)(store);
@@ -651,7 +652,7 @@ function setSoftwareServicesData(configurator: Configurator) {
 
     const sortedKeyPermissions = getSortedKeyPermissionsByStep(
       StepName.SoftwareServices
-    );
+    )(store);
     const sortedCards = sortedCardsByArrTemplate(
       softwareServicesCardData,
       sortedKeyPermissions
@@ -721,4 +722,17 @@ function sortedCardsByArrTemplate(
   const sortedCards = sortedData.sorted.filter(Boolean) as Array<CardI>;
 
   return [...sortedCards, ...sortedData.rest];
+}
+
+function getSortedKeyPermissionsByStep(stepName: StepName) {
+  return (store: Store) => {
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    const activeKeys = step
+      .getChainActiveElements()
+      .flat()
+      .map((item) => item.name);
+    return getSortedKeyPermissions(stepName, activeKeys);
+  };
 }

@@ -2,12 +2,16 @@ import React from "react";
 import s from "./Card.module.scss";
 import { DataSectionI } from "../../../type";
 import { useAppSelector } from "../../../../../hooks/redux";
-import { getDetailRoomLangPage } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
+import {
+  getCSVLangPage,
+  getDetailRoomLangPage,
+} from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const Card: React.FC<DataSectionI> = (props) => {
-  const { image, title, subtitle, partNumber, count, amount, selectValue } =
+  const { image, title, subtitle, partNumber, count, amount, labelValue } =
     props;
   const langPage = useAppSelector(getDetailRoomLangPage);
+  const langPageCSV = useAppSelector(getCSVLangPage);
 
   return (
     <div className={s.container}>
@@ -30,20 +34,24 @@ export const Card: React.FC<DataSectionI> = (props) => {
         {!!count && <div className={s.count}>x {count}</div>}
         {!!count && (
           <div className={s.count_mobile}>
-            <div className={s.count_mobile_text}>QUANTITY</div>
+            <div className={s.count_mobile_text}>
+              {langPageCSV.Header.Quantity}
+            </div>
             <div className={s.count_mobile_value}>x{count}</div>
           </div>
         )}
         {!!amount && (
           <div className={s.amount}>
-            <div className={s.amount_mobile_title}>PRICE</div>
+            <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
             <div className={s.amount_price}>
               <div className={s.amount_value}>{amount}</div>
-              <div className={s.amount_text}>MSRP {langPage.Card.PerUnit}</div>
+              <div className={s.amount_text}>
+                {langPage.Card.MSRP} {langPage.Card.PerUnit}
+              </div>
             </div>
           </div>
         )}
-        {!!selectValue && <div className={s.value}>{selectValue}</div>}
+        {!!labelValue && <div className={s.value}>{labelValue}</div>}
       </div>
     </div>
   );

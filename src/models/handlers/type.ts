@@ -19,6 +19,7 @@ export enum RuleName {
   rallyBar_TapIp_bundle = "rallyBar_TapIp_bundle",
   rallyBarMini_TapIp_bundle = "rallyBarMini_TapIp_bundle",
   rallyPlus_bundle = "rallyPlus_bundle",
+  byod_reqOneAddon = "byod_reqOneAddon",
 
   //Recommendation Rules
   reco_micPendantMount_inWhite = "reco_micPendantMount_inWhite",

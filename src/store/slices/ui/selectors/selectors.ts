@@ -328,8 +328,27 @@ export const getIsRecommendedCardByCard =
 
 export const getIsCanChangeStep = (state: RootState) => {
   const permission = getPermission()(state);
-  return permission.canNextStep();
+  const isCanChange = permission.canNextStep();
+  if (!isCanChange) return false;
+  const activeStep = getActiveStep(state);
+  const stepData = getDataStepByName(activeStep)(state);
+  const requiredCards = Object.values(stepData.cards).filter((card) =>
+    getRequiredFromMetadataByCard(card)(state)
+  );
+  if (requiredCards.length === 0) return true;
+  const selectedCards = getSelectedCardsByStep(activeStep)(state);
+  const activeCardKeys = selectedCards.map((card) => card.keyPermission);
+  return requiredCards.some((card) =>
+    activeCardKeys.includes(card.keyPermission)
+  );
 };
+
+export const getRequiredFromMetadataByCard =
+  (card: CardI) => (state: RootState) => {
+    const metadata = getMetadataAssetFromCard(card)(state);
+    if (!metadata) return false;
+    return metadata["Required"] === "true";
+  };
 
 export const getSecondaryCardsFromStep =
   (stepData: StepI) => (state: RootState) => {

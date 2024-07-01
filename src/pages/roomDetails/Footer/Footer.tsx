@@ -21,7 +21,7 @@ export const Footer: React.FC<PropsI> = (props) => {
             <div className={s.total}>{langPage.Footer.Total}</div>
             <div className={s.amount}>
               <div className={s.amount_value}>{totalAmount}</div>
-              <div className={s.amount_text}>MSRP</div>
+              <div className={s.amount_text}>{langPage.Card.MSRP}</div>
             </div>
           </div>
         )}

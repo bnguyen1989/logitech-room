@@ -433,13 +433,12 @@ export function createStepAudioExtensions() {
         [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
         [AudioExtensionName.RallyMicPodPendantMount]: ["count"],
       })
-
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
       })
-      // .addReservationMount({
-      //   [CameraName.RallyPlus]: [1, 2],
-      // })
+      .addSecondaryMount({
+        [CameraName.RallyPlus]: [1, 2],
+      })
       .setAccessoryItems([
         AudioExtensionName.RallyMicPodMount,
         AudioExtensionName.RallyMicPodPendantMount,
@@ -467,9 +466,6 @@ export function createStepAudioExtensions() {
       })
       .addAutoChangeItems({
         [AudioExtensionName.RallyMicPodPendantMount]: ["count"],
-      })
-      .addReservationMount({
-        [CameraName.LogitechSight]: [3],
       })
   );
   const group3 = new GroupElement().addElement(
@@ -804,3 +800,48 @@ function isCompareName(name: string) {
     return arrayNames.some((item) => item.toLowerCase() === name.toLowerCase());
   };
 }
+
+export const getSortedKeyPermissions = (
+  stepName: StepName,
+  activeKeyPermissions: string[]
+) => {
+  switch (stepName) {
+    case StepName.Services:
+      return [ServiceName.Android, ServiceName.PC];
+    case StepName.ConferenceCamera:
+      return [
+        CameraName.RallyBar,
+        CameraName.RallyBarMini,
+        CameraName.RallyBarHuddle,
+        CameraName.MeetUp2,
+        CameraName.RallyPlus,
+        CameraName.LogitechSight,
+      ];
+    case StepName.SoftwareServices:
+      return [
+        SoftwareServicesName.SupportService,
+        SoftwareServicesName.EssentialServicePlan,
+        SoftwareServicesName.LogitechSync,
+        SoftwareServicesName.ExtendedWarranty,
+      ];
+    case StepName.MeetingController:
+      if (activeKeyPermissions.includes(ServiceName.PC)) {
+        return [
+          MeetingControllerName.LogitechTap,
+          MeetingControllerName.LogitechTapIP,
+          MeetingControllerName.TapTableMount,
+          MeetingControllerName.TapRiserMount,
+          MeetingControllerName.TapWallMount,
+        ];
+      }
+      return [
+        MeetingControllerName.LogitechTapIP,
+        MeetingControllerName.LogitechTap,
+        MeetingControllerName.TapTableMount,
+        MeetingControllerName.TapRiserMount,
+        MeetingControllerName.TapWallMount,
+      ];
+    default:
+      return [];
+  }
+};
