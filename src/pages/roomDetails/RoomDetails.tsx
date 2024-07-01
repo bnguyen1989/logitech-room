@@ -12,7 +12,12 @@ import { StepName } from "../../utils/baseUtils";
 import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
 import { isBundleElement } from "../../utils/permissionUtils";
 import { useAppSelector } from "../../hooks/redux";
-import { getDetailRoomLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
+import {
+  getCardLangPage,
+  getDetailRoomLangPage,
+} from "../../store/slices/ui/selectors/selectoteLangPage";
+import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
+import { getFormattingNameColor } from "../../components/ColorSwitchers/ColorSwitcherItem/ColorSwitcherItem";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -22,6 +27,8 @@ export const RoomDetails: React.FC = () => {
   const [images, setImages] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
   const langPage = useAppSelector(getDetailRoomLangPage);
+
+  const langCard = useAppSelector(getCardLangPage);
 
   const getTitleSectionOrderByStepName = (
     stepName: StepName | "Room Solution Bundle"
@@ -82,6 +89,14 @@ export const RoomDetails: React.FC = () => {
         );
         let total = 0;
         const dataSections: Array<SectionI> = [];
+
+        const getLabelValue = (selectValue?: string) => {
+          if (selectValue?.includes("Years")) {
+            return getFormatName(langCard)(selectValue);
+          }
+
+          return selectValue;
+        };
         room.cart.forEach((item) => {
           const {
             data,
@@ -115,6 +130,7 @@ export const RoomDetails: React.FC = () => {
                 subtitle: description ?? "",
                 image: card.image ?? "",
                 selectValue: selectValue,
+                labelValue: getLabelValue(selectValue),
               },
             ],
           };
@@ -127,9 +143,10 @@ export const RoomDetails: React.FC = () => {
             const amountNumber = priceNumber * parseInt(count);
             total += amountNumber;
             const amount = formatPrice(priceNumber);
-            const partNumber = `${color}${color ? " : " : ""}${
-              isBundleCard ? sku + "*" : sku
-            }`;
+
+            const partNumber = `${getFormattingNameColor(color)(langCard)}${
+              color ? " : " : ""
+            }${isBundleCard ? sku + "*" : sku}`;
             itemSection = {
               ...itemSection,
               data: [
@@ -147,6 +164,7 @@ export const RoomDetails: React.FC = () => {
             dataSections.push(itemSection);
             return;
           }
+
           dataSections[sectionId].data.push(itemSection.data[0]);
         });
 

@@ -114,9 +114,7 @@ export const Header: React.FC = () => {
             <div className={s.header_title}>{langPage.header.name}</div>
             <div className={s.header_subtitle}>{langPage.header.title}</div>
             {userCanReqConsultation && (
-              <div className={s.desc}>
-                {Object.values(langPage.header.subtitle).join(" ")}
-              </div>
+              <div className={s.desc}>{langPage.header.subtitle}</div>
             )}
           </div>
           <div className={s.header_action}>

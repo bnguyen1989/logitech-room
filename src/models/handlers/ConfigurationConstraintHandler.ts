@@ -124,20 +124,21 @@ export class ConfigurationConstraintHandler extends Handler {
     if (!level2row || !level2row.value) {
       //disabled all options in the level 2 attributes if the level 1 attributes are not all selected
       //todo: Temp solution
-      const attrState = this.getAttrStateDataByName(
-        AttributeName.RoomAdditionalCamera
+      [AttributeName.RoomAdditionalCamera, AttributeName.RoomSight].forEach(
+        (nameAttr) => {
+          const attrState = this.getAttrStateDataByName(nameAttr);
+          if (!attrState) return;
+          const values = deepCopy(attrState.values) as ValueAssetStateI[];
+
+          values.forEach((option) => {
+            option.visible = false;
+          });
+
+          this.configurator.setAttributeState(attrState.id, {
+            values: values,
+          });
+        }
       );
-      if (attrState) {
-        const values = deepCopy(attrState.values) as ValueAssetStateI[];
-
-        values.forEach((option) => {
-          option.visible = false;
-        });
-
-        this.configurator.setAttributeState(attrState.id, {
-          values: values,
-        });
-      }
 
       return true;
     }
@@ -260,6 +261,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.rallyPlus_bundle)) {
       this.rule_rallyPlus_bundle();
     }
+
+    if (attrRulesArr.includes(RuleName.byod_reqOneAddon)) {
+      this.rule_byod_reqOneAddon();
+    }
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -286,35 +291,29 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private rule_rallyPlus_bundle() {
     const isSelectRallyPlus = this.isSelectRallyPlus();
-    if (!isSelectRallyPlus) return;
 
     const attrDataQtyMicPod = this.getAttrStateDataByName(AttributeName.QtyMic);
     if (!attrDataQtyMicPod) return;
 
-    // const allCountMicPod = attrDataQtyMicPod.values.length - 1;
+    const allCountMicPod = attrDataQtyMicPod.values.length - 1;
     const minMicPod = 2;
-    // if (!isSelectRallyPlus) {
-    //   this.limitValuesAttrByCallback(
-    //     attrDataQtyMicPod.values,
-    //     attrDataQtyMicPod.id,
-    //     (currentCount: number) => currentCount <= allCountMicPod
-    //   );
-    //   return;
-    // }
-    // this.limitValuesAttrByCallback(
-    //   attrDataQtyMicPod.values,
-    //   attrDataQtyMicPod.id,
-    //   (currentCount: number) => currentCount >= minMicPod
-    // );
-    // const isChangeRallyPlus = this.triggeredByAttr.includes(
-    //   AttributeName.RoomCamera
-    // );
-    // if (!isChangeRallyPlus) return;
-
-    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
-    if (typeof qtyMicPod !== "string") return;
-    const count = parseInt(qtyMicPod);
-    if (count > minMicPod) return;
+    if (!isSelectRallyPlus) {
+      this.limitValuesAttrByCallback(
+        attrDataQtyMicPod.values,
+        attrDataQtyMicPod.id,
+        (currentCount: number) => currentCount <= allCountMicPod
+      );
+      return;
+    }
+    this.limitValuesAttrByCallback(
+      attrDataQtyMicPod.values,
+      attrDataQtyMicPod.id,
+      (currentCount: number) => currentCount >= minMicPod
+    );
+    const isChangeRallyPlus = this.triggeredByAttr.includes(
+      AttributeName.RoomCamera
+    );
+    if (!isChangeRallyPlus) return;
 
     this.configurator.setConfiguration({
       [AttributeName.QtyMic]: minMicPod.toString(),
@@ -383,6 +382,7 @@ export class ConfigurationConstraintHandler extends Handler {
     });
   }
 
+  //Made to make independent mounting options for MicPods and Pendant cards
   private rule_micPod_micMount_inWhite() {
     const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
     const isSelectMic = typeof selectedMic === "object";
@@ -413,6 +413,38 @@ export class ConfigurationConstraintHandler extends Handler {
       });
     }
 
+    if (isSelectMicMount && isSelectPendant) {
+      const removeMount = (attrName: string, qtyName: string) => {
+        this.configurator.setConfiguration({
+          [attrName]: {
+            assetId: "",
+          },
+          [qtyName]: "0",
+        });
+      };
+      const isChangeQtyMicMount = this.triggeredByAttr.includes(
+        AttributeName.QtyMicMount
+      );
+      const isChangeQtyMicPendantMount = this.triggeredByAttr.includes(
+        AttributeName.QtyMicPendantMount
+      );
+      if (isChangeQtyMicMount) {
+        removeMount(
+          AttributeName.RoomMicPendantMount,
+          AttributeName.QtyMicPendantMount
+        );
+        this.configurator.setConfiguration({
+          [AttributeName.QtyMicMount]: qtyMicPod,
+        });
+      }
+      if (isChangeQtyMicPendantMount) {
+        removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
+        this.configurator.setConfiguration({
+          [AttributeName.QtyMicPendantMount]: qtyMicPod,
+        });
+      }
+    }
+
     const attrDataQtyMicMount = this.getAttrStateDataByName(
       AttributeName.QtyMicMount
     );
@@ -434,130 +466,184 @@ export class ConfigurationConstraintHandler extends Handler {
       attrDataQtyPendantMount.id,
       (currentCount: number) => currentCount <= availableCountMic
     );
-
-    const qtyMicMount = this.getSelectedValue(AttributeName.QtyMicMount);
-    if (typeof qtyMicMount !== "string") return;
-    const qtyMicPendantMount = this.getSelectedValue(
-      AttributeName.QtyMicPendantMount
-    );
-    if (typeof qtyMicPendantMount !== "string") return;
-    const countMicMount = parseInt(qtyMicMount);
-    const countMicPendantMount = parseInt(qtyMicPendantMount);
-    const countAllMount = countMicMount + countMicPendantMount;
-    if (countAllMount === availableCountMic) return;
-    if (!isSelectMicMount || !isSelectPendant) return;
-    const isChangeQtyMicMount = this.triggeredByAttr.includes(
-      AttributeName.QtyMicMount
-    );
-    const isChangeQtyMicPendantMount = this.triggeredByAttr.includes(
-      AttributeName.QtyMicPendantMount
-    );
-    if (isChangeQtyMicMount && isChangeQtyMicPendantMount) return;
-
-    if (
-      availableCountMic > countAllMount &&
-      !isChangeQtyMicMount &&
-      !isChangeQtyMicPendantMount
-    ) {
-      if (countMicMount > countMicPendantMount) {
-        this.configurator.setConfiguration({
-          [AttributeName.QtyMicPendantMount]: (
-            availableCountMic - countMicMount
-          ).toString(),
-        });
-      } else {
-        this.configurator.setConfiguration({
-          [AttributeName.QtyMicMount]: (
-            availableCountMic - countMicPendantMount
-          ).toString(),
-        });
-      }
-      return;
-    }
-
-    const removeMount = (attrName: string, qtyName: string) => {
-      this.configurator.setConfiguration({
-        [attrName]: {
-          assetId: "",
-        },
-        [qtyName]: "0",
-      });
-    };
-
-    if (
-      availableCountMic < countAllMount &&
-      !isChangeQtyMicMount &&
-      !isChangeQtyMicPendantMount
-    ) {
-      if (countMicMount > countMicPendantMount) {
-        const count = availableCountMic - countMicPendantMount;
-        this.configurator.setConfiguration({
-          [AttributeName.QtyMicMount]: count.toString(),
-        });
-        if (count === 0) {
-          removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
-        }
-      } else {
-        const count = availableCountMic - countMicMount;
-        this.configurator.setConfiguration({
-          [AttributeName.QtyMicPendantMount]: count.toString(),
-        });
-        if (count === 0) {
-          removeMount(
-            AttributeName.RoomMicPendantMount,
-            AttributeName.QtyMicPendantMount
-          );
-        }
-      }
-      return;
-    }
-
-    if (countAllMount > availableCountMic) {
-      if (isChangeQtyMicMount) {
-        const count = countMicPendantMount - 1;
-        this.configurator.setConfiguration({
-          [AttributeName.QtyMicPendantMount]: count.toString(),
-        });
-        if (count === 0) {
-          removeMount(
-            AttributeName.RoomMicPendantMount,
-            AttributeName.QtyMicPendantMount
-          );
-        }
-      }
-      if (isChangeQtyMicPendantMount) {
-        const count = countMicMount - 1;
-        this.configurator.setConfiguration({
-          [AttributeName.QtyMicMount]: count.toString(),
-        });
-        if (count === 0) {
-          removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
-        }
-      }
-      return;
-    }
-    if (isChangeQtyMicMount) {
-      const count = countMicPendantMount + 1;
-      this.configurator.setConfiguration({
-        [AttributeName.QtyMicPendantMount]: count.toString(),
-      });
-      if (count === availableCountMic) {
-        removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
-      }
-    }
-    if (isChangeQtyMicPendantMount) {
-      const count = countMicMount + 1;
-      this.configurator.setConfiguration({
-        [AttributeName.QtyMicMount]: count.toString(),
-      });
-      if (count === availableCountMic) {
-        removeMount(
-          AttributeName.RoomMicPendantMount,
-          AttributeName.QtyMicPendantMount
-        );
-      }
-    }
   }
+
+  //this solution was implemented so that different mounting options for MicPods and Pendants could mix in place
+  // private rule_micPod_micMount_inWhit1() {
+  //   const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
+  //   const isSelectMic = typeof selectedMic === "object";
+  //   const colorSelectMic =
+  //     isSelectMic && this.getColorFromAssetName(selectedMic.name);
+  //   if (colorSelectMic !== "White") return;
+
+  //   const selectedMicMount = this.getSelectedValue(AttributeName.RoomMicMount);
+  //   const isSelectMicMount = typeof selectedMicMount === "object";
+
+  //   const selectedPendant = this.getSelectedValue(
+  //     AttributeName.RoomMicPendantMount
+  //   );
+  //   const isSelectPendant = typeof selectedPendant === "object";
+
+  //   const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
+  //   if (typeof qtyMicPod !== "string") return;
+
+  //   if (!isSelectMicMount && isSelectPendant) {
+  //     this.configurator.setConfiguration({
+  //       [AttributeName.QtyMicPendantMount]: qtyMicPod,
+  //     });
+  //   }
+
+  //   if (isSelectMicMount && !isSelectPendant) {
+  //     this.configurator.setConfiguration({
+  //       [AttributeName.QtyMicMount]: qtyMicPod,
+  //     });
+  //   }
+
+  //   const attrDataQtyMicMount = this.getAttrStateDataByName(
+  //     AttributeName.QtyMicMount
+  //   );
+  //   const attrDataQtyPendantMount = this.getAttrStateDataByName(
+  //     AttributeName.QtyMicPendantMount
+  //   );
+  //   if (!attrDataQtyPendantMount || !attrDataQtyMicMount) return;
+
+  //   const availableCountMic = this.getQtyMicForMounts();
+
+  //   this.limitValuesAttrByCallback(
+  //     attrDataQtyMicMount.values,
+  //     attrDataQtyMicMount.id,
+  //     (currentCount: number) => currentCount <= availableCountMic
+  //   );
+
+  //   this.limitValuesAttrByCallback(
+  //     attrDataQtyPendantMount.values,
+  //     attrDataQtyPendantMount.id,
+  //     (currentCount: number) => currentCount <= availableCountMic
+  //   );
+
+  //   const qtyMicMount = this.getSelectedValue(AttributeName.QtyMicMount);
+  //   if (typeof qtyMicMount !== "string") return;
+  //   const qtyMicPendantMount = this.getSelectedValue(
+  //     AttributeName.QtyMicPendantMount
+  //   );
+  //   if (typeof qtyMicPendantMount !== "string") return;
+  //   const countMicMount = parseInt(qtyMicMount);
+  //   const countMicPendantMount = parseInt(qtyMicPendantMount);
+  //   const countAllMount = countMicMount + countMicPendantMount;
+  //   if (countAllMount === availableCountMic) return;
+  //   if (!isSelectMicMount || !isSelectPendant) return;
+  //   const isChangeQtyMicMount = this.triggeredByAttr.includes(
+  //     AttributeName.QtyMicMount
+  //   );
+  //   const isChangeQtyMicPendantMount = this.triggeredByAttr.includes(
+  //     AttributeName.QtyMicPendantMount
+  //   );
+  //   if (isChangeQtyMicMount && isChangeQtyMicPendantMount) return;
+
+  //   if (
+  //     availableCountMic > countAllMount &&
+  //     !isChangeQtyMicMount &&
+  //     !isChangeQtyMicPendantMount
+  //   ) {
+  //     if (countMicMount > countMicPendantMount) {
+  //       this.configurator.setConfiguration({
+  //         [AttributeName.QtyMicPendantMount]: (
+  //           availableCountMic - countMicMount
+  //         ).toString(),
+  //       });
+  //     } else {
+  //       this.configurator.setConfiguration({
+  //         [AttributeName.QtyMicMount]: (
+  //           availableCountMic - countMicPendantMount
+  //         ).toString(),
+  //       });
+  //     }
+  //     return;
+  //   }
+
+  //   const removeMount = (attrName: string, qtyName: string) => {
+  //     this.configurator.setConfiguration({
+  //       [attrName]: {
+  //         assetId: "",
+  //       },
+  //       [qtyName]: "0",
+  //     });
+  //   };
+
+  //   if (
+  //     availableCountMic < countAllMount &&
+  //     !isChangeQtyMicMount &&
+  //     !isChangeQtyMicPendantMount
+  //   ) {
+  //     if (countMicMount > countMicPendantMount) {
+  //       const count = availableCountMic - countMicPendantMount;
+  //       this.configurator.setConfiguration({
+  //         [AttributeName.QtyMicMount]: count.toString(),
+  //       });
+  //       if (count === 0) {
+  //         removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
+  //       }
+  //     } else {
+  //       const count = availableCountMic - countMicMount;
+  //       this.configurator.setConfiguration({
+  //         [AttributeName.QtyMicPendantMount]: count.toString(),
+  //       });
+  //       if (count === 0) {
+  //         removeMount(
+  //           AttributeName.RoomMicPendantMount,
+  //           AttributeName.QtyMicPendantMount
+  //         );
+  //       }
+  //     }
+  //     return;
+  //   }
+
+  //   if (countAllMount > availableCountMic) {
+  //     if (isChangeQtyMicMount) {
+  //       const count = countMicPendantMount - 1;
+  //       this.configurator.setConfiguration({
+  //         [AttributeName.QtyMicPendantMount]: count.toString(),
+  //       });
+  //       if (count === 0) {
+  //         removeMount(
+  //           AttributeName.RoomMicPendantMount,
+  //           AttributeName.QtyMicPendantMount
+  //         );
+  //       }
+  //     }
+  //     if (isChangeQtyMicPendantMount) {
+  //       const count = countMicMount - 1;
+  //       this.configurator.setConfiguration({
+  //         [AttributeName.QtyMicMount]: count.toString(),
+  //       });
+  //       if (count === 0) {
+  //         removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
+  //       }
+  //     }
+  //     return;
+  //   }
+  //   if (isChangeQtyMicMount) {
+  //     const count = countMicPendantMount + 1;
+  //     this.configurator.setConfiguration({
+  //       [AttributeName.QtyMicPendantMount]: count.toString(),
+  //     });
+  //     if (count === availableCountMic) {
+  //       removeMount(AttributeName.RoomMicMount, AttributeName.QtyMicMount);
+  //     }
+  //   }
+  //   if (isChangeQtyMicPendantMount) {
+  //     const count = countMicMount + 1;
+  //     this.configurator.setConfiguration({
+  //       [AttributeName.QtyMicMount]: count.toString(),
+  //     });
+  //     if (count === availableCountMic) {
+  //       removeMount(
+  //         AttributeName.RoomMicPendantMount,
+  //         AttributeName.QtyMicPendantMount
+  //       );
+  //     }
+  //   }
+  // }
 
   private rule_micPod_micMount_inNoneWhite() {
     const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
@@ -652,6 +738,29 @@ export class ConfigurationConstraintHandler extends Handler {
         },
       });
       CACHE.set(RuleName.micPod_CATCoupler, true);
+    }
+  }
+
+  private rule_byod_reqOneAddon() {
+    const arrAttrName = [
+      AttributeName.RoomSwytch,
+      AttributeName.RoomExtend,
+      AttributeName.RoomUSBAtoHDMICable,
+    ];
+
+    for (const attrName of arrAttrName) {
+      const attrState = this.getAttrStateDataByName(attrName);
+      if (!attrState) continue;
+      const values = deepCopy(attrState.values) as ValueAssetStateI[];
+
+      values.forEach((option) => {
+        if (!option.visible) return;
+        this.setDataInMetadata(option, "Required", "true");
+      });
+
+      this.configurator.setAttributeState(attrState.id, {
+        values,
+      });
     }
   }
 

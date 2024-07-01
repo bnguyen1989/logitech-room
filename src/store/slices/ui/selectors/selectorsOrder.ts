@@ -145,6 +145,7 @@ const getCardData = (state: RootState) => {
       copyCard.key,
       copyCard.keyPermission
     )(state);
+
     const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
     const langProduct = getLangProductBlade1(productName)(state);
     const sku = getSkuFromMetadataByCard(copyCard)(state);
@@ -160,7 +161,10 @@ const getCardData = (state: RootState) => {
       productName
     )(state);
 
-    if (langProductImage) {
+    const isSupportServiceUseStaticImageRoomPage =
+      copyCard.key === StepName.SoftwareServices;
+
+    if (langProductImage && !isSupportServiceUseStaticImageRoomPage) {
       copyCard.image = langProductImage;
     }
 

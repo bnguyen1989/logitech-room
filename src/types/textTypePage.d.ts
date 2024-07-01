@@ -263,15 +263,15 @@ export interface Rooms {
 export interface Header {
   name: string;
   title: string;
-  subtitle: Subtitle;
+  subtitle: string;
   buttons: Buttons;
 }
 
-export interface Subtitle {
-  "0": string;
-  "1": string;
-  "2": string;
-}
+// export interface Subtitle {
+//   "0": string;
+//   "1": string;
+//   "2": string;
+// }
 
 export interface Buttons {
   RequestConsultation: string;
@@ -365,6 +365,7 @@ export interface Card2 {
   PartNumber: string;
   PerUnit: string;
   MSRP: string;
+  Price: string;
 }
 
 export interface Footer {

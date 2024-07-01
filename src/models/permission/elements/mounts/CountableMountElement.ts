@@ -11,9 +11,19 @@ export class CountableMountElement extends MountElement {
   public notAvailableIndex: Array<number> = [];
   public offsetIndex: number = 0;
   public mountLogic: ruleMountsType[] = [];
+  public secondaryIndex: number[] = [];
 
   constructor(name: string, nodeName: string) {
     super(name, nodeName);
+  }
+
+  public setSecondaryIndex(indexArr: number[]): this {
+    this.secondaryIndex = [...indexArr];
+    return this;
+  }
+
+  public getSecondaryIndex(): number[] {
+    return this.secondaryIndex;
   }
 
   public setOffsetIndex(offsetIndex: number): CountableMountElement {
@@ -35,15 +45,15 @@ export class CountableMountElement extends MountElement {
 
   public getNameNode(): string {
     const availableIndex = this.getRangeAvailableIndex();
-    const indexNode = availableIndex[this.activeIndex - 1];
+    const indexNode = availableIndex[this.activeIndex - this.min - 1];
 
     return `${this.nodeName}_${indexNode + this.offsetIndex}`;
   }
 
   public getRangeNameNode(): string[] {
-    return this.getRangeAvailableIndex().map(
-      (index) => `${this.nodeName}_${index + this.offsetIndex}`
-    );
+    return this.getRangeAvailableIndex()
+      .map((index) => `${this.nodeName}_${index + this.offsetIndex}`)
+      .concat(this.getSecondaryNameNode());
   }
 
   public getAvailableNameNode(): string[] {
@@ -53,7 +63,13 @@ export class CountableMountElement extends MountElement {
       const index = rangeAvailableIndex[i - 1];
       range.push(`${this.nodeName}_${index + this.offsetIndex}`);
     }
-    return range;
+    return range.concat(this.getSecondaryNameNode());
+  }
+
+  public getSecondaryNameNode(): string[] {
+    return this.secondaryIndex.map(
+      (index) => `${this.nodeName}_${index + this.offsetIndex}`
+    );
   }
 
   public setMountLogic(mountLogicType: ruleMountsType[]) {

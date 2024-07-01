@@ -287,6 +287,13 @@
     "key": "Conference Camera#subtitle2"
   },
   {
+    "en-US": "[2. platform] in a [1. room] room.",
+    "de-DE": "[2. Plattform] in einem Raum [1. Raum].",
+    "es-ES": "[2. plataforma] en una sala [1. sala].",
+    "es-MX": "[2. plataforma] en una [1. sala] sala.",
+    "key": "Conference Camera#subtitleBYOD"
+  },
+  {
     "en-US": "Audio Extensions & Accessories",
     "de-DE": "Audioerweiterungen & Zubehör",
     "es-ES": "Extensiones de audio y accesorios",
@@ -833,19 +840,10 @@
     "key": "Rooms#header#subtitle#0"
   },
   {
-    "en-US": "Download and share your custom room guide.",
-    "de-DE": "Laden Sie Ihren individuellen Raumführer herunter und teilen Sie ihn mit anderen.",
-    "es-ES": "Descargue y comparta su guía de salas personalizada.",
-    "es-MX": "Descargue y comparta su guía de salas personalizada.",
-    "key": "Rooms#header#subtitle#1"
+    "en-US": "Explore your finished room(s) below, and when you're ready to talk next steps, simply request a consultation. We'd be happy to discuss your project, develop a formal quote, and facilitate next steps, whether through Logitech or your preferred partner.",
+    "key": "Rooms#header#subtitle"
   },
-  {
-    "en-US": "Request a consultation to receive a formal quote and facilitate next steps, whether through Logitech or your preferred partner.",
-    "de-DE": "Beantragen Sie noch heute eine Beratung durch Logitech oder Ihren bevorzugten Partner, um ein formelles Angebot zu erhalten und die nächsten Schritte festzulegen.",
-    "es-ES": "Solicite un asesoramiento hoy mismo para recibir un presupuesto formal y facilitarle los siguientes pasos, ya sea a través de Logitech o del asociado que elija.",
-    "es-MX": "Solicite una consulta para recibir un presupuesto formal y facilitar los pasos siguientes, ya sea mediante Logitech o su asociado preferido.",
-    "key": "Rooms#header#subtitle#2"
-  },
+
   {
     "en-US": "Request Consultation",
     "de-DE": "Beratung anfordern",
@@ -1132,6 +1130,10 @@
     "es-ES": "Número de parte",
     "es-MX": "Número de parte",
     "key": "Order#Card#PartNumber"
+  },
+  {
+    "en-US": "PRICE",
+    "key": "Order#Card#Price"
   },
   {
     "en-US": "per unit",
