@@ -19,14 +19,20 @@ import { ContentContainer } from "../ContentContainer/ContentContainer";
 import { useAnchor } from "../../../../hooks/anchor";
 import { getPlatformLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 
-export const PrepareSection: React.FC = () => {
+interface PrepareSectionIn {
+  refHeader?: any;
+}
+export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
   const activeStepData: StepI = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
   const secondaryCards = useAppSelector(
     getSecondaryCardsFromStep(activeStepData)
   );
+
   const actionAnchor = useAnchor<HTMLDivElement>();
   const langPage = useAppSelector(getPlatformLangPage);
+  // //@ts-ignore
+  // window.actionAnchor = actionAnchor;
 
   // submit event:
   useEffect(() => {
@@ -43,6 +49,11 @@ export const PrepareSection: React.FC = () => {
         optionValue: card.keyPermission,
       })),
     });
+    console.log("test handleTopAnchor");
+
+    if (refHeader) {
+      refHeader.handleTopAnchor();
+    }
   }, [activeStepData.key]);
 
   if (isConfiguratorStep) return null;
@@ -63,7 +74,11 @@ export const PrepareSection: React.FC = () => {
           key={index}
           keyItemPermission={card.keyPermission}
           onSelectedAnalytics={onSelectedAnalytics}
-          onClick={()=>{}}
+          onClick={() => {
+            console.log("test handleBottonAnchor");
+
+            actionAnchor.handleBottonAnchor();
+          }}
         />
       );
     }
@@ -73,6 +88,11 @@ export const PrepareSection: React.FC = () => {
           key={index}
           keyItemPermission={card.keyPermission}
           onSelectedAnalytics={onSelectedAnalytics}
+          onClick={() => {
+            console.log("test handleBottonAnchor");
+
+            actionAnchor.handleBottonAnchor();
+          }}
         />
       );
     }
@@ -81,7 +101,18 @@ export const PrepareSection: React.FC = () => {
         <CardService
           key={index}
           keyItemPermission={card.keyPermission}
-          onSelectedAnalytics={onSelectedAnalytics}
+          onSelectedAnalytics={() => {
+            console.log("test handleBottonAnchor");
+
+            actionAnchor.handleBottonAnchor();
+            onSelectedAnalytics()
+          }}
+          // onClick={() => {
+          //   console.log("test handleBottonAnchor");
+
+          //   actionAnchor.handleBottonAnchor();
+          //   onSelectedAnalytics()
+          // }}
         />
       );
     }
