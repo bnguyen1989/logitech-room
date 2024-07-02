@@ -4,7 +4,12 @@ import { ConfigurationFormForStep } from "./ConfigurationFormForStep/Configurati
 import { LoaderPlayer } from "./LoaderPlayer/LoaderPlayer";
 import { ContentContainer } from "../ContentContainer/ContentContainer";
 
-export const ConfiguratorSection: React.FC = () => {
+interface ConfiguratorSectionIn {
+  refHeader?: any;
+}
+export const ConfiguratorSection: React.FC<ConfiguratorSectionIn> = ({
+  refHeader,
+}) => {
   return (
     <ContentContainer>
       <div className={s.container_configuratorSection}>
@@ -13,7 +18,7 @@ export const ConfiguratorSection: React.FC = () => {
             <Player />
             <LoaderPlayer />
           </div>
-          <ConfigurationFormForStep />
+          <ConfigurationFormForStep refHeader={refHeader} />
         </div>
       </div>
     </ContentContainer>
