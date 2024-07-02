@@ -7,11 +7,13 @@ import { moveToStartStep } from "../../store/slices/ui/Ui.slice";
 import { useUser } from "../../hooks/user";
 import { PermissionUser } from "../../utils/userRoleUtils";
 import { useNavigate } from "react-router-dom";
+import { useAnchor } from "../../hooks/anchor";
 
 export const Configurator: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useUser();
+  const headerRefAnchor = useAnchor<HTMLDivElement>();
 
   useEffect(() => {
     if (!user.role.can(PermissionUser.ADD_ROOM)) {
@@ -23,8 +25,8 @@ export const Configurator: React.FC = () => {
 
   return (
     <div className={s.container}>
-      <Header />
-      <Content />
+      <Header refHeader={headerRefAnchor.ref} />
+      <Content refHeader={headerRefAnchor} />
     </div>
   );
 };

@@ -37,9 +37,12 @@ export const PrepareCardContainer: React.FC<PropsI> = (props) => {
   const handleClick = () => {
     const { attributeName, threekitItems } = card.dataThreekit;
     const threekitAsset = threekitItems[card.keyPermission];
+    console.log('onClick',onClick);
 
     props.onSelectedAnalytics();
 
+    onClick && onClick();
+    
     if (!attributeName.length) {
       if (isActiveCard) {
         dispatch(removeActiveCard({ key: card.keyPermission }));
@@ -60,7 +63,7 @@ export const PrepareCardContainer: React.FC<PropsI> = (props) => {
       card.keyPermission
     );
 
-    onClick && onClick();
+    
   };
 
   const isDisabled = !!selectCards.length && !isActiveCard;

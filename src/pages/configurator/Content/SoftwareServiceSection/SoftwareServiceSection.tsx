@@ -12,8 +12,14 @@ import { getActiveStepData } from "../../../../store/slices/ui/selectors/selecto
 import { ContentContainer } from "../ContentContainer/ContentContainer";
 import { useAnchor } from "../../../../hooks/anchor";
 
-export const SoftwareServiceSection: React.FC = () => {
+interface SoftwareServiceSectionIn {
+  refHeader?: any;
+}
+export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
+  refHeader,
+}) => {
   const dispatch = useDispatch();
+
   const actionAnchor = useAnchor<HTMLDivElement>();
 
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -55,6 +61,9 @@ export const SoftwareServiceSection: React.FC = () => {
         optionValue: card.keyPermission,
       })),
     });
+    if (refHeader) {
+      refHeader.handleTopAnchor();
+    }
   }, [isSoftwareServicesStep]);
 
   const getCardComponent = (card: CardI, index: number) => {
@@ -69,7 +78,11 @@ export const SoftwareServiceSection: React.FC = () => {
             interactionType: OptionInteractionType.Select,
           })
         }
-        onClick={()=>{}}
+        onClick={() => {
+          console.log("test handleBottonAnchor");
+
+          actionAnchor.handleBottonAnchor();
+        }}
       />
     );
   };
