@@ -265,6 +265,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.byod_reqOneAddon)) {
       this.rule_byod_reqOneAddon();
     }
+
+    if (attrRulesArr.includes(RuleName.tapIp_scribe)) {
+      this.rule_tapIp_scribe();
+    }
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -762,6 +766,24 @@ export class ConfigurationConstraintHandler extends Handler {
         values,
       });
     }
+  }
+
+  private rule_tapIp_scribe() {
+    const selectedTapIp = this.getSelectedValue(AttributeName.RoomMeetingTapIp);
+    const isSelectTapIp = typeof selectedTapIp === "object";
+
+    const attrState = this.getAttrStateDataByName(AttributeName.RoomScribe);
+    if (!attrState) return;
+
+    const values = deepCopy(attrState.values) as ValueAssetStateI[];
+
+    values.forEach((option) => {
+      option.visible = isSelectTapIp;
+    });
+
+    this.configurator.setAttributeState(attrState.id, {
+      values,
+    });
   }
 
   private rule_reco_micPendantMount_inWhite() {
