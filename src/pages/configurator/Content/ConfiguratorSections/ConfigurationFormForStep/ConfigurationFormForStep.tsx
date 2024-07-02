@@ -38,8 +38,13 @@ export const ConfigurationFormForStep = ({
     if (!contentRef.current) return;
     contentRef.current.scrollTop = 0;
 
-    if (refHeader) {
-      refHeader.handleTopAnchor();
+    if (
+      activeStepName === StepName.AudioExtensions ||
+      activeStepName === StepName.ConferenceCamera
+    ) {
+      if (refHeader) {
+        refHeader.handleTopAnchor();
+      }
     }
   }, [activeStepName]);
 
