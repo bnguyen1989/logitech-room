@@ -24,7 +24,7 @@ export const Content: React.FC<PropsI> = ({ refHeader }) => {
           isPlayer ? `${s.player_visible} ${s.fixHeight}` : ""
         }`}
       >
-        <ConfiguratorSection />
+        <ConfiguratorSection  refHeader={refHeader} />
       </div>
     </div>
   );
