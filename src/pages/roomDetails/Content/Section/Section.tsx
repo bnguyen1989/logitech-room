@@ -1,11 +1,10 @@
 import React from "react";
 import s from "./Section.module.scss";
 import { Card } from "./Card/Card";
-import { SectionI } from '../../type'
-
+import { SectionI } from "../../type";
 
 export const Section: React.FC<SectionI> = (props) => {
-  const { title, data } = props;
+  const { title, data, typeSection } = props;
   return (
     <div className={s.container}>
       <div className={s.title}>{title}:</div>
@@ -18,6 +17,11 @@ export const Section: React.FC<SectionI> = (props) => {
           </div>
         ))}
       </div>
+      {typeSection === "Room Solution Bundles" && (
+        <div className={s.bundle}>
+          <div className={s.bundleText}>*Price and part number reflect ease and savings of an automatic bundle</div>
+        </div>
+      )}
     </div>
   );
 };

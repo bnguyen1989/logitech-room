@@ -77,7 +77,7 @@ export enum AttributeName {
   QtyTapRiserMount = "Qty - Tap Riser Mount",
   RoomTapWallMount = "Room Tap Wall Mount",
   QtyTapWallMount = "Qty - Tap Wall Mount",
-  RoomProductBundle = "Room Product Bundle",
+  RoomProductBundle = "ProductBundle",
   RoomTapScheduler = "Room Tap Scheduler",
   RoomTapSchedulerAngleMount = "Room Tap Scheduler Angle Mount",
   RoomTapSchedulerSideMount = "Room Tap Scheduler Side Mount#not-ui",
