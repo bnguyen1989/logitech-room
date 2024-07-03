@@ -1,7 +1,12 @@
 import { CardI } from "../../store/slices/ui/type";
 import { LocaleT } from "../../types/locale";
 import { langRegionCodes } from "../../utils/localeUtils";
-import { SoftwareServicesName } from "../../utils/permissionUtils";
+import {
+  SoftwareServicesName,
+  isBundleElement,
+  isCameraElement,
+  isTapElement,
+} from "../../utils/permissionUtils";
 import { getSKUProductByExtendedWarranty } from "../../utils/productUtils";
 import { LanguageService } from "../LanguageService/LanguageService";
 import { ThreekitService } from "../Threekit/ThreekitService";
@@ -63,6 +68,9 @@ export class RoomService {
 
     return dataOrders.map((dataOrder) => {
       const { name, data } = dataOrder;
+      const isContainBundle = data.some((item) =>
+        isBundleElement(JSON.parse(item.data).keyPermission)
+      );
       const softwareCardData = data.find((item: any) => {
         const card = JSON.parse(item.data) as CardI;
         return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
@@ -89,22 +97,35 @@ export class RoomService {
         const card = JSON.parse(item.data) as CardI;
         return card.keyPermission !== SoftwareServicesName.ExtendedWarranty;
       });
-      const rows: Array<RowCSVRoomI> = [...cardsData, ...additional].map(
-        (dataCard, index) => {
+      const rows: Array<RowCSVRoomI> = [...cardsData, ...additional].reduce(
+        (acc, dataCard, index) => {
           const { data, price, count, title, sku } = dataCard;
           const card = JSON.parse(data) as CardI;
+          const isCamera = isCameraElement(card.keyPermission);
+          const isTap = isTapElement(card.keyPermission);
+
+          if (
+            isContainBundle &&
+            (isCamera || (isTap && parseInt(count) === 1))
+          ) {
+            return acc;
+          }
           const amount = parseFloat(price) * parseInt(count);
 
-          return {
-            [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
-            [ColumnNameCSVRoom.CATEGORY]: card.key,
-            [ColumnNameCSVRoom.PRODUCT_NAME]: title,
-            [ColumnNameCSVRoom.PART_NUMBER]: sku,
-            [ColumnNameCSVRoom.QUANTITY]: count,
-            [ColumnNameCSVRoom.MSPR]: parseFloat(price).toFixed(2),
-            [ColumnNameCSVRoom.TOTAL_QUANTITY]: amount.toFixed(2),
-          };
-        }
+          return [
+            ...acc,
+            {
+              [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
+              [ColumnNameCSVRoom.CATEGORY]: card.key,
+              [ColumnNameCSVRoom.PRODUCT_NAME]: title,
+              [ColumnNameCSVRoom.PART_NUMBER]: sku,
+              [ColumnNameCSVRoom.QUANTITY]: count,
+              [ColumnNameCSVRoom.MSPR]: parseFloat(price).toFixed(2),
+              [ColumnNameCSVRoom.TOTAL_QUANTITY]: amount.toFixed(2),
+            },
+          ];
+        },
+        []
       );
 
       rows.push({

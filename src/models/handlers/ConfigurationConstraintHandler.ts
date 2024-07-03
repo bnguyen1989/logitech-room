@@ -38,6 +38,7 @@ export class ConfigurationConstraintHandler extends Handler {
   private dataTableLevel2: DataTable;
   private configurator: Configurator;
   private triggeredByAttr: Array<string> = [];
+  private localeTagStr: string = "";
   constructor(
     configurator: Configurator,
     dataTableLevel1: DataTable,
@@ -86,6 +87,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
     const locale = this.configurator.language;
     const localeTagStr = `locale_${locale.toLowerCase()}`;
+    this.localeTagStr = localeTagStr;
     const leadingSpecCharForDefault = "*";
     const leadingSpecCharForRecommended = "r";
     const skipColumns = ["level2datatableId", "attrRules", "recoRules"];
@@ -250,13 +252,17 @@ export class ConfigurationConstraintHandler extends Handler {
       this.rule_micPod_CATCoupler();
     }
 
-    if (attrRulesArr.includes(RuleName.rallyBar_TapIp_bundle)) {
-      this.rule_rallyBar_TapIp_bundle();
-    }
+    this.rule_rallyBar_TapIp_bundle();
+    this.rule_rallyBarMini_TapIp_bundle();
+    this.rule_rallyBarHuddle_TapIp_bundle();
 
-    if (attrRulesArr.includes(RuleName.rallyBarMini_TapIp_bundle)) {
-      this.rule_rallyBarMini_TapIp_bundle();
-    }
+    // if (attrRulesArr.includes(RuleName.rallyBar_TapIp_bundle)) {
+    //   this.rule_rallyBar_TapIp_bundle();
+    // }
+
+    // if (attrRulesArr.includes(RuleName.rallyBarMini_TapIp_bundle)) {
+    //   this.rule_rallyBarMini_TapIp_bundle();
+    // }
 
     if (attrRulesArr.includes(RuleName.rallyPlus_bundle)) {
       this.rule_rallyPlus_bundle();
@@ -338,11 +344,19 @@ export class ConfigurationConstraintHandler extends Handler {
     );
   }
 
+  private rule_rallyBarHuddle_TapIp_bundle() {
+    this.rule_camera_TapIp_bundle(
+      CameraName.RallyBarHuddle,
+      MeetingControllerName.RallyBarHuddleTapIP
+    );
+  }
+
   private rule_camera_TapIp_bundle(cameraName: string, bundleName: string) {
     const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
     const isSelectCamera = typeof selectedCamera === "object";
     const isSelectRallyBar =
       isSelectCamera && selectedCamera.name.includes(cameraName);
+    if (!isSelectRallyBar) return;
     const colorSelectCamera =
       isSelectRallyBar && this.getColorFromAssetName(selectedCamera.name);
     const isCameraGraphite = colorSelectCamera === ColorName.Graphite;
@@ -364,14 +378,17 @@ export class ConfigurationConstraintHandler extends Handler {
       return;
     }
 
-    const attribute = this.getAttribute(AttributeName.RoomProductBundle);
-    if (!attribute) return;
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attrState[attribute.id].values;
+    const attrState = this.configurator.getStateAttributeByName(
+      AttributeName.RoomProductBundle
+    );
+    if (!attrState) return;
+    const attributeValuesArr = attrState.values;
     if (!attributeValuesArr) return;
 
     const visibleValues = attributeValuesArr.filter(
-      (option) => option.visible
+      (option) =>
+        option.visible &&
+        (option as ValueAssetStateI).tags.includes(this.localeTagStr)
     ) as ValueAssetStateI[];
     if (!visibleValues.length) return;
     const bundleElement = visibleValues.find((option) =>

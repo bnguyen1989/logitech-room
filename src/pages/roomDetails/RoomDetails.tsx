@@ -10,7 +10,11 @@ import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
 import { StepName } from "../../utils/baseUtils";
 import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
-import { isBundleElement } from "../../utils/permissionUtils";
+import {
+  isBundleElement,
+  isCameraElement,
+  isTapElement,
+} from "../../utils/permissionUtils";
 import { useAppSelector } from "../../hooks/redux";
 import {
   getCardLangPage,
@@ -31,7 +35,7 @@ export const RoomDetails: React.FC = () => {
   const langCard = useAppSelector(getCardLangPage);
 
   const getTitleSectionOrderByStepName = (
-    stepName: StepName | "Room Solution Bundle"
+    stepName: StepName | "Room Solution Bundles"
   ) => {
     switch (stepName) {
       case StepName.ConferenceCamera:
@@ -39,6 +43,7 @@ export const RoomDetails: React.FC = () => {
       case StepName.MeetingController:
       case StepName.VideoAccessories:
       case StepName.SoftwareServices:
+      case "Room Solution Bundles":
         return langPage.StepName[stepName];
       default:
         return "";
@@ -97,6 +102,10 @@ export const RoomDetails: React.FC = () => {
 
           return selectValue;
         };
+
+        const isContainBundle = room.cart.some((item) =>
+          isBundleElement(JSON.parse(item.metadata.data).keyPermission)
+        );
         room.cart.forEach((item) => {
           const {
             data,
@@ -110,13 +119,20 @@ export const RoomDetails: React.FC = () => {
           } = item.metadata;
           const card = JSON.parse(data) as CardI;
 
-          let titleSection = getTitleSectionOrderByStepName(card.key);
           const isBundleCard = isBundleElement(card.keyPermission);
-          if (isBundleCard) {
-            titleSection = getTitleSectionOrderByStepName(
-              "Room Solution Bundle"
-            );
+          if (isBundleCard) return;
+          let keySection: any = card.key;
+
+          const isCamera = isCameraElement(card.keyPermission);
+          const isTap = isTapElement(card.keyPermission);
+          if (
+            isContainBundle &&
+            (isCamera || (isTap && parseInt(count) === 1))
+          ) {
+            keySection = "Room Solution Bundles";
           }
+
+          const titleSection = getTitleSectionOrderByStepName(keySection);
 
           const sectionId = dataSections.findIndex(
             (section) => section.title === titleSection
@@ -133,6 +149,7 @@ export const RoomDetails: React.FC = () => {
                 labelValue: getLabelValue(selectValue),
               },
             ],
+            typeSection: keySection,
           };
 
           if (card.key !== StepName.SoftwareServices) {
