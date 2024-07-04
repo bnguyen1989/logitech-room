@@ -101,6 +101,11 @@ const configuratorSlice = createSlice({
         }
       });
     },
+    removeHighlightNodesByKeys: (state, action: PayloadAction<string[]>) => {
+      action.payload.forEach((key) => {
+        delete state.highlightNodes[key];
+      });
+    },
     disabledPopuptNodes: (state, action: PayloadAction<string>) => {
       Object.keys(state.popuptNodes).forEach((key) => {
         if (action.payload.includes(key)) {
@@ -124,6 +129,7 @@ export const {
   changeStatusProcessing,
   setHighlightNodes,
   disabledHighlightNode,
+  removeHighlightNodesByKeys,
   setPopuptNodes,
   disabledPopuptNodes,
 } = configuratorSlice.actions;
