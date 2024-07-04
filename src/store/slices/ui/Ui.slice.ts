@@ -207,7 +207,11 @@ const uiSlice = createSlice({
       const selectedData = state.selectedData;
       Object.keys(selectedData).forEach((step) => {
         if (ignoreSteps.includes(step as StepName)) return;
-        selectedData[step] = {};
+        const stepData = selectedData[step];
+        Object.keys(stepData).forEach((key) => {
+          stepData[key].selected = [];
+        });
+        selectedData[step] = stepData;
       });
       state.selectedData = selectedData;
     },
