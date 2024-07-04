@@ -3,6 +3,7 @@ import { Modal } from "../../../../models/modals/Modal";
 import { SelectProductModal } from "../../../../models/modals/SelectProductModal";
 import { getIsShowProductModal } from "../selectors/selectors";
 import { setSelectProductModal } from "../Modals.slice";
+import { clearAllNodes } from "../../configurator/handlers/handlers";
 
 export const getModalsHandlers = (store: Store) => {
   app.eventEmitter.on("showModal", (data: Modal) => {
@@ -24,6 +25,7 @@ export const getModalsHandlers = (store: Store) => {
 
         app.eventEmitter.on("SelectProductModal/edit", () => {
           data.editCallback();
+          clearAllNodes()(store);
         });
         app.eventEmitter.on("SelectProductModal/close", () => {
           data.closeCallback();
