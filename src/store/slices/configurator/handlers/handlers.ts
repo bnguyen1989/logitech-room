@@ -97,9 +97,18 @@ export function deleteNodesByCards(cards: Array<CardI>) {
     const nodes = getNodes(state);
     const keys = Object.keys(nodes);
     const keysForRemove = keys.filter((key) => assetIds.includes(nodes[key]));
-    store.dispatch(removeNodeByKeys(keysForRemove));
-    store.dispatch(removeValuesConfigurationByKeys(keysForRemove));
-    store.dispatch(removeHighlightNodesByKeys(keysForRemove));
+    clearAllNodes(keysForRemove)(store);
+  };
+}
+
+export function clearAllNodes(nodesArr?: string[]) {
+  return (store: Store) => {
+    const state = store.getState();
+    const nodes = getNodes(state);
+    const keys = nodesArr ?? Object.keys(nodes);
+    store.dispatch(removeNodeByKeys(keys));
+    store.dispatch(removeValuesConfigurationByKeys(keys));
+    store.dispatch(removeHighlightNodesByKeys(keys));
   };
 }
 
