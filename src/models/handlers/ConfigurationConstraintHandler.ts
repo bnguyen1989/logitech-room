@@ -359,7 +359,9 @@ export class ConfigurationConstraintHandler extends Handler {
     if (!isSelectRallyBar) return;
     const colorSelectCamera =
       isSelectRallyBar && this.getColorFromAssetName(selectedCamera.name);
-    const isCameraGraphite = colorSelectCamera === ColorName.Graphite;
+    const isCameraGraphite =
+      colorSelectCamera === undefined ||
+      colorSelectCamera === ColorName.Graphite;
 
     const selectTapIp = this.getSelectedValue(AttributeName.RoomMeetingTapIp);
 

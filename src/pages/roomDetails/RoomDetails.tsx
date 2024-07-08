@@ -106,6 +106,7 @@ export const RoomDetails: React.FC = () => {
         const isContainBundle = room.cart.some((item) =>
           isBundleElement(JSON.parse(item.metadata.data).keyPermission)
         );
+        let isBundleTapIp = false;
         room.cart.forEach((item) => {
           const {
             data,
@@ -127,8 +128,11 @@ export const RoomDetails: React.FC = () => {
           const isTap = isTapElement(card.keyPermission);
           if (
             isContainBundle &&
-            (isCamera || (isTap && parseInt(count) === 1))
+            (isCamera || (isTap && parseInt(count) === 1 && !isBundleTapIp))
           ) {
+            if (isTap) {
+              isBundleTapIp = true;
+            }
             keySection = "Room Solution Bundles";
           }
 
