@@ -5,6 +5,8 @@ import { SectionI } from "../../type";
 
 export const Section: React.FC<SectionI> = (props) => {
   const { title, data, typeSection } = props;
+
+  const isBundleSections = typeSection === "Room Solution Bundles";
   return (
     <div className={s.container}>
       <div className={s.title}>{title}:</div>
@@ -12,14 +14,23 @@ export const Section: React.FC<SectionI> = (props) => {
       <div className={s.cards}>
         {data.map((item, index) => (
           <div key={index} className={s.wrapper}>
-            <Card {...item} />
+            <Card
+              {...item}
+              isBundleShow={
+                !isBundleSections ||
+                (isBundleSections && index === data.length - 1)
+              }
+            />
             {index !== data.length - 1 && <div className={s.divider}></div>}
           </div>
         ))}
       </div>
-      {typeSection === "Room Solution Bundles" && (
+      {isBundleSections && (
         <div className={s.bundle}>
-          <div className={s.bundleText}>*Price and part number reflect ease and savings of an automatic bundle</div>
+          <div className={s.bundleText}>
+            *Price and part number reflect ease and savings of an automatic
+            bundle
+          </div>
         </div>
       )}
     </div>
