@@ -18,9 +18,11 @@ export interface DataSectionI {
   title: string;
   subtitle: string;
   image: string;
+  inStock: boolean;
   partNumber?: string;
   count?: string;
   amount?: string;
+  strikeThroughPrice?: string;
   selectValue?: string;
   labelValue?: string;
 }

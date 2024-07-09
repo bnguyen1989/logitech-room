@@ -22,6 +22,7 @@ import {
 } from "../../store/slices/ui/selectors/selectoteLangPage";
 import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
 import { getFormattingNameColor } from "../../components/ColorSwitchers/ColorSwitcherItem/ColorSwitcherItem";
+import { PriceService } from "../../services/PriceService/PriceService";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -50,24 +51,11 @@ export const RoomDetails: React.FC = () => {
     }
   };
 
-  const getFormatPrice =
-    (locale: string, currency: string) => (price: number) => {
-      const formattedCurrency = currency.toUpperCase();
-      const localeParts = locale.split("-");
+  const getFormatPrice = (currency: string) => (price: number) => {
+    const formattedCurrency = currency.toUpperCase();
 
-      if (localeParts.length !== 2) {
-        return price.toString();
-      }
-
-      const formattedLocale = `${
-        localeParts[0]
-      }-${localeParts[1].toUpperCase()}`;
-
-      return price.toLocaleString(formattedLocale, {
-        style: "currency",
-        currency: formattedCurrency,
-      });
-    };
+    return new PriceService().formatPrice(price, formattedCurrency);
+  };
 
   useEffect(() => {
     setIsLoaded(true);
@@ -88,10 +76,7 @@ export const RoomDetails: React.FC = () => {
           currency: "USD",
         };
 
-        const formatPrice = getFormatPrice(
-          locale.currencyLocale,
-          locale.currency
-        );
+        const formatPrice = getFormatPrice(locale.currency);
         let total = 0;
         const dataSections: Array<SectionI> = [];
 
@@ -107,17 +92,9 @@ export const RoomDetails: React.FC = () => {
           isBundleElement(JSON.parse(item.metadata.data).keyPermission)
         );
         let isBundleTapIp = false;
-        room.cart.forEach((item) => {
-          const {
-            data,
-            color,
-            price,
-            count,
-            title,
-            sku,
-            description,
-            selectValue,
-          } = item.metadata;
+        room.cart.forEach(async (item) => {
+          const { data, color, count, title, sku, description, selectValue } =
+            item.metadata;
           const card = JSON.parse(data) as CardI;
 
           const isBundleCard = isBundleElement(card.keyPermission);
@@ -142,6 +119,9 @@ export const RoomDetails: React.FC = () => {
             (section) => section.title === titleSection
           );
 
+          const dataProduct = await new PriceService().getDataProductBySku(sku);
+          const inStock = dataProduct.inStock ?? true;
+
           let itemSection: SectionI = {
             title: titleSection,
             data: [
@@ -151,18 +131,22 @@ export const RoomDetails: React.FC = () => {
                 image: card.image ?? "",
                 selectValue: selectValue,
                 labelValue: getLabelValue(selectValue),
+                inStock,
               },
             ],
             typeSection: keySection,
           };
 
           if (card.key !== StepName.SoftwareServices) {
-            let priceNumber = parseFloat(price);
-            if (isNaN(priceNumber)) {
-              priceNumber = 0.0;
-            }
+            const priceNumber = dataProduct.price ?? 0.0;
+            const strikeThroughPrice = dataProduct.strikeThroughPrice;
+
             const amountNumber = priceNumber * parseInt(count);
             total += amountNumber;
+            setTotalAmount(formatPrice(total));
+            console.log("amountNumber", amountNumber)
+            console.log("total", total);
+            
             const amount = formatPrice(priceNumber);
 
             const partNumber = `${getFormattingNameColor(color)(langCard)}${
@@ -176,6 +160,9 @@ export const RoomDetails: React.FC = () => {
                   partNumber,
                   count: count,
                   amount,
+                  strikeThroughPrice: strikeThroughPrice
+                    ? formatPrice(strikeThroughPrice)
+                    : undefined,
                 },
               ],
             };
@@ -190,7 +177,7 @@ export const RoomDetails: React.FC = () => {
         });
 
         setSections(dataSections);
-        setTotalAmount(formatPrice(total));
+        console.log("total-1", total);
       })
       .finally(() => {
         setIsLoaded(false);

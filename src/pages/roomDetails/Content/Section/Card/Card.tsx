@@ -8,13 +8,22 @@ import {
 } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const Card: React.FC<DataSectionI> = (props) => {
-  const { image, title, subtitle, partNumber, count, amount, labelValue } =
-    props;
+  const {
+    image,
+    title,
+    subtitle,
+    partNumber,
+    count,
+    amount,
+    labelValue,
+    strikeThroughPrice,
+    inStock,
+  } = props;
   const langPage = useAppSelector(getDetailRoomLangPage);
   const langPageCSV = useAppSelector(getCSVLangPage);
 
   return (
-    <div className={s.container}>
+    <div className={`${s.container} ${!inStock ? s.container_disabled : ""}`}>
       <div className={s.left_content}>
         <div className={s.image}>
           <img src={image} alt="image_item" />
@@ -44,7 +53,15 @@ export const Card: React.FC<DataSectionI> = (props) => {
           <div className={s.amount}>
             <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
             <div className={s.amount_price}>
-              <div className={s.amount_value}>{amount}</div>
+              <div className={s.amount_vales}>
+                {!!strikeThroughPrice && (
+                  <div className={s.amount_strike_through}>
+                    {strikeThroughPrice}
+                  </div>
+                )}
+                <div className={s.amount_value}>{amount}</div>
+              </div>
+
               <div className={s.amount_text}>
                 {langPage.Card.MSRP} {langPage.Card.PerUnit}
               </div>
