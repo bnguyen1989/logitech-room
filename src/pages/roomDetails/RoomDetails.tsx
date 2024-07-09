@@ -61,7 +61,7 @@ export const RoomDetails: React.FC = () => {
     setIsLoaded(true);
     new ThreekitService()
       .getOrders({ shortId: roomId })
-      .then((res) => {
+      .then(async (res) => {
         const [room] = res.orders;
         if (!room) return;
         setNameRoom(room.metadata.name);
@@ -88,21 +88,36 @@ export const RoomDetails: React.FC = () => {
           return selectValue;
         };
 
-        const isContainBundle = room.cart.some((item) =>
+        const bundleElement = room.cart.find((item) =>
           isBundleElement(JSON.parse(item.metadata.data).keyPermission)
         );
+
+        const isContainBundle = !!bundleElement;
         let isBundleTapIp = false;
-        room.cart.forEach(async (item) => {
-          const { data, color, count, title, sku, description, selectValue } =
-            item.metadata;
+
+        for (const item of room.cart) {
+          const {
+            data,
+            color,
+            count,
+            title,
+            sku: defaultSku,
+            description,
+            selectValue,
+          } = item.metadata;
+          let sku = defaultSku;
           const card = JSON.parse(data) as CardI;
 
           const isBundleCard = isBundleElement(card.keyPermission);
-          if (isBundleCard) return;
-          let keySection: any = card.key;
+          if (isBundleCard) continue;
 
+          let keySection: any = card.key;
           const isCamera = isCameraElement(card.keyPermission);
           const isTap = isTapElement(card.keyPermission);
+
+          let dataProduct = await new PriceService().getDataProductBySku(sku);
+          const inStock = dataProduct.inStock ?? true;
+
           if (
             isContainBundle &&
             (isCamera || (isTap && parseInt(count) === 1 && !isBundleTapIp))
@@ -111,16 +126,14 @@ export const RoomDetails: React.FC = () => {
               isBundleTapIp = true;
             }
             keySection = "Room Solution Bundles";
+            sku = bundleElement.metadata.sku;
+            dataProduct = await new PriceService().getDataProductBySku(sku);
           }
 
           const titleSection = getTitleSectionOrderByStepName(keySection);
-
           const sectionId = dataSections.findIndex(
             (section) => section.title === titleSection
           );
-
-          const dataProduct = await new PriceService().getDataProductBySku(sku);
-          const inStock = dataProduct.inStock ?? true;
 
           let itemSection: SectionI = {
             title: titleSection,
@@ -140,18 +153,15 @@ export const RoomDetails: React.FC = () => {
           if (card.key !== StepName.SoftwareServices) {
             const priceNumber = dataProduct.price ?? 0.0;
             const strikeThroughPrice = dataProduct.strikeThroughPrice;
-
             const amountNumber = priceNumber * parseInt(count);
             total += amountNumber;
             setTotalAmount(formatPrice(total));
-            console.log("amountNumber", amountNumber)
-            console.log("total", total);
-            
-            const amount = formatPrice(priceNumber);
 
+            const amount = formatPrice(priceNumber);
             const partNumber = `${getFormattingNameColor(color)(langCard)}${
               color ? " : " : ""
             }${isBundleCard ? sku + "*" : sku}`;
+
             itemSection = {
               ...itemSection,
               data: [
@@ -170,14 +180,12 @@ export const RoomDetails: React.FC = () => {
 
           if (sectionId === -1) {
             dataSections.push(itemSection);
-            return;
+          } else {
+            dataSections[sectionId].data.push(itemSection.data[0]);
           }
-
-          dataSections[sectionId].data.push(itemSection.data[0]);
-        });
+        }
 
         setSections(dataSections);
-        console.log("total-1", total);
       })
       .finally(() => {
         setIsLoaded(false);
