@@ -9,6 +9,7 @@ import {
 } from "../../utils/permissionUtils";
 import { getSKUProductByExtendedWarranty } from "../../utils/productUtils";
 import { LanguageService } from "../LanguageService/LanguageService";
+import { PriceService } from "../PriceService/PriceService";
 import { ThreekitService } from "../Threekit/ThreekitService";
 import { OrdersI } from "../Threekit/type";
 import { RoomApi } from "../api/Server/RoomApi/RoomApi";
@@ -30,7 +31,7 @@ export class RoomService {
   }
 
   private async generateCSVByOrders(orders: OrdersI, locale: LocaleT) {
-    const formattedData = this.formatOrdersToDataCSV(orders);
+    const formattedData = await this.formatOrdersToDataCSV(orders);
 
     const langData = await new LanguageService().getLanguageData(locale);
     const langDataCSV = langData.pages.CSV;
@@ -63,80 +64,93 @@ export class RoomService {
     ];
   }
 
-  private formatOrdersToDataCSV(orders: OrdersI): Array<Array<RowCSVRoomI>> {
+  private async formatOrdersToDataCSV(
+    orders: OrdersI
+  ): Promise<Array<Array<RowCSVRoomI>>> {
     const dataOrders = this.getDataOrdersForCSV(orders);
 
-    return dataOrders.map((dataOrder) => {
-      const { name, data } = dataOrder;
-      const isContainBundle = data.some((item) =>
-        isBundleElement(JSON.parse(item.data).keyPermission)
-      );
-      const softwareCardData = data.find((item: any) => {
-        const card = JSON.parse(item.data) as CardI;
-        return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
-      });
-      const additional: any[] = [];
-      if (softwareCardData) {
-        const year = softwareCardData?.selectValue;
-        data.forEach((dataCard) => {
-          const { data } = dataCard;
-          const card = JSON.parse(data) as CardI;
-          const newSKU = getSKUProductByExtendedWarranty(
-            card.keyPermission,
-            year ?? ""
-          );
-          if (!newSKU) return;
-          additional.push({
-            ...softwareCardData,
-            sku: newSKU,
-          });
+    return Promise.all(
+      dataOrders.map(async (dataOrder) => {
+        const { name, data } = dataOrder;
+        const isContainBundle = data.some((item) =>
+          isBundleElement(JSON.parse(item.data).keyPermission)
+        );
+        const softwareCardData = data.find((item: any) => {
+          const card = JSON.parse(item.data) as CardI;
+          return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
         });
-      }
+        const additional: any[] = [];
+        if (softwareCardData) {
+          const year = softwareCardData?.selectValue;
+          data.forEach((dataCard) => {
+            const { data } = dataCard;
+            const card = JSON.parse(data) as CardI;
+            const newSKU = getSKUProductByExtendedWarranty(
+              card.keyPermission,
+              year ?? ""
+            );
+            if (!newSKU) return;
+            additional.push({
+              ...softwareCardData,
+              sku: newSKU,
+            });
+          });
+        }
 
-      const cardsData = data.filter((item: any) => {
-        const card = JSON.parse(item.data) as CardI;
-        return card.keyPermission !== SoftwareServicesName.ExtendedWarranty;
-      });
-      const rows: Array<RowCSVRoomI> = [...cardsData, ...additional].reduce(
-        (acc, dataCard, index) => {
-          const { data, price, count, title, sku } = dataCard;
-          const card = JSON.parse(data) as CardI;
-          const isCamera = isCameraElement(card.keyPermission);
-          const isTap = isTapElement(card.keyPermission);
+        const cardsData = data.filter((item: any) => {
+          const card = JSON.parse(item.data) as CardI;
+          return card.keyPermission !== SoftwareServicesName.ExtendedWarranty;
+        });
 
-          if (
-            isContainBundle &&
-            (isCamera || (isTap && parseInt(count) === 1))
-          ) {
-            return acc;
-          }
-          const amount = parseFloat(price) * parseInt(count);
+        const rows: Array<RowCSVRoomI> = await cardsData
+          .concat(additional)
+          .reduce(async (accPromise, dataCard, index) => {
+            const acc = await accPromise;
+            const { data, count, title, sku } = dataCard;
+            const card = JSON.parse(data) as CardI;
+            const isCamera = isCameraElement(card.keyPermission);
+            const isTap = isTapElement(card.keyPermission);
 
-          return [
-            ...acc,
-            {
-              [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
-              [ColumnNameCSVRoom.CATEGORY]: card.key,
-              [ColumnNameCSVRoom.PRODUCT_NAME]: title,
-              [ColumnNameCSVRoom.PART_NUMBER]: sku,
-              [ColumnNameCSVRoom.QUANTITY]: count,
-              [ColumnNameCSVRoom.MSPR]: parseFloat(price).toFixed(2),
-              [ColumnNameCSVRoom.TOTAL_QUANTITY]: amount.toFixed(2),
+            if (
+              isContainBundle &&
+              (isCamera || (isTap && parseInt(count) === 1))
+            ) {
+              return acc;
+            }
+
+            const dataProduct = await new PriceService().getDataProductBySku(
+              sku
+            );
+            const price = dataProduct.price ?? 0.0;
+            const amount = price * parseInt(count);
+
+            return [
+              ...acc,
+              {
+                [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
+                [ColumnNameCSVRoom.CATEGORY]: card.key,
+                [ColumnNameCSVRoom.PRODUCT_NAME]: title,
+                [ColumnNameCSVRoom.PART_NUMBER]: sku,
+                [ColumnNameCSVRoom.QUANTITY]: count,
+                [ColumnNameCSVRoom.MSPR]: price.toFixed(2),
+                [ColumnNameCSVRoom.TOTAL_QUANTITY]: amount.toFixed(2),
+              },
+            ];
+          }, Promise.resolve([] as RowCSVRoomI[]));
+
+        rows.push({
+          ...Object.values(ColumnNameCSVRoom).reduce<RowCSVRoomI>(
+            (acc, key) => {
+              acc[key] = "";
+              return acc;
             },
-          ];
-        },
-        []
-      );
+            {} as RowCSVRoomI
+          ),
+        });
 
-      rows.push({
-        ...Object.values(ColumnNameCSVRoom).reduce<RowCSVRoomI>((acc, key) => {
-          acc[key] = "";
-          return acc;
-        }, {} as RowCSVRoomI),
-      });
-
-      return rows;
-    });
+        return rows;
+      })
+    );
   }
 
   private getDataOrdersForCSV(orders: OrdersI) {
