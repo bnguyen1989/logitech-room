@@ -15,9 +15,9 @@ export interface SectionI {
 }
 
 export interface DataSectionI {
-  title: string;
-  subtitle: string;
-  image: string;
+  title?: string;
+  subtitle?: string;
+  image?: string;
   inStock: boolean;
   partNumber?: string;
   count?: string;
