@@ -13,9 +13,10 @@ import s from "./CardRoom.module.scss";
 interface PropsI {
   keyItemPermission: string;
   onSelectedAnalytics: () => void;
+  onClick?: () => void;
 }
 export const CardRoom: React.FC<PropsI> = (props) => {
-  const { keyItemPermission } = props;
+  const { keyItemPermission, onClick } = props;
   const activeStep = useAppSelector(getActiveStep);
   const title = useAppSelector(
     getPrepareCardTitleLangByKeyPermission(keyItemPermission)
@@ -32,6 +33,7 @@ export const CardRoom: React.FC<PropsI> = (props) => {
       isPadding={false}
       keyItemPermission={keyItemPermission}
       onSelectedAnalytics={props.onSelectedAnalytics}
+      onClick={onClick}
     >
       <div className={s.container}>
         <div className={s.image}>

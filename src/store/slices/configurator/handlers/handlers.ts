@@ -5,6 +5,7 @@ import {
   changeValueConfiguration,
   changeValueNodes,
   disabledHighlightNode,
+  removeHighlightNodesByKeys,
   removeNodeByKeys,
   removeNodes,
   removeValuesConfigurationByKeys,
@@ -96,7 +97,18 @@ export function deleteNodesByCards(cards: Array<CardI>) {
     const nodes = getNodes(state);
     const keys = Object.keys(nodes);
     const keysForRemove = keys.filter((key) => assetIds.includes(nodes[key]));
-    store.dispatch(removeNodeByKeys(keysForRemove));
+    clearAllNodes(keysForRemove)(store);
+  };
+}
+
+export function clearAllNodes(nodesArr?: string[]) {
+  return (store: Store) => {
+    const state = store.getState();
+    const nodes = getNodes(state);
+    const keys = nodesArr ?? Object.keys(nodes);
+    store.dispatch(removeNodeByKeys(keys));
+    store.dispatch(removeValuesConfigurationByKeys(keys));
+    store.dispatch(removeHighlightNodesByKeys(keys));
   };
 }
 
@@ -204,10 +216,9 @@ export function addElement(
           mount.getAvailableNameNode().forEach((nameNode) => {
             setElementByNameNode(cardAsset.id, nameNode)(store);
           });
-          return;
+        } else {
+          setElementByNameNode(cardAsset.id, mount.getNameNode())(store);
         }
-
-        setElementByNameNode(cardAsset.id, mount.getNameNode())(store);
       });
 
       const defaultMount = element.getDefaultMount();

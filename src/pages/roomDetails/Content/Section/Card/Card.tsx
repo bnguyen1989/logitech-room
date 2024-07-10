@@ -7,14 +7,27 @@ import {
   getDetailRoomLangPage,
 } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
-export const Card: React.FC<DataSectionI> = (props) => {
-  const { image, title, subtitle, partNumber, count, amount, labelValue } =
-    props;
+interface PropsI extends DataSectionI {
+  isBundleShow?: boolean;
+}
+export const Card: React.FC<PropsI> = (props) => {
+  const {
+    image,
+    title,
+    subtitle,
+    partNumber,
+    count,
+    amount,
+    labelValue,
+    strikeThroughPrice,
+    inStock,
+    isBundleShow = true,
+  } = props;
   const langPage = useAppSelector(getDetailRoomLangPage);
   const langPageCSV = useAppSelector(getCSVLangPage);
 
   return (
-    <div className={s.container}>
+    <div className={`${s.container} ${!inStock ? s.container_disabled : ""}`}>
       <div className={s.left_content}>
         <div className={s.image}>
           <img src={image} alt="image_item" />
@@ -25,12 +38,13 @@ export const Card: React.FC<DataSectionI> = (props) => {
           <div className={s.title}>{title}</div>
           <div className={s.subtitle}>{subtitle}</div>
         </div>
-        {!!partNumber && (
+        {!!partNumber && isBundleShow && (
           <div className={s.part_number}>
             <div className={s.part_number_text}>{langPage.Card.PartNumber}</div>
             <div className={s.part_number_value}>{partNumber}</div>
           </div>
         )}
+        {!isBundleShow && <div className={s.part_number}></div>}
         {!!count && <div className={s.count}>x {count}</div>}
         {!!count && (
           <div className={s.count_mobile}>
@@ -40,11 +54,20 @@ export const Card: React.FC<DataSectionI> = (props) => {
             <div className={s.count_mobile_value}>x{count}</div>
           </div>
         )}
-        {!!amount && (
+        {!isBundleShow && <div className={s.amount}></div>}
+        {!!amount && isBundleShow && (
           <div className={s.amount}>
             <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
             <div className={s.amount_price}>
-              <div className={s.amount_value}>{amount}</div>
+              <div className={s.amount_vales}>
+                {!!strikeThroughPrice && (
+                  <div className={s.amount_strike_through}>
+                    {strikeThroughPrice}
+                  </div>
+                )}
+                <div className={s.amount_value}>{amount}</div>
+              </div>
+
               <div className={s.amount_text}>
                 {langPage.Card.MSRP} {langPage.Card.PerUnit}
               </div>

@@ -21,7 +21,6 @@ import {
 import {
   PlatformName,
   isBundleElement,
-  isCameraElement,
   isTapElement,
 } from "../../../../utils/permissionUtils";
 import {
@@ -203,20 +202,32 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
       card.key,
       card.keyPermission
     )(state);
-    const isCamera = isCameraElement(card.keyPermission);
-    if (existCardBundle && isCamera) return acc;
     const isTap = isTapElement(card.keyPermission);
-    if (existCardBundle && isTap) {
-      const count = selectData?.property?.count;
-      if (!count || count < 2) return acc;
-
+    const count = selectData?.property?.count;
+    if (existCardBundle && isTap && count && count > 1) {
       const copySelectData = deepCopy(selectData);
-      copySelectData.property.count -= 1;
+
       return [
         ...acc,
         {
           card,
-          selectData: copySelectData,
+          selectData: {
+            ...copySelectData,
+            property: {
+              ...copySelectData.property,
+              count: 1,
+            },
+          },
+        },
+        {
+          card,
+          selectData: {
+            ...copySelectData,
+            property: {
+              ...copySelectData.property,
+              count: copySelectData.property.count - 1,
+            },
+          },
         },
       ];
     }

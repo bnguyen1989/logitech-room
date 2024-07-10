@@ -14,7 +14,12 @@ import { getTKAnalytics } from "../../../../../utils/getTKAnalytics";
 import { StepName } from "../../../../../utils/baseUtils";
 import { getCardLangPage } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
-export const ConfigurationFormForStep = () => {
+interface ConfigurationFormForStepIn {
+  refHeader?: any;
+}
+export const ConfigurationFormForStep = ({
+  refHeader,
+}: ConfigurationFormForStepIn) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const activeStepName = useAppSelector(getActiveStep);
   const activeStepData: StepI = useAppSelector(getActiveStepData);
@@ -32,6 +37,16 @@ export const ConfigurationFormForStep = () => {
   useEffect(() => {
     if (!contentRef.current) return;
     contentRef.current.scrollTop = 0;
+
+    // debugger
+    if (
+      activeStepName === StepName.VideoAccessories ||
+      activeStepName === StepName.ConferenceCamera
+    ) {
+      if (refHeader) {
+        refHeader.handleTopAnchor();
+      }
+    }
   }, [activeStepName]);
 
   const getCardComponent = (card: CardI, index: number) => {

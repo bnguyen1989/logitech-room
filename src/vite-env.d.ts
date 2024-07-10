@@ -8,4 +8,10 @@ interface Window {
   Munchkin: {
     init: (id: string) => void;
   };
+  pangea: {
+    storeManager: {
+      getProductData: (productIds: string[]) => Promise<any>;
+      formatPrice: (value: number, currency: string) => string;
+    };
+  };
 }

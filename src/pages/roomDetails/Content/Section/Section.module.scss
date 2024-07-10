@@ -20,6 +20,14 @@
       }
     }
   }
+
+  .bundle {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    .bundleText {
+    }
+  }
 }
 
 @media (max-width: 1000px) {
