@@ -458,6 +458,9 @@ export function createStepAudioExtensions() {
           )
         )
       )
+      .addReservationMount({
+        [CameraName.LogitechSight]: [3],
+      })
       .setDisabledColor(true)
       .setHiddenColor(true)
       .addDisabledCounterDependence({
