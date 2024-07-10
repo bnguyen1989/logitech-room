@@ -30,6 +30,7 @@ import { AvailableStepHandler } from "./handlers/property/AvailableStepHandler";
 import { DisabledColorElementHandler } from "./handlers/property/DisabledColorElementHandler";
 import { BundleMountElementRule } from "./rules/BundleMountElementRule";
 import { SecondaryMountHandler } from "./handlers/mounts/SecondaryMountHandler";
+import { NameNodeHandler } from "./handlers/NameNodeHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName;
@@ -99,6 +100,7 @@ export class Permission {
   }
 
   public executeBasicHandlers(step: Step): void {
+    new NameNodeHandler().handle(step);
     new AvailableStepHandler().handle(step);
     new DependentMountHandler().handle(step);
     new ReservationMountHandler().handle(step);

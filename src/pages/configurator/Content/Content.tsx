@@ -6,19 +6,25 @@ import { ConfiguratorSection } from "./ConfiguratorSections/ConfiguratorSection"
 import { useAppSelector } from "../../../hooks/redux";
 import { getIsIncludePlayer } from "../../../store/slices/ui/selectors/selectors";
 
-interface PropsI {}
-export const Content: React.FC<PropsI> = () => {
+interface PropsI {
+  refHeader?: any;
+}
+export const Content: React.FC<PropsI> = ({ refHeader }) => {
   const isPlayer = useAppSelector(getIsIncludePlayer);
   return (
     <div className={s.container}>
       {!isPlayer && (
         <div className={s.prepare_content}>
-          <PrepareSection />
-          <SoftwareServiceSection />
+          <PrepareSection refHeader={refHeader} />
+          <SoftwareServiceSection refHeader={refHeader} />
         </div>
       )}
-      <div className={`${s.plyer_content} ${isPlayer ? `${s.player_visible} ${s.fixHeight}` : ""}`}>
-        <ConfiguratorSection />
+      <div
+        className={`${s.plyer_content} ${
+          isPlayer ? `${s.player_visible} ${s.fixHeight}` : ""
+        }`}
+      >
+        <ConfiguratorSection  refHeader={refHeader} />
       </div>
     </div>
   );

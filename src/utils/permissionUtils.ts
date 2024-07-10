@@ -73,6 +73,7 @@ export enum MeetingControllerName {
 
   RallyBarTapIP = "Rally Bar + Tap IP",
   RallyBarMiniTapIP = "Rally Bar Mini + Tap IP",
+  RallyBarHuddleTapIP = "Rally Bar Huddle + Tap IP",
 }
 
 export enum VideoAccessoryName {
@@ -576,6 +577,11 @@ export function createStepMeetingController() {
     )
     .addElement(
       new ItemElement(MeetingControllerName.RallyBarMiniTapIP).setVisible(false)
+    )
+    .addElement(
+      new ItemElement(MeetingControllerName.RallyBarHuddleTapIP).setVisible(
+        false
+      )
     );
 
   stepMeetingController.allElements = [groupTap, groupBundle];
@@ -782,6 +788,7 @@ export const isBundleElement = (name: string) => {
   return isCompareName(name)([
     MeetingControllerName.RallyBarTapIP,
     MeetingControllerName.RallyBarMiniTapIP,
+    MeetingControllerName.RallyBarHuddleTapIP,
   ]);
 };
 

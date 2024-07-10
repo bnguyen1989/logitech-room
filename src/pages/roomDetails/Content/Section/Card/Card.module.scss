@@ -96,10 +96,21 @@
         line-height: 22px;
         text-transform: uppercase;
 
-        .amount_value {
-          font-size: 30px;
-          line-height: 32px;
-          font-weight: 300;
+        .amount_vales {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .amount_strike_through,
+          .amount_value {
+            font-size: 30px;
+            line-height: 32px;
+            font-weight: 300;
+          }
+
+          .amount_strike_through {
+            text-decoration: line-through ;
+          }
         }
 
         .amount_text {
@@ -121,6 +132,10 @@
       line-height: 22px;
     }
   }
+}
+
+.container_disabled {
+  opacity: 0.5;
 }
 
 @media (max-width: 1200px) {
@@ -218,10 +233,13 @@
           align-items: normal;
           gap: 10px;
 
-          .amount_value {
-            font-size: 18px;
-            line-height: 24px;
-            font-weight: 400;
+          .amount_vales {
+            .amount_strike_through,
+            .amount_value {
+              font-size: 18px;
+              line-height: 24px;
+              font-weight: 400;
+            }
           }
 
           .amount_text {

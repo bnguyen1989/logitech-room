@@ -1,4 +1,4 @@
-import { StepName } from "../../../utils/baseUtils";
+import { getArrayStepNames, StepName } from "../../../utils/baseUtils";
 import { Application } from "../../Application";
 import { Configurator } from "../../configurator/Configurator";
 import { AttributeName } from "../../configurator/type";
@@ -15,7 +15,7 @@ export class AddItemBehavior extends Behavior {
         new SelectProductModal(
           command.nameProperty,
           () => {
-            const arrayStepName = Object.values(StepName);
+            const arrayStepName = getArrayStepNames();
             const index = arrayStepName.indexOf(StepName.ConferenceCamera);
             arrayStepName.forEach((stepName, i) => {
               if (i <= index) return;

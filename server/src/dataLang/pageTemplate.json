@@ -210,10 +210,10 @@
     "key": "Platform#titleAditions"
   },
   {
-    "en-US": "Choose a Bring-Your-Own-Device setup.",
-    "de-DE": "Wählen Sie ein Setup zur Verwendung eigener Geräte (BYOD).",
-    "es-ES": "Elija el modo de dispositivo propio.",
-    "es-MX": "Elige una configuración de “Trae tu propio dispositivo”.",
+    "en-US": "Choose a Bring-Your-Own-Device setup",
+    "de-DE": "Wählen Sie ein Setup zur Verwendung eigener Geräte (BYOD)",
+    "es-ES": "Elija el modo de dispositivo propio",
+    "es-MX": "Elige una configuración de “Trae tu propio dispositivo”",
     "key": "Platform#Cards#AditionCard#0#title"
   },
   {
