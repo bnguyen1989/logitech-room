@@ -8,7 +8,8 @@ import {
 } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 interface PropsI extends DataSectionI {
-  isBundleShow?: boolean;
+  isHideDetails?: boolean;
+  isBundleCard?: boolean;
 }
 export const Card: React.FC<PropsI> = (props) => {
   const {
@@ -21,7 +22,8 @@ export const Card: React.FC<PropsI> = (props) => {
     labelValue,
     strikeThroughPrice,
     inStock,
-    isBundleShow = true,
+    isHideDetails = true,
+    isBundleCard = false,
   } = props;
   const langPage = useAppSelector(getDetailRoomLangPage);
   const langPageCSV = useAppSelector(getCSVLangPage);
@@ -30,21 +32,23 @@ export const Card: React.FC<PropsI> = (props) => {
     <div className={`${s.container} ${!inStock ? s.container_disabled : ""}`}>
       <div className={s.left_content}>
         <div className={s.image}>
-          <img src={image} alt="image_item" />
+          {!!image && <img src={image} alt="image_item" />}
         </div>
       </div>
       <div className={s.right_content}>
         <div className={s.text}>
-          <div className={s.title}>{title}</div>
-          <div className={s.subtitle}>{subtitle}</div>
+          {!!title && <div className={s.title}>{title}</div>}
+          {!!subtitle && <div className={s.subtitle}>{subtitle}</div>}
         </div>
-        {!!partNumber && isBundleShow && (
+        {!!partNumber && isHideDetails && (
           <div className={s.part_number}>
-            <div className={s.part_number_text}>{langPage.Card.PartNumber}</div>
+            <div className={s.part_number_text}>{`${langPage.Card.PartNumber}${
+              isBundleCard ? "*" : ""
+            }`}</div>
             <div className={s.part_number_value}>{partNumber}</div>
           </div>
         )}
-        {!isBundleShow && <div className={s.part_number}></div>}
+        {!isHideDetails && <div className={s.part_number}></div>}
         {!!count && <div className={s.count}>x {count}</div>}
         {!!count && (
           <div className={s.count_mobile}>
@@ -54,8 +58,8 @@ export const Card: React.FC<PropsI> = (props) => {
             <div className={s.count_mobile_value}>x{count}</div>
           </div>
         )}
-        {!isBundleShow && <div className={s.amount}></div>}
-        {!!amount && isBundleShow && (
+        {!isHideDetails && <div className={s.amount}></div>}
+        {!!amount && isHideDetails && (
           <div className={s.amount}>
             <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
             <div className={s.amount_price}>

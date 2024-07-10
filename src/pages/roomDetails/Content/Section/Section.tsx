@@ -14,16 +14,22 @@ export const Section: React.FC<SectionI> = (props) => {
       <div className={s.cards}>
         {data.map((item, index) => (
           <div key={index} className={s.wrapper}>
-            <Card
-              {...item}
-              isBundleShow={
-                !isBundleSections ||
-                (isBundleSections && index === data.length - 1)
-              }
-            />
+            <Card {...item} isHideDetails={!isBundleSections} />
             {index !== data.length - 1 && <div className={s.divider}></div>}
           </div>
         ))}
+        {isBundleSections && (
+          <div className={s.wrapper}>
+            <div className={s.divider}></div>
+            <Card
+              partNumber={data[0]?.partNumber}
+              count={data[0]?.count}
+              amount={data[0]?.amount}
+              inStock={data[0]?.inStock}
+              isBundleCard
+            />
+          </div>
+        )}
       </div>
       {isBundleSections && (
         <div className={s.bundle}>
