@@ -444,6 +444,11 @@ export function createStepAudioExtensions() {
         AudioExtensionName.RallyMicPodMount,
         AudioExtensionName.RallyMicPodPendantMount,
       ])
+      .addDisabledColorDependence({
+        [CameraName.RallyPlus]: {
+          active: true,
+        },
+      })
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)

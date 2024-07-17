@@ -120,7 +120,6 @@ export function updateNodesByConfiguration(
     const state = store.getState();
     const configuration = configurator.getConfiguration();
     const step = getDataStepByName(stepName)(state);
-    // const selectedCardsByStep = getSelectedCardsByStep(stepName)(state);
     arrayAttributes.forEach((item) => {
       const [name] = item;
       const value = configuration[name];

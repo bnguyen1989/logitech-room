@@ -53,6 +53,7 @@ import {
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
   getPropertySelectValueCardByKeyPermission,
+  getSelectedCardsByStep,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -62,6 +63,7 @@ import { StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
+import { deleteNodesByCards } from "../../configurator/handlers/handlers";
 
 declare const app: Application;
 
@@ -189,7 +191,7 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
       arr.forEach((keyCard) => {
         const card = getCardByKeyPermission(key as StepName, keyCard)(state);
-        if(!card) return;
+        if (!card) return;
         const { attributeName } = card.dataThreekit;
         app.removeItem(attributeName, card.keyPermission);
       });
@@ -411,6 +413,8 @@ function setStepData(
     stepCardData,
     sortedKeyPermissions
   );
+
+  removeNodesForNotValidCards(stepName, sortedCards)(store);
 
   setDataCard(sortedCards, stepName)(store);
 }
@@ -734,5 +738,23 @@ function getSortedKeyPermissionsByStep(stepName: StepName) {
       .flat()
       .map((item) => item.name);
     return getSortedKeyPermissions(stepName, activeKeys);
+  };
+}
+
+function removeNodesForNotValidCards(
+  stepName: StepName,
+  newCards: Array<CardI>
+) {
+  return (store: Store) => {
+    const state = store.getState();
+    const selectedCardsByStep = getSelectedCardsByStep(stepName)(state);
+    selectedCardsByStep.forEach((cardItem) => {
+      const isExist = newCards.some(
+        (item) => item.keyPermission === cardItem.keyPermission
+      );
+      if (!isExist) {
+        deleteNodesByCards([cardItem])(store);
+      }
+    });
   };
 }
