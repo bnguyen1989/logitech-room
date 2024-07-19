@@ -988,6 +988,22 @@ export class ConfigurationConstraintHandler extends Handler {
     this.configurator.setAttributeState(attrState.id, {
       values,
     });
+
+    const selectedMic = this.getSelectedValue(AttributeName.RoomMic);
+    const isSelectMic = typeof selectedMic === "object";
+    if (!isSelectMic) return;
+    const colorSelectMic =
+      isSelectMic && this.getColorFromAssetName(selectedMic.name);
+    if (colorSelectMic !== ColorName.Graphite) return;
+    const attrStateMicMount = this.getAttrStateDataByName(
+      AttributeName.QtyMicMount
+    );
+    if (!attrStateMicMount) return;
+    this.limitValuesAttrByCallback(
+      attrStateMicMount.values,
+      attrStateMicMount.id,
+      (currentValue: number) => currentValue < countVisible - 1
+    );
   }
 
   private rule_tapQty10_tapIp() {
