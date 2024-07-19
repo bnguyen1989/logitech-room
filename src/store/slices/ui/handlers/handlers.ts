@@ -33,6 +33,7 @@ import {
   getSortedKeyPermissions,
   isExtendWarranty,
   isSupportService,
+  SoftwareServicesName,
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
@@ -145,6 +146,7 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(
         clearAllActiveCardsSteps({
           ignoreSteps: [StepName.RoomSize],
+          clearProperty: true,
         })
       );
       setAudioExtensionsData(configurator)(store);
@@ -189,10 +191,21 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
       );
       if (position === "next") return;
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
+      if (key === StepName.ConferenceCamera) return;
       arr.forEach((keyCard) => {
         const card = getCardByKeyPermission(key as StepName, keyCard)(state);
         if (!card) return;
         const { attributeName } = card.dataThreekit;
+
+        if (
+          keyCard === SoftwareServicesName.SupportService ||
+          keyCard === SoftwareServicesName.ExtendedWarranty
+        )
+          app.changeSelectItemConfiguration(
+            attributeName,
+            "",
+            card.keyPermission
+          );
         app.removeItem(attributeName, card.keyPermission);
       });
     });
