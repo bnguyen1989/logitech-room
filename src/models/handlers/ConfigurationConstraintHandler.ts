@@ -13,7 +13,7 @@ import { Handler } from "./Handler";
 import { AttrSpecI, RuleName } from "./type";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { Application } from "../Application";
-import { ColorName, getSeparatorItemColor } from "../../utils/baseUtils";
+import { ColorName, getSeparatorItem } from "../../utils/baseUtils";
 import { CameraName, MeetingControllerName } from "../../utils/permissionUtils";
 import { Cache } from "../Cache";
 import { deepCopy } from "../../utils/objUtils";
@@ -1242,7 +1242,7 @@ export class ConfigurationConstraintHandler extends Handler {
         let isExist = optionRecommendation.includes(option.name);
         if (!isExist) {
           const name = this.getAssetNameWithoutColor(option.name);
-          const separatorColor = getSeparatorItemColor();
+          const separatorColor = getSeparatorItem();
           isExist = optionRecommendation.some((recoName) =>
             recoName.includes(`${name}${separatorColor}`)
           );
@@ -1482,13 +1482,13 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private getColorFromAssetName(name: string) {
-    const colorSeparator = getSeparatorItemColor();
+    const colorSeparator = getSeparatorItem();
     const color = name.split(colorSeparator)[1];
     return color;
   }
 
   private getAssetNameWithoutColor(name: string) {
-    const colorSeparator = getSeparatorItemColor();
+    const colorSeparator = getSeparatorItem();
     return name.split(colorSeparator)[0];
   }
 

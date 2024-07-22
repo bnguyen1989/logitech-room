@@ -60,7 +60,7 @@ import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColor
 import { changeColorItem, changeCountItem } from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
 import { getRoomAssetId } from "../../../../utils/threekitUtils";
-import { StepName } from "../../../../utils/baseUtils";
+import { getSeparatorItem, StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
@@ -573,9 +573,13 @@ function setSoftwareServicesData(configurator: Configurator) {
         value.values.forEach((item: ValueAttributeStateI) => {
           const asset = item as ValueAssetStateI;
           if (!asset.visible) return;
-          if (!threekitItems[baseCard.keyPermission]) {
+          const keyPermission = `${
+            baseCard.keyPermission
+          }${getSeparatorItem()}${asset.id}`;
+          if (!threekitItems[keyPermission]) {
             threekitItems = {
-              [baseCard.keyPermission]: asset,
+              ...threekitItems,
+              [keyPermission]: asset,
             };
           }
           const productName = getProductNameFromMetadata(asset.metadata);
