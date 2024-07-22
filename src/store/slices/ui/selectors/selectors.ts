@@ -2,7 +2,7 @@ import { RootState } from "../../../";
 import { Permission } from "../../../../models/permission/Permission";
 import { MountElement } from "../../../../models/permission/elements/mounts/MountElement";
 import { MetadataI } from "../../../../services/Threekit/type";
-import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { StepName, getSeparatorItem } from "../../../../utils/baseUtils";
 import { PlatformName } from "../../../../utils/permissionUtils";
 import { replaceArrValues } from "../../../../utils/strUtils";
 import { CardI, StepI } from "../type";
@@ -222,16 +222,28 @@ export const getAssetFromCard = (card: CardI) => (state: RootState) => {
   const stepName = card.key;
 
   const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+  if (!data) return threekitItems[keyPermission];
+  const separatorItem = getSeparatorItem();
+
+  if (card.select && data.property.select) {
+    const selectValue = data.property.select;
+    const nameAsset = `${keyPermission}${separatorItem}${selectValue}`;
+    const asset = threekitItems[nameAsset];
+    if (asset) return asset;
+  }
+
+  const keysThreekitItems = Object.keys(threekitItems);
   const color = data?.property.color;
-  if (!color) return threekitItems[keyPermission];
+  if (color) {
+    const nameAsset = `${keyPermission}${separatorItem}${color}`;
+    const asset = threekitItems[nameAsset];
+    if (asset) return asset;
 
-  const separatorItemColor = getSeparatorItemColor();
-  const nameAsset = `${keyPermission}${separatorItemColor}${color}`;
-  const asset = threekitItems[nameAsset];
-  if (asset) return asset;
-
-  const keys = Object.keys(threekitItems).filter((key) => key.includes(color));
-  return threekitItems[keys[0]];
+    const keys = keysThreekitItems.filter((key) => key.includes(color));
+    return threekitItems[keys[0]];
+  }
+  if (threekitItems[keyPermission]) return threekitItems[keyPermission];
+  return threekitItems[keysThreekitItems[0]];
 };
 
 export const getMetadataAssetFromCard = (card: CardI) => (state: RootState) => {
