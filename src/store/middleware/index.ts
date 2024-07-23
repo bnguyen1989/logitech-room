@@ -80,7 +80,11 @@ export const middleware: Middleware =
 
         state = store.getState();
         const stepData = getDataStepByName(stepName)(state);
-        const isExistCards = Object.keys(stepData.cards).length > 0;
+        const permission = getPermission(stepName)(state);
+        const elementsKeys = permission.getElements().map((item) => item.name);
+        const isExistCards = Object.keys(stepData.cards).some((item) =>
+          elementsKeys.includes(item)
+        );
         const positionNewStep =
           getPositionStepNameBasedOnActiveStep(stepName)(state);
         if (!isExistCards) {

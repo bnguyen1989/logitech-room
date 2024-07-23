@@ -4,7 +4,7 @@ import { ItemElement } from "../models/permission/elements/ItemElement";
 import { MountElement } from "../models/permission/elements/mounts/MountElement";
 import { ReferenceMountElement } from "../models/permission/elements/mounts/ReferenceMountElement";
 import { Step } from "../models/permission/step/Step";
-import { StepName, getSeparatorItemColor } from "./baseUtils";
+import { StepName, getSeparatorItem } from "./baseUtils";
 import { PlacementManager } from "../models/configurator/PlacementManager";
 import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
 import { RulleManagerMount } from "../models/configurator/RulleManagerMount";
@@ -444,6 +444,11 @@ export function createStepAudioExtensions() {
         AudioExtensionName.RallyMicPodMount,
         AudioExtensionName.RallyMicPodPendantMount,
       ])
+      .addDisabledColorDependence({
+        [CameraName.RallyPlus]: {
+          active: true,
+        },
+      })
   );
   const group2 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallyMicPodMount)
@@ -693,7 +698,7 @@ export const getPermissionNameByItemName = (
 
   const isColorItemNameMatching =
     (threekitItemName_local: string) => (permissionName: string) => {
-      const separatorItemColor = getSeparatorItemColor();
+      const separatorItemColor = getSeparatorItem();
 
       const isIncludeSeparator = threekitItemName_local
         .toLowerCase()

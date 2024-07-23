@@ -2,7 +2,7 @@ import s from "./App.module.scss";
 import { Configurator } from "./pages/configurator/Configurator";
 import { GetStarted } from "./pages/getStarted/GetStarted";
 import { Room } from "./pages/room/Room";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { RoomDetails } from "./pages/roomDetails/RoomDetails";
 import { Modals } from "./components/Modals/Modals";
 import { useEffect, useState } from "react";
@@ -24,6 +24,11 @@ function App() {
   const dispatch = useDispatch();
   const locale = useLocale();
   const [isRequest, setIsRequest] = useState(true);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     recalculateVh();
