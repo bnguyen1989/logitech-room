@@ -1,5 +1,5 @@
 import { RootState } from "../../..";
-import { StepName, getSeparatorItemColor } from "../../../../utils/baseUtils";
+import { StepName, getSeparatorItem } from "../../../../utils/baseUtils";
 import { getColorsData } from "../utils";
 import {
   getAllAssetFromCard,
@@ -23,7 +23,7 @@ export const getColorsFromCard =
     function getColors(items: string[]) {
       const colors: string[] = [];
 
-      const separatorItemColor = getSeparatorItemColor();
+      const separatorItemColor = getSeparatorItem();
 
       items.forEach((item) => {
         const parts = item.split(separatorItemColor);

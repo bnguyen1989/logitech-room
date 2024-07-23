@@ -201,15 +201,17 @@ const uiSlice = createSlice({
       state,
       action: PayloadAction<{
         ignoreSteps?: StepName[];
+        clearProperty?: boolean;
       }>
     ) => {
-      const { ignoreSteps = [] } = action.payload;
+      const { ignoreSteps = [], clearProperty } = action.payload;
       const selectedData = state.selectedData;
       Object.keys(selectedData).forEach((step) => {
         if (ignoreSteps.includes(step as StepName)) return;
         const stepData = selectedData[step];
         Object.keys(stepData).forEach((key) => {
           stepData[key].selected = [];
+          if (clearProperty) stepData[key].property = {};
         });
         selectedData[step] = stepData;
       });

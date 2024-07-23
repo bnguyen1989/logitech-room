@@ -1,4 +1,4 @@
-export const getSeparatorItemColor = () => {
+export const getSeparatorItem = () => {
   return " - ";
 };
 
