@@ -190,17 +190,6 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
       );
       if (position === "next") return;
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
-      if (
-        key === StepName.ConferenceCamera ||
-        key === StepName.SoftwareServices
-      )
-        return;
-      arr.forEach((keyCard) => {
-        const card = getCardByKeyPermission(key as StepName, keyCard)(state);
-        if (!card) return;
-        const { attributeName } = card.dataThreekit;
-        app.removeItem(attributeName, card.keyPermission);
-      });
     });
   };
 }
