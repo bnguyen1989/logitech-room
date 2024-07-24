@@ -8,7 +8,7 @@ import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { SectionI } from "./type";
 import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
-import { StepName } from "../../utils/baseUtils";
+import { getFormattingNameColor, StepName } from "../../utils/baseUtils";
 import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
 import {
   isBundleElement,
@@ -21,7 +21,6 @@ import {
   getDetailRoomLangPage,
 } from "../../store/slices/ui/selectors/selectoteLangPage";
 import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
-import { getFormattingNameColor } from "../../components/ColorSwitchers/ColorSwitcherItem/ColorSwitcherItem";
 import { PriceService } from "../../services/PriceService/PriceService";
 
 export const RoomDetails: React.FC = () => {
@@ -116,7 +115,8 @@ export const RoomDetails: React.FC = () => {
           const isTap = isTapElement(card.keyPermission);
 
           let dataProduct = await new PriceService().getDataProductBySku(sku);
-          const inStock = dataProduct.inStock ?? true;
+          // const inStock = dataProduct.inStock ?? true;
+          const inStock = true; // temp solution, description in Pull Request
 
           if (
             isContainBundle &&
