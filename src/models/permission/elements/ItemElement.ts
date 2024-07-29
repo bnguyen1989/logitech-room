@@ -1,23 +1,12 @@
-import { DependentElement, PropertyDependentElement } from "../type";
+import {
+  ConditionAttributesMountType,
+  DependentElement,
+  PropertyDependentElement,
+} from "../type";
 import { BaseElement } from "./BaseElement";
 import { Element } from "./Element";
 import { MountElement } from "./mounts/MountElement";
 
-// type nameAttributeType = string
-// type ConditionMountType = Record<nameAttributeType,number>
-// type ActionType = 'point'
-// type ActionMountType = Record<nameAttributeType,number>
-
-// type ruleMount = {
-//   condition: ConditionMountType;
-//   action: {
-//     point: string;
-//   };
-// };
-
-// interface Actio {
-//   point: string; // ідентифікатор або назва точки монтування
-// }
 export class ItemElement extends BaseElement implements Element<ItemElement> {
   private dependence: DependentElement = {};
   private dependenceMount: Array<MountElement> = [];
@@ -32,9 +21,24 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private disabledCounterDependence: PropertyDependentElement = {};
   private disabledColorDependence: PropertyDependentElement = {};
   private bundleMountsDependence: Record<string, Array<string>> = {};
+  public conditionAttributesMount: ConditionAttributesMountType = {};
 
   constructor(name: string) {
     super(name);
+  }
+
+  public addConditionAttributesMount(
+    conditionAttributes: ConditionAttributesMountType
+  ): ItemElement {
+    this.conditionAttributesMount = {
+      ...this.conditionAttributesMount,
+      ...conditionAttributes,
+    };
+    return this;
+  }
+
+  public getConditionAttributesMount(): ConditionAttributesMountType {
+    return this.conditionAttributesMount;
   }
 
   public addBundleMountsDependence(
@@ -132,8 +136,8 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
    * @description
    * key is name item element;
    * value is array of mount name or mount id
-   * 
-   * The method allows you to add secondary nameNodes 
+   *
+   * The method allows you to add secondary nameNodes
    */
   public addSecondaryMount(
     value: Record<string, Array<string | number>>

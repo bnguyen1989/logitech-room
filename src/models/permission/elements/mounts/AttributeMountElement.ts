@@ -8,6 +8,13 @@ export class AttributeMountElement extends MountElement {
     return this;
   }
 
+  public updateAttributes(
+    attributes: Record<string, any>
+  ): AttributeMountElement {
+    this.attributes = { ...this.attributes, ...attributes };
+    return this;
+  }
+
   public getAttributes(): Record<string, any> {
     return this.attributes;
   }
