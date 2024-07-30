@@ -2,6 +2,7 @@ import { Middleware } from "@reduxjs/toolkit";
 import {
   updateActiveCardsByPermissionData,
   updateAssetIdByKeyPermission,
+  updateColorForAutoChangeItems,
   updateDataCardByStepName,
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
@@ -138,6 +139,8 @@ export const middleware: Middleware =
         permission.processAddActiveElementByName(key);
 
         updateActiveCardsByPermissionData(permission)(store);
+
+        updateColorForAutoChangeItems(activeStep, key)(store);
 
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
