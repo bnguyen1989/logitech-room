@@ -54,6 +54,7 @@ import {
   getProductNameFromMetadata,
   getPropertySelectValueCardByKeyPermission,
   getSelectedCardsByStep,
+  getStepNameByKeyPermission,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -158,6 +159,38 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(changeAssetId(configurator.assetId));
     }
   );
+};
+
+export const updateColorForAutoChangeItems = (
+  stepName: StepName,
+  keyPermission: string
+) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const color = getPropertyColorCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
+    if (!color) return;
+    Object.entries(permission.getItemsNeedChange(keyPermission)).forEach(
+      ([key, arr]) => {
+        if (!arr.includes("color")) return;
+        const stepElement = getStepNameByKeyPermission(key)(state);
+        if (!stepElement) return;
+        store.dispatch(
+          setPropertyItem({
+            step: stepElement,
+            keyItemPermission: key,
+            property: {
+              color: color,
+            },
+          })
+        );
+      }
+    );
+  };
 };
 
 export const updateAssetIdByKeyPermission = (keyPermission: string) => {

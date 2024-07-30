@@ -16,7 +16,7 @@ export const getPropertyColorCardByKeyPermission =
 export const getColorsFromCard =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
 
-    const assetCard = getAllAssetFromCard(stepName, keyPermission)(state);;
+    const assetCard = getAllAssetFromCard(stepName, keyPermission)(state);
 
     const colorsData = getColorsData();
 
