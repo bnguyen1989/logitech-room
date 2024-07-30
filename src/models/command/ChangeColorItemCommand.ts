@@ -60,7 +60,13 @@ export class ChangeColorItemCommand extends ItemCommand {
     );
     if (!attribute) return "";
     const option = attribute.values.find(
-      (opt) => typeof opt === "object" && opt.name.includes(value)
+      (opt) =>
+        typeof opt === "object" &&
+        opt.name.includes(value) &&
+        opt.name.includes(this.keyItemPermission) &&
+        opt.tags?.includes(
+          `locale_${this.configurator.language.toLocaleLowerCase()}`
+        )
     ) as AssetI;
     return option?.id || "";
   }
