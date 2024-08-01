@@ -15,8 +15,9 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../../models/analytics/type";
-import { DirectionStep } from "../../../../utils/baseUtils";
+import { DirectionStep, StepName } from "../../../../utils/baseUtils";
 import { getNavigationLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
+import { getDataCamera } from "../../../../store/slices/configurator/selectors/selectors";
 
 declare const app: Application;
 
@@ -25,10 +26,19 @@ export const ActionsContent = () => {
   const dispatch = useDispatch();
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
   const isCanChangeStep = useAppSelector(getIsCanChangeStep);
+  const dataCamera = useAppSelector(getDataCamera);
 
   const langPage = useAppSelector(getNavigationLangPage);
 
   const handleNext = () => {
+    if (
+      dataCamera &&
+      dataCamera.position &&
+      nextStep.key === StepName.ConferenceCamera
+    ) {
+      app.resetCameraEvent(dataCamera);
+    }
+
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,
       action: EventActionName.step_complete,

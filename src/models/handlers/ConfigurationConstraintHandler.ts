@@ -768,7 +768,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const arrAttrName = [
       AttributeName.RoomSwytch,
       AttributeName.RoomExtend,
-      AttributeName.RoomUSBAtoHDMICable,
+      AttributeName.RoomMeetUp2ActiveCable,
     ];
 
     const changeAttr = arrAttrName.find((attrName) =>
@@ -1194,6 +1194,8 @@ export class ConfigurationConstraintHandler extends Handler {
         const isContainValue = "value" in option;
         const isContainTags = "tags" in option;
         const isContainId = "id" in option;
+
+        if (isContainTags && !option.tags.includes(localeTagStr)) return;
 
         if (
           ((isContainName && optionNames.includes(option.name)) ||

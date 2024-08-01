@@ -64,7 +64,10 @@ import { getSeparatorItem, StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
-import { deleteNodesByCards } from "../../configurator/handlers/handlers";
+import {
+  deleteNodesByCards,
+  removeElement,
+} from "../../configurator/handlers/handlers";
 
 declare const app: Application;
 
@@ -310,6 +313,15 @@ function updateDataByConfiguration(
         );
       }
     });
+
+    const selectedCardsByStep = getSelectedCardsByStep(stepName)(state);
+    selectedCardsByStep.forEach((cardItem) => {
+      const isExist = activeKeys.some((key) => key === cardItem.keyPermission);
+      if (!isExist) {
+        removeElement(cardItem, stepName)(store);
+      }
+    });
+
     store.dispatch(
       setActiveCardsForStep({
         step: stepName,
