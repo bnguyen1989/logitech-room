@@ -1195,7 +1195,10 @@ export class ConfigurationConstraintHandler extends Handler {
         const isContainTags = "tags" in option;
         const isContainId = "id" in option;
 
-        if (isContainTags && !option.tags.includes(localeTagStr)) return;
+        if (isContainTags && !option.tags.includes(localeTagStr)) {
+          option.visible = false;
+          return;
+        }
 
         if (
           ((isContainName && optionNames.includes(option.name)) ||
