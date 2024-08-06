@@ -584,8 +584,11 @@ export function changeColorElement(
           Object.entries(autoChangeItems).forEach(([key, arr]) => {
             if (!arr.includes("color") || key === defaultMount.name) return;
 
+            const stepNameItem = getStepNameByKeyPermission(key)(state);
+            const stepItem = permission.getStepByName(stepNameItem);
+
             const isSelectElement = getIsSelectedCardByKeyPermission(
-              stepName,
+              stepNameItem,
               key
             )(state);
             if (!isSelectElement) {
@@ -593,7 +596,7 @@ export function changeColorElement(
               if (!(dependentDefaultMount instanceof MountElement)) return;
 
               const cardDefaultElement = getCardByKeyPermission(
-                stepName,
+                stepNameItem,
                 defaultMount.name
               )(state);
               const cardDefaultAssetElement =
@@ -608,12 +611,18 @@ export function changeColorElement(
               )(store);
               return;
             }
-            const elementMount = step.getElementByName(key);
+            const elementMount = stepItem.getElementByName(key);
+            if (elementMount instanceof ItemElement) {
+              return changeColorElement(key, stepNameItem)(store);
+            }
             if (!(elementMount instanceof MountElement)) return;
             const elementDependentMount = elementMount.getDependentMount();
             if (!(elementDependentMount instanceof MountElement)) return;
 
-            const cardElement = getCardByKeyPermission(stepName, key)(state);
+            const cardElement = getCardByKeyPermission(
+              stepNameItem,
+              key
+            )(state);
             const cardAssetElement = getAssetFromCard(cardElement)(state);
 
             setElementByNameNode(
