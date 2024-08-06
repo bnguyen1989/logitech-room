@@ -227,7 +227,7 @@ export function createStepConferenceCamera() {
         .setDefaultMount(
           new MountElement(
             CameraName.RallyBarHuddle,
-            PlacementManager.getNameNodeForCamera("TV", 1, 1)
+            PlacementManager.getNameNodeCommodeForCamera("Huddle")
           )
         )
         .addBundleMount(
