@@ -31,14 +31,6 @@ export const ActionsContent = () => {
   const langPage = useAppSelector(getNavigationLangPage);
 
   const handleNext = () => {
-    if (
-      dataCamera &&
-      dataCamera.position &&
-      nextStep.key === StepName.ConferenceCamera
-    ) {
-      app.resetCameraEvent(dataCamera);
-    }
-
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,
       action: EventActionName.step_complete,
@@ -48,6 +40,14 @@ export const ActionsContent = () => {
     if (!nextStep) {
       dispatch(setFinishModal({ isOpen: true }));
       return;
+    }
+
+    if (
+      dataCamera &&
+      dataCamera?.position &&
+      nextStep.key === StepName.ConferenceCamera
+    ) {
+      app.resetCameraEvent(dataCamera);
     }
 
     app.changeStep(nextStep.key, DirectionStep.Next);
