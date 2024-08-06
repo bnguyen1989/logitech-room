@@ -9,7 +9,7 @@ export const useCache = () => {
 
 
   const [cache, setCache] = useState(true);
-  const [keyCache, setKeyCache] = useState<string>("v072");
+  const [keyCache, setKeyCache] = useState<string>("v075");
 
   useEffect(() => {
     if (cacheParam) {
