@@ -325,9 +325,15 @@ export class ConfigurationConstraintHandler extends Handler {
     );
     if (!isChangeRallyPlus) return;
 
-    this.configurator.setConfiguration({
-      [AttributeName.QtyMic]: minMicPod.toString(),
-    });
+    const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);
+    if (typeof qtyMicPod !== "string") return;
+
+    const countMicPod = parseInt(qtyMicPod);
+    if (countMicPod < minMicPod) {
+      this.configurator.setConfiguration({
+        [AttributeName.QtyMic]: minMicPod.toString(),
+      });
+    }
   }
 
   private rule_rallyBar_TapIp_bundle() {
