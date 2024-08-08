@@ -52,8 +52,8 @@ export class RoomService {
   private getHeaderCSV() {
     return [
       { id: ColumnNameCSVRoom.ROOM_NAME, title: "RoomName" },
-      { id: ColumnNameCSVRoom.CATEGORY, title: "ProductName" },
-      { id: ColumnNameCSVRoom.PRODUCT_NAME, title: "ProductCategory" },
+      { id: ColumnNameCSVRoom.CATEGORY, title: "ProductCategory" },
+      { id: ColumnNameCSVRoom.PRODUCT_NAME, title: "ProductName" },
       {
         id: ColumnNameCSVRoom.PART_NUMBER,
         title: "PartNumber",
