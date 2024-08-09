@@ -158,9 +158,18 @@ export const RoomDetails: React.FC = () => {
             setTotalAmount(formatPrice(total));
 
             const amount = formatPrice(priceNumber);
-            const partNumber = `${getFormattingNameColor(color)(langCard)}${
-              color ? " : " : ""
-            }${isBundleCard ? sku + "*" : sku}`;
+            let formatColor = getFormattingNameColor(color)(langCard);
+            if (formatColor) {
+              formatColor += " : ";
+            }
+
+            const isDisplayColor =
+              !!formatColor &&
+              Object.values(card.dataThreekit.threekitItems).length > 1;
+
+            const partNumber = `${isDisplayColor ? formatColor : ""}${
+              isBundleCard ? sku + "*" : sku
+            }`;
 
             itemSection = {
               ...itemSection,
