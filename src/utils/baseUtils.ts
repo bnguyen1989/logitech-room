@@ -51,8 +51,9 @@ export const getArrayStepNames = () => {
 
 export const getFormattingNameColor =
   (colorValue: any) => (langCard: CardPageI) => {
-    if (colorValue === ColorName.Graphite) return langCard.Colors.Graphite;
-    if (colorValue === ColorName.White) return langCard.Colors.White;
-    if (colorValue?.length > 0) return colorValue;
-    return "";
+    let res: string | undefined;
+    if (colorValue === ColorName.Graphite) res = langCard.Colors.Graphite;
+    if (colorValue === ColorName.White) res = langCard.Colors.White;
+
+    return res;
   };
