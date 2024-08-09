@@ -159,7 +159,7 @@ export function createStepConferenceCamera() {
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
-          PlacementManager.getNameNodeForCamera("TV", 2)
+          PlacementManager.getNameNodeForCamera("TV", 1, 2)
         )
         // .setDependentMount(
         //   new MountElement(
@@ -230,6 +230,13 @@ export function createStepConferenceCamera() {
             PlacementManager.getNameNodeCommodeForCamera("Huddle")
           )
         )
+        .addDependenceMount(
+          new MountElement(
+            CameraName.TVMountForVideoBars,
+            PlacementManager.getNameNodeForCamera("TV", 1, 1)
+          )
+        )
+        .setAccessoryItems([CameraName.TVMountForVideoBars])
         .addBundleMount(
           new MountElement(
             TVName.LogitechTVOne,

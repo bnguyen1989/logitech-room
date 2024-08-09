@@ -68,27 +68,56 @@ export class Step {
       return res;
     }
 
-    const elementsMount = elements
-      .map((element) => {
+    const elementsMount = elements.reduce<Record<string, MountElement[]>>(
+      (acc, element) => {
         const dependenceMounts = element.getDependenceMount();
         const defaultMount = element.getDefaultMount();
-        if (!defaultMount) return dependenceMounts;
-        if (defaultMount instanceof CountableMountElement)
-          return dependenceMounts;
-        if (defaultMount instanceof ReferenceMountElement)
-          return dependenceMounts;
+        if (
+          !defaultMount ||
+          defaultMount instanceof CountableMountElement ||
+          defaultMount instanceof ReferenceMountElement
+        )
+          return {
+            ...acc,
+            [element.name]: dependenceMounts,
+          };
 
         const isExistDefaultMount = dependenceMounts.some(
           (mount) => mount.name === defaultMount.name
         );
-        if (isExistDefaultMount) return dependenceMounts;
+        if (!isExistDefaultMount) {
+          dependenceMounts.push(defaultMount);
+        }
 
-        dependenceMounts.push(defaultMount);
-        return dependenceMounts;
-      })
-      .flat();
+        return {
+          ...acc,
+          [element.name]: dependenceMounts,
+        };
+      },
+      {}
+    );
 
-    return elementsMount.find((element) => element.name === name);
+    const includeMounts = Object.entries(elementsMount).reduce<
+      Record<string, MountElement>
+    >((acc, [key, value]) => {
+      const mountElement = value.find((mount) => mount.name === name);
+      if (mountElement) {
+        return {
+          ...acc,
+          [key]: mountElement,
+        };
+      }
+      return acc;
+    }, {});
+
+    const keys = Object.keys(includeMounts);
+    const activeKey = keys.find((key) =>
+      this.getActiveElements().some((activeItem) => activeItem.name === key)
+    );
+
+    if (activeKey) return includeMounts[activeKey];
+
+    return includeMounts[keys[0]];
   }
 
   public addActiveElementByName(itemName: string): void {
@@ -103,7 +132,7 @@ export class Step {
   public getActiveItemElementByMountName(
     name: string
   ): ItemElement | undefined {
-    const elements = this._activeElements;
+    const elements = this.getActiveElements();
     const res = elements.find((element) => {
       return (
         element instanceof ItemElement &&
