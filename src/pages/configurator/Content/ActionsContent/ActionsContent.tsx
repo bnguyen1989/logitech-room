@@ -15,8 +15,9 @@ import {
   EventActionName,
   EventCategoryName,
 } from "../../../../models/analytics/type";
-import { DirectionStep } from "../../../../utils/baseUtils";
+import { DirectionStep, StepName } from "../../../../utils/baseUtils";
 import { getNavigationLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
+import { getDataCamera } from "../../../../store/slices/configurator/selectors/selectors";
 
 declare const app: Application;
 
@@ -25,6 +26,7 @@ export const ActionsContent = () => {
   const dispatch = useDispatch();
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
   const isCanChangeStep = useAppSelector(getIsCanChangeStep);
+  const dataCamera = useAppSelector(getDataCamera);
 
   const langPage = useAppSelector(getNavigationLangPage);
 
@@ -38,6 +40,14 @@ export const ActionsContent = () => {
     if (!nextStep) {
       dispatch(setFinishModal({ isOpen: true }));
       return;
+    }
+
+    if (
+      dataCamera &&
+      dataCamera?.position &&
+      nextStep.key === StepName.ConferenceCamera
+    ) {
+      app.resetCameraEvent(dataCamera);
     }
 
     app.changeStep(nextStep.key, DirectionStep.Next);

@@ -1,3 +1,22 @@
-
-
-export type LocaleT = "en-US" | "de-DE" | "es-ES" | "es-MX" | "en-GB";
+export type LocaleT =
+  | "en-US"
+  | "de-DE"
+  | "es-ES"
+  | "es-MX"
+  | "en-GB"
+  | "fr-CA"
+  | "fr-FR"
+  | "fr-CH"
+  | "fr-BE"
+  | "it-IT"
+  | "it-CH"
+  | "ja-JP"
+  | "nl-NL"
+  | "nl-BE"
+  | "pt-BR"
+  | "zh-CN"
+  | "en-CA"
+  | "en-IN"
+  | "en-AU"
+  | "en-EU"
+  | "en-MY";
