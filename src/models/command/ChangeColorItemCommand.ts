@@ -1,6 +1,8 @@
 import { AssetI } from "../../services/Threekit/type";
+import { AudioExtensionName, CameraName } from "../../utils/permissionUtils";
 import { isAssetType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
+import { AttributeName } from "../configurator/type";
 import { ItemCommand } from "./ItemCommand";
 
 export class ChangeColorItemCommand extends ItemCommand {
@@ -50,17 +52,47 @@ export class ChangeColorItemCommand extends ItemCommand {
       });
       this.changeProperties.push(mount);
     });
+
+    this.changeDependedItemsBasedOnRallyPlus();
     return true;
   }
 
-  private getAssetIdByValue(attrName: string, value: string): string {
+  private changeDependedItemsBasedOnRallyPlus() {
+    const isSelectedMicPod = this.isSelectedAttr(AttributeName.RoomMic);
+    if (isSelectedMicPod && this.keyItemPermission === CameraName.RallyPlus) {
+      const asset = this.getAssetIdByValue(
+        AttributeName.RoomMic,
+        this.value,
+        AudioExtensionName.RallyMicPod
+      );
+      if (!asset.length) return;
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMic]: {
+          assetId: asset,
+        },
+      });
+      this.changeProperties.push(AttributeName.RoomMic);
+    }
+  }
+
+  private getAssetIdByValue(
+    attrName: string,
+    value: string,
+    keyItemPermission = this.keyItemPermission
+  ): string {
     const attributes = this.configurator.getAttributes();
     const attribute = attributes.find(
       (attr) => attr.name === attrName && isAssetType(attr.type)
     );
     if (!attribute) return "";
     const option = attribute.values.find(
-      (opt) => typeof opt === "object" && opt.name.includes(value)
+      (opt) =>
+        typeof opt === "object" &&
+        opt.name.includes(value) &&
+        opt.name.includes(keyItemPermission) &&
+        opt.tags?.includes(
+          `locale_${this.configurator.language.toLocaleLowerCase()}`
+        )
     ) as AssetI;
     return option?.id || "";
   }

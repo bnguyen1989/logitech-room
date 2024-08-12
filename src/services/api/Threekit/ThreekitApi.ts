@@ -33,10 +33,13 @@ export class ThreekitApi extends BaseApi {
         Accept: "application/json",
       },
       params: {
+        all: true,
+        branch: "main",
         bearer_token: this.PUBLIC_TOKEN,
+        orgId: this.ORG_ID,
         tags: tagId,
+        type: "item",
       },
-      baseURL: `https://${ConfigData.host}/api/v2`,
     });
   }
 

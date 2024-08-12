@@ -10,12 +10,11 @@ import {
   getColorsFromCard,
   getPropertyColorCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectorsColorsCard";
-import { ColorName, StepName } from "../../../utils/baseUtils";
+import { getFormattingNameColor, StepName } from "../../../utils/baseUtils";
 import { useEffect } from "react";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
-import { CardPageI } from "../../../types/textTypePage";
 
 declare const app: Application;
 
@@ -26,12 +25,6 @@ interface PropsI {
   activeStepProp?: StepName;
   dataAnalytics?: string;
 }
-
-export const getFormattingNameColor = (colorValue: any) => (langCard: CardPageI) => {
-  if (colorValue === ColorName.Graphite) return langCard.Colors.Graphite;
-  if (colorValue === ColorName.White) return langCard.Colors.White;
-  return "";
-};
 
 export const ColorSwitcherItem: React.FC<PropsI> = (props) => {
   const { keyItemPermission, disabled, activeStepProp, hidden, dataAnalytics } =

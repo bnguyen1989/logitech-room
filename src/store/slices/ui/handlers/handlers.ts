@@ -54,6 +54,7 @@ import {
   getProductNameFromMetadata,
   getPropertySelectValueCardByKeyPermission,
   getSelectedCardsByStep,
+  getStepNameByKeyPermission,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import { changeColorItem, changeCountItem } from "../actions/actions";
@@ -63,7 +64,10 @@ import { getSeparatorItem, StepName } from "../../../../utils/baseUtils";
 import { EventDataAnalyticsI } from "../../../../models/analytics/type";
 import { getDataEvent } from "../selectors/selectorsAnalytics";
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
-import { deleteNodesByCards } from "../../configurator/handlers/handlers";
+import {
+  deleteNodesByCards,
+  removeElement,
+} from "../../configurator/handlers/handlers";
 
 declare const app: Application;
 
@@ -160,6 +164,38 @@ export const getUiHandlers = (store: Store) => {
   );
 };
 
+export const updateColorForAutoChangeItems = (
+  stepName: StepName,
+  keyPermission: string
+) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const color = getPropertyColorCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
+    if (!color) return;
+    Object.entries(permission.getItemsNeedChange(keyPermission)).forEach(
+      ([key, arr]) => {
+        if (!arr.includes("color")) return;
+        const stepElement = getStepNameByKeyPermission(key)(state);
+        if (!stepElement) return;
+        store.dispatch(
+          setPropertyItem({
+            step: stepElement,
+            keyItemPermission: key,
+            property: {
+              color: color,
+            },
+          })
+        );
+      }
+    );
+  };
+};
+
 export const updateAssetIdByKeyPermission = (keyPermission: string) => {
   return (store: Store) => {
     const state = store.getState();
@@ -190,17 +226,6 @@ export function updateActiveCardsByPermissionData(permission: Permission) {
       );
       if (position === "next") return;
       store.dispatch(removeActiveCards({ step: key as StepName, keys: arr }));
-      if (
-        key === StepName.ConferenceCamera ||
-        key === StepName.SoftwareServices
-      )
-        return;
-      arr.forEach((keyCard) => {
-        const card = getCardByKeyPermission(key as StepName, keyCard)(state);
-        if (!card) return;
-        const { attributeName } = card.dataThreekit;
-        app.removeItem(attributeName, card.keyPermission);
-      });
     });
   };
 }
@@ -288,6 +313,15 @@ function updateDataByConfiguration(
         );
       }
     });
+
+    const selectedCardsByStep = getSelectedCardsByStep(stepName)(state);
+    selectedCardsByStep.forEach((cardItem) => {
+      const isExist = activeKeys.some((key) => key === cardItem.keyPermission);
+      if (!isExist) {
+        removeElement(cardItem, stepName)(store);
+      }
+    });
+
     store.dispatch(
       setActiveCardsForStep({
         step: stepName,

@@ -4,6 +4,8 @@ import { SelectProductModal } from "../../../../models/modals/SelectProductModal
 import { getIsShowProductModal } from "../selectors/selectors";
 import { setSelectProductModal } from "../Modals.slice";
 import { clearAllNodes } from "../../configurator/handlers/handlers";
+import { clearAllActiveCardsSteps } from "../../ui/Ui.slice";
+import { StepName } from "../../../../utils/baseUtils";
 
 export const getModalsHandlers = (store: Store) => {
   app.eventEmitter.on("showModal", (data: Modal) => {
@@ -24,6 +26,17 @@ export const getModalsHandlers = (store: Store) => {
         );
 
         app.eventEmitter.on("SelectProductModal/edit", () => {
+          store.dispatch(
+            clearAllActiveCardsSteps({
+              ignoreSteps: [
+                StepName.RoomSize,
+                StepName.Platform,
+                StepName.Services,
+                StepName.ConferenceCamera,
+              ],
+              clearProperty: true,
+            })
+          );
           data.editCallback();
           clearAllNodes()(store);
         });

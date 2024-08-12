@@ -1,3 +1,5 @@
+import { CardPageI } from "../types/textTypePage";
+
 export const getSeparatorItem = () => {
   return " - ";
 };
@@ -46,3 +48,12 @@ export const getArrayStepNames = () => {
     StepName.SoftwareServices,
   ];
 };
+
+export const getFormattingNameColor =
+  (colorValue: any) => (langCard: CardPageI) => {
+    let res: string | undefined;
+    if (colorValue === ColorName.Graphite) res = langCard.Colors.Graphite;
+    if (colorValue === ColorName.White) res = langCard.Colors.White;
+
+    return res;
+  };

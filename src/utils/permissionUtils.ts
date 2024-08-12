@@ -159,7 +159,7 @@ export function createStepConferenceCamera() {
       .addDependenceMount(
         new MountElement(
           CameraName.TVMountForVideoBars,
-          PlacementManager.getNameNodeForCamera("TV", 2)
+          PlacementManager.getNameNodeForCamera("TV", 1, 2)
         )
         // .setDependentMount(
         //   new MountElement(
@@ -227,9 +227,16 @@ export function createStepConferenceCamera() {
         .setDefaultMount(
           new MountElement(
             CameraName.RallyBarHuddle,
+            PlacementManager.getNameNodeCommodeForCamera("Huddle")
+          )
+        )
+        .addDependenceMount(
+          new MountElement(
+            CameraName.TVMountForVideoBars,
             PlacementManager.getNameNodeForCamera("TV", 1, 1)
           )
         )
+        .setAccessoryItems([CameraName.TVMountForVideoBars])
         .addBundleMount(
           new MountElement(
             TVName.LogitechTVOne,
@@ -247,6 +254,7 @@ export function createStepConferenceCamera() {
           ).setAttributes({
             Position: true,
             Alternative_rally_plus: false,
+            display: false,
           })
         )
         .addDependenceMount(
@@ -256,8 +264,17 @@ export function createStepConferenceCamera() {
           ).setAttributes({
             Position: false,
             Alternative_rally_plus: true,
+            display: false,
           })
         )
+        .addConditionAttributesMount({
+          display: {
+            [CameraName.RallyMountingKit]: {
+              nameNodes: [PlatformName.BYOD],
+              value: true,
+            },
+          },
+        })
         .addAutoChangeItems({
           [AudioExtensionName.RallyMicPod]: ["color"],
           [AudioExtensionName.RallyMicPodMount]: ["color"],
