@@ -275,6 +275,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.tapIp_scribe)) {
       this.rule_tapIp_scribe();
     }
+
+
+    //Rules that are not in the lists in DataTable
+    this.rule_tap_tapIp();
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -792,6 +796,35 @@ export class ConfigurationConstraintHandler extends Handler {
         },
       });
       CACHE.set(RuleName.micPod_CATCoupler, true);
+    }
+  }
+
+  /**
+   * 
+   * @description: this rule provides mutual exclusion for Tap/TapIp
+   */
+  private rule_tap_tapIp() {
+    const arrAttrName = [
+      AttributeName.RoomMeetingTap,
+      AttributeName.RoomMeetingTapIp,
+    ];
+
+    const changeAttr = arrAttrName.find((attrName) =>
+      this.triggeredByAttr.includes(attrName)
+    );
+    if (!changeAttr) return;
+
+    const selectedAttr = this.getSelectedValue(changeAttr);
+    const isSelectAttr = typeof selectedAttr === "object";
+    if (!isSelectAttr) return;
+
+    for (const attrName of arrAttrName) {
+      if (attrName === changeAttr) continue;
+      this.configurator.setConfiguration({
+        [attrName]: {
+          assetId: "",
+        },
+      });
     }
   }
 
