@@ -88,7 +88,11 @@ describe("CountableMountElement", () => {
       mountElement.setMin(0);
       mountElement.setMax(5);
       mountElement.setActiveIndex(3);
-      expect(mountElement.getAvailableNameNode()).toEqual(["node_1", "node_2", "node_3"]);
+      expect(mountElement.getAvailableNameNode()).toEqual([
+        "node_1",
+        "node_2",
+        "node_3",
+      ]);
     });
 
     test("Get Correct Available Name Node with Unavailable Index Added", () => {
@@ -116,6 +120,21 @@ describe("CountableMountElement", () => {
         "node_2",
         "node_5",
         "node_6",
+      ]);
+    });
+
+    test("Get Correct Available Name Node with Multiple Secondary Indexes Added", () => {
+      const mountElement = new CountableMountElement("name", "node");
+      mountElement.setMin(2);
+      mountElement.setMax(7);
+      mountElement.setActiveIndex(5);
+      mountElement.setSecondaryIndex([1, 2]);
+      expect(mountElement.getAvailableNameNode()).toEqual([
+        "node_3",
+        "node_4",
+        "node_5",
+        "node_1",
+        "node_2",
       ]);
     });
   });
