@@ -1,7 +1,7 @@
 .container_screen {
   width: 100vw;
   height: 100%;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -11,7 +11,7 @@
 
   .container_modal_center {
     background: #fff;
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -21,7 +21,7 @@
 
   .container_modal_right {
     background: #fff;
-    position: absolute;
+    position: fixed;
     right: 0%;
     top: 0%;
     bottom: 0;
