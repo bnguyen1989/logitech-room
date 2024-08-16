@@ -197,7 +197,7 @@ export const getSubTitleStepByStepName =
     );
 
     if ("subtitle" in langStepData) return langStepData.subtitle;
- 
+
     if (platformCard && platformCard.keyPermission === PlatformName.BYOD) {
       if ("subtitle1" in langStepData && "subtitleBYOD" in langStepData) {
         return `${langStepData.subtitle1} ${langStepData.subtitleBYOD}`;
@@ -240,6 +240,7 @@ export const getPrepareCardTitleLangByKeyPermission =
         return services.Cards[keyPermission].title;
       }
 
+      case SoftwareServicesName.EssentialServicePlan:
       case SoftwareServicesName.SupportService:
       case SoftwareServicesName.ExtendedWarranty:
       case SoftwareServicesName.LogitechSync: {
