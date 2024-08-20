@@ -516,6 +516,9 @@ export function createStepAudioExtensions() {
       .addAutoChangeItems({
         [AudioExtensionName.RallyMicPodMount]: ["count"],
       })
+      .addReservationMount({
+        [CameraName.LogitechSight]: [3],
+      })
   );
   const group4 = new GroupElement().addElement(
     new ItemElement(AudioExtensionName.RallySpeaker)
