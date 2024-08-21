@@ -27,7 +27,7 @@ export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
-  const [totalAmount, setTotalAmount] = useState<string>("");
+  const [formatTotalAmount, setFormatTotalAmount] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
   const langPage = useAppSelector(getDetailRoomLangPage);
@@ -76,7 +76,6 @@ export const RoomDetails: React.FC = () => {
         };
 
         const formatPrice = getFormatPrice(locale.currency);
-        let total = 0;
         const dataSections: Array<SectionI> = [];
 
         const getLabelValue = (selectValue?: string) => {
@@ -94,107 +93,114 @@ export const RoomDetails: React.FC = () => {
         const isContainBundle = !!bundleElement;
         let isBundleTapIp = false;
 
-        for (const item of room.cart) {
-          const {
-            data,
-            color,
-            count,
-            title,
-            sku: defaultSku,
-            description,
-            selectValue,
-          } = item.metadata;
-          let sku = defaultSku;
-          const card = JSON.parse(data) as CardI;
+        return (async () => {
+          let totalAmount = 0;
+          for (const item of room.cart) {
+            const {
+              data,
+              color,
+              count,
+              title,
+              sku: defaultSku,
+              description,
+              selectValue,
+            } = item.metadata;
+            let sku = defaultSku;
+            const card = JSON.parse(data) as CardI;
 
-          const isBundleCard = isBundleElement(card.keyPermission);
-          if (isBundleCard) continue;
+            const isBundleCard = isBundleElement(card.keyPermission);
 
-          let keySection: any = card.key;
-          const isCamera = isCameraElement(card.keyPermission);
-          const isTap = isTapElement(card.keyPermission);
+            let keySection: any = card.key;
+            const isCamera = isCameraElement(card.keyPermission);
+            const isTap = isTapElement(card.keyPermission);
 
-          let dataProduct = await new PriceService().getDataProductBySku(sku);
-          // const inStock = dataProduct.inStock ?? true;
-          const inStock = true; // temp solution, description in Pull Request
+            let dataProduct = await new PriceService().getDataProductBySku(sku);
+            // const inStock = dataProduct.inStock ?? true;
+            const inStock = true; // temp solution, description in Pull Request
 
-          if (
-            isContainBundle &&
-            (isCamera || (isTap && parseInt(count) === 1 && !isBundleTapIp))
-          ) {
-            if (isTap) {
-              isBundleTapIp = true;
-            }
-            keySection = "Room Solution Bundles";
-            sku = bundleElement.metadata.sku;
-            dataProduct = await new PriceService().getDataProductBySku(sku);
-          }
-
-          const titleSection = getTitleSectionOrderByStepName(keySection);
-          const sectionId = dataSections.findIndex(
-            (section) => section.title === titleSection
-          );
-
-          let itemSection: SectionI = {
-            title: titleSection,
-            data: [
-              {
-                title: title,
-                subtitle: description ?? "",
-                image: card.image ?? "",
-                selectValue: selectValue,
-                labelValue: getLabelValue(selectValue),
-                inStock,
-              },
-            ],
-            typeSection: keySection,
-          };
-
-          if (card.key !== StepName.SoftwareServices) {
-            const priceNumber = dataProduct.price ?? 0.0;
-            const strikeThroughPrice = dataProduct.strikeThroughPrice;
-            const amountNumber = priceNumber * parseInt(count);
-            total += amountNumber;
-            setTotalAmount(formatPrice(total));
-
-            const amount = formatPrice(priceNumber);
-            let formatColor = getFormattingNameColor(color)(langCard);
-            if (formatColor) {
-              formatColor += " : ";
+            let cardFromBundle = false;
+            if (
+              isContainBundle &&
+              (isCamera || (isTap && parseInt(count) === 1 && !isBundleTapIp))
+            ) {
+              if (isTap) {
+                isBundleTapIp = true;
+              }
+              keySection = "Room Solution Bundles";
+              sku = bundleElement.metadata.sku;
+              dataProduct = await new PriceService().getDataProductBySku(sku);
+              cardFromBundle = true;
             }
 
-            const isDisplayColor =
-              !!formatColor &&
-              Object.values(card.dataThreekit.threekitItems).length > 1;
+            const titleSection = getTitleSectionOrderByStepName(keySection);
+            const sectionId = dataSections.findIndex(
+              (section) => section.title === titleSection
+            );
 
-            const partNumber = `${isDisplayColor ? formatColor : ""}${
-              isBundleCard ? sku + "*" : sku
-            }`;
-
-            itemSection = {
-              ...itemSection,
+            let itemSection: SectionI = {
+              title: titleSection,
               data: [
                 {
-                  ...itemSection.data[0],
-                  partNumber,
-                  count: count,
-                  amount,
-                  strikeThroughPrice: strikeThroughPrice
-                    ? formatPrice(strikeThroughPrice)
-                    : undefined,
+                  title: title,
+                  subtitle: description ?? "",
+                  image: card.image ?? "",
+                  selectValue: selectValue,
+                  labelValue: getLabelValue(selectValue),
+                  inStock,
                 },
               ],
+              typeSection: keySection,
             };
-          }
 
-          if (sectionId === -1) {
-            dataSections.push(itemSection);
-          } else {
-            dataSections[sectionId].data.push(itemSection.data[0]);
-          }
-        }
+            if (card.key !== StepName.SoftwareServices) {
+              const priceNumber = dataProduct.price ?? 0.0;
+              const strikeThroughPrice = dataProduct.strikeThroughPrice;
+              const amountNumber = priceNumber * parseInt(count);
+              if (!cardFromBundle) totalAmount += amountNumber;
 
-        setSections(dataSections);
+              const amount = formatPrice(priceNumber);
+              let formatColor = getFormattingNameColor(color)(langCard);
+              if (formatColor) {
+                formatColor += " : ";
+              }
+
+              const isDisplayColor =
+                !!formatColor &&
+                Object.values(card.dataThreekit.threekitItems).length > 1;
+
+              const partNumber = `${isDisplayColor ? formatColor : ""}${
+                isBundleCard ? sku + "*" : sku
+              }`;
+
+              itemSection = {
+                ...itemSection,
+                data: [
+                  {
+                    ...itemSection.data[0],
+                    partNumber,
+                    count: count,
+                    amount,
+                    strikeThroughPrice: strikeThroughPrice
+                      ? formatPrice(strikeThroughPrice)
+                      : undefined,
+                  },
+                ],
+              };
+            }
+
+            if (isBundleCard) continue;
+
+            if (sectionId === -1) {
+              dataSections.push(itemSection);
+            } else {
+              dataSections[sectionId].data.push(itemSection.data[0]);
+            }
+          }
+          return totalAmount;
+        })().then((totalAmount) => {
+          setSections(dataSections);
+          setFormatTotalAmount(formatPrice(totalAmount));
+        });
       })
       .finally(() => {
         setIsLoaded(false);
@@ -207,7 +213,7 @@ export const RoomDetails: React.FC = () => {
       <div className={s.wrapper}>
         <Header title={nameRoom} />
         <Content sections={sections} />
-        <Footer totalAmount={totalAmount} />
+        <Footer totalAmount={formatTotalAmount} />
       </div>
       {isLoaded && (
         <div className={s.loader}>
