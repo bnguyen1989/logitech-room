@@ -22,12 +22,15 @@ import {
 } from "../../store/slices/ui/selectors/selectoteLangPage";
 import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
 import { PriceService } from "../../services/PriceService/PriceService";
+import { isShowPriceByLocale } from "../../utils/productUtils";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
   const [sections, setSections] = useState<Array<SectionI>>([]);
   const [nameRoom, setNameRoom] = useState<string>("");
-  const [formatTotalAmount, setFormatTotalAmount] = useState<string>("");
+  const [formatTotalAmount, setFormatTotalAmount] = useState<
+    string | undefined
+  >();
   const [images, setImages] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(true);
   const langPage = useAppSelector(getDetailRoomLangPage);
@@ -76,6 +79,7 @@ export const RoomDetails: React.FC = () => {
         };
 
         const formatPrice = getFormatPrice(locale.currency);
+        const isShowPrice = isShowPriceByLocale(locale.currencyLocale);
         const dataSections: Array<SectionI> = [];
 
         const getLabelValue = (selectValue?: string) => {
@@ -179,7 +183,7 @@ export const RoomDetails: React.FC = () => {
                     ...itemSection.data[0],
                     partNumber,
                     count: count,
-                    amount,
+                    amount: isShowPrice ? amount : undefined,
                     strikeThroughPrice: strikeThroughPrice
                       ? formatPrice(strikeThroughPrice)
                       : undefined,
@@ -199,7 +203,7 @@ export const RoomDetails: React.FC = () => {
           return totalAmount;
         })().then((totalAmount) => {
           setSections(dataSections);
-          setFormatTotalAmount(formatPrice(totalAmount));
+          if (isShowPrice) setFormatTotalAmount(formatPrice(totalAmount));
         });
       })
       .finally(() => {

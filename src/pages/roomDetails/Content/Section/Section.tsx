@@ -31,7 +31,7 @@ export const Section: React.FC<SectionI> = (props) => {
           </div>
         )}
       </div>
-      {isBundleSections && (
+      {isBundleSections && data[0]?.amount !== undefined && (
         <div className={s.bundle}>
           <div className={s.bundleText}>
             *Price and part number reflect ease and savings of an automatic
