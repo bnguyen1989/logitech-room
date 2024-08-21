@@ -153,7 +153,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
           {recommended && (
             <div className={s.wrapper_recommended}>
               <div className={s.recommended}>
-                <div className={s.text}>recommended</div>
+                <div className={s.text}>{langCard.Text.Recommended}</div>
               </div>
             </div>
           )}
