@@ -70,6 +70,8 @@ function App() {
       </div>
     );
 
+  console.log("Main");
+
   return (
     <div className={s.app}>
       <Routes>

@@ -1,9 +1,9 @@
 import { RoomSizeName } from "./permissionUtils";
 
 export const ConfigData = {
-  host: "preview.threekit.com",
-  orgId: "04015bb6-401d-47f8-97c0-dd6fa759c441",
-  publicToken: "5fb71ddf-8d5b-4c0d-9695-4a65a0561fa8",
+  host: "admin-fts.threekit.com",
+  orgId: "98900460-52bb-4de1-bf91-02e3ea8c2d87",
+  publicToken: "214fed2b-ce44-4557-9e75-162438852542",
 };
 
 export const getRoomAssetId = (roomSize: string) => {
