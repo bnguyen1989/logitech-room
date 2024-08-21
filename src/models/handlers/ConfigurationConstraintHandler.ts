@@ -232,6 +232,10 @@ export class ConfigurationConstraintHandler extends Handler {
       ? attrRulesStr.split(";").map((aStr: any) => aStr.trim())
       : [];
 
+    if (attrRulesArr.includes(RuleName.rallyPlus_bundle)) {
+      this.rule_rallyPlus_bundle();
+    }
+
     if (attrRulesArr.includes(RuleName.tapQty_tapIp)) {
       this.rule_tapQty10_tapIp();
     }
@@ -264,10 +268,6 @@ export class ConfigurationConstraintHandler extends Handler {
     //   this.rule_rallyBarMini_TapIp_bundle();
     // }
 
-    if (attrRulesArr.includes(RuleName.rallyPlus_bundle)) {
-      this.rule_rallyPlus_bundle();
-    }
-
     if (attrRulesArr.includes(RuleName.byod_reqOneAddon)) {
       this.rule_byod_reqOneAddon();
     }
@@ -275,6 +275,10 @@ export class ConfigurationConstraintHandler extends Handler {
     if (attrRulesArr.includes(RuleName.tapIp_scribe)) {
       this.rule_tapIp_scribe();
     }
+
+
+    //Rules that are not in the lists in DataTable
+    this.rule_tap_tapIp();
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -300,7 +304,10 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   private rule_rallyPlus_bundle() {
-    const isSelectRallyPlus = this.isSelectRallyPlus();
+    const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
+    const isSelectCamera = typeof selectedCamera === "object";
+    const isSelectRallyPlus =
+      isSelectCamera && selectedCamera.name.includes(CameraName.RallyPlus);
 
     const attrDataQtyMicPod = this.getAttrStateDataByName(AttributeName.QtyMic);
     if (!attrDataQtyMicPod) return;
@@ -334,6 +341,28 @@ export class ConfigurationConstraintHandler extends Handler {
         [AttributeName.QtyMic]: minMicPod.toString(),
       });
     }
+
+    const activeMicPod = this.getSelectedValue(AttributeName.RoomMic);
+    const isSelectMicPod = typeof activeMicPod === "object";
+    if (!isSelectMicPod) return;
+    const attrDataMicPod = this.getAttrStateDataByName(AttributeName.RoomMic);
+    const colorRallyPlus = this.getColorRallyPlusByName(selectedCamera.name);
+    if (!colorRallyPlus) return;
+    const assetMicPod = attrDataMicPod?.values.find((option) => {
+      return (
+        typeof option === "object" &&
+        "name" in option &&
+        option.name.includes(colorRallyPlus) &&
+        option.visible
+      );
+    }) as ValueAssetStateI;
+
+    if (!assetMicPod) return;
+    this.configurator.setConfiguration({
+      [AttributeName.RoomMic]: {
+        assetId: assetMicPod.id,
+      },
+    });
   }
 
   private rule_rallyBar_TapIp_bundle() {
@@ -767,6 +796,35 @@ export class ConfigurationConstraintHandler extends Handler {
         },
       });
       CACHE.set(RuleName.micPod_CATCoupler, true);
+    }
+  }
+
+  /**
+   * 
+   * @description: this rule provides mutual exclusion for Tap/TapIp
+   */
+  private rule_tap_tapIp() {
+    const arrAttrName = [
+      AttributeName.RoomMeetingTap,
+      AttributeName.RoomMeetingTapIp,
+    ];
+
+    const changeAttr = arrAttrName.find((attrName) =>
+      this.triggeredByAttr.includes(attrName)
+    );
+    if (!changeAttr) return;
+
+    const selectedAttr = this.getSelectedValue(changeAttr);
+    const isSelectAttr = typeof selectedAttr === "object";
+    if (!isSelectAttr) return;
+
+    for (const attrName of arrAttrName) {
+      if (attrName === changeAttr) continue;
+      this.configurator.setConfiguration({
+        [attrName]: {
+          assetId: "",
+        },
+      });
     }
   }
 
@@ -1501,6 +1559,11 @@ export class ConfigurationConstraintHandler extends Handler {
     return color;
   }
 
+  private getColorRallyPlusByName(name: string) {
+    if (name.includes(ColorName.Graphite)) return ColorName.Graphite;
+    if (name.includes(ColorName.White)) return ColorName.White;
+  }
+
   private getAssetNameWithoutColor(name: string) {
     const colorSeparator = getSeparatorItem();
     return name.split(colorSeparator)[0];
@@ -1553,14 +1616,6 @@ export class ConfigurationConstraintHandler extends Handler {
       values: attributeValuesArr,
     });
   };
-
-  private isSelectRallyPlus() {
-    const selectedCamera = this.getSelectedValue(AttributeName.RoomCamera);
-    const isSelectCamera = typeof selectedCamera === "object";
-    const isSelectRallyPlus =
-      isSelectCamera && selectedCamera.name.includes(CameraName.RallyPlus);
-    return isSelectRallyPlus;
-  }
 
   private getQtyMicForMounts = () => {
     const qtyMicPod = this.getSelectedValue(AttributeName.QtyMic);

@@ -39,3 +39,16 @@ const data: Record<string, Record<string, string>> = {
     "Logitech RoomMate": "994-000170",
   },
 };
+
+export const isShowPriceByLocale = (locale: string) => {
+  const localeNotShowPrice = [
+    "es-MX",
+    "ja-JP",
+    "pt-BR",
+    "zh-CN",
+    "en-IN",
+    "en-AU",
+    "en-MY",
+  ];
+  return !localeNotShowPrice.includes(locale);
+};

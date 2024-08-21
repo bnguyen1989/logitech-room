@@ -1,8 +1,8 @@
 import { AssetI } from "../../services/Threekit/type";
-import { AudioExtensionName, CameraName } from "../../utils/permissionUtils";
+import { getSeparatorItem } from "../../utils/baseUtils";
+import { CameraName } from "../../utils/permissionUtils";
 import { isAssetType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
-import { AttributeName } from "../configurator/type";
 import { ItemCommand } from "./ItemCommand";
 
 export class ChangeColorItemCommand extends ItemCommand {
@@ -53,26 +53,7 @@ export class ChangeColorItemCommand extends ItemCommand {
       this.changeProperties.push(mount);
     });
 
-    this.changeDependedItemsBasedOnRallyPlus();
     return true;
-  }
-
-  private changeDependedItemsBasedOnRallyPlus() {
-    const isSelectedMicPod = this.isSelectedAttr(AttributeName.RoomMic);
-    if (isSelectedMicPod && this.keyItemPermission === CameraName.RallyPlus) {
-      const asset = this.getAssetIdByValue(
-        AttributeName.RoomMic,
-        this.value,
-        AudioExtensionName.RallyMicPod
-      );
-      if (!asset.length) return;
-      this.configurator.setConfiguration({
-        [AttributeName.RoomMic]: {
-          assetId: asset,
-        },
-      });
-      this.changeProperties.push(AttributeName.RoomMic);
-    }
   }
 
   private getAssetIdByValue(
@@ -85,16 +66,23 @@ export class ChangeColorItemCommand extends ItemCommand {
       (attr) => attr.name === attrName && isAssetType(attr.type)
     );
     if (!attribute) return "";
+    const nameItem = this.getNameItemByKeyAndColor(keyItemPermission, value);
     const option = attribute.values.find(
       (opt) =>
         typeof opt === "object" &&
-        opt.name.includes(value) &&
-        opt.name.includes(keyItemPermission) &&
+        opt.name.includes(nameItem) &&
         opt.tags?.includes(
           `locale_${this.configurator.language.toLocaleLowerCase()}`
         )
     ) as AssetI;
     return option?.id || "";
+  }
+
+  private getNameItemByKeyAndColor(key: string, valueColor: string) {
+    const color =
+      key === CameraName.RallyPlus ? `with ${valueColor}` : valueColor;
+
+    return `${key}${getSeparatorItem()}${color}`;
   }
 
   private isSelectedAttr(attrName: string): boolean {

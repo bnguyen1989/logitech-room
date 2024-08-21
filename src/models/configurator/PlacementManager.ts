@@ -11,14 +11,14 @@ export class PlacementManager {
     return `Mic_Placement_${id}`;
   }
 
-  public static getNameNodeForMicWithMount(id?: number): string {
-    if (!id) return `Mic_Placement_Withmount`;
-    return `Mic_Placement_Withmount_${id}`;
+  public static getNameNodeForMicWithSight(id?: number): string {
+    if (!id) return `Mic_Placement_with_sight`;
+    return `Mic_Placement_with_sight_${id}`;
   }
 
-  public static getNameNodeForMicWithoutMount(id?: number): string {
-    if (!id) return `Mic_Placement_Mount`;
-    return `Mic_Placement_Mount_${id}`;
+  public static getNameNodeForMicWithoutSight(id?: number): string {
+    if (!id) return `Mic_Placement_not_sight`;
+    return `Mic_Placement_not_sight_${id}`;
   }
 
   public static getNameNodeForTap(type: "Wall" | "Table", id: number): string {
@@ -145,8 +145,8 @@ export class PlacementManager {
     );
 
     Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) => {
-      placements.push(this.getNameNodeForMicWithMount(num));
-      placements.push(this.getNameNodeForMicWithoutMount(num));
+      placements.push(this.getNameNodeForMicWithSight(num));
+      placements.push(this.getNameNodeForMicWithoutSight(num));
     });
 
     placements.push(

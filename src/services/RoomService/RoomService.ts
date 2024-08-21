@@ -7,7 +7,10 @@ import {
   isCameraElement,
   isTapElement,
 } from "../../utils/permissionUtils";
-import { getSKUProductByExtendedWarranty } from "../../utils/productUtils";
+import {
+  getSKUProductByExtendedWarranty,
+  isShowPriceByLocale,
+} from "../../utils/productUtils";
 import { LanguageService } from "../LanguageService/LanguageService";
 import { PriceService } from "../PriceService/PriceService";
 import { ThreekitService } from "../Threekit/ThreekitService";
@@ -31,7 +34,7 @@ export class RoomService {
   }
 
   private async generateCSVByOrders(orders: OrdersI, locale: LocaleT) {
-    const formattedData = await this.formatOrdersToDataCSV(orders);
+    const formattedData = await this.formatOrdersToDataCSV(orders, locale);
 
     const langData = await new LanguageService().getLanguageData(locale);
     const langDataCSV = langData.pages.CSV;
@@ -65,9 +68,12 @@ export class RoomService {
   }
 
   private async formatOrdersToDataCSV(
-    orders: OrdersI
+    orders: OrdersI,
+    locale: LocaleT
   ): Promise<Array<Array<RowCSVRoomI>>> {
     const dataOrders = this.getDataOrdersForCSV(orders);
+
+    const isShowPrice = isShowPriceByLocale(locale);
 
     return Promise.all(
       dataOrders.map(async (dataOrder) => {
@@ -132,8 +138,10 @@ export class RoomService {
                 [ColumnNameCSVRoom.PRODUCT_NAME]: title,
                 [ColumnNameCSVRoom.PART_NUMBER]: sku,
                 [ColumnNameCSVRoom.QUANTITY]: count,
-                [ColumnNameCSVRoom.MSPR]: price.toFixed(2),
-                [ColumnNameCSVRoom.TOTAL_QUANTITY]: amount.toFixed(2),
+                [ColumnNameCSVRoom.MSPR]: isShowPrice ? price.toFixed(2) : "",
+                [ColumnNameCSVRoom.TOTAL_QUANTITY]: isShowPrice
+                  ? amount.toFixed(2)
+                  : "",
               },
             ];
           }, Promise.resolve([] as RowCSVRoomI[]));
