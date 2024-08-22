@@ -1537,11 +1537,6 @@ export class ConfigurationConstraintHandler extends Handler {
     return color;
   }
 
-  private getColorRallyPlusByName(name: string) {
-    if (name.includes(ColorName.Graphite)) return ColorName.Graphite;
-    if (name.includes(ColorName.White)) return ColorName.White;
-  }
-
   private getAssetNameWithoutColor(name: string) {
     const colorSeparator = getSeparatorItem();
     return name.split(colorSeparator)[0];
