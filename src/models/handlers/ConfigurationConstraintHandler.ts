@@ -341,28 +341,6 @@ export class ConfigurationConstraintHandler extends Handler {
         [AttributeName.QtyMic]: minMicPod.toString(),
       });
     }
-
-    const activeMicPod = this.getSelectedValue(AttributeName.RoomMic);
-    const isSelectMicPod = typeof activeMicPod === "object";
-    if (!isSelectMicPod) return;
-    const attrDataMicPod = this.getAttrStateDataByName(AttributeName.RoomMic);
-    const colorRallyPlus = this.getColorRallyPlusByName(selectedCamera.name);
-    if (!colorRallyPlus) return;
-    const assetMicPod = attrDataMicPod?.values.find((option) => {
-      return (
-        typeof option === "object" &&
-        "name" in option &&
-        option.name.includes(colorRallyPlus) &&
-        option.visible
-      );
-    }) as ValueAssetStateI;
-
-    if (!assetMicPod) return;
-    this.configurator.setConfiguration({
-      [AttributeName.RoomMic]: {
-        assetId: assetMicPod.id,
-      },
-    });
   }
 
   private rule_rallyBar_TapIp_bundle() {
