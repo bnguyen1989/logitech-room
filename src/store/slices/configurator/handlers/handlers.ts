@@ -25,7 +25,11 @@ import {
   getSelectData,
   getStepNameByKeyPermission,
 } from "../../ui/selectors/selectors";
-import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
+import {
+  getAssetIdByNameNode,
+  getNodes,
+  isMountedCard,
+} from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
 import { StepName } from "../../../../utils/baseUtils";
 import { AttributeMountElement } from "../../../../models/permission/elements/mounts/AttributeMountElement";
@@ -138,14 +142,8 @@ export function updateNodesByConfiguration(
           card.keyPermission
         )(state);
 
-        const nodes = getNodes(state);
-        const keys = Object.keys(nodes);
-        const keyNodes = keys.filter((key) => nodes[key] === value.assetId);
-        if (
-          keyNodes.length &&
-          (count === undefined || count === keyNodes.length)
-        )
-          return;
+        const isMounted = isMountedCard(card, stepName)(value.assetId)(state);
+        if (isMounted) return;
         addElement(card, stepName, count)(store);
 
         const minCount = card.counter?.min;
