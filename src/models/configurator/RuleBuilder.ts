@@ -31,5 +31,3 @@ export class RuleBuilder {
     return builtRule;
   }
 }
-
-// Де
