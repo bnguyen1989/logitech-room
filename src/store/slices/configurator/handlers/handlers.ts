@@ -697,8 +697,19 @@ export function changeCountElement(
         const action = matchingMountRulse.action;
 
         if (action.add && action.add.nameNodes) {
+          let assetId = cardAsset.id;
+          if (card.keyPermission !== matchingMountRulse.keyPermission) {
+            const stepNameElement = getStepNameByKeyPermission(
+              matchingMountRulse.keyPermission
+            )(state);
+            const cardElement = getCardByKeyPermission(
+              stepNameElement,
+              matchingMountRulse.keyPermission
+            )(state);
+            assetId = getAssetFromCard(cardElement)(state).id;
+          }
           action.add.nameNodes.map((nameNode) => {
-            return setElementByNameNode(cardAsset.id, nameNode)(store);
+            return setElementByNameNode(assetId, nameNode)(store);
           });
         }
         if (action.remove && action.remove.nameNodes) {
