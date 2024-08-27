@@ -610,9 +610,6 @@ export function changeColorElement(
               return;
             }
             const elementMount = stepItem.getElementByName(key);
-            if (elementMount instanceof ItemElement) {
-              return changeColorElement(key, stepNameItem)(store);
-            }
             if (!(elementMount instanceof MountElement)) return;
             const elementDependentMount = elementMount.getDependentMount();
             if (!(elementDependentMount instanceof MountElement)) return;
