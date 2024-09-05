@@ -11,7 +11,10 @@ declare const app: Application;
 export class ChangeRoomCameraBehavior extends Behavior {
   public async execute(command: AddItemCommand): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      if (command.nameProperty === AttributeName.RoomCamera) {
+      const isShowModal =
+        command.nameProperty === AttributeName.RoomCamera ||
+        command.nameProperty === AttributeName.RoomSight;
+      if (isShowModal) {
         new SelectProductModal(
           command.nameProperty,
           () => {
