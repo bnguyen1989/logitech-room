@@ -3,7 +3,6 @@ import { StepName } from "../../../../utils/baseUtils";
 import {
   getActiveStep,
   getAssetFromCard,
-  getCardsByStep,
   getDisabledActionByKeyPermission,
   getHiddenActionByKeyPermission,
   getIsSelectedCardByKeyPermission,
@@ -37,25 +36,18 @@ export const getRequestConsultationModalData = (state: RootState) => {
   return state.modals[ModalName.REQUEST_CONSULTATION];
 };
 
-export const getIsShowProductModal =
-  (attrName: string) => (state: RootState) => {
-    const activeStep = getActiveStep(state);
-    if (activeStep !== StepName.ConferenceCamera) return false;
-    const cards = getCardsByStep(activeStep)(state);
-    const cardsFromAttrName = Object.values(cards).filter((card) => {
-      const attributeName = card.dataThreekit.attributeName;
-      return attributeName === attrName;
-    });
-    if (cardsFromAttrName.length < 2) return false;
-    const selectedData = getSelectData(state);
-    const { nextStep } = getNavigationStepData(state);
-    const selectedDataNextStep = selectedData[nextStep.key];
-    if (!selectedDataNextStep) return false;
-    const isActiveElements = Object.values(selectedDataNextStep).some(
-      (item) => item.selected.length > 0
-    );
-    return isActiveElements;
-  };
+export const getIsShowProductModal = (state: RootState) => {
+  const activeStep = getActiveStep(state);
+  if (activeStep !== StepName.ConferenceCamera) return false;
+  const selectedData = getSelectData(state);
+  const { nextStep } = getNavigationStepData(state);
+  const selectedDataNextStep = selectedData[nextStep.key];
+  if (!selectedDataNextStep) return false;
+  const isActiveElements = Object.values(selectedDataNextStep).some(
+    (item) => item.selected.length > 0
+  );
+  return isActiveElements;
+};
 
 export const getDataForAnnotationModal =
   (keyPermission: string, card: CardI) => (state: RootState) => {
