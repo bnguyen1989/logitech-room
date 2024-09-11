@@ -5,6 +5,8 @@ import {
   RoomSizeName,
 } from "../../../utils/permissionUtils";
 import { PlacementManager } from "../../configurator/PlacementManager";
+import { RuleBuilder } from "../../configurator/RuleBuilder";
+import { RuleManagerMount } from "../../configurator/RuleManagerMount";
 import { CountableMountElement } from "../elements/mounts/CountableMountElement";
 import { Step } from "../step/Step";
 import { Handler } from "./Handler";
@@ -15,6 +17,10 @@ export class NameNodeHandler extends Handler {
 
     const isAltRoom = activeElements.some(
       (element) => element.name === RoomSizeName.Auditorium
+    );
+
+    const isLargeRoom = activeElements.some(
+      (element) => element.name === RoomSizeName.Large
     );
 
     const isBYOD = activeElements.some(
@@ -64,6 +70,38 @@ export class NameNodeHandler extends Handler {
             );
           }
         });
+      }
+
+      if (isLargeRoom && isSight) {
+        if (element.name === AudioExtensionName.RallyMicPod) {
+          const defaultMount = element.getDefaultMount();
+          if (defaultMount instanceof CountableMountElement) {
+            defaultMount.setMountLogic([
+              RuleManagerMount.createRuleObject({
+                keyPermission: CameraName.LogitechSight,
+                condition: RuleBuilder.newRule()
+                  .ruleFor("count")
+                  .equalTo(1)
+                  .build(),
+                action: RuleManagerMount.generateActionAddNodesAndRemoveNodes({
+                  setNodes: [PlacementManager.getNameNodeForSight()],
+                  remoteNodes: [PlacementManager.getNameNodeForSight2()],
+                }),
+              }),
+              RuleManagerMount.createRuleObject({
+                keyPermission: CameraName.LogitechSight,
+                condition: RuleBuilder.newRule()
+                  .ruleFor("count")
+                  .equalTo(2)
+                  .build(),
+                action: RuleManagerMount.generateActionAddNodesAndRemoveNodes({
+                  setNodes: [PlacementManager.getNameNodeForSight2()],
+                  remoteNodes: [PlacementManager.getNameNodeForSight()],
+                }),
+              }),
+            ]);
+          }
+        }
       }
     });
     return true;
