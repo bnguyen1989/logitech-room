@@ -1,7 +1,7 @@
 import { Configurator } from "../configurator/Configurator";
 import { ValueStringStateI } from "../configurator/type";
 import { ItemCommand } from "./ItemCommand";
-import { AddItemBehavior } from "./behavior/AddItemBehavior";
+import { ChangeRoomCameraBehavior } from "./behavior/ChangeRoomCameraBehavior";
 
 export class AddItemCommand extends ItemCommand {
   public name: string = "AddItemCommand";
@@ -17,7 +17,7 @@ export class AddItemCommand extends ItemCommand {
     super(configurator, keyItemPermission);
     this.assetId = assetId;
     this.nameProperty = nameProperty;
-    this.behaviors.push(new AddItemBehavior());
+    this.behaviors.push(new ChangeRoomCameraBehavior());
   }
 
   public executeCommand(): boolean {

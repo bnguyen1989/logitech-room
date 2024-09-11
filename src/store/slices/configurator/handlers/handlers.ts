@@ -25,7 +25,11 @@ import {
   getSelectData,
   getStepNameByKeyPermission,
 } from "../../ui/selectors/selectors";
-import { getAssetIdByNameNode, getNodes } from "../selectors/selectors";
+import {
+  getAssetIdByNameNode,
+  getNodes,
+  isMountedCard,
+} from "../selectors/selectors";
 import { ReferenceMountElement } from "../../../../models/permission/elements/mounts/ReferenceMountElement";
 import { StepName } from "../../../../utils/baseUtils";
 import { AttributeMountElement } from "../../../../models/permission/elements/mounts/AttributeMountElement";
@@ -138,14 +142,8 @@ export function updateNodesByConfiguration(
           card.keyPermission
         )(state);
 
-        const nodes = getNodes(state);
-        const keys = Object.keys(nodes);
-        const keyNodes = keys.filter((key) => nodes[key] === value.assetId);
-        if (
-          keyNodes.length &&
-          (count === undefined || count === keyNodes.length)
-        )
-          return;
+        const isMounted = isMountedCard(card, stepName)(value.assetId)(state);
+        if (isMounted) return;
         addElement(card, stepName, count)(store);
 
         const minCount = card.counter?.min;
@@ -612,9 +610,6 @@ export function changeColorElement(
               return;
             }
             const elementMount = stepItem.getElementByName(key);
-            if (elementMount instanceof ItemElement) {
-              return changeColorElement(key, stepNameItem)(store);
-            }
             if (!(elementMount instanceof MountElement)) return;
             const elementDependentMount = elementMount.getDependentMount();
             if (!(elementDependentMount instanceof MountElement)) return;
@@ -699,8 +694,19 @@ export function changeCountElement(
         const action = matchingMountRulse.action;
 
         if (action.add && action.add.nameNodes) {
+          let assetId = cardAsset.id;
+          if (card.keyPermission !== matchingMountRulse.keyPermission) {
+            const stepNameElement = getStepNameByKeyPermission(
+              matchingMountRulse.keyPermission
+            )(state);
+            const cardElement = getCardByKeyPermission(
+              stepNameElement,
+              matchingMountRulse.keyPermission
+            )(state);
+            assetId = getAssetFromCard(cardElement)(state).id;
+          }
           action.add.nameNodes.map((nameNode) => {
-            return setElementByNameNode(cardAsset.id, nameNode)(store);
+            return setElementByNameNode(assetId, nameNode)(store);
           });
         }
         if (action.remove && action.remove.nameNodes) {
