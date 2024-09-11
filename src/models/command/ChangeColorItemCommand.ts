@@ -3,7 +3,6 @@ import { getSeparatorItem } from "../../utils/baseUtils";
 import { CameraName } from "../../utils/permissionUtils";
 import { isAssetType } from "../../utils/threekitUtils";
 import { Configurator } from "../configurator/Configurator";
-import { ChangeRoomCameraBehavior } from "./behavior/ChangeRoomCameraBehavior";
 import { ItemCommand } from "./ItemCommand";
 
 export class ChangeColorItemCommand extends ItemCommand {
@@ -20,7 +19,6 @@ export class ChangeColorItemCommand extends ItemCommand {
     super(configurator, keyItemPermission);
     this.value = value;
     this.nameProperty = nameProperty;
-    this.behaviors.push(new ChangeRoomCameraBehavior());
   }
 
   public executeCommand(): boolean {

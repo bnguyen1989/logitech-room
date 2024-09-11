@@ -12,7 +12,7 @@ export const getModalsHandlers = (store: Store) => {
     const state = store.getState();
     if (data instanceof SelectProductModal) {
       const attributeName = data.attributeName;
-      const isShowProductModal = getIsShowProductModal(state);
+      const isShowProductModal = getIsShowProductModal(attributeName)(state);
       if (isShowProductModal) {
         store.dispatch(
           setSelectProductModal({
