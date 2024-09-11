@@ -11,7 +11,6 @@ export type ActionMountType = {
 };
 
 export type ruleMountsType = {
-  keyPermission: string;
   condition: ConditionMountType;
   action: ActionMountType;
 };
@@ -25,19 +24,13 @@ type generateActionAddNodesAndRemoveNodesType = {
   valueAttribute: any;
 };
 type createRuleObject = {
-  keyPermission: string;
   condition: ConditionMountType;
   action: ActionMountType;
 };
 
-export class RuleManagerMount {
-  public static createRuleObject({
-    condition,
-    action,
-    keyPermission,
-  }: createRuleObject) {
+export class RulleManagerMount {
+  public static createRuleObject({ condition, action }: createRuleObject) {
     return {
-      keyPermission: keyPermission,
       condition: condition,
       action: action,
     };
@@ -65,3 +58,20 @@ export class RuleManagerMount {
     };
   }
 }
+
+// {
+//   condition: {
+//     count: 1,
+//   },
+//   action: {
+//     add: {
+//       nameNodes: [PlacementManager.getNameNodeForCamera("Wall", 4)],
+//     },
+//     remove: {
+//       nameNodes: [
+//         PlacementManager.getNameNodeForCamera("Wall", 2),
+//         PlacementManager.getNameNodeForCamera("Wall", 3),
+//       ],
+//     },
+//   },
+// },

@@ -40,10 +40,6 @@ export class PlacementManager {
     return "Sight_Placement";
   }
 
-  public static getNameNodeForSight2(): string {
-    return "Sight_Placement_2";
-  }
-
   public static getNameNodeCommodeForCamera(
     type: "RallyBar" | "Huddle" | "Mini",
     display?: number
@@ -172,8 +168,7 @@ export class PlacementManager {
       this.getNameNodeCommodeForCamera("Mini"),
       this.getNameNodeCommodeForCamera("Mini", 1),
       this.getNameNodeForTV(),
-      this.getNameNodeCameraRalyPlus(),
-      this.getNameNodeForSight2()
+      this.getNameNodeCameraRalyPlus()
     );
 
     return placements;

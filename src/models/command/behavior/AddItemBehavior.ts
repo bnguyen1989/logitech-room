@@ -8,13 +8,10 @@ import Behavior from "./Behavior";
 
 declare const app: Application;
 
-export class ChangeRoomCameraBehavior extends Behavior {
+export class AddItemBehavior extends Behavior {
   public async execute(command: AddItemCommand): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      const isShowModal =
-        command.nameProperty === AttributeName.RoomCamera ||
-        command.nameProperty === AttributeName.RoomSight;
-      if (isShowModal) {
+      if (command.nameProperty === AttributeName.RoomCamera) {
         new SelectProductModal(
           command.nameProperty,
           () => {

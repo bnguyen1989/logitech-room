@@ -7,9 +7,7 @@ import { StepName } from "../../../../utils/baseUtils";
 import {
   getCardByKeyPermission,
   getPermission,
-  getPropertyCounterCardByKeyPermission,
 } from "../../ui/selectors/selectors";
-import { CardI } from "../../ui/type";
 
 export const getIsBuilding = (state: RootState) =>
   state.configurator.isBuilding;
@@ -127,44 +125,4 @@ export const getKeyPermissionFromNameNode =
     });
 
     return objKeyPermission;
-  };
-
-export const isMountedCard =
-  (card: CardI, stepName: StepName) => (assetId: string) => {
-    return (state: RootState) => {
-      const permission = getPermission(stepName)(state);
-      const stepData = permission.getStepByName(stepName);
-      const count = getPropertyCounterCardByKeyPermission(
-        stepName,
-        card.keyPermission
-      )(state);
-
-      const nodes = getNodes(state);
-      const keys = Object.keys(nodes);
-      const keyNodes = keys.filter((key) => nodes[key] === assetId);
-
-      const item = stepData.getElementByName(card.keyPermission);
-      const isMountedCard =
-        item instanceof ItemElement &&
-        item
-          .getAccessoryItems()
-          .map((ac) => {
-            const acItem = stepData.getElementByName(ac);
-            if (!(acItem instanceof ItemElement)) return;
-            const defaultMount = acItem.getDefaultMount();
-            if (!(defaultMount instanceof CountableMountElement)) return;
-            return defaultMount.getRangeNameNode();
-          })
-          .flat()
-          .filter((nameNode) => nameNode && keys.includes(nameNode)).length ===
-          count;
-
-      const keylength = keyNodes.length;
-      return (
-        keylength &&
-        (count === undefined ||
-          count === keylength ||
-          (isMountedCard && keylength === 1))
-      );
-    };
   };

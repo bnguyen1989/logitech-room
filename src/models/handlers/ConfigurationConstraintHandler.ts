@@ -341,6 +341,28 @@ export class ConfigurationConstraintHandler extends Handler {
         [AttributeName.QtyMic]: minMicPod.toString(),
       });
     }
+
+    const activeMicPod = this.getSelectedValue(AttributeName.RoomMic);
+    const isSelectMicPod = typeof activeMicPod === "object";
+    if (!isSelectMicPod) return;
+    const attrDataMicPod = this.getAttrStateDataByName(AttributeName.RoomMic);
+    const colorRallyPlus = this.getColorRallyPlusByName(selectedCamera.name);
+    if (!colorRallyPlus) return;
+    const assetMicPod = attrDataMicPod?.values.find((option) => {
+      return (
+        typeof option === "object" &&
+        "name" in option &&
+        option.name.includes(colorRallyPlus) &&
+        option.visible
+      );
+    }) as ValueAssetStateI;
+
+    if (!assetMicPod) return;
+    this.configurator.setConfiguration({
+      [AttributeName.RoomMic]: {
+        assetId: assetMicPod.id,
+      },
+    });
   }
 
   private rule_rallyBar_TapIp_bundle() {
@@ -1535,6 +1557,11 @@ export class ConfigurationConstraintHandler extends Handler {
     const colorSeparator = getSeparatorItem();
     const color = name.split(colorSeparator)[1];
     return color;
+  }
+
+  private getColorRallyPlusByName(name: string) {
+    if (name.includes(ColorName.Graphite)) return ColorName.Graphite;
+    if (name.includes(ColorName.White)) return ColorName.White;
   }
 
   private getAssetNameWithoutColor(name: string) {
