@@ -1,7 +1,7 @@
 import {
   ConditionMountType,
   ruleMountsType,
-} from "../../../configurator/RulleManagerMount";
+} from "../../../configurator/RuleManagerMount";
 import { MountElement } from "./MountElement";
 
 export class CountableMountElement extends MountElement {

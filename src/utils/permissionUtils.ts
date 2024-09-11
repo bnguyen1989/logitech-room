@@ -7,7 +7,7 @@ import { Step } from "../models/permission/step/Step";
 import { StepName, getSeparatorItem } from "./baseUtils";
 import { PlacementManager } from "../models/configurator/PlacementManager";
 import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
-import { RulleManagerMount } from "../models/configurator/RulleManagerMount";
+import { RuleManagerMount } from "../models/configurator/RuleManagerMount";
 import { RuleBuilder } from "../models/configurator/RuleBuilder";
 
 export enum RoomSizeName {
@@ -317,22 +317,24 @@ export function createStepConferenceCamera() {
       )
         .setOffsetIndex(1)
         .setMountLogic([
-          RulleManagerMount.createRuleObject({
+          RuleManagerMount.createRuleObject({
+            keyPermission: CameraName.RallyCamera,
             condition: RuleBuilder.newRule()
               .ruleFor("count")
               .equalTo(1)
               .build(),
-            action: RulleManagerMount.generateActionAddNodesAndRemoveNodes({
+            action: RuleManagerMount.generateActionAddNodesAndRemoveNodes({
               setNodes: PlacementManager.getNameNodeCameraRallyPlusBackWall(),
               remoteNodes: PlacementManager.getNameNodeCameraRallyPlusAboveTV(),
             }),
           }),
-          RulleManagerMount.createRuleObject({
+          RuleManagerMount.createRuleObject({
+            keyPermission: CameraName.RallyCamera,
             condition: RuleBuilder.newRule()
               .ruleFor("count")
               .equalTo(2)
               .build(),
-            action: RulleManagerMount.generateActionAddNodesAndRemoveNodes({
+            action: RuleManagerMount.generateActionAddNodesAndRemoveNodes({
               setNodes: PlacementManager.getNameNodeCameraRallyPlusAboveTV(),
               remoteNodes:
                 PlacementManager.getNameNodeCameraRallyPlusBackWall(),
