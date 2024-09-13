@@ -176,6 +176,8 @@ export const RoomDetails: React.FC = () => {
                 isBundleCard ? sku + "*" : sku
               }`;
 
+              const isContactReseller = isShowPrice && amountNumber === 0;
+
               itemSection = {
                 ...itemSection,
                 data: [
@@ -183,10 +185,13 @@ export const RoomDetails: React.FC = () => {
                     ...itemSection.data[0],
                     partNumber,
                     count: count,
-                    amount: isShowPrice ? amount : undefined,
-                    strikeThroughPrice: strikeThroughPrice
-                      ? formatPrice(strikeThroughPrice)
-                      : undefined,
+                    priceData: {
+                      amount: isShowPrice ? amount : undefined,
+                      strikeThroughPrice: strikeThroughPrice
+                        ? formatPrice(strikeThroughPrice)
+                        : undefined,
+                      isContactReseller,
+                    },
                   },
                 ],
               };

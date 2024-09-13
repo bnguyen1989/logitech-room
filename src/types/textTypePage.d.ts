@@ -366,6 +366,7 @@ export interface Card2 {
   PerUnit: string;
   MSRP: string;
   Price: string;
+  ContactLocalReseller: string;
 }
 
 export interface Footer {
