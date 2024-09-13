@@ -21,8 +21,13 @@ export interface DataSectionI {
   inStock: boolean;
   partNumber?: string;
   count?: string;
-  amount?: string;
-  strikeThroughPrice?: string;
+  priceData?: PriceDataI;
   selectValue?: string;
   labelValue?: string;
+}
+
+interface PriceDataI {
+  amount?: string;
+  strikeThroughPrice?: string;
+  isContactReseller?: boolean;
 }

@@ -1150,6 +1150,13 @@
     "key": "Order#Card#MSRP"
   },
   {
+    "en-US": "Contact your local reseller",
+    "de-DE": "Kontaktieren Sie Ihren Händler vor Ort",
+    "es-ES": "Contacta con tu distribuidor local",
+    "es-MX": "Contacta con tu distribuidor local",
+    "key": "Order#Card#ContactLocalReseller"
+  },
+  {
     "en-US": "Prices may vary by channel or reseller",
     "de-DE": "Die Preise können je nach Kanal oder Händler variieren",
     "es-ES": "Los precios pueden variar según el canal o el distribuidor",
