@@ -8,9 +8,9 @@ export const dataLangFile = (): void => {
     .setFolderProduct("/product")
     .setNumberRowDivider(354);
 
-  // if (processor.isExist()) {
-  //   return;
-  // }
+  if (processor.isExist()) {
+    return;
+  }
 
   const filePath = path.join(__dirname, "./../dataLang/", "sheet.tsv");
   processor
