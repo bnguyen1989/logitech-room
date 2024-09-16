@@ -1,11 +1,11 @@
-import { StepName } from '../../../../../utils/baseUtils'
+import { StepName } from '../../../../../../utils/baseUtils'
 import {
   AudioExtensionName,
   CameraName,
-} from "../../../../../utils/permissionUtils";
-import { ItemElement } from "../../../elements/ItemElement";
-import { CountableMountElement } from "../../../elements/mounts/CountableMountElement";
-import { Step } from "../../../step/Step";
+} from "../../../../../../utils/permissionUtils";
+import { ItemElement } from "../../../../elements/ItemElement";
+import { CountableMountElement } from "../../../../elements/mounts/CountableMountElement";
+import { Step } from "../../../../step/Step";
 import { ReservationMountHandler } from "../ReservationMountHandler";
 
 describe("ReservationMountHandler", () => {
