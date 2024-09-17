@@ -61,26 +61,28 @@ export const Card: React.FC<PropsI> = (props) => {
             <div className={s.count_mobile_value}>x{count}</div>
           </div>
         )}
-        {!isHidePrice && <div className={s.amount}></div>}
-        {!!priceData?.amount && !priceData.isContactReseller && isHidePrice && (
-          <div className={s.amount}>
-            <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
-            <div className={s.amount_price}>
-              <div className={s.amount_vales}>
-                {!!priceData?.strikeThroughPrice && (
-                  <div className={s.amount_strike_through}>
-                    {priceData?.strikeThroughPrice}
-                  </div>
-                )}
-                <div className={s.amount_value}>{priceData?.amount}</div>
-              </div>
+        {isHidePrice && <div className={s.amount}></div>}
+        {!!priceData?.amount &&
+          !priceData.isContactReseller &&
+          !isHidePrice && (
+            <div className={s.amount}>
+              <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
+              <div className={s.amount_price}>
+                <div className={s.amount_vales}>
+                  {!!priceData?.strikeThroughPrice && (
+                    <div className={s.amount_strike_through}>
+                      {priceData?.strikeThroughPrice}
+                    </div>
+                  )}
+                  <div className={s.amount_value}>{priceData?.amount}</div>
+                </div>
 
-              <div className={s.amount_text}>
-                {langPage.Card.MSRP} {langPage.Card.PerUnit}
+                <div className={s.amount_text}>
+                  {langPage.Card.MSRP} {langPage.Card.PerUnit}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
         {!!priceData?.isContactReseller && (
           <div className={s.amount}>
             <div className={s.amount_price}>
