@@ -25,6 +25,15 @@ export const Footer: React.FC<PropsI> = (props) => {
             </div>
           </div>
         )}
+        {!totalAmount && (
+          <div className={s.total_amount}>
+            <div className={s.amount}>
+              <div className={s.amount_text_contact_reseller}>
+                {langPage.Card.ContactLocalReseller}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <div className={s.buttons}>
         <Actions />
