@@ -49,10 +49,10 @@ const LogitechStage: React.FC<LogitechStageProps> = ({ children }) => {
 
   return (
     <>
-      <Environment
+      {/* <Environment
         files={`${ServerApi.getUrlApi()}/assets/ibl/env.hdr`}
         blur={0}
-      />
+      /> */}
       {/* <SoftShadows
         size={controls.shadows.keySize}
         focus={controls.shadows.keyFocus}
