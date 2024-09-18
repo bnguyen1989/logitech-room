@@ -7,6 +7,7 @@ export const Section: React.FC<SectionI> = (props) => {
   const { title, data, typeSection } = props;
 
   const isBundleSections = typeSection === "Room Solution Bundles";
+  const hideProperties: any = isBundleSections ? ["partNumber", "price"] : [];
   return (
     <div className={s.container}>
       <div className={s.title}>{title}:</div>
@@ -14,7 +15,7 @@ export const Section: React.FC<SectionI> = (props) => {
       <div className={s.cards}>
         {data.map((item, index) => (
           <div key={index} className={s.wrapper}>
-            <Card {...item} isHideDetails={!isBundleSections} />
+            <Card {...item} hideProperties={hideProperties} />
             {index !== data.length - 1 && <div className={s.divider}></div>}
           </div>
         ))}
@@ -24,14 +25,14 @@ export const Section: React.FC<SectionI> = (props) => {
             <Card
               partNumber={data[0]?.partNumber}
               count={data[0]?.count}
-              amount={data[0]?.amount}
+              priceData={data[0]?.priceData}
               inStock={data[0]?.inStock}
-              isBundleCard
+              mode="bundle"
             />
           </div>
         )}
       </div>
-      {isBundleSections && data[0]?.amount !== undefined && (
+      {isBundleSections && data[0]?.priceData?.amount !== undefined && (
         <div className={s.bundle}>
           <div className={s.bundleText}>
             *Price and part number reflect ease and savings of an automatic

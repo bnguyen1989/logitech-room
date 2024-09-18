@@ -8,8 +8,8 @@ import {
 } from "../../../../../store/slices/ui/selectors/selectoteLangPage";
 
 interface PropsI extends DataSectionI {
-  isHideDetails?: boolean;
-  isBundleCard?: boolean;
+  mode?: "bundle" | "default";
+  hideProperties?: ("partNumber" | "count" | "price")[];
 }
 export const Card: React.FC<PropsI> = (props) => {
   const {
@@ -18,15 +18,20 @@ export const Card: React.FC<PropsI> = (props) => {
     subtitle,
     partNumber,
     count,
-    amount,
+    priceData,
     labelValue,
-    strikeThroughPrice,
     inStock,
-    isHideDetails = true,
-    isBundleCard = false,
+    mode = "default",
+    hideProperties = [],
   } = props;
   const langPage = useAppSelector(getDetailRoomLangPage);
   const langPageCSV = useAppSelector(getCSVLangPage);
+
+  const isBundle = mode === "bundle";
+  const isHidePartNumber = hideProperties.includes("partNumber");
+  const isHidePrice = hideProperties.includes("price");
+
+  const isSoftwareCard = !count && !priceData?.amount;
 
   return (
     <div className={`${s.container} ${!inStock ? s.container_disabled : ""}`}>
@@ -40,15 +45,18 @@ export const Card: React.FC<PropsI> = (props) => {
           {!!title && <div className={s.title}>{title}</div>}
           {!!subtitle && <div className={s.subtitle}>{subtitle}</div>}
         </div>
-        {!!partNumber && isHideDetails && (
+        {!!partNumber && !isHidePartNumber && (
           <div className={s.part_number}>
             <div className={s.part_number_text}>{`${langPage.Card.PartNumber}${
-              isBundleCard ? "*" : ""
+              isBundle ? "*" : ""
             }`}</div>
             <div className={s.part_number_value}>{partNumber}</div>
           </div>
         )}
-        {!isHideDetails && <div className={s.part_number}></div>}
+        {(isHidePartNumber ||
+          (!partNumber && !isHidePartNumber && !isSoftwareCard)) && (
+          <div className={s.part_number}></div>
+        )}
         {!!count && <div className={s.count}>x {count}</div>}
         {!!count && (
           <div className={s.count_mobile}>
@@ -58,22 +66,33 @@ export const Card: React.FC<PropsI> = (props) => {
             <div className={s.count_mobile_value}>x{count}</div>
           </div>
         )}
-        {!isHideDetails && <div className={s.amount}></div>}
-        {!!amount && isHideDetails && (
-          <div className={s.amount}>
-            <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
-            <div className={s.amount_price}>
-              <div className={s.amount_vales}>
-                {!!strikeThroughPrice && (
-                  <div className={s.amount_strike_through}>
-                    {strikeThroughPrice}
-                  </div>
-                )}
-                <div className={s.amount_value}>{amount}</div>
-              </div>
+        {isHidePrice && <div className={s.amount}></div>}
+        {!!priceData?.amount &&
+          !priceData.isContactReseller &&
+          !isHidePrice && (
+            <div className={s.amount}>
+              <div className={s.amount_mobile_title}>{langPage.Card.Price}</div>
+              <div className={s.amount_price}>
+                <div className={s.amount_vales}>
+                  {!!priceData?.strikeThroughPrice && (
+                    <div className={s.amount_strike_through}>
+                      {priceData?.strikeThroughPrice}
+                    </div>
+                  )}
+                  <div className={s.amount_value}>{priceData?.amount}</div>
+                </div>
 
-              <div className={s.amount_text}>
-                {langPage.Card.MSRP} {langPage.Card.PerUnit}
+                <div className={s.amount_text}>
+                  {langPage.Card.MSRP} {langPage.Card.PerUnit}
+                </div>
+              </div>
+            </div>
+          )}
+        {!!priceData?.isContactReseller && (
+          <div className={s.amount}>
+            <div className={s.amount_price}>
+              <div className={s.amount_text_contact_reseller}>
+                {langPage.Card.ContactLocalReseller}
               </div>
             </div>
           </div>

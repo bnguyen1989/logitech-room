@@ -52,6 +52,7 @@ npm start:dev
 
 ### Architecture
  - UML diagrams, located in the docs folder (use StarUML)
+ - Data modification process diagrams, located in the docs folder (use excalidraw to change the view)
 
 # Production
 
