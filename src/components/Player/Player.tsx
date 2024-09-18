@@ -169,7 +169,7 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
         hiddenEdgeColor={0x32156d}
         blur={true}
         edgeStrength={30}
-        pulseSpeed={0.5}
+        pulseSpeed={0.3}
         resolutionScale={0.5}
         blendFunction={BlendFunction.SCREEN}
       />
