@@ -31,6 +31,8 @@ export const Card: React.FC<PropsI> = (props) => {
   const isHidePartNumber = hideProperties.includes("partNumber");
   const isHidePrice = hideProperties.includes("price");
 
+  const isSoftwareCard = !count && !priceData?.amount;
+
   return (
     <div className={`${s.container} ${!inStock ? s.container_disabled : ""}`}>
       <div className={s.left_content}>
@@ -51,7 +53,10 @@ export const Card: React.FC<PropsI> = (props) => {
             <div className={s.part_number_value}>{partNumber}</div>
           </div>
         )}
-        {isHidePartNumber && <div className={s.part_number}></div>}
+        {(isHidePartNumber ||
+          (!partNumber && !isHidePartNumber && !isSoftwareCard)) && (
+          <div className={s.part_number}></div>
+        )}
         {!!count && <div className={s.count}>x {count}</div>}
         {!!count && (
           <div className={s.count_mobile}>
