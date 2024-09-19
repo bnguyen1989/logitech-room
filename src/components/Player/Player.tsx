@@ -20,9 +20,10 @@ import {
   ToneMapping,
 } from "@react-three/postprocessing";
 import { useCache } from "../../hooks/cache.ts";
-import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { ForwardedRef, forwardRef, useState } from "react";
 import { snapshot } from "../../utils/snapshot.ts";
 import {
+  BlendFunction,
   EffectComposer as EffectComposerImpl,
   EffectPass,
   RenderPass,
@@ -154,32 +155,11 @@ export const Player: React.FC = () => {
 };
 
 const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
-  const [edgeStrength, setEdgeStrength] = useState(10);
-  const [fadeDirection, setFadeDirection] = useState(-1);
 
-  useEffect(() => {
-    const duration = 1200;
-    const steps = 30;
-    const intervalTime = duration / steps;
-    const changePerStep = 10 / steps;
-
-    const interval = setInterval(() => {
-      setEdgeStrength((prev) => {
-        const newStrength = prev + fadeDirection * changePerStep;
-        if (newStrength <= 0 || newStrength >= 10) {
-          setFadeDirection((prev) => -prev);
-        }
-        return Math.max(0, Math.min(10, newStrength));
-      });
-    }, intervalTime);
-
-    return () => clearInterval(interval);
-  }, [fadeDirection]);
 
   return (
     <EffectComposer
       stencilBuffer
-      disableNormalPass
       autoClear={false}
       multisampling={4}
       ref={ref}
@@ -187,20 +167,11 @@ const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
       <Outline
         visibleEdgeColor={0x32156d}
         hiddenEdgeColor={0x32156d}
-        blur={false}
-        edgeStrength={edgeStrength}
-      />
-      <Outline
-        visibleEdgeColor={0x32156d}
-        hiddenEdgeColor={0x32156d}
-        blur={false}
-        edgeStrength={edgeStrength * 0.75}
-      />
-      <Outline
-        visibleEdgeColor={0x32156d}
-        hiddenEdgeColor={0x32156d}
-        blur={false}
-        edgeStrength={edgeStrength * 0.5}
+        blur={true}
+        edgeStrength={30}
+        pulseSpeed={0.3}
+        resolutionScale={0.5}
+        blendFunction={BlendFunction.SCREEN}
       />
       <ToneMapping
         mode={ToneMappingMode.UNCHARTED2}
