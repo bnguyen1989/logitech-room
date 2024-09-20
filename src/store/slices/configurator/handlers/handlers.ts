@@ -225,7 +225,7 @@ export function addElement(
         const dependentMount = defaultMount.getDependentMount();
         if (!dependentMount) {
           if (countValue) {
-            const matchingMountRulse = defaultMount.getMatchingMountRulse({
+            const matchingMountRulse = defaultMount.getMatchingMountRule({
               count: countValue,
             });
 
@@ -698,7 +698,7 @@ export function changeCountElement(
     if (!isCountableMountElement) return;
 
     if (value) {
-      const matchingMountRulse = mountElement.getMatchingMountRulse({
+      const matchingMountRulse = mountElement.getMatchingMountRule({
         count: value,
       });
 
