@@ -225,23 +225,35 @@ export function addElement(
         const dependentMount = defaultMount.getDependentMount();
         if (!dependentMount) {
           if (countValue) {
-            const matchingMountRulse = defaultMount.getMatchingMountRulse({
+            const matchingMountRulse = defaultMount.getMatchingMountRule({
               count: countValue,
             });
 
             if (matchingMountRulse && matchingMountRulse.action) {
               const action = matchingMountRulse.action;
 
+              let assetId = cardAsset.id;
+              if (card.keyPermission !== matchingMountRulse.keyPermission) {
+                const stepNameElement = getStepNameByKeyPermission(
+                  matchingMountRulse.keyPermission
+                )(state);
+                const cardElement = getCardByKeyPermission(
+                  stepNameElement,
+                  matchingMountRulse.keyPermission
+                )(state);
+                assetId = getAssetFromCard(cardElement)(state).id;
+              }
+
               if (action.add && action.add.nameNodes) {
                 action.add.nameNodes.forEach((nameNode) => {
-                  setElementByNameNode(cardAsset.id, nameNode)(store);
+                  setElementByNameNode(assetId, nameNode)(store);
                 });
               }
               if (action.remove && action.remove.nameNodes) {
                 store.dispatch(removeNodeByKeys(action.remove.nameNodes));
               }
 
-              return;
+              if (assetId === cardAsset.id) return;
             }
           }
 
@@ -686,25 +698,26 @@ export function changeCountElement(
     if (!isCountableMountElement) return;
 
     if (value) {
-      const matchingMountRulse = mountElement.getMatchingMountRulse({
+      const matchingMountRulse = mountElement.getMatchingMountRule({
         count: value,
       });
 
       if (matchingMountRulse && matchingMountRulse.action) {
         const action = matchingMountRulse.action;
 
+        let assetId = cardAsset.id;
+        if (card.keyPermission !== matchingMountRulse.keyPermission) {
+          const stepNameElement = getStepNameByKeyPermission(
+            matchingMountRulse.keyPermission
+          )(state);
+          const cardElement = getCardByKeyPermission(
+            stepNameElement,
+            matchingMountRulse.keyPermission
+          )(state);
+          assetId = getAssetFromCard(cardElement)(state).id;
+        }
+
         if (action.add && action.add.nameNodes) {
-          let assetId = cardAsset.id;
-          if (card.keyPermission !== matchingMountRulse.keyPermission) {
-            const stepNameElement = getStepNameByKeyPermission(
-              matchingMountRulse.keyPermission
-            )(state);
-            const cardElement = getCardByKeyPermission(
-              stepNameElement,
-              matchingMountRulse.keyPermission
-            )(state);
-            assetId = getAssetFromCard(cardElement)(state).id;
-          }
           action.add.nameNodes.map((nameNode) => {
             return setElementByNameNode(assetId, nameNode)(store);
           });
@@ -713,7 +726,7 @@ export function changeCountElement(
           store.dispatch(removeNodeByKeys(action.remove.nameNodes));
         }
 
-        return;
+        if (assetId === cardAsset.id) return;
       }
     }
 

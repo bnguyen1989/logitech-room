@@ -78,16 +78,22 @@ export class CountableMountElement extends MountElement {
     return this;
   }
 
-  public getMatchingMountRulse(
-    datacondition: ConditionMountType
+  public getMatchingMountRule(
+    dataCondition: ConditionMountType
   ): ruleMountsType | undefined {
-    if (datacondition.count) {
-      const mountRulse = this.getMountLogic();
-      const matchingRulse = mountRulse
-        .reverse()
-        .find((rule) => rule.condition.count === datacondition.count);
+    if (dataCondition.count) {
+      const mountRule = this.getMountLogic();
+      const matchingRule = mountRule.reverse().find((rule) => {
+        const ruleCondition = rule.condition;
+        const keys = Object.keys(ruleCondition);
+        const matchingKeys = keys.filter((key) => {
+          return ruleCondition[key] === dataCondition[key];
+        });
 
-      return matchingRulse;
+        return matchingKeys.length === keys.length;
+      });
+
+      return matchingRule;
     }
 
     return undefined;
