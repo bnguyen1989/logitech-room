@@ -216,6 +216,7 @@ export function addElement(
         } else {
           setElementByNameNode(cardAsset.id, mount.getNameNode())(store);
         }
+        updateNameNodesByCondition(mount, cardAsset.id)(store);
       });
 
       const defaultMount = element.getDefaultMount();
@@ -261,6 +262,7 @@ export function addElement(
           const nodeName = defaultMount.next().getNameNode();
 
           setElementByNameNode(cardAsset.id, nodeName)(store);
+          updateNameNodesByCondition(defaultMount, cardAsset.id)(store);
           return;
         }
 
@@ -790,11 +792,11 @@ export function changeCountElement(
 
         if (!(dependentMount instanceof ReferenceMountElement)) return;
 
+        const availableNameNodes = defaultMount.getAvailableNameNode();
+        const lastNode = availableNameNodes[availableNameNodes.length - 1];
+        const cardElement = getCardByKeyPermission(stepName, key)(state);
+        const cardAssetElement = getAssetFromCard(cardElement)(state);
         if (isIncrease) {
-          const availableNameNodes = defaultMount.getAvailableNameNode();
-          const lastNode = availableNameNodes[availableNameNodes.length - 1];
-          const cardElement = getCardByKeyPermission(stepName, key)(state);
-          const cardAssetElement = getAssetFromCard(cardElement)(state);
           setElementByNameNode(cardAssetElement.id, lastNode)(store);
           setElementByNameNode(
             cardAsset.id,
@@ -807,6 +809,8 @@ export function changeCountElement(
           const nodeName = defaultMount.getNameNode();
           store.dispatch(removeNodeByKeys([nodeName]));
         }
+        defaultMount.setActiveIndex(value);
+        updateNameNodesByCondition(defaultMount, cardAssetElement.id)(store);
       } else if (allActive) {
         activeAutoItemArr.forEach((key) => {
           const count = getPropertyCounterCardByKeyPermission(
@@ -869,6 +873,8 @@ export function changeCountElement(
           const nodeName = mountElement.getNameNode();
           store.dispatch(removeNodeByKeys([nodeName]));
         }
+        mountElement.setActiveIndex(value);
+        updateNameNodesByCondition(mountElement, cardAsset.id)(store);
       }
     } else {
       if (!(dependentMount instanceof ReferenceMountElement)) return;
@@ -943,5 +949,22 @@ function setAssetIdNodeNames(namesNode: Array<string>, assetId: string) {
     namesNode.forEach((name) => {
       setElementByNameNode(assetId, name)(store);
     });
+  };
+}
+
+function updateNameNodesByCondition(
+  mountElement: MountElement,
+  assetId: string
+) {
+  return (store: Store) => {
+    const removeNameNodes = mountElement.getNodeNamesConditionRemove();
+    if (removeNameNodes.length) {
+      store.dispatch(removeNodeByKeys(removeNameNodes));
+      let availableNameNodes = [mountElement.getNameNode()];
+      if (mountElement instanceof CountableMountElement) {
+        availableNameNodes = mountElement.getAvailableNameNode();
+      }
+      setAssetIdNodeNames(availableNameNodes, assetId)(store);
+    }
   };
 }

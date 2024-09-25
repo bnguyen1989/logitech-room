@@ -1,7 +1,6 @@
 import {
   AudioExtensionName,
   CameraName,
-  MeetingControllerName,
   PlatformName,
   RoomSizeName,
 } from "../../../utils/permissionUtils";
@@ -102,26 +101,6 @@ export class NameNodeHandler extends Handler {
               }),
             ]);
           }
-        }
-      }
-
-      if (isLargeRoom) {
-        if (
-          element.name === MeetingControllerName.LogitechTap ||
-          element.name === MeetingControllerName.LogitechTapIP
-        ) {
-          [element.getDefaultMount(), ...element.getDependenceMount()].forEach(
-            (mount) => {
-              if (
-                mount &&
-                !(mount instanceof CountableMountElement) &&
-                mount.nodeName ===
-                  PlacementManager.getNameNodeForTap("Table", 1)
-              ) {
-                mount.nodeName = PlacementManager.getNameNodeForTap("Table", 2);
-              }
-            }
-          );
         }
       }
     });
