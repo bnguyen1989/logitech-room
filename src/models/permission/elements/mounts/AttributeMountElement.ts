@@ -20,7 +20,9 @@ export class AttributeMountElement extends MountElement {
   }
 
   public copy(): AttributeMountElement {
+    const prev = super.copy();
     const mountElement = new AttributeMountElement(this.name, this.nodeName);
+    Object.assign(mountElement, prev);
     mountElement.setAttributes(this.attributes);
     return mountElement;
   }

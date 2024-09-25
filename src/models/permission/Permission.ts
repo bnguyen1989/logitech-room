@@ -32,6 +32,7 @@ import { BundleMountElementRule } from "./rules/BundleMountElementRule";
 import { SecondaryMountHandler } from "./handlers/mounts/countable/SecondaryMountHandler";
 import { NameNodeHandler } from "./handlers/NameNodeHandler";
 import { ConditionAttributesMountHandler } from "./handlers/mounts/ConditionAttributesMountHandler";
+import { ConditionNameNodeHandler } from "./handlers/mounts/ConditionNameNodeHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName;
@@ -111,6 +112,7 @@ export class Permission {
     new DisabledCounterElementHandler().handle(step);
     new DisabledColorElementHandler().handle(step);
     new ConditionAttributesMountHandler().handle(step);
+    new ConditionNameNodeHandler().handle(step);
   }
 
   public addStep(step: Step): Permission {
