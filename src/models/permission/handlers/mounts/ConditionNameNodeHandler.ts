@@ -1,5 +1,4 @@
-import { Condition } from "../../conditions/Condition";
-import { ConditionPropertyName } from "../../conditions/type";
+import { ConditionExecutor } from "../../conditions/ConditionExecutor";
 import { ItemElement } from "../../elements/ItemElement";
 import { MountElement } from "../../elements/mounts/MountElement";
 import { Step } from "../../step/Step";
@@ -13,40 +12,25 @@ export class ConditionNameNodeHandler extends Handler {
       const mounts = this.getMountElementsByElement(element);
       mounts.forEach((mount) => {
         const conditionNameNodes = mount.getConditionNameNodes();
-        const nameNodes = Object.keys(conditionNameNodes);
-        if (!nameNodes.length) return;
+        if (!conditionNameNodes.length) return;
 
-        const nameNode = nameNodes.find((name) => {
-          const condition = conditionNameNodes[name];
-          const isValidDependentConditions = condition
-            .getDependentConditions()
-            .every((dependentCondition) =>
-              this.checkCondition(dependentCondition, mount, allActiveElements)
-            );
-          if (!isValidDependentConditions) return false;
-
-          return this.checkCondition(condition, mount, allActiveElements);
+        const conditionExecuter = new ConditionExecutor();
+        conditionNameNodes.forEach((conditionNameNode) => {
+          conditionExecuter.addConditionWithChanges(conditionNameNode);
         });
-        if (nameNode) {
-          mount.nodeName = nameNode;
-        }
+        const changedProperty = conditionExecuter.applyChangesIfConditionsMet(
+          mount.getProperty(),
+          allActiveElements.map((activeElement) => activeElement.name)
+        );
+
+        Object.keys(changedProperty).forEach((key: string) => {
+          if (Object.prototype.hasOwnProperty.call(mount, key)) {
+            mount[key as keyof MountElement] = changedProperty[key];
+          }
+        });
       });
     });
     return true;
-  }
-
-  private checkCondition(
-    condition: Condition,
-    mountElement: MountElement,
-    allActiveElements: (ItemElement | MountElement)[]
-  ): boolean {
-    const property = {
-      ...mountElement.getProperty(),
-      [ConditionPropertyName.ACTIVE]: allActiveElements.some(
-        (activeElement) => activeElement.name === condition.getKeyPermission()
-      ),
-    };
-    return condition.checkCondition(property);
   }
 
   private getMountElementsByElement(
