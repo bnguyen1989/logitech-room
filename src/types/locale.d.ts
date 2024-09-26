@@ -19,4 +19,5 @@ export type LocaleT =
   | "en-IN"
   | "en-AU"
   | "en-EU"
-  | "en-MY";
+  | "en-MY"
+  | "en-SG";

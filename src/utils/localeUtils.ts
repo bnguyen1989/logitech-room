@@ -22,6 +22,7 @@ export const langRegionCodesStaging: Record<string, LocaleT> = {
   en_au: "en-AU",
   en_eu: "en-EU",
   en_my: "en-MY",
+  en_sg: "en-SG",
 };
 
 export const langRegionCodesProd: Record<string, LocaleT> = {
@@ -46,6 +47,7 @@ export const langRegionCodesProd: Record<string, LocaleT> = {
   "en-au": "en-AU",
   "en-eu": "en-EU",
   "en-my": "en-MY",
+  "en-sg": "en-SG",
 };
 export const langRegionCodes: Record<string, LocaleT> = {
   ...langRegionCodesStaging,
@@ -74,4 +76,5 @@ export const localeToCurrency: Record<LocaleT, string> = {
   "en-AU": "AUD",
   "en-EU": "EUR",
   "en-MY": "MYR",
+  "en-SG": "SGD",
 };
