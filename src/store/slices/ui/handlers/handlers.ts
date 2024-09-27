@@ -49,6 +49,7 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
+  getLocale,
   getPermission,
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
@@ -68,6 +69,7 @@ import {
   deleteNodesByCards,
   removeElement,
 } from "../../configurator/handlers/handlers";
+import { getExclusionServiceByLocale } from "../../../../utils/productUtils";
 
 declare const app: Application;
 
@@ -701,10 +703,18 @@ function setSoftwareServicesData(configurator: Configurator) {
     const sortedKeyPermissions = getSortedKeyPermissionsByStep(
       StepName.SoftwareServices
     )(store);
-    const sortedCards = sortedCardsByArrTemplate(
+    let sortedCards = sortedCardsByArrTemplate(
       softwareServicesCardData,
       sortedKeyPermissions
     );
+
+    const locale = getLocale(store.getState());
+    const exclusionServices = getExclusionServiceByLocale(locale);
+    if (exclusionServices) {
+      sortedCards = sortedCards.filter(
+        (card) => !exclusionServices.includes(card.keyPermission)
+      );
+    }
 
     setDataCard(sortedCards, StepName.SoftwareServices)(store);
   };
