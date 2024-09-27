@@ -31,6 +31,7 @@ export const formLocalization = {
       "en-AU": 18414,
       "en-EU": 18414,
       "en-MY": 18414,
+      "en-SG": 18414,
     },
   },
   [FORM_MKTO.ABRIDGE_FORM]: {
@@ -57,6 +58,7 @@ export const formLocalization = {
       "en-AU": 18461,
       "en-EU": 18461,
       "en-MY": 18461,
+      "en-SG": 18461,
     },
   },
   [FORM_MKTO.REQUEST_CONSULTATION]: {
@@ -83,6 +85,7 @@ export const formLocalization = {
       "en-AU": 18463,
       "en-EU": 18463,
       "en-MY": 18463,
+      "en-SG": 18463,
     },
   },
 };
