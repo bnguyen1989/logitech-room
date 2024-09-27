@@ -66,6 +66,7 @@ export const Card: React.FC<PropsI> = (props) => {
             <div className={s.count_mobile_value}>x{count}</div>
           </div>
         )}
+        {!!labelValue && <div className={s.value}>{labelValue}</div>}
         {isHidePrice && <div className={s.amount}></div>}
         {!!priceData?.amount &&
           !priceData.isContactReseller &&
@@ -97,7 +98,6 @@ export const Card: React.FC<PropsI> = (props) => {
             </div>
           </div>
         )}
-        {!!labelValue && <div className={s.value}>{labelValue}</div>}
       </div>
     </div>
   );

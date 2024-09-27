@@ -141,6 +141,14 @@ export const RoomDetails: React.FC = () => {
               (section) => section.title === titleSection
             );
 
+            const priceNumber = dataProduct.price ?? 0.0;
+            const strikeThroughPrice = dataProduct.strikeThroughPrice;
+            const amountNumber = priceNumber * parseInt(count);
+            if (!cardFromBundle) totalAmount += amountNumber;
+
+            const amount = formatPrice(priceNumber);
+            const isContactReseller = isShowPrice && amountNumber === 0;
+
             let itemSection: SectionI = {
               title: titleSection,
               data: [
@@ -151,18 +159,19 @@ export const RoomDetails: React.FC = () => {
                   selectValue: selectValue,
                   labelValue: getLabelValue(selectValue),
                   inStock,
+                  priceData: {
+                    amount: isShowPrice ? amount : undefined,
+                    strikeThroughPrice: strikeThroughPrice
+                      ? formatPrice(strikeThroughPrice)
+                      : undefined,
+                    isContactReseller,
+                  },
                 },
               ],
               typeSection: keySection,
             };
 
             if (card.key !== StepName.SoftwareServices) {
-              const priceNumber = dataProduct.price ?? 0.0;
-              const strikeThroughPrice = dataProduct.strikeThroughPrice;
-              const amountNumber = priceNumber * parseInt(count);
-              if (!cardFromBundle) totalAmount += amountNumber;
-
-              const amount = formatPrice(priceNumber);
               let formatColor = getFormattingNameColor(color)(langCard);
               if (formatColor) {
                 formatColor += " : ";
@@ -176,22 +185,13 @@ export const RoomDetails: React.FC = () => {
                 isBundleCard ? sku + "*" : sku
               }`;
 
-              const isContactReseller = isShowPrice && amountNumber === 0;
-
               itemSection = {
                 ...itemSection,
                 data: [
                   {
                     ...itemSection.data[0],
                     partNumber,
-                    count: count,
-                    priceData: {
-                      amount: isShowPrice ? amount : undefined,
-                      strikeThroughPrice: strikeThroughPrice
-                        ? formatPrice(strikeThroughPrice)
-                        : undefined,
-                      isContactReseller,
-                    },
+                    count: count
                   },
                 ],
               };
