@@ -100,6 +100,11 @@ export class PlacementManager {
     return `Mic_Placement_pedant_${id}`;
   }
 
+  public static getNameNodePendantMountSingle(id?: number): string {
+    if (!id) return `Mic_Placement_pedant_Single`;
+    return `Mic_Placement_pedant_Single_${id}`;
+  }
+
   public static getNameNodePendantMountDouble(id?: number): string {
     if (!id) return `Mic_Placement_pedant_Double`;
     return `Mic_Placement_pedant_Double_${id}`;
@@ -174,6 +179,7 @@ export class PlacementManager {
     });
 
     Array.from({ length: 2 }, (_, i) => i + 1).forEach((num) => {
+      placements.push(this.getNameNodePendantMountSingle(num));
       placements.push(this.getNameNodePendantMountDouble(num));
     });
 
