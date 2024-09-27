@@ -1,3 +1,5 @@
+import { SoftwareServicesName } from "./permissionUtils";
+
 export const getSKUProductByExtendedWarranty = (
   productName: string,
   year: string
@@ -52,3 +54,49 @@ export const isShowPriceByLocale = (locale: string) => {
   ];
   return !localeNotShowPrice.includes(locale);
 };
+
+export const getExclusionServiceByLocale = (locale: string) => {
+  const {
+    ExtendedWarranty,
+    EssentialServicePlan,
+    SupportService,
+  } = SoftwareServicesName;
+
+  const data: Record<string, string[]> = {
+    "ExtendedWarrantyOnly": [ExtendedWarranty],
+    "EssentialAndSupport": [EssentialServicePlan, SupportService],
+    "AllServices": [ExtendedWarranty, EssentialServicePlan, SupportService],
+  };
+
+  const mapping: Record<string, string[]> = {
+    "AU": data.ExtendedWarrantyOnly,
+    "DE": data.ExtendedWarrantyOnly,
+    "TH": data.ExtendedWarrantyOnly,
+    "KE": data.ExtendedWarrantyOnly,
+
+    "BR": data.AllServices,
+    "PR": data.AllServices,
+    "KH": data.AllServices,
+    "NG": data.AllServices,
+    "KZ": data.AllServices,
+
+    "CR": data.EssentialAndSupport,
+    "EC": data.EssentialAndSupport,
+    "UY": data.EssentialAndSupport,
+    "NI": data.EssentialAndSupport,
+    "PA": data.EssentialAndSupport,
+    "AL": data.EssentialAndSupport,
+    "MM": data.EssentialAndSupport,
+    "LK": data.EssentialAndSupport,
+    "BD": data.EssentialAndSupport,
+    "MT": data.EssentialAndSupport,
+    "UA": data.EssentialAndSupport,
+  };
+
+  const key = Object.keys(mapping).find((k) =>
+    locale.toLowerCase().includes(k.toLowerCase())
+  );
+
+  return key ? mapping[key] : undefined;
+};
+
