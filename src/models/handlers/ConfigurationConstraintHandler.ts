@@ -276,7 +276,6 @@ export class ConfigurationConstraintHandler extends Handler {
       this.rule_tapIp_scribe();
     }
 
-
     //Rules that are not in the lists in DataTable
     this.rule_tap_tapIp();
   }
@@ -778,15 +777,32 @@ export class ConfigurationConstraintHandler extends Handler {
   }
 
   /**
-   * 
-   * @description: this rule provides mutual exclusion for Tap/TapIp
+   *
+   * @description: this rule provides mutual exclusion for Tap/TapIp or TapMount
    */
   private rule_tap_tapIp() {
-    const arrAttrName = [
+    const arrAttrNameTap = [
       AttributeName.RoomMeetingTap,
       AttributeName.RoomMeetingTapIp,
     ];
 
+    this.rule_deactivate_elem_notActive(arrAttrNameTap);
+
+    const arrAttrNameTapMount = [
+      AttributeName.RoomTapRiserMount,
+      AttributeName.RoomTapTableMount,
+      AttributeName.RoomTapWallMount,
+    ];
+
+    this.rule_deactivate_elem_notActive(arrAttrNameTapMount);
+  }
+
+  /**
+   *
+   * @param arrAttrName - array of attribute names which from one group
+   * @description: this rule remove assetId from the attribute if the selected value is not active
+   */
+  private rule_deactivate_elem_notActive(arrAttrName: string[]) {
     const changeAttr = arrAttrName.find((attrName) =>
       this.triggeredByAttr.includes(attrName)
     );
