@@ -1,5 +1,6 @@
 import { Configurator } from "../configurator/Configurator";
 import { ValueStringStateI } from "../configurator/type";
+import { ChangeRoomCameraBehavior } from "./behavior/ChangeRoomCameraBehavior";
 import { ItemCommand } from "./ItemCommand";
 
 export class RemoveItemCommand extends ItemCommand {
@@ -13,6 +14,7 @@ export class RemoveItemCommand extends ItemCommand {
   ) {
     super(configurator, keyItemPermission);
     this.nameProperty = nameProperty;
+    this.behaviors.push(new ChangeRoomCameraBehavior());
   }
 
   public executeCommand(): boolean {
