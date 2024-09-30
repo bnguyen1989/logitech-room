@@ -125,7 +125,9 @@ export const RoomDetails: React.FC = () => {
             let cardFromBundle = false;
             if (
               isContainBundle &&
-              (isCamera || (isTap && parseInt(count) === 1 && !isBundleTapIp))
+              (isCamera ||
+                (isTap && parseInt(count) === 1 && !isBundleTapIp)) &&
+              card.key !== StepName.SoftwareServices
             ) {
               if (isTap) {
                 isBundleTapIp = true;
@@ -191,7 +193,7 @@ export const RoomDetails: React.FC = () => {
                   {
                     ...itemSection.data[0],
                     partNumber,
-                    count: count
+                    count: count,
                   },
                 ],
               };

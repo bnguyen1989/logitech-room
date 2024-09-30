@@ -10,6 +10,7 @@ import {
 interface PropsI extends DataSectionI {
   mode?: "bundle" | "default";
   hideProperties?: ("partNumber" | "count" | "price")[];
+  dependenceCards?: DataSectionI[];
 }
 export const Card: React.FC<PropsI> = (props) => {
   const {
@@ -23,6 +24,7 @@ export const Card: React.FC<PropsI> = (props) => {
     inStock,
     mode = "default",
     hideProperties = [],
+    dependenceCards = [],
   } = props;
   const langPage = useAppSelector(getDetailRoomLangPage);
   const langPageCSV = useAppSelector(getCSVLangPage);
@@ -32,6 +34,12 @@ export const Card: React.FC<PropsI> = (props) => {
   const isHidePrice = hideProperties.includes("price");
 
   const isSoftwareCard = !count && !priceData?.amount;
+
+  const isShowDependenceCards = dependenceCards.length > 0;
+
+  const textDependentCards = dependenceCards
+    .map((item) => item.title)
+    .join(", ");
 
   return (
     <div className={`${s.container} ${!inStock ? s.container_disabled : ""}`}>
@@ -44,6 +52,9 @@ export const Card: React.FC<PropsI> = (props) => {
         <div className={s.text}>
           {!!title && <div className={s.title}>{title}</div>}
           {!!subtitle && <div className={s.subtitle}>{subtitle}</div>}
+          {isShowDependenceCards && (
+            <div className={s.subtitle}>For Product {textDependentCards}</div>
+          )}
         </div>
         {!!partNumber && !isHidePartNumber && (
           <div className={s.part_number}>

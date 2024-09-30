@@ -20,6 +20,7 @@ import {
 } from "./selectors";
 import {
   PlatformName,
+  SoftwareServicesName,
   isBundleElement,
   isTapElement,
 } from "../../../../utils/permissionUtils";
@@ -32,6 +33,8 @@ import {
 import { localeToCurrency } from "../../../../utils/localeUtils";
 import { deepCopy } from "../../../../utils/objUtils";
 import { Byod } from "../../../../types/textTypePage";
+import { getSKUProductByExtendedWarranty } from "../../../../utils/productUtils";
+import { capitalizeEachWord } from "../../../../utils/strUtils";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -133,59 +136,95 @@ const getDescriptionRoom = (state: RootState) => {
 
 const getCardData = (state: RootState) => {
   const selectedCards = getSelectedConfiguratorCards(state);
-  return processCards(selectedCards)(state).map(({ card, selectData }) => {
-    const copyCard = JSON.parse(JSON.stringify(card)) as CardI;
-    const cardAsset = getAssetFromCard(copyCard)(state);
-    const price = getPriceFromMetadataByKeyPermission(
-      copyCard.key,
-      copyCard.keyPermission
-    )(state);
-    const title = getTitleCardByKeyPermission(
-      copyCard.key,
-      copyCard.keyPermission
-    )(state);
+  const cardData = processCards(selectedCards)(state).map(
+    ({ card, selectData }) => {
+      const copyCard = JSON.parse(JSON.stringify(card)) as CardI;
+      const cardAsset = getAssetFromCard(copyCard)(state);
+      const price = getPriceFromMetadataByKeyPermission(
+        copyCard.key,
+        copyCard.keyPermission
+      )(state);
+      const title = getTitleCardByKeyPermission(
+        copyCard.key,
+        copyCard.keyPermission
+      )(state);
 
-    const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
-    const langProduct = getLangProductBlade1(productName)(state);
-    const sku = getSkuFromMetadataByCard(copyCard)(state);
+      const productName = getMetadataProductNameAssetFromCard(copyCard)(state);
+      const langProduct = getLangProductBlade1(productName)(state);
+      const sku = getSkuFromMetadataByCard(copyCard)(state);
 
-    const selectValue = getSelectValueBySelectData(selectData, copyCard);
+      const selectValue = getSelectValueBySelectData(selectData, copyCard);
 
-    const langProductImage = getLangProductImage(
-      productName,
-      copyCard.keyPermission
-    )(state);
-    const colorCard = getPropertyColorCardByKeyPermissionForOrder(
-      selectData,
-      productName
-    )(state);
+      const langProductImage = getLangProductImage(
+        productName,
+        copyCard.keyPermission
+      )(state);
+      const colorCard = getPropertyColorCardByKeyPermissionForOrder(
+        selectData,
+        productName
+      )(state);
 
-    const isSupportServiceUseStaticImageRoomPage =
-      copyCard.key === StepName.SoftwareServices;
+      const isSupportServiceUseStaticImageRoomPage =
+        copyCard.key === StepName.SoftwareServices;
 
-    if (langProductImage && !isSupportServiceUseStaticImageRoomPage) {
-      copyCard.image = langProductImage;
+      if (langProductImage && !isSupportServiceUseStaticImageRoomPage) {
+        copyCard.image = langProductImage;
+      }
+
+      const prepareCardDescription = getPrepareDescriptionLangByKeyPermission(
+        copyCard.keyPermission
+      )(state);
+
+      return {
+        metadata: {
+          data: JSON.stringify(copyCard),
+          title: capitalizeEachWord(title),
+          description: prepareCardDescription ?? langProduct?.ShortDescription,
+          sku: sku,
+          color: colorCard,
+          count: selectData?.property?.count ?? 1,
+          price: price,
+          selectValue: selectValue,
+        },
+        configurationId: cardAsset?.id ?? "",
+        count: 1,
+      };
     }
+  );
 
-    const prepareCardDescription = getPrepareDescriptionLangByKeyPermission(
-      copyCard.keyPermission
-    )(state);
+  return processSoftwareServiceCardData(cardData);
+};
 
-    return {
-      metadata: {
-        data: JSON.stringify(copyCard),
-        title: title,
-        description: prepareCardDescription ?? langProduct?.ShortDescription,
-        sku: sku,
-        color: colorCard,
-        count: selectData?.property?.count ?? 1,
-        price: price,
-        selectValue: selectValue,
-      },
-      configurationId: cardAsset?.id ?? "",
-      count: 1,
-    };
+const processSoftwareServiceCardData = (cardData: any[]) => {
+  const softwareCardData = cardData.find((item: any) => {
+    const card = JSON.parse(item.metadata.data) as CardI;
+    return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
   });
+  const additional: any[] = [];
+  if (softwareCardData) {
+    const year = softwareCardData?.metadata?.selectValue;
+    cardData.forEach((dataCard) => {
+      const { data } = dataCard.metadata;
+      const card = JSON.parse(data) as CardI;
+      const newSKU = getSKUProductByExtendedWarranty(
+        card.keyPermission,
+        year ?? ""
+      );
+      if (!newSKU) return;
+
+      card.key = StepName.SoftwareServices;
+      additional.push({
+        ...dataCard,
+        metadata: {
+          ...dataCard.metadata,
+          data: JSON.stringify(card),
+          sku: newSKU,
+        },
+      });
+    });
+  }
+
+  return [...cardData, ...additional];
 };
 
 const processCards = (cards: CardI[]) => (state: RootState) => {

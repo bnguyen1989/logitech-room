@@ -1,5 +1,6 @@
 import { CardI } from "../../store/slices/ui/type";
 import { LocaleT } from "../../types/locale";
+import { StepName } from "../../utils/baseUtils";
 import { langRegionCodes } from "../../utils/localeUtils";
 import {
   SoftwareServicesName,
@@ -7,10 +8,7 @@ import {
   isCameraElement,
   isTapElement,
 } from "../../utils/permissionUtils";
-import {
-  getSKUProductByExtendedWarranty,
-  isShowPriceByLocale,
-} from "../../utils/productUtils";
+import { isShowPriceByLocale } from "../../utils/productUtils";
 import { LanguageService } from "../LanguageService/LanguageService";
 import { PriceService } from "../PriceService/PriceService";
 import { ThreekitService } from "../Threekit/ThreekitService";
@@ -81,36 +79,14 @@ export class RoomService {
         const isContainBundle = data.some((item) =>
           isBundleElement(JSON.parse(item.data).keyPermission)
         );
-        const softwareCardData = data.find((item: any) => {
-          const card = JSON.parse(item.data) as CardI;
-          return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
-        });
-        const additional: any[] = [];
-        if (softwareCardData) {
-          const year = softwareCardData?.selectValue;
-          data.forEach((dataCard) => {
-            const { data } = dataCard;
-            const card = JSON.parse(data) as CardI;
-            const newSKU = getSKUProductByExtendedWarranty(
-              card.keyPermission,
-              year ?? ""
-            );
-            if (!newSKU) return;
-            additional.push({
-              ...softwareCardData,
-              sku: newSKU,
-            });
-          });
-        }
 
         const cardsData = data.filter((item: any) => {
           const card = JSON.parse(item.data) as CardI;
           return card.keyPermission !== SoftwareServicesName.ExtendedWarranty;
         });
 
-        const rows: Array<RowCSVRoomI> = await cardsData
-          .concat(additional)
-          .reduce(async (accPromise, dataCard, index) => {
+        const rows: Array<RowCSVRoomI> = await cardsData.reduce(
+          async (accPromise, dataCard, index) => {
             const acc = await accPromise;
             const { data, count, title, sku } = dataCard;
             const card = JSON.parse(data) as CardI;
@@ -119,7 +95,8 @@ export class RoomService {
 
             if (
               isContainBundle &&
-              (isCamera || (isTap && parseInt(count) === 1))
+              (isCamera || (isTap && parseInt(count) === 1)) &&
+              card.key !== StepName.SoftwareServices
             ) {
               return acc;
             }
@@ -144,7 +121,9 @@ export class RoomService {
                   : "",
               },
             ];
-          }, Promise.resolve([] as RowCSVRoomI[]));
+          },
+          Promise.resolve([] as RowCSVRoomI[])
+        );
 
         rows.push({
           ...Object.values(ColumnNameCSVRoom).reduce<RowCSVRoomI>(
