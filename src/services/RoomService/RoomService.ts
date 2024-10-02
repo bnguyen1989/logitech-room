@@ -80,10 +80,8 @@ export class RoomService {
           isBundleElement(JSON.parse(item.data).keyPermission)
         );
 
-        const cardsData = data.filter((item: any) => {
-          const card = JSON.parse(item.data) as CardI;
-          return card.keyPermission !== SoftwareServicesName.ExtendedWarranty;
-        });
+        const { cardsData, softwareCardExtendedWarranty } =
+          this.processCardDataCSV(data);
 
         const rows: Array<RowCSVRoomI> = await cardsData.reduce(
           async (accPromise, dataCard, index) => {
@@ -107,12 +105,17 @@ export class RoomService {
             const price = dataProduct.price ?? 0.0;
             const amount = price * parseInt(count);
 
+            let productName: string = title;
+            if (softwareCardExtendedWarranty) {
+              productName = `${softwareCardExtendedWarranty.title} ${softwareCardExtendedWarranty.selectValue} - ${title}`;
+            }
+
             return [
               ...acc,
               {
                 [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
                 [ColumnNameCSVRoom.CATEGORY]: card.key,
-                [ColumnNameCSVRoom.PRODUCT_NAME]: title,
+                [ColumnNameCSVRoom.PRODUCT_NAME]: productName,
                 [ColumnNameCSVRoom.PART_NUMBER]: sku,
                 [ColumnNameCSVRoom.QUANTITY]: count,
                 [ColumnNameCSVRoom.MSPR]: isShowPrice ? price.toFixed(2) : "",
@@ -137,6 +140,32 @@ export class RoomService {
 
         return rows;
       })
+    );
+  }
+
+  private processCardDataCSV(data: any[]) {
+    return data.reduce<{
+      cardsData: any[];
+      softwareCardExtendedWarranty: any | undefined;
+    }>(
+      (acc, item: any) => {
+        const card = JSON.parse(item.data) as CardI;
+        const isContainExtendedWarranty =
+          card.keyPermission === SoftwareServicesName.ExtendedWarranty;
+
+        if (isContainExtendedWarranty) {
+          return {
+            ...acc,
+            softwareCardExtendedWarranty: item,
+          };
+        }
+
+        return {
+          ...acc,
+          cardsData: [...acc.cardsData, item],
+        };
+      },
+      { cardsData: [], softwareCardExtendedWarranty: undefined }
     );
   }
 

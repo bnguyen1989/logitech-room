@@ -134,7 +134,22 @@ const getDescriptionRoom = (state: RootState) => {
   return description;
 };
 
-const getCardData = (state: RootState) => {
+interface CardDataI {
+  metadata: {
+    data: string;
+    title: string;
+    description: string;
+    sku: string;
+    color: any;
+    count: any;
+    price: string;
+    selectValue: string | undefined;
+  };
+  configurationId: string;
+  count: number;
+}
+
+const getCardData = (state: RootState): CardDataI[] => {
   const selectedCards = getSelectedConfiguratorCards(state);
   const cardData = processCards(selectedCards)(state).map(
     ({ card, selectData }) => {
@@ -195,12 +210,12 @@ const getCardData = (state: RootState) => {
   return processSoftwareServiceCardData(cardData);
 };
 
-const processSoftwareServiceCardData = (cardData: any[]) => {
-  const softwareCardData = cardData.find((item: any) => {
+const processSoftwareServiceCardData = (cardData: CardDataI[]) => {
+  const softwareCardData = cardData.find((item: CardDataI) => {
     const card = JSON.parse(item.metadata.data) as CardI;
     return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
   });
-  const additional: any[] = [];
+  const additional: CardDataI[] = [];
   if (softwareCardData) {
     const year = softwareCardData?.metadata?.selectValue;
     cardData.forEach((dataCard) => {
