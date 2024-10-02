@@ -39,7 +39,7 @@ export class RoomService {
     const langData = await new LanguageService().getLanguageData(locale);
     const langDataCSV = langData.pages.CSV;
     const dataLangHeader = langDataCSV.Header;
-    const header = this.getHeaderCSV().map((item) => ({
+    const header = this.getHeaderCSV(locale).map((item) => ({
       ...item,
       title: dataLangHeader[item.title],
     }));
@@ -52,8 +52,8 @@ export class RoomService {
     return response.data;
   }
 
-  private getHeaderCSV() {
-    return [
+  private getHeaderCSV(locale: LocaleT) {
+    const data = [
       { id: ColumnNameCSVRoom.ROOM_NAME, title: "RoomName" },
       { id: ColumnNameCSVRoom.CATEGORY, title: "ProductCategory" },
       { id: ColumnNameCSVRoom.PRODUCT_NAME, title: "ProductName" },
@@ -62,9 +62,17 @@ export class RoomService {
         title: "PartNumber",
       },
       { id: ColumnNameCSVRoom.QUANTITY, title: "Quantity" },
-      { id: ColumnNameCSVRoom.MSPR, title: "MSRP" },
-      { id: ColumnNameCSVRoom.TOTAL_QUANTITY, title: "TotalMSRP" },
     ];
+
+    const isShowPrice = isShowPriceByLocale(locale);
+    if (isShowPrice) {
+      data.push(
+        { id: ColumnNameCSVRoom.MSPR, title: "MSRP" },
+        { id: ColumnNameCSVRoom.TOTAL_QUANTITY, title: "TotalMSRP" }
+      );
+    }
+
+    return data;
   }
 
   private async formatOrdersToDataCSV(
