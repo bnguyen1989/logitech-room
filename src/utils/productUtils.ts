@@ -49,6 +49,7 @@ export const isShowPriceByLocale = (locale: string) => {
     "en-IN",
     "en-AU",
     "en-MY",
+    "en-SG",
   ];
   return !localeNotShowPrice.includes(locale);
 };
