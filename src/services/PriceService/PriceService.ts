@@ -1,3 +1,5 @@
+import { DataTable } from "../../models/dataTable/DataTable";
+import { ThreekitService } from "../Threekit/ThreekitService";
 import { DataProductI, ProductsDataI } from "./type";
 
 export class PriceService {
@@ -27,5 +29,27 @@ export class PriceService {
   public formatPrice(value: number, currency: string) {
     if (!this.pangea) return value.toString();
     return this.pangea.storeManager.formatPrice(value, currency);
+  }
+
+  public getDataTablePriceSoftwareServices() {
+    return new ThreekitService()
+      .getDataTablesById("f3d2c17e-db6d-49f4-a123-c91bd6c5b0bb")
+      .then((data) => {
+        const dataTable = new DataTable(data);
+        return dataTable;
+      });
+  }
+
+  public getPriceForSoftwareServices(
+    dataTable: DataTable,
+    locale: string,
+    sku: string
+  ) {
+    const dataRows = dataTable.getDataRowsByValue("locale", locale);
+
+    const value = dataRows.find((row) => row.value["sku"] === sku)?.value
+      ?.price;
+
+    return value ? parseFloat(value) : undefined;
   }
 }

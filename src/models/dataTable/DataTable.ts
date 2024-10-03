@@ -35,6 +35,15 @@ export class DataTable {
     return this._data.map((row) => row.value[columnName]);
   }
 
+  public getDataRowsByValue(
+    columnName: string,
+    value: string
+  ): DataTableRowI[] {
+    return this._data.filter(
+      (row) => row.value[columnName].toLowerCase() === value.toLowerCase()
+    );
+  }
+
   public isEmpty(): boolean {
     return this._data.length === 0;
   }

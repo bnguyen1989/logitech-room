@@ -1,5 +1,6 @@
 import { CardI } from "../../store/slices/ui/type";
 import { LocaleT } from "../../types/locale";
+import { StepName } from "../../utils/baseUtils";
 import { langRegionCodes } from "../../utils/localeUtils";
 import {
   SoftwareServicesName,
@@ -7,10 +8,7 @@ import {
   isCameraElement,
   isTapElement,
 } from "../../utils/permissionUtils";
-import {
-  getSKUProductByExtendedWarranty,
-  isShowPriceByLocale,
-} from "../../utils/productUtils";
+import { isShowPriceByLocale } from "../../utils/productUtils";
 import { LanguageService } from "../LanguageService/LanguageService";
 import { PriceService } from "../PriceService/PriceService";
 import { ThreekitService } from "../Threekit/ThreekitService";
@@ -83,42 +81,21 @@ export class RoomService {
 
     const isShowPrice = isShowPriceByLocale(locale);
 
+    const priceDataTableSoftwareServices =
+      await new PriceService().getDataTablePriceSoftwareServices();
+
     return Promise.all(
       dataOrders.map(async (dataOrder) => {
         const { name, data } = dataOrder;
         const isContainBundle = data.some((item) =>
           isBundleElement(JSON.parse(item.data).keyPermission)
         );
-        const softwareCardData = data.find((item: any) => {
-          const card = JSON.parse(item.data) as CardI;
-          return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
-        });
-        const additional: any[] = [];
-        if (softwareCardData) {
-          const year = softwareCardData?.selectValue;
-          data.forEach((dataCard) => {
-            const { data } = dataCard;
-            const card = JSON.parse(data) as CardI;
-            const newSKU = getSKUProductByExtendedWarranty(
-              card.keyPermission,
-              year ?? ""
-            );
-            if (!newSKU) return;
-            additional.push({
-              ...softwareCardData,
-              sku: newSKU,
-            });
-          });
-        }
 
-        const cardsData = data.filter((item: any) => {
-          const card = JSON.parse(item.data) as CardI;
-          return card.keyPermission !== SoftwareServicesName.ExtendedWarranty;
-        });
+        const { cardsData, softwareCardExtendedWarranty } =
+          this.processCardDataCSV(data);
 
-        const rows: Array<RowCSVRoomI> = await cardsData
-          .concat(additional)
-          .reduce(async (accPromise, dataCard, index) => {
+        const rows: Array<RowCSVRoomI> = await cardsData.reduce(
+          async (accPromise, dataCard, index) => {
             const acc = await accPromise;
             const { data, count, title, sku } = dataCard;
             const card = JSON.parse(data) as CardI;
@@ -127,7 +104,8 @@ export class RoomService {
 
             if (
               isContainBundle &&
-              (isCamera || (isTap && parseInt(count) === 1))
+              (isCamera || (isTap && parseInt(count) === 1)) &&
+              card.key !== StepName.SoftwareServices
             ) {
               return acc;
             }
@@ -135,15 +113,26 @@ export class RoomService {
             const dataProduct = await new PriceService().getDataProductBySku(
               sku
             );
-            const price = dataProduct.price ?? 0.0;
+            const priceSoftware =
+              new PriceService().getPriceForSoftwareServices(
+                priceDataTableSoftwareServices,
+                locale,
+                sku
+              );
+            const price = dataProduct.price ?? priceSoftware ?? 0.0;
             const amount = price * parseInt(count);
+
+            let productName: string = title;
+            if (softwareCardExtendedWarranty) {
+              productName = `${softwareCardExtendedWarranty.title} ${softwareCardExtendedWarranty.selectValue} - ${title}`;
+            }
 
             return [
               ...acc,
               {
                 [ColumnNameCSVRoom.ROOM_NAME]: index === 0 ? name : "",
                 [ColumnNameCSVRoom.CATEGORY]: card.key,
-                [ColumnNameCSVRoom.PRODUCT_NAME]: title,
+                [ColumnNameCSVRoom.PRODUCT_NAME]: productName,
                 [ColumnNameCSVRoom.PART_NUMBER]: sku,
                 [ColumnNameCSVRoom.QUANTITY]: count,
                 [ColumnNameCSVRoom.MSPR]: isShowPrice ? price.toFixed(2) : "",
@@ -152,7 +141,9 @@ export class RoomService {
                   : "",
               },
             ];
-          }, Promise.resolve([] as RowCSVRoomI[]));
+          },
+          Promise.resolve([] as RowCSVRoomI[])
+        );
 
         rows.push({
           ...Object.values(ColumnNameCSVRoom).reduce<RowCSVRoomI>(
@@ -166,6 +157,32 @@ export class RoomService {
 
         return rows;
       })
+    );
+  }
+
+  private processCardDataCSV(data: any[]) {
+    return data.reduce<{
+      cardsData: any[];
+      softwareCardExtendedWarranty: any | undefined;
+    }>(
+      (acc, item: any) => {
+        const card = JSON.parse(item.data) as CardI;
+        const isContainExtendedWarranty =
+          card.keyPermission === SoftwareServicesName.ExtendedWarranty;
+
+        if (isContainExtendedWarranty) {
+          return {
+            ...acc,
+            softwareCardExtendedWarranty: item,
+          };
+        }
+
+        return {
+          ...acc,
+          cardsData: [...acc.cardsData, item],
+        };
+      },
+      { cardsData: [], softwareCardExtendedWarranty: undefined }
     );
   }
 
