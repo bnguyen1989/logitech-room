@@ -8,9 +8,9 @@ import {
   CardPrice,
   CardText,
 } from "./CardParts";
+import { isExtendWarranty } from "../../../../../utils/permissionUtils";
 
 interface PropsI extends DataSectionI {
-  type: "item" | "software";
   mode?: "bundle" | "default";
   hideProperties?: ("partNumber" | "count" | "price")[];
   dependenceCards?: DataSectionI[];
@@ -27,15 +27,15 @@ export const Card: React.FC<PropsI> = (props) => {
     labelValue,
     inStock,
     mode = "default",
-    type = "item",
     hideProperties = [],
     dependenceCards,
+    keyPermission = "",
   } = props;
 
   const isBundle = mode === "bundle";
-  const isSoftwareCard = type === "software";
+  const isSoftwareCard = isExtendWarranty(keyPermission);
   const isHidePartNumber =
-    hideProperties.includes("partNumber") || (!partNumber && !isSoftwareCard);
+    hideProperties.includes("partNumber") || isSoftwareCard;
   const isHidePrice = hideProperties.includes("price");
 
   return (

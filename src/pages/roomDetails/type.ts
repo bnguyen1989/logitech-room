@@ -24,9 +24,11 @@ export interface DataSectionI {
   priceData?: PriceDataI;
   selectValue?: string;
   labelValue?: string;
+  keyPermission?: string;
 }
 
 export interface PriceDataI {
+  amountNumber?: number;
   amount?: string;
   strikeThroughPrice?: string;
   isContactReseller?: boolean;

@@ -1,3 +1,4 @@
+import { DataTable } from "../../models/dataTable/DataTable";
 import { CardI } from "../../store/slices/ui/type";
 import { LocaleT } from "../../types/locale";
 import { StepName } from "../../utils/baseUtils";
@@ -73,6 +74,9 @@ export class RoomService {
 
     const isShowPrice = isShowPriceByLocale(locale);
 
+    const priceDataTableSoftwareServices =
+      await this.getDataTablePriceSoftwareServices();
+
     return Promise.all(
       dataOrders.map(async (dataOrder) => {
         const { name, data } = dataOrder;
@@ -102,7 +106,12 @@ export class RoomService {
             const dataProduct = await new PriceService().getDataProductBySku(
               sku
             );
-            const price = dataProduct.price ?? 0.0;
+            const priceSoftware = this.getPriceForSoftwareServices(
+              priceDataTableSoftwareServices,
+              locale,
+              sku
+            );
+            const price = dataProduct.price ?? priceSoftware ?? 0.0;
             const amount = price * parseInt(count);
 
             let productName: string = title;
@@ -179,5 +188,27 @@ export class RoomService {
         data: cardData,
       };
     });
+  }
+
+  private getDataTablePriceSoftwareServices() {
+    return new ThreekitService()
+      .getDataTablesById("f3d2c17e-db6d-49f4-a123-c91bd6c5b0bb")
+      .then((data) => {
+        const dataTable = new DataTable(data);
+        return dataTable;
+      });
+  }
+
+  private getPriceForSoftwareServices(
+    dataTable: DataTable,
+    locale: string,
+    sku: string
+  ) {
+    const dataRows = dataTable.getDataRowsByValue("locale", locale);
+
+    const value = dataRows.find((row) => row.value["sku"] === sku)?.value
+      ?.price;
+
+    return value ? parseFloat(value) : undefined;
   }
 }
