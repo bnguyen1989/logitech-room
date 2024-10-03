@@ -26,7 +26,7 @@ export interface DataSectionI {
   labelValue?: string;
 }
 
-interface PriceDataI {
+export interface PriceDataI {
   amount?: string;
   strikeThroughPrice?: string;
   isContactReseller?: boolean;

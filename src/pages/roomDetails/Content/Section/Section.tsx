@@ -9,10 +9,12 @@ export const Section: React.FC<SectionI> = (props) => {
 
   const isBundleSections = typeSection === "Room Solution Bundles";
   const hideProperties: any = isBundleSections ? ["partNumber", "price"] : [];
+
+  const typeCards =
+    typeSection === StepName.SoftwareServices ? "software" : "item";
+
   const dependenceCards =
-    typeSection === StepName.SoftwareServices && data.length > 1
-      ? data.slice(1)
-      : [];
+    typeCards === "software" && data.length > 1 ? data.slice(1) : [];
 
   const dataArr = dependenceCards.length ? [data[0]] : data;
   return (
@@ -26,6 +28,7 @@ export const Section: React.FC<SectionI> = (props) => {
               {...item}
               hideProperties={hideProperties}
               dependenceCards={dependenceCards}
+              type={typeCards}
             />
             {index !== dataArr.length - 1 && <div className={s.divider}></div>}
           </div>
@@ -39,6 +42,7 @@ export const Section: React.FC<SectionI> = (props) => {
               priceData={dataArr[0]?.priceData}
               inStock={dataArr[0]?.inStock}
               mode="bundle"
+              type={typeCards}
             />
           </div>
         )}
