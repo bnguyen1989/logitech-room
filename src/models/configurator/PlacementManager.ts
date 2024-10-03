@@ -110,6 +110,16 @@ export class PlacementManager {
     return `Mic_Placement_pedant_Double_${id}`;
   }
 
+  public static getNameNodePendantMountWithSight(id?: number): string {
+    if (!id) return `Mic_Placement_pedant_with_sight`;
+    return `Mic_Placement_pedant_with_sight_${id}`;
+  }
+
+  public static getNameNodePendantMountWithoutSight(id?: number): string {
+    if (!id) return `Mic_Placement_pedant_not_sight`;
+    return `Mic_Placement_pedant_not_sight_${id}`;
+  }
+
   public static getNameNodePodPendantMount(): string {
     return "Pod_Pendant_Mount_Point";
   }
@@ -171,6 +181,11 @@ export class PlacementManager {
     Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) => {
       placements.push(this.getNameNodeForMicWithSight(num));
       placements.push(this.getNameNodeForMicWithoutSight(num));
+    });
+
+    Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) => {
+      placements.push(this.getNameNodePendantMountWithSight(num));
+      placements.push(this.getNameNodePendantMountWithoutSight(num));
     });
 
     Array.from({ length: 2 }, (_, i) => i + 1).forEach((num) => {
