@@ -24,7 +24,6 @@ import {
 import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
 import { PriceService } from "../../services/PriceService/PriceService";
 import { isShowPriceByLocale } from "../../utils/productUtils";
-import { DataTable } from "../../models/dataTable/DataTable";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -62,18 +61,11 @@ export const RoomDetails: React.FC = () => {
   };
 
   const getPriceDataSoftwareServices = (locale: string) => {
-    return new ThreekitService()
-      .getDataTablesById("f3d2c17e-db6d-49f4-a123-c91bd6c5b0bb")
+    return new PriceService()
+      .getDataTablePriceSoftwareServices()
       .then((data) => {
-        const dataTable = new DataTable(data);
-        const dataRows = dataTable.getDataRowsByValue("locale", locale);
-
-        return (sku: string) => {
-          const value = dataRows.find((row) => row.value["sku"] === sku)?.value
-            ?.price;
-
-          return value ? parseFloat(value) : undefined;
-        };
+        return (sku: string) =>
+          new PriceService().getPriceForSoftwareServices(data, locale, sku);
       });
   };
 

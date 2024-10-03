@@ -7,7 +7,8 @@ import { PriceDataI } from "../../../../type";
 export const CardPrice: React.FC<{
   priceData?: PriceDataI;
   isHide: boolean;
-}> = ({ priceData, isHide }) => {
+  isSoftwareCard?: boolean;
+}> = ({ priceData, isHide, isSoftwareCard }) => {
   const langPage = useAppSelector(getDetailRoomLangPage);
 
   if (isHide) return <div className={s.amount}></div>;
@@ -40,7 +41,9 @@ export const CardPrice: React.FC<{
         </div>
 
         <div className={s.amount_text}>
-          {langPage.Card.MSRP} {langPage.Card.PerUnit}
+          {isSoftwareCard
+            ? `${langPage.Card.MSRP} ${langPage.Card.PerUnit}`
+            : "For all warranties"}
         </div>
       </div>
     </div>
