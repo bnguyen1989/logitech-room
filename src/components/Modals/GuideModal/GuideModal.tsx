@@ -1,0 +1,170 @@
+import React, { useEffect, useState } from "react";
+import s from "./GuideModal.module.scss";
+import { IconButton } from "../../Buttons/IconButton/IconButton";
+import {
+  CameraControlsSVG,
+  CloseSVG,
+  DimensionSVG,
+  InfoSVG,
+  ProductInfoSVG,
+} from "../../../assets";
+import { CameraControlTab } from "./contentTab/CameraControlTab/CameraContentTab";
+import { Actions } from "./actions/Actions";
+import { TextTab } from "./contentTab/TextTab/TextTab";
+import { ActiveTabI, TabDataI } from "./type";
+import { useAppSelector } from "../../../hooks/redux";
+import { getDataGuideModal } from "../../../store/slices/modals/selectors/selectors";
+import { useDispatch } from "react-redux";
+import { setGuideModal } from "../../../store/slices/modals/Modals.slice";
+
+const tabs: TabDataI[] = [
+  {
+    icon: <CameraControlsSVG />,
+    contents: [
+      <CameraControlTab type="desktop" />,
+      <CameraControlTab type="tablet" />,
+    ],
+  },
+  {
+    icon: <DimensionSVG />,
+    contents: [
+      <TextTab
+        title="Room and product layout dimensions"
+        subtitle="Click the button to get more information on how products are placed in the room given the dimensions of the table or room size."
+      />,
+    ],
+  },
+  {
+    icon: <ProductInfoSVG />,
+    contents: [
+      <TextTab
+        title="Product Info"
+        subtitle="Click the information button to highlight the products in the room, so you can click to find out more information."
+      />,
+    ],
+  },
+  {
+    icon: <InfoSVG />,
+    contents: [
+      <TextTab
+        title="How to interact with the configurator"
+        subtitle="Click the question mark button to revisit this guide again."
+      />,
+    ],
+  },
+];
+
+export const GuideModal: React.FC = () => {
+  const dispatch = useDispatch();
+  const [activeData, setActiveData] = useState<ActiveTabI>({
+    tabIndex: 0,
+    contentIndex: 0,
+  });
+  const { isOpen } = useAppSelector(getDataGuideModal);
+
+  const handleClose = () => {
+    dispatch(setGuideModal({ isOpen: false }));
+  };
+
+  const handleNext = () => {
+    const currentTab = tabs[activeData.tabIndex];
+    if (activeData.contentIndex < currentTab.contents.length - 1) {
+      const nextContentIndex = activeData.contentIndex + 1;
+      setActiveData((prev) => ({
+        ...prev,
+        contentIndex: nextContentIndex,
+      }));
+      return;
+    }
+    const nextTabIndex = activeData.tabIndex + 1;
+    if (nextTabIndex >= tabs.length) {
+      handleClose();
+      return;
+    }
+    setActiveData({
+      tabIndex: nextTabIndex,
+      contentIndex: 0,
+    });
+  };
+
+  const handlePrev = () => {
+    if (activeData.contentIndex > 0) {
+      const prevContentIndex = activeData.contentIndex - 1;
+      if (prevContentIndex < 0) return;
+      setActiveData((prev) => ({
+        ...prev,
+        contentIndex: prevContentIndex,
+      }));
+      return;
+    }
+    const prevTabIndex = activeData.tabIndex - 1;
+    const prevTab = tabs[prevTabIndex];
+    setActiveData({
+      tabIndex: prevTabIndex,
+      contentIndex: prevTab.contents.length - 1,
+    });
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setActiveData({
+        tabIndex: 0,
+        contentIndex: 0,
+      });
+      return;
+    }
+    const timer = setTimeout(() => {
+      handleNext();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [isOpen, activeData]);
+
+  const getPosition = () => {
+    if (activeData.tabIndex === 0 && activeData.contentIndex === 0) {
+      return "start";
+    }
+    if (activeData.tabIndex === tabs.length - 1) {
+      return "end";
+    }
+    return "middle";
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className={s.container_screen}>
+      <div className={s.modal}>
+        <div className={s.header}>
+          <div className={s.close}>
+            <IconButton onClick={handleClose}>
+              <CloseSVG color={"#ffffff"} />
+            </IconButton>
+          </div>
+        </div>
+        <div className={s.content}>
+          <div className={s.icon_tabs}>
+            {tabs.map((tab, index) => (
+              <div
+                key={index}
+                className={`${s.icon_tab} ${
+                  index === activeData.tabIndex ? s.icon_tab_active : ""
+                }`}
+              >
+                {tab.icon}
+              </div>
+            ))}
+          </div>
+          <div className={s.tab_content}>
+            {tabs[activeData.tabIndex].contents[activeData.contentIndex]}
+          </div>
+          <Actions
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+            handleSkip={handleClose}
+            position={getPosition()}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};

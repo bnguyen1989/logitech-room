@@ -73,3 +73,7 @@ export const getDataForAnnotationModal =
 
     return { isActiveCard, disabledActions, hiddenActions, threekitAsset };
   };
+
+export const getDataGuideModal = (state: RootState) => {
+  return state.modals[ModalName.GUIDE_MODAL];
+};

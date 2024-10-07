@@ -1,0 +1,29 @@
+.textTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+
+  color: #fff;
+  .title {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 32px;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .textTab {
+    .title {
+      font-size: 26px;
+      line-height: 1.3;
+    }
+  }
+}
