@@ -6,7 +6,7 @@ export const dataLangFile = (): void => {
     .setOutputFilePath(path.join(__dirname, "./../dataLang/result"))
     .setFolderPage("/page")
     .setFolderProduct("/product")
-    .setNumberRowDivider(354);
+    .setNumberRowDivider(357);
 
   if (processor.isExist()) {
     return;

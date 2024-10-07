@@ -43,7 +43,7 @@ export const CardPrice: React.FC<{
         <div className={s.amount_text}>
           {isSoftwareCard
             ? `${langPage.Card.MSRP} ${langPage.Card.PerUnit}`
-            : "For all warranties"}
+            : langPage.Card.ForAllWarranties}
         </div>
       </div>
     </div>

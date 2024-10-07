@@ -367,6 +367,8 @@ export interface Card2 {
   MSRP: string;
   Price: string;
   ContactLocalReseller: string;
+  ForAllWarranties: string;
+  ForProduct: string;
 }
 
 export interface Footer {
