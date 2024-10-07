@@ -11,6 +11,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    cursor: pointer;
 
     & svg {
       transform: scaleX(-1);
@@ -57,5 +58,6 @@
     line-height: 18px;
     letter-spacing: 0.5px;
     text-align: center;
+    cursor: pointer;
   }
 }

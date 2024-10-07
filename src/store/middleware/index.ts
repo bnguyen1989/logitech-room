@@ -41,6 +41,7 @@ import {
   getPrepareStepNames,
 } from "../../utils/baseUtils";
 import { CONFIGURATOR_ACTION_NAME } from "../slices/configurator/utils";
+import { showModalByStep } from "../slices/modals/handlers/handlers";
 
 declare const app: Application;
 
@@ -175,6 +176,8 @@ export const middleware: Middleware =
         const permission = getPermission(stepName)(state);
 
         updateActiveCardsByPermissionData(permission)(store);
+
+        showModalByStep(stepName)(store);
 
         setDefaultsNode(stepName)(store);
 

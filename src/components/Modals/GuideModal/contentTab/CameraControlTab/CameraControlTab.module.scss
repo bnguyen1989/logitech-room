@@ -14,7 +14,7 @@
 
   .icons_wrapper {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 30px;
 
     .icon_wrapper {
@@ -30,6 +30,38 @@
         line-height: 22px;
         text-align: center;
         color: #fff;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .cameraControlTab {
+    .title {
+      font-size: 26px;
+      line-height: 1.3;
+    }
+  
+    .icons_wrapper {
+      gap: 20px;
+  
+      .icon_wrapper {
+        max-width: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+
+        & svg {
+          width: 50px;
+          height: 50px;
+        }
+  
+        .text {
+          width: 90px;
+          font-size: 16px;
+          line-height: 1.3;
+        }
       }
     }
   }
