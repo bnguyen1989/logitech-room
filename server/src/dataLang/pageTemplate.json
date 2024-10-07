@@ -1157,6 +1157,20 @@
     "key": "Order#Card#ContactLocalReseller"
   },
   {
+    "en-US": "For all warranties",
+    "de-DE": "Für alle Garantien",
+    "es-ES": "Para todas las garantías",
+    "es-MX": "Para todas las garantías",
+    "key": "Order#Card#ForAllWarranties"
+  },
+  {
+    "en-US": "For Product",
+    "de-DE": "Für das Produkt",
+    "es-ES": "Para el producto",
+    "es-MX": "Para el producto",
+    "key": "Order#Card#ForProduct"
+  },
+  {
     "en-US": "Prices may vary by channel or reseller",
     "de-DE": "Die Preise können je nach Kanal oder Händler variieren",
     "es-ES": "Los precios pueden variar según el canal o el distribuidor",
