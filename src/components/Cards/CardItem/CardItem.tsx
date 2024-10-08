@@ -28,6 +28,7 @@ import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsC
 import { useEffect } from "react";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { DisplayToggle } from "../../DisplayToggle/DisplayToggle";
 
 interface PropsI {
   keyItemPermission: string;
@@ -162,6 +163,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
                 <div className={s.subtitle}>{subTitle}</div>
               )}
             </div>
+            <DisplayToggle />
             {isAction && <div className={s.divider}></div>}
             <div className={s.content}>
               {isAction && (
