@@ -6,7 +6,6 @@ interface ConfiguratorStateI {
   assetId: string | null;
   isBuilding: boolean;
   isProcessing: boolean;
-  showDimensions: boolean;
   configuration: Record<string, Configuration>;
   nodes: Record<string, string>;
   highlightNodes: Record<string, boolean>;
@@ -18,7 +17,6 @@ const initialState: ConfiguratorStateI = {
   assetId: null,
   isBuilding: true,
   isProcessing: false,
-  showDimensions: false,
   configuration: {},
   nodes: {},
   highlightNodes: {},
@@ -32,9 +30,6 @@ const configuratorSlice = createSlice({
   reducers: {
     changeStatusBuilding: (state, action: PayloadAction<boolean>) => {
       state.isBuilding = action.payload;
-    },
-    changeShowDimensions: (state, action: PayloadAction<boolean>) => {
-      state.showDimensions = action.payload;
     },
     changeValueConfiguration: (
       state,
@@ -119,7 +114,6 @@ const configuratorSlice = createSlice({
 export const {
   setDataCamera,
   changeStatusBuilding,
-  changeShowDimensions,
   changeValueConfiguration,
   removeValuesConfigurationByKeys,
   changeValueNodes,
