@@ -1,3 +1,4 @@
+import { deepCopy } from "../../../../utils/objUtils";
 import {
   ConditionMountType,
   ruleMountsType,
@@ -78,16 +79,22 @@ export class CountableMountElement extends MountElement {
     return this;
   }
 
-  public getMatchingMountRulse(
-    datacondition: ConditionMountType
+  public getMatchingMountRule(
+    dataCondition: ConditionMountType
   ): ruleMountsType | undefined {
-    if (datacondition.count) {
-      const mountRulse = this.getMountLogic();
-      const matchingRulse = mountRulse
-        .reverse()
-        .find((rule) => rule.condition.count === datacondition.count);
+    if (dataCondition.count) {
+      const mountRule = this.getMountLogic();
+      const matchingRule = mountRule.reverse().find((rule) => {
+        const ruleCondition = rule.condition;
+        const keys = Object.keys(ruleCondition);
+        const matchingKeys = keys.filter((key) => {
+          return ruleCondition[key] === dataCondition[key];
+        });
 
-      return matchingRulse;
+        return matchingKeys.length === keys.length;
+      });
+
+      return matchingRule;
     }
 
     return undefined;
@@ -123,12 +130,34 @@ export class CountableMountElement extends MountElement {
     return this;
   }
 
+  public getNodeNamesConditionRemove(): string[] {
+    const data = super.getNodeNamesConditionRemove();
+    const availableIndex = this.getRangeAvailableIndex().concat(
+      this.secondaryIndex
+    );
+    return data.flatMap((nodeName) =>
+      availableIndex.map((index) => `${nodeName}_${index + this.offsetIndex}`)
+    );
+  }
+
+  public getProperty(): Record<string, any> {
+    return {
+      ...super.getProperty(),
+      count: this.activeIndex,
+    };
+  }
+
   public copy(): CountableMountElement {
+    const prev = super.copy();
     const mountElement = new CountableMountElement(this.name, this.nodeName);
+    Object.assign(mountElement, prev);
     mountElement.min = this.min;
     mountElement.max = this.max;
     mountElement.activeIndex = this.activeIndex;
-    mountElement.notAvailableIndex = this.notAvailableIndex;
+    mountElement.notAvailableIndex = deepCopy<number[]>(this.notAvailableIndex);
+    mountElement.offsetIndex = this.offsetIndex;
+    mountElement.mountLogic = deepCopy<ruleMountsType[]>(this.mountLogic);
+    mountElement.secondaryIndex = deepCopy<number[]>(this.secondaryIndex);
     return mountElement;
   }
 

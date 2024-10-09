@@ -38,7 +38,6 @@ export const ConfigurationFormForStep = ({
     if (!contentRef.current) return;
     contentRef.current.scrollTop = 0;
 
-    // debugger
     if (
       activeStepName === StepName.VideoAccessories ||
       activeStepName === StepName.ConferenceCamera

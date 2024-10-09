@@ -57,6 +57,20 @@ export class NameNodeHandler extends Handler {
       }
 
       if (
+        isAltRoom &&
+        element.name === AudioExtensionName.RallyMicPodPendantMount
+      ) {
+        if (!activeRallyBarWithSight && !activeOnlyRallyBar) return;
+        const nameNode = activeOnlyRallyBar
+          ? PlacementManager.getNameNodePendantMountWithoutSight()
+          : PlacementManager.getNameNodePendantMountWithSight();
+        const defaultMount = element.getDefaultMount();
+        if (defaultMount instanceof CountableMountElement) {
+          defaultMount.nodeName = nameNode;
+        }
+      }
+
+      if (
         isBYOD &&
         (element.name === CameraName.RallyBar ||
           element.name === CameraName.RallyBarMini)

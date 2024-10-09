@@ -9,6 +9,9 @@ import { PlacementManager } from "../models/configurator/PlacementManager";
 import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
 import { RuleManagerMount } from "../models/configurator/RuleManagerMount";
 import { RuleBuilder } from "../models/configurator/RuleBuilder";
+import { Condition } from "../models/permission/conditions/Condition";
+import { ConditionPropertyName } from "../models/permission/conditions/type";
+import { ConditionChangeBuilder } from "../models/permission/conditions/ConditionChangeBuilder";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -305,6 +308,39 @@ export function createStepConferenceCamera() {
             .setMin(0)
             .setMax(2)
             .setActiveIndex(2)
+            .addConditionNameNode(
+              new ConditionChangeBuilder()
+                .setCondition(
+                  new Condition(AudioExtensionName.RallyMicPod)
+                    .addProperty(ConditionPropertyName.COUNT, 2)
+                    .addDependentCondition(
+                      new Condition(RoomSizeName.Large).addProperty(
+                        ConditionPropertyName.ACTIVE,
+                        true
+                      )
+                    )
+                )
+                .addChange(
+                  "nodeName",
+                  PlacementManager.getNameNodeForMicDouble()
+                )
+                .build()
+            )
+            .addConditionNameNode(
+              new ConditionChangeBuilder()
+                .setCondition(
+                  new Condition(AudioExtensionName.RallyMicPod)
+                    .addProperty(ConditionPropertyName.COUNT, 3)
+                    .addDependentCondition(
+                      new Condition(RoomSizeName.Large).addProperty(
+                        ConditionPropertyName.ACTIVE,
+                        true
+                      )
+                    )
+                )
+                .addChange("nodeName", PlacementManager.getNameNodeForMic())
+                .build()
+            )
         )
     )
     .setRequiredOne(true);
@@ -448,6 +484,241 @@ export function createStepAudioExtensions() {
           AudioExtensionName.RallyMicPod,
           PlacementManager.getNameNodeForMic()
         )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicSingle())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMic())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMic())
+              .build()
+          )
+
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicSingle())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodeForMicWithoutSight()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMic())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPod)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
       )
       .addAutoChangeItems({
         [AudioExtensionName.RallyMicPodMount]: ["color", "count"],
@@ -475,12 +746,248 @@ export function createStepAudioExtensions() {
         new CountableMountElement(
           AudioExtensionName.RallyMicPodMount,
           PlacementManager.getNameNodeForMic()
-        ).setDependentMount(
-          new ReferenceMountElement(
-            AudioExtensionName.RallyMicPod,
-            PlacementManager.getNameNodeMicPodMount()
-          )
         )
+          .setDependentMount(
+            new ReferenceMountElement(
+              AudioExtensionName.RallyMicPod,
+              PlacementManager.getNameNodeMicPodMount()
+            )
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicSingle())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMic())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMic())
+              .build()
+          )
+
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicSingle())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodeForMicWithoutSight()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMic())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodMount)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .build()
+          )
       )
       .addReservationMount({
         [CameraName.LogitechSight]: [3],
@@ -502,12 +1009,269 @@ export function createStepAudioExtensions() {
         new CountableMountElement(
           AudioExtensionName.RallyMicPodPendantMount,
           PlacementManager.getNameNodePendantMount()
-        ).setDependentMount(
-          new ReferenceMountElement(
-            AudioExtensionName.RallyMicPod,
-            PlacementManager.getNameNodePodPendantMount()
-          )
         )
+          .setDependentMount(
+            new ReferenceMountElement(
+              AudioExtensionName.RallyMicPod,
+              PlacementManager.getNameNodePodPendantMount()
+            )
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountSingle()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountDouble()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodePendantMount())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountDouble()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Large).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodePendantMount())
+              .build()
+          )
+
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountSingle()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountWithoutSight()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      false
+                    )
+                  )
+              )
+              .addChange("nodeName", PlacementManager.getNameNodePendantMount())
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 1)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountDouble()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 2)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountDouble()
+              )
+              .build()
+          )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(AudioExtensionName.RallyMicPodPendantMount)
+                  .addProperty(ConditionPropertyName.COUNT, 3)
+                  .addDependentCondition(
+                    new Condition(RoomSizeName.Medium).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+                  .addDependentCondition(
+                    new Condition(CameraName.LogitechSight).addProperty(
+                      ConditionPropertyName.ACTIVE,
+                      true
+                    )
+                  )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodePendantMountDouble()
+              )
+              .build()
+          )
       )
       .setHiddenColor(true)
       .addDisabledCounterDependence({
@@ -562,28 +1326,71 @@ export function createStepMeetingController() {
         new MountElement(
           MeetingControllerName.TapRiserMount,
           PlacementManager.getNameNodeForTap("Table", 1)
-        ).setDependentMount(
-          new MountElement(
-            MeetingControllerName.TapRiserMount,
-            PlacementManager.getNameNodeTapRiserMount()
-          )
         )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(RoomSizeName.Large).addProperty(
+                  ConditionPropertyName.ACTIVE,
+                  true
+                )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodeForTap("Table", 2)
+              )
+              .build()
+          )
+          .setDependentMount(
+            new MountElement(
+              MeetingControllerName.TapRiserMount,
+              PlacementManager.getNameNodeTapRiserMount()
+            )
+          )
       )
       .addDependenceMount(
         new MountElement(
           MeetingControllerName.TapTableMount,
           PlacementManager.getNameNodeForTap("Table", 1)
-        ).setDependentMount(
-          new MountElement(
-            MeetingControllerName.TapTableMount,
-            PlacementManager.getNameNodeTapTableMount()
-          )
         )
+          .addConditionNameNode(
+            new ConditionChangeBuilder()
+              .setCondition(
+                new Condition(RoomSizeName.Large).addProperty(
+                  ConditionPropertyName.ACTIVE,
+                  true
+                )
+              )
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodeForTap("Table", 2)
+              )
+              .build()
+          )
+          .setDependentMount(
+            new MountElement(
+              MeetingControllerName.TapTableMount,
+              PlacementManager.getNameNodeTapTableMount()
+            )
+          )
       )
       .setDefaultMount(
         new MountElement(
           item.name,
           PlacementManager.getNameNodeForTap("Table", 1)
+        ).addConditionNameNode(
+          new ConditionChangeBuilder()
+            .setCondition(
+              new Condition(RoomSizeName.Large).addProperty(
+                ConditionPropertyName.ACTIVE,
+                true
+              )
+            )
+            .addChange(
+              "nodeName",
+              PlacementManager.getNameNodeForTap("Table", 2)
+            )
+            .build()
         )
       )
       .setAccessoryItems([
