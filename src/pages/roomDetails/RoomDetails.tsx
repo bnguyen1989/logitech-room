@@ -64,8 +64,13 @@ export const RoomDetails: React.FC = () => {
     return new PriceService()
       .getDataTablePriceSoftwareServices()
       .then((data) => {
-        return (sku: string) =>
-          new PriceService().getPriceForSoftwareServices(data, locale, sku);
+        return (sku: string, title?: string) =>
+          new PriceService().getPriceForSoftwareServices(
+            data,
+            locale,
+            sku,
+            title
+          );
       });
   };
 
@@ -170,7 +175,10 @@ export const RoomDetails: React.FC = () => {
               isBundleCard ? sku + "*" : sku
             }`;
 
-            const priceSoftwareServices = getPriceForSoftwareServices(sku);
+            const priceSoftwareServices = getPriceForSoftwareServices(
+              sku,
+              title
+            );
 
             const priceNumber =
               dataProduct.price ?? priceSoftwareServices ?? 0.0;
