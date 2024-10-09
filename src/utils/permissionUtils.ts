@@ -629,7 +629,10 @@ export function createStepAudioExtensions() {
                     )
                   )
               )
-              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodeForMicWithoutSight()
+              )
               .build()
           )
           .addConditionNameNode(
@@ -895,7 +898,10 @@ export function createStepAudioExtensions() {
                     )
                   )
               )
-              .addChange("nodeName", PlacementManager.getNameNodeForMicDouble())
+              .addChange(
+                "nodeName",
+                PlacementManager.getNameNodeForMicWithoutSight()
+              )
               .build()
           )
           .addConditionNameNode(
@@ -1169,7 +1175,7 @@ export function createStepAudioExtensions() {
               )
               .addChange(
                 "nodeName",
-                PlacementManager.getNameNodePendantMountDouble()
+                PlacementManager.getNameNodePendantMountWithoutSight()
               )
               .build()
           )
