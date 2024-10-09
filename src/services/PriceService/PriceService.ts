@@ -43,12 +43,23 @@ export class PriceService {
   public getPriceForSoftwareServices(
     dataTable: DataTable,
     locale: string,
-    sku: string
+    sku: string,
+    name?: string
   ) {
-    const dataRows = dataTable.getDataRowsByValue("locale", locale);
+    let dataRows = dataTable
+      .getDataRowsByValue("locale", locale)
+      .filter((row) => row.value["sku"] === sku);
 
-    const value = dataRows.find((row) => row.value["sku"] === sku)?.value
-      ?.price;
+    if (dataRows.length > 1 && name) {
+      dataRows = dataRows.filter(
+        (row) => row.value["Description"].toLowerCase() === name?.toLowerCase()
+      );
+    }
+
+    let value: string | undefined;
+    if (dataRows.length) {
+      value = dataRows[0].value["price"];
+    }
 
     return value ? parseFloat(value) : undefined;
   }

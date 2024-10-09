@@ -117,7 +117,8 @@ export class RoomService {
               new PriceService().getPriceForSoftwareServices(
                 priceDataTableSoftwareServices,
                 locale,
-                sku
+                sku,
+                title
               );
             const price = dataProduct.price ?? priceSoftware ?? 0.0;
             const amount = price * parseInt(count);
