@@ -2,7 +2,7 @@ import { BaseApi } from "../BaseApi";
 
 export class ServerApi extends BaseApi {
   public static getUrlApi() {
-    let link = "https://logitech.3kit.com";
+    let link = "https://logitech-staging.3kit.com/";
 
     if (process.env.NODE_ENV === "development") {
       link = "http://localhost:3000";

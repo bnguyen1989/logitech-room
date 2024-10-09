@@ -21,6 +21,16 @@ export class PlacementManager {
     return `Mic_Placement_not_sight_${id}`;
   }
 
+  public static getNameNodeForMicSingle(id?: number): string {
+    if (!id) return `Mic_Placement_Single`;
+    return `Mic_Placement_Single_${id}`;
+  }
+
+  public static getNameNodeForMicDouble(id?: number): string {
+    if (!id) return `Mic_Placement_Double`;
+    return `Mic_Placement_Double_${id}`;
+  }
+
   public static getNameNodeForTap(type: "Wall" | "Table", id: number): string {
     return `Tap_Placement_${type}_${id}`;
   }
@@ -90,6 +100,26 @@ export class PlacementManager {
     return `Mic_Placement_pedant_${id}`;
   }
 
+  public static getNameNodePendantMountSingle(id?: number): string {
+    if (!id) return `Mic_Placement_pedant_Single`;
+    return `Mic_Placement_pedant_Single_${id}`;
+  }
+
+  public static getNameNodePendantMountDouble(id?: number): string {
+    if (!id) return `Mic_Placement_pedant_Double`;
+    return `Mic_Placement_pedant_Double_${id}`;
+  }
+
+  public static getNameNodePendantMountWithSight(id?: number): string {
+    if (!id) return `Mic_Placement_pedant_with_sight`;
+    return `Mic_Placement_pedant_with_sight_${id}`;
+  }
+
+  public static getNameNodePendantMountWithoutSight(id?: number): string {
+    if (!id) return `Mic_Placement_pedant_not_sight`;
+    return `Mic_Placement_pedant_not_sight_${id}`;
+  }
+
   public static getNameNodePodPendantMount(): string {
     return "Pod_Pendant_Mount_Point";
   }
@@ -151,6 +181,21 @@ export class PlacementManager {
     Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) => {
       placements.push(this.getNameNodeForMicWithSight(num));
       placements.push(this.getNameNodeForMicWithoutSight(num));
+    });
+
+    Array.from({ length: 4 }, (_, i) => i + 1).forEach((num) => {
+      placements.push(this.getNameNodePendantMountWithSight(num));
+      placements.push(this.getNameNodePendantMountWithoutSight(num));
+    });
+
+    Array.from({ length: 2 }, (_, i) => i + 1).forEach((num) => {
+      placements.push(this.getNameNodeForMicSingle(num));
+      placements.push(this.getNameNodeForMicDouble(num));
+    });
+
+    Array.from({ length: 2 }, (_, i) => i + 1).forEach((num) => {
+      placements.push(this.getNameNodePendantMountSingle(num));
+      placements.push(this.getNameNodePendantMountDouble(num));
     });
 
     placements.push(

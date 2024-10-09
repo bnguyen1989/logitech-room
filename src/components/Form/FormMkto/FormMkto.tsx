@@ -111,7 +111,8 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 
       if (isShowLabelPoliticUSA) {
         row.style.setProperty("grid-column", "span 2", "important");
-        const wrapLabelMktoFiels = row.querySelector<HTMLDivElement>(".mktoHtmlText");
+        const wrapLabelMktoFiels =
+          row.querySelector<HTMLDivElement>(".mktoHtmlText");
         if (wrapLabelMktoFiels) {
           wrapLabelMktoFiels.style.setProperty("width", "auto", "important");
         }
@@ -170,7 +171,6 @@ export const FormMkto: React.FC<FormMktoPropsI> = ({
 
     MktoForms2.whenReady((form: any) => {
       console.log("Logger::Mkto:whenReady");
-      // debugger;
       if (initialValues) {
         Object.entries(initialValues).forEach(([key, value]) => {
           form.setValues({

@@ -1,5 +1,5 @@
 export type nameAttributeType = string;
-export type ConditionMountType = Record<nameAttributeType, number>;
+export type ConditionMountType = Record<nameAttributeType, number | string>;
 
 export type ActionMountType = {
   add: {
