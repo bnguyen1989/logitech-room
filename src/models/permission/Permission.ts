@@ -22,16 +22,17 @@ import { CountableMountElement } from "./elements/mounts/CountableMountElement";
 import { ReferenceMountElement } from "./elements/mounts/ReferenceMountElement";
 import { RecommendationElementHandler } from "./handlers/property/RecommendationElementHandler";
 import { RequiredElementHandler } from "./handlers/property/RequiredElementHandler";
-import { ReservationMountHandler } from "./handlers/mounts/ReservationMountHandler";
+import { ReservationMountHandler } from "./handlers/mounts/countable/ReservationMountHandler";
 import { DependentMountHandler } from "./handlers/mounts/DependentMountHandler";
 import { DisabledCounterElementHandler } from "./handlers/property/DisabledCounterElementHandler";
 import { DirectionStep, StepName } from "../../utils/baseUtils";
 import { AvailableStepHandler } from "./handlers/property/AvailableStepHandler";
 import { DisabledColorElementHandler } from "./handlers/property/DisabledColorElementHandler";
 import { BundleMountElementRule } from "./rules/BundleMountElementRule";
-import { SecondaryMountHandler } from "./handlers/mounts/SecondaryMountHandler";
+import { SecondaryMountHandler } from "./handlers/mounts/countable/SecondaryMountHandler";
 import { NameNodeHandler } from "./handlers/NameNodeHandler";
 import { ConditionAttributesMountHandler } from "./handlers/mounts/ConditionAttributesMountHandler";
+import { ConditionNameNodeHandler } from "./handlers/mounts/ConditionNameNodeHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName;
@@ -111,6 +112,7 @@ export class Permission {
     new DisabledCounterElementHandler().handle(step);
     new DisabledColorElementHandler().handle(step);
     new ConditionAttributesMountHandler().handle(step);
+    new ConditionNameNodeHandler().handle(step);
   }
 
   public addStep(step: Step): Permission {
