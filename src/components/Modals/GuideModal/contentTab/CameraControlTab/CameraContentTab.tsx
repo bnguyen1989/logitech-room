@@ -48,27 +48,25 @@ const data: Record<
   },
 };
 
-interface PropsI {
-  type: "desktop" | "tablet";
-}
-export const CameraControlTab: React.FC<PropsI> = (props) => {
-  const { type } = props;
-
-  const { title, iconsData } = data[type];
+export const CameraControlTab: React.FC = () => {
   return (
-    <div className={s.cameraControlTab}>
-      <div className={s.title}>{title}</div>
-      <div className={s.icons_wrapper}>
-        {iconsData.map((iconData, index) => (
-          <div key={index} className={s.icon_wrapper}>
-            {iconData.icon}
-            <div
-              className={s.text}
-              dangerouslySetInnerHTML={{ __html: iconData.text }}
-            ></div>
+    <>
+      {Object.entries(data).map(([key, { title, iconsData }]) => (
+        <div className={`${s.cameraControlTab} ${s[key]}`}>
+          <div className={s.title}>{title}</div>
+          <div className={s.icons_wrapper}>
+            {iconsData.map((iconData, index) => (
+              <div key={index} className={s.icon_wrapper}>
+                {iconData.icon}
+                <div
+                  className={s.text}
+                  dangerouslySetInnerHTML={{ __html: iconData.text }}
+                ></div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      ))}
+    </>
   );
 };
