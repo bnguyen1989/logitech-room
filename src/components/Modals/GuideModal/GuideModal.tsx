@@ -20,10 +20,7 @@ import { setGuideModal } from "../../../store/slices/modals/Modals.slice";
 const tabs: TabDataI[] = [
   {
     icon: <CameraControlsSVG />,
-    contents: [
-      <CameraControlTab type="desktop" />,
-      <CameraControlTab type="tablet" />,
-    ],
+    contents: [<CameraControlTab />],
   },
   {
     icon: <DimensionSVG />,

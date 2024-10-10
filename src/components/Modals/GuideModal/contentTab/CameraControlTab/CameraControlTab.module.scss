@@ -35,16 +35,24 @@
   }
 }
 
+.desktop {
+  display: flex;
+}
+
+.tablet {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .cameraControlTab {
     .title {
       font-size: 26px;
       line-height: 1.3;
     }
-  
+
     .icons_wrapper {
       gap: 20px;
-  
+
       .icon_wrapper {
         max-width: 150px;
         display: flex;
@@ -56,7 +64,7 @@
           width: 50px;
           height: 50px;
         }
-  
+
         .text {
           width: 90px;
           font-size: 16px;
@@ -64,5 +72,11 @@
         }
       }
     }
+  }
+  .desktop {
+    display: none;
+  }
+  .tablet {
+    display: flex;
   }
 }
