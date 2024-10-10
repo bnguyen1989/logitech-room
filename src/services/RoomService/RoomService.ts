@@ -6,11 +6,13 @@ import {
   SoftwareServicesName,
   isBundleElement,
   isCameraElement,
+  isSoftwareService,
   isTapElement,
 } from "../../utils/permissionUtils";
 import { isShowPriceByLocale } from "../../utils/productUtils";
 import { LanguageService } from "../LanguageService/LanguageService";
 import { PriceService } from "../PriceService/PriceService";
+import { SoftwarePriceService } from "../SoftwarePriceService/SoftwarePriceService";
 import { ThreekitService } from "../Threekit/ThreekitService";
 import { OrdersI } from "../Threekit/type";
 import { RoomApi } from "../api/Server/RoomApi/RoomApi";
@@ -73,15 +75,25 @@ export class RoomService {
 
     const isShowPrice = isShowPriceByLocale(locale);
 
-    const priceDataTableSoftwareServices =
-      await new PriceService().getDataTablePriceSoftwareServices();
-
     return Promise.all(
       dataOrders.map(async (dataOrder) => {
         const { name, data } = dataOrder;
         const isContainBundle = data.some((item) =>
           isBundleElement(JSON.parse(item.data).keyPermission)
         );
+
+        const softwareServiceName = data.reduce<string>((acc, item) => {
+          const card = JSON.parse(item.data) as CardI;
+          if (!isSoftwareService(card.keyPermission)) return acc;
+          acc = card.keyPermission;
+          return acc;
+        }, "");
+
+        const softwarePriceService = new SoftwarePriceService(
+          softwareServiceName,
+          locale
+        );
+        await softwarePriceService.loadData();
 
         const { cardsData, softwareCardExtendedWarranty } =
           this.processCardDataCSV(data);
@@ -106,17 +118,15 @@ export class RoomService {
               sku
             );
             const priceSoftware =
-              new PriceService().getPriceForSoftwareServices(
-                priceDataTableSoftwareServices,
-                locale,
-                sku,
-                title
-              );
+              softwarePriceService.getPriceForSoftwareServices(sku, title);
             const price = dataProduct.price ?? priceSoftware ?? 0.0;
             const amount = price * parseInt(count);
 
             let productName: string = title;
-            if (softwareCardExtendedWarranty) {
+            if (
+              softwareCardExtendedWarranty &&
+              card.key === StepName.SoftwareServices
+            ) {
               productName = `${softwareCardExtendedWarranty.title} ${softwareCardExtendedWarranty.selectValue} - ${title}`;
             }
 

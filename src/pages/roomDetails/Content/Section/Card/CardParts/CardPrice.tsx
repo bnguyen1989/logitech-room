@@ -13,7 +13,7 @@ export const CardPrice: React.FC<{
 
   if (isHide) return <div className={s.amount}></div>;
 
-  if (!priceData) return null;
+  if (!priceData || !priceData.amount) return null;
 
   if (priceData?.isContactReseller) {
     return (
