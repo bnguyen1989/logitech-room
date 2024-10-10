@@ -14,6 +14,7 @@ import {
   isBundleElement,
   isCameraElement,
   isExtendWarranty,
+  isSoftwareService,
   isTapElement,
 } from "../../utils/permissionUtils";
 import { useAppSelector } from "../../hooks/redux";
@@ -24,6 +25,7 @@ import {
 import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
 import { PriceService } from "../../services/PriceService/PriceService";
 import { isShowPriceByLocale } from "../../utils/productUtils";
+import { SoftwarePriceService } from "../../services/SoftwarePriceService/SoftwarePriceService";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -60,20 +62,6 @@ export const RoomDetails: React.FC = () => {
     return new PriceService().formatPrice(price, formattedCurrency);
   };
 
-  const getPriceDataSoftwareServices = (locale: string) => {
-    return new PriceService()
-      .getDataTablePriceSoftwareServices()
-      .then((data) => {
-        return (sku: string, title?: string) =>
-          new PriceService().getPriceForSoftwareServices(
-            data,
-            locale,
-            sku,
-            title
-          );
-      });
-  };
-
   useEffect(() => {
     setIsLoaded(true);
     new ThreekitService()
@@ -93,9 +81,18 @@ export const RoomDetails: React.FC = () => {
           currency: "USD",
         };
 
-        const getPriceForSoftwareServices = await getPriceDataSoftwareServices(
+        const softwareServiceName = room.cart.reduce<string>((acc, item) => {
+          const card = JSON.parse(item.metadata.data) as CardI;
+          if (!isSoftwareService(card.keyPermission)) return acc;
+          acc = card.keyPermission;
+          return acc;
+        }, "");
+
+        const softwarePriceService = new SoftwarePriceService(
+          softwareServiceName,
           locale.currencyLocale
         );
+        await softwarePriceService.loadData();
 
         const formatPrice = getFormatPrice(locale.currency);
         const isShowPrice = isShowPriceByLocale(locale.currencyLocale);
@@ -175,10 +172,7 @@ export const RoomDetails: React.FC = () => {
               isBundleCard ? sku + "*" : sku
             }`;
 
-            const priceSoftwareServices = getPriceForSoftwareServices(
-              sku,
-              title
-            );
+            const priceSoftwareServices = softwarePriceService.getPriceForSoftwareServices(sku, title);
 
             const priceNumber =
               dataProduct.price ?? priceSoftwareServices ?? 0.0;

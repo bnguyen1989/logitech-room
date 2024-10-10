@@ -1613,6 +1613,15 @@ export const isTapMount = (name: string) => {
   ]);
 };
 
+export const isSoftwareService = (name: string) => {
+  return isCompareName(name)([
+    SoftwareServicesName.SupportService,
+    SoftwareServicesName.EssentialServicePlan,
+    SoftwareServicesName.LogitechSync,
+    SoftwareServicesName.ExtendedWarranty,
+  ]);
+}
+
 export const isSupportService = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.SupportService]);
 };
