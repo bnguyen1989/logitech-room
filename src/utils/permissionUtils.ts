@@ -738,6 +738,10 @@ export function createStepAudioExtensions() {
         [CameraName.RallyPlus]: {
           active: true,
         },
+      }).addRequiredDependence({
+        [CameraName.RallyPlus]: {
+          active: true,
+        },
       })
   );
   const group2 = new GroupElement().addElement(

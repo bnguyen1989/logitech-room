@@ -759,7 +759,7 @@ export function changeCountElement(
     const countPrevActiveAutoItem = Object.values(
       prevValueAutoChangeItems
     ).reduce((acc, v) => {
-      if (v !== 0) return acc + 1;
+      if (v !== 0 && v) return acc + 1;
       return acc;
     }, 0);
 
@@ -929,7 +929,7 @@ export function changeCountElement(
       }
     }
 
-    if (value === card.counter.min) {
+    if (value === card.counter.min && !element.getRequired()) {
       removeElement();
     }
   };

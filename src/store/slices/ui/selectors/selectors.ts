@@ -472,6 +472,17 @@ export const getDisabledActionByKeyPermission =
     res.color = element.getDisabledColor();
     return res;
   };
+
+export const getIsRequiredCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    if (!step) return false;
+    const element = step.getElementByName(keyPermission);
+    if (!element) return false;
+    return element.getRequired();
+  };
+  
 export const getHiddenActionByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const res = {

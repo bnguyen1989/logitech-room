@@ -108,8 +108,11 @@ export const GuideModal: React.FC = () => {
         tabIndex: 0,
         contentIndex: 0,
       });
-      return;
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
     const timer = setTimeout(() => {
       handleNext();
     }, 5000);

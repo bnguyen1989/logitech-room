@@ -15,6 +15,7 @@ import {
   getDisabledActionByKeyPermission,
   getHiddenActionByKeyPermission,
   getIsRecommendedCardByKeyPermission,
+  getIsRequiredCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
   getSubTitleCardByKeyPermission,
@@ -74,6 +75,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const isRequiredCard = useAppSelector(
+    getIsRequiredCardByKeyPermission(activeStep, keyItemPermission)
+  );
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -108,6 +112,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
   };
 
   const handleClick = () => {
+    if (isRequiredCard) return;
     const { attributeName } = card.dataThreekit;
 
     getTKAnalytics().optionInteraction({

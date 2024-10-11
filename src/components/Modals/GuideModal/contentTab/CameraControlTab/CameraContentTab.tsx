@@ -51,8 +51,8 @@ const data: Record<
 export const CameraControlTab: React.FC = () => {
   return (
     <>
-      {Object.entries(data).map(([key, { title, iconsData }]) => (
-        <div className={`${s.cameraControlTab} ${s[key]}`}>
+      {Object.entries(data).map(([key, { title, iconsData }], index) => (
+        <div key={index} className={`${s.cameraControlTab} ${s[key]}`}>
           <div className={s.title}>{title}</div>
           <div className={s.icons_wrapper}>
             {iconsData.map((iconData, index) => (
