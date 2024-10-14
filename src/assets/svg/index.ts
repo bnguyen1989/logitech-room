@@ -20,3 +20,4 @@ export { DimensionSVG } from "./Dimension.tsx";
 export { InfoSVG } from "./Info.tsx";
 export { ProductInfoSVG } from "./ProductInfo.tsx";
 export { MouseSVG } from "./Mouse.tsx";
+export { DisplaySVG } from "./Display.tsx";

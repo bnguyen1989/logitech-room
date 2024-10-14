@@ -19,10 +19,10 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
+  getDisplayType,
   getIsSelectedCardByKeyPermission,
   getPermission,
   getPropertyCounterCardByKeyPermission,
-  getSelectData,
   getStepNameByKeyPermission,
 } from "../../ui/selectors/selectors";
 import {
@@ -34,35 +34,43 @@ import { ReferenceMountElement } from "../../../../models/permission/elements/mo
 import { StepName } from "../../../../utils/baseUtils";
 import { AttributeMountElement } from "../../../../models/permission/elements/mounts/AttributeMountElement";
 import { Configuration } from "@threekit/rest-api";
-import { getTVMountBySettings } from "../../../../utils/permissionUtils";
+import {
+  getTVMountByName,
+  isCameraElement,
+  TVName,
+} from "../../../../utils/permissionUtils";
 
-export const setDefaultsNode = (stepName: StepName) => {
+export const updateDisplayNode = (displayType: TVName, stepName: StepName) => {
   return (store: Store) => {
     const state = store.getState();
-    if (stepName !== StepName.ConferenceCamera) return;
-
-    const selectData = getSelectData(state);
-    const keyPermissions = [StepName.RoomSize, StepName.Platform].map((key) => {
-      const data = selectData[key];
-      return Object.values(data).find((item) => item.selected.length > 0)
-        ?.selected[0];
-    });
-    const { 0: keyPermissionRoom, 1: keyPermissionPlatform } = keyPermissions;
-    if (!keyPermissionRoom || !keyPermissionPlatform) return;
-    const tvMount = getTVMountBySettings(
-      keyPermissionRoom,
-      keyPermissionPlatform
-    );
+    const tvMount = getTVMountByName(displayType);
 
     const nameNode = tvMount.getNameNode();
-    const nodes = getNodes(state);
-    if (nodes[nameNode]) return;
 
     const card = getCardByKeyPermission(stepName, tvMount.name)(state);
     const asset = getAssetFromCard(card)(state);
 
     setElementByNameNode(asset.id, tvMount.getNameNode())(store);
     store.dispatch(disabledHighlightNode(nameNode));
+  };
+};
+
+export const updateDisplayNodeByKeyPermission = (
+  keyPermission: string,
+  stepName: StepName
+) => {
+  return (store: Store) => {
+    if (stepName !== StepName.ConferenceCamera) return;
+    if (!isCameraElement(keyPermission)) return;
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    const element = step.getElementByName(keyPermission);
+    if (element?.getHiddenDisplay()) return;
+
+    const displayType = getDisplayType(state);
+    if (!displayType) return;
+    updateDisplayNode(displayType, stepName)(store);
   };
 };
 

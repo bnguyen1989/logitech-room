@@ -11,6 +11,8 @@ export class BaseElement extends Element<BaseElement> {
   private isDisabledColor: boolean = false;
   private property: Record<string, any> = {};
   private _isSecondary: boolean = false;
+  private isHiddenDisplay: boolean = true;
+  private recommendedDisplay: Record<string, boolean> = {};
 
   constructor(name: string) {
     super();
@@ -101,6 +103,24 @@ export class BaseElement extends Element<BaseElement> {
     return this.isDisabledColor;
   }
 
+  public setHiddenDisplay(value: boolean) {
+    this.isHiddenDisplay = value;
+    return this;
+  }
+
+  public getHiddenDisplay(): boolean {
+    return this.isHiddenDisplay;
+  }
+
+  public addRecommendedDisplay(key: string, value: boolean) {
+    this.recommendedDisplay[key] = value;
+    return this;
+  }
+
+  public getRecommendedDisplay(): Record<string, boolean> {
+    return this.recommendedDisplay;
+  }
+
   public isEquals(element: BaseElement): boolean {
     return this.name === element.name;
   }
@@ -114,6 +134,8 @@ export class BaseElement extends Element<BaseElement> {
     baseElement.setDisabledCounter(this.getDisabledCounter());
     baseElement.setDisabledColor(this.getDisabledColor());
     baseElement.setProperty(this.getProperty());
+    baseElement.setSecondary(this.getSecondary());
+    baseElement.setHiddenDisplay(this.getHiddenDisplay());
     return baseElement;
   }
 }

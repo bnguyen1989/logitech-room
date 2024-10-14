@@ -1,5 +1,6 @@
 import { Middleware } from "@reduxjs/toolkit";
 import {
+  setDefaultsDisplay,
   updateActiveCardsByPermissionData,
   updateAssetIdByKeyPermission,
   updateColorForAutoChangeItems,
@@ -11,7 +12,8 @@ import {
   changeCountElement,
   deleteNodesByCards,
   removeElement,
-  setDefaultsNode,
+  updateDisplayNode,
+  updateDisplayNodeByKeyPermission,
   updateHighlightNodes,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
@@ -152,6 +154,7 @@ export const middleware: Middleware =
         updateNodes(store, attributeNames);
 
         updateAssetIdByKeyPermission(key)(store);
+        updateDisplayNodeByKeyPermission(key, activeStep)(store);
         break;
       }
 
@@ -166,7 +169,7 @@ export const middleware: Middleware =
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card, activeStep)(store);
-        setDefaultsNode(activeStep)(store);
+        setDefaultsDisplay(activeStep)(store);
         break;
       }
 
@@ -179,7 +182,7 @@ export const middleware: Middleware =
 
         showModalByStep(stepName)(store);
 
-        setDefaultsNode(stepName)(store);
+        setDefaultsDisplay(stepName)(store);
 
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
@@ -297,6 +300,13 @@ export const middleware: Middleware =
         const updatedNodes = action.payload;
 
         updateHighlightNodes(updatedNodes)(store);
+        break;
+      }
+      case UI_ACTION_NAME.CHANGE_DISPLAY_TYPE: {
+        const displayType = action.payload;
+        const activeStep = getActiveStep(state);
+
+        updateDisplayNode(displayType, activeStep)(store);
         break;
       }
       default:
