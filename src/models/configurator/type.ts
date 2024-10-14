@@ -88,5 +88,6 @@ export enum AttributeName {
   RoomDeviceManagementSoftware = "Room Device Management Software",
   RoomSupportService = "Room Support Service",
   RoomExtendWarranty = "Room Extended Warranty",
+  RoomEssentialService = "Room Essential Service",
   RoomMeetUp2ActiveCable = "Room MeetUp 2 Active Cable",
 }

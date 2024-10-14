@@ -1,4 +1,4 @@
-import { SoftwareServicesName } from "./permissionUtils";
+import { CameraName, SoftwareServicesName } from "./permissionUtils";
 
 export const getSKUProductByExtendedWarranty = (
   productName: string,
@@ -6,12 +6,12 @@ export const getSKUProductByExtendedWarranty = (
 ) => {
   const number = year?.split(" ");
   if (!number && number[0]) return null;
-  const sku = data[number[0]][productName];
+  const sku = dataExtendedWarranty[number[0]][productName];
   if (!sku) return null;
   return sku;
 };
 
-const data: Record<string, Record<string, string>> = {
+const dataExtendedWarranty: Record<string, Record<string, string>> = {
   "1": {
     "Logitech Rally Bar Huddle": "994-000248",
     "Logitech Rally Bar Mini": "994-000138",
@@ -56,41 +56,38 @@ export const isShowPriceByLocale = (locale: string) => {
 };
 
 export const getExclusionServiceByLocale = (locale: string) => {
-  const {
-    ExtendedWarranty,
-    EssentialServicePlan,
-    SupportService,
-  } = SoftwareServicesName;
+  const { ExtendedWarranty, EssentialServicePlan, SupportService } =
+    SoftwareServicesName;
 
   const data: Record<string, string[]> = {
-    "ExtendedWarrantyOnly": [ExtendedWarranty],
-    "EssentialAndSupport": [EssentialServicePlan, SupportService],
-    "AllServices": [ExtendedWarranty, EssentialServicePlan, SupportService],
+    ExtendedWarrantyOnly: [ExtendedWarranty],
+    EssentialAndSupport: [EssentialServicePlan, SupportService],
+    AllServices: [ExtendedWarranty, EssentialServicePlan, SupportService],
   };
 
   const mapping: Record<string, string[]> = {
-    "AU": data.ExtendedWarrantyOnly,
-    "DE": data.ExtendedWarrantyOnly,
-    "TH": data.ExtendedWarrantyOnly,
-    "KE": data.ExtendedWarrantyOnly,
+    AU: data.ExtendedWarrantyOnly,
+    DE: data.ExtendedWarrantyOnly,
+    TH: data.ExtendedWarrantyOnly,
+    KE: data.ExtendedWarrantyOnly,
 
-    "BR": data.AllServices,
-    "PR": data.AllServices,
-    "KH": data.AllServices,
-    "NG": data.AllServices,
-    "KZ": data.AllServices,
+    BR: data.AllServices,
+    PR: data.AllServices,
+    KH: data.AllServices,
+    NG: data.AllServices,
+    KZ: data.AllServices,
 
-    "CR": data.EssentialAndSupport,
-    "EC": data.EssentialAndSupport,
-    "UY": data.EssentialAndSupport,
-    "NI": data.EssentialAndSupport,
-    "PA": data.EssentialAndSupport,
-    "AL": data.EssentialAndSupport,
-    "MM": data.EssentialAndSupport,
-    "LK": data.EssentialAndSupport,
-    "BD": data.EssentialAndSupport,
-    "MT": data.EssentialAndSupport,
-    "UA": data.EssentialAndSupport,
+    CR: data.EssentialAndSupport,
+    EC: data.EssentialAndSupport,
+    UY: data.EssentialAndSupport,
+    NI: data.EssentialAndSupport,
+    PA: data.EssentialAndSupport,
+    AL: data.EssentialAndSupport,
+    MM: data.EssentialAndSupport,
+    LK: data.EssentialAndSupport,
+    BD: data.EssentialAndSupport,
+    MT: data.EssentialAndSupport,
+    UA: data.EssentialAndSupport,
   };
 
   const key = Object.keys(mapping).find((k) =>
@@ -100,3 +97,29 @@ export const getExclusionServiceByLocale = (locale: string) => {
   return key ? mapping[key] : undefined;
 };
 
+export const getSKUSelectServiceByCamera = (
+  cameraName: string,
+  year: string
+) => {
+  if (!cameraName || !year) return null;
+  const number = year?.split(" ");
+  if (!number && number[0]) return null;
+  const data: Record<string, Record<string, string>> = {
+    "1": {
+      [CameraName.MeetUp2]: "994-000368",
+      [CameraName.RallyBarHuddle]: "994-000368",
+    },
+    "3": {
+      [CameraName.MeetUp2]: "994-000369",
+      [CameraName.RallyBarHuddle]: "994-000369",
+    },
+    "5": {
+      [CameraName.MeetUp2]: "994-000370",
+      [CameraName.RallyBarHuddle]: "994-000370",
+    },
+  };
+
+  const sku = data[number[0]][cameraName];
+  if (!sku) return null;
+  return sku;
+};

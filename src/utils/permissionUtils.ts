@@ -1218,7 +1218,7 @@ export const isSoftwareService = (name: string) => {
     SoftwareServicesName.LogitechSync,
     SoftwareServicesName.ExtendedWarranty,
   ]);
-}
+};
 
 export const isSupportService = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.SupportService]);
@@ -1226,6 +1226,10 @@ export const isSupportService = (name: string) => {
 
 export const isExtendWarranty = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.ExtendedWarranty]);
+};
+
+export const isEssentialService = (name: string) => {
+  return isCompareName(name)([SoftwareServicesName.EssentialServicePlan]);
 };
 
 export const isBundleElement = (name: string) => {

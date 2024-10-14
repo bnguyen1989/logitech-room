@@ -31,6 +31,7 @@ import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorIt
 import {
   getPermissionNameByItemName,
   getSortedKeyPermissions,
+  isEssentialService,
   isExtendWarranty,
   isSupportService,
 } from "../../../../utils/permissionUtils";
@@ -663,6 +664,18 @@ function setSoftwareServicesData(configurator: Configurator) {
       if (isSupport(name)) {
         const baseCard = softwareServicesBaseData.find((item) =>
           isSupportService(item.keyPermission)
+        );
+
+        if (!baseCard) return;
+
+        setSelectCards(baseCard, value);
+        return;
+      }
+
+      const isEssential = (name: string) => name.includes("Essential");
+      if (isEssential(name)) {
+        const baseCard = softwareServicesBaseData.find((item) =>
+          isEssentialService(item.keyPermission)
         );
 
         if (!baseCard) return;

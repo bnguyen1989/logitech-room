@@ -20,8 +20,10 @@ import {
 } from "./selectors";
 import {
   PlatformName,
-  SoftwareServicesName,
   isBundleElement,
+  isCameraElement,
+  isExtendWarranty,
+  isSupportService,
   isTapElement,
 } from "../../../../utils/permissionUtils";
 import {
@@ -33,7 +35,10 @@ import {
 import { localeToCurrency } from "../../../../utils/localeUtils";
 import { deepCopy } from "../../../../utils/objUtils";
 import { Byod } from "../../../../types/textTypePage";
-import { getSKUProductByExtendedWarranty } from "../../../../utils/productUtils";
+import {
+  getSKUProductByExtendedWarranty,
+  getSKUSelectServiceByCamera,
+} from "../../../../utils/productUtils";
 import { capitalizeEachWord } from "../../../../utils/strUtils";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
@@ -211,35 +216,100 @@ const getCardData = (state: RootState): CardDataI[] => {
 };
 
 const processSoftwareServiceCardData = (cardData: CardDataI[]) => {
-  const softwareCardData = cardData.find((item: CardDataI) => {
-    const card = JSON.parse(item.metadata.data) as CardI;
-    return card.keyPermission === SoftwareServicesName.ExtendedWarranty;
-  });
-  const additional: CardDataI[] = [];
-  if (softwareCardData) {
-    const year = softwareCardData?.metadata?.selectValue;
-    cardData.forEach((dataCard) => {
-      const { data } = dataCard.metadata;
-      const card = JSON.parse(data) as CardI;
-      const newSKU = getSKUProductByExtendedWarranty(
-        card.keyPermission,
-        year ?? ""
-      );
-      if (!newSKU) return;
+  const initialState = {
+    extendedWarranty: undefined as CardDataI | undefined,
+    selectService: undefined as CardDataI | undefined,
+  };
 
-      card.key = StepName.SoftwareServices;
-      additional.push({
-        ...dataCard,
-        metadata: {
-          ...dataCard.metadata,
-          data: JSON.stringify(card),
-          sku: newSKU,
-        },
-      });
-    });
+  const { extendedWarranty, selectService } = cardData.reduce((acc, item) => {
+    const card = JSON.parse(item.metadata.data) as CardI;
+
+    if (isExtendWarranty(card.keyPermission)) {
+      acc.extendedWarranty = item;
+    }
+
+    if (isSupportService(card.keyPermission)) {
+      acc.selectService = item;
+    }
+
+    return acc;
+  }, initialState);
+
+  const res: CardDataI[] = [...cardData];
+
+  if (extendedWarranty) {
+    const additionalCards: CardDataI[] = getAdditionalExtendedWarrantyCards(
+      cardData,
+      extendedWarranty
+    );
+    res.push(...additionalCards);
   }
 
-  return [...cardData, ...additional];
+  if (selectService) {
+    const newSKU = getNewSKUSelectService(cardData, selectService);
+    if (newSKU) {
+      selectService.metadata.sku = newSKU;
+    }
+  }
+
+  return res;
+};
+
+const getAdditionalExtendedWarrantyCards = (
+  cardData: CardDataI[],
+  extendedWarranty: CardDataI
+) => {
+  const additionalCards: CardDataI[] = [];
+  const year = extendedWarranty?.metadata?.selectValue;
+
+  cardData.forEach((dataCard) => {
+    const card = JSON.parse(dataCard.metadata.data) as CardI;
+    const newSKU = getSKUProductByExtendedWarranty(
+      card.keyPermission,
+      year ?? ""
+    );
+
+    if (!newSKU) return;
+
+    card.key = StepName.SoftwareServices;
+    additionalCards.push({
+      ...dataCard,
+      metadata: {
+        ...dataCard.metadata,
+        data: JSON.stringify(card),
+        sku: newSKU,
+      },
+    });
+  });
+
+  return additionalCards;
+};
+
+const getNewSKUSelectService = (
+  cardData: CardDataI[],
+  selectService: CardDataI
+) => {
+  const year = selectService?.metadata?.selectValue;
+
+  const cameraCard = cardData.reduce<CardI | undefined>((acc, item) => {
+    const card = JSON.parse(item.metadata.data) as CardI;
+    if (
+      card.key === StepName.ConferenceCamera &&
+      isCameraElement(card.keyPermission)
+    ) {
+      acc = card;
+    }
+    return acc;
+  }, undefined);
+
+  if (cameraCard) {
+    const newSKU = getSKUSelectServiceByCamera(
+      cameraCard.keyPermission,
+      year ?? ""
+    );
+
+    return newSKU;
+  }
 };
 
 const processCards = (cards: CardI[]) => (state: RootState) => {
