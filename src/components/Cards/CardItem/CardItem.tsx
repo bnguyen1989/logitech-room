@@ -131,6 +131,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
 
   const isShowColor = !hiddenActions.color && availableColorsData.length > 1;
 
+  const isShowDisplayToggle = !hiddenActions.display;
+
   const isAction = card.counter || card.select || isShowColor;
 
   const getClassNameCardContainer = () => {
@@ -163,7 +165,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
                 <div className={s.subtitle}>{subTitle}</div>
               )}
             </div>
-            <DisplayToggle />
+            {isShowDisplayToggle && <DisplayToggle disabled={!isActiveCard} />}
             {isAction && <div className={s.divider}></div>}
             <div className={s.content}>
               {isAction && (

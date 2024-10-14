@@ -14,6 +14,7 @@ export enum UI_ACTION_NAME {
   CHANGE_ACTIVE_STEP = "ui/changeActiveStep",
   MOVE_TO_START_STEP = "ui/moveToStartStep",
   CLEAR_ALL_ACTIVE_CARDS_STEPS = "ui/clearAllActiveCardsSteps",
+  CHANGE_DISPLAY_TYPE = "ui/changeDisplayType",
 }
 
 export enum CUSTOM_UI_ACTION_NAME {

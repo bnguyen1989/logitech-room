@@ -16,6 +16,7 @@ import {
   addActiveCard,
   addActiveCards,
   changeActiveStep,
+  changeDisplayType,
   changeProcessInitData,
   clearAllActiveCardsSteps,
   createItem,
@@ -31,6 +32,8 @@ import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorIt
 import {
   getPermissionNameByItemName,
   getSortedKeyPermissions,
+  getTVMountNameBySettings,
+  isCameraElement,
   isExtendWarranty,
   isSupportService,
 } from "../../../../utils/permissionUtils";
@@ -49,11 +52,13 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
+  getDisplayType,
   getLocale,
   getPermission,
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
   getPropertySelectValueCardByKeyPermission,
+  getSelectData,
   getSelectedCardsByStep,
   getStepNameByKeyPermission,
 } from "../selectors/selectors";
@@ -164,6 +169,40 @@ export const getUiHandlers = (store: Store) => {
       store.dispatch(changeAssetId(configurator.assetId));
     }
   );
+};
+
+export const setDefaultsDisplay = (stepName: StepName) => {
+  return (store: Store) => {
+    const state = store.getState();
+    if (stepName !== StepName.ConferenceCamera) return;
+
+    const displayName = getDisplayType(state);
+    if (displayName) {
+      const permission = getPermission(stepName)(state);
+      const activeElements = permission.getActiveElements();
+      const cameraElement = activeElements.find((item) =>
+        isCameraElement(item.name)
+      );
+      if (cameraElement && !cameraElement.getHiddenDisplay()) {
+        return;
+      }
+    }
+
+    const selectData = getSelectData(state);
+    const keyPermissions = [StepName.RoomSize, StepName.Platform].map((key) => {
+      const data = selectData[key];
+      return Object.values(data).find((item) => item.selected.length > 0)
+        ?.selected[0];
+    });
+    const { 0: keyPermissionRoom, 1: keyPermissionPlatform } = keyPermissions;
+    if (!keyPermissionRoom || !keyPermissionPlatform) return;
+    const tvMountName = getTVMountNameBySettings(
+      keyPermissionRoom,
+      keyPermissionPlatform
+    );
+
+    store.dispatch(changeDisplayType(tvMountName));
+  };
 };
 
 export const updateColorForAutoChangeItems = (

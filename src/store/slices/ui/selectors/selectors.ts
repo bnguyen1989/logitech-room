@@ -476,6 +476,7 @@ export const getHiddenActionByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const res = {
       color: false,
+      display: false,
     };
     const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
@@ -484,6 +485,7 @@ export const getHiddenActionByKeyPermission =
     if (!element) return res;
 
     res.color = element.getHiddenColor();
+    res.display = element.getHiddenDisplay();
 
     return res;
   };
@@ -565,3 +567,5 @@ const getIsRecommendedCardFromMetadata = (metadata: Record<string, string>) => {
 export const getProductNameFromMetadata = (metadata: MetadataI) => {
   return metadata["Product Name"]?.trim();
 };
+
+export const getDisplayType = (state: RootState) => state.ui.typeDisplay;
