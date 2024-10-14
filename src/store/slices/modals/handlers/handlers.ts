@@ -64,9 +64,6 @@ export const showModalByStep = (stepName: StepName) => {
         store.dispatch(
           setGuideModal({
             isOpen: true,
-            dataModal: {
-              isFirst: true,
-            },
           })
         );
       }
