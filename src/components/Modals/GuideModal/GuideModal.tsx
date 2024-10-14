@@ -4,7 +4,7 @@ import { IconButton } from "../../Buttons/IconButton/IconButton";
 import {
   CameraControlsSVG,
   CloseSVG,
-  DimensionSVG,
+  // DimensionSVG,
   InfoSVG,
   ProductInfoSVG,
 } from "../../../assets";
@@ -22,15 +22,15 @@ const tabs: TabDataI[] = [
     icon: <CameraControlsSVG />,
     contents: [<CameraControlTab />],
   },
-  {
-    icon: <DimensionSVG />,
-    contents: [
-      <TextTab
-        title="Room and product layout dimensions"
-        subtitle="Click the button to get more information on how products are placed in the room given the dimensions of the table or room size."
-      />,
-    ],
-  },
+  // {
+  //   icon: <DimensionSVG />,
+  //   contents: [
+  //     <TextTab
+  //       title="Room and product layout dimensions"
+  //       subtitle="Click the button to get more information on how products are placed in the room given the dimensions of the table or room size."
+  //     />,
+  //   ],
+  // },
   {
     icon: <ProductInfoSVG />,
     contents: [
@@ -57,10 +57,17 @@ export const GuideModal: React.FC = () => {
     tabIndex: 0,
     contentIndex: 0,
   });
-  const { isOpen } = useAppSelector(getDataGuideModal);
+  const { isOpen, dataModal } = useAppSelector(getDataGuideModal);
 
   const handleClose = () => {
-    dispatch(setGuideModal({ isOpen: false }));
+    dispatch(
+      setGuideModal({
+        isOpen: false,
+        dataModal: {
+          isFirst: true,
+        },
+      })
+    );
   };
 
   const handleNext = () => {
@@ -129,6 +136,16 @@ export const GuideModal: React.FC = () => {
     return "middle";
   };
 
+  const getHideActions = () => {
+    const res: "skip"[] = [];
+
+    if (dataModal?.isFirst) {
+      res.push("skip");
+    }
+
+    return res;
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -162,6 +179,7 @@ export const GuideModal: React.FC = () => {
             handlePrev={handlePrev}
             handleSkip={handleClose}
             position={getPosition()}
+            hideActions={getHideActions()}
           />
         </div>
       </div>

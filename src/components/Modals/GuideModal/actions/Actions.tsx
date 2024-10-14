@@ -6,11 +6,20 @@ interface PropsI {
   handleNext: () => void;
   handleSkip: () => void;
   position: "start" | "middle" | "end";
+  hideActions?: "skip"[];
 }
 export const Actions: React.FC<PropsI> = (props) => {
-  const { handlePrev, handleNext, handleSkip, position } = props;
+  const {
+    handlePrev,
+    handleNext,
+    handleSkip,
+    position,
+    hideActions = [],
+  } = props;
   const isStart = position === "start";
   const isEnd = position === "end";
+
+  const isHideSkip = hideActions.includes("skip");
 
   return (
     <div className={s.actions}>
@@ -27,7 +36,7 @@ export const Actions: React.FC<PropsI> = (props) => {
         </div>
       </div>
 
-      {isStart && (
+      {isStart && !isHideSkip && (
         <div className={s.skip_button} onClick={handleSkip}>
           Skip, I got this!
         </div>
