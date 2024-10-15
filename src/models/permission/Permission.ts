@@ -33,6 +33,7 @@ import { SecondaryMountHandler } from "./handlers/mounts/countable/SecondaryMoun
 import { NameNodeHandler } from "./handlers/NameNodeHandler";
 import { ConditionAttributesMountHandler } from "./handlers/mounts/ConditionAttributesMountHandler";
 import { ConditionNameNodeHandler } from "./handlers/mounts/ConditionNameNodeHandler";
+import { DisabledDisplayElementHandler } from "./handlers/property/DisabledDisplayElementHandler";
 export class Permission {
   public id: string = IdGenerator.generateId();
   private currentStepName: StepName;
@@ -113,6 +114,7 @@ export class Permission {
     new DisabledColorElementHandler().handle(step);
     new ConditionAttributesMountHandler().handle(step);
     new ConditionNameNodeHandler().handle(step);
+    new DisabledDisplayElementHandler().handle(step);
   }
 
   public addStep(step: Step): Permission {

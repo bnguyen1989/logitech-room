@@ -22,9 +22,24 @@ export class ItemElement extends BaseElement implements Element<ItemElement> {
   private disabledColorDependence: PropertyDependentElement = {};
   private bundleMountsDependence: Record<string, Array<string>> = {};
   public conditionAttributesMount: ConditionAttributesMountType = {};
+  private disabledDisplayDependence: PropertyDependentElement = {};
 
   constructor(name: string) {
     super(name);
+  }
+
+  public addDisabledDisplayDependence(
+    value: PropertyDependentElement
+  ): ItemElement {
+    this.disabledDisplayDependence = {
+      ...this.disabledDisplayDependence,
+      ...value,
+    };
+    return this;
+  }
+
+  public getDisabledDisplayDependence(): PropertyDependentElement {
+    return this.disabledDisplayDependence;
   }
 
   public addConditionAttributesMount(

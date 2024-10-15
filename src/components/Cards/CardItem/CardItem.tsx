@@ -95,6 +95,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   );
   const dispatch = useDispatch();
 
+  console.log("disabledActions", disabledActions);
+  
+
   if (!card) return null;
 
   const handleInfo = () => {
@@ -165,7 +168,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
                 <div className={s.subtitle}>{subTitle}</div>
               )}
             </div>
-            {isShowDisplayToggle && <DisplayToggle disabled={!isActiveCard} />}
+            {isShowDisplayToggle && (
+              <DisplayToggle
+                disabled={!isActiveCard || disabledActions.display}
+              />
+            )}
             {isAction && <div className={s.divider}></div>}
             <div className={s.content}>
               {isAction && (

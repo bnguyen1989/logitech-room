@@ -206,7 +206,7 @@ export function addElement(
 
     const element = step.getElementByName(card.keyPermission);
 
-    if (element instanceof ItemElement) {
+    const bundleMountApply = (element: ItemElement) => {
       const bundleMount = permission.getBundleMountElementsByName(element.name);
       bundleMount.forEach((mount) => {
         const stepNameCard = getStepNameByKeyPermission(mount.name)(state);
@@ -226,6 +226,10 @@ export function addElement(
         }
         updateNameNodesByCondition(mount, cardAsset.id)(store);
       });
+    };
+
+    if (element instanceof ItemElement) {
+      bundleMountApply(element);
 
       const defaultMount = element.getDefaultMount();
 
@@ -356,6 +360,8 @@ export function addElement(
     } else if (element instanceof MountElement) {
       const itemElement = step.getActiveItemElementByMountName(element.name);
       if (!itemElement) return;
+      updateDisplayNodeByKeyPermission(itemElement.name, stepName)(store);
+      bundleMountApply(itemElement);
       const cardItemElement = getCardByKeyPermission(
         stepName,
         itemElement.name

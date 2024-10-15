@@ -1,6 +1,7 @@
 import {
   AudioExtensionName,
   CameraName,
+  isCameraElement,
   PlatformName,
   RoomSizeName,
 } from "../../../utils/permissionUtils";
@@ -70,20 +71,8 @@ export class NameNodeHandler extends Handler {
         }
       }
 
-      if (
-        isBYOD &&
-        (element.name === CameraName.RallyBar ||
-          element.name === CameraName.RallyBarMini)
-      ) {
-        element.getDependenceMount().forEach((dependenceMount) => {
-          if (dependenceMount.name === CameraName.TVMountForVideoBars) {
-            dependenceMount.nodeName = PlacementManager.getNameNodeForCamera(
-              "TV",
-              1,
-              1
-            );
-          }
-        });
+      if (isBYOD && isCameraElement(element.name)) {
+        element.setHiddenDisplay(true);
       }
 
       if (isLargeRoom && isSight) {

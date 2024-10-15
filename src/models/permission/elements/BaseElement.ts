@@ -12,11 +12,21 @@ export class BaseElement extends Element<BaseElement> {
   private property: Record<string, any> = {};
   private _isSecondary: boolean = false;
   private isHiddenDisplay: boolean = true;
+  private isDisabledDisplay: boolean = false;
   private recommendedDisplay: Record<string, boolean> = {};
 
   constructor(name: string) {
     super();
     this.name = name;
+  }
+
+  public setDisabledDisplay(value: boolean) {
+    this.isDisabledDisplay = value;
+    return this;
+  }
+
+  public getDisabledDisplay(): boolean {
+    return this.isDisabledDisplay;
   }
 
   public getSecondary(): boolean {
