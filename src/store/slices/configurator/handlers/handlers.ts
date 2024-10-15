@@ -19,10 +19,10 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
-  getDisplayType,
   getIsSelectedCardByKeyPermission,
   getPermission,
   getPropertyCounterCardByKeyPermission,
+  getPropertyDisplayCardByKeyPermission,
   getStepNameByKeyPermission,
 } from "../../ui/selectors/selectors";
 import {
@@ -68,7 +68,11 @@ export const updateDisplayNodeByKeyPermission = (
     const element = step.getElementByName(keyPermission);
     if (element?.getHiddenDisplay()) return;
 
-    const displayType = getDisplayType(state);
+    const displayType = getPropertyDisplayCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
     if (!displayType) return;
     updateDisplayNode(displayType, stepName)(store);
   };
@@ -206,7 +210,7 @@ export function addElement(
 
     const element = step.getElementByName(card.keyPermission);
 
-    if (element instanceof ItemElement) {
+    const bundleMountApply = (element: ItemElement) => {
       const bundleMount = permission.getBundleMountElementsByName(element.name);
       bundleMount.forEach((mount) => {
         const stepNameCard = getStepNameByKeyPermission(mount.name)(state);
@@ -226,6 +230,10 @@ export function addElement(
         }
         updateNameNodesByCondition(mount, cardAsset.id)(store);
       });
+    };
+
+    if (element instanceof ItemElement) {
+      bundleMountApply(element);
 
       const defaultMount = element.getDefaultMount();
 
@@ -356,6 +364,8 @@ export function addElement(
     } else if (element instanceof MountElement) {
       const itemElement = step.getActiveItemElementByMountName(element.name);
       if (!itemElement) return;
+      updateDisplayNodeByKeyPermission(itemElement.name, stepName)(store);
+      bundleMountApply(itemElement);
       const cardItemElement = getCardByKeyPermission(
         stepName,
         itemElement.name

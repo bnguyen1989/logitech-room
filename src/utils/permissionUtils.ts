@@ -153,26 +153,27 @@ export function createStepConferenceCamera() {
             CameraName.WallMountForVideoBars,
             PlacementManager.getNameNodeForCamera("Wall", 1, 2)
           )
-          // .setDependentMount(
-          //   new MountElement(
-          //     CameraName.WallMountForVideoBars,
-          //     PlacementManager.getNameNodeCameraWallMount()
-          //   )
-          // )
-          .addRecommendedDisplay(TVName.LogitechTVOne, true)
+            // .setDependentMount(
+            //   new MountElement(
+            //     CameraName.WallMountForVideoBars,
+            //     PlacementManager.getNameNodeCameraWallMount()
+            //   )
+            // )
+            .addRecommendedDisplay(TVName.LogitechTVOne, true)
+            .addRecommendedDisplay(TVName.LogitechTVTwo, true)
         )
         .addDependenceMount(
           new MountElement(
             CameraName.TVMountForVideoBars,
-            PlacementManager.getNameNodeForCamera("TV", 1, 2)
+            PlacementManager.getNameNodeForCamera("TV", 1, 1)
           )
-          // .setDependentMount(
-          //   new MountElement(
-          //     CameraName.TVMountForVideoBars,
-          //     PlacementManager.getNameNodeCameraTVMount()
-          //   )
-          // )
-          .addRecommendedDisplay(TVName.LogitechTVTwo, true)
+            // .setDependentMount(
+            //   new MountElement(
+            //     CameraName.TVMountForVideoBars,
+            //     PlacementManager.getNameNodeCameraTVMount()
+            //   )
+            // )
+            .addRecommendedDisplay(TVName.LogitechTVOne, true)
         )
         .setDefaultMount(
           new MountElement(
@@ -190,19 +191,27 @@ export function createStepConferenceCamera() {
         //     PlacementManager.getNameNodeForTV()
         //   )
         // )
-        // .addBundleMount(
-        //   new MountElement(
-        //     TVName.LogitechTVOne,
-        //     PlacementManager.getNameNodeForTV()
-        //   )
-        // )
+        .addBundleMount(
+          new MountElement(
+            TVName.LogitechTVOne,
+            PlacementManager.getNameNodeForTV()
+          )
+        )
         // .addBundleMountsDependence(TVName.LogitechTVTwo, [
         //   PlatformName.GoogleMeet,
         //   PlatformName.MicrosoftTeams,
         //   PlatformName.Zoom,
         // ])
-        // .addBundleMountsDependence(TVName.LogitechTVOne, [PlatformName.BYOD])
+        .addBundleMountsDependence(TVName.LogitechTVOne, [
+          CameraName.TVMountForVideoBars,
+          PlatformName.BYOD,
+        ])
         .setHiddenDisplay(false)
+        .addDisabledDisplayDependence({
+          [CameraName.TVMountForVideoBars]: {
+            active: true,
+          },
+        })
     );
   };
   const group = new GroupElement()
@@ -280,7 +289,17 @@ export function createStepConferenceCamera() {
         .addConditionAttributesMount({
           display: {
             [CameraName.RallyMountingKit]: {
-              nameNodes: [PlatformName.BYOD],
+              condition: {
+                [PlatformName.BYOD]: {
+                  [ConditionPropertyName.ACTIVE]: true,
+                },
+                [CameraName.RallyPlus]: {
+                  [ConditionPropertyName.ACTIVE]: true,
+                  property: {
+                    display: TVName.LogitechTVOne,
+                  },
+                },
+              },
               value: true,
             },
           },

@@ -24,12 +24,17 @@ describe("ConditionAttributesMountHandler", () => {
       .addConditionAttributesMount({
         display: {
           [CameraName.RallyMountingKit]: {
-            nameNodes: [PlatformName.BYOD],
+            condition: {
+              [PlatformName.BYOD]: {
+                active: true,
+              },
+            },
             value: true,
           },
         },
       });
 
+    step.allElements = [byod, rallyPLus];
     step.addValidElement(byod);
     step.addActiveElement(byod);
     step.addValidElement(rallyPLus);

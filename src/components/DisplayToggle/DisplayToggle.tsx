@@ -1,21 +1,31 @@
-import { useDispatch } from "react-redux";
 import { DisplaySVG } from "../../assets";
 import { TVName } from "../../utils/permissionUtils";
 import s from "./DisplayToggle.module.scss";
-import { changeDisplayType } from "../../store/slices/ui/Ui.slice";
-import { getDisplayType } from "../../store/slices/ui/selectors/selectors";
+import {
+  getActiveStep,
+  getDisplayType,
+  getPropertyDisplayCardByKeyPermission,
+} from "../../store/slices/ui/selectors/selectors";
 import { useAppSelector } from "../../hooks/redux";
+import { Application } from "../../models/Application";
+
+declare const app: Application;
+
 interface PropsI {
+  keyItemPermission: string;
   disabled?: boolean;
 }
 export const DisplayToggle: React.FC<PropsI> = (props) => {
-  const { disabled } = props;
-  const dispatch = useDispatch();
+  const { keyItemPermission, disabled } = props;
+  const activeStep = useAppSelector(getActiveStep);
   const typeDisplay = useAppSelector(getDisplayType);
+  const display = useAppSelector(
+    getPropertyDisplayCardByKeyPermission(activeStep, keyItemPermission)
+  );
 
   const handleChange = (displayName: TVName) => {
     if (disabled) return;
-    dispatch(changeDisplayType(displayName));
+    app.changeDisplayItemConfiguration(displayName, keyItemPermission);
   };
 
   const data = [
@@ -31,7 +41,7 @@ export const DisplayToggle: React.FC<PropsI> = (props) => {
     },
   ];
 
-  const isActive = (key: TVName) => key === typeDisplay;
+  const isActive = (key: TVName) => key === (display ?? typeDisplay);
 
   return (
     <div

@@ -203,6 +203,12 @@ export const getPropertySelectValueCardByKeyPermission =
     return data?.property.select;
   };
 
+export const getPropertyDisplayCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    return data?.property.display;
+  };
+
 export const getIsSelectedCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
@@ -462,6 +468,7 @@ export const getDisabledActionByKeyPermission =
     const res = {
       counter: false,
       color: false,
+      display: false,
     };
     const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
@@ -470,6 +477,7 @@ export const getDisabledActionByKeyPermission =
     if (!element) return res;
     res.counter = element.getDisabledCounter();
     res.color = element.getDisabledColor();
+    res.display = element.getDisabledDisplay();
     return res;
   };
 

@@ -69,10 +69,11 @@ export class PropertyHandler extends Handler {
           return false;
         }
 
+        if (activeElement instanceof MountElement) return true;
+
         const elementDepend = Step.getElementByName(key, allValidElements);
-        if (!(elementDepend instanceof ItemElement)) {
+        if (!elementDepend || elementDepend instanceof MountElement)
           return false;
-        }
 
         const property = elementDepend.getProperty();
 
@@ -90,7 +91,7 @@ export class PropertyHandler extends Handler {
         if (count) {
           const defaultMount = elementDepend.getDefaultMount();
           if (!(defaultMount instanceof CountableMountElement)) return false;
- 
+
           res = defaultMount.activeIndex === count;
         }
         return res;
