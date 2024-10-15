@@ -35,8 +35,8 @@ const tabs: TabDataI[] = [
     icon: <ProductInfoSVG />,
     contents: [
       <TextTab
-        title="Product Info"
-        subtitle="Click the information button to highlight the products in the room, so you can click to find out more information."
+        title="Product info"
+        subtitle="Click the information button to highlight the products in the room, and to find out more about each product."
       />,
     ],
   },
