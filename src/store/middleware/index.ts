@@ -302,6 +302,32 @@ export const middleware: Middleware =
         updateHighlightNodes(updatedNodes)(store);
         break;
       }
+      case CUSTOM_UI_ACTION_NAME.CHANGE_DISPLAY_ITEM: {
+        const { key, value } = action.payload;
+        const activeStep = getActiveStep(state);
+
+        store.dispatch(
+          setPropertyItem({
+            step: activeStep,
+            keyItemPermission: key,
+            property: {
+              display: value,
+            },
+          })
+        );
+
+        updateDisplayNodeByKeyPermission(key, activeStep)(store);
+        changeColorElement(key, activeStep)(store);
+
+        const updateNodes = updateNodesByConfiguration(
+          currentConfigurator,
+          activeStep
+        );
+
+        const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
+        updateNodes(store, attributeNames);
+        break;
+      }
       case UI_ACTION_NAME.CHANGE_DISPLAY_TYPE: {
         const displayType = action.payload;
         const activeStep = getActiveStep(state);

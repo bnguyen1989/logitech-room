@@ -289,7 +289,17 @@ export function createStepConferenceCamera() {
         .addConditionAttributesMount({
           display: {
             [CameraName.RallyMountingKit]: {
-              nameNodes: [PlatformName.BYOD],
+              condition: {
+                [PlatformName.BYOD]: {
+                  [ConditionPropertyName.ACTIVE]: true,
+                },
+                [CameraName.RallyPlus]: {
+                  [ConditionPropertyName.ACTIVE]: true,
+                  property: {
+                    display: TVName.LogitechTVOne,
+                  },
+                },
+              },
               value: true,
             },
           },

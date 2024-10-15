@@ -76,6 +76,9 @@ export class Permission {
         if (value?.color) {
           element.setProperty({ color: value.color });
         }
+        if (value?.display) {
+          element.setProperty({ display: value.display });
+        }
         if (value?.count !== undefined && element instanceof ItemElement) {
           const setDataCountableMount = (element: CountableMountElement) => {
             element.setActiveIndex(value.count);

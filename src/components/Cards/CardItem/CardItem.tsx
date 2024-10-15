@@ -96,7 +96,6 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const dispatch = useDispatch();
 
   console.log("disabledActions", disabledActions);
-  
 
   if (!card) return null;
 
@@ -170,6 +169,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
             </div>
             {isShowDisplayToggle && (
               <DisplayToggle
+                keyItemPermission={card.keyPermission}
                 disabled={!isActiveCard || disabledActions.display}
               />
             )}

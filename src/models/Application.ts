@@ -16,6 +16,7 @@ import { RoomService } from "../services/RoomService/RoomService";
 import { EventDataAnalyticsI } from "./analytics/type";
 import { DataCamera } from "./R3F";
 import { LocaleT } from "../types/locale";
+import { ChangeDisplayItemCommand } from "./command/ChangeDisplayItemCommand";
 
 declare const logger: Logger;
 
@@ -133,6 +134,19 @@ export class Application {
       new ChangeColorItemCommand(
         this.currentConfigurator,
         nameProperty,
+        value,
+        keyItemPermission
+      )
+    );
+  }
+
+  public changeDisplayItemConfiguration(
+    value: string,
+    keyItemPermission: string
+  ): Promise<boolean> {
+    return this.executeCommand(
+      new ChangeDisplayItemCommand(
+        this.currentConfigurator,
         value,
         keyItemPermission
       )

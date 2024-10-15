@@ -19,10 +19,10 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
-  getDisplayType,
   getIsSelectedCardByKeyPermission,
   getPermission,
   getPropertyCounterCardByKeyPermission,
+  getPropertyDisplayCardByKeyPermission,
   getStepNameByKeyPermission,
 } from "../../ui/selectors/selectors";
 import {
@@ -68,7 +68,11 @@ export const updateDisplayNodeByKeyPermission = (
     const element = step.getElementByName(keyPermission);
     if (element?.getHiddenDisplay()) return;
 
-    const displayType = getDisplayType(state);
+    const displayType = getPropertyDisplayCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
     if (!displayType) return;
     updateDisplayNode(displayType, stepName)(store);
   };

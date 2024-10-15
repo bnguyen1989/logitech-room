@@ -203,6 +203,12 @@ export const getPropertySelectValueCardByKeyPermission =
     return data?.property.select;
   };
 
+export const getPropertyDisplayCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    return data?.property.display;
+  };
+
 export const getIsSelectedCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);

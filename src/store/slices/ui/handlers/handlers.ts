@@ -63,7 +63,11 @@ import {
   getStepNameByKeyPermission,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
-import { changeColorItem, changeCountItem } from "../actions/actions";
+import {
+  changeColorItem,
+  changeCountItem,
+  changeDisplayItem,
+} from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
 import { getRoomAssetId } from "../../../../utils/threekitUtils";
 import { getSeparatorItem, StepName } from "../../../../utils/baseUtils";
@@ -75,6 +79,7 @@ import {
   removeElement,
 } from "../../configurator/handlers/handlers";
 import { getExclusionServiceByLocale } from "../../../../utils/productUtils";
+import { ChangeDisplayItemCommand } from "../../../../models/command/ChangeDisplayItemCommand";
 
 declare const app: Application;
 
@@ -103,6 +108,12 @@ export const getUiHandlers = (store: Store) => {
           key: data.keyItemPermission,
           value: data.value,
         })
+      );
+    }
+
+    if (data instanceof ChangeDisplayItemCommand) {
+      store.dispatch(
+        changeDisplayItem({ key: data.keyItemPermission, value: data.value })
       );
     }
 
