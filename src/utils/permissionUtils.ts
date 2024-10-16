@@ -765,7 +765,8 @@ export function createStepAudioExtensions() {
         [CameraName.RallyPlus]: {
           active: true,
         },
-      }).addRequiredDependence({
+      })
+      .addRequiredDependence({
         [CameraName.RallyPlus]: {
           active: true,
         },
@@ -1510,7 +1511,14 @@ export function createStepVideoAccessories() {
         )
       )
     )
-    .addElement(new ItemElement(VideoAccessoryName.LogitechExtend))
+    .addElement(
+      new ItemElement(VideoAccessoryName.LogitechExtend).setDefaultMount(
+        new MountElement(
+          VideoAccessoryName.LogitechExtend,
+          PlacementManager.getNameNodeForLogitechExtend()
+        )
+      )
+    )
     .addElement(new ItemElement(VideoAccessoryName.LogitechUSBaToHDMIAdapter))
     .addElement(
       new ItemElement(VideoAccessoryName.MeetUp2ActiveCable).addDependence(

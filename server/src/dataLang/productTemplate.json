@@ -587,6 +587,19 @@
       ]
     }
   },
+  "Logitech Extend": {
+    "Card": {
+      "ProductName": "Logitech Extend",
+      "ShortDescription": ["Bring-your-own-laptop with an extended connection"]
+    },
+    "Blade_1": {
+      "ProductName": "Logitech Extend",
+      "LongDescription": "Bring-your-own-laptop with an extended connection",
+      "Colors": {
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/tap-scheduler-angle-mount/tap-scheduler-angle-mount-graphite-1.png?v=1"
+      }
+    }
+  },
   "RALLY PLUS": {
     "Card": {
       "ProductName": "Rally Plus",

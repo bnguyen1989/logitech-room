@@ -135,6 +135,10 @@ export class PlacementManager {
     return "Camera_Placement_RalyPlus";
   }
 
+  public static getNameNodeForLogitechExtend(): string {
+    return "LogitechExtend_Placement";
+  }
+
   public static getNameNodeCameraRallyPlusBackWall(): string[] {
     return [PlacementManager.getNameNodeForCamera("Wall", 4)];
   }
@@ -218,7 +222,8 @@ export class PlacementManager {
       this.getNameNodeCommodeForCamera("Mini", 1),
       this.getNameNodeForTV(),
       this.getNameNodeCameraRalyPlus(),
-      this.getNameNodeForSight2()
+      this.getNameNodeForSight2(),
+      this.getNameNodeForLogitechExtend()
     );
 
     return placements;
