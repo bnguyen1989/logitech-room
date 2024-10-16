@@ -1,51 +1,35 @@
-import { useAppSelector } from "../../../hooks/redux";
-import {
-  getCardByKeyPermission,
-  getMetadataProductNameAssetFromCard,
-  getTitleCardByKeyPermission,
-} from "../../../store/slices/ui/selectors/selectors";
-import { getPropertyColorCardByKeyPermission } from "../../../store/slices/ui/selectors/selectorsColorsCard";
 import { Html } from "@react-three/drei";
 import { AnnotationProduct } from "./AnnotationProduct";
-import { useDispatch } from "react-redux";
-import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
 import { StepName } from "../../../utils/baseUtils";
 import { useEffect, useRef } from "react";
+import { useAppSelector } from "../../../hooks/redux";
+import { getAnnotationDataByKeyPermissions } from "../../../store/slices/ui/selectors/selectorsAnnotationProduct";
+import { useDispatch } from "react-redux";
+import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
+import { CardI } from "../../../store/slices/ui/type";
 
 interface AnnotationProductPropsI {
   stepPermission: StepName;
-  keyPermission: string;
-  position: [number, number, number],
+  keyPermissions: string[];
+  position: [number, number, number];
   callbackDisablePopuptNodes: () => void;
 }
 
 export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
   props: AnnotationProductPropsI
 ) => {
-  const { stepPermission, keyPermission, position, callbackDisablePopuptNodes } = props;
+  const {
+    stepPermission,
+    keyPermissions,
+    position,
+    callbackDisablePopuptNodes,
+  } = props;
   const htmlRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
-  const title = useAppSelector(
-    getTitleCardByKeyPermission(stepPermission, keyPermission)
-  );
-  const card = useAppSelector(
-    getCardByKeyPermission(stepPermission, keyPermission)
-  );
-  const colorValue = useAppSelector(
-    getPropertyColorCardByKeyPermission(stepPermission, keyPermission)
-  );
-  const productName = useAppSelector(getMetadataProductNameAssetFromCard(card));
 
-  const handleInfo = () => {
-    dispatch(
-      setAnnotationItemModal({
-        isOpen: true,
-        product: productName,
-        keyPermission: keyPermission,
-        card: card,
-      })
-    );
-  };
+  const dataAnnotation = useAppSelector(
+    getAnnotationDataByKeyPermissions(stepPermission, keyPermissions)
+  );
 
   const handleClickOutside = (event: MouseEvent) => {
     if (htmlRef.current && !htmlRef.current.contains(event.target as Node)) {
@@ -54,23 +38,31 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
+  const callbackHandleInfo = (productName: string, card: CardI) => {
+    dispatch(
+      setAnnotationItemModal({
+        isOpen: true,
+        product: productName,
+        keyPermission: card.keyPermission,
+        card,
+      })
+    );
+  };
 
-  if (keyPermission === undefined) return null;
+  if (!keyPermissions.length) return null;
 
   return (
-    <Html
-      distanceFactor={40}
-      center
-      position={position}
-      ref={htmlRef} // Прив'язуємо посилання до компонента Html
-    >
-      <AnnotationProduct annotationText={`${title} - ${colorValue}`} onHandleInfo={handleInfo} />
+    <Html distanceFactor={40} center position={position} ref={htmlRef}>
+      <AnnotationProduct
+        dataAnnotation={dataAnnotation}
+        callbackHandleInfo={callbackHandleInfo}
+      />
     </Html>
   );
 };
