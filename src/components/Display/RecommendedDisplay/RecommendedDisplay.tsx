@@ -2,6 +2,7 @@ import { DisplaySVG } from "../../../assets";
 import { useAppSelector } from "../../../hooks/redux";
 import { getActiveStep } from "../../../store/slices/ui/selectors/selectors";
 import { getRecommendedDisplayByKeyPermission } from "../../../store/slices/ui/selectors/selectorsPermission";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { TVName } from "../../../utils/permissionUtils";
 import s from "./RecommendedDisplay.module.scss";
 
@@ -14,6 +15,7 @@ export const RecommendedDisplay: React.FC<PropsI> = (props) => {
   const recommendedDisplay = useAppSelector(
     getRecommendedDisplayByKeyPermission(activeStep, keyItemPermission)
   );
+  const langCard = useAppSelector(getCardLangPage);
 
   const keys = Object.keys(recommendedDisplay).filter(
     (key) => recommendedDisplay[key]
@@ -30,11 +32,11 @@ export const RecommendedDisplay: React.FC<PropsI> = (props) => {
   > = {
     [TVName.LogitechTVOne]: {
       icon: <DisplaySVG type={"single"} />,
-      text: "Best for single display",
+      text: langCard.Display.BestSingle,
     },
     [TVName.LogitechTVTwo]: {
       icon: <DisplaySVG type={"double"} />,
-      text: "Best for dual display",
+      text: langCard.Display.BestDual,
     },
   };
 

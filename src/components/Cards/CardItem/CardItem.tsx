@@ -29,8 +29,8 @@ import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsC
 import { useEffect } from "react";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
-import { DisplayToggle } from "../../DisplayToggle/DisplayToggle";
-import { RecommendedDisplay } from "../RecommendedDisplay/RecommendedDisplay";
+import { DisplayToggle } from "../../Display/DisplayToggle/DisplayToggle";
+import { RecommendedDisplay } from "../../Display/RecommendedDisplay/RecommendedDisplay";
 
 interface PropsI {
   keyItemPermission: string;

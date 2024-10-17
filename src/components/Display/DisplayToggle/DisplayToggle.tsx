@@ -1,14 +1,14 @@
-import { DisplaySVG } from "../../assets";
-import { TVName } from "../../utils/permissionUtils";
+import { DisplaySVG } from "../../../assets";
+import { TVName } from "../../../utils/permissionUtils";
 import s from "./DisplayToggle.module.scss";
 import {
   getActiveStep,
   getDisplayType,
   getPropertyDisplayCardByKeyPermission,
-} from "../../store/slices/ui/selectors/selectors";
-import { useAppSelector } from "../../hooks/redux";
-import { Application } from "../../models/Application";
-import { getCardLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
+} from "../../../store/slices/ui/selectors/selectors";
+import { useAppSelector } from "../../../hooks/redux";
+import { Application } from "../../../models/Application";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
