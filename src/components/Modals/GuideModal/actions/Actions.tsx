@@ -1,4 +1,6 @@
 import { ArrowRightSVG } from "../../../../assets";
+import { useAppSelector } from "../../../../hooks/redux";
+import { getGuideModalLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 import s from "./Actions.module.scss";
 
 interface PropsI {
@@ -16,6 +18,8 @@ export const Actions: React.FC<PropsI> = (props) => {
     position,
     hideActions = [],
   } = props;
+  const langPage = useAppSelector(getGuideModalLangPage);
+
   const isStart = position === "start";
   const isEnd = position === "end";
 
@@ -30,7 +34,9 @@ export const Actions: React.FC<PropsI> = (props) => {
       )}
 
       <div className={s.next_button} onClick={isEnd ? handleSkip : handleNext}>
-        <div className={s.text}>{isEnd ? "Let's get started" : "Next"}</div>
+        <div className={s.text}>
+          {isEnd ? langPage.Actions.LetsStarted : langPage.Actions.Next}
+        </div>
         <div className={s.icon}>
           <ArrowRightSVG />
         </div>
@@ -38,7 +44,7 @@ export const Actions: React.FC<PropsI> = (props) => {
 
       {isStart && !isHideSkip && (
         <div className={s.skip_button} onClick={handleSkip}>
-          Skip, I got this!
+          {langPage.Actions.Skip}
         </div>
       )}
     </div>

@@ -8,6 +8,7 @@ import {
 } from "../../store/slices/ui/selectors/selectors";
 import { useAppSelector } from "../../hooks/redux";
 import { Application } from "../../models/Application";
+import { getCardLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
 
 declare const app: Application;
 
@@ -22,6 +23,7 @@ export const DisplayToggle: React.FC<PropsI> = (props) => {
   const display = useAppSelector(
     getPropertyDisplayCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const langCard = useAppSelector(getCardLangPage);
 
   const handleChange = (displayName: TVName) => {
     if (disabled) return;
@@ -32,12 +34,12 @@ export const DisplayToggle: React.FC<PropsI> = (props) => {
     {
       key: TVName.LogitechTVOne,
       icon: <DisplaySVG type={"single"} />,
-      text: "Single",
+      text: langCard.Display.Single,
     },
     {
       key: TVName.LogitechTVTwo,
       icon: <DisplaySVG type={"double"} />,
-      text: "Dual",
+      text: langCard.Display.Dual,
     },
   ];
 

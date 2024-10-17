@@ -1,6 +1,6 @@
 import { AnnotationModal } from "./AnnotationModal/AnnotationModal";
 import { FinishModal } from "./FinishModal/FinishModal";
-// import { GuideModal } from './GuideModal/GuideModal'
+import { GuideModal } from './GuideModal/GuideModal'
 import { RequestConsultationModal } from "./RequestConsultationModal/RequestConsultationModal";
 import { SelectProductModal } from "./SelectProductModal/SelectProductModal";
 import { SetupModal } from "./SetupModal/SetupModal";
@@ -15,7 +15,7 @@ export const Modals: React.FC = () => {
       <ShareProjectModal />
       <FinishModal />
       <RequestConsultationModal />
-      {/* <GuideModal /> */}
+      <GuideModal />
     </>
   );
 };

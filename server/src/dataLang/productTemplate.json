@@ -646,6 +646,9 @@
           }
         }
       ]
+    },
+    "END_CTA": {
+      "end": "Add to Room"
     }
   },
   "RALLY PLUS": {
