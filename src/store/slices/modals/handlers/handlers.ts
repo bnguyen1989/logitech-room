@@ -9,7 +9,6 @@ import { setGuideModal, setSelectProductModal } from "../Modals.slice";
 import { clearAllNodes } from "../../configurator/handlers/handlers";
 import { clearAllActiveCardsSteps } from "../../ui/Ui.slice";
 import { StepName } from "../../../../utils/baseUtils";
-import { getLocale } from "../../ui/selectors/selectors";
 
 export const getModalsHandlers = (store: Store) => {
   app.eventEmitter.on("showModal", (data: Modal) => {
@@ -57,8 +56,7 @@ export const getModalsHandlers = (store: Store) => {
 export const showModalByStep = (stepName: StepName) => {
   return (store: Store) => {
     const state = store.getState();
-    const locale = getLocale(state);
-    if (stepName === StepName.ConferenceCamera && locale.includes("en")) {
+    if (stepName === StepName.ConferenceCamera) {
       const guideModalData = getDataGuideModal(state);
       if (!guideModalData.dataModal?.isFirst) {
         store.dispatch(

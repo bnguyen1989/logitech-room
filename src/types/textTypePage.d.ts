@@ -16,6 +16,7 @@ export interface PagesI {
   SelectProductModal: SelectProductModal;
   FinishModal: FinishModal;
   RemoveModal: RemoveModal;
+  GuideModal: GuideModal;
   Navigation: Navigation;
   Loader: Loader;
   CSV: Csv;
@@ -457,6 +458,7 @@ export interface CardPageI {
   Colors: Colors;
   Counter: Counter;
   Text: Text;
+  Display: CardDisplay;
 }
 
 export interface Colors {
@@ -475,4 +477,45 @@ export interface Text {
   ChooseNumberOfYears: string;
   Years: string;
   AddToRoom: string;
+}
+
+export interface CardDisplay {
+  Single: string;
+  Dual: string;
+  BestSingle: string;
+  BestDual: string;
+}
+
+export interface GuideModal {
+  CameraMouse: CameraMouse;
+  CameraTouch: CameraTouch;
+  Dimension: GuideModalTextTab;
+  ProductInfo: GuideModalTextTab;
+  Interact: GuideModalTextTab;
+  Actions: Actions;
+}
+
+export interface CameraMouse {
+  title: string;
+  Card: CardCamera[];
+}
+
+export interface CameraTouch {
+  title: string;
+  Card: CardCamera[];
+}
+
+export interface CardCamera {
+  title: string;
+}
+
+export interface GuideModalTextTab {
+  title: string;
+  subtitle: string;
+}
+
+export interface Actions {
+  Next: string;
+  Skip: string;
+  LetsStarted: string;
 }

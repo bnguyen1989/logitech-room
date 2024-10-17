@@ -16,40 +16,7 @@ import { useAppSelector } from "../../../hooks/redux";
 import { getDataGuideModal } from "../../../store/slices/modals/selectors/selectors";
 import { useDispatch } from "react-redux";
 import { setGuideModal } from "../../../store/slices/modals/Modals.slice";
-
-const tabs: TabDataI[] = [
-  {
-    icon: <CameraControlsSVG />,
-    contents: [<CameraControlTab />],
-  },
-  // {
-  //   icon: <DimensionSVG />,
-  //   contents: [
-  //     <TextTab
-  //       title="Room and product layout dimensions"
-  //       subtitle="Click the button to get more information on how products are placed in the room given the dimensions of the table or room size."
-  //     />,
-  //   ],
-  // },
-  {
-    icon: <ProductInfoSVG />,
-    contents: [
-      <TextTab
-        title="Product info"
-        subtitle="Click the information button to highlight the products in the room, and to find out more about each product."
-      />,
-    ],
-  },
-  {
-    icon: <InfoSVG />,
-    contents: [
-      <TextTab
-        title="How to interact with the configurator"
-        subtitle="Click the question mark button to revisit this guide again."
-      />,
-    ],
-  },
-];
+import { getGuideModalLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 
 export const GuideModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -58,6 +25,41 @@ export const GuideModal: React.FC = () => {
     contentIndex: 0,
   });
   const { isOpen, dataModal } = useAppSelector(getDataGuideModal);
+  const langPage = useAppSelector(getGuideModalLangPage);
+
+  const tabs: TabDataI[] = [
+    {
+      icon: <CameraControlsSVG />,
+      contents: [<CameraControlTab />],
+    },
+    // {
+    //   icon: <DimensionSVG />,
+    //   contents: [
+    //     <TextTab
+    //       title={langPage.Dimension.title}
+    //       subtitle={langPage.Dimension.subtitle}
+    //     />,
+    //   ],
+    // },
+    {
+      icon: <ProductInfoSVG />,
+      contents: [
+        <TextTab
+          title={langPage.ProductInfo.title}
+          subtitle={langPage.ProductInfo.subtitle}
+        />,
+      ],
+    },
+    {
+      icon: <InfoSVG />,
+      contents: [
+        <TextTab
+          title={langPage.Interact.title}
+          subtitle={langPage.Interact.subtitle}
+        />,
+      ],
+    },
+  ];
 
   const handleClose = () => {
     dispatch(
