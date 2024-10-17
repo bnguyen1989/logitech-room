@@ -29,7 +29,8 @@ import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsC
 import { useEffect } from "react";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
-import { DisplayToggle } from "../../DisplayToggle/DisplayToggle";
+import { DisplayToggle } from "../../Display/DisplayToggle/DisplayToggle";
+import { RecommendedDisplay } from "../../Display/RecommendedDisplay/RecommendedDisplay";
 
 interface PropsI {
   keyItemPermission: string;
@@ -199,6 +200,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   />
                 </div>
               )}
+
+              <RecommendedDisplay keyItemPermission={card.keyPermission} />
               <div className={s.info}>
                 <IconButton
                   onClick={handleInfo}

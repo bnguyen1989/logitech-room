@@ -1,10 +1,8 @@
 import { DisplaySVG } from "../../../assets";
 import { useAppSelector } from "../../../hooks/redux";
-import {
-  getActiveStep,
-  getDisplayType,
-} from "../../../store/slices/ui/selectors/selectors";
+import { getActiveStep } from "../../../store/slices/ui/selectors/selectors";
 import { getRecommendedDisplayByKeyPermission } from "../../../store/slices/ui/selectors/selectorsPermission";
+import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { TVName } from "../../../utils/permissionUtils";
 import s from "./RecommendedDisplay.module.scss";
 
@@ -14,31 +12,40 @@ interface PropsI {
 export const RecommendedDisplay: React.FC<PropsI> = (props) => {
   const { keyItemPermission } = props;
   const activeStep = useAppSelector(getActiveStep);
-  const displayType = useAppSelector(getDisplayType);
   const recommendedDisplay = useAppSelector(
     getRecommendedDisplayByKeyPermission(activeStep, keyItemPermission)
   );
+  const langCard = useAppSelector(getCardLangPage);
 
-  const isShowRecommendedDisplay =
-    recommendedDisplay && displayType && recommendedDisplay[displayType];
+  const keys = Object.keys(recommendedDisplay).filter(
+    (key) => recommendedDisplay[key]
+  );
 
-  if (!isShowRecommendedDisplay) return null;
+  if (!keys.length) return null;
 
-  const data = {
+  const data: Record<
+    string,
+    {
+      icon: JSX.Element;
+      text: string;
+    }
+  > = {
     [TVName.LogitechTVOne]: {
       icon: <DisplaySVG type={"single"} />,
-      text: "Best for single display",
+      text: langCard.Display.BestSingle,
     },
     [TVName.LogitechTVTwo]: {
       icon: <DisplaySVG type={"double"} />,
-      text: "Best for dual display",
+      text: langCard.Display.BestDual,
     },
   };
 
+  const keyDisplay = keys[0];
+
   return (
     <div className={s.recommended_display}>
-      <div className={s.icon}>{data[displayType].icon}</div>
-      <div className={s.text}>{data[displayType].text}</div>
+      <div className={s.icon}>{data[keyDisplay].icon}</div>
+      <div className={s.text}>{data[keyDisplay].text}</div>
     </div>
   );
 };
