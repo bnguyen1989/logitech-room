@@ -54,7 +54,7 @@ export const DisplayToggle: React.FC<PropsI> = (props) => {
           className={`${s.button} ${isActive(item.key) ? s.button_active : ""}`}
           onClick={() => handleChange(item.key)}
         >
-          <div className={s.icon}>{item.icon}</div>
+          <div className={`${s.icon} ${s[item.text.toLowerCase()]}`}>{item.icon}</div>
           <div className={s.text}>{item.text}</div>
         </div>
       ))}

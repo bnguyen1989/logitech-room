@@ -30,6 +30,7 @@ import { useEffect } from "react";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
 import { DisplayToggle } from "../../DisplayToggle/DisplayToggle";
+import { RecommendedDisplay } from "../RecommendedDisplay/RecommendedDisplay";
 
 interface PropsI {
   keyItemPermission: string;
@@ -199,6 +200,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   />
                 </div>
               )}
+
+              <RecommendedDisplay keyItemPermission={card.keyPermission} />
               <div className={s.info}>
                 <IconButton
                   onClick={handleInfo}

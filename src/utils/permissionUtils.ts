@@ -159,8 +159,6 @@ export function createStepConferenceCamera() {
             //     PlacementManager.getNameNodeCameraWallMount()
             //   )
             // )
-            .addRecommendedDisplay(TVName.LogitechTVOne, true)
-            .addRecommendedDisplay(TVName.LogitechTVTwo, true)
         )
         .addDependenceMount(
           new MountElement(
