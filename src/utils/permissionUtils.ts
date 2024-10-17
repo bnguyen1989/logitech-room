@@ -153,12 +153,12 @@ export function createStepConferenceCamera() {
             CameraName.WallMountForVideoBars,
             PlacementManager.getNameNodeForCamera("Wall", 1, 2)
           )
-            // .setDependentMount(
-            //   new MountElement(
-            //     CameraName.WallMountForVideoBars,
-            //     PlacementManager.getNameNodeCameraWallMount()
-            //   )
-            // )
+          // .setDependentMount(
+          //   new MountElement(
+          //     CameraName.WallMountForVideoBars,
+          //     PlacementManager.getNameNodeCameraWallMount()
+          //   )
+          // )
         )
         .addDependenceMount(
           new MountElement(
@@ -200,10 +200,7 @@ export function createStepConferenceCamera() {
         //   PlatformName.MicrosoftTeams,
         //   PlatformName.Zoom,
         // ])
-        .addBundleMountsDependence(TVName.LogitechTVOne, [
-          CameraName.TVMountForVideoBars,
-          PlatformName.BYOD,
-        ])
+        .addBundleMountsDependence(TVName.LogitechTVOne, [PlatformName.BYOD])
         .setHiddenDisplay(false)
         .addDisabledDisplayDependence({
           [CameraName.TVMountForVideoBars]: {
@@ -1697,6 +1694,15 @@ export const isCameraElement = (name: string) => {
     CameraName.RallyBarMini,
     CameraName.RallyBar,
     CameraName.RallyPlus,
+  ]);
+};
+
+export const isCameraMountElement = (name: string) => {
+  return isCompareName(name)([
+    CameraName.WallMountForVideoBars,
+    CameraName.TVMountForVideoBars,
+    CameraName.TVMountForMeetUP,
+    CameraName.RallyMountingKit,
   ]);
 };
 

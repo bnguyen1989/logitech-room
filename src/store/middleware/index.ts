@@ -5,6 +5,7 @@ import {
   updateAssetIdByKeyPermission,
   updateColorForAutoChangeItems,
   updateDataCardByStepName,
+  updateDisplayBasedOnRecommendation,
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
@@ -154,6 +155,7 @@ export const middleware: Middleware =
         updateNodes(store, attributeNames);
 
         updateAssetIdByKeyPermission(key)(store);
+        updateDisplayBasedOnRecommendation(key, activeStep)(store);
         updateDisplayNodeByKeyPermission(key, activeStep)(store);
         break;
       }

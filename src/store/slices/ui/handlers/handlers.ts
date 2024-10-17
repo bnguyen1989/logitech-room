@@ -37,6 +37,8 @@ import {
   isCameraElement,
   isExtendWarranty,
   isSupportService,
+  isCameraMountElement,
+  TVName,
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
@@ -214,6 +216,36 @@ export const setDefaultsDisplay = (stepName: StepName) => {
     );
 
     store.dispatch(changeDisplayType(tvMountName));
+  };
+};
+
+export const updateDisplayBasedOnRecommendation = (
+  keyPermission: string,
+  stepName: StepName
+) => {
+  return (store: Store) => {
+    if (stepName !== StepName.ConferenceCamera) return;
+    const skipElement = !isCameraMountElement(keyPermission);
+    if (skipElement) return;
+
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    const element = step.getElementByName(keyPermission);
+    if (!element) return;
+
+    const itemElement = step.getActiveItemElementByMountName(element.name);
+    if (!itemElement) return;
+    const recommendedDisplay = element.getRecommendedDisplay();
+    const activeKey = Object.keys(recommendedDisplay).find(
+      (key) => recommendedDisplay[key]
+    );
+    if (!activeKey) return;
+    const displayName = activeKey as TVName;
+
+    store.dispatch(
+      changeDisplayItem({ key: itemElement.name, value: displayName })
+    );
   };
 };
 
