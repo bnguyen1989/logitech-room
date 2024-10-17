@@ -89,8 +89,8 @@ export const Product: React.FC<ProductProps> = ({
             Object.keys(keyPermissionObj).length > 0 && (
               <AnnotationProductContainer
                 stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
-                keyPermission={Object.values(keyPermissionObj)[0]}
-                position={[0, sizeProduct.y + 0.4, 0]}
+                keyPermissions={Object.values(keyPermissionObj)[0]}
+                position={[0, sizeProduct.y + 0.8, 0]}
                 callbackDisablePopuptNodes={callbackDisablePopuptNodes}
               />
             )}
