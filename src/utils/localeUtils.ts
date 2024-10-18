@@ -23,6 +23,14 @@ export const langRegionCodesStaging: Record<string, LocaleT> = {
   en_eu: "en-EU",
   en_my: "en-MY",
   en_sg: "en-SG",
+  es_ar: "es-AR",
+  es_roam: "es-ROAM",
+  de_ch: "de-CH",
+  de_at: "de-AT",
+  en_ch: "en-CH",
+  en_nz: "en-NZ",
+  en_ph: "en-PH",
+  en_za: "en-ZA",
 };
 
 export const langRegionCodesProd: Record<string, LocaleT> = {
@@ -48,6 +56,14 @@ export const langRegionCodesProd: Record<string, LocaleT> = {
   "en-eu": "en-EU",
   "en-my": "en-MY",
   "en-sg": "en-SG",
+  "es-ar": "es-AR",
+  "es-roam": "es-ROAM",
+  "de-ch": "de-CH",
+  "de-at": "de-AT",
+  "en-ch": "en-CH",
+  "en-nz": "en-NZ",
+  "en-ph": "en-PH",
+  "en-za": "en-ZA",
 };
 export const langRegionCodes: Record<string, LocaleT> = {
   ...langRegionCodesStaging,
@@ -77,4 +93,12 @@ export const localeToCurrency: Record<LocaleT, string> = {
   "en-EU": "EUR",
   "en-MY": "MYR",
   "en-SG": "SGD",
+  "es-AR": "ARS",
+  "es-ROAM": "EUR",
+  "de-CH": "CHF",
+  "de-AT": "EUR",
+  "en-CH": "CHF",
+  "en-NZ": "NZD",
+  "en-PH": "PHP",
+  "en-ZA": "ZAR",
 };
