@@ -1,4 +1,10 @@
-import { CameraName, SoftwareServicesName } from "./permissionUtils";
+import {
+  AudioExtensionName,
+  CameraName,
+  MeetingControllerName,
+  SoftwareServicesName,
+  VideoAccessoryName,
+} from "./permissionUtils";
 
 export const getSKUProductByExtendedWarranty = (
   productName: string,
@@ -126,4 +132,69 @@ export const getSKUSelectServiceByCamera = (
   const sku = data[number[0]][cameraName];
   if (!sku) return null;
   return sku;
+};
+
+export const getUrlProductByKeyPermission = (keyPermission: string) => {
+  return productUrlData[keyPermission];
+};
+
+const productUrlData: Record<string, string> = {
+  [CameraName.MeetUp2]:
+    "https://www.logitech.com/products/video-conferencing/conference-cameras/meetup2-conferencecam.html",
+  [CameraName.TVMountForMeetUP]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tv-mount-for-meetup.html",
+  [CameraName.RallyBarHuddle]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarhuddle.html",
+  [CameraName.RallyBarMini]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarmini.html",
+  [CameraName.RallyBar]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybar.html",
+  [CameraName.RallyCamera]:
+    "https://www.logitech.com/products/video-conferencing/conference-cameras/rally-ultra-hd-ptz-camera.html",
+  [CameraName.RallyPlus]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rally-ultra-hd-conferencecam.html",
+  [CameraName.LogitechSight]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/sight.html",
+  [VideoAccessoryName.LogitechScribe]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/scribe.html",
+  [MeetingControllerName.LogitechTap]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/tap.html",
+  [MeetingControllerName.LogitechTapIP]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/tap-ip.html",
+  [VideoAccessoryName.LogitechTapScheduler]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/tap-scheduler.html",
+  [VideoAccessoryName.LogitechSwytch]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/swytch.html",
+  [CameraName.RoomMate]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/roommate.html",
+  [AudioExtensionName.RallyMicPod]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mic-pod-for-rally.html",
+  [CameraName.RallyMountingKit]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mounting-kit-for-rally.html",
+  [AudioExtensionName.RallyMicPodMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mic-pod-mount.html",
+  [AudioExtensionName.RallyMicPodPendantMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mic-pod-pendant-mount.html",
+  [MeetingControllerName.TapWallMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-wall-mount.html",
+  [MeetingControllerName.TapRiserMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-riser-mount.html",
+  [MeetingControllerName.TapTableMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-table-mount.html",
+  [VideoAccessoryName.LogitechTapSchedulerAngleMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-scheduler-angle-mount.html",
+  [AudioExtensionName.CATCoupler]:
+    "https://www.logitech.com/products/video-conferencing/accessories/rally-mic-pod-cat-coupler.html",
+  [AudioExtensionName.RallyMicPodHub]:
+    "https://www.logitech.com/products/video-conferencing/accessories/hub-for-rally-mic-pod.html",
+  [SoftwareServicesName.ExtendedWarranty]:
+    "https://www.logitech.com/video-collaboration/products/extended-warranty.html",
+  [SoftwareServicesName.LogitechSync]:
+    "https://www.logitech.com/video-collaboration/products/sync.html",
+  [SoftwareServicesName.SupportService]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/select-comprehensive-service-plan.html",
+  [MeetingControllerName.RallyBarTapIP]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybar-tapip.html",
+  [MeetingControllerName.RallyBarMiniTapIP]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarmini-tapip.html",
 };
