@@ -9,6 +9,7 @@ import {
   CardText,
 } from "./CardParts";
 import { isExtendWarranty } from "../../../../../utils/permissionUtils";
+import { getUrlProductByKeyPermission } from "../../../../../utils/productUtils";
 
 interface PropsI extends DataSectionI {
   mode?: "bundle" | "default";
@@ -38,6 +39,8 @@ export const Card: React.FC<PropsI> = (props) => {
     hideProperties.includes("partNumber") || isSoftwareCard;
   const isHidePrice = hideProperties.includes("price");
 
+  const linkProduct = getUrlProductByKeyPermission(keyPermission);
+
   return (
     <div className={`${s.container} ${!inStock ? s.container_disabled : ""}`}>
       <div className={s.left_content}>
@@ -48,6 +51,7 @@ export const Card: React.FC<PropsI> = (props) => {
           title={title}
           subtitle={subtitle}
           dependenceCards={dependenceCards}
+          link={linkProduct}
         />
 
         <CardPartNumber
