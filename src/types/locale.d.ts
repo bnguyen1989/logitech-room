@@ -20,4 +20,12 @@ export type LocaleT =
   | "en-AU"
   | "en-EU"
   | "en-MY"
-  | "en-SG";
+  | "en-SG"
+  | "es-AR"
+  | "es-ROAM"
+  | "de-CH"
+  | "de-AT"
+  | "en-CH"
+  | "en-NZ"
+  | "en-PH"
+  | "en-ZA";
