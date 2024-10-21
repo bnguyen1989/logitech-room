@@ -1584,10 +1584,10 @@
     "key": "Card#Display#Dual"
   },
   {
-    "en-US": "Best for single display",
-    "de-DE": "Am besten für Einzeldisplays",
-    "es-ES": "Ideal para una pantalla",
-    "es-MX": "Lo mejor para una sola pantalla",
+    "en-US": "For Single Display",
+    "de-DE": "Für Einzelanzeige",
+    "es-ES": "Para pantalla única",
+    "es-MX": "Para pantalla única",
     "key": "Card#Display#BestSingle"
   },
   {
