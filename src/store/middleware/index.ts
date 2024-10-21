@@ -13,6 +13,7 @@ import {
   changeCountElement,
   deleteNodesByCards,
   removeElement,
+  setHighlightAllNodes,
   updateDisplayNode,
   updateDisplayNodeByKeyPermission,
   updateHighlightNodes,
@@ -335,6 +336,11 @@ export const middleware: Middleware =
         const activeStep = getActiveStep(state);
 
         updateDisplayNode(displayType, activeStep)(store);
+        break;
+      }
+      case CUSTOM_UI_ACTION_NAME.SET_HIGHLIGHT_ALL_NODES: {
+        const { isHighlight } = action.payload;
+        setHighlightAllNodes(isHighlight)(store);
         break;
       }
       default:

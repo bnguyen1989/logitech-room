@@ -78,6 +78,14 @@ export const updateDisplayNodeByKeyPermission = (
   };
 };
 
+export const setHighlightAllNodes = (isHighlight: boolean) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const nodes = isHighlight ? getNodes(state) : {};
+    updateHighlightNodes(nodes)(store);
+  };
+};
+
 export const updateHighlightNodes = (nodes: Record<string, string>) => {
   return (store: Store) => {
     const newHighlightNodes: Record<string, boolean> = {};

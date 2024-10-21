@@ -20,3 +20,7 @@ export const changeColorItem = createAction<{
 export const createOrder = createAction<{
   configurator: Configurator;
 }>(CUSTOM_UI_ACTION_NAME.CREATE_ORDER);
+
+export const setHighlightAllProducts = createAction<{
+  isHighlight: boolean;
+}>(CUSTOM_UI_ACTION_NAME.SET_HIGHLIGHT_ALL_NODES);
