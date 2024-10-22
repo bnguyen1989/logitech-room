@@ -6,6 +6,7 @@ import {
   updateColorForAutoChangeItems,
   updateDataCardByStepName,
   updateDisplayBasedOnRecommendation,
+  updateDisplayForAutoChangeItems,
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
@@ -318,6 +319,7 @@ export const middleware: Middleware =
           })
         );
 
+        updateDisplayForAutoChangeItems(activeStep, key)(store);
         updateDisplayNodeByKeyPermission(key, activeStep)(store);
         changeColorElement(key, activeStep)(store);
 
