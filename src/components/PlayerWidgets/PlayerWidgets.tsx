@@ -6,10 +6,21 @@ import { IconButton } from "../Buttons/IconButton/IconButton";
 import { InfoSVG, ProductInfoSVG } from "../../assets";
 import { setGuideModal } from "../../store/slices/modals/Modals.slice";
 import { setHighlightAllProducts } from "../../store/slices/ui/actions/actions";
+import { useEffect, useState } from "react";
 
 export const PlayerWidgets: React.FC = () => {
   const dispatch = useDispatch();
   const isProcessing = useAppSelector(getIsProcessing);
+  const [isActiveHighlight, setIsActiveHighlight] = useState(false);
+
+  useEffect(() => {
+    if (!isActiveHighlight) return;
+
+    setTimeout(() => {
+      setIsActiveHighlight(false);
+      dispatch(setHighlightAllProducts({ isHighlight: false }));
+    }, 5000);
+  }, [isActiveHighlight]);
 
   const handleInfo = () => {
     dispatch(setGuideModal({ isOpen: true }));
@@ -17,10 +28,7 @@ export const PlayerWidgets: React.FC = () => {
 
   const handleHighlightProducts = () => {
     dispatch(setHighlightAllProducts({ isHighlight: true }));
-
-    setTimeout(() => {
-      dispatch(setHighlightAllProducts({ isHighlight: false }));
-    }, 5000);
+    setIsActiveHighlight(true);
   };
 
   if (isProcessing) return null;
@@ -28,7 +36,7 @@ export const PlayerWidgets: React.FC = () => {
   return (
     <div className={s.container}>
       <IconButton onClick={handleHighlightProducts}>
-        <ProductInfoSVG />
+        <ProductInfoSVG color={isActiveHighlight ? "#814EFA" : "black"} />
       </IconButton>
       <IconButton onClick={handleInfo}>
         <InfoSVG />
