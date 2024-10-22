@@ -8,13 +8,14 @@ interface PropsI {
     productName: string;
   }[];
   callbackHandleInfo: (productName: string, card: CardI) => void;
+  position?: "top" | "bottom";
 }
 
 export const AnnotationProduct: React.FC<PropsI> = (props) => {
-  const { dataAnnotation, callbackHandleInfo } = props;
+  const { dataAnnotation, callbackHandleInfo, position = "bottom" } = props;
 
   return (
-    <div className={s.annotationWrap}>
+    <div className={`${s.annotationWrap} ${s["annotationWrap_" + position]}`}>
       {dataAnnotation.map((item, index) => (
         <AnnotationProductItem
           key={index}
