@@ -210,8 +210,21 @@ export function createStepConferenceCamera() {
     );
   };
   const group = new GroupElement()
-    .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
-    .addElement(setMountForCamera(new ItemElement(CameraName.RallyBarMini)))
+    .addElement(
+      setMountForCamera(
+        new ItemElement(CameraName.RallyBar)
+      ).addAutoChangeItems({
+        [CameraName.RallyBarMini]: ["display"],
+        [CameraName.RallyPlus]: ["display"],
+      })
+    )
+    .addElement(
+      setMountForCamera(
+        new ItemElement(CameraName.RallyBarMini)
+      ).addAutoChangeItems({
+        [CameraName.RallyBar]: ["display"],
+      })
+    )
     .addElement(
       new ItemElement(CameraName.MeetUp2)
         .setDefaultMount(
@@ -302,6 +315,7 @@ export function createStepConferenceCamera() {
         .addAutoChangeItems({
           [AudioExtensionName.RallyMicPod]: ["color"],
           [AudioExtensionName.RallyMicPodMount]: ["color"],
+          [CameraName.RallyBar]: ["display"],
         })
         // .addBundleMount(
         //   new MountElement(

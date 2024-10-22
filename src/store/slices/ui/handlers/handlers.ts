@@ -60,6 +60,7 @@ import {
   getPermission,
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
+  getPropertyCardByKeyPermission,
   getPropertySelectValueCardByKeyPermission,
   getSelectData,
   getSelectedCardsByStep,
@@ -278,6 +279,60 @@ export const updateColorForAutoChangeItems = (
         );
       }
     );
+  };
+};
+
+export const updateDisplayForAutoChangeItems = (
+  stepName: StepName,
+  keyPermission: string
+) => {
+  return (store: Store) => {
+    updatePropertyForAutoChangeItems(stepName, keyPermission, ["display"])(
+      store
+    );
+  };
+};
+
+export const updatePropertyForAutoChangeItems = (
+  stepName: StepName,
+  keyPermission: string,
+  property: string[]
+) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const itemsNeedChange = permission.getItemsNeedChange(keyPermission);
+    const propertyCard = getPropertyCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
+    if (!Object.keys(propertyCard).length) return;
+
+    Object.entries(itemsNeedChange).forEach(([key, arr]) => {
+      const existProperty = property.filter((item) => arr.includes(item));
+      if (!existProperty.length) return;
+      const stepElement = getStepNameByKeyPermission(key)(state);
+      if (!stepElement) return;
+
+      const updateProperty = existProperty.reduce((acc, item) => {
+        const data = propertyCard[item];
+        if (!data) return acc;
+        acc[item] = data;
+        return acc;
+      }, {} as Record<string, string>);
+
+      if (!Object.keys(updateProperty).length) return;
+      store.dispatch(
+        setPropertyItem({
+          step: stepElement,
+          keyItemPermission: key,
+          property: {
+            ...updateProperty,
+          },
+        })
+      );
+    });
   };
 };
 
