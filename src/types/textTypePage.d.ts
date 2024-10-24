@@ -482,8 +482,8 @@ export interface Text {
 export interface CardDisplay {
   Single: string;
   Dual: string;
-  BestSingle: string;
-  BestDual: string;
+  ForSingle: string;
+  ForAll: string;
 }
 
 export interface GuideModal {
