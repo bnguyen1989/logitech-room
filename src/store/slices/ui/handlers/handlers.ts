@@ -238,11 +238,11 @@ export const updateDisplayBasedOnRecommendation = (
     const itemElement = step.getActiveItemElementByMountName(element.name);
     if (!itemElement) return;
     const recommendedDisplay = element.getRecommendedDisplay();
-    const activeKey = Object.keys(recommendedDisplay).find(
-      (key) => recommendedDisplay[key]
-    );
-    if (!activeKey) return;
-    const displayName = activeKey as TVName;
+    const keys = Object.keys(recommendedDisplay);
+    const activeKeys = keys.filter((key) => recommendedDisplay[key]);
+    if (activeKeys.length > 1 || !activeKeys.length) return;
+
+    const displayName = activeKeys[0] as TVName;
 
     store.dispatch(
       changeDisplayItem({ key: itemElement.name, value: displayName })

@@ -1584,17 +1584,17 @@
     "key": "Card#Display#Dual"
   },
   {
-    "en-US": "For Single Display",
-    "de-DE": "Für Einzelanzeige",
-    "es-ES": "Para pantalla única",
-    "es-MX": "Para pantalla única",
-    "key": "Card#Display#BestSingle"
+    "en-US": "For a single display",
+    "de-DE": "Für einen einzelnen Bildschirm",
+    "es-ES": "Para una sola pantalla",
+    "es-MX": "Para una sola pantalla",
+    "key": "Card#Display#ForSingle"
   },
   {
-    "en-US": "Best for dual display",
-    "de-DE": "Ideal für zwei Displays",
-    "es-ES": "Ideal para dos pantallas",
-    "es-MX": "Lo mejor para dos pantallas",
-    "key": "Card#Display#BestDual"
+    "en-US": "For all displays",
+    "de-DE": "Für alle Bildschirme",
+    "es-ES": "Para todas las pantallas",
+    "es-MX": "Para todas las pantallas",
+    "key": "Card#Display#ForAll"
   }
 ]
