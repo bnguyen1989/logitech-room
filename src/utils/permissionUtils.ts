@@ -294,7 +294,6 @@ export function createStepConferenceCamera() {
               Alternative_rally_plus: true,
               display: false,
             })
-            .addRecommendedDisplay(TVName.LogitechTVTwo, true)
         )
         .addConditionAttributesMount({
           display: {
