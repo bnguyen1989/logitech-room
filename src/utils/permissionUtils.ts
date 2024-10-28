@@ -153,14 +153,14 @@ export function createStepConferenceCamera() {
             CameraName.WallMountForVideoBars,
             PlacementManager.getNameNodeForCamera("Wall", 1, 2)
           )
-          // .setDependentMount(
-          //   new MountElement(
-          //     CameraName.WallMountForVideoBars,
-          //     PlacementManager.getNameNodeCameraWallMount()
-          //   )
-          // )
-          .addRecommendedDisplay(TVName.LogitechTVOne, true)
-          .addRecommendedDisplay(TVName.LogitechTVTwo, true)
+            // .setDependentMount(
+            //   new MountElement(
+            //     CameraName.WallMountForVideoBars,
+            //     PlacementManager.getNameNodeCameraWallMount()
+            //   )
+            // )
+            .addRecommendedDisplay(TVName.LogitechTVOne, true)
+            .addRecommendedDisplay(TVName.LogitechTVTwo, true)
         )
         .addDependenceMount(
           new MountElement(
@@ -1766,6 +1766,15 @@ export const getSortedKeyPermissions = (
         MeetingControllerName.TapTableMount,
         MeetingControllerName.TapRiserMount,
         MeetingControllerName.TapWallMount,
+      ];
+    case StepName.VideoAccessories:
+      return [
+        VideoAccessoryName.LogitechTapScheduler,
+        VideoAccessoryName.LogitechTapSchedulerAngleMount,
+        VideoAccessoryName.LogitechScribe,
+        VideoAccessoryName.LogitechSwytch,
+        VideoAccessoryName.MeetUp2ActiveCable,
+        VideoAccessoryName.LogitechExtend,
       ];
     default:
       return [];
