@@ -149,3 +149,14 @@ export const isMountedCard =
       );
     };
   };
+
+export const getDimensionData = (state: RootState) =>
+  state.configurator.dimension;
+
+export const getDimensionNodes = (state: RootState) => {
+  const dimensionData = getDimensionData(state);
+  return dimensionData.data;
+};
+
+export const getDimensionEnabled = (state: RootState) =>
+  getDimensionData(state).enabled;

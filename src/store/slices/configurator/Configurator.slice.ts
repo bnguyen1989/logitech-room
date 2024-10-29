@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Configuration } from "@threekit/rest-api";
 import { DataCamera, CameraData } from "../../../models/R3F";
+import { DimensionDataI, DimensionNodeData } from "./type";
 
 interface ConfiguratorStateI {
   assetId: string | null;
@@ -11,6 +12,7 @@ interface ConfiguratorStateI {
   highlightNodes: Record<string, boolean>;
   popuptNodes: Record<string, boolean>;
   camera: DataCamera;
+  dimension: DimensionDataI;
 }
 
 const initialState: ConfiguratorStateI = {
@@ -22,6 +24,21 @@ const initialState: ConfiguratorStateI = {
   highlightNodes: {},
   popuptNodes: {},
   camera: CameraData,
+  dimension: {
+    enabled: false,
+    data: [
+      {
+        label: "12d / 4m",
+        nodeAName: "Room_Length_1",
+        nodeBName: "Room_Length_2",
+      },
+      {
+        label: "13d / 4m",
+        nodeAName: "Room_Width_1",
+        nodeBName: "Room_Width_2",
+      },
+    ],
+  },
 };
 
 const configuratorSlice = createSlice({
@@ -108,6 +125,15 @@ const configuratorSlice = createSlice({
         }
       });
     },
+    setDimensionNodes: (state, action: PayloadAction<DimensionNodeData[]>) => {
+      state.dimension = {
+        ...state.dimension,
+        data: action.payload,
+      };
+    },
+    setEnabledDimension: (state, action: PayloadAction<boolean>) => {
+      state.dimension.enabled = action.payload;
+    },
   },
 });
 
@@ -126,5 +152,7 @@ export const {
   removeHighlightNodesByKeys,
   setPopuptNodes,
   disabledPopuptNodes,
+  setDimensionNodes,
+  setEnabledDimension,
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;

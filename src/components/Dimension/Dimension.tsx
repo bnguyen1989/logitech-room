@@ -1,14 +1,20 @@
 import React, { useMemo } from "react";
 import * as THREE from "three";
 import DimensionBetweenNodes from "./DimensionBetweenNodes";
+import { useAppSelector } from "../../hooks/redux";
+import {
+  getDimensionEnabled,
+  getDimensionNodes,
+} from "../../store/slices/configurator/selectors/selectors";
 
 interface PropsI {
   threeNode: THREE.Object3D;
-  lines: string[][]; // Каждая строка — это массив из двух имен узлов [nodeAName, nodeBName]
 }
 
-export const Dimension: React.FC<PropsI> = ({ threeNode, lines }) => {
-  // Создание словаря узлов
+export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
+  const dimensionNodes = useAppSelector(getDimensionNodes);
+  const enabled = useAppSelector(getDimensionEnabled);
+
   const nodeMap: Record<string, THREE.Mesh | undefined> = useMemo(() => {
     const map: Record<string, THREE.Mesh | undefined> = {};
 
@@ -19,24 +25,26 @@ export const Dimension: React.FC<PropsI> = ({ threeNode, lines }) => {
       object.children.forEach(traverse);
     };
 
-    traverse(threeNode); // Рекурсивно обходим узлы и создаем карту
+    traverse(threeNode);
     return map;
   }, [threeNode]);
 
+  if (!enabled) return null;
+
   return (
     <>
-      {lines.map(([nodeAName, nodeBName], index) => {
+      {dimensionNodes.map(({ nodeAName, nodeBName, label }, index) => {
         const nodeA = nodeMap[nodeAName];
         const nodeB = nodeMap[nodeBName];
 
-        if (!nodeA || !nodeB) return null; // Пропускаем, если узел не найден
+        if (!nodeA || !nodeB) return null;
 
         return (
           <DimensionBetweenNodes
             key={index}
             nodeA={nodeA}
             nodeB={nodeB}
-            label={`8ft / 2.4m`}
+            label={label}
           />
         );
       })}

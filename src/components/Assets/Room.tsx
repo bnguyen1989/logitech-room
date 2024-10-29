@@ -77,7 +77,7 @@ export const Room: React.FC<RoomProps> = (props) => {
       {camera && <primitive object={camera}></primitive>}
       <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
-      <Dimension threeNode={gltf.scene} lines={[["Mic_Placement_1", "Mic_Placement_2"]]} />
+      <Dimension threeNode={gltf.scene} />
       <CameraRoom gltf={gltf} camera={camera} roomAssetId={roomAssetId} />
     </>
   );
