@@ -2,17 +2,15 @@ import React, { useMemo } from "react";
 import * as THREE from "three";
 import DimensionBetweenNodes from "./DimensionBetweenNodes";
 import { useAppSelector } from "../../hooks/redux";
-import {
-  getDimensionEnabled,
-  getDimensionNodes,
-} from "../../store/slices/configurator/selectors/selectors";
+import { getDimensionEnabled } from "../../store/slices/configurator/selectors/selectors";
+import { getDimensionNodeData } from "../../store/slices/configurator/selectors/dimensionSelectors";
 
 interface PropsI {
   threeNode: THREE.Object3D;
 }
 
 export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
-  const dimensionNodes = useAppSelector(getDimensionNodes);
+  const dimensionNodes = useAppSelector(getDimensionNodeData);
   const enabled = useAppSelector(getDimensionEnabled);
 
   const nodeMap: Record<string, THREE.Mesh | undefined> = useMemo(() => {
