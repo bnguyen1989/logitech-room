@@ -10,6 +10,7 @@ import {
   removeNodes,
   removeValuesConfigurationByKeys,
   setHighlightNodes,
+  setPopuptNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
@@ -82,6 +83,17 @@ export const setHighlightAllNodes = (isHighlight: boolean) => {
   return (store: Store) => {
     const state = store.getState();
     const nodes = isHighlight ? getNodes(state) : {};
+
+    store.dispatch(
+      setPopuptNodes({
+        ...Object.keys(nodes).reduce<Record<string, boolean>>((acc, curr) => {
+          return {
+            ...acc,
+            [curr]: isHighlight,
+          };
+        }, {}),
+      })
+    );
     updateHighlightNodes(nodes)(store);
   };
 };

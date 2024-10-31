@@ -32,20 +32,21 @@ export const RecommendedDisplay: React.FC<PropsI> = (props) => {
   > = {
     [TVName.LogitechTVOne]: {
       icon: <DisplaySVG type={"single"} />,
-      text: langCard.Display.BestSingle,
+      text: langCard.Display.ForSingle,
     },
-    [TVName.LogitechTVTwo]: {
-      icon: <DisplaySVG type={"double"} />,
-      text: langCard.Display.BestDual,
+    ["all"]: {
+      icon: <DisplaySVG type={"all"} />,
+      text: langCard.Display.ForAll,
     },
   };
 
-  const keyDisplay = keys[0];
+  const keyDisplay = keys.length === 2 ? "all" : keys[0];
+  const dataRecommended = data[keyDisplay];
 
   return (
     <div className={s.recommended_display}>
-      <div className={s.icon}>{data[keyDisplay].icon}</div>
-      <div className={s.text}>{data[keyDisplay].text}</div>
+      <div className={s.icon}>{dataRecommended.icon}</div>
+      <div className={s.text}>{dataRecommended.text}</div>
     </div>
   );
 };

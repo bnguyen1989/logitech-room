@@ -49,12 +49,15 @@ export const DisplayToggle: React.FC<PropsI> = (props) => {
     <div
       className={`${s.container_display_toggle} ${disabled ? s.disabled : ""}`}
     >
-      {data.map((item) => (
+      {data.map((item, index) => (
         <div
+          key={index}
           className={`${s.button} ${isActive(item.key) ? s.button_active : ""}`}
           onClick={() => handleChange(item.key)}
         >
-          <div className={`${s.icon} ${s[item.text.toLowerCase()]}`}>{item.icon}</div>
+          <div className={`${s.icon} ${s[item.text.toLowerCase()]}`}>
+            {item.icon}
+          </div>
           <div className={s.text}>{item.text}</div>
         </div>
       ))}

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/redux";
 import {
@@ -15,6 +16,16 @@ export const PlayerWidgets: React.FC = () => {
   const dispatch = useDispatch();
   const isProcessing = useAppSelector(getIsProcessing);
   const enabledDimension = useAppSelector(getDimensionEnabled);
+  const [isActiveHighlight, setIsActiveHighlight] = useState(false);
+
+  useEffect(() => {
+    if (!isActiveHighlight) return;
+
+    setTimeout(() => {
+      setIsActiveHighlight(false);
+      dispatch(setHighlightAllProducts({ isHighlight: false }));
+    }, 5000);
+  }, [isActiveHighlight]);
 
   const handleInfo = () => {
     dispatch(setGuideModal({ isOpen: true }));
@@ -22,10 +33,7 @@ export const PlayerWidgets: React.FC = () => {
 
   const handleHighlightProducts = () => {
     dispatch(setHighlightAllProducts({ isHighlight: true }));
-
-    setTimeout(() => {
-      dispatch(setHighlightAllProducts({ isHighlight: false }));
-    }, 5000);
+    setIsActiveHighlight(true);
   };
 
   const handleDimension = () => {
@@ -40,7 +48,7 @@ export const PlayerWidgets: React.FC = () => {
         <DimensionSVG color={enabledDimension ? "#814EFA" : "black"} />
       </IconButton>
       <IconButton onClick={handleHighlightProducts}>
-        <ProductInfoSVG />
+        <ProductInfoSVG color={isActiveHighlight ? "#814EFA" : "black"} />
       </IconButton>
       <IconButton onClick={handleInfo}>
         <InfoSVG />

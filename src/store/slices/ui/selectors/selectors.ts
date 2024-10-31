@@ -308,12 +308,17 @@ export const getPriceFromMetadataByKeyPermission =
   };
 
 export const getStepNameByKeyPermission =
-  (keyPermission: string) => (state: RootState) => {
+  (keyPermission: string) =>
+  (state: RootState): StepName => {
     const stepData = getStepData(state);
-    const step = Object.entries(stepData).filter((item) => {
-      return !!item[1].cards[keyPermission];
-    });
-    return step[0][0] as StepName;
+
+    return Object.entries(stepData).reduce<string>((acc, item) => {
+      const isExist = !!item[1].cards[keyPermission];
+      if (isExist) {
+        acc = item[0];
+      }
+      return acc;
+    }, "") as StepName;
   };
 
 export const getMetadataByKeyPermission =
@@ -490,7 +495,7 @@ export const getIsRequiredCardByKeyPermission =
     if (!element) return false;
     return element.getRequired();
   };
-  
+
 export const getHiddenActionByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const res = {
@@ -588,3 +593,10 @@ export const getProductNameFromMetadata = (metadata: MetadataI) => {
 };
 
 export const getDisplayType = (state: RootState) => state.ui.typeDisplay;
+
+export const getPropertyCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    const value = data?.property;
+    return value ? value : {};
+  };

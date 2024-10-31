@@ -153,12 +153,14 @@ export function createStepConferenceCamera() {
             CameraName.WallMountForVideoBars,
             PlacementManager.getNameNodeForCamera("Wall", 1, 2)
           )
-          // .setDependentMount(
-          //   new MountElement(
-          //     CameraName.WallMountForVideoBars,
-          //     PlacementManager.getNameNodeCameraWallMount()
-          //   )
-          // )
+            // .setDependentMount(
+            //   new MountElement(
+            //     CameraName.WallMountForVideoBars,
+            //     PlacementManager.getNameNodeCameraWallMount()
+            //   )
+            // )
+            .addRecommendedDisplay(TVName.LogitechTVOne, true)
+            .addRecommendedDisplay(TVName.LogitechTVTwo, true)
         )
         .addDependenceMount(
           new MountElement(
@@ -210,8 +212,21 @@ export function createStepConferenceCamera() {
     );
   };
   const group = new GroupElement()
-    .addElement(setMountForCamera(new ItemElement(CameraName.RallyBar)))
-    .addElement(setMountForCamera(new ItemElement(CameraName.RallyBarMini)))
+    .addElement(
+      setMountForCamera(
+        new ItemElement(CameraName.RallyBar)
+      ).addAutoChangeItems({
+        [CameraName.RallyBarMini]: ["display"],
+        [CameraName.RallyPlus]: ["display"],
+      })
+    )
+    .addElement(
+      setMountForCamera(
+        new ItemElement(CameraName.RallyBarMini)
+      ).addAutoChangeItems({
+        [CameraName.RallyBar]: ["display"],
+      })
+    )
     .addElement(
       new ItemElement(CameraName.MeetUp2)
         .setDefaultMount(
@@ -279,7 +294,6 @@ export function createStepConferenceCamera() {
               Alternative_rally_plus: true,
               display: false,
             })
-            .addRecommendedDisplay(TVName.LogitechTVTwo, true)
         )
         .addConditionAttributesMount({
           display: {
@@ -302,6 +316,7 @@ export function createStepConferenceCamera() {
         .addAutoChangeItems({
           [AudioExtensionName.RallyMicPod]: ["color"],
           [AudioExtensionName.RallyMicPodMount]: ["color"],
+          [CameraName.RallyBar]: ["display"],
         })
         // .addBundleMount(
         //   new MountElement(
@@ -1751,6 +1766,15 @@ export const getSortedKeyPermissions = (
         MeetingControllerName.TapTableMount,
         MeetingControllerName.TapRiserMount,
         MeetingControllerName.TapWallMount,
+      ];
+    case StepName.VideoAccessories:
+      return [
+        VideoAccessoryName.LogitechTapScheduler,
+        VideoAccessoryName.LogitechTapSchedulerAngleMount,
+        VideoAccessoryName.LogitechScribe,
+        VideoAccessoryName.LogitechSwytch,
+        VideoAccessoryName.MeetUp2ActiveCable,
+        VideoAccessoryName.LogitechExtend,
       ];
     default:
       return [];

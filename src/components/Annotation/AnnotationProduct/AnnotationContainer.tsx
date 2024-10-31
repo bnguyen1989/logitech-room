@@ -7,6 +7,11 @@ import { getAnnotationDataByKeyPermissions } from "../../../store/slices/ui/sele
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
 import { CardI } from "../../../store/slices/ui/type";
+import {
+  AudioExtensionName,
+  CameraName,
+  VideoAccessoryName,
+} from "../../../utils/permissionUtils";
 
 interface AnnotationProductPropsI {
   stepPermission: StepName;
@@ -55,13 +60,39 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
     );
   };
 
+  const getVariantAnnotation = () => {
+    console.log("keyPermissions", keyPermissions);
+
+    const isTopPosition = [
+      AudioExtensionName.RallyMicPodPendantMount,
+      CameraName.RallyCamera,
+    ].some((key) => keyPermissions.includes(key));
+
+    if (isTopPosition) return "top";
+    return "bottom";
+  };
+
+  const getPosition = (): [number, number, number] => {
+    const variant = getVariantAnnotation();
+    if (variant === "top") {
+      return [position[0], position[1] + 0.2, position[2]];
+    }
+
+    const offset = keyPermissions.includes(VideoAccessoryName.LogitechScribe)
+      ? 0
+      : 0.6;
+
+    return [position[0], position[1] + offset, position[2]];
+  };
+
   if (!keyPermissions.length) return null;
 
   return (
-    <Html distanceFactor={40} center position={position} ref={htmlRef}>
+    <Html distanceFactor={40} center position={getPosition()} ref={htmlRef}>
       <AnnotationProduct
         dataAnnotation={dataAnnotation}
         callbackHandleInfo={callbackHandleInfo}
+        position={getVariantAnnotation()}
       />
     </Html>
   );

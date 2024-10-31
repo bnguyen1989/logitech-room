@@ -10,7 +10,7 @@ import {
 } from "../configurator/type";
 import { DataTable } from "../dataTable/DataTable";
 import { Handler } from "./Handler";
-import { AttrSpecI, RuleName } from "./type";
+import { AttrSpecI, PrefixName, RuleName } from "./type";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
 import { Application } from "../Application";
 import { ColorName, getSeparatorItem } from "../../utils/baseUtils";
@@ -88,8 +88,6 @@ export class ConfigurationConstraintHandler extends Handler {
     const locale = this.configurator.language;
     const localeTagStr = `locale_${locale.toLowerCase()}`;
     this.localeTagStr = localeTagStr;
-    const leadingSpecCharForDefault = "*";
-    const leadingSpecCharForRecommended = "r";
     const skipColumns = ["level2datatableId", "attrRules", "recoRules"];
     const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
     const currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
@@ -106,8 +104,6 @@ export class ConfigurationConstraintHandler extends Handler {
       this.validateLevel1Attr(
         localeTagStr,
         this.dataTableLevel1,
-        leadingSpecCharForDefault,
-        leadingSpecCharForRecommended,
         skipColumns,
         level1AttrSequenceArr,
         currentIndexInLevel1Sequence
@@ -117,9 +113,7 @@ export class ConfigurationConstraintHandler extends Handler {
     ////* 2nd - based on selection from level1 attributes to find level2 datatable to further validate level2 attributes
     const level2row = this.findLevel2Row(
       this.dataTableLevel1,
-      level1AttrSequenceArr,
-      leadingSpecCharForDefault,
-      leadingSpecCharForRecommended
+      level1AttrSequenceArr
     );
 
     //May need to set a flag for UI to know that it can't pass this step unless level1 attributes are all selected.
@@ -172,8 +166,6 @@ export class ConfigurationConstraintHandler extends Handler {
           // After loading the data, call the handler
           this.proccesDataTableLavel2(
             localeTagStr,
-            leadingSpecCharForDefault,
-            leadingSpecCharForRecommended,
             setLevel2Default_flag,
             attrRulesStr,
             recoRulesStr
@@ -184,8 +176,6 @@ export class ConfigurationConstraintHandler extends Handler {
       // Let's make sure that the level 2 table ID exists before calling the handler
       this.proccesDataTableLavel2(
         localeTagStr,
-        leadingSpecCharForDefault,
-        leadingSpecCharForRecommended,
         setLevel2Default_flag,
         attrRulesStr,
         recoRulesStr
@@ -198,17 +188,13 @@ export class ConfigurationConstraintHandler extends Handler {
 
   public proccesDataTableLavel2(
     localeTagStr: string,
-    leadingSpecCharForDefault: string,
-    leadingSpecCharForRecommended: string,
     setLevel2Default_flag: boolean,
     attrRulesStr: string,
     recoRulesStr: string
   ) {
     const setConfig_obj = this.validateAttributesWithDatatable(
       localeTagStr,
-      this.dataTableLevel2,
-      leadingSpecCharForDefault,
-      leadingSpecCharForRecommended
+      this.dataTableLevel2
     );
     if (!setConfig_obj) return true;
     const forceSetConfig_obj = this.forceSetOption(
@@ -1208,9 +1194,7 @@ export class ConfigurationConstraintHandler extends Handler {
     dataTable: DataTable,
     tableColName: string,
     theAttrId: string,
-    theAttrValuesArr?: Array<ValueStringStateI | ValueAssetStateI>,
-    leadingSpecCharForDefault = "*", // - Symbol of the default value
-    leadingSpecCharForRecommended = "r" // - Symbol of the recommended value
+    theAttrValuesArr?: Array<ValueStringStateI | ValueAssetStateI>
   ) {
     const rows = dataTable.data;
     const optionRecommendation: Array<string> = [];
@@ -1226,13 +1210,14 @@ export class ConfigurationConstraintHandler extends Handler {
     for (let i = 0; i < rows.length; i++) {
       const rowValue = rows[i].value[tableColName].trim();
       if (rowValue) {
-        const isDefault = rowValue.indexOf(leadingSpecCharForDefault) === 0;
+        const isDefaultActive =
+          rowValue.indexOf(PrefixName.DEFAULT_ACTIVE) === 0;
+        const isRecommendedActive =
+          rowValue.indexOf(PrefixName.RECOMMENDED_DEFAULT_ACTIVE) === 0;
         const isRecommendedDefault =
-          rowValue.indexOf(
-            leadingSpecCharForRecommended + leadingSpecCharForDefault
-          ) === 0;
-        if (isDefault || isRecommendedDefault) {
-          const dfOption = isDefault
+          rowValue.indexOf(PrefixName.RECOMMENDED_DEFAULT) === 0;
+        if (isDefaultActive || isRecommendedActive) {
+          const dfOption = isDefaultActive
             ? rowValue.substring(1)
             : rowValue.substring(2);
           if (dfOption) {
@@ -1240,16 +1225,25 @@ export class ConfigurationConstraintHandler extends Handler {
             attrSpec.defaultValue = dfOption;
             if (dfOption === "None") attrSpec.allowBlank = true;
             if (
-              isRecommendedDefault &&
+              isRecommendedActive &&
               !optionRecommendation.includes(dfOption)
             ) {
               optionRecommendation.push(dfOption);
             }
           }
         } else {
-          if (i === 0) attrSpec.defaultValue = rowValue;
-          if (optionNames.indexOf(rowValue) < 0) optionNames.push(rowValue);
-          if (rowValue === "None") attrSpec.allowBlank = true;
+          const dfOption = isRecommendedDefault
+            ? rowValue.substring(2)
+            : rowValue;
+          if (
+            isRecommendedDefault &&
+            !optionRecommendation.includes(dfOption)
+          ) {
+            optionRecommendation.push(dfOption);
+          }
+          if (i === 0) attrSpec.defaultValue = dfOption;
+          if (optionNames.indexOf(dfOption) < 0) optionNames.push(dfOption);
+          if (dfOption === "None") attrSpec.allowBlank = true;
         }
       }
     }
@@ -1350,8 +1344,6 @@ export class ConfigurationConstraintHandler extends Handler {
   private validateAttributesWithDatatable(
     localeTagStr: string,
     dataTable: DataTable,
-    leadingSpecCharForDefault = "*",
-    leadingSpecCharForRecommended = "r",
     skipColumns: Array<string> = [],
     attrSequenceArr: Array<string> = [],
     currentIndexInSequence = -1
@@ -1374,16 +1366,28 @@ export class ConfigurationConstraintHandler extends Handler {
             : selectedValue
           : "None";
 
-        datarows = datarows.filter(
-          (row) =>
-            row.value[attrSequenceArr[i]] === selectedValue_str ||
-            row.value[attrSequenceArr[i]] ===
-              leadingSpecCharForDefault + selectedValue_str ||
-            row.value[attrSequenceArr[i]] ===
-              leadingSpecCharForRecommended +
-                leadingSpecCharForDefault +
-                selectedValue_str
-        );
+        datarows = datarows.filter((row) => {
+          const value = row.value[attrSequenceArr[i]];
+          return (
+            typeof selectedValue_str === "string" &&
+            (value === selectedValue_str ||
+              value ===
+                this.getAssetNameWithPrefix(
+                  PrefixName.DEFAULT_ACTIVE,
+                  selectedValue_str
+                ) ||
+              value ===
+                this.getAssetNameWithPrefix(
+                  PrefixName.RECOMMENDED_DEFAULT_ACTIVE,
+                  selectedValue_str
+                ) ||
+              value ===
+                this.getAssetNameWithPrefix(
+                  PrefixName.RECOMMENDED_DEFAULT,
+                  selectedValue_str
+                ))
+          );
+        });
       }
       attributeName_arr = attrSequenceArr.slice(currentIndexInSequence + 1);
     }
@@ -1405,9 +1409,7 @@ export class ConfigurationConstraintHandler extends Handler {
         copyDataTable,
         attrName,
         attribute.id,
-        attributeValuesArr,
-        leadingSpecCharForDefault,
-        leadingSpecCharForRecommended
+        attributeValuesArr
       );
       attrSpec_obj[attrName] = attrSpec;
     });
@@ -1477,8 +1479,6 @@ export class ConfigurationConstraintHandler extends Handler {
   private validateLevel1Attr(
     localeTagStr: string,
     dataTable: DataTable,
-    leadingSpecCharForDefault = "*",
-    leadingSpecCharForRecommended = "r",
     skipColumns: Array<string> = [],
     level1AttrSequenceArr: Array<string> = [],
     currentIndexInLevel1Sequence: number
@@ -1486,8 +1486,6 @@ export class ConfigurationConstraintHandler extends Handler {
     const setConfig_obj = this.validateAttributesWithDatatable(
       localeTagStr,
       dataTable,
-      leadingSpecCharForDefault,
-      leadingSpecCharForRecommended,
       skipColumns,
       level1AttrSequenceArr,
       currentIndexInLevel1Sequence
@@ -1512,8 +1510,6 @@ export class ConfigurationConstraintHandler extends Handler {
           this.validateLevel1Attr(
             localeTagStr,
             dataTable,
-            leadingSpecCharForDefault,
-            leadingSpecCharForRecommended,
             skipColumns,
             level1AttrSequenceArr,
             currentIndexInLevel1Sequence + 1
@@ -1525,9 +1521,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
   private findLevel2Row(
     dataTableLevel1: DataTable,
-    attrSequenceArr: Array<string>,
-    leadingSpecCharForDefault = "*",
-    leadingSpecCharForRecommended = "r"
+    attrSequenceArr: Array<string>
   ) {
     if (attrSequenceArr.length < 1) return undefined;
 
@@ -1552,11 +1546,20 @@ export class ConfigurationConstraintHandler extends Handler {
           if (
             rowValue === selectedValueArr[attrIndex] ||
             rowValue ===
-              leadingSpecCharForDefault + selectedValueArr[attrIndex] ||
-            rowValue ===
-              leadingSpecCharForRecommended +
-                leadingSpecCharForDefault +
+              this.getAssetNameWithPrefix(
+                PrefixName.DEFAULT_ACTIVE,
                 selectedValueArr[attrIndex]
+              ) ||
+            rowValue ===
+              this.getAssetNameWithPrefix(
+                PrefixName.RECOMMENDED_DEFAULT_ACTIVE,
+                selectedValueArr[attrIndex]
+              ) ||
+            rowValue ===
+              this.getAssetNameWithPrefix(
+                PrefixName.RECOMMENDED_DEFAULT,
+                selectedValueArr[attrIndex]
+              )
           )
             found_counter++;
         }
@@ -1565,6 +1568,10 @@ export class ConfigurationConstraintHandler extends Handler {
       if (found_counter === attrSequenceArr.length) return row;
     }
     return undefined;
+  }
+
+  private getAssetNameWithPrefix(prefix: string, name: string) {
+    return `${prefix}${name}`;
   }
 
   private getColorFromAssetName(name: string) {
