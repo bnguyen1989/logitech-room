@@ -29,7 +29,7 @@ export const DisplaySVG: React.FC<PropsI> = (props) => {
           height="204"
           rx="22"
           stroke="black"
-          stroke-width="8"
+          strokeWidth="8"
         />
       </svg>
     );
