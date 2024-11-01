@@ -590,7 +590,7 @@
   "Logitech Extend": {
     "Card": {
       "ProductName": "Logitech Extend",
-      "ShortDescription": ["Bring-your-own-laptop with a single extended connection"]
+      "ShortDescription": ["Single cable bring-your-own-device extended connection"]
     },
     "Blade_1": {
       "ProductName": "Logitech Extend",
@@ -888,12 +888,12 @@
   "Logitech Active USB Cable": {
     "Card": {
       "ProductName": "Logitech Active USB Cable",
-      "ShortDescription": ["Bring-your-own-laptop connection for MeetUp 2"]
+      "ShortDescription": ["Single cable bring-your-own-device 5m connection with MeetUp 2"]
     },
     "Blade_1": {
       "ProductName": "Active USB Cable",
       "ShortDescription": "Enables single-cable BYOD connection for MeetUp 2.",
-      "LongDescription": "Logitech Active USB Cable allows a single-cable connection between MeetUp 2 and laptops for BYOD meetings.",
+      "LongDescription": "Deploy single-cable BYOD meetings with the Active USB Cable, with a 5m cable to provide ample connection in smaller spaces.",
       "Colors": {
         "Off white": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/extend-byod-connection/logitech-extend-02.png?v=1"
       }
