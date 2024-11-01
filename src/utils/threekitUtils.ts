@@ -45,3 +45,7 @@ export const getPriceTableIdBySoftwareService = (service: string) => {
       return null;
   }
 };
+
+export const getDimensionTableId = () => {
+  return "82709479-805e-4010-8fa7-edc52554da32";
+};

@@ -1,4 +1,4 @@
-import { ConditionChangeType } from "../../conditions/type";
+import { ConditionChangeType } from "../../../conditions/type";
 import { BaseElement } from "../BaseElement";
 import { Element } from "../Element";
 

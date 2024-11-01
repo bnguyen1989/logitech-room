@@ -149,6 +149,14 @@ export class PlacementManager {
     ];
   }
 
+  public static getNameNodeRoomLength(id: number): string {
+    return `Room_Length_${id}`;
+  }
+
+  public static getNameNodeRoomWidth(id: number): string {
+    return `Room_Width_${id}`;
+  }
+
   static getAllPlacement(): string[] {
     const placements: string[] = [];
 

@@ -9,9 +9,9 @@ import { PlacementManager } from "../models/configurator/PlacementManager";
 import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
 import { RuleManagerMount } from "../models/configurator/RuleManagerMount";
 import { RuleBuilder } from "../models/configurator/RuleBuilder";
-import { Condition } from "../models/permission/conditions/Condition";
-import { ConditionPropertyName } from "../models/permission/conditions/type";
-import { ConditionChangeBuilder } from "../models/permission/conditions/ConditionChangeBuilder";
+import { Condition } from "../models/conditions/Condition";
+import { ConditionPropertyName } from "../models/conditions/type";
+import { ConditionChangeBuilder } from "../models/conditions/ConditionChangeBuilder";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",

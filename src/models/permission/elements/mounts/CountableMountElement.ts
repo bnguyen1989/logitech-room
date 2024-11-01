@@ -108,6 +108,10 @@ export class CountableMountElement extends MountElement {
     this.notAvailableIndex.push(index);
   }
 
+  public getNotAvailableIndex(): number[] {
+    return this.notAvailableIndex;
+  }
+
   public removeNotAvailableIndex(index: number): void {
     const indexToRemove = this.notAvailableIndex.indexOf(index);
     if (indexToRemove !== -1) {

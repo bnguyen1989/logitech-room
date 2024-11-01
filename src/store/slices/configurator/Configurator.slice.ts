@@ -11,6 +11,7 @@ interface ConfiguratorStateI {
   highlightNodes: Record<string, boolean>;
   popuptNodes: Record<string, boolean>;
   camera: DataCamera;
+  dimensionEnabled: boolean;
 }
 
 const initialState: ConfiguratorStateI = {
@@ -22,6 +23,7 @@ const initialState: ConfiguratorStateI = {
   highlightNodes: {},
   popuptNodes: {},
   camera: CameraData,
+  dimensionEnabled: false,
 };
 
 const configuratorSlice = createSlice({
@@ -108,6 +110,9 @@ const configuratorSlice = createSlice({
         }
       });
     },
+    setEnabledDimension: (state, action: PayloadAction<boolean>) => {
+      state.dimensionEnabled = action.payload;
+    },
   },
 });
 
@@ -126,5 +131,6 @@ export const {
   removeHighlightNodesByKeys,
   setPopuptNodes,
   disabledPopuptNodes,
+  setEnabledDimension,
 } = configuratorSlice.actions;
 export default configuratorSlice.reducer;

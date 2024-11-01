@@ -1,4 +1,4 @@
-import { ConditionExecutor } from "../../conditions/ConditionExecutor";
+import { ConditionExecutor } from "../../../conditions/ConditionExecutor";
 import { ItemElement } from "../../elements/ItemElement";
 import { MountElement } from "../../elements/mounts/MountElement";
 import { Step } from "../../step/Step";
