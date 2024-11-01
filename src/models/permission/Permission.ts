@@ -263,6 +263,18 @@ export class Permission {
     return this.steps.find((step) => step.name === stepName) as Step;
   }
 
+  public getAllElements(): Array<ItemElement | MountElement> {
+    return this.steps.reduce((acc: Array<ItemElement | MountElement>, step) => {
+      return acc.concat(step.getSimpleElements());
+    }, []);
+  }
+
+  public getAllActiveElements(): Array<ItemElement | MountElement> {
+    return this.steps.reduce((acc: Array<ItemElement | MountElement>, step) => {
+      return acc.concat(step.getActiveElements());
+    }, []);
+  }
+
   private groupKeyElementsByStepName(
     keys: string[]
   ): Record<string, Array<string>> {

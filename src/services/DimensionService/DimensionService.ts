@@ -80,18 +80,19 @@ export class DimensionService {
   private buildCondition(value: string, keyPermission: string): Condition {
     const condition = new Condition(keyPermission);
     if (this.isCountCondition(value)) {
-      condition
-        .addProperty(ConditionPropertyName.ACTIVE, true)
-        .addProperty(
-          ConditionPropertyName.COUNT,
-          parseFloat(value.replace("+", ""))
-        )
-        .addOperatorProperty(
-          ConditionPropertyName.COUNT,
-          value.includes("+")
-            ? OperatorName.GREATER_OR_EQUAL
-            : OperatorName.EQUAL
-        );
+      const numberValue = parseFloat(value.replace("+", ""));
+      condition.addProperty(ConditionPropertyName.ACTIVE, numberValue !== 0);
+
+      if (!isNaN(numberValue) && numberValue !== 0) {
+        condition
+          .addProperty(ConditionPropertyName.COUNT, numberValue)
+          .addOperatorProperty(
+            ConditionPropertyName.COUNT,
+            value.includes("+")
+              ? OperatorName.GREATER_OR_EQUAL
+              : OperatorName.EQUAL
+          );
+      }
     } else {
       condition.addProperty(
         ConditionPropertyName.ACTIVE,

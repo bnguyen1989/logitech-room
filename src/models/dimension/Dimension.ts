@@ -3,7 +3,11 @@ import {
   DimensionDataI,
 } from "../../services/DimensionService/type";
 import { StepName } from "../../utils/baseUtils";
-import { AudioExtensionName } from "../../utils/permissionUtils";
+import {
+  AudioExtensionName,
+  CameraName,
+  RoomSizeName,
+} from "../../utils/permissionUtils";
 import { Condition } from "../conditions/Condition";
 import { ConditionPropertyName } from "../conditions/type";
 import { PlacementManager } from "../configurator/PlacementManager";
@@ -11,6 +15,7 @@ import { ItemElement } from "../permission/elements/ItemElement";
 import { CountableMountElement } from "../permission/elements/mounts/CountableMountElement";
 import { MountElement } from "../permission/elements/mounts/MountElement";
 import { Permission } from "../permission/Permission";
+import { getRoadMapDimensionByRoom } from "./roadMapDimension";
 import { DataDistanceI, DimensionNodeData, DimensionNodeI } from "./type";
 
 export class Dimension {
@@ -42,7 +47,9 @@ export class Dimension {
 
   private buildDimensionNodes(): DimensionNodeData[] {
     const currentStep = this.permissionElement.getCurrentStep();
-    const elements = currentStep.getChainElements().flat();
+    const elements = this.permissionElement.getAllElements();
+    // const activeElements = this.permissionElement.getActiveElements();
+    // const elements = currentStep.getChainElements().flat();
     const activeElements = currentStep.getChainActiveElements().flat();
     const activeElementsNames = activeElements.map((el) => el.name);
 
@@ -101,26 +108,67 @@ export class Dimension {
     dataCondition: DimensionDataI,
     activeElements: (ItemElement | MountElement)[]
   ): DimensionNodeData[] {
+    const indexCondition = this.dataCondition.indexOf(dataCondition);
+    const roadMapNodes = this.getRoadMapNodesRoom(indexCondition);
+    const nodes = [];
+
     const micPodElement = activeElements.find(
       (el) => el.name === AudioExtensionName.RallyMicPod
     );
-    if (
-      !(micPodElement instanceof ItemElement) ||
-      !(micPodElement.getDefaultMount() instanceof CountableMountElement)
-    )
-      return [];
+    const defaultMountMicPod =
+      micPodElement instanceof ItemElement
+        ? micPodElement.getDefaultMount()
+        : null;
 
-    const defaultMount =
-      micPodElement.getDefaultMount() as CountableMountElement;
+    const sightElement = activeElements.find(
+      (el) => el.name === CameraName.LogitechSight
+    );
+
+    if (roadMapNodes) {
+      if (defaultMountMicPod instanceof CountableMountElement) {
+        const activeIndex = defaultMountMicPod.activeIndex;
+        const newNodes = roadMapNodes.orderMicPods
+          .filter((i) => i <= activeIndex)
+          .map((index) => `${roadMapNodes.nodeMicPod}_${index}`);
+        nodes.push(...newNodes);
+      }
+
+      if (
+        sightElement &&
+        roadMapNodes.nodeSight &&
+        roadMapNodes.indexSight !== undefined
+      ) {
+        nodes.splice(roadMapNodes.indexSight, 0, roadMapNodes.nodeSight);
+      }
+    } else {
+      if (defaultMountMicPod instanceof CountableMountElement) {
+        nodes.push(...defaultMountMicPod.getAvailableNameNode());
+      }
+
+      if (sightElement instanceof ItemElement) {
+        if (defaultMountMicPod instanceof CountableMountElement) {
+          const notAvailableIndex = defaultMountMicPod.getNotAvailableIndex();
+          const index = notAvailableIndex[0] - 2;
+          const defaultSightMount = sightElement.getDefaultMount();
+          if (defaultSightMount instanceof MountElement)
+            nodes.splice(index, 0, defaultSightMount?.nodeName);
+        } else {
+          const defaultSightMount = sightElement.getDefaultMount();
+          if (defaultSightMount instanceof MountElement)
+            nodes.push(defaultSightMount.nodeName);
+        }
+      }
+    }
+
     return [
-      ...this.getCameraToMicPodNodes(dataCondition, defaultMount),
-      ...this.getMicPodToMicPodNodes(dataCondition, defaultMount),
+      ...this.getCameraToMicPodNodes(dataCondition, nodes),
+      ...this.getMicPodToMicPodNodes(dataCondition, nodes),
     ];
   }
 
   private getCameraToMicPodNodes(
     dataCondition: DimensionDataI,
-    defaultMount: CountableMountElement
+    nodeNames: string[]
   ): DimensionNodeData[] {
     if (!dataCondition.data[ColumnNameDimension.CAMERA_TO_MIC_POD_METER])
       return [];
@@ -129,17 +177,57 @@ export class Dimension {
       ColumnNameDimension.CAMERA_TO_MIC_POD_METER,
       dataCondition.data
     );
+    const lastNode = nodeNames[nodeNames.length - 1];
+    const activeRoom = this.getActiveRoomName();
+    if (activeRoom === RoomSizeName.Auditorium) {
+      const res = [];
+      const firstNode = nodeNames[0];
+
+      if (
+        nodeNames.length >= 4 ||
+        (nodeNames.length >= 3 &&
+          dataCondition.data[ColumnNameDimension.CAMERA] !==
+            CameraName.RallyPlus)
+      )
+        res.push(
+          this.getDimensionNodeDataByData(distance, {
+            nodeAName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+            nodeBName: lastNode,
+          })
+        );
+
+      if (
+        nodeNames.length >= 5 ||
+        (nodeNames.length >= 4 &&
+          dataCondition.data[ColumnNameDimension.CAMERA] !==
+            CameraName.RallyPlus)
+      )
+        res.push(
+          this.getDimensionNodeDataByData(distance, {
+            nodeAName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+            nodeBName: firstNode,
+          })
+        );
+
+      return res;
+    }
     return [
       this.getDimensionNodeDataByData(distance, {
         nodeAName: PlacementManager.getNameNodeCommodeForCamera("RallyBar", 2),
-        nodeBName: `${defaultMount.nodeName}_1`,
+        nodeBName: lastNode,
       }),
     ];
   }
 
   private getMicPodToMicPodNodes(
     dataCondition: DimensionDataI,
-    defaultMount: CountableMountElement
+    nodeNames: string[]
   ): DimensionNodeData[] {
     if (!dataCondition.data[ColumnNameDimension.MIC_POD_TO_MIC_POD_METER])
       return [];
@@ -148,11 +236,10 @@ export class Dimension {
       ColumnNameDimension.MIC_POD_TO_MIC_POD_METER,
       dataCondition.data
     );
-    const nodes = defaultMount.getAvailableNameNode();
-    return nodes.slice(0, -1).map((current, index) =>
+    return nodeNames.slice(0, -1).map((current, index) =>
       this.getDimensionNodeDataByData(distance, {
         nodeAName: current,
-        nodeBName: nodes[index + 1],
+        nodeBName: nodeNames[index + 1],
       })
     );
   }
@@ -213,5 +300,19 @@ export class Dimension {
       meter: value,
       feet: valueFeet,
     };
+  }
+
+  private getActiveRoomName(): string {
+    const roomStep = this.permissionElement.getStepByName(StepName.RoomSize);
+    const [activeRoom] = roomStep.getActiveElements();
+    return activeRoom.name;
+  }
+
+  private getRoadMapNodesRoom(index: number) {
+    const roadMapNodes = getRoadMapDimensionByRoom();
+    const values = Object.values(roadMapNodes).flat();
+    if (values.length > index) {
+      return values[index];
+    }
   }
 }
