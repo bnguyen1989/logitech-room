@@ -28,3 +28,9 @@ export enum RuleName {
   reco_RallyBar = "reco_RallyBar",
   reco_RallyPlus = "reco_RallyPlus",
 }
+
+export enum PrefixName {
+  DEFAULT_ACTIVE = "*",
+  RECOMMENDED_DEFAULT_ACTIVE = "r*",
+  RECOMMENDED_DEFAULT = "r_",
+}

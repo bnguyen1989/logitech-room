@@ -2,6 +2,11 @@ import { createAction } from "@reduxjs/toolkit";
 import { CUSTOM_UI_ACTION_NAME } from "../utils";
 import { Configurator } from "../../../../models/configurator/Configurator";
 
+export const changeDisplayItem = createAction<{
+  key: string;
+  value: string;
+}>(CUSTOM_UI_ACTION_NAME.CHANGE_DISPLAY_ITEM);
+
 export const changeCountItem = createAction<{
   key: string;
   value: number;
@@ -15,3 +20,7 @@ export const changeColorItem = createAction<{
 export const createOrder = createAction<{
   configurator: Configurator;
 }>(CUSTOM_UI_ACTION_NAME.CREATE_ORDER);
+
+export const setHighlightAllProducts = createAction<{
+  isHighlight: boolean;
+}>(CUSTOM_UI_ACTION_NAME.SET_HIGHLIGHT_ALL_NODES);

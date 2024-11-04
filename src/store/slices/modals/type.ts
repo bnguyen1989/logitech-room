@@ -5,6 +5,7 @@ export enum ModalName {
   SHARE_PROJECT = "SHARE_PROJECT",
   FINISH = "FINISH",
   REQUEST_CONSULTATION = "REQUEST_CONSULTATION",
+  GUIDE_MODAL = "GUIDE_MODAL",
 }
 
 export interface ModalI {
@@ -28,5 +29,11 @@ export interface SelectProductModalI extends ModalI {
 export interface MySetupModalI extends ModalI {
   dataModal?: {
     linkSnapshot: string;
+  };
+}
+
+export interface GuideModalI extends ModalI {
+  dataModal?: {
+    isFirst?: boolean;
   };
 }

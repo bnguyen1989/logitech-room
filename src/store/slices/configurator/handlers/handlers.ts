@@ -10,6 +10,7 @@ import {
   removeNodes,
   removeValuesConfigurationByKeys,
   setHighlightNodes,
+  setPopuptNodes,
 } from "../Configurator.slice";
 import { Configurator } from "../../../../models/configurator/Configurator";
 import { ItemElement } from "../../../../models/permission/elements/ItemElement";
@@ -22,7 +23,7 @@ import {
   getIsSelectedCardByKeyPermission,
   getPermission,
   getPropertyCounterCardByKeyPermission,
-  getSelectData,
+  getPropertyDisplayCardByKeyPermission,
   getStepNameByKeyPermission,
 } from "../../ui/selectors/selectors";
 import {
@@ -34,35 +35,66 @@ import { ReferenceMountElement } from "../../../../models/permission/elements/mo
 import { StepName } from "../../../../utils/baseUtils";
 import { AttributeMountElement } from "../../../../models/permission/elements/mounts/AttributeMountElement";
 import { Configuration } from "@threekit/rest-api";
-import { getTVMountBySettings } from "../../../../utils/permissionUtils";
+import {
+  getTVMountByName,
+  isCameraElement,
+  TVName,
+} from "../../../../utils/permissionUtils";
 
-export const setDefaultsNode = (stepName: StepName) => {
+export const updateDisplayNode = (displayType: TVName, stepName: StepName) => {
   return (store: Store) => {
     const state = store.getState();
-    if (stepName !== StepName.ConferenceCamera) return;
-
-    const selectData = getSelectData(state);
-    const keyPermissions = [StepName.RoomSize, StepName.Platform].map((key) => {
-      const data = selectData[key];
-      return Object.values(data).find((item) => item.selected.length > 0)
-        ?.selected[0];
-    });
-    const { 0: keyPermissionRoom, 1: keyPermissionPlatform } = keyPermissions;
-    if (!keyPermissionRoom || !keyPermissionPlatform) return;
-    const tvMount = getTVMountBySettings(
-      keyPermissionRoom,
-      keyPermissionPlatform
-    );
+    const tvMount = getTVMountByName(displayType);
 
     const nameNode = tvMount.getNameNode();
-    const nodes = getNodes(state);
-    if (nodes[nameNode]) return;
 
     const card = getCardByKeyPermission(stepName, tvMount.name)(state);
     const asset = getAssetFromCard(card)(state);
 
     setElementByNameNode(asset.id, tvMount.getNameNode())(store);
     store.dispatch(disabledHighlightNode(nameNode));
+  };
+};
+
+export const updateDisplayNodeByKeyPermission = (
+  keyPermission: string,
+  stepName: StepName
+) => {
+  return (store: Store) => {
+    if (stepName !== StepName.ConferenceCamera) return;
+    if (!isCameraElement(keyPermission)) return;
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    const element = step.getElementByName(keyPermission);
+    if (element?.getHiddenDisplay()) return;
+
+    const displayType = getPropertyDisplayCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
+    if (!displayType) return;
+    updateDisplayNode(displayType, stepName)(store);
+  };
+};
+
+export const setHighlightAllNodes = (isHighlight: boolean) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const nodes = isHighlight ? getNodes(state) : {};
+
+    store.dispatch(
+      setPopuptNodes({
+        ...Object.keys(nodes).reduce<Record<string, boolean>>((acc, curr) => {
+          return {
+            ...acc,
+            [curr]: isHighlight,
+          };
+        }, {}),
+      })
+    );
+    updateHighlightNodes(nodes)(store);
   };
 };
 
@@ -198,7 +230,7 @@ export function addElement(
 
     const element = step.getElementByName(card.keyPermission);
 
-    if (element instanceof ItemElement) {
+    const bundleMountApply = (element: ItemElement) => {
       const bundleMount = permission.getBundleMountElementsByName(element.name);
       bundleMount.forEach((mount) => {
         const stepNameCard = getStepNameByKeyPermission(mount.name)(state);
@@ -218,6 +250,10 @@ export function addElement(
         }
         updateNameNodesByCondition(mount, cardAsset.id)(store);
       });
+    };
+
+    if (element instanceof ItemElement) {
+      bundleMountApply(element);
 
       const defaultMount = element.getDefaultMount();
 
@@ -348,6 +384,8 @@ export function addElement(
     } else if (element instanceof MountElement) {
       const itemElement = step.getActiveItemElementByMountName(element.name);
       if (!itemElement) return;
+      updateDisplayNodeByKeyPermission(itemElement.name, stepName)(store);
+      bundleMountApply(itemElement);
       const cardItemElement = getCardByKeyPermission(
         stepName,
         itemElement.name
@@ -759,7 +797,7 @@ export function changeCountElement(
     const countPrevActiveAutoItem = Object.values(
       prevValueAutoChangeItems
     ).reduce((acc, v) => {
-      if (v !== 0) return acc + 1;
+      if (v !== 0 && v) return acc + 1;
       return acc;
     }, 0);
 
@@ -929,7 +967,7 @@ export function changeCountElement(
       }
     }
 
-    if (value === card.counter.min) {
+    if (value === card.counter.min && !element.getRequired()) {
       removeElement();
     }
   };

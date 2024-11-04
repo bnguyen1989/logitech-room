@@ -5,6 +5,7 @@ import {
   ConferenceCamera,
   Csv,
   FinishModal,
+  GuideModal,
   Loader,
   MainPage,
   MeetingControllerAddOn,
@@ -126,6 +127,10 @@ export const getFinishModalLangPage = (state: RootState) => {
 
 export const getRemoveModalLangPage = (state: RootState) => {
   return getLangPage("RemoveModal")(state) as RemoveModal;
+};
+
+export const getGuideModalLangPage = (state: RootState) => {
+  return getLangPage("GuideModal")(state) as GuideModal;
 };
 
 export const getCardLangPage = (state: RootState) => {

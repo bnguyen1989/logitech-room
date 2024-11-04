@@ -587,6 +587,70 @@
       ]
     }
   },
+  "Logitech Extend": {
+    "Card": {
+      "ProductName": "Logitech Extend",
+      "ShortDescription": ["Single cable bring-your-own-device extended connection"]
+    },
+    "Blade_1": {
+      "ProductName": "Logitech Extend",
+      "ShortDescription": "Single-cable BYOD connection",
+      "LongDescription": "Deploy Logitech Extend with category cabling so that anyone can walk into an Android or BYOD-based meeting room, plug in with the USB-C cable, and launch a meeting from their preferred video platform running on their own laptop or mobile device.",
+      "Colors": {
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/extend-byod-connection/logitech-extend-02.png?v=1"
+      }
+    },
+    "Blade_2": {
+      "Headline": "EASY BYOD MEETINGS",
+      "Description": "Use the USB-C cable to quickly plug in a laptop or mobile device and run meetings using a preferred video platform. No need to install additional software.",
+      "Image|Video": {
+        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-extend-intro-banner.png?v=1"
+      }
+    },
+    "Blade_3A": {
+      "Features": [
+        {
+          "HeaderFeature": "Extended Reach",
+          "sorting": "1",
+          "KeyFeature": "Deploy with standard category cabling to extend BYOD connections up to 100 meters to fit the size and layout of your larger meeting rooms.",
+          "LinkImgFeature": {
+            "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-extend-extended-reach.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "Clean Setup",
+          "sorting": "2",
+          "KeyFeature": "Rest the USB-C cable on the included magnetic dock for a clean tabletop.",
+          "LinkImgFeature": {
+            "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/extend-byod-connection/logitech-extend-single-cable.png?v=1"
+          }
+        }
+      ]
+    },
+    "Blade_2A": {
+      "Features": [
+        {
+          "HeaderFeature": "Enable Device Power Delivery (Optional)",
+          "sorting": "1",
+          "KeyFeature": "Deliver up to 100W of power to a laptop or mobile device by connecting a standard USB-C power adapter to the Table Side Box.",
+          "LinkImgFeature": {
+            "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/extend-byod-connection/logitech-extend-power-delivery.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "Simple to Manage",
+          "sorting": "2",
+          "KeyFeature": "Verify connectivity status and deploy updates via Sync, Logitech’s platform for managing all your collaboration devices and spaces. Logitech Extend can also be updated using Zoom Device Management and Teams Admin Center, as part of CollabOS device updates.*Updates to Logitech Extend are deployed through Rally Bar family CollabOS updates. For other configurations, use the Sync app.",
+          "LinkImgFeature": {
+            "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/extend-byod-connection/logitech-extend-simple-to-manage.png?v=1"
+          }
+        }
+      ]
+    },
+    "END_CTA": {
+      "end": "Add to Room"
+    }
+  },
   "RALLY PLUS": {
     "Card": {
       "ProductName": "Rally Plus",
@@ -824,14 +888,14 @@
   "Logitech Active USB Cable": {
     "Card": {
       "ProductName": "Logitech Active USB Cable",
-      "ShortDescription": ["Bring-your-own-laptop connection for MeetUp 2"]
+      "ShortDescription": ["Single cable bring-your-own-device 5m connection with MeetUp 2"]
     },
     "Blade_1": {
       "ProductName": "Active USB Cable",
       "ShortDescription": "Enables single-cable BYOD connection for MeetUp 2.",
-      "LongDescription": "Logitech Active USB Cable allows a single-cable connection between MeetUp 2 and laptops for BYOD meetings.",
+      "LongDescription": "Deploy single-cable BYOD meetings with the Active USB Cable, with a 5m cable to provide ample connection in smaller spaces.",
       "Colors": {
-        "Off white": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/active-usb-cable/active-usb-cable-01.png?v=1"
+        "Off white": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/extend-byod-connection/logitech-extend-02.png?v=1"
       }
     },
     "Blade_2": {

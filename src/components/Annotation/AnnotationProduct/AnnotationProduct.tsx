@@ -1,27 +1,28 @@
-import { InformationSVG } from "../../../assets";
-import { IconButton } from "../../Buttons/IconButton/IconButton";
+import { CardI } from "../../../store/slices/ui/type";
 import s from "./AnnotationProduct.module.scss";
-
-interface AnnotationProductPropsI {
-  annotationText: string;
-  onHandleInfo: () => void;
+import { AnnotationProductItem } from "./AnnotationProductItem/AnnotationProductItem";
+interface PropsI {
+  dataAnnotation: {
+    title: string;
+    card: CardI;
+    productName: string;
+  }[];
+  callbackHandleInfo: (productName: string, card: CardI) => void;
+  position?: "top" | "bottom";
 }
 
-export const AnnotationProduct: React.FC<AnnotationProductPropsI> = (
-  props: AnnotationProductPropsI
-) => {
-  const { annotationText, onHandleInfo } = props;
+export const AnnotationProduct: React.FC<PropsI> = (props) => {
+  const { dataAnnotation, callbackHandleInfo, position = "bottom" } = props;
+
   return (
-    <div className={s.annotationWrap}>
-      <div className={s.labelText}>{annotationText}</div>
-      <div className={s.info}>
-        <IconButton
-          onClick={onHandleInfo}
-          dataAnalytics={"annotation-product-show-annotation-modal"}
-        >
-          <InformationSVG />
-        </IconButton>
-      </div>
+    <div className={`${s.annotationWrap} ${s["annotationWrap_" + position]}`}>
+      {dataAnnotation.map((item, index) => (
+        <AnnotationProductItem
+          key={index}
+          title={item.title}
+          handleInfo={() => callbackHandleInfo(item.title, item.card)}
+        />
+      ))}
     </div>
   );
 };

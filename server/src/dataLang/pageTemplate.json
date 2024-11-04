@@ -1157,6 +1157,20 @@
     "key": "Order#Card#ContactLocalReseller"
   },
   {
+    "en-US": "For all warranties",
+    "de-DE": "Für alle Garantien",
+    "es-ES": "Para todas las garantías",
+    "es-MX": "Para todas las garantías",
+    "key": "Order#Card#ForAllWarranties"
+  },
+  {
+    "en-US": "For Product",
+    "de-DE": "Für das Produkt",
+    "es-ES": "Para el producto",
+    "es-MX": "Para el producto",
+    "key": "Order#Card#ForProduct"
+  },
+  {
     "en-US": "Prices may vary by channel or reseller",
     "de-DE": "Die Preise können je nach Kanal oder Händler variieren",
     "es-ES": "Los precios pueden variar según el canal o el distribuidor",
@@ -1318,6 +1332,125 @@
     "key": "Loader#Player#title"
   },
   {
+    "en-US": "Camera controls with mouse",
+    "de-DE": "Kamerasteuerung mit Maus",
+    "es-ES": "Controles de cámara con ratón",
+    "es-MX": "Controles de la cámara con mouse",
+    "key": "GuideModal#CameraMouse#title"
+  },
+  {
+    "en-US": "Left-click and drag to rotate",
+    "de-DE": "Linksklick und Ziehen zum Drehen",
+    "es-ES": "Haz clic con el botón izquierdo y arrastra para girar",
+    "es-MX": "Haz clic con el botón izquierdo y arrastra para girar",
+    "key": "GuideModal#CameraMouse#Card#0#title"
+  },
+  {
+    "en-US": "Scroll to zoom in and out",
+    "de-DE": "Zum Vergrößern und Verkleinern scrollen",
+    "es-ES": "Desplaza para acercar y alejar",
+    "es-MX": "Desplázate para acercar y alejar",
+    "key": "GuideModal#CameraMouse#Card#1#title"
+  },
+  {
+    "en-US": "Right-click and drag to pan",
+    "de-DE": "Zum Schwenken mit der rechten Maustaste klicken und ziehen",
+    "es-ES": "Haz clic con el botón derecho y arrastra para hacer una panorámica",
+    "es-MX": "Haz clic con el botón derecho y arrastra para obtener una panorámica",
+    "key": "GuideModal#CameraMouse#Card#2#title"
+  },
+  {
+    "en-US": "Camera controls with touch",
+    "de-DE": "Kamerasteuerung mit Touch",
+    "es-ES": "Controles de cámara táctiles",
+    "es-MX": "Controles táctiles para la cámara",
+    "key": "GuideModal#CameraTouch#title"
+  },
+  {
+    "en-US": "Drag to rotate",
+    "de-DE": "Zum Drehen ziehen",
+    "es-ES": "Arrastra para girar",
+    "es-MX": "Arrastra para girar",
+    "key": "GuideModal#CameraTouch#Card#0#title"
+  },
+  {
+    "en-US": "Pinch to zoom in and out",
+    "de-DE": "Zum Vergrößern und Verkleinern zusammenziehen",
+    "es-ES": "Pellizca para acercar y alejar",
+    "es-MX": "Pellizca para acercar y alejar",
+    "key": "GuideModal#CameraTouch#Card#1#title"
+  },
+  {
+    "en-US": "Drag with two fingers to pan",
+    "de-DE": "Ziehen mit zwei Fingern zum Schwenken",
+    "es-ES": "Arrastra con dos dedos para hacer una panorámica",
+    "es-MX": "Arrastra con dos dedos para obtener una panorámica",
+    "key": "GuideModal#CameraTouch#Card#2#title"
+  },
+  {
+    "en-US": "Room and product layout dimensions",
+    "de-DE": "Abmessungen des Raum- und Produktlayouts",
+    "es-ES": "Dimensiones de distribución de salas y productos",
+    "es-MX": "Dimensiones de la distribución de la sala y del producto",
+    "key": "GuideModal#Dimension#title"
+  },
+  {
+    "en-US": "Click the button to get sample measurements on where products are placed in the room given the dimensions of the table or room size.",
+    "de-DE": "Klicken Sie auf die Schaltfläche, um Beispiele der Platzierung der Produkte im Raum aufgrund der Abmessungen des Tisches oder der Raumgröße zu erhalten.",
+    "es-ES": "Haz clic en el botón para obtener medidas de muestra sobre dónde se colocan los productos dadas las dimensiones de la mesa o el tamaño de la sala.",
+    "es-MX": "Haz clic en el botón para obtener medidas de muestra sobre dónde se colocan los productos en la sala según las dimensiones de la mesa o el tamaño de la sala.",
+    "key": "GuideModal#Dimension#subtitle"
+  },
+  {
+    "en-US": "Product info",
+    "de-DE": "Produktinfo",
+    "es-ES": "Información del producto",
+    "es-MX": "Información del producto",
+    "key": "GuideModal#ProductInfo#title"
+  },
+  {
+    "en-US": "Click the information button to highlight the products in the room, and to find out more about each product.",
+    "de-DE": "Klicken Sie auf die Informationsschaltfläche, um die Produkte im Raum hervorzuheben und mehr über jedes Produkt zu erfahren.",
+    "es-ES": "Haz clic en el botón de información para resaltar los productos de la sala y obtener más información sobre cada uno de ellos.",
+    "es-MX": "Haz clic en el botón de información para destacar los productos de la sala y obtener más información sobre cada producto.",
+    "key": "GuideModal#ProductInfo#subtitle"
+  },
+  {
+    "en-US": "How to interact with the configurator",
+    "de-DE": "So interagieren Sie mit dem Konfigurator",
+    "es-ES": "Cómo interactuar con el configurador",
+    "es-MX": "Cómo interactuar con el configurador",
+    "key": "GuideModal#Interact#title"
+  },
+  {
+    "en-US": "Click the question mark button to revisit this guide again.",
+    "de-DE": "Klicken Sie auf die Fragezeichen-Schaltfläche, um diese Anleitung erneut aufzurufen.",
+    "es-ES": "Haz clic en el botón de interrogación para volver a ver esta guía.",
+    "es-MX": "Haz clic en el botón con el signo de interrogación para volver a consultar esta guía.",
+    "key": "GuideModal#Interact#subtitle"
+  },
+  {
+    "en-US": "Next",
+    "de-DE": "Weiter",
+    "es-ES": "Siguiente",
+    "es-MX": "Siguiente",
+    "key": "GuideModal#Actions#Next"
+  },
+  {
+    "en-US": "Skip, I got this!",
+    "de-DE": "Überspringen, ich hab's!",
+    "es-ES": "Omitir, entendido",
+    "es-MX": "Omitir, ¡ya lo sé!",
+    "key": "GuideModal#Actions#Skip"
+  },
+  {
+    "en-US": "Let's get started",
+    "de-DE": "Lass uns anfangen",
+    "es-ES": "Empecemos",
+    "es-MX": "Empecemos",
+    "key": "GuideModal#Actions#LetsStarted"
+  },
+  {
     "en-US": "Configurations are for exploratory purposes only. Room guides and the prices listed are based on local MSRP for the products and are not formal quotes. Prices may vary by location, channel or reseller. Please request a consultation for more information and next steps.",
     "de-DE": "Die Konfigurationen dienen nur zu Testzwecken. Raum-Guides und die aufgeführten Preise basieren auf der unverbindlichen Preisempfehlung (UVP) vor Ort für die Produkte und stellen keine formellen Angebote dar. Die Preise können je nach Standort, Vertriebsweg oder Händler variieren. Bitte fordern Sie eine Beratung an, um weitere Informationen und die nächsten Schritte zu erhalten.",
     "es-ES": "Las configuraciones son solo para fines exploratorios. Las guías de sala y los precios enumerados se basan en el MSRP local de los productos y no son cotizaciones formales. Los precios pueden variar según la ubicación, el canal o el revendedor. Solicite una consulta para obtener más información y próximos pasos.",
@@ -1435,5 +1568,33 @@
     "es-ES": "Añadir a la habitación",
     "es-MX": "Añadir a la habitación",
     "key": "Card#Text#AddToRoom"
+  },
+  {
+    "en-US": "Single",
+    "de-DE": "Single",
+    "es-ES": "Único",
+    "es-MX": "Individual",
+    "key": "Card#Display#Single"
+  },
+  {
+    "en-US": "Dual",
+    "de-DE": "Dual",
+    "es-ES": "Doble",
+    "es-MX": "Dual",
+    "key": "Card#Display#Dual"
+  },
+  {
+    "en-US": "For a single display",
+    "de-DE": "Für einen einzelnen Bildschirm",
+    "es-ES": "Para una sola pantalla",
+    "es-MX": "Para una sola pantalla",
+    "key": "Card#Display#ForSingle"
+  },
+  {
+    "en-US": "For all displays",
+    "de-DE": "Für alle Bildschirme",
+    "es-ES": "Para todas las pantallas",
+    "es-MX": "Para todas las pantallas",
+    "key": "Card#Display#ForAll"
   }
 ]

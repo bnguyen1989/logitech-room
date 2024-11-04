@@ -4,6 +4,7 @@ import {
   getActiveStep,
   getAssetFromCard,
   getCardByKeyPermission,
+  getIsRequiredCardByKeyPermission,
   getPropertyCounterCardByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectors";
 import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
@@ -23,6 +24,9 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const isRequiredCard = useAppSelector(
+    getIsRequiredCardByKeyPermission(activeStep, keyItemPermission)
+  );
   const cardAsset = useAppSelector(getAssetFromCard(card));
   const count = useAppSelector(
     getPropertyCounterCardByKeyPermission(activeStep, keyItemPermission)
@@ -37,11 +41,11 @@ export const CounterItem: React.FC<PropsI> = (props) => {
   const handleChange = (value: number) => {
     const attributeName = card.dataThreekit.attributeName;
     const isIncrement = value > count;
-    if (isIncrement && value === min + 1) {
+    if (isIncrement && value === min + 1 && !isRequiredCard) {
       app.addItemConfiguration(attributeName, cardAsset.id, card.keyPermission);
       return;
     }
-    if (!isIncrement && disabled) {
+    if (!isIncrement && disabled && !isRequiredCard) {
       app.removeItem(attributeName, card.keyPermission);
       return;
     }

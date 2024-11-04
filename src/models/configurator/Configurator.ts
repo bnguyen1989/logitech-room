@@ -87,6 +87,7 @@ export class Configurator {
     [AttributeName.RoomDeviceManagementSoftware],
     [AttributeName.RoomSupportService],
     [AttributeName.RoomExtendWarranty],
+    [AttributeName.RoomEssentialService],
   ];
 
   public static getNamesAttrByStepName(stepName: string): Array<Array<string>> {

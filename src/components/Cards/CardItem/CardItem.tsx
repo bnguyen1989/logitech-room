@@ -15,6 +15,7 @@ import {
   getDisabledActionByKeyPermission,
   getHiddenActionByKeyPermission,
   getIsRecommendedCardByKeyPermission,
+  getIsRequiredCardByKeyPermission,
   getIsSelectedCardByKeyPermission,
   getMetadataProductNameAssetFromCard,
   getSubTitleCardByKeyPermission,
@@ -28,6 +29,8 @@ import { getColorsFromCard } from "../../../store/slices/ui/selectors/selectorsC
 import { useEffect } from "react";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import { getTKAnalytics } from "../../../utils/getTKAnalytics";
+import { DisplayToggle } from "../../Display/DisplayToggle/DisplayToggle";
+import { RecommendedDisplay } from "../../Display/RecommendedDisplay/RecommendedDisplay";
 
 interface PropsI {
   keyItemPermission: string;
@@ -74,6 +77,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const isRequiredCard = useAppSelector(
+    getIsRequiredCardByKeyPermission(activeStep, keyItemPermission)
+  );
   const title = useAppSelector(
     getTitleCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -94,6 +100,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
   );
   const dispatch = useDispatch();
 
+  console.log("disabledActions", disabledActions);
+
   if (!card) return null;
 
   const handleInfo = () => {
@@ -108,6 +116,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
   };
 
   const handleClick = () => {
+    if (isRequiredCard) return;
     const { attributeName } = card.dataThreekit;
 
     getTKAnalytics().optionInteraction({
@@ -129,6 +138,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
   };
 
   const isShowColor = !hiddenActions.color && availableColorsData.length > 1;
+
+  const isShowDisplayToggle = !hiddenActions.display;
 
   const isAction = card.counter || card.select || isShowColor;
 
@@ -162,6 +173,12 @@ export const CardItem: React.FC<PropsI> = (props) => {
                 <div className={s.subtitle}>{subTitle}</div>
               )}
             </div>
+            {isShowDisplayToggle && (
+              <DisplayToggle
+                keyItemPermission={card.keyPermission}
+                disabled={!isActiveCard || disabledActions.display}
+              />
+            )}
             {isAction && <div className={s.divider}></div>}
             <div className={s.content}>
               {isAction && (
@@ -183,6 +200,8 @@ export const CardItem: React.FC<PropsI> = (props) => {
                   />
                 </div>
               )}
+
+              <RecommendedDisplay keyItemPermission={card.keyPermission} />
               <div className={s.info}>
                 <IconButton
                   onClick={handleInfo}

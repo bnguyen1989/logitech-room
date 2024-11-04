@@ -1,15 +1,23 @@
+import {
+  AudioExtensionName,
+  CameraName,
+  MeetingControllerName,
+  SoftwareServicesName,
+  VideoAccessoryName,
+} from "./permissionUtils";
+
 export const getSKUProductByExtendedWarranty = (
   productName: string,
   year: string
 ) => {
   const number = year?.split(" ");
   if (!number && number[0]) return null;
-  const sku = data[number[0]][productName];
+  const sku = dataExtendedWarranty[number[0]][productName];
   if (!sku) return null;
   return sku;
 };
 
-const data: Record<string, Record<string, string>> = {
+const dataExtendedWarranty: Record<string, Record<string, string>> = {
   "1": {
     "Logitech Rally Bar Huddle": "994-000248",
     "Logitech Rally Bar Mini": "994-000138",
@@ -18,7 +26,7 @@ const data: Record<string, Record<string, string>> = {
     "Logitech Rally Plus": "994-000101",
     "Logitech Sight": "994-000240",
     "Logitech Scribe": "994-000147",
-    "Logitech Tap": "994-000139",
+    "Logitech Tap": "994-000150",
     "Logitech Tap IP": "994-000150",
     "Logitech Tap Scheduler": "994-000151",
     "Logitech Swytch": "994-000125",
@@ -32,7 +40,7 @@ const data: Record<string, Record<string, string>> = {
     "Logitech Rally Plus": "994-000156",
     "Logitech Sight": "994-000239",
     "Logitech Scribe": "994-000164",
-    "Logitech Tap": "994-000170",
+    "Logitech Tap": "994-000159",
     "Logitech Tap IP": "994-000159",
     "Logitech Tap Scheduler": "994-000163",
     "Logitech Swytch": "994-000165",
@@ -49,6 +57,144 @@ export const isShowPriceByLocale = (locale: string) => {
     "en-IN",
     "en-AU",
     "en-MY",
+    "en-SG",
   ];
   return !localeNotShowPrice.includes(locale);
+};
+
+export const getExclusionServiceByLocale = (locale: string) => {
+  const { ExtendedWarranty, EssentialServicePlan, SupportService } =
+    SoftwareServicesName;
+
+  const data: Record<string, string[]> = {
+    ExtendedWarrantyOnly: [ExtendedWarranty],
+    EssentialAndSupport: [EssentialServicePlan, SupportService],
+    AllServices: [ExtendedWarranty, EssentialServicePlan, SupportService],
+  };
+
+  const mapping: Record<string, string[]> = {
+    AU: data.ExtendedWarrantyOnly,
+    DE: data.ExtendedWarrantyOnly,
+    TH: data.ExtendedWarrantyOnly,
+    KE: data.ExtendedWarrantyOnly,
+
+    BR: data.AllServices,
+    PR: data.AllServices,
+    KH: data.AllServices,
+    NG: data.AllServices,
+    KZ: data.AllServices,
+
+    CR: data.EssentialAndSupport,
+    EC: data.EssentialAndSupport,
+    UY: data.EssentialAndSupport,
+    NI: data.EssentialAndSupport,
+    PA: data.EssentialAndSupport,
+    AL: data.EssentialAndSupport,
+    MM: data.EssentialAndSupport,
+    LK: data.EssentialAndSupport,
+    BD: data.EssentialAndSupport,
+    MT: data.EssentialAndSupport,
+    UA: data.EssentialAndSupport,
+  };
+
+  const country = locale.split("-")[1];
+  if (!country) return undefined;
+
+  const key = Object.keys(mapping).find((k) =>
+    country?.toLowerCase()?.includes(k.toLowerCase())
+  );
+
+  return key ? mapping[key] : undefined;
+};
+
+export const getSKUSelectServiceByCamera = (
+  cameraName: string,
+  year: string
+) => {
+  if (!cameraName || !year) return null;
+  const number = year?.split(" ");
+  if (!number && number[0]) return null;
+  const data: Record<string, Record<string, string>> = {
+    "1": {
+      [CameraName.MeetUp2]: "994-000368",
+      [CameraName.RallyBarHuddle]: "994-000368",
+    },
+    "3": {
+      [CameraName.MeetUp2]: "994-000369",
+      [CameraName.RallyBarHuddle]: "994-000369",
+    },
+    "5": {
+      [CameraName.MeetUp2]: "994-000370",
+      [CameraName.RallyBarHuddle]: "994-000370",
+    },
+  };
+
+  const sku = data[number[0]][cameraName];
+  if (!sku) return null;
+  return sku;
+};
+
+export const getUrlProductByKeyPermission = (keyPermission: string) => {
+  return productUrlData[keyPermission];
+};
+
+const productUrlData: Record<string, string> = {
+  [CameraName.MeetUp2]:
+    "https://www.logitech.com/products/video-conferencing/conference-cameras/meetup2-conferencecam.html",
+  [CameraName.TVMountForMeetUP]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tv-mount-for-meetup.html",
+  [CameraName.RallyBarHuddle]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarhuddle.html",
+  [CameraName.RallyBarMini]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarmini.html",
+  [CameraName.RallyBar]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybar.html",
+  [CameraName.RallyCamera]:
+    "https://www.logitech.com/products/video-conferencing/conference-cameras/rally-ultra-hd-ptz-camera.html",
+  [CameraName.RallyPlus]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rally-ultra-hd-conferencecam.html",
+  [CameraName.LogitechSight]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/sight.html",
+  [VideoAccessoryName.LogitechScribe]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/scribe.html",
+  [MeetingControllerName.LogitechTap]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/tap.html",
+  [MeetingControllerName.LogitechTapIP]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/tap-ip.html",
+  [VideoAccessoryName.LogitechTapScheduler]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/tap-scheduler.html",
+  [VideoAccessoryName.LogitechSwytch]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/swytch.html",
+  [CameraName.RoomMate]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/roommate.html",
+  [AudioExtensionName.RallyMicPod]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mic-pod-for-rally.html",
+  [CameraName.RallyMountingKit]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mounting-kit-for-rally.html",
+  [AudioExtensionName.RallyMicPodMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mic-pod-mount.html",
+  [AudioExtensionName.RallyMicPodPendantMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/mic-pod-pendant-mount.html",
+  [MeetingControllerName.TapWallMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-wall-mount.html",
+  [MeetingControllerName.TapRiserMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-riser-mount.html",
+  [MeetingControllerName.TapTableMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-table-mount.html",
+  [VideoAccessoryName.LogitechTapSchedulerAngleMount]:
+    "https://www.logitech.com/products/video-conferencing/accessories/tap-scheduler-angle-mount.html",
+  [AudioExtensionName.CATCoupler]:
+    "https://www.logitech.com/products/video-conferencing/accessories/rally-mic-pod-cat-coupler.html",
+  [AudioExtensionName.RallyMicPodHub]:
+    "https://www.logitech.com/products/video-conferencing/accessories/hub-for-rally-mic-pod.html",
+  [SoftwareServicesName.ExtendedWarranty]:
+    "https://www.logitech.com/video-collaboration/products/extended-warranty.html",
+  [SoftwareServicesName.LogitechSync]:
+    "https://www.logitech.com/video-collaboration/products/sync.html",
+  [SoftwareServicesName.SupportService]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/select-comprehensive-service-plan.html",
+  [MeetingControllerName.RallyBarTapIP]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybar-tapip.html",
+  [MeetingControllerName.RallyBarMiniTapIP]:
+    "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarmini-tapip.html",
 };

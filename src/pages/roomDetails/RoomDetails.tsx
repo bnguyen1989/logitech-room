@@ -13,6 +13,8 @@ import { ImageGallery } from "../../components/ImageGallery/ImageGallery";
 import {
   isBundleElement,
   isCameraElement,
+  isExtendWarranty,
+  isSoftwareService,
   isTapElement,
 } from "../../utils/permissionUtils";
 import { useAppSelector } from "../../hooks/redux";
@@ -23,6 +25,7 @@ import {
 import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
 import { PriceService } from "../../services/PriceService/PriceService";
 import { isShowPriceByLocale } from "../../utils/productUtils";
+import { SoftwarePriceService } from "../../services/SoftwarePriceService/SoftwarePriceService";
 
 export const RoomDetails: React.FC = () => {
   const { roomId } = useParams();
@@ -78,6 +81,19 @@ export const RoomDetails: React.FC = () => {
           currency: "USD",
         };
 
+        const softwareServiceName = room.cart.reduce<string>((acc, item) => {
+          const card = JSON.parse(item.metadata.data) as CardI;
+          if (!isSoftwareService(card.keyPermission)) return acc;
+          acc = card.keyPermission;
+          return acc;
+        }, "");
+
+        const softwarePriceService = new SoftwarePriceService(
+          softwareServiceName,
+          locale.currencyLocale
+        );
+        await softwarePriceService.loadData();
+
         const formatPrice = getFormatPrice(locale.currency);
         const isShowPrice = isShowPriceByLocale(locale.currencyLocale);
         const dataSections: Array<SectionI> = [];
@@ -125,7 +141,9 @@ export const RoomDetails: React.FC = () => {
             let cardFromBundle = false;
             if (
               isContainBundle &&
-              (isCamera || (isTap && parseInt(count) === 1 && !isBundleTapIp))
+              (isCamera ||
+                (isTap && parseInt(count) === 1 && !isBundleTapIp)) &&
+              card.key !== StepName.SoftwareServices
             ) {
               if (isTap) {
                 isBundleTapIp = true;
@@ -141,6 +159,32 @@ export const RoomDetails: React.FC = () => {
               (section) => section.title === titleSection
             );
 
+            let formatColor = getFormattingNameColor(color)(langCard);
+            if (formatColor) {
+              formatColor += " : ";
+            }
+
+            const isDisplayColor =
+              !!formatColor &&
+              Object.values(card.dataThreekit.threekitItems).length > 1;
+
+            const partNumber = `${isDisplayColor ? formatColor : ""}${
+              isBundleCard ? sku + "*" : sku
+            }`;
+
+            const priceSoftwareServices = softwarePriceService.getPriceForSoftwareServices(sku, title);
+
+            const priceNumber =
+              dataProduct.price ?? priceSoftwareServices ?? 0.0;
+            const strikeThroughPrice = dataProduct.strikeThroughPrice;
+            const amountNumber = count
+              ? priceNumber * parseInt(count)
+              : priceNumber;
+            if (!cardFromBundle) totalAmount += amountNumber;
+
+            const amount = formatPrice(priceNumber);
+            const isContactReseller = isShowPrice && amountNumber === 0;
+
             let itemSection: SectionI = {
               title: titleSection,
               data: [
@@ -148,50 +192,31 @@ export const RoomDetails: React.FC = () => {
                   title: title,
                   subtitle: description ?? "",
                   image: card.image ?? "",
+                  partNumber,
                   selectValue: selectValue,
                   labelValue: getLabelValue(selectValue),
                   inStock,
+                  priceData: {
+                    amountNumber: isShowPrice ? amountNumber : undefined,
+                    amount: isShowPrice ? amount : undefined,
+                    strikeThroughPrice: strikeThroughPrice
+                      ? formatPrice(strikeThroughPrice)
+                      : undefined,
+                    isContactReseller,
+                  },
+                  keyPermission: card.keyPermission,
                 },
               ],
               typeSection: keySection,
             };
 
             if (card.key !== StepName.SoftwareServices) {
-              const priceNumber = dataProduct.price ?? 0.0;
-              const strikeThroughPrice = dataProduct.strikeThroughPrice;
-              const amountNumber = priceNumber * parseInt(count);
-              if (!cardFromBundle) totalAmount += amountNumber;
-
-              const amount = formatPrice(priceNumber);
-              let formatColor = getFormattingNameColor(color)(langCard);
-              if (formatColor) {
-                formatColor += " : ";
-              }
-
-              const isDisplayColor =
-                !!formatColor &&
-                Object.values(card.dataThreekit.threekitItems).length > 1;
-
-              const partNumber = `${isDisplayColor ? formatColor : ""}${
-                isBundleCard ? sku + "*" : sku
-              }`;
-
-              const isContactReseller = isShowPrice && amountNumber === 0;
-
               itemSection = {
                 ...itemSection,
                 data: [
                   {
                     ...itemSection.data[0],
-                    partNumber,
                     count: count,
-                    priceData: {
-                      amount: isShowPrice ? amount : undefined,
-                      strikeThroughPrice: strikeThroughPrice
-                        ? formatPrice(strikeThroughPrice)
-                        : undefined,
-                      isContactReseller,
-                    },
                   },
                 ],
               };
@@ -203,6 +228,37 @@ export const RoomDetails: React.FC = () => {
               dataSections.push(itemSection);
             } else {
               dataSections[sectionId].data.push(itemSection.data[0]);
+            }
+          }
+
+          const softwareSection = dataSections.find(
+            (section) => section.typeSection === StepName.SoftwareServices
+          );
+          if (softwareSection) {
+            const extendWarrantyIndex = softwareSection.data.findIndex((item) =>
+              isExtendWarranty(item.keyPermission ?? "")
+            );
+
+            if (extendWarrantyIndex !== -1) {
+              const amountExtendWarranty = softwareSection.data.reduce<number>(
+                (acc, item, index) => {
+                  if (index === extendWarrantyIndex) return acc;
+                  const amount = item.priceData?.amountNumber ?? 0;
+                  return acc + amount;
+                },
+                0
+              );
+
+              const extendWarrantyCard =
+                softwareSection.data[extendWarrantyIndex];
+
+              extendWarrantyCard.priceData = {
+                ...extendWarrantyCard.priceData,
+                amount: isShowPrice
+                  ? formatPrice(amountExtendWarranty)
+                  : undefined,
+                isContactReseller: isShowPrice && amountExtendWarranty === 0,
+              };
             }
           }
           return totalAmount;
