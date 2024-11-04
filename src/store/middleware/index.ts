@@ -1,9 +1,12 @@
 import { Middleware } from "@reduxjs/toolkit";
 import {
+  setDefaultsDisplay,
   updateActiveCardsByPermissionData,
   updateAssetIdByKeyPermission,
   updateColorForAutoChangeItems,
   updateDataCardByStepName,
+  updateDisplayBasedOnRecommendation,
+  updateDisplayForAutoChangeItems,
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
@@ -11,7 +14,9 @@ import {
   changeCountElement,
   deleteNodesByCards,
   removeElement,
-  setDefaultsNode,
+  setHighlightAllNodes,
+  updateDisplayNode,
+  updateDisplayNodeByKeyPermission,
   updateHighlightNodes,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
@@ -41,6 +46,7 @@ import {
   getPrepareStepNames,
 } from "../../utils/baseUtils";
 import { CONFIGURATOR_ACTION_NAME } from "../slices/configurator/utils";
+import { showModalByStep } from "../slices/modals/handlers/handlers";
 
 declare const app: Application;
 
@@ -151,6 +157,8 @@ export const middleware: Middleware =
         updateNodes(store, attributeNames);
 
         updateAssetIdByKeyPermission(key)(store);
+        updateDisplayBasedOnRecommendation(key, activeStep)(store);
+        updateDisplayNodeByKeyPermission(key, activeStep)(store);
         break;
       }
 
@@ -165,7 +173,7 @@ export const middleware: Middleware =
 
         const card = getCardByKeyPermission(activeStep, key)(state);
         removeElement(card, activeStep)(store);
-        setDefaultsNode(activeStep)(store);
+        setDefaultsDisplay(activeStep)(store);
         break;
       }
 
@@ -176,7 +184,9 @@ export const middleware: Middleware =
 
         updateActiveCardsByPermissionData(permission)(store);
 
-        setDefaultsNode(stepName)(store);
+        showModalByStep(stepName)(store);
+
+        setDefaultsDisplay(stepName)(store);
 
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
@@ -294,6 +304,45 @@ export const middleware: Middleware =
         const updatedNodes = action.payload;
 
         updateHighlightNodes(updatedNodes)(store);
+        break;
+      }
+      case CUSTOM_UI_ACTION_NAME.CHANGE_DISPLAY_ITEM: {
+        const { key, value } = action.payload;
+        const activeStep = getActiveStep(state);
+
+        store.dispatch(
+          setPropertyItem({
+            step: activeStep,
+            keyItemPermission: key,
+            property: {
+              display: value,
+            },
+          })
+        );
+
+        updateDisplayForAutoChangeItems(activeStep, key)(store);
+        updateDisplayNodeByKeyPermission(key, activeStep)(store);
+        changeColorElement(key, activeStep)(store);
+
+        const updateNodes = updateNodesByConfiguration(
+          currentConfigurator,
+          activeStep
+        );
+
+        const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
+        updateNodes(store, attributeNames);
+        break;
+      }
+      case UI_ACTION_NAME.CHANGE_DISPLAY_TYPE: {
+        const displayType = action.payload;
+        const activeStep = getActiveStep(state);
+
+        updateDisplayNode(displayType, activeStep)(store);
+        break;
+      }
+      case CUSTOM_UI_ACTION_NAME.SET_HIGHLIGHT_ALL_NODES: {
+        const { isHighlight } = action.payload;
+        setHighlightAllNodes(isHighlight)(store);
         break;
       }
       default:

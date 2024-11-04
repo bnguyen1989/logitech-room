@@ -16,6 +16,7 @@ import {
   addActiveCard,
   addActiveCards,
   changeActiveStep,
+  changeDisplayType,
   changeProcessInitData,
   clearAllActiveCardsSteps,
   createItem,
@@ -31,8 +32,13 @@ import { ChangeColorItemCommand } from "../../../../models/command/ChangeColorIt
 import {
   getPermissionNameByItemName,
   getSortedKeyPermissions,
+  isEssentialService,
+  getTVMountNameBySettings,
+  isCameraElement,
   isExtendWarranty,
   isSupportService,
+  isCameraMountElement,
+  TVName,
 } from "../../../../utils/permissionUtils";
 import { RemoveItemCommand } from "../../../../models/command/RemoveItemCommand";
 import {
@@ -49,15 +55,23 @@ import {
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
+  getDisplayType,
+  getLocale,
   getPermission,
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
+  getPropertyCardByKeyPermission,
   getPropertySelectValueCardByKeyPermission,
+  getSelectData,
   getSelectedCardsByStep,
   getStepNameByKeyPermission,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
-import { changeColorItem, changeCountItem } from "../actions/actions";
+import {
+  changeColorItem,
+  changeCountItem,
+  changeDisplayItem,
+} from "../actions/actions";
 import { Permission } from "../../../../models/permission/Permission";
 import { getRoomAssetId } from "../../../../utils/threekitUtils";
 import { getSeparatorItem, StepName } from "../../../../utils/baseUtils";
@@ -68,6 +82,8 @@ import {
   deleteNodesByCards,
   removeElement,
 } from "../../configurator/handlers/handlers";
+import { getExclusionServiceByLocale } from "../../../../utils/productUtils";
+import { ChangeDisplayItemCommand } from "../../../../models/command/ChangeDisplayItemCommand";
 
 declare const app: Application;
 
@@ -96,6 +112,12 @@ export const getUiHandlers = (store: Store) => {
           key: data.keyItemPermission,
           value: data.value,
         })
+      );
+    }
+
+    if (data instanceof ChangeDisplayItemCommand) {
+      store.dispatch(
+        changeDisplayItem({ key: data.keyItemPermission, value: data.value })
       );
     }
 
@@ -164,6 +186,70 @@ export const getUiHandlers = (store: Store) => {
   );
 };
 
+export const setDefaultsDisplay = (stepName: StepName) => {
+  return (store: Store) => {
+    const state = store.getState();
+    if (stepName !== StepName.ConferenceCamera) return;
+
+    const displayName = getDisplayType(state);
+    if (displayName) {
+      const permission = getPermission(stepName)(state);
+      const activeElements = permission.getActiveElements();
+      const cameraElement = activeElements.find((item) =>
+        isCameraElement(item.name)
+      );
+      if (cameraElement && !cameraElement.getHiddenDisplay()) {
+        return;
+      }
+    }
+
+    const selectData = getSelectData(state);
+    const keyPermissions = [StepName.RoomSize, StepName.Platform].map((key) => {
+      const data = selectData[key];
+      return Object.values(data).find((item) => item.selected.length > 0)
+        ?.selected[0];
+    });
+    const { 0: keyPermissionRoom, 1: keyPermissionPlatform } = keyPermissions;
+    if (!keyPermissionRoom || !keyPermissionPlatform) return;
+    const tvMountName = getTVMountNameBySettings(
+      keyPermissionRoom,
+      keyPermissionPlatform
+    );
+
+    store.dispatch(changeDisplayType(tvMountName));
+  };
+};
+
+export const updateDisplayBasedOnRecommendation = (
+  keyPermission: string,
+  stepName: StepName
+) => {
+  return (store: Store) => {
+    if (stepName !== StepName.ConferenceCamera) return;
+    const skipElement = !isCameraMountElement(keyPermission);
+    if (skipElement) return;
+
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    const element = step.getElementByName(keyPermission);
+    if (!element) return;
+
+    const itemElement = step.getActiveItemElementByMountName(element.name);
+    if (!itemElement) return;
+    const recommendedDisplay = element.getRecommendedDisplay();
+    const keys = Object.keys(recommendedDisplay);
+    const activeKeys = keys.filter((key) => recommendedDisplay[key]);
+    if (activeKeys.length > 1 || !activeKeys.length) return;
+
+    const displayName = activeKeys[0] as TVName;
+
+    store.dispatch(
+      changeDisplayItem({ key: itemElement.name, value: displayName })
+    );
+  };
+};
+
 export const updateColorForAutoChangeItems = (
   stepName: StepName,
   keyPermission: string
@@ -193,6 +279,60 @@ export const updateColorForAutoChangeItems = (
         );
       }
     );
+  };
+};
+
+export const updateDisplayForAutoChangeItems = (
+  stepName: StepName,
+  keyPermission: string
+) => {
+  return (store: Store) => {
+    updatePropertyForAutoChangeItems(stepName, keyPermission, ["display"])(
+      store
+    );
+  };
+};
+
+export const updatePropertyForAutoChangeItems = (
+  stepName: StepName,
+  keyPermission: string,
+  property: string[]
+) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const itemsNeedChange = permission.getItemsNeedChange(keyPermission);
+    const propertyCard = getPropertyCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
+    if (!Object.keys(propertyCard).length) return;
+
+    Object.entries(itemsNeedChange).forEach(([key, arr]) => {
+      const existProperty = property.filter((item) => arr.includes(item));
+      if (!existProperty.length) return;
+      const stepElement = getStepNameByKeyPermission(key)(state);
+      if (!stepElement) return;
+
+      const updateProperty = existProperty.reduce((acc, item) => {
+        const data = propertyCard[item];
+        if (!data) return acc;
+        acc[item] = data;
+        return acc;
+      }, {} as Record<string, string>);
+
+      if (!Object.keys(updateProperty).length) return;
+      store.dispatch(
+        setPropertyItem({
+          step: stepElement,
+          keyItemPermission: key,
+          property: {
+            ...updateProperty,
+          },
+        })
+      );
+    });
   };
 };
 
@@ -669,6 +809,18 @@ function setSoftwareServicesData(configurator: Configurator) {
         return;
       }
 
+      const isEssential = (name: string) => name.includes("Essential");
+      if (isEssential(name)) {
+        const baseCard = softwareServicesBaseData.find((item) =>
+          isEssentialService(item.keyPermission)
+        );
+
+        if (!baseCard) return;
+
+        setSelectCards(baseCard, value);
+        return;
+      }
+
       const cardPermissionWithDataThreekit: TypeCardPermissionWithDataThreekit =
         getCardPermissionWithDataThreekit(value);
 
@@ -701,10 +853,18 @@ function setSoftwareServicesData(configurator: Configurator) {
     const sortedKeyPermissions = getSortedKeyPermissionsByStep(
       StepName.SoftwareServices
     )(store);
-    const sortedCards = sortedCardsByArrTemplate(
+    let sortedCards = sortedCardsByArrTemplate(
       softwareServicesCardData,
       sortedKeyPermissions
     );
+
+    const locale = getLocale(store.getState());
+    const exclusionServices = getExclusionServiceByLocale(locale);
+    if (exclusionServices) {
+      sortedCards = sortedCards.filter(
+        (card) => !exclusionServices.includes(card.keyPermission)
+      );
+    }
 
     setDataCard(sortedCards, StepName.SoftwareServices)(store);
   };

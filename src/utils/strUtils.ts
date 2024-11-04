@@ -48,3 +48,8 @@ export const toCamelCase = (str: string): string => {
     })
     .join("");
 };
+
+export const capitalizeEachWord = (str: string): string => {
+  if (!str) return "";
+  return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+};

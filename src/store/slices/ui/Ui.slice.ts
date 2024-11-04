@@ -10,6 +10,7 @@ import {
 import { getFormInitData, getInitStepData } from "./utils";
 import { FormName, StepName } from "../../../utils/baseUtils";
 import { LocaleT } from "../../../types/locale";
+import { TVName } from "../../../utils/permissionUtils";
 
 interface UIStateI {
   locale: LocaleT | "";
@@ -19,6 +20,7 @@ interface UIStateI {
   selectedData: SelectedDataI;
   langText: LangTextI;
   formData: FormI;
+  typeDisplay: TVName | undefined;
 }
 
 const initialState: UIStateI = {
@@ -32,6 +34,7 @@ const initialState: UIStateI = {
     products: {},
   },
   formData: getFormInitData(),
+  typeDisplay: TVName.LogitechTVOne,
 };
 
 const uiSlice = createSlice({
@@ -249,6 +252,9 @@ const uiSlice = createSlice({
         ...value,
       };
     },
+    changeDisplayType: (state, action: PayloadAction<TVName>) => {
+      state.typeDisplay = action.payload;
+    },
   },
 });
 
@@ -269,5 +275,6 @@ export const {
   clearAllActiveCardsSteps,
   updateLocale,
   updateDataForm,
+  changeDisplayType,
 } = uiSlice.actions;
 export default uiSlice.reducer;

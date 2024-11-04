@@ -1,4 +1,4 @@
-import { RoomSizeName } from "./permissionUtils";
+import { RoomSizeName, SoftwareServicesName } from "./permissionUtils";
 
 export const ConfigData = {
   host: "admin-fts.threekit.com",
@@ -31,4 +31,17 @@ export const isAssetType = (type: string) => {
 
 export const isStringType = (type: string) => {
   return type === "String";
+};
+
+export const getPriceTableIdBySoftwareService = (service: string) => {
+  switch (service) {
+    case SoftwareServicesName.ExtendedWarranty:
+      return "f3d2c17e-db6d-49f4-a123-c91bd6c5b0bb";
+    case SoftwareServicesName.EssentialServicePlan:
+      return "e89e54fc-0b9d-4a35-b353-7ce76a66d731";
+    case SoftwareServicesName.SupportService:
+      return "e2130a33-3505-4bb2-b878-d982c71e8195";
+    default:
+      return null;
+  }
 };

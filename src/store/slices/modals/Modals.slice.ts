@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import {
   AnnotationItemModalI,
+  GuideModalI,
   ModalI,
   ModalName,
   MySetupModalI,
@@ -15,6 +16,7 @@ interface ModalsStateI {
   [ModalName.SHARE_PROJECT]: ModalI;
   [ModalName.FINISH]: ModalI;
   [ModalName.REQUEST_CONSULTATION]: ModalI;
+  [ModalName.GUIDE_MODAL]: GuideModalI;
 }
 
 const initialState: ModalsStateI = {
@@ -34,6 +36,9 @@ const initialState: ModalsStateI = {
     isOpen: false,
   },
   [ModalName.REQUEST_CONSULTATION]: {
+    isOpen: false,
+  },
+  [ModalName.GUIDE_MODAL]: {
     isOpen: false,
   },
 };
@@ -66,6 +71,22 @@ const ModalsSlice = createSlice({
     setRequestConsultationModal: (state, action: PayloadAction<ModalI>) => {
       state[ModalName.REQUEST_CONSULTATION] = action.payload;
     },
+    setGuideModal: (state, action: PayloadAction<Partial<GuideModalI>>) => {
+      const prev = state[ModalName.GUIDE_MODAL];
+      const dataPrev = prev.dataModal;
+      const newData = {
+        ...prev,
+        ...action.payload,
+      };
+
+      if (dataPrev && action.payload.dataModal) {
+        newData.dataModal = {
+          ...dataPrev,
+          ...action.payload.dataModal,
+        };
+      }
+      state[ModalName.GUIDE_MODAL] = newData;
+    },
   },
 });
 
@@ -76,6 +97,7 @@ export const {
   setShareProjectModal,
   setFinishModal,
   setRequestConsultationModal,
+  setGuideModal,
 } = ModalsSlice.actions;
 
 export default ModalsSlice.reducer;

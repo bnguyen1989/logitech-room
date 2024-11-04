@@ -203,6 +203,12 @@ export const getPropertySelectValueCardByKeyPermission =
     return data?.property.select;
   };
 
+export const getPropertyDisplayCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    return data?.property.display;
+  };
+
 export const getIsSelectedCardByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
@@ -302,12 +308,17 @@ export const getPriceFromMetadataByKeyPermission =
   };
 
 export const getStepNameByKeyPermission =
-  (keyPermission: string) => (state: RootState) => {
+  (keyPermission: string) =>
+  (state: RootState): StepName => {
     const stepData = getStepData(state);
-    const step = Object.entries(stepData).filter((item) => {
-      return !!item[1].cards[keyPermission];
-    });
-    return step[0][0] as StepName;
+
+    return Object.entries(stepData).reduce<string>((acc, item) => {
+      const isExist = !!item[1].cards[keyPermission];
+      if (isExist) {
+        acc = item[0];
+      }
+      return acc;
+    }, "") as StepName;
   };
 
 export const getMetadataByKeyPermission =
@@ -462,6 +473,7 @@ export const getDisabledActionByKeyPermission =
     const res = {
       counter: false,
       color: false,
+      display: false,
     };
     const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
@@ -470,12 +482,25 @@ export const getDisabledActionByKeyPermission =
     if (!element) return res;
     res.counter = element.getDisabledCounter();
     res.color = element.getDisabledColor();
+    res.display = element.getDisabledDisplay();
     return res;
   };
+
+export const getIsRequiredCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    if (!step) return false;
+    const element = step.getElementByName(keyPermission);
+    if (!element) return false;
+    return element.getRequired();
+  };
+
 export const getHiddenActionByKeyPermission =
   (stepName: StepName, keyPermission: string) => (state: RootState) => {
     const res = {
       color: false,
+      display: false,
     };
     const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
@@ -484,6 +509,7 @@ export const getHiddenActionByKeyPermission =
     if (!element) return res;
 
     res.color = element.getHiddenColor();
+    res.display = element.getHiddenDisplay();
 
     return res;
   };
@@ -565,3 +591,12 @@ const getIsRecommendedCardFromMetadata = (metadata: Record<string, string>) => {
 export const getProductNameFromMetadata = (metadata: MetadataI) => {
   return metadata["Product Name"]?.trim();
 };
+
+export const getDisplayType = (state: RootState) => state.ui.typeDisplay;
+
+export const getPropertyCardByKeyPermission =
+  (stepName: StepName, keyPermission: string) => (state: RootState) => {
+    const data = getSelectedDataByKeyPermission(stepName, keyPermission)(state);
+    const value = data?.property;
+    return value ? value : {};
+  };
