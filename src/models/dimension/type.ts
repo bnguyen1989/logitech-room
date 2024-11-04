@@ -1,3 +1,5 @@
+import { Condition } from "../conditions/Condition";
+
 export interface DimensionNodeData extends DimensionNodeI {
   label: string;
 }
@@ -17,9 +19,14 @@ export interface RoadMapDimensionI {
 }
 
 export interface RoadMapItemDimensionI {
+  conditions: Condition[];
+  data: RoadMapItemDimensionDataI;
+}
+
+export interface RoadMapItemDimensionDataI {
   nodeCamera: string;
   nodeMicPod: string;
   nodeSight?: string;
   indexSight?: number;
-  orderMicPods: number[];
+  orderMicPods: number[][];
 }
