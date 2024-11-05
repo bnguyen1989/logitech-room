@@ -13,7 +13,6 @@ export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
   const dimensionNodes = useAppSelector(getDimensionNodeData);
   const enabled = useAppSelector(getDimensionEnabled);
   console.log(dimensionNodes);
-  
 
   const nodeMap: Record<string, THREE.Mesh | undefined> = useMemo(() => {
     const map: Record<string, THREE.Mesh | undefined> = {};
@@ -33,21 +32,24 @@ export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
 
   return (
     <>
-      {dimensionNodes.map(({ nodeAName, nodeBName, label }, index) => {
-        const nodeA = nodeMap[nodeAName];
-        const nodeB = nodeMap[nodeBName];
+      {dimensionNodes.map(
+        ({ nodeAName, nodeBName, label, offsetPosition }, index) => {
+          const nodeA = nodeMap[nodeAName];
+          const nodeB = nodeMap[nodeBName];
 
-        if (!nodeA || !nodeB) return null;
+          if (!nodeA || !nodeB) return null;
 
-        return (
-          <DimensionBetweenNodes
-            key={index}
-            nodeA={nodeA}
-            nodeB={nodeB}
-            label={label}
-          />
-        );
-      })}
+          return (
+            <DimensionBetweenNodes
+              key={index}
+              nodeA={nodeA}
+              nodeB={nodeB}
+              label={label}
+              offsetPosition={offsetPosition}
+            />
+          );
+        }
+      )}
     </>
   );
 };

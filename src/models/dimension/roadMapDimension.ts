@@ -26,12 +26,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          orderMicPods: [[1, 4]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [[1, 4]],
+          },
         },
       },
       {
@@ -49,15 +53,19 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          orderMicPods: [
-            [1, 4],
-            [2, 5],
-          ],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [
+              [1, 4],
+              [2, 5],
+            ],
+          },
         },
       },
       {
@@ -75,12 +83,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicWithoutSight(),
-          orderMicPods: [[2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicWithoutSight(),
+            orderMicPods: [[2, 1]],
+          },
         },
       },
       {
@@ -98,12 +110,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicWithoutSight(),
-          orderMicPods: [[2, 1, 3]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicWithoutSight(),
+            orderMicPods: [[2, 1, 3]],
+          },
         },
       },
       {
@@ -121,15 +137,19 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicWithoutSight(),
-          orderMicPods: [
-            [2, 1, 3],
-            [2, 4],
-          ],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicWithoutSight(),
+            orderMicPods: [
+              [2, 1, 3],
+              [2, 4],
+            ],
+          },
         },
       },
     ],
@@ -146,14 +166,20 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
           ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight(),
+            indexPositionSight: 0,
+          },
         },
       },
       {
@@ -167,12 +193,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 1),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicSingle(),
-          orderMicPods: [[1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicSingle(),
+            orderMicPods: [[1]],
+          },
         },
       },
       {
@@ -186,14 +216,21 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 1),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicDouble(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicDouble(),
+            orderMicPods: [[1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight(),
+            indexPositionSight: 0,
+          },
         },
       },
       {
@@ -207,14 +244,21 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 2),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicDouble(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicDouble(),
+            orderMicPods: [[2, 1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight(),
+            indexPositionSight: 0,
+          },
         },
       },
       {
@@ -232,14 +276,17 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 2),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicDouble(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicDouble(),
+            orderMicPods: [[2, 1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
         },
       },
       {
@@ -257,14 +304,21 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 2),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight2(),
-          orderMicPods: [[2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [[2, 1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight2(),
+            indexPositionSight: 0,
+          },
         },
       },
 
@@ -287,14 +341,21 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight2(),
-          orderMicPods: [[2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [[2, 1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight2(),
+            indexPositionSight: 0,
+          },
         },
       },
       {
@@ -316,14 +377,17 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [[3, 2, 1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
         },
       },
       {
@@ -341,14 +405,17 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[3, 2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [[3, 2, 1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
         },
       },
     ],
@@ -364,12 +431,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 1),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicSingle(),
-          orderMicPods: [[1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicSingle(),
+            orderMicPods: [[1]],
+          },
         },
       },
       {
@@ -383,14 +454,21 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 1),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicDouble(),
-          indexSight: 1,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicDouble(),
+            orderMicPods: [[1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight(),
+            indexPositionSight: 1,
+          },
         },
       },
       {
@@ -404,14 +482,17 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 2),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicWithoutSight(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[1, 2]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicWithoutSight(),
+            orderMicPods: [[1, 2]],
+            offsetPosition: [-0.5, 0, 0],
+          },
         },
       },
       {
@@ -425,14 +506,21 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             .addProperty(ConditionPropertyName.COUNT, 2),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicDouble(),
-          indexSight: 1,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[1, 2]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicDouble(),
+            orderMicPods: [[1, 2]],
+            offsetPosition: [-0.5, 0, 0],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight(),
+            indexPositionSight: 1,
+          },
         },
       },
 
@@ -451,14 +539,17 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMic(),
-          indexSight: 0,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[3, 2, 1]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [[3, 2, 1]],
+            offsetPosition: [-0.5, 0, 0],
+          },
         },
       },
       {
@@ -476,14 +567,21 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
         ],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: PlacementManager.getNameNodeForMicDouble(),
-          indexSight: 1,
-          nodeSight: PlacementManager.getNameNodeForSight(),
-          orderMicPods: [[1, 2]],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicDouble(),
+            orderMicPods: [[1, 2]],
+            offsetPosition: [-0.5, 0, 0],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight(),
+            indexPositionSight: 1,
+          },
         },
       },
     ],
@@ -491,12 +589,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
       {
         conditions: [],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: "",
-          orderMicPods: [],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: "",
+            orderMicPods: [],
+          },
         },
       },
     ],
@@ -504,12 +606,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
       {
         conditions: [],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: "",
-          orderMicPods: [],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: "",
+            orderMicPods: [],
+          },
         },
       },
     ],
@@ -517,12 +623,16 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
       {
         conditions: [],
         data: {
-          nodeCamera: PlacementManager.getNameNodeCommodeForCamera(
-            "RallyBar",
-            2
-          ),
-          nodeMicPod: "",
-          orderMicPods: [],
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: "",
+            orderMicPods: [],
+          },
         },
       },
     ],
