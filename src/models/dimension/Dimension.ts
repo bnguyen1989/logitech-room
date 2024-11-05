@@ -2,6 +2,7 @@ import {
   ColumnNameDimension,
   DimensionDataI,
 } from "../../services/DimensionService/type";
+import { ArrVector3T } from "../../types/mathType";
 import { StepName } from "../../utils/baseUtils";
 import { AudioExtensionName, CameraName } from "../../utils/permissionUtils";
 import { Condition } from "../conditions/Condition";
@@ -129,34 +130,36 @@ export class Dimension {
 
     if (roadMapNodes) {
       if (defaultMountMicPod instanceof CountableMountElement) {
+        const { nodeName, orderMicPods } = roadMapNodes.micPod;
         const activeIndex = defaultMountMicPod.activeIndex;
-        const newNodeRoadMap = roadMapNodes.orderMicPods.map((order) => {
+        const newNodeRoadMap = orderMicPods.map((order) => {
           return order
             .filter((i) => i <= activeIndex)
-            .map((index) => `${roadMapNodes.nodeMicPod}_${index}`);
+            .map((index) => `${nodeName}_${index}`);
         });
         nodes.push(...newNodeRoadMap);
       }
 
-      if (
-        sightElement &&
-        roadMapNodes.nodeSight &&
-        roadMapNodes.indexSight !== undefined &&
-        nodes[0]
-      ) {
-        nodes[0].splice(roadMapNodes.indexSight, 0, roadMapNodes.nodeSight);
+      if (sightElement && roadMapNodes.sight && nodes[0]) {
+        const { indexPositionSight, nodeName } = roadMapNodes.sight;
+        nodes[0].splice(indexPositionSight, 0, nodeName);
       }
     }
 
     return [
       ...this.getCameraToMicPodNodes(dataCondition, nodes),
-      ...this.getMicPodToMicPodNodes(dataCondition, nodes),
+      ...this.getMicPodToMicPodNodes(
+        dataCondition,
+        nodes,
+        roadMapNodes?.micPod.offsetPosition
+      ),
     ];
   }
 
   private getCameraToMicPodNodes(
     dataCondition: DimensionDataI,
-    nodeNames: string[][]
+    nodeNames: string[][],
+    offsetPosition?: ArrVector3T
   ): DimensionNodeData[] {
     if (!dataCondition.data[ColumnNameDimension.CAMERA_TO_MIC_POD_METER])
       return [];
@@ -171,13 +174,15 @@ export class Dimension {
       return this.getDimensionNodeDataByData(distance, {
         nodeAName: PlacementManager.getNameNodeCommodeForCamera("RallyBar", 2),
         nodeBName: lastNode,
+        offsetPosition,
       });
     });
   }
 
   private getMicPodToMicPodNodes(
     dataCondition: DimensionDataI,
-    nodeNames: string[][]
+    nodeNames: string[][],
+    offsetPosition?: ArrVector3T
   ): DimensionNodeData[] {
     if (!dataCondition.data[ColumnNameDimension.MIC_POD_TO_MIC_POD_METER])
       return [];
@@ -192,6 +197,7 @@ export class Dimension {
           this.getDimensionNodeDataByData(distance, {
             nodeAName: current,
             nodeBName: nodes[index + 1],
+            offsetPosition,
           })
         )
       )
@@ -241,6 +247,7 @@ export class Dimension {
       label: `${dataDistance.feet} ft / ${dataDistance.meter} m`,
       nodeAName: dataNode.nodeAName,
       nodeBName: dataNode.nodeBName,
+      offsetPosition: dataNode.offsetPosition,
     };
   }
 

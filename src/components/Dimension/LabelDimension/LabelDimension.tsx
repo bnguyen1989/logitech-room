@@ -9,8 +9,10 @@ export const LabelDimension: React.FC<PropsI> = (props) => {
 
   return (
     <Html>
-      <div className={s.label_dimension}>
-        <div className={s.text}>{text}</div>
+      <div className={s.container_label_dimension}>
+        <div className={s.label_dimension}>
+          <div className={s.text}>{text}</div>
+        </div>
       </div>
     </Html>
   );

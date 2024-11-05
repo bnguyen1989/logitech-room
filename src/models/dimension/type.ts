@@ -1,3 +1,4 @@
+import type { ArrVector3T } from "../../types/mathType";
 import { Condition } from "../conditions/Condition";
 
 export interface DimensionNodeData extends DimensionNodeI {
@@ -7,6 +8,7 @@ export interface DimensionNodeData extends DimensionNodeI {
 export interface DimensionNodeI {
   nodeAName: string;
   nodeBName: string;
+  offsetPosition?: ArrVector3T;
 }
 
 export interface DataDistanceI {
@@ -24,9 +26,19 @@ export interface RoadMapItemDimensionI {
 }
 
 export interface RoadMapItemDimensionDataI {
-  nodeCamera: string;
-  nodeMicPod: string;
-  nodeSight?: string;
-  indexSight?: number;
+  camera: DimensionRoadMapNodeI
+  micPod: MicPodNodeDimensionI;
+  sight?: SightNodeDimensionI;
+}
+
+interface SightNodeDimensionI extends DimensionRoadMapNodeI {
+  indexPositionSight: number;
+}
+interface MicPodNodeDimensionI extends DimensionRoadMapNodeI {
   orderMicPods: number[][];
+}
+
+interface DimensionRoadMapNodeI {
+  nodeName: string;
+  offsetPosition?: ArrVector3T;
 }
