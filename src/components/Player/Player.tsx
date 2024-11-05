@@ -41,7 +41,7 @@ export const bhoustonAuth = {
 
 export const Player: React.FC = () => {
   const { cache, keyCache } = useCache();
-  const { target, distance } = usePlayer();
+  const { target, distance, polarAngle } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
@@ -144,8 +144,8 @@ export const Player: React.FC = () => {
               minDistance={distance.minDistance}
               maxDistance={distance.maxDistance}
               target={target}
-              minPolarAngle={Math.PI / 6}
-              maxPolarAngle={Math.PI / 2}
+              minPolarAngle={polarAngle.minPolarAngle}
+              maxPolarAngle={polarAngle.maxPolarAngle}
             />
           </Selection>
         </>
@@ -155,15 +155,8 @@ export const Player: React.FC = () => {
 };
 
 const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
-
-
   return (
-    <EffectComposer
-      stencilBuffer
-      autoClear={false}
-      multisampling={4}
-      ref={ref}
-    >
+    <EffectComposer stencilBuffer autoClear={false} multisampling={4} ref={ref}>
       <Outline
         visibleEdgeColor={0x32156d}
         hiddenEdgeColor={0x32156d}

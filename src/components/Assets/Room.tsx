@@ -9,7 +9,7 @@ import { changeStatusBuilding } from "../../store/slices/configurator/Configurat
 import { ProductsNodes } from "./ProductsNodes.js";
 import { useThree } from "@react-three/fiber";
 import { CameraRoom } from "./CameraRoom.js";
-import { Dimension } from '../Dimension/Dimension.js'
+import { Dimension } from "../Dimension/Dimension.js";
 
 export type RoomProps = {
   roomAssetId: string;
@@ -28,6 +28,12 @@ export const Room: React.FC<RoomProps> = (props) => {
   const dispatch = useDispatch();
   const gltf = useScene({ assetId: roomAssetId });
   const three = useThree();
+
+  const setMainCamera = (camera: THREE.PerspectiveCamera) => {
+    camera.aspect = three.size.width / three.size.height;
+    camera.updateProjectionMatrix();
+    three.set({ camera });
+  };
 
   useEffect(() => {
     if (!gltf) return;
@@ -50,9 +56,7 @@ export const Room: React.FC<RoomProps> = (props) => {
     const domeLight = gltf.scene.userData.domeLight;
     const camera = gltf.scene.userData.camera as THREE.PerspectiveCamera;
     three.scene.environment = domeLight.image;
-    camera.aspect = three.size.width / three.size.height;
-    camera.updateProjectionMatrix();
-    three.set({ camera });
+    setMainCamera(camera);
 
     gltf.scene.traverse((node) => {
       if (node instanceof THREE.Mesh && node.isMesh) {
@@ -69,16 +73,30 @@ export const Room: React.FC<RoomProps> = (props) => {
     });
   }, [gltf]);
 
+  const changeMainCamera = (type: "Main" | "Dimension") => {
+    if (type === "Main") {
+      setMainCamera(
+        new THREE.PerspectiveCamera().copy(
+          gltf.scene.userData.camera as THREE.PerspectiveCamera
+        )
+      );
+    } else {
+      const cam = new THREE.PerspectiveCamera().copy(
+        gltf.cameras["3"] as THREE.PerspectiveCamera
+      );
+      setMainCamera(cam);
+    }
+  };
+
   if (!gltf) return <></>;
-  const { camera } = gltf.scene.userData;
 
   return (
     <>
-      {camera && <primitive object={camera}></primitive>}
+      {three.camera && <primitive object={three.camera}></primitive>}
       <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
-      <Dimension threeNode={gltf.scene} />
-      <CameraRoom gltf={gltf} camera={camera} roomAssetId={roomAssetId} />
+      <Dimension threeNode={gltf.scene} changeCamera={changeMainCamera} />
+      <CameraRoom gltf={gltf} camera={three.camera} roomAssetId={roomAssetId} />
     </>
   );
 };

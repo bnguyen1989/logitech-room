@@ -36,3 +36,16 @@ export const getTargetDataByKeyPermission = (keyPermission: string) => {
       );
   }
 };
+
+export const getPolarAngle = (dimension: boolean) => {
+  if (dimension) {
+    return {
+      minPolarAngle: -Math.PI,
+      maxPolarAngle: -Math.PI,
+    };
+  }
+  return {
+    minPolarAngle: Math.PI / 6,
+    maxPolarAngle: Math.PI / 2,
+  };
+};
