@@ -973,6 +973,16 @@ export class ConfigurationConstraintHandler extends Handler {
     }
 
     const cache = CACHE.get(RuleName.reco_micPod_micPodHub);
+
+    if (!cache && isSelectHub && !isNeedSetRecommended) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicHub]: {
+          assetId: "",
+        },
+        [AttributeName.QtyMicHub]: "0",
+      });
+    }
+
     if (!isNeedSetRecommended || cache) return;
 
     const visibleValue = attributeValuesArr.find(
