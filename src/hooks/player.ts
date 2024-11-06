@@ -37,22 +37,14 @@ export const usePlayer = () => {
     if (!cardRoomSize) return;
 
     const distanceData = getDistanceDataByKeyPermission(
-      cardRoomSize.keyPermission
+      cardRoomSize.keyPermission,
+      dimensionEnable
     );
     const targetData = getTargetDataByKeyPermission(cardRoomSize.keyPermission);
     const polarAngleData = getPolarAngle(dimensionEnable);
 
-    if (dimensionEnable) {
-      setDistance({
-        minDistance: undefined,
-        maxDistance: undefined,
-      });
-      setTarget(undefined);
-    } else {
-      setDistance(distanceData);
-      setTarget(targetData);
-    }
-
+    setDistance(distanceData);
+    setTarget(targetData);
     setPolarAngle(polarAngleData);
   }, [cardRoomSize, dimensionEnable]);
 

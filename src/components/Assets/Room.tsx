@@ -73,21 +73,6 @@ export const Room: React.FC<RoomProps> = (props) => {
     });
   }, [gltf]);
 
-  const changeMainCamera = (type: "Main" | "Dimension") => {
-    if (type === "Main") {
-      setMainCamera(
-        new THREE.PerspectiveCamera().copy(
-          gltf.scene.userData.camera as THREE.PerspectiveCamera
-        )
-      );
-    } else {
-      const cam = new THREE.PerspectiveCamera().copy(
-        gltf.cameras["3"] as THREE.PerspectiveCamera
-      );
-      setMainCamera(cam);
-    }
-  };
-
   if (!gltf) return <></>;
 
   return (
@@ -95,7 +80,7 @@ export const Room: React.FC<RoomProps> = (props) => {
       {three.camera && <primitive object={three.camera}></primitive>}
       <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
-      <Dimension threeNode={gltf.scene} changeCamera={changeMainCamera} />
+      <Dimension threeNode={gltf.scene} />
       <CameraRoom gltf={gltf} camera={three.camera} roomAssetId={roomAssetId} />
     </>
   );

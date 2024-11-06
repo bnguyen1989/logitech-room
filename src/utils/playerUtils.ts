@@ -1,20 +1,50 @@
 import { Vector3 } from "three";
 import { RoomSizeName } from "./permissionUtils";
 
-export const getDistanceDataByKeyPermission = (keyPermission: string) => {
+export const getDistanceDataByKeyPermission = (
+  keyPermission: string,
+  dimension: boolean
+) => {
   switch (keyPermission) {
-    case RoomSizeName.Phonebooth:
+    case RoomSizeName.Phonebooth: {
+      if (dimension) {
+        return { minDistance: 70, maxDistance: 70 };
+      }
+
       return { minDistance: 35, maxDistance: 60 };
-    case RoomSizeName.Huddle:
+    }
+    case RoomSizeName.Huddle: {
+      if (dimension) {
+        return { minDistance: 70, maxDistance: 70 };
+      }
       return { minDistance: 40, maxDistance: 70 };
-    case RoomSizeName.Small:
+    }
+
+    case RoomSizeName.Small: {
+      if (dimension) {
+        return { minDistance: 80, maxDistance: 80 };
+      }
+
       return { minDistance: 40, maxDistance: 80 };
-    case RoomSizeName.Medium:
+    }
+    case RoomSizeName.Medium: {
+      if (dimension) {
+        return { minDistance: 200, maxDistance: 200 };
+      }
       return { minDistance: 50, maxDistance: 150 };
-    case RoomSizeName.Large:
+    }
+    case RoomSizeName.Large: {
+      if (dimension) {
+        return { minDistance: 280, maxDistance: 280 };
+      }
       return { minDistance: 50, maxDistance: 200 };
-    case RoomSizeName.Auditorium:
+    }
+    case RoomSizeName.Auditorium: {
+      if (dimension) {
+        return { minDistance: 300, maxDistance: 300 };
+      }
       return { minDistance: 50, maxDistance: 230 };
+    }
     default:
       return { minDistance: 50, maxDistance: 150 };
   }

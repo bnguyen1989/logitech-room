@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import * as THREE from "three";
 import DimensionBetweenNodes from "./DimensionBetweenNodes";
 import { useAppSelector } from "../../hooks/redux";
@@ -7,10 +7,9 @@ import { getDimensionNodeData } from "../../store/slices/configurator/selectors/
 
 interface PropsI {
   threeNode: THREE.Object3D;
-  changeCamera: (type: "Main" | "Dimension") => void;
 }
 
-export const Dimension: React.FC<PropsI> = ({ threeNode, changeCamera }) => {
+export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
   const dimensionNodes = useAppSelector(getDimensionNodeData);
   const enabled = useAppSelector(getDimensionEnabled);
   console.log(dimensionNodes);
@@ -28,14 +27,6 @@ export const Dimension: React.FC<PropsI> = ({ threeNode, changeCamera }) => {
     traverse(threeNode);
     return map;
   }, [threeNode]);
-
-  useEffect(() => {
-    if (enabled) {
-      changeCamera("Dimension");
-    } else {
-      changeCamera("Main");
-    }
-  }, [enabled]);
 
   if (!enabled) return null;
 
