@@ -29,6 +29,7 @@ interface PropsI {
   autoActive?: boolean;
   onSelectedAnalytics: () => void;
   onClick?: () => void;
+  children?: React.ReactNode;
 }
 
 const dataLinkMetadataIfMissing: Record<string, string> = {
@@ -53,7 +54,7 @@ export const getFormatName = (langCard: CardPageI) => (name: string) => {
 
 export const CardSoftware: React.FC<PropsI> = (props) => {
   const dispatch = useDispatch();
-  const { keyItemPermission, autoActive, onClick } = props;
+  const { keyItemPermission, autoActive, onClick, children } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -190,6 +191,7 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
               />
             </div>
           )}
+          {children}
           <div className={s.info_mobile}>
             <div
               className={s.info_button_mobile}
