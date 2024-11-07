@@ -10,6 +10,7 @@ export enum ColumnNameDimension {
   CAMERA_TO_MIC_POD_METER = "CTM_METER",
   MIC_POD_TO_MIC_POD_METER = "MTM_METER",
   EXCEPTION_METER = "exception_METER",
+  TABLE_METER = "TABLE_METER",
 }
 
 export interface DimensionDataI {

@@ -44,7 +44,10 @@ export class Dimension {
   private getActiveRoomDimensionData(): DimensionNodeData[] {
     const roomStep = this.permissionElement.getStepByName(StepName.RoomSize);
     const [activeRoom] = roomStep.getActiveElements();
-    return this.getDimensionDataForRoomSize(activeRoom.name);
+    return [
+      ...this.getDimensionDataForRoomSize(activeRoom.name),
+      ...this.getDimensionDataForTableLength(activeRoom.name),
+    ];
   }
 
   private buildDimensionNodes(): DimensionNodeData[] {
@@ -211,9 +214,7 @@ export class Dimension {
   public getDimensionDataForRoomSize(
     keyPermission: string
   ): DimensionNodeData[] {
-    const dataCondition = this.dataCondition.find(
-      (data) => data.data[ColumnNameDimension.ROOM_SIZE] === keyPermission
-    );
+    const dataCondition = this.getConditionDataByRoomSize(keyPermission);
     if (!dataCondition) return [];
     return [
       this.getDimensionNodeDataByData(
@@ -237,6 +238,34 @@ export class Dimension {
         }
       ),
     ];
+  }
+
+  public getDimensionDataForTableLength(
+    keyPermission: string
+  ): DimensionNodeData[] {
+    const dataCondition = this.getConditionDataByRoomSize(keyPermission);
+    if (!dataCondition) return [];
+    if (!dataCondition.data[ColumnNameDimension.TABLE_METER]) return [];
+    return [
+      this.getDimensionNodeDataByData(
+        this.getDataDistance(
+          ColumnNameDimension.TABLE_METER,
+          dataCondition.data
+        ),
+        {
+          nodeAName: PlacementManager.getNameNodeTableLength(1),
+          nodeBName: PlacementManager.getNameNodeTableLength(2),
+        }
+      ),
+    ];
+  }
+
+  private getConditionDataByRoomSize(
+    keyPermission: string
+  ): DimensionDataI | undefined {
+    return this.dataCondition.find(
+      (data) => data.data[ColumnNameDimension.ROOM_SIZE] === keyPermission
+    );
   }
 
   private getDimensionNodeDataByData(
