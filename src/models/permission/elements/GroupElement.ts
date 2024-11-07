@@ -17,11 +17,11 @@ export class GroupElement extends Element<GroupElement> {
   public getSimpleElements(): Array<ItemElement> {
     const resElements: Array<ItemElement> = [];
     this.elements.forEach((elem) => {
-      if(elem instanceof GroupElement) {
-        return resElements.push(...elem.getSimpleElements()) ;
+      if (elem instanceof GroupElement) {
+        return resElements.push(...elem.getSimpleElements());
       }
       resElements.push(elem);
-    })
+    });
     return resElements;
   }
 
@@ -34,12 +34,36 @@ export class GroupElement extends Element<GroupElement> {
     return this._isRequiredOne;
   }
 
+  public getGroupBySimpleElementName(name: string): GroupElement | undefined {
+    for (const element of this.elements) {
+      if (element instanceof GroupElement) {
+        return element.getGroupBySimpleElementName(name);
+      }
+
+      if (element instanceof ItemElement) {
+        if (element.name === name) {
+          return this as GroupElement;
+        }
+      }
+    }
+  }
+
   public includeElement(element: ItemElement): boolean {
     return this.elements.some((elem) => {
       if (elem instanceof ItemElement) {
         return elem.name === element.name;
       } else {
         return false;
+      }
+    });
+  }
+
+  public compare(element: GroupElement): boolean {
+    return this.elements.every((elem) => {
+      if (elem instanceof ItemElement) {
+        return element.includeElement(elem);
+      } else {
+        return elem.compare(element);
       }
     });
   }
