@@ -157,6 +157,10 @@ export class PlacementManager {
     return `Room_Width_${id}`;
   }
 
+  public static getNameNodeTableLength(id: number): string {
+    return `Table_Length_${id}`;
+  }
+
   static getAllPlacement(): string[] {
     const placements: string[] = [];
 

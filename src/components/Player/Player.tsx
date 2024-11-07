@@ -41,7 +41,7 @@ export const bhoustonAuth = {
 
 export const Player: React.FC = () => {
   const { cache, keyCache } = useCache();
-  const { target, distance, polarAngle } = usePlayer();
+  const { target, distance, polarAngle, azimuthalAngle } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
@@ -146,6 +146,8 @@ export const Player: React.FC = () => {
               target={target}
               minPolarAngle={polarAngle.minPolarAngle}
               maxPolarAngle={polarAngle.maxPolarAngle}
+              minAzimuthAngle={azimuthalAngle.maxAzimuthalAngle}
+              maxAzimuthAngle={azimuthalAngle.maxAzimuthalAngle}
             />
           </Selection>
         </>
