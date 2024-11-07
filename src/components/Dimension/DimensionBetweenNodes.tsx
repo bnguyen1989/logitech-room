@@ -3,6 +3,7 @@ import { useThree } from "@react-three/fiber";
 import { Mesh, Vector3 } from "three";
 import { LabelDimension } from "./LabelDimension/LabelDimension";
 import type { ArrVector3T } from "../../types/mathType";
+import { VectorMath } from "../../models/math/VectorMath/VectorMath";
 
 interface PropsI {
   nodeA: Mesh;
@@ -38,6 +39,11 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
     (positionA[2] + positionB[2]) / 2,
   ];
 
+  const isHorizontalDirection = new VectorMath("XY").isHorizontal(
+    [...positionA],
+    [...positionB]
+  );
+
   return (
     <>
       <Line
@@ -57,7 +63,10 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
         anchorY="middle"
         onUpdate={(self) => self.lookAt(camera.position)}
       >
-        <LabelDimension text={label} />
+        <LabelDimension
+          text={label}
+          type={isHorizontalDirection ? "horizontal" : "vertical"}
+        />
       </Text>
     </>
   );

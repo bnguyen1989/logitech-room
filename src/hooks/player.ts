@@ -30,6 +30,11 @@ export const usePlayer = () => {
     maxPolarAngle: Math.PI / 2,
   });
 
+  const [azimuthalAngle, setAzimuthalAngle] = useState<{
+    minAzimuthalAngle?: number;
+    maxAzimuthalAngle?: number;
+  }>({});
+
   const cardRoomSize = useAppSelector(getSelectedRoomSizeCard);
   const dimensionEnable = useAppSelector(getDimensionEnabled);
 
@@ -46,11 +51,21 @@ export const usePlayer = () => {
     setDistance(distanceData);
     setTarget(targetData);
     setPolarAngle(polarAngleData);
+
+    if (dimensionEnable) {
+      setAzimuthalAngle({
+        minAzimuthalAngle: Math.PI / 2,
+        maxAzimuthalAngle: Math.PI / 2,
+      });
+    } else {
+      setAzimuthalAngle({});
+    }
   }, [cardRoomSize, dimensionEnable]);
 
   return {
     target,
     distance,
     polarAngle,
+    azimuthalAngle,
   };
 };
