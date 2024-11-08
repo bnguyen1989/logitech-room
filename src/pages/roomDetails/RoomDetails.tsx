@@ -5,7 +5,7 @@ import { Footer } from "./Footer/Footer";
 import { Content } from "./Content/Content";
 import { useParams } from "react-router-dom";
 import { ThreekitService } from "../../services/Threekit/ThreekitService";
-import { SectionI } from "./type";
+import { DataSectionI, SectionI } from "./type";
 import { Loader } from "../../components/Loader/Loader";
 import { CardI } from "../../store/slices/ui/type";
 import { getFormattingNameColor, StepName } from "../../utils/baseUtils";
@@ -172,7 +172,8 @@ export const RoomDetails: React.FC = () => {
               isBundleCard ? sku + "*" : sku
             }`;
 
-            const priceSoftwareServices = softwarePriceService.getPriceForSoftwareServices(sku, title);
+            const priceSoftwareServices =
+              softwarePriceService.getPriceForSoftwareServices(sku, title);
 
             const priceNumber =
               dataProduct.price ?? priceSoftwareServices ?? 0.0;
@@ -240,17 +241,41 @@ export const RoomDetails: React.FC = () => {
             );
 
             if (extendWarrantyIndex !== -1) {
-              const amountExtendWarranty = softwareSection.data.reduce<number>(
-                (acc, item, index) => {
-                  if (index === extendWarrantyIndex) return acc;
+              const {
+                amount: amountExtendWarranty,
+                softwareSectionData,
+                additionData,
+              } = softwareSection.data.reduce<{
+                amount: number;
+                softwareSectionData: DataSectionI[];
+                additionData: DataSectionI[];
+              }>(
+                (acc, item) => {
+                  if (isSoftwareService(item.keyPermission ?? "")) {
+                    return {
+                      ...acc,
+                      softwareSectionData: acc.softwareSectionData.concat(item),
+                    };
+                  }
                   const amount = item.priceData?.amountNumber ?? 0;
-                  return acc + amount;
+                  return {
+                    ...acc,
+                    amount: acc.amount + amount,
+                    additionData: acc.additionData.concat(item),
+                  };
                 },
-                0
+                {
+                  amount: 0,
+                  softwareSectionData: [],
+                  additionData: [],
+                }
               );
+
+              softwareSection.data = softwareSectionData;
 
               const extendWarrantyCard =
                 softwareSection.data[extendWarrantyIndex];
+              extendWarrantyCard.dependenceCards = [...additionData];
 
               extendWarrantyCard.priceData = {
                 ...extendWarrantyCard.priceData,

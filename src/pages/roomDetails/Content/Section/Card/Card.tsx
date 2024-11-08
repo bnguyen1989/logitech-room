@@ -14,7 +14,6 @@ import { getUrlProductByKeyPermission } from "../../../../../utils/productUtils"
 interface PropsI extends DataSectionI {
   mode?: "bundle" | "default";
   hideProperties?: ("partNumber" | "count" | "price")[];
-  dependenceCards?: DataSectionI[];
 }
 
 export const Card: React.FC<PropsI> = (props) => {
