@@ -158,9 +158,14 @@ export interface SoftwareServices {
   name: string;
   title: string;
   titleAfterForm: string;
-  helpButton: string;
+  buttons: SoftwareServicesButtons;
   Cards: Cards4;
   QuestionForm: QuestionForm;
+}
+
+export interface SoftwareServicesButtons {
+  needHelp: string;
+  alreadyKnow: string;
 }
 
 export interface Cards4 {

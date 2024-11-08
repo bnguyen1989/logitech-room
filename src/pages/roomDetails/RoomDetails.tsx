@@ -22,9 +22,8 @@ import {
   getCardLangPage,
   getDetailRoomLangPage,
 } from "../../store/slices/ui/selectors/selectoteLangPage";
-import { getFormatName } from "../../components/Cards/CardSoftware/CardSoftware";
 import { PriceService } from "../../services/PriceService/PriceService";
-import { isShowPriceByLocale } from "../../utils/productUtils";
+import { getFormatName, isShowPriceByLocale } from "../../utils/productUtils";
 import { SoftwarePriceService } from "../../services/SoftwarePriceService/SoftwarePriceService";
 
 export const RoomDetails: React.FC = () => {
@@ -136,7 +135,7 @@ export const RoomDetails: React.FC = () => {
 
             let dataProduct = await new PriceService().getDataProductBySku(sku);
             // const inStock = dataProduct.inStock ?? true;
-            const inStock = true; // temp solution, description in Pull Request
+            const inStock = true; // temp solution, description in Pull Request #500
 
             let cardFromBundle = false;
             if (

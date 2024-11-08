@@ -158,15 +158,12 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
             interactionType: OptionInteractionType.Select,
           })
         }
-        onClick={() => {
-          console.log("test handleBottonAnchor");
-
-          actionAnchor.handleBottonAnchor();
-        }}
+        onClick={actionAnchor.handleBottomAnchor}
       >
         {subKeyPermissions.length > 0 && (
           <SubSectionCardSoftware
             name={"Add additional warranty"}
+            parentKeyPermission={card.keyPermission}
             keyPermissionCards={subKeyPermissions}
           />
         )}
@@ -187,8 +184,12 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
           <div className={s.button_link}>
             <div className={s.actions}>
               <IconButton
-                text={langPage.helpButton}
-                onClick={bottomContentAnchor.handleBottonAnchor}
+                text={
+                  isUserPartner
+                    ? langPage.buttons.needHelp
+                    : langPage.buttons.alreadyKnow
+                }
+                onClick={bottomContentAnchor.handleBottomAnchor}
                 variant={"outlined"}
               >
                 <ArrowSelectDownSVG />
