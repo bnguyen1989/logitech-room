@@ -133,7 +133,8 @@ export class RoomService {
             let productName: string = title;
             if (
               softwareCardExtendedWarranty &&
-              card.key === StepName.SoftwareServices
+              card.key === StepName.SoftwareServices &&
+              !isSoftwareService(card.keyPermission)
             ) {
               productName = `${softwareCardExtendedWarranty.title} ${softwareCardExtendedWarranty.selectValue} - ${title}`;
             }

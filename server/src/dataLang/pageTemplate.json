@@ -396,7 +396,14 @@
     "de-DE": "Benötigen Sie Hilfe bei der Auswahl?",
     "es-ES": "¿Necesita ayuda para elegir?",
     "es-MX": "¿Necesitas ayuda para elegir?",
-    "key": "Software & Services#helpButton"
+    "key": "Software & Services#buttons#needHelp"
+  },
+  {
+    "en-US": "I already know what I need",
+    "de-DE": "I already know what I need",
+    "es-ES": "I already know what I need",
+    "es-MX": "I already know what I need",
+    "key": "Software & Services#buttons#alreadyKnow"
   },
   {
     "en-US": "ESSENTIAL SERVICE PLAN",

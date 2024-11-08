@@ -1,21 +1,8 @@
 import { useAppSelector } from "../../../hooks/redux";
 import { getCardLangPage } from "../../../store/slices/ui/selectors/selectoteLangPage";
-import { CardPageI } from "../../../types/textTypePage";
+import { getFormatName } from "../../../utils/productUtils";
 import { SelectItem } from "../../Fields/SelectItem/SelectItem";
 import s from "./SubSoftwareCard.module.scss";
-
-const getFormatName = (langCard: CardPageI) => (name: string) => {
-  const arr = name.split(" ");
-  const number = parseInt(arr[0]);
-  if (isNaN(number)) {
-    return name;
-  }
-
-  const arrLang = langCard.Text.Years.split(",");
-  const nameFormat = arrLang[number - 1]?.trim();
-  if (!nameFormat) return name;
-  return nameFormat;
-};
 
 interface PropsI {
   keyItemPermission: string;
