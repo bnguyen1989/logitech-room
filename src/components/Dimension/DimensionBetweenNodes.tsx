@@ -39,7 +39,7 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
     (positionA[2] + positionB[2]) / 2,
   ];
 
-  const isHorizontalDirection = new VectorMath("XY").isHorizontal(
+  const isHorizontalDirection = new VectorMath("XY", 1).isHorizontal(
     [...positionA],
     [...positionB]
   );

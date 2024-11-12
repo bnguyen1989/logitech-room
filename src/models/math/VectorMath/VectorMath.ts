@@ -5,7 +5,7 @@ export class VectorMath {
   private plane: PlaneOrientationT;
   private tolerance: number;
 
-  constructor(plane: PlaneOrientationT, tolerance: number = 0.01) {
+  constructor(plane: PlaneOrientationT, tolerance: number = 1E-3) {
     this.plane = plane;
     this.tolerance = tolerance;
   }
