@@ -4,6 +4,7 @@ import DimensionBetweenNodes from "./DimensionBetweenNodes";
 import { useAppSelector } from "../../hooks/redux";
 import { getDimensionEnabled } from "../../store/slices/configurator/selectors/selectors";
 import { getDimensionNodeData } from "../../store/slices/configurator/selectors/dimensionSelectors";
+import { DimensionTextBetweenNodes } from "./DimensionTextBetweenNodes";
 
 interface PropsI {
   threeNode: THREE.Object3D;
@@ -33,11 +34,22 @@ export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
   return (
     <>
       {dimensionNodes.map(
-        ({ nodeAName, nodeBName, label, offsetPosition }, index) => {
+        ({ nodeAName, nodeBName, label, offsetPosition, type }, index) => {
           const nodeA = nodeMap[nodeAName];
           const nodeB = nodeMap[nodeBName];
 
           if (!nodeA || !nodeB) return null;
+
+          if (type === "text") {
+            return (
+              <DimensionTextBetweenNodes
+                key={index}
+                nodeA={nodeA}
+                nodeB={nodeB}
+                label={label}
+              />
+            );
+          }
 
           return (
             <DimensionBetweenNodes

@@ -29,7 +29,7 @@ export const getDistanceDataByKeyPermission = (
     }
     case RoomSizeName.Medium: {
       if (dimension) {
-        return { minDistance: 200, maxDistance: 200 };
+        return { minDistance: 250, maxDistance: 250 };
       }
       return { minDistance: 50, maxDistance: 150 };
     }

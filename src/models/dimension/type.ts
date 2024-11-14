@@ -1,8 +1,10 @@
 import type { ArrVector3T } from "../../types/mathType";
 import { Condition } from "../conditions/Condition";
 
+type DimensionNodeDataType = "dimension" | "text";
 export interface DimensionNodeData extends DimensionNodeI {
   label: string;
+  type?: DimensionNodeDataType;
 }
 
 export interface DimensionNodeI {
@@ -26,7 +28,7 @@ export interface RoadMapItemDimensionI {
 }
 
 export interface RoadMapItemDimensionDataI {
-  camera: DimensionRoadMapNodeI
+  camera: DimensionRoadMapNodeI;
   micPod: MicPodNodeDimensionI;
   sight?: SightNodeDimensionI;
 }

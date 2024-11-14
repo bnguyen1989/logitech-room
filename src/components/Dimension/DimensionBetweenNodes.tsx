@@ -30,30 +30,39 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
     return res;
   };
 
-  const positionA = getWorldPosition(nodeA);
+  const positionA = getWorldPosition(nodeA); 
   const positionB = getWorldPosition(nodeB);
+  
 
-  const midPoint: ArrVector3T = [
-    (positionA[0] + positionB[0]) / 2,
-    (positionA[1] + positionB[1]) / 1.8,
-    (positionA[2] + positionB[2]) / 2,
-  ];
-
-  const isHorizontalDirection = new VectorMath("XY", 1).isHorizontal(
+  const midPoint: ArrVector3T = VectorMath.getMidPoint(
     [...positionA],
     [...positionB]
   );
 
+  const isHorizontalDirection = new VectorMath("XZ", 1).isHorizontal(
+    [...positionA],
+    [...positionB]
+  );
+
+  const getPositionHashMark = (length: number) => {
+    const vectorMath = new VectorMath("XZ", 1);
+    const perpendicularPoints = vectorMath.getPerpendicularPoints(
+      [...positionA],
+      [...positionB],
+      length
+    );
+    const distance = vectorMath.getDistance([...positionA], [...positionB]) / 2;
+    const direction = vectorMath.getDirection([...positionA], [...positionB]);
+    return [
+      vectorMath.movePoint([...perpendicularPoints[0]], direction, distance),
+      vectorMath.movePoint([...perpendicularPoints[1]], direction, distance),
+    ];
+  };
+
   return (
     <>
-      <Line
-        points={[positionA, positionB]}
-        lineWidth={1}
-        color="black"
-        dashed
-        dashSize={0.2}
-        gapSize={0.2}
-      />
+      <Line points={[positionA, positionB]} lineWidth={2} color="black" />
+      <Line points={getPositionHashMark(0.5)} lineWidth={1} color="black" />
 
       <Text
         position={midPoint}
