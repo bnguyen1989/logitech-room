@@ -245,18 +245,35 @@ export class Dimension {
   ): DimensionNodeData[] {
     const dataCondition = this.getConditionDataByRoomSize(keyPermission);
     if (!dataCondition) return [];
-    if (!dataCondition.data[ColumnNameDimension.TABLE_METER]) return [];
+    if (!dataCondition.data[ColumnNameDimension.TABLE_L_METER]) return [];
+
+    const dataDistanceLength = this.getDataDistance(
+      ColumnNameDimension.TABLE_L_METER,
+      dataCondition.data
+    );
+
+    let label = `Sample configuration shown on a ${dataDistanceLength.feet} ft or ${dataDistanceLength.meter} m long table.`;
+
+    const dataDistanceWidth =
+      dataCondition.data[ColumnNameDimension.TABLE_W_METER];
+    const isExistWidth = !!dataDistanceWidth;
+
+    if (isExistWidth) {
+      const dataDistanceWidth = this.getDataDistance(
+        ColumnNameDimension.TABLE_W_METER,
+        dataCondition.data
+      );
+
+      label = `Sample configuration shown on a ${dataDistanceLength.feet} by ${dataDistanceWidth.feet} ft or ${dataDistanceLength.meter} by ${dataDistanceWidth.meter} m long table.`;
+    }
+
     return [
-      this.getDimensionNodeDataByData(
-        this.getDataDistance(
-          ColumnNameDimension.TABLE_METER,
-          dataCondition.data
-        ),
-        {
-          nodeAName: PlacementManager.getNameNodeTableLength(1),
-          nodeBName: PlacementManager.getNameNodeTableLength(2),
-        }
-      ),
+      {
+        label: label,
+        nodeAName: PlacementManager.getNameNodeTableLength(1),
+        nodeBName: PlacementManager.getNameNodeTableLength(2),
+        type: "text",
+      },
     ];
   }
 

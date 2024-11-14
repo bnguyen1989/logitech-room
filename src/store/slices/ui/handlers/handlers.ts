@@ -47,7 +47,10 @@ import {
   getServicesCardData,
   getSoftwareServicesCardData,
 } from "../utils";
-import { changeAssetId } from "../../configurator/Configurator.slice";
+import {
+  changeAssetId,
+  setEnabledDimension,
+} from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
 import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
 import {
@@ -182,6 +185,7 @@ export const getUiHandlers = (store: Store) => {
       setPlatformData(configurator)(store);
       setServiceData(configurator)(store);
       store.dispatch(changeAssetId(configurator.assetId));
+      store.dispatch(setEnabledDimension(false));
     }
   );
 };
