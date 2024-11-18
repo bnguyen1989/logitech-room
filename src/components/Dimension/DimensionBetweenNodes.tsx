@@ -1,9 +1,10 @@
 import { Line, Text } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { Mesh, Vector3 } from "three";
-import { LabelDimension } from "./LabelDimension/LabelDimension";
+import { Mesh } from "three";
+import { LabelDimension } from "./HtmlContentDimension/LabelDimension/LabelDimension";
 import type { ArrVector3T } from "../../types/mathType";
 import { VectorMath } from "../../models/math/VectorMath/VectorMath";
+import { getWorldPositionByNode } from "../../utils/dimensionUtils";
 
 interface PropsI {
   nodeA: Mesh;
@@ -17,9 +18,7 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
   const { camera } = useThree();
 
   const getWorldPosition = (node: Mesh) => {
-    const worldPosition = new Vector3();
-    node.getWorldPosition(worldPosition);
-    const res = worldPosition.toArray() as ArrVector3T;
+    const res = getWorldPositionByNode(node);
     if (offsetPosition) {
       return [
         res[0] + offsetPosition[0],
@@ -30,9 +29,8 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
     return res;
   };
 
-  const positionA = getWorldPosition(nodeA); 
+  const positionA = getWorldPosition(nodeA);
   const positionB = getWorldPosition(nodeB);
-  
 
   const midPoint: ArrVector3T = VectorMath.getMidPoint(
     [...positionA],
