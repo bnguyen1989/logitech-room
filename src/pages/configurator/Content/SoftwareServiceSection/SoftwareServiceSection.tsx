@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { CardSoftware } from "../../../../components/Cards/CardSoftware/CardSoftware";
 import { CardI, QuestionFormI, StepI } from "../../../../store/slices/ui/type";
 import s from "./SoftwareServiceSection.module.scss";
-import { FormName, StepName } from "../../../../utils/baseUtils";
+import { StepName } from "../../../../utils/baseUtils";
 import { useAppSelector } from "../../../../hooks/redux";
-import { useDispatch } from "react-redux";
-import { updateDataForm } from "../../../../store/slices/ui/Ui.slice";
 import { getTKAnalytics } from "../../../../utils/getTKAnalytics";
 import { OptionInteractionType, OptionsType } from "@threekit/rest-api";
 import {
@@ -16,7 +14,6 @@ import { ContentContainer } from "../ContentContainer/ContentContainer";
 import { useAnchor } from "../../../../hooks/anchor";
 import { SubSectionCardSoftware } from "./SubSectionCardSoftware/SubSectionCardSoftware";
 import { QuestionForm } from "../../../../components/QuestionForm/QuestionForm";
-import { getDataSoftwareQuestionsForm } from "../../../../store/slices/ui/selectors/selectorsForm";
 import { getExpressionArrayForQuestionForm } from "../../../../store/slices/ui/utils";
 import { SoftwareServicesName } from "../../../../utils/permissionUtils";
 import { IconButton } from "../../../../components/Buttons/IconButton/IconButton";
@@ -24,6 +21,7 @@ import { ArrowSelectDownSVG } from "../../../../assets";
 import { getSoftwareServicesLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 import { RoleUserName } from "../../../../utils/userRoleUtils";
 import { useUser } from "../../../../hooks/user";
+import { useQuestionForm } from "../../../../hooks/questionForm";
 
 interface ExpressionI {
   questionIndex: number;
@@ -35,7 +33,6 @@ interface SoftwareServiceSectionIn {
 export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
   refHeader,
 }) => {
-  const dispatch = useDispatch();
   const user = useUser();
   const [keysNotVisibleCards, setKeysNotVisibleCards] = useState<Array<string>>(
     []
@@ -48,7 +45,7 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
   const subCardKeyPermissions = useAppSelector(
     getSubCardsKeyPermissionStep(activeStepData)
   );
-  const dataForm = useAppSelector(getDataSoftwareQuestionsForm);
+  const questionForm = useQuestionForm();
   const langPage = useAppSelector(getSoftwareServicesLangPage);
 
   const cards = Object.values(activeStepData.cards);
@@ -58,24 +55,13 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
 
   const isUserPartner = user.role.name === RoleUserName.PARTNER;
 
-  const setStatusForm = (value: boolean) => {
-    dispatch(
-      updateDataForm({
-        key: FormName.QuestionFormSoftware,
-        value: {
-          isSubmit: value,
-        },
-      })
-    );
-  };
-
   useEffect(() => {
-    return () => setStatusForm(false);
+    return () => questionForm.setStatusForm(false);
   }, []);
 
   useEffect(() => {
     if (!isSoftwareServicesStep) {
-      setStatusForm(false);
+      questionForm.setStatusForm(false);
     }
   }, [isSoftwareServicesStep]);
 
@@ -98,7 +84,7 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
   const submitFormData = (data: Array<QuestionFormI>) => {
     const { select, basic, extendedWarranty } =
       getExpressionArrayForQuestionForm();
-    setStatusForm(true);
+    questionForm.setStatusForm(true);
     const dataKeys = [
       SoftwareServicesName.LogitechSync,
       SoftwareServicesName.SupportService,
@@ -180,7 +166,7 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
   return (
     <ContentContainer refAction={actionAnchor.ref}>
       <div className={s.container}>
-        {!dataForm.isSubmit ? (
+        {!questionForm.data.isSubmit ? (
           <div className={s.button_link}>
             <div className={s.actions}>
               <IconButton
@@ -198,8 +184,11 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
           </div>
         ) : null}
 
-        {!isUserPartner && !dataForm.isSubmit && (
-          <QuestionForm baseData={dataForm.data} submitData={submitFormData} />
+        {!isUserPartner && !questionForm.data.isSubmit && (
+          <QuestionForm
+            baseData={questionForm.data.data}
+            submitData={submitFormData}
+          />
         )}
 
         <div
@@ -211,10 +200,10 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
           )}
         </div>
 
-        {isUserPartner && !dataForm.isSubmit && (
+        {isUserPartner && !questionForm.data.isSubmit && (
           <div ref={bottomContentAnchor.ref}>
             <QuestionForm
-              baseData={dataForm.data}
+              baseData={questionForm.data.data}
               submitData={submitFormData}
             />
           </div>
