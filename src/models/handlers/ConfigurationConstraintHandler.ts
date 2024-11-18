@@ -736,9 +736,10 @@ export class ConfigurationConstraintHandler extends Handler {
     const isSelectMic = typeof selectedMic === "object";
     const attribute = this.getAttribute(AttributeName.RoomMicCATCoupler);
     if (!attribute) return;
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = attrState[attribute.id].values;
-    if (!attributeValuesArr) return;
+    const attributeValuesArr = this.getValuesAssetStateByAttrName(
+      AttributeName.RoomMicCATCoupler
+    );
+    if (!attributeValuesArr.length) return;
 
     if (!isSelectMic) {
       this.configurator.setConfiguration({
@@ -779,6 +780,21 @@ export class ConfigurationConstraintHandler extends Handler {
         },
       });
       CACHE.set(RuleName.micPod_CATCoupler, true);
+    }
+
+    if (cache && !isSelectSight && isChangeSight) {
+      CACHE.set(RuleName.micPod_CATCoupler, false);
+    }
+
+    const isChangeMic = this.triggeredByAttr.includes(AttributeName.RoomMic);
+    if (!cache && isSelectMic && isChangeMic) {
+      const visibleValue = attributeValuesArr.find((option) => option.visible);
+      if (!visibleValue) return;
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicCATCoupler]: {
+          assetId: visibleValue.id,
+        },
+      });
     }
   }
 
@@ -973,6 +989,16 @@ export class ConfigurationConstraintHandler extends Handler {
     }
 
     const cache = CACHE.get(RuleName.reco_micPod_micPodHub);
+
+    if (!cache && isSelectHub && !isNeedSetRecommended) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicHub]: {
+          assetId: "",
+        },
+        [AttributeName.QtyMicHub]: "0",
+      });
+    }
+
     if (!isNeedSetRecommended || cache) return;
 
     const visibleValue = attributeValuesArr.find(
@@ -1644,4 +1670,15 @@ export class ConfigurationConstraintHandler extends Handler {
     const count = parseInt(qtyMicPod);
     return count;
   };
+
+  private getValuesAssetStateByAttrName(attrName: string): ValueAssetStateI[] {
+    const attrState = this.configurator.getStateAttributeByName(attrName);
+    if (!attrState) return [];
+
+    const values = attrState.values as ValueAssetStateI[];
+
+    return values.filter((option: ValueAssetStateI) =>
+      option.tags.includes(this.localeTagStr)
+    );
+  }
 }

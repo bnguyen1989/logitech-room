@@ -479,9 +479,7 @@ export function removeElement(card: CardI, stepName: StepName) {
               removeNodeByKeys([...nameNodes, dependentMount.getNameNode()])
             );
           });
-
-          const secondaryNameNodes = mountElement.getSecondaryNameNode();
-          setAssetIdNodeNames(secondaryNameNodes, cardAsset.id)(store);
+          updateNameNodesByCondition(mountElement, cardAsset.id)(store);
         }
 
         if (!(dependentMount instanceof ReferenceMountElement)) return;
