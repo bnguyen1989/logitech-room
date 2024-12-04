@@ -1,4 +1,3 @@
-import { CardPageI } from "../types/textTypePage";
 import {
   AudioExtensionName,
   CameraName,
@@ -204,15 +203,21 @@ const productUrlData: Record<string, string> = {
     "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarmini-tapip.html",
 };
 
-export const getFormatName = (langCard: CardPageI) => (name: string) => {
+export const getFormatName = (templateValue: string) => (name: string) => {
+  
   const arr = name.split(" ");
   const number = parseInt(arr[0]);
   if (isNaN(number)) {
     return name;
   }
 
-  const arrLang = langCard.Text.Years.split(",");
+  const arrLang = templateValue.split(",");
   const nameFormat = arrLang[number - 1]?.trim();
-  if (!nameFormat) return name;
+  if (!nameFormat) {
+    const numText = arrLang.find((item) => item.includes(number.toString()));
+    if(numText) return numText.trim();
+
+    return name;
+  }
   return nameFormat;
 };

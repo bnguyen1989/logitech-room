@@ -294,6 +294,36 @@ export const getListSoftwareCardLangByKeyPermission =
     }
   };
 
+export const getSelectSoftwareCardLangByKeyPermission =
+  (keyPermission: string) => (state: RootState) => {
+    switch (keyPermission) {
+      case SoftwareServicesName.SupportService:
+      case SoftwareServicesName.EssentialServicePlan:
+      case SoftwareServicesName.ExtendedWarranty:
+      case SoftwareServicesName.LogitechSync: {
+        const softwareServices = getSoftwareServicesLangPage(state);
+        return softwareServices.Cards[keyPermission]?.select;
+      }
+    }
+  };
+
+export const getSelectDataSoftwareCardLangByKeyPermission =
+  (keyPermission: string) => (state: RootState) => {
+    const selectData =
+      getSelectSoftwareCardLangByKeyPermission(keyPermission)(state);
+
+    if (selectData) {
+      return selectData;
+    }
+
+    const softwareCard = getCardLangPage(state);
+
+    return {
+      defaultLabel: softwareCard.Text.ChooseNumberOfYears,
+      valuesTemplate: softwareCard.Text.Years,
+    };
+  };
+
 export const getPrepareDescriptionLangByKeyPermission =
   (keyPermission: string) => (state: RootState) => {
     switch (keyPermission) {

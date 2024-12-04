@@ -17,12 +17,13 @@ import {
   getCardLangPage,
   getListSoftwareCardLangByKeyPermission,
   getPrepareDescriptionLangByKeyPermission,
+  getSelectDataSoftwareCardLangByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { CardContainerSoftware } from "../CardContainerSoftware/CardContainerSoftware";
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
 import { SoftwareServicesName } from "../../../utils/permissionUtils";
-import { getFormatName } from '../../../utils/productUtils'
+import { getFormatName } from "../../../utils/productUtils";
 
 interface PropsI {
   keyItemPermission: string;
@@ -33,8 +34,6 @@ interface PropsI {
 }
 
 const dataLinkMetadataIfMissing: Record<string, string> = {
-  [SoftwareServicesName.EssentialServicePlan]:
-    "https://www.logitech.com/business/services-and-software.html#compare-plans",
   [SoftwareServicesName.LogitechSync]:
     "https://www.logitech.com/business/services-and-software.html#compare-plans",
 };
@@ -56,6 +55,9 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   );
   const list = useAppSelector(
     getListSoftwareCardLangByKeyPermission(keyItemPermission)
+  );
+  const selectData = useAppSelector(
+    getSelectDataSoftwareCardLangByKeyPermission(keyItemPermission)
   );
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
@@ -172,9 +174,9 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             <div className={s.actions}>
               <SelectItem
                 keyItemPermission={keyItemPermission}
-                defaultLabel={langCard.Text.ChooseNumberOfYears}
+                defaultLabel={selectData.defaultLabel}
                 dataAnalytics="card-choose-lorem-plan"
-                getFormatName={getFormatName(langCard)}
+                getFormatName={getFormatName(selectData.valuesTemplate)}
               />
             </div>
           )}
