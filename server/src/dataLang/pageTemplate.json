@@ -441,13 +441,6 @@
     "key": "Software & Services#Cards#Essential Service Plan#list#values#2"
   },
   {
-    "en-US": "Coming soon!",
-    "de-DE": "Demnächst erhältlich",
-    "es-ES": "¡Próximamente!",
-    "es-MX": "¡Próximamente!",
-    "key": "Software & Services#Cards#Essential Service Plan#list#values#3"
-  },
-  {
     "en-US": "BASIC SERVICES",
     "de-DE": "BASIC SERVICES",
     "es-ES": "SERVICIOS BÁSICOS",
@@ -509,6 +502,20 @@
     "es-ES": "Añada hasta 3 años de garantía para ampliar la cobertura y la asistencia para sus dispositivos.",
     "es-MX": "Agrega hasta 3 años de garantía para ampliar la cobertura y la asistencia para tus dispositivos.",
     "key": "Software & Services#Cards#Logitech Extended Warranty#description"
+  },
+  {
+    "en-US": "Add additional warranty",
+    "de-DE": "Add additional warranty",
+    "es-ES": "Add additional warranty",
+    "es-MX": "Add additional warranty",
+    "key": "Software & Services#Cards#Logitech Extended Warranty#select#defaultLabel"
+  },
+  {
+    "en-US": "1 yr extended warranty, 3 yr extended warranty",
+    "de-DE": "1 yr extended warranty, 3 yr extended warranty",
+    "es-ES": "1 yr extended warranty, 3 yr extended warranty",
+    "es-MX": "1 yr extended warranty, 3 yr extended warranty",
+    "key": "Software & Services#Cards#Logitech Extended Warranty#select#valuesTemplate"
   },
   {
     "en-US": "SELECT SERVICE PLAN",

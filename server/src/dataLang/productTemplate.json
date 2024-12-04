@@ -1773,6 +1773,55 @@
       ]
     }
   },
+  "Essential Service Plan": {
+    "Card": {
+      "ProductName": "Logitech Essential",
+      "ShortDescription": ["Advanced software and tools"]
+    },
+    "Blade_1": {
+      "ProductName": "Logitech Essential",
+      "ShortDescription": "Advanced software and tools",
+      "LongDescription": "Empower your IT team with advanced software tools for efficiently managing spaces.",
+      "Colors": {
+        "Image": "https://resource.logitech.com/w_1206,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/logitech-essential-service/logitech-essential-service-optimize-monitor-workspace.png?v=1"
+      }
+    },
+    "Blade_2": {
+      "Headline": "SIMPLIFY THE MANAGEMENT OF ROOMS, DESKS, AND DEVICES",
+      "Description": "Make device and space management effortless with the Logitech Essential service plan. Empower your IT team with advanced software tools to efficiently manage, monitor, and troubleshoot shared spaces and connected devices.",
+      "Image|Video": {
+        "Image link": "https://resource.logitech.com/w_1200,h_630,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/logitech-essential-service/logitech-essential-service-twitter-image.jpg?v=1"
+      }
+    },
+    "Blade_2A": {
+      "Features": [
+        {
+          "HeaderFeature": "REMOTELY MANAGE DEVICES",
+          "sorting": "1",
+          "KeyFeature": "Configure device settings, control updates, and remotely manage devices through Logitech Sync.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_389,c_lfill,ar_16:9,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/logitech-essential-service/logitech-essential-service-intro-remote-management.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "GET INSIGHTS",
+          "sorting": "2",
+          "KeyFeature": "Get insights on space and device usage to help better plan and decide on future IT investments and workspace-related changes.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_389,c_lfill,ar_16:9,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/logitech-essential-service/logitech-essential-service-intro-insights.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "MANAGE SPACES",
+          "sorting": "3",
+          "KeyFeature": "Simplify how you manage shared office spaces while enabling employees to find and book rooms and flex desks easily.",
+          "LinkImgFeature": {
+            "Image": "https://resource.logitech.com/w_389,c_lfill,ar_16:9,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/logitech-essential-service/logitech-essential-service-intro-space-management.png?v=1"
+          }
+        }
+      ]
+    }
+  },
   "EXTENDED WARRANTY": {
     "Card": {
       "ProductName": "Logitech Extended Warranty",

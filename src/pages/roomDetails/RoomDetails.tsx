@@ -99,7 +99,7 @@ export const RoomDetails: React.FC = () => {
 
         const getLabelValue = (selectValue?: string) => {
           if (selectValue?.includes("Years")) {
-            return getFormatName(langCard)(selectValue);
+            return getFormatName(langCard.Text.Years)(selectValue);
           }
 
           return selectValue;

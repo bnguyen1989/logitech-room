@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import s from "./SelectItem.module.scss";
 import {
   getActiveStep,
@@ -38,6 +38,23 @@ export const SelectItem: React.FC<PropsI> = (props) => {
   const selectValue = useAppSelector(
     getPropertySelectValueCardByKeyPermission(activeStep, keyItemPermission)
   );
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   if (!card || !card.select) return null;
 
@@ -81,6 +98,7 @@ export const SelectItem: React.FC<PropsI> = (props) => {
       }`}
       onClick={toggleSelect}
       data-analytics-title={dataAnalytics}
+      ref={selectRef}
     >
       <div className={s.value}>{getName()}</div>
       <div className={s.icon}>
