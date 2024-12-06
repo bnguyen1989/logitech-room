@@ -147,11 +147,7 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
         onClick={actionAnchor.handleBottomAnchor}
       >
         {subKeyPermissions.length > 0 && (
-          <SubSectionCardSoftware
-            name={"Add additional warranty"}
-            parentKeyPermission={card.keyPermission}
-            keyPermissionCards={subKeyPermissions}
-          />
+          <SubSectionCardSoftware keyPermissionCards={subKeyPermissions} />
         )}
       </CardSoftware>
     );
