@@ -1,9 +1,10 @@
 import s from "./LabelDimension.module.scss";
 import { HtmlWrapperDimension } from "../HtmlWrapperDimension";
+import type { OrientationT } from "../../../../types/mathType";
 
 interface PropsI {
   text: string;
-  type?: "horizontal" | "vertical";
+  type?: OrientationT;
 }
 export const LabelDimension: React.FC<PropsI> = (props) => {
   const { text, type } = props;
@@ -14,8 +15,8 @@ export const LabelDimension: React.FC<PropsI> = (props) => {
         <div
           style={{
             transform:
-              type === "horizontal"
-                ? "translate(-20%, -50%) rotate(90deg)"
+              type === "vertical"
+                ? "translate(-80%, -50%) rotate(-90deg)"
                 : "translate(-50%, -140%)",
           }}
           className={s.label_dimension}

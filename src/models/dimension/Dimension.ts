@@ -2,7 +2,7 @@ import {
   ColumnNameDimension,
   DimensionDataI,
 } from "../../services/DimensionService/type";
-import { ArrVector3T } from "../../types/mathType";
+import type { OrientationT } from "../../types/mathType";
 import { StepName } from "../../utils/baseUtils";
 import { AudioExtensionName, CameraName } from "../../utils/permissionUtils";
 import { Condition } from "../conditions/Condition";
@@ -17,6 +17,7 @@ import {
   DataDistanceI,
   DimensionNodeData,
   DimensionNodeI,
+  PositionDimensionNodeI,
   RoadMapItemDimensionDataI,
 } from "./type";
 
@@ -149,20 +150,23 @@ export class Dimension {
       }
     }
 
+    const orientation: OrientationT = "horizontal";
+
     return [
-      ...this.getCameraToMicPodNodes(dataCondition, nodes),
-      ...this.getMicPodToMicPodNodes(
-        dataCondition,
-        nodes,
-        roadMapNodes?.micPod.offsetPosition
-      ),
+      ...this.getCameraToMicPodNodes(dataCondition, nodes, {
+        orientation,
+      }),
+      ...this.getMicPodToMicPodNodes(dataCondition, nodes, {
+        orientation,
+        offsetPosition: roadMapNodes?.micPod.offsetPosition,
+      }),
     ];
   }
 
   private getCameraToMicPodNodes(
     dataCondition: DimensionDataI,
     nodeNames: string[][],
-    offsetPosition?: ArrVector3T
+    position?: PositionDimensionNodeI
   ): DimensionNodeData[] {
     if (!dataCondition.data[ColumnNameDimension.CAMERA_TO_MIC_POD_METER])
       return [];
@@ -177,7 +181,7 @@ export class Dimension {
       return this.getDimensionNodeDataByData(distance, {
         nodeAName: PlacementManager.getNameNodeCommodeForCamera("RallyBar", 2),
         nodeBName: lastNode,
-        offsetPosition,
+        position,
       });
     });
   }
@@ -185,7 +189,7 @@ export class Dimension {
   private getMicPodToMicPodNodes(
     dataCondition: DimensionDataI,
     nodeNames: string[][],
-    offsetPosition?: ArrVector3T
+    position?: PositionDimensionNodeI
   ): DimensionNodeData[] {
     if (!dataCondition.data[ColumnNameDimension.MIC_POD_TO_MIC_POD_METER])
       return [];
@@ -200,7 +204,7 @@ export class Dimension {
           this.getDimensionNodeDataByData(distance, {
             nodeAName: current,
             nodeBName: nodes[index + 1],
-            offsetPosition,
+            position,
           })
         )
       )
@@ -293,7 +297,7 @@ export class Dimension {
       label: `${dataDistance.feet} ft / ${dataDistance.meter} m`,
       nodeAName: dataNode.nodeAName,
       nodeBName: dataNode.nodeBName,
-      offsetPosition: dataNode.offsetPosition,
+      position: dataNode.position,
     };
   }
 

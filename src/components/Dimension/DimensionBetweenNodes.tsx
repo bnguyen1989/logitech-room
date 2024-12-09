@@ -2,24 +2,26 @@ import { Line, Text } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Mesh } from "three";
 import { LabelDimension } from "./HtmlContentDimension/LabelDimension/LabelDimension";
-import type { ArrVector3T } from "../../types/mathType";
+import type { ArrVector3T, OrientationT } from "../../types/mathType";
 import { VectorMath } from "../../models/math/VectorMath/VectorMath";
 import { getWorldPositionByNode } from "../../utils/dimensionUtils";
+import { PositionDimensionNodeI } from "../../models/dimension/type";
 
 interface PropsI {
   nodeA: Mesh;
   nodeB: Mesh;
   label: string;
-  offsetPosition?: ArrVector3T;
+  position?: PositionDimensionNodeI;
 }
 
 const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
-  const { nodeA, nodeB, label, offsetPosition } = props;
+  const { nodeA, nodeB, label, position } = props;
   const { camera } = useThree();
 
   const getWorldPosition = (node: Mesh) => {
     const res = getWorldPositionByNode(node);
-    if (offsetPosition) {
+    if (position?.offsetPosition) {
+      const offsetPosition = position.offsetPosition;
       return [
         res[0] + offsetPosition[0],
         res[1] + offsetPosition[1],
@@ -57,6 +59,9 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
     ];
   };
 
+  const typeLabel: OrientationT =
+    position?.orientation ?? isHorizontalDirection ? "horizontal" : "vertical";
+
   return (
     <>
       <Line points={[positionA, positionB]} lineWidth={2} color="black" />
@@ -70,10 +75,7 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
         anchorY="middle"
         onUpdate={(self) => self.lookAt(camera.position)}
       >
-        <LabelDimension
-          text={label}
-          type={isHorizontalDirection ? "horizontal" : "vertical"}
-        />
+        <LabelDimension text={label} type={typeLabel} />
       </Text>
     </>
   );
