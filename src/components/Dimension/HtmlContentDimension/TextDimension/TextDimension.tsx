@@ -1,9 +1,10 @@
 import s from "./TextDimension.module.scss";
 import { HtmlWrapperDimension } from "../HtmlWrapperDimension";
+import type { OrientationT } from "../../../../types/mathType";
 
 interface PropsI {
   text: string;
-  type?: "horizontal" | "vertical";
+  type?: OrientationT;
 }
 export const TextDimension: React.FC<PropsI> = (props) => {
   const { text, type } = props;

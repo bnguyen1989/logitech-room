@@ -34,7 +34,7 @@ export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
   return (
     <>
       {dimensionNodes.map(
-        ({ nodeAName, nodeBName, label, offsetPosition, type }, index) => {
+        ({ nodeAName, nodeBName, label, position, type }, index) => {
           const nodeA = nodeMap[nodeAName];
           const nodeB = nodeMap[nodeBName];
 
@@ -57,7 +57,7 @@ export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
               nodeA={nodeA}
               nodeB={nodeB}
               label={label}
-              offsetPosition={offsetPosition}
+              position={position}
             />
           );
         }

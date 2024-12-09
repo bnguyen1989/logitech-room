@@ -54,8 +54,8 @@ export const usePlayer = () => {
 
     if (dimensionEnable) {
       setAzimuthalAngle({
-        minAzimuthalAngle: Math.PI / 2,
-        maxAzimuthalAngle: Math.PI / 2,
+        minAzimuthalAngle: 0,
+        maxAzimuthalAngle: 0,
       });
     } else {
       setAzimuthalAngle({});

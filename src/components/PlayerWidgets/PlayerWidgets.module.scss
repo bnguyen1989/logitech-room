@@ -8,3 +8,13 @@
 		height: 40px;
 	}
 }
+
+@media screen and (max-width: 992px) {
+	.container {
+		display: flex;
+		bottom: auto;
+		top: 20px;
+		right: 40px;
+	}
+	
+}
