@@ -60,6 +60,12 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
   }, []);
 
   useEffect(() => {
+    if (!questionForm.data.isSubmit) {
+      setKeysNotVisibleCards([]);
+    }
+  }, [questionForm.data.isSubmit]);
+
+  useEffect(() => {
     if (!isSoftwareServicesStep) {
       questionForm.setStatusForm(false);
     }
@@ -82,27 +88,22 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
   }, [isSoftwareServicesStep]);
 
   const submitFormData = (data: Array<QuestionFormI>) => {
-    const { select, basic, extendedWarranty } =
-      getExpressionArrayForQuestionForm();
+    const expressionArray = getExpressionArrayForQuestionForm();
     questionForm.setStatusForm(true);
     const dataKeys = [
       SoftwareServicesName.LogitechSync,
       SoftwareServicesName.SupportService,
       SoftwareServicesName.ExtendedWarranty,
+      SoftwareServicesName.EssentialServicePlan,
     ];
-    const visibleKeys = [];
-    const isSelect = getResultExpression(data, select);
-    if (isSelect) {
-      visibleKeys.push(SoftwareServicesName.SupportService);
-    }
-    const isBasic = getResultExpression(data, basic);
-    if (isBasic) {
-      visibleKeys.push(SoftwareServicesName.LogitechSync);
-    }
-    const isExtendedWarranty = getResultExpression(data, extendedWarranty);
-    if (isExtendedWarranty) {
-      visibleKeys.push(SoftwareServicesName.ExtendedWarranty);
-    }
+    const visibleKeys: SoftwareServicesName[] = [];
+    dataKeys.forEach((key) => {
+      const isExist = getResultExpression(data, expressionArray[key]);
+      if (isExist) {
+        visibleKeys.push(key);
+      }
+    });
+
     visibleKeys.forEach((key) => {
       const index = dataKeys.indexOf(key);
       if (index !== -1) {

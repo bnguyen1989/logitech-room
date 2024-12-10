@@ -245,6 +245,7 @@ export interface Values3 {
 export interface QuestionForm {
   v1: V1[];
   v2: V2[];
+  v3: V2[];
 }
 
 export interface V1 {

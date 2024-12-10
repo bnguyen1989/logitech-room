@@ -345,7 +345,7 @@ export const getPrepareDescriptionLangByKeyPermission =
   };
 
 export const getDataQuestionFormCustomer =
-  (version: "v1" | "v2") =>
+  (version: "v1" | "v2" | "v3") =>
   (state: RootState): Array<QuestionFormI> => {
     const langPage = getSoftwareServicesLangPage(state);
     const { QuestionForm } = langPage;
