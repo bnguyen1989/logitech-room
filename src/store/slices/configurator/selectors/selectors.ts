@@ -97,10 +97,18 @@ export const getKeyPermissionFromNameNode =
 
           if (!(defaultMount instanceof MountElement)) return;
 
+          const listItems: string[] = [element.name];
+          element.getAccessoryItems().forEach((ac) => {
+            const isActiveAccessory = step.isActiveElement(ac);
+            if (isActiveAccessory) {
+              listItems.push(ac);
+            }
+          });
+
           const nodeName = defaultMount.getNameNode();
           if (nodeName === nameNode) {
             objKeyPermission = {
-              [step["name"]]: [element.name],
+              [step["name"]]: listItems,
             };
           }
         }

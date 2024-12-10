@@ -162,6 +162,12 @@ export class Step {
     return this.validElements;
   }
 
+  public isActiveElement(name: string): boolean {
+    return this._activeElements.some(
+      (activeItem: ItemElement | MountElement) => activeItem.name === name
+    );
+  }
+
   public addValidElement(element: ItemElement | MountElement) {
     const isExist = this.validElements.some(
       (elem) => elem.name === element.name
