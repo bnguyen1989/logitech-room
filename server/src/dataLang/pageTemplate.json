@@ -812,6 +812,125 @@
     "key": "Software & Services#QuestionForm#v2#3#option_2"
   },
   {
+    "en-US": "What’s your support team’s level of AV/IT expertise?",
+    "de-DE": "What’s your support team’s level of AV/IT expertise?",
+    "es-ES": "What’s your support team’s level of AV/IT expertise?",
+    "es-MX": "What’s your support team’s level of AV/IT expertise?",
+    "key": "Software & Services#QuestionForm#v3#0#question"
+  },
+  {
+    "en-US": "No expertise on staff",
+    "de-DE": "No expertise on staff",
+    "es-ES": "No expertise on staff",
+    "es-MX": "No expertise on staff",
+    "key": "Software & Services#QuestionForm#v3#0#option_1"
+  },
+  {
+    "en-US": "Qualified internal or partner team",
+    "de-DE": "Qualified internal or partner team",
+    "es-ES": "Qualified internal or partner team",
+    "es-MX": "Qualified internal or partner team",
+    "key": "Software & Services#QuestionForm#v3#0#option_2"
+  },
+  {
+    "en-US": "What additional resources are needed for ongoing operations?",
+    "de-DE": "What additional resources are needed for ongoing operations?",
+    "es-ES": "What additional resources are needed for ongoing operations?",
+    "es-MX": "What additional resources are needed for ongoing operations?",
+    "key": "Software & Services#QuestionForm#v3#1#question"
+  },
+  {
+    "en-US": "Ongoing service management",
+    "de-DE": "Ongoing service management",
+    "es-ES": "Ongoing service management",
+    "es-MX": "Ongoing service management",
+    "key": "Software & Services#QuestionForm#v3#1#option_1"
+  },
+  {
+    "en-US": "Advanced, proactive software tools",
+    "de-DE": "Advanced, proactive software tools",
+    "es-ES": "Advanced, proactive software tools",
+    "es-MX": "Advanced, proactive software tools",
+    "key": "Software & Services#QuestionForm#v3#1#option_2"
+  },
+  {
+    "en-US": "Tech support when I need it",
+    "de-DE": "Tech support when I need it",
+    "es-ES": "Tech support when I need it",
+    "es-MX": "Tech support when I need it",
+    "key": "Software & Services#QuestionForm#v3#1#option_3"
+  },
+  {
+    "en-US": "How would you like to troubleshoot issues?",
+    "de-DE": "How would you like to troubleshoot issues?",
+    "es-ES": "How would you like to troubleshoot issues?",
+    "es-MX": "How would you like to troubleshoot issues?",
+    "key": "Software & Services#QuestionForm#v3#2#question"
+  },
+  {
+    "en-US": "Trust a separate team to quickly resolve",
+    "de-DE": "Trust a separate team to quickly resolve",
+    "es-ES": "Trust a separate team to quickly resolve",
+    "es-MX": "Trust a separate team to quickly resolve",
+    "key": "Software & Services#QuestionForm#v3#2#option_1"
+  },
+  {
+    "en-US": "Do it ourselves with powerful tools",
+    "de-DE": "Do it ourselves with powerful tools",
+    "es-ES": "Do it ourselves with powerful tools",
+    "es-MX": "Do it ourselves with powerful tools",
+    "key": "Software & Services#QuestionForm#v3#2#option_2"
+  },
+  {
+    "en-US": "Contact tech support when I need it",
+    "de-DE": "Contact tech support when I need it",
+    "es-ES": "Contact tech support when I need it",
+    "es-MX": "Contact tech support when I need it",
+    "key": "Software & Services#QuestionForm#v3#2#option_3"
+  },
+  {
+    "en-US": "What are the hours of support you’re expected to deliver?",
+    "de-DE": "What are the hours of support you’re expected to deliver?",
+    "es-ES": "What are the hours of support you’re expected to deliver?",
+    "es-MX": "What are the hours of support you’re expected to deliver?",
+    "key": "Software & Services#QuestionForm#v3#3#question"
+  },
+  {
+    "en-US": "24x7",
+    "de-DE": "24x7",
+    "es-ES": "24x7",
+    "es-MX": "24x7",
+    "key": "Software & Services#QuestionForm#v3#3#option_1"
+  },
+  {
+    "en-US": "Business hours",
+    "de-DE": "Business hours",
+    "es-ES": "Business hours",
+    "es-MX": "Business hours",
+    "key": "Software & Services#QuestionForm#v3#3#option_2"
+  },
+  {
+    "en-US": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "de-DE": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "es-ES": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "es-MX": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "key": "Software & Services#QuestionForm#v3#4#question"
+  },
+  {
+    "en-US": "Preferably a day or less",
+    "de-DE": "Preferably a day or less",
+    "es-ES": "Preferably a day or less",
+    "es-MX": "Preferably a day or less",
+    "key": "Software & Services#QuestionForm#v3#4#option_1"
+  },
+  {
+    "en-US": "About a week is fine",
+    "de-DE": "About a week is fine",
+    "es-ES": "About a week is fine",
+    "es-MX": "About a week is fine",
+    "key": "Software & Services#QuestionForm#v3#4#option_2"
+  },
+  {
     "en-US": "SHOW ME THE COMPLETE SETUP",
     "de-DE": "ZEIGEN SIE MIR DAS KOMPLETTE SETUP",
     "es-ES": "VER EL EQUIPO COMPLETO",
