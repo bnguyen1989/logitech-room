@@ -31,7 +31,7 @@ export const DimensionTextBetweenNodes: React.FC<PropsI> = (props) => {
       anchorY="middle"
       onUpdate={(self) => self.lookAt(camera.position)}
     >
-      <TextDimension text={label} type={"vertical"} />
+      <TextDimension text={label} type={"horizontal"} />
     </Text>
   );
 };

@@ -274,8 +274,8 @@ export class Dimension {
     return [
       {
         label: label,
-        nodeAName: PlacementManager.getNameNodeTableLength(1),
-        nodeBName: PlacementManager.getNameNodeTableLength(2),
+        nodeAName: PlacementManager.getNameNodeTableDimension(),
+        nodeBName: PlacementManager.getNameNodeTableDimension(),
         type: "text",
       },
     ];

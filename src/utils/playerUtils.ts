@@ -22,26 +22,26 @@ export const getDistanceDataByKeyPermission = (
 
     case RoomSizeName.Small: {
       if (dimension) {
-        return { minDistance: 80, maxDistance: 80 };
+        return { minDistance: 90, maxDistance: 90 };
       }
 
       return { minDistance: 40, maxDistance: 80 };
     }
     case RoomSizeName.Medium: {
       if (dimension) {
-        return { minDistance: 250, maxDistance: 250 };
+        return { minDistance: 270, maxDistance: 270 };
       }
       return { minDistance: 50, maxDistance: 150 };
     }
     case RoomSizeName.Large: {
       if (dimension) {
-        return { minDistance: 280, maxDistance: 280 };
+        return { minDistance: 300, maxDistance: 300 };
       }
       return { minDistance: 50, maxDistance: 200 };
     }
     case RoomSizeName.Auditorium: {
       if (dimension) {
-        return { minDistance: 300, maxDistance: 300 };
+        return { minDistance: 330, maxDistance: 330 };
       }
       return { minDistance: 50, maxDistance: 230 };
     }
