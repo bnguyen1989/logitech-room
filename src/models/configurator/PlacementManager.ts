@@ -161,6 +161,10 @@ export class PlacementManager {
     return `Table_Length_${id}`;
   }
 
+  public static getNameNodeTableDimension(): string {
+    return `Table_Dimension`;
+  }
+
   static getAllPlacement(): string[] {
     const placements: string[] = [];
 
