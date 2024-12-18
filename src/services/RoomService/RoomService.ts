@@ -109,7 +109,7 @@ export class RoomService {
         const rows: Array<RowCSVRoomI> = await cardsData.reduce(
           async (accPromise, dataCard, index) => {
             const acc = await accPromise;
-            const { data, count, title, sku } = dataCard;
+            const { data, count, title, sku, selectValue } = dataCard;
             const card = JSON.parse(data) as CardI;
             const isCamera = isCameraElement(card.keyPermission);
             const isTap = isTapElement(card.keyPermission);
@@ -131,6 +131,9 @@ export class RoomService {
             const amount = price * parseInt(count);
 
             let productName: string = title;
+            if (selectValue && isSoftwareService(card.keyPermission)) {
+              productName += ` ${selectValue}`;
+            }
             if (
               softwareCardExtendedWarranty &&
               card.key === StepName.SoftwareServices &&
