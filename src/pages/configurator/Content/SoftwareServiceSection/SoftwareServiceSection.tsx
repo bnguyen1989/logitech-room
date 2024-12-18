@@ -182,10 +182,12 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
         ) : null}
 
         {!isUserPartner && !questionForm.data.isSubmit && (
-          <QuestionForm
-            baseData={questionForm.data.data}
-            submitData={submitFormData}
-          />
+          <div>
+            <QuestionForm
+              baseData={questionForm.data.data}
+              submitData={submitFormData}
+            />
+          </div>
         )}
 
         <div
