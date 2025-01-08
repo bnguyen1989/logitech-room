@@ -65,6 +65,7 @@ import {
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
   getPropertyCardByKeyPermission,
+  getPropertyDisplayCardByKeyPermission,
   getPropertySelectValueCardByKeyPermission,
   getSelectData,
   getSelectedCardsByStep,
@@ -218,6 +219,32 @@ export const changeSelectItem = (
         parentKeyPermission
       );
     }
+  };
+};
+
+export const updateDisplayTypeByKeyPermission = (
+  keyPermission: string,
+  stepName: StepName
+) => {
+  return (store: Store) => {
+    if (stepName !== StepName.ConferenceCamera) return;
+    if (!isCameraElement(keyPermission)) return;
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    const element = step.getElementByName(keyPermission);
+    if (element?.getHiddenDisplay()) {
+      setDefaultsDisplay(stepName)(store);
+      return;
+    }
+
+    const displayType = getPropertyDisplayCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
+    if (!displayType) return;
+    store.dispatch(changeDisplayType(displayType));
   };
 };
 
