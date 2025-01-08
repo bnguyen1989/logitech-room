@@ -7,6 +7,7 @@ import {
   updateDataCardByStepName,
   updateDisplayBasedOnRecommendation,
   updateDisplayForAutoChangeItems,
+  updateDisplayTypeByKeyPermission,
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
@@ -16,7 +17,6 @@ import {
   removeElement,
   setHighlightAllNodes,
   updateDisplayNode,
-  updateDisplayNodeByKeyPermission,
   updateHighlightNodes,
   updateNodesByConfiguration,
 } from "../slices/configurator/handlers/handlers";
@@ -158,7 +158,7 @@ export const middleware: Middleware =
 
         updateAssetIdByKeyPermission(key)(store);
         updateDisplayBasedOnRecommendation(key, activeStep)(store);
-        updateDisplayNodeByKeyPermission(key, activeStep)(store);
+        updateDisplayTypeByKeyPermission(key, activeStep)(store);
         break;
       }
 
@@ -321,7 +321,7 @@ export const middleware: Middleware =
         );
 
         updateDisplayForAutoChangeItems(activeStep, key)(store);
-        updateDisplayNodeByKeyPermission(key, activeStep)(store);
+        updateDisplayTypeByKeyPermission(key, activeStep)(store);
         changeColorElement(key, activeStep)(store);
 
         const updateNodes = updateNodesByConfiguration(
