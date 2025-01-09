@@ -90,9 +90,12 @@ export class ConfigurationConstraintHandler extends Handler {
     this.localeTagStr = localeTagStr;
     const skipColumns = ["level2datatableId", "attrRules", "recoRules"];
     const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
-    const currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
+    let currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
       triggeredByAttr[0]
     );
+    if (currentIndexInLevel1Sequence > 0) {
+      currentIndexInLevel1Sequence -= 1;
+    }
     const firstLevel1AttrSelectedValue = this.getSelectedValue(
       level1AttrSequenceArr[0]
     );
