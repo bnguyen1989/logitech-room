@@ -955,10 +955,10 @@ export class ConfigurationConstraintHandler extends Handler {
     const selectedMicMount = this.getSelectedValue(AttributeName.RoomMicMount);
     const attribute = this.getAttribute(AttributeName.RoomMicHub);
     if (!attribute) return;
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = deepCopy(
-      attrState[attribute.id].values
-    ) as ValueAssetStateI[];
+    const valueAssets = this.getValuesAssetStateByAttrName(
+      AttributeName.RoomMicHub
+    );
+    const attributeValuesArr = deepCopy<ValueAssetStateI[]>(valueAssets);
     if (!attributeValuesArr) return;
     const isSelectMic = typeof selectedMic === "object";
     const isSelectMicMount = typeof selectedMicMount === "object";
@@ -975,6 +975,24 @@ export class ConfigurationConstraintHandler extends Handler {
         this.setRecommendedInMetadata(option, false);
       });
     }
+
+    if (!isSelectMic) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicHub]: {
+          assetId: "",
+        },
+        [AttributeName.QtyMicHub]: "0",
+      });
+
+      attributeValuesArr.forEach((option) => {
+        option.visible = false;
+      });
+    } else {
+      attributeValuesArr.forEach((option) => {
+        option.visible = true;
+      });
+    }
+
     this.configurator.setAttributeState(attribute.id, {
       values: attributeValuesArr,
     });
