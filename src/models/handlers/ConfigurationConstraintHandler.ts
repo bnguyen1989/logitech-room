@@ -773,10 +773,7 @@ export class ConfigurationConstraintHandler extends Handler {
     });
 
     const cache = CACHE.get(RuleName.micPod_CATCoupler);
-    const isChangeSight = this.triggeredByAttr.includes(
-      AttributeName.RoomSight
-    );
-    if (!cache && isSelectSight && isChangeSight) {
+    if (!cache && isSelectSight) {
       this.configurator.setConfiguration({
         [AttributeName.RoomMicCATCoupler]: {
           assetId: "",
@@ -785,7 +782,7 @@ export class ConfigurationConstraintHandler extends Handler {
       CACHE.set(RuleName.micPod_CATCoupler, true);
     }
 
-    if (cache && !isSelectSight && isChangeSight) {
+    if (cache && !isSelectSight) {
       CACHE.set(RuleName.micPod_CATCoupler, false);
     }
 
