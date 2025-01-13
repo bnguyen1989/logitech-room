@@ -1002,7 +1002,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
     const isChangeHub = this.triggeredByAttr.includes(AttributeName.RoomMicHub);
 
-    if (!isSelectHub && isChangeHub) {
+    if (isChangeHub) {
       CACHE.set(RuleName.reco_micPod_micPodHub, true);
     }
 
