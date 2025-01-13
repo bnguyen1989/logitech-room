@@ -1022,7 +1022,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const visibleValue = attributeValuesArr.find(
       (option) => option.visible
     ) as ValueAssetStateI;
-    if (!visibleValue) return;
+    if (!visibleValue || isSelectHub) return;
     this.configurator.setConfiguration({
       [AttributeName.RoomMicHub]: {
         assetId: visibleValue.id,
