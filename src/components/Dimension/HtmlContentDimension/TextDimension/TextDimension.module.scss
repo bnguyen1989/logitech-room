@@ -2,8 +2,10 @@
   position: relative;
 
   .text_dimension {
+    padding: 5px;
+    border: 1px solid var(--main-color-block);
     position: absolute;
-		width: 300px;
+		width: 250px;
 
     .text {
       color: var(--main-color-text);
@@ -20,7 +22,6 @@
 @media screen and (max-width: 1500px) {
   .container_text_dimension {
     .text_dimension {
-      width: 250px;
       .text {
         font-size: 12px;
         line-height: 10px;
