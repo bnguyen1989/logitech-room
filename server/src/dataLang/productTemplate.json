@@ -831,7 +831,7 @@
     },
     "Blade_2": {
       "Headline": "BRING INTELLIGENT EXPERIENCE TO USB AND BYOD SETUPS",
-      "Description": "All-in-one conference camera that works with popular platforms and brings AI-based audio and video experiences to USB and BYOD deployments in small rooms.",
+      "Description": "Upgrade your small meeting rooms with MeetUp 2. It brings a simple setup, a selection of AI-enabled audio and video features, and easy management to USB-based deployments with a compute or PC, or in BYOD mode.",
       "Image|Video": {
         "Lemmy_Hero Landing_BYOD.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/meetup-2-overview-room-config.png?v=1"
       }
@@ -839,27 +839,29 @@
     "Blade_3A": {
       "Features": [
         {
-          "HeaderFeature": "USB DEPLOYMENT",
+          "HeaderFeature": "Simple and Flexible Deployments in Small Rooms",
           "sorting": "1",
-          "KeyFeature": "Have the flexibility of deploying with an in-room compute or in BYOD mode.",
+          "KeyFeature": "Use MeetUp 2 in USB mode connected to a meeting room PC, or connect via laptop for BYOD mode. Connect to a laptop in BYOD with a standard two cable setup, or, connect with a singular cable via Logitech Active USB Cable (image shown).",
           "LinkImgFeature": {
-            "Lemmy_Features_Digital Signage_01.png": "https://drive.google.com/file/d/1ia8kyNKHqiSiuBSwFXXvXdE08v3q5ao9/view?usp=sharing"
+            "Lemmy_Features_Digital Signage_01.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/meetup-2-deployments-room-config.png?v=1"
           }
         },
         {
-          "HeaderFeature": "Works with Leading Platforms",
+          "HeaderFeature": "AI-Powered Video with RightSight",
           "sorting": "2",
-          "KeyFeature": "Leverage the video conferencing platforms and features you already use. MeetUp 2 works with leading video platforms like Microsoft Teams, Zoom, and Google Meet.",
+          "KeyFeature": "Better frame and focus on the in-room action with intelligent experiences like speaker view, grid view, and camera zone.",
           "LinkImgFeature": {
-            "Lemmy_Partner_Teams_04.png": "https://drive.google.com/file/d/1p5emi6B2jWy6qqIqxBwp_RByR9zoH4l_/view?usp=drive_link"
+            "Video": "https://resource.logitech.com/w_900,ac_none,f_auto,dpr_1.0,q_auto:best/content/dam/logitech/en/video-collaboration/room-configurator/meetup-2-rightsight-grid-view-room-config.mp4",
+            "Static image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/meetup-2-rightsight-grid-view-room-config.png?v=1"
           }
         },
         {
-          "HeaderFeature": "Device Management through Sync",
+          "HeaderFeature": "AI-Powered Sound with RightSound",
           "sorting": "3",
-          "KeyFeature": "Easily manage your MeetUp 2 and other Logitech video collaboration devices with Logitech Sync. Monitor room status, deploy updates, and modify settings all from a single cloud-based app. And with Sync Insights, you can see how meeting spaces are used over time.",
+          "KeyFeature": "Reduce unwanted noise and make voices in the room crisp and clear with intelligent noise suppression and echo suppression.",
           "LinkImgFeature": {
-            "logitech-sync-hero-laptop-dashboard-only-rooms.png": "https://drive.google.com/file/d/1T2KESE0rLPD6usQcx8JrWznYa1l_vdAF/view?usp=sharing"
+            "Video": "https://resource.logitech.com/w_900,ac_none,f_auto,dpr_1.0,q_auto:best/content/dam/logitech/en/products/video-conferencing/meetup-2/meetup-2-rightsound-ai-noise-suppression.mp4",
+            "Static image": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/meetup-2/meetup-2-rightsound-ai-noise-suppression.png?v=1"
           }
         }
       ]
@@ -867,17 +869,28 @@
     "Blade_2A": {
       "Features": [
         {
-          "HeaderFeature": "Flexible deployments with the Multi Mount",
+          "HeaderFeature": "Works with Leading Platforms",
           "sorting": "1",
-          "KeyFeature": "Multi mount enables an easy and flexible installation. Attach MeetUp 2 to a display, table, or wall to get the most out of your huddle and small spaces.",
+          "KeyFeature": "Leverage the video conferencing platforms and features you already use. MeetUp 2 works with leading video platforms like Microsoft Teams, Zoom, and Google Meet.",
           "LinkImgFeature": {
-            "Lemmy_Multi Mount_Hero.png": "https://drive.google.com/file/d/1cHkV8Us7E9jQfBNSSlsTA0H_33LZwO1s/view?usp=drive_link"
+            "Lemmy_Multi Mount_Hero.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/meetup-2-platform-room-config.png?v=1"
           }
         },
         {
-          "HeaderFeature": "Clean cabling and secure wire management",
+          "HeaderFeature": "Easily Configure, Manage and  Update through Sync",
           "sorting": "2",
-          "KeyFeature": "Ensure clean, confident installs with secure cable management and minimal cabling."
+          "KeyFeature": "Easily manage MeetUp 2 with Logitech Sync. Install the Sync app on the in-room PC or manage and configure remotely through Ethernet or Wi-Fi in BYOD mode.",
+          "LinkImgFeature": {
+            "Lemmy_Multi Mount_Hero.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/meetup-2-simple-to-manage-room-config.png?v=1"
+          }
+        },
+        {
+          "HeaderFeature": "Flexible deployments with the Multi Mount",
+          "sorting": "3",
+          "KeyFeature": "Multi mount enables an easy and flexible installation. Attach MeetUp 2 to a display, table, or wall to get the most out of your huddle and small spaces.",
+          "LinkImgFeature": {
+            "Lemmy_Multi Mount_Hero.png": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/meetup-2-multi-mount-room-config.png?v=1"
+          }
         }
       ]
     },
