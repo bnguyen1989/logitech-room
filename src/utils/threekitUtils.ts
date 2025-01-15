@@ -49,3 +49,14 @@ export const getPriceTableIdBySoftwareService = (service: string) => {
 export const getDimensionTableId = () => {
   return "82709479-805e-4010-8fa7-edc52554da32";
 };
+
+export const getPreloadAssets = () => {
+  return [
+    {
+      assetId: "5f7c030f-54bf-4881-8ea8-f47642e47f60",
+    },
+    {
+      assetId: "7e16bf97-167a-4ae6-83f2-8331b138ee1e",
+    },
+  ];
+};
