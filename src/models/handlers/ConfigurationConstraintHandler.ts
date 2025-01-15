@@ -245,10 +245,6 @@ export class ConfigurationConstraintHandler extends Handler {
       this.rule_micPod_CATCoupler();
     }
 
-    this.rule_rallyBar_TapIp_bundle();
-    this.rule_rallyBarMini_TapIp_bundle();
-    this.rule_rallyBarHuddle_TapIp_bundle();
-
     // if (attrRulesArr.includes(RuleName.rallyBar_TapIp_bundle)) {
     //   this.rule_rallyBar_TapIp_bundle();
     // }
@@ -267,6 +263,10 @@ export class ConfigurationConstraintHandler extends Handler {
 
     //Rules that are not in the lists in DataTable
     this.rule_tap_tapIp();
+
+    this.rule_rallyBar_TapIp_bundle();
+    this.rule_rallyBarMini_TapIp_bundle();
+    this.rule_rallyBarHuddle_TapIp_bundle();
   }
 
   private handleRecoRules(recoRulesStr: string) {
