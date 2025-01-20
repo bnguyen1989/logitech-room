@@ -148,6 +148,9 @@ export const middleware: Middleware =
 
         updateColorForAutoChangeItems(activeStep, key)(store);
 
+        updateDisplayBasedOnRecommendation(key, activeStep)(store);
+        updateDisplayTypeByKeyPermission(key, activeStep)(store);
+
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
           activeStep
@@ -157,8 +160,6 @@ export const middleware: Middleware =
         updateNodes(store, attributeNames);
 
         updateAssetIdByKeyPermission(key)(store);
-        updateDisplayBasedOnRecommendation(key, activeStep)(store);
-        updateDisplayTypeByKeyPermission(key, activeStep)(store);
         break;
       }
 
