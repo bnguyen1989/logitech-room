@@ -7,6 +7,9 @@ import { Text } from "@react-three/drei";
 import { getWorldPositionByNode } from "../../utils/dimensionUtils";
 import { DimensionStyleI } from "../../models/dimension/type";
 import { useDeviceType } from "../../hooks/deviceType";
+import { useAppSelector } from "../../hooks/redux";
+import { getDimensionLangPage } from "../../store/slices/ui/selectors/selectoteLangPage";
+import { useCallback } from "react";
 
 interface PropsI {
   nodeA: Mesh;
@@ -18,6 +21,7 @@ export const DimensionTextBetweenNodes: React.FC<PropsI> = (props) => {
   const { nodeA, nodeB, label, style } = props;
   const { camera } = useThree();
   const { isMobile } = useDeviceType();
+  const dimensionLang = useAppSelector(getDimensionLangPage);
 
   const positionA = getWorldPositionByNode(nodeA);
   const positionB = getWorldPositionByNode(nodeB);
@@ -29,6 +33,23 @@ export const DimensionTextBetweenNodes: React.FC<PropsI> = (props) => {
 
   const styleObj = style ? (isMobile ? style.mobile : style.desktop) : {};
 
+  const getLabel = useCallback(() => {
+    let template = dimensionLang.Text.SizeTable.v1;
+    const arr = label.split(" ");
+    const everySize = arr.every((item) => item.includes(":"));
+    if (!arr.length || !everySize) return label;
+    if (arr.length > 2) {
+      template = dimensionLang.Text.SizeTable.v2;
+    }
+
+    arr.forEach((element) => {
+      const [key, value] = element.split(":");
+      template = template.replace(key, value);
+    });
+
+    return template;
+  }, [dimensionLang.Text.SizeTable.v1, dimensionLang.Text.SizeTable.v2, label]);
+
   return (
     <Text
       position={midPoint}
@@ -37,7 +58,7 @@ export const DimensionTextBetweenNodes: React.FC<PropsI> = (props) => {
       anchorY="middle"
       onUpdate={(self) => self.lookAt(camera.position)}
     >
-      <TextDimension text={label} type={"horizontal"} style={styleObj} />
+      <TextDimension text={getLabel()} type={"horizontal"} style={styleObj} />
     </Text>
   );
 };

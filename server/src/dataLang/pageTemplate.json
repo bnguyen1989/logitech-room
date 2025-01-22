@@ -1596,5 +1596,19 @@
     "es-ES": "Para todas las pantallas",
     "es-MX": "Para todas las pantallas",
     "key": "Card#Display#ForAll"
+  },
+  {
+    "en-US": "Sample configuration shown on a X ft or Y m long table",
+    "de-DE": "Beispielkonfiguration auf einem X Fuss oder Y Meter langen Tisch",
+    "es-ES": "Configuración de muestra mostrada en una mesa de X pies o Y m de largo",
+    "es-MX": "Configuración de muestra mostrada en una mesa de X pies o Y m de largo",
+    "key": "Player#Dimension#Text#SizeTable#v1"
+  },
+  {
+    "en-US": "Sample configuration shown on a X ft by Y ft or m by A m by B m long table",
+    "de-DE": "Beispielkonfiguration auf einem X Fuss mal Y Fuss oder A Meter mal B Meter langen Tisch",
+    "es-ES": "Configuración de muestra mostrada en una mesa de X pies por Y pies o A m por B m de largo",
+    "es-MX": "Configuración de muestra mostrada en una mesa de X pies por Y pies o A m por B m de largo",
+    "key": "Player#Dimension#Text#SizeTable#v2"
   }
 ]

@@ -14,6 +14,7 @@ import {
   PagesI,
   PagesIKeys,
   Platform,
+  PlayerPageI,
   RemoveModal,
   RequestConsultation,
   RoomSize,
@@ -147,6 +148,15 @@ export const getLoaderLangPage = (state: RootState) => {
 
 export const getCSVLangPage = (state: RootState) => {
   return getLangPage("CSV")(state) as Csv;
+};
+
+export const getPlayerLangPage = (state: RootState) => {
+  return getLangPage("Player")(state) as PlayerPageI;
+};
+
+export const getDimensionLangPage = (state: RootState) => {
+  const playerLang = getPlayerLangPage(state);
+  return playerLang.Dimension;
 };
 
 export const getLangStepDataByStepName =

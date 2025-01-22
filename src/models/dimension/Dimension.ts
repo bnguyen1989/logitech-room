@@ -48,6 +48,8 @@ export class Dimension {
   private getActiveRoomDimensionData(): DimensionNodeData[] {
     const roomStep = this.permissionElement.getStepByName(StepName.RoomSize);
     const [activeRoom] = roomStep.getActiveElements();
+
+    if (!activeRoom) return [];
     return [
       ...this.getDimensionDataForRoomSize(activeRoom.name),
       ...this.getDimensionDataForTableLength(activeRoom.name),
@@ -259,7 +261,7 @@ export class Dimension {
       dataCondition.data
     );
 
-    let label = `Sample configuration shown on a ${dataDistanceLength.feet} ft or ${dataDistanceLength.meter} m long table.`;
+    let label = `X:${dataDistanceLength.feet} Y:${dataDistanceLength.meter}`;
 
     const dataDistanceWidth =
       dataCondition.data[ColumnNameDimension.TABLE_W_METER];
@@ -271,7 +273,7 @@ export class Dimension {
         dataCondition.data
       );
 
-      label = `Sample configuration shown on a ${dataDistanceLength.feet} by ${dataDistanceWidth.feet} ft or ${dataDistanceLength.meter} by ${dataDistanceWidth.meter} m long table.`;
+      label = `X:${dataDistanceLength.feet} Y:${dataDistanceWidth.feet} A:${dataDistanceLength.meter} B:${dataDistanceWidth.meter}`;
     }
 
     const style = this.getStyleDimensionByType(

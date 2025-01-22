@@ -21,6 +21,7 @@ export interface PagesI {
   Loader: Loader;
   CSV: Csv;
   Card: CardPageI;
+  Player: PlayerPageI;
 }
 
 export type PagesIKeys = keyof PagesI;
@@ -518,4 +519,21 @@ export interface Actions {
   Next: string;
   Skip: string;
   LetsStarted: string;
+}
+
+export interface PlayerPageI {
+  Dimension: DimensionTextDataI;
+}
+
+export interface DimensionTextDataI {
+  Text: DimensionTextI;
+}
+
+export interface DimensionTextI {
+  SizeTable: DimensionSizeTableI;
+}
+
+export interface DimensionSizeTableI {
+  v1: string;
+  v2: string;
 }
