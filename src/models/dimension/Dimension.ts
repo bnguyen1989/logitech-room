@@ -13,12 +13,15 @@ import { CountableMountElement } from "../permission/elements/mounts/CountableMo
 import { MountElement } from "../permission/elements/mounts/MountElement";
 import { Permission } from "../permission/Permission";
 import { getRoadMapDimensionByRoom } from "./roadMapDimension";
+import { getRoadMapStyleDimensionByRoom } from "./roadMapStyleDimension";
 import {
   DataDistanceI,
   DimensionNodeData,
   DimensionNodeI,
+  DimensionStyleI,
   PositionDimensionNodeI,
   RoadMapItemDimensionDataI,
+  RoadMapStyleItemDimensionI,
 } from "./type";
 
 export class Dimension {
@@ -271,12 +274,17 @@ export class Dimension {
       label = `Sample configuration shown on a ${dataDistanceLength.feet} by ${dataDistanceWidth.feet} ft or ${dataDistanceLength.meter} by ${dataDistanceWidth.meter} m long table.`;
     }
 
+    const style = this.getStyleDimensionByType(
+      ColumnNameDimension.TABLE_L_METER
+    );
+
     return [
       {
         label: label,
         nodeAName: PlacementManager.getNameNodeTableDimension(),
         nodeBName: PlacementManager.getNameNodeTableDimension(),
         type: "text",
+        style,
       },
     ];
   }
@@ -332,5 +340,16 @@ export class Dimension {
       )
     );
     return validItem?.data;
+  }
+
+  private getStyleDimensionByType(type: string): DimensionStyleI {
+    const roadMapStyle = this.getRoadMapStyleDimensionByRoom();
+    return roadMapStyle[type] || {};
+  }
+
+  private getRoadMapStyleDimensionByRoom(): RoadMapStyleItemDimensionI {
+    const activeRoom = this.getActiveRoomName();
+    const roadMapNodes = getRoadMapStyleDimensionByRoom();
+    return roadMapNodes[activeRoom];
   }
 }

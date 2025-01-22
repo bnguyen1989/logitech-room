@@ -33,7 +33,7 @@ export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
   return (
     <>
       {dimensionNodes.map(
-        ({ nodeAName, nodeBName, label, position, type }, index) => {
+        ({ nodeAName, nodeBName, label, position, type, style }, index) => {
           const nodeA = nodeMap[nodeAName];
           const nodeB = nodeMap[nodeBName];
 
@@ -46,6 +46,7 @@ export const Dimension: React.FC<PropsI> = ({ threeNode }) => {
                 nodeA={nodeA}
                 nodeB={nodeB}
                 label={label}
+                style={style}
               />
             );
           }
