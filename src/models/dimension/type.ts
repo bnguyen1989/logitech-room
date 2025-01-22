@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import type { ArrVector3T, OrientationT } from "../../types/mathType";
 import { Condition } from "../conditions/Condition";
 
@@ -11,6 +12,7 @@ export interface DimensionNodeI {
   nodeAName: string;
   nodeBName: string;
   position?: PositionDimensionNodeI;
+  style?: DimensionStyleI;
 }
 
 export interface PositionDimensionNodeI {
@@ -21,6 +23,18 @@ export interface PositionDimensionNodeI {
 export interface DataDistanceI {
   meter: number;
   feet: number;
+}
+
+export interface RoadMapStyleDimensionI {
+  [roomSize: string]: RoadMapStyleItemDimensionI;
+}
+export interface RoadMapStyleItemDimensionI {
+  [key: string]: DimensionStyleI;
+}
+
+export interface DimensionStyleI {
+  desktop?: CSSProperties;
+  mobile?: CSSProperties;
 }
 
 export interface RoadMapDimensionI {

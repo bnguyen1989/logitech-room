@@ -13,12 +13,15 @@ import { CountableMountElement } from "../permission/elements/mounts/CountableMo
 import { MountElement } from "../permission/elements/mounts/MountElement";
 import { Permission } from "../permission/Permission";
 import { getRoadMapDimensionByRoom } from "./roadMapDimension";
+import { getRoadMapStyleDimensionByRoom } from "./roadMapStyleDimension";
 import {
   DataDistanceI,
   DimensionNodeData,
   DimensionNodeI,
+  DimensionStyleI,
   PositionDimensionNodeI,
   RoadMapItemDimensionDataI,
+  RoadMapStyleItemDimensionI,
 } from "./type";
 
 export class Dimension {
@@ -45,6 +48,8 @@ export class Dimension {
   private getActiveRoomDimensionData(): DimensionNodeData[] {
     const roomStep = this.permissionElement.getStepByName(StepName.RoomSize);
     const [activeRoom] = roomStep.getActiveElements();
+
+    if (!activeRoom) return [];
     return [
       ...this.getDimensionDataForRoomSize(activeRoom.name),
       ...this.getDimensionDataForTableLength(activeRoom.name),
@@ -256,7 +261,7 @@ export class Dimension {
       dataCondition.data
     );
 
-    let label = `Sample configuration shown on a ${dataDistanceLength.feet} ft or ${dataDistanceLength.meter} m long table.`;
+    let label = `X:${dataDistanceLength.feet} Y:${dataDistanceLength.meter}`;
 
     const dataDistanceWidth =
       dataCondition.data[ColumnNameDimension.TABLE_W_METER];
@@ -268,8 +273,12 @@ export class Dimension {
         dataCondition.data
       );
 
-      label = `Sample configuration shown on a ${dataDistanceLength.feet} by ${dataDistanceWidth.feet} ft or ${dataDistanceLength.meter} by ${dataDistanceWidth.meter} m long table.`;
+      label = `X:${dataDistanceLength.feet} Y:${dataDistanceWidth.feet} A:${dataDistanceLength.meter} B:${dataDistanceWidth.meter}`;
     }
+
+    const style = this.getStyleDimensionByType(
+      ColumnNameDimension.TABLE_L_METER
+    );
 
     return [
       {
@@ -277,6 +286,7 @@ export class Dimension {
         nodeAName: PlacementManager.getNameNodeTableDimension(),
         nodeBName: PlacementManager.getNameNodeTableDimension(),
         type: "text",
+        style,
       },
     ];
   }
@@ -332,5 +342,16 @@ export class Dimension {
       )
     );
     return validItem?.data;
+  }
+
+  private getStyleDimensionByType(type: string): DimensionStyleI {
+    const roadMapStyle = this.getRoadMapStyleDimensionByRoom();
+    return roadMapStyle[type] || {};
+  }
+
+  private getRoadMapStyleDimensionByRoom(): RoadMapStyleItemDimensionI {
+    const activeRoom = this.getActiveRoomName();
+    const roadMapNodes = getRoadMapStyleDimensionByRoom();
+    return roadMapNodes[activeRoom];
   }
 }
