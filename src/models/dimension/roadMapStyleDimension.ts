@@ -13,6 +13,7 @@ export const getRoadMapStyleDimensionByRoom = (): RoadMapStyleDimensionI => {
         },
         mobile: {
           width: "24vw",
+          height: "1vh",
         },
       },
     },
@@ -24,6 +25,7 @@ export const getRoadMapStyleDimensionByRoom = (): RoadMapStyleDimensionI => {
         },
         mobile: {
           width: "24vw",
+          height: "1vh",
         },
       },
     },
@@ -35,6 +37,7 @@ export const getRoadMapStyleDimensionByRoom = (): RoadMapStyleDimensionI => {
         },
         mobile: {
           width: "18vw",
+          height: "1vh",
         },
       },
     },
@@ -46,7 +49,7 @@ export const getRoadMapStyleDimensionByRoom = (): RoadMapStyleDimensionI => {
         },
         mobile: {
           width: "18vw",
-          height: "0vh",
+          height: "1vh",
         },
       },
     },
@@ -58,6 +61,7 @@ export const getRoadMapStyleDimensionByRoom = (): RoadMapStyleDimensionI => {
         },
         mobile: {
           width: "25vw",
+          height: "1vh",
         },
       },
     },
