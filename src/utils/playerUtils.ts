@@ -29,7 +29,7 @@ export const getDistanceDataByKeyPermission = (
     }
     case RoomSizeName.Medium: {
       if (dimension) {
-        return { minDistance: 270, maxDistance: 270 };
+        return { minDistance: 250, maxDistance: 250 };
       }
       return { minDistance: 50, maxDistance: 150 };
     }
@@ -41,7 +41,7 @@ export const getDistanceDataByKeyPermission = (
     }
     case RoomSizeName.Auditorium: {
       if (dimension) {
-        return { minDistance: 330, maxDistance: 330 };
+        return { minDistance: 300, maxDistance: 300 };
       }
       return { minDistance: 50, maxDistance: 230 };
     }
