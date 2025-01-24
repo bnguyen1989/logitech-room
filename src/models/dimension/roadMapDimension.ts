@@ -596,8 +596,8 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
             ),
           },
           micPod: {
-            nodeName: "",
-            orderMicPods: [],
+            nodeName: PlacementManager.getNameNodeForMic(),
+            orderMicPods: [[1]],
           },
         },
       },
