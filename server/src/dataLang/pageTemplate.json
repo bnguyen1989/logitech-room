@@ -616,10 +616,10 @@
     "key": "Software & Services#QuestionForm#v1#1#option_3"
   },
   {
-    "en-US": "How would you like to troubleshoot issues?",
-    "de-DE": "How would you like to troubleshoot issues?",
-    "es-ES": "How would you like to troubleshoot issues?",
-    "es-MX": "How would you like to troubleshoot issues?",
+    "en-US": "How do you manage troubleshooting?",
+    "de-DE": "How do you manage troubleshooting?",
+    "es-ES": "How do you manage troubleshooting?",
+    "es-MX": "How do you manage troubleshooting?",
     "key": "Software & Services#QuestionForm#v1#2#question"
   },
   {
@@ -637,10 +637,10 @@
     "key": "Software & Services#QuestionForm#v1#2#option_2"
   },
   {
-    "en-US": "Contact tech support when I need it",
-    "de-DE": "Contact tech support when I need it",
-    "es-ES": "Contact tech support when I need it",
-    "es-MX": "Contact tech support when I need it",
+    "en-US": "Contact tech support when needed",
+    "de-DE": "Contact tech support when needed",
+    "es-ES": "Contact tech support when needed",
+    "es-MX": "Contact tech support when needed",
     "key": "Software & Services#QuestionForm#v1#2#option_3"
   },
   {
@@ -686,10 +686,10 @@
     "key": "Software & Services#QuestionForm#v1#4#option_2"
   },
   {
-    "en-US": "What’s the support team’s level of AV/IT expertise?",
-    "de-DE": "What’s the support team’s level of AV/IT expertise?",
-    "es-ES": "What’s the support team’s level of AV/IT expertise?",
-    "es-MX": "What’s the support team’s level of AV/IT expertise?",
+    "en-US": "What’s the customer support team’s level of AV/IT expertise?",
+    "de-DE": "What’s the customer support team’s level of AV/IT expertise?",
+    "es-ES": "What’s the customer support team’s level of AV/IT expertise?",
+    "es-MX": "What’s the customer support team’s level of AV/IT expertise?",
     "key": "Software & Services#QuestionForm#v2#0#question"
   },
   {
@@ -735,7 +735,7 @@
     "key": "Software & Services#QuestionForm#v2#1#option_3"
   },
   {
-    "en-US": "How would the customer like to troubleshoot issues?",
+    "en-US": "How does the customer manage troubleshooting?",
     "de-DE": "How would the customer like to troubleshoot issues?",
     "es-ES": "How would the customer like to troubleshoot issues?",
     "es-MX": "How would the customer like to troubleshoot issues?",
@@ -1164,10 +1164,10 @@
     "key": "Order#Card#ContactLocalReseller"
   },
   {
-    "en-US": "For all warranties",
-    "de-DE": "Für alle Garantien",
-    "es-ES": "Para todas las garantías",
-    "es-MX": "Para todas las garantías",
+    "en-US": "For All Product Warranties",
+    "de-DE": "For All Product Warranties",
+    "es-ES": "For All Product Warranties",
+    "es-MX": "For All Product Warranties",
     "key": "Order#Card#ForAllWarranties"
   },
   {
