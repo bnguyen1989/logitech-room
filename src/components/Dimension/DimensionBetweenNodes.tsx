@@ -64,8 +64,18 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
 
   return (
     <>
-      <Line points={[positionA, positionB]} lineWidth={2} color="#814EFA" />
-      <Line points={getPositionHashMark(0.5)} lineWidth={1} color="#814EFA" />
+      <Line
+        points={[positionA, positionB]}
+        lineWidth={2}
+        color="#814EFA"
+        depthTest={false}
+      />
+      <Line
+        points={getPositionHashMark(0.5)}
+        lineWidth={1}
+        color="#814EFA"
+        depthTest={false}
+      />
 
       <Text
         position={midPoint}
