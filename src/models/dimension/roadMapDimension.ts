@@ -13,63 +13,6 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
     [RoomSizeName.Auditorium]: [
       {
         conditions: [
-          new Condition(CameraName.RallyPlus).addProperty(
-            ConditionPropertyName.ACTIVE,
-            true
-          ),
-          new Condition(AudioExtensionName.RallyMicPod)
-            .addProperty(ConditionPropertyName.ACTIVE, true)
-            .addProperty(ConditionPropertyName.COUNT, 4)
-            .addOperatorProperty(
-              ConditionPropertyName.COUNT,
-              OperatorName.EQUAL
-            ),
-        ],
-        data: {
-          camera: {
-            nodeName: PlacementManager.getNameNodeCommodeForCamera(
-              "RallyBar",
-              2
-            ),
-          },
-          micPod: {
-            nodeName: PlacementManager.getNameNodeForMic(),
-            orderMicPods: [[1, 4]],
-          },
-        },
-      },
-      {
-        conditions: [
-          new Condition(CameraName.RallyPlus).addProperty(
-            ConditionPropertyName.ACTIVE,
-            true
-          ),
-          new Condition(AudioExtensionName.RallyMicPod)
-            .addProperty(ConditionPropertyName.ACTIVE, true)
-            .addProperty(ConditionPropertyName.COUNT, 5)
-            .addOperatorProperty(
-              ConditionPropertyName.COUNT,
-              OperatorName.GREATER_OR_EQUAL
-            ),
-        ],
-        data: {
-          camera: {
-            nodeName: PlacementManager.getNameNodeCommodeForCamera(
-              "RallyBar",
-              2
-            ),
-          },
-          micPod: {
-            nodeName: PlacementManager.getNameNodeForMic(),
-            orderMicPods: [
-              [1, 4],
-              [2, 5],
-            ],
-          },
-        },
-      },
-      {
-        conditions: [
           new Condition(CameraName.RallyBar).addProperty(
             ConditionPropertyName.ACTIVE,
             true
@@ -235,34 +178,6 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
       },
       {
         conditions: [
-          new Condition(CameraName.RallyPlus).addProperty(
-            ConditionPropertyName.ACTIVE,
-            true
-          ),
-          new Condition(AudioExtensionName.RallyMicPod)
-            .addProperty(ConditionPropertyName.ACTIVE, true)
-            .addProperty(ConditionPropertyName.COUNT, 2),
-        ],
-        data: {
-          camera: {
-            nodeName: PlacementManager.getNameNodeCommodeForCamera(
-              "RallyBar",
-              2
-            ),
-          },
-          micPod: {
-            nodeName: PlacementManager.getNameNodeForMicDouble(),
-            orderMicPods: [[2, 1]],
-            offsetPosition: [-0.5, 0, 0],
-          },
-          sight: {
-            nodeName: PlacementManager.getNameNodeForSight(),
-            indexPositionSight: 0,
-          },
-        },
-      },
-      {
-        conditions: [
           new Condition(CameraName.RallyBar).addProperty(
             ConditionPropertyName.ACTIVE,
             true
@@ -367,34 +282,6 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
           new Condition(CameraName.LogitechSight).addProperty(
             ConditionPropertyName.ACTIVE,
             false
-          ),
-          new Condition(AudioExtensionName.RallyMicPod)
-            .addProperty(ConditionPropertyName.ACTIVE, true)
-            .addProperty(ConditionPropertyName.COUNT, 3)
-            .addOperatorProperty(
-              ConditionPropertyName.COUNT,
-              OperatorName.GREATER_OR_EQUAL
-            ),
-        ],
-        data: {
-          camera: {
-            nodeName: PlacementManager.getNameNodeCommodeForCamera(
-              "RallyBar",
-              2
-            ),
-          },
-          micPod: {
-            nodeName: PlacementManager.getNameNodeForMic(),
-            orderMicPods: [[3, 2, 1]],
-            offsetPosition: [-0.5, 0, 0],
-          },
-        },
-      },
-      {
-        conditions: [
-          new Condition(CameraName.RallyPlus).addProperty(
-            ConditionPropertyName.ACTIVE,
-            true
           ),
           new Condition(AudioExtensionName.RallyMicPod)
             .addProperty(ConditionPropertyName.ACTIVE, true)
