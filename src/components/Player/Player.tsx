@@ -9,7 +9,7 @@ import type React from "react";
 import { Helmet as Head } from "react-helmet";
 import LogitechStage from "../stages/LogitechStage.tsx";
 import { Room } from "../Assets/Room.tsx";
-import { ConfigData } from "../../utils/threekitUtils.ts";
+import { ConfigData, getPreloadAssets } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
 import { Camera } from "three";
@@ -32,6 +32,7 @@ import {
 } from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
 import { base64ToBlob } from "../../utils/browserUtils.ts";
+import { AssetsPreload } from "../Assets/AssetPreload.tsx";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -138,6 +139,7 @@ export const Player: React.FC = () => {
                 setSnapshotCameras={setSnapshotCameras}
               />
             </LogitechStage>
+            <AssetsPreload assets={getPreloadAssets()} />
             <OrbitControls
               enableDamping={true}
               enableZoom={true}

@@ -88,7 +88,13 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
   if (!keyPermissions.length) return null;
 
   return (
-    <Html distanceFactor={40} center position={getPosition()} ref={htmlRef}>
+    <Html
+      zIndexRange={[1]}
+      distanceFactor={40}
+      center
+      position={getPosition()}
+      ref={htmlRef}
+    >
       <AnnotationProduct
         dataAnnotation={dataAnnotation}
         callbackHandleInfo={callbackHandleInfo}

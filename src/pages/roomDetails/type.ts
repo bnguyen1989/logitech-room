@@ -25,6 +25,7 @@ export interface DataSectionI {
   selectValue?: string;
   labelValue?: string;
   keyPermission?: string;
+  dependenceCards?: Array<DataSectionI>;
 }
 
 export interface PriceDataI {

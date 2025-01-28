@@ -159,9 +159,14 @@ export interface SoftwareServices {
   name: string;
   title: string;
   titleAfterForm: string;
-  helpButton: string;
+  buttons: SoftwareServicesButtons;
   Cards: Cards4;
   QuestionForm: QuestionForm;
+}
+
+export interface SoftwareServicesButtons {
+  needHelp: string;
+  alreadyKnow: string;
 }
 
 export interface Cards4 {
@@ -171,9 +176,15 @@ export interface Cards4 {
   "Support Service": SupportService;
 }
 
+export interface SelectSoftwareServiceCard {
+  defaultLabel: string;
+  valuesTemplate: string;
+}
+
 export interface EssentialServicePlan {
   title: string;
   list: List2;
+  select: SelectSoftwareServiceCard;
 }
 
 export interface List2 {
@@ -192,6 +203,7 @@ export interface LogitechSync {
   title: string;
   list: List3;
   description: string;
+  select?: SelectSoftwareServiceCard;
 }
 
 export interface List3 {
@@ -209,6 +221,7 @@ export interface Values2 {
 export interface LogitechExtendedWarranty {
   title: string;
   description: string;
+  select?: SelectSoftwareServiceCard;
 }
 
 export interface SupportService {
@@ -216,6 +229,7 @@ export interface SupportService {
   list: List4;
   valuesTemplate: string;
   description: string;
+  select?: SelectSoftwareServiceCard;
 }
 
 export interface List4 {

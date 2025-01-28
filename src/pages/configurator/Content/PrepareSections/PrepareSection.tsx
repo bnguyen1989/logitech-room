@@ -77,7 +77,7 @@ export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
           onClick={() => {
             console.log("test handleBottonAnchor");
 
-            actionAnchor.handleBottonAnchor();
+            actionAnchor.handleBottomAnchor();
           }}
         />
       );
@@ -91,7 +91,7 @@ export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
           onClick={() => {
             console.log("test handleBottonAnchor");
 
-            actionAnchor.handleBottonAnchor();
+            actionAnchor.handleBottomAnchor();
           }}
         />
       );
@@ -104,13 +104,13 @@ export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
           onSelectedAnalytics={() => {
             console.log("test handleBottonAnchor");
 
-            actionAnchor.handleBottonAnchor();
+            actionAnchor.handleBottomAnchor();
             onSelectedAnalytics()
           }}
           // onClick={() => {
           //   console.log("test handleBottonAnchor");
 
-          //   actionAnchor.handleBottonAnchor();
+          //   actionAnchor.handleBottomAnchor();
           //   onSelectedAnalytics()
           // }}
         />

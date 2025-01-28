@@ -35,13 +35,33 @@ export class AddActiveElementHandler extends Handler {
       const simpleElements = group.getSimpleElements();
       return simpleElements.some((elem) => elem.name === this.element.name);
     });
-    if (group) {
-      const simpleElements = group
+    if (group instanceof GroupElement) {
+      let elementsNeedRemove = group
         .getSimpleElements()
         .filter((elem) => elem.getVisible())
         .filter((elem) => elem.name !== this.element.name);
+
+      const groupIncludeElement = group.getGroupBySimpleElementName(
+        this.element.name
+      );
+
+      if (groupIncludeElement && !groupIncludeElement.compare(group)) {
+        const simpleElements = groupIncludeElement
+          .getSimpleElements()
+          .filter((elem) => elem.getVisible())
+          .filter((elem) => elem.name !== this.element.name);
+
+        if (groupIncludeElement.isRequiredOne()) {
+          elementsNeedRemove = simpleElements;
+        } else {
+          elementsNeedRemove = elementsNeedRemove.filter((elem) =>
+            !simpleElements.some((simpleElem) => simpleElem.name === elem.name)
+          );
+        }
+      }
+
       const activeElements = step.getActiveElements();
-      const activeElementsFromGroup = simpleElements.filter((elem) =>
+      const activeElementsFromGroup = elementsNeedRemove.filter((elem) =>
         activeElements.some((activeElem) => activeElem.name === elem.name)
       );
       activeElementsFromGroup.forEach((element) => {
