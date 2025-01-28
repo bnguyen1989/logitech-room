@@ -97,12 +97,36 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
       SoftwareServicesName.EssentialServicePlan,
     ];
     const visibleKeys: SoftwareServicesName[] = [];
-    dataKeys.forEach((key) => {
-      const isExist = getResultExpression(data, expressionArray[key]);
-      if (isExist) {
-        visibleKeys.push(key);
-      }
-    });
+    const weightByQuestionForm: Record<string, number> = dataKeys.reduce(
+      (acc, key) => {
+        const weightByQuestionForm = getResultWeightExpression(
+          data,
+          expressionArray[key]
+        );
+
+        if (weightByQuestionForm === 0) {
+          return acc;
+        }
+        return {
+          ...acc,
+          [key]: getResultWeightExpression(data, expressionArray[key]),
+        };
+      },
+      {}
+    );
+
+    const keys = Object.keys(weightByQuestionForm) as SoftwareServicesName[];
+    if (keys.length === 1) {
+      visibleKeys.push(keys[0]);
+    }
+
+    if (keys.length > 1) {
+      const maxWeight = Math.max(...Object.values(weightByQuestionForm));
+      const maxWeightKeys = keys.filter(
+        (key) => weightByQuestionForm[key] === maxWeight
+      );
+      visibleKeys.push(...maxWeightKeys);
+    }
 
     visibleKeys.forEach((key) => {
       const index = dataKeys.indexOf(key);
@@ -113,18 +137,21 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
     setKeysNotVisibleCards(dataKeys);
   };
 
-  const getResultExpression = (
+  const getResultWeightExpression = (
     data: Array<QuestionFormI>,
     expression: Array<Array<ExpressionI>>
   ) => {
-    const result = expression.map((item) => {
-      return item.some((expressionItem) => {
+    return expression.reduce((acc, current) => {
+      const isExist = current.some((expressionItem) => {
         const { questionIndex, optionIndex } = expressionItem;
         const question = data[questionIndex - 1];
         return question.options[optionIndex - 1].value;
       });
-    });
-    return result.every((item) => item);
+
+      if (isExist) acc += 1;
+
+      return acc;
+    }, 0);
   };
 
   const getCardComponent = (card: CardI, index: number) => {
