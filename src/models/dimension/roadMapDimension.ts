@@ -424,6 +424,32 @@ export const getRoadMapDimensionByRoom = (): RoadMapDimensionI => {
         conditions: [
           new Condition(CameraName.LogitechSight).addProperty(
             ConditionPropertyName.ACTIVE,
+            true
+          ),
+          new Condition(AudioExtensionName.RallyMicPod)
+            .addProperty(ConditionPropertyName.ACTIVE, false)
+        ],
+        data: {
+          camera: {
+            nodeName: PlacementManager.getNameNodeCommodeForCamera(
+              "RallyBar",
+              2
+            ),
+          },
+          micPod: {
+            nodeName: PlacementManager.getNameNodeForMicSingle(),
+            orderMicPods: [[1]],
+          },
+          sight: {
+            nodeName: PlacementManager.getNameNodeForSight(),
+            indexPositionSight: 0,
+          },
+        },
+      },
+      {
+        conditions: [
+          new Condition(CameraName.LogitechSight).addProperty(
+            ConditionPropertyName.ACTIVE,
             false
           ),
           new Condition(AudioExtensionName.RallyMicPod)

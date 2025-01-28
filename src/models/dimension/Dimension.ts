@@ -149,9 +149,13 @@ export class Dimension {
         nodes.push(...newNodeRoadMap);
       }
 
-      if (sightElement && roadMapNodes.sight && nodes[0]) {
+      if (sightElement && roadMapNodes.sight) {
         const { indexPositionSight, nodeName } = roadMapNodes.sight;
-        nodes[0].splice(indexPositionSight, 0, nodeName);
+        if (nodes[0]) {
+          nodes[0].splice(indexPositionSight, 0, nodeName);
+        } else {
+          nodes.push([nodeName]);
+        }
       }
     }
 
@@ -161,11 +165,36 @@ export class Dimension {
       ...this.getCameraToMicPodNodes(dataCondition, nodes, {
         orientation,
       }),
+      ...this.getTableEndToMicPodNodes(dataCondition, nodes, {
+        orientation,
+      }),
       ...this.getMicPodToMicPodNodes(dataCondition, nodes, {
         orientation,
         offsetPosition: roadMapNodes?.micPod.offsetPosition,
       }),
     ];
+  }
+
+  private getTableEndToMicPodNodes(
+    dataCondition: DimensionDataI,
+    nodeNames: string[][],
+    position?: PositionDimensionNodeI
+  ) {
+    if (!dataCondition.data[ColumnNameDimension.EXCEPTION_METER]) return [];
+
+    const distance = this.getDataDistance(
+      ColumnNameDimension.EXCEPTION_METER,
+      dataCondition.data
+    );
+
+    return nodeNames.map((nodes) => {
+      const lastNode = nodes[nodes.length - 1];
+      return this.getDimensionNodeDataByData(distance, {
+        nodeAName: PlacementManager.getNameNodeTableEndDimension(),
+        nodeBName: lastNode,
+        position,
+      });
+    });
   }
 
   private getCameraToMicPodNodes(
@@ -253,23 +282,24 @@ export class Dimension {
     keyPermission: string
   ): DimensionNodeData[] {
     const dataCondition = this.getConditionDataByRoomSize(keyPermission);
-    if (!dataCondition) return [];
-    if (!dataCondition.data[ColumnNameDimension.TABLE_L_METER]) return [];
 
-    const dataDistanceLength = this.getDataDistance(
-      ColumnNameDimension.TABLE_L_METER,
+    if (!dataCondition) return [];
+    if (!dataCondition.data[ColumnNameDimension.TABLE_W_METER]) return [];
+
+    const dataDistanceWidth = this.getDataDistance(
+      ColumnNameDimension.TABLE_W_METER,
       dataCondition.data
     );
 
-    let label = `X:${dataDistanceLength.feet} Y:${dataDistanceLength.meter}`;
+    let label = `X:${dataDistanceWidth.feet} Y:${dataDistanceWidth.meter}`;
 
-    const dataDistanceWidth =
-      dataCondition.data[ColumnNameDimension.TABLE_W_METER];
-    const isExistWidth = !!dataDistanceWidth;
+    const dataDistanceLength =
+      dataCondition.data[ColumnNameDimension.TABLE_L_METER];
+    const isExistLength = !!dataDistanceLength;
 
-    if (isExistWidth) {
-      const dataDistanceWidth = this.getDataDistance(
-        ColumnNameDimension.TABLE_W_METER,
+    if (isExistLength) {
+      const dataDistanceLength = this.getDataDistance(
+        ColumnNameDimension.TABLE_L_METER,
         dataCondition.data
       );
 
