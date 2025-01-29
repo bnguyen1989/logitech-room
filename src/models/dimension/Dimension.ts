@@ -168,6 +168,9 @@ export class Dimension {
       ...this.getTableEndToMicPodNodes(dataCondition, nodes, {
         orientation,
       }),
+      ...this.getCameraToTableEnd(dataCondition, nodes, {
+        orientation,
+      }),
       ...this.getMicPodToMicPodNodes(dataCondition, nodes, {
         orientation,
         offsetPosition: roadMapNodes?.micPod.offsetPosition,
@@ -195,6 +198,35 @@ export class Dimension {
         position,
       });
     });
+  }
+
+  private getCameraToTableEnd(
+    dataCondition: DimensionDataI,
+    nodeNames: string[][],
+    position?: PositionDimensionNodeI
+  ) {
+    if (
+      nodeNames.length ||
+      !dataCondition.data[ColumnNameDimension.EXCEPTION_METER]
+    )
+      return [];
+
+    console.log("nodeNames1212", nodeNames);
+
+    const distance = this.getDataDistance(
+      ColumnNameDimension.EXCEPTION_METER,
+      dataCondition.data
+    );
+
+    console.log("nodeNames1212", distance);
+
+    return [
+      this.getDimensionNodeDataByData(distance, {
+        nodeAName: PlacementManager.getNameNodeCommodeForCamera("RallyBar", 2),
+        nodeBName: PlacementManager.getNameNodeTableEndDimension(),
+        position,
+      }),
+    ];
   }
 
   private getCameraToMicPodNodes(
@@ -284,26 +316,31 @@ export class Dimension {
     const dataCondition = this.getConditionDataByRoomSize(keyPermission);
 
     if (!dataCondition) return [];
-    if (!dataCondition.data[ColumnNameDimension.TABLE_W_METER]) return [];
 
-    const dataDistanceWidth = this.getDataDistance(
-      ColumnNameDimension.TABLE_W_METER,
-      dataCondition.data
-    );
+    const hasWidth = !!dataCondition.data[ColumnNameDimension.TABLE_W_METER];
+    const hasLength = !!dataCondition.data[ColumnNameDimension.TABLE_L_METER];
 
-    let label = `X:${dataDistanceWidth.feet} Y:${dataDistanceWidth.meter}`;
+    if (!hasWidth && !hasLength) return [];
 
-    const dataDistanceLength =
-      dataCondition.data[ColumnNameDimension.TABLE_L_METER];
-    const isExistLength = !!dataDistanceLength;
+    let label = "";
 
-    if (isExistLength) {
+    if (hasWidth && hasLength) {
+      const dataDistanceWidth = this.getDataDistance(
+        ColumnNameDimension.TABLE_W_METER,
+        dataCondition.data
+      );
       const dataDistanceLength = this.getDataDistance(
         ColumnNameDimension.TABLE_L_METER,
         dataCondition.data
       );
-
       label = `X:${dataDistanceLength.feet} Y:${dataDistanceWidth.feet} A:${dataDistanceLength.meter} B:${dataDistanceWidth.meter}`;
+    } else {
+      const key = hasWidth
+        ? ColumnNameDimension.TABLE_W_METER
+        : ColumnNameDimension.TABLE_L_METER;
+
+      const dataDistance = this.getDataDistance(key, dataCondition.data);
+      label = `X:${dataDistance.feet} Y:${dataDistance.meter}`;
     }
 
     const style = this.getStyleDimensionByType(
