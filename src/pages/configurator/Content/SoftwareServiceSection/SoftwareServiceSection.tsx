@@ -90,12 +90,13 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
   const submitFormData = (data: Array<QuestionFormI>) => {
     const expressionArray = getExpressionArrayForQuestionForm();
     questionForm.setStatusForm(true);
-    const dataKeys = [
-      SoftwareServicesName.LogitechSync,
-      SoftwareServicesName.SupportService,
-      SoftwareServicesName.ExtendedWarranty,
-      SoftwareServicesName.EssentialServicePlan,
-    ];
+    const keysPriority = {
+      [SoftwareServicesName.LogitechSync]: 3,
+      [SoftwareServicesName.SupportService]: 1,
+      [SoftwareServicesName.ExtendedWarranty]: 3,
+      [SoftwareServicesName.EssentialServicePlan]: 2,
+    };
+    const dataKeys = Object.keys(keysPriority) as SoftwareServicesName[];
     const visibleKeys: SoftwareServicesName[] = [];
     const weightByQuestionForm: Record<string, number> = dataKeys.reduce(
       (acc, key) => {
@@ -125,7 +126,12 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
       const maxWeightKeys = keys.filter(
         (key) => weightByQuestionForm[key] === maxWeight
       );
-      visibleKeys.push(...maxWeightKeys);
+
+      const maxWeightKeysPriority = maxWeightKeys.reduce((acc, key) => {
+        return keysPriority[key] < keysPriority[acc] ? key : acc;
+      }, maxWeightKeys[0]);
+
+      visibleKeys.push(maxWeightKeysPriority);
     }
 
     visibleKeys.forEach((key) => {
