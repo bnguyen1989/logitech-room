@@ -295,6 +295,7 @@ export class Dimension {
         {
           nodeAName: PlacementManager.getNameNodeRoomWidth(1),
           nodeBName: PlacementManager.getNameNodeRoomWidth(2),
+          variant: "room",
         }
       ),
       this.getDimensionNodeDataByData(
@@ -305,6 +306,7 @@ export class Dimension {
         {
           nodeAName: PlacementManager.getNameNodeRoomLength(1),
           nodeBName: PlacementManager.getNameNodeRoomLength(2),
+          variant: "room",
         }
       ),
     ];
@@ -375,6 +377,7 @@ export class Dimension {
       nodeAName: dataNode.nodeAName,
       nodeBName: dataNode.nodeBName,
       position: dataNode.position,
+      variant: dataNode.variant,
     };
   }
 

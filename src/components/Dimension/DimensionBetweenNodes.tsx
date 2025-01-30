@@ -5,17 +5,21 @@ import { LabelDimension } from "./HtmlContentDimension/LabelDimension/LabelDimen
 import type { ArrVector3T, OrientationT } from "../../types/mathType";
 import { VectorMath } from "../../models/math/VectorMath/VectorMath";
 import { getWorldPositionByNode } from "../../utils/dimensionUtils";
-import { PositionDimensionNodeI } from "../../models/dimension/type";
+import {
+  PositionDimensionNodeI,
+  VariantDimensionNodeType,
+} from "../../models/dimension/type";
 
 interface PropsI {
   nodeA: Mesh;
   nodeB: Mesh;
   label: string;
   position?: PositionDimensionNodeI;
+  variant?: VariantDimensionNodeType;
 }
 
 const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
-  const { nodeA, nodeB, label, position } = props;
+  const { nodeA, nodeB, label, position, variant } = props;
   const { camera } = useThree();
 
   const getWorldPosition = (node: Mesh) => {
@@ -44,21 +48,37 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
     [...positionB]
   );
 
-  const getPositionHashMark = (length: number) => {
+  const getPositionHashMark = (length: number, positionFactor: number) => {
     const vectorMath = new VectorMath("XZ", 1);
     const perpendicularPoints = vectorMath.getPerpendicularPoints(
       [...positionA],
       [...positionB],
       length
     );
-    const distance = vectorMath.getDistance([...positionA], [...positionB]) / 2;
+    const totalDistance = vectorMath.getDistance(
+      [...positionA],
+      [...positionB]
+    );
+    const targetDistance = totalDistance * positionFactor;
     const direction = vectorMath.getDirection([...positionA], [...positionB]);
     return [
-      vectorMath.movePoint([...perpendicularPoints[0]], direction, distance),
-      vectorMath.movePoint([...perpendicularPoints[1]], direction, distance),
+      vectorMath.movePoint(
+        [...perpendicularPoints[0]],
+        direction,
+        targetDistance
+      ),
+      vectorMath.movePoint(
+        [...perpendicularPoints[1]],
+        direction,
+        targetDistance
+      ),
     ];
   };
 
+  const listPositionHashMark =
+    variant === "room"
+      ? [getPositionHashMark(0.5, 0.5)]
+      : [getPositionHashMark(0.7, 0), getPositionHashMark(0.7, 1)];
   const typeLabel: OrientationT =
     position?.orientation ?? isHorizontalDirection ? "horizontal" : "vertical";
 
@@ -70,12 +90,15 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
         color="#814EFA"
         depthTest={false}
       />
-      <Line
-        points={getPositionHashMark(0.5)}
-        lineWidth={1}
-        color="#814EFA"
-        depthTest={false}
-      />
+      {listPositionHashMark.map((points, index) => (
+        <Line
+          key={index}
+          points={points}
+          lineWidth={1.5}
+          color="#814EFA"
+          depthTest={false}
+        />
+      ))}
 
       <Text
         position={midPoint}
@@ -85,7 +108,11 @@ const DimensionBetweenNodes: React.FC<PropsI> = (props) => {
         anchorY="middle"
         onUpdate={(self) => self.lookAt(camera.position)}
       >
-        <LabelDimension text={label} type={typeLabel} />
+        <LabelDimension
+          text={label}
+          type={typeLabel}
+          offset={variant === "room"}
+        />
       </Text>
     </>
   );
