@@ -3,6 +3,7 @@ import type { ArrVector3T, OrientationT } from "../../types/mathType";
 import { Condition } from "../conditions/Condition";
 
 type DimensionNodeDataType = "dimension" | "text";
+export type VariantDimensionNodeType = "product" | "room";
 export interface DimensionNodeData extends DimensionNodeI {
   label: string;
   type?: DimensionNodeDataType;
@@ -13,6 +14,7 @@ export interface DimensionNodeI {
   nodeBName: string;
   position?: PositionDimensionNodeI;
   style?: DimensionStyleI;
+  variant?: VariantDimensionNodeType;
 }
 
 export interface PositionDimensionNodeI {
