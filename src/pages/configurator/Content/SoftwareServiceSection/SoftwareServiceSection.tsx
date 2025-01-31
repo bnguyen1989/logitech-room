@@ -110,7 +110,7 @@ export const SoftwareServiceSection: React.FC<SoftwareServiceSectionIn> = ({
         }
         return {
           ...acc,
-          [key]: getResultWeightExpression(data, expressionArray[key]),
+          [key]: weightByQuestionForm,
         };
       },
       {}
