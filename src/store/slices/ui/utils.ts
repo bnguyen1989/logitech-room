@@ -231,12 +231,10 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
 
 export const getExpressionArrayForQuestionForm = () => {
   const expressionArraySelect = [
-    [
-      { questionIndex: 1, optionIndex: 1 },
-      { questionIndex: 2, optionIndex: 1 },
-      { questionIndex: 3, optionIndex: 1 },
-      { questionIndex: 4, optionIndex: 1 },
-    ],
+    [{ questionIndex: 1, optionIndex: 1 }],
+    [{ questionIndex: 2, optionIndex: 1 }],
+    [{ questionIndex: 3, optionIndex: 1 }],
+    [{ questionIndex: 4, optionIndex: 1 }],
   ];
 
   const baseExpressionArray = [
