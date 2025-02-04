@@ -9,9 +9,9 @@ import { PlacementManager } from "../models/configurator/PlacementManager";
 import { AttributeMountElement } from "../models/permission/elements/mounts/AttributeMountElement";
 import { RuleManagerMount } from "../models/configurator/RuleManagerMount";
 import { RuleBuilder } from "../models/configurator/RuleBuilder";
-import { Condition } from "../models/permission/conditions/Condition";
-import { ConditionPropertyName } from "../models/permission/conditions/type";
-import { ConditionChangeBuilder } from "../models/permission/conditions/ConditionChangeBuilder";
+import { Condition } from "../models/conditions/Condition";
+import { ConditionPropertyName } from "../models/conditions/type";
+import { ConditionChangeBuilder } from "../models/conditions/ConditionChangeBuilder";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -288,12 +288,11 @@ export function createStepConferenceCamera() {
           new AttributeMountElement(
             CameraName.RallyMountingKit,
             PlacementManager.getNameNodeCameraRalyPlus()
-          )
-            .setAttributes({
-              Position: false,
-              Alternative_rally_plus: true,
-              display: false,
-            })
+          ).setAttributes({
+            Position: false,
+            Alternative_rally_plus: true,
+            display: false,
+          })
         )
         .addConditionAttributesMount({
           display: {
@@ -1544,13 +1543,22 @@ export function createStepVideoAccessories() {
 export function createStepSoftwareServices() {
   const stepSoftwareServices = new Step(StepName.SoftwareServices);
   const group = new GroupElement()
-    .addElement(new ItemElement(SoftwareServicesName.LogitechSync))
     .addElement(
       new ItemElement(SoftwareServicesName.SupportService).setRecommended(true)
     )
-    .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty))
     .addElement(new ItemElement(SoftwareServicesName.EssentialServicePlan));
+
+  const groupBasic = new GroupElement()
+    .addElement(
+      new ItemElement(SoftwareServicesName.LogitechSync).setAccessoryItems([
+        SoftwareServicesName.ExtendedWarranty,
+      ])
+    )
+    .addElement(new ItemElement(SoftwareServicesName.ExtendedWarranty));
+
+  group.addElement(groupBasic);
   group.setRequiredOne(true);
+
   stepSoftwareServices.allElements = [group];
   return stepSoftwareServices;
 }

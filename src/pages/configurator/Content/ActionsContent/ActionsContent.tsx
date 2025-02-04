@@ -18,6 +18,7 @@ import {
 import { DirectionStep, StepName } from "../../../../utils/baseUtils";
 import { getNavigationLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 import { getDataCamera } from "../../../../store/slices/configurator/selectors/selectors";
+import { useQuestionForm } from "../../../../hooks/questionForm";
 
 declare const app: Application;
 
@@ -27,6 +28,7 @@ export const ActionsContent = () => {
   const { prevStep, nextStep } = useAppSelector(getNavigationStepData);
   const isCanChangeStep = useAppSelector(getIsCanChangeStep);
   const dataCamera = useAppSelector(getDataCamera);
+  const questionForm = useQuestionForm();
 
   const langPage = useAppSelector(getNavigationLangPage);
 
@@ -62,6 +64,11 @@ export const ActionsContent = () => {
 
     if (!prevStep) {
       navigate("/", { replace: true });
+      return;
+    }
+
+    if (questionForm.data.isSubmit) {
+      questionForm.setStatusForm(false);
       return;
     }
 

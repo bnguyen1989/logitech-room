@@ -39,7 +39,6 @@ import {
   getSKUProductByExtendedWarranty,
   getSKUSelectServiceByCamera,
 } from "../../../../utils/productUtils";
-import { capitalizeEachWord } from "../../../../utils/strUtils";
 
 export const getPropertyColorCardByKeyPermissionForOrder =
   (selectData: any, keyProduct: string) => (state: RootState) => {
@@ -198,7 +197,7 @@ const getCardData = (state: RootState): CardDataI[] => {
       return {
         metadata: {
           data: JSON.stringify(copyCard),
-          title: capitalizeEachWord(title),
+          title: title,
           description: prepareCardDescription ?? langProduct?.ShortDescription,
           sku: sku,
           color: colorCard,

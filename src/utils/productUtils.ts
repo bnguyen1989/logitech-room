@@ -12,7 +12,9 @@ export const getSKUProductByExtendedWarranty = (
 ) => {
   const number = year?.split(" ");
   if (!number && number[0]) return null;
-  const sku = dataExtendedWarranty[number[0]][productName];
+  const dataByYear = dataExtendedWarranty[number[0]];
+  if (!dataByYear) return null;
+  const sku = dataByYear[productName];
   if (!sku) return null;
   return sku;
 };
@@ -129,7 +131,9 @@ export const getSKUSelectServiceByCamera = (
     },
   };
 
-  const sku = data[number[0]][cameraName];
+  const dataByYer = data[number[0]];
+  if (!dataByYer) return null;
+  const sku = dataByYer[cameraName];
   if (!sku) return null;
   return sku;
 };
@@ -197,4 +201,23 @@ const productUrlData: Record<string, string> = {
     "https://www.logitech.com/products/video-conferencing/room-solutions/rallybar-tapip.html",
   [MeetingControllerName.RallyBarMiniTapIP]:
     "https://www.logitech.com/products/video-conferencing/room-solutions/rallybarmini-tapip.html",
+};
+
+export const getFormatName = (templateValue: string) => (name: string) => {
+  
+  const arr = name.split(" ");
+  const number = parseInt(arr[0]);
+  if (isNaN(number)) {
+    return name;
+  }
+
+  const arrLang = templateValue.split(",");
+  const nameFormat = arrLang[number - 1]?.trim();
+  if (!nameFormat) {
+    const numText = arrLang.find((item) => item.includes(number.toString()));
+    if(numText) return numText.trim();
+
+    return name;
+  }
+  return nameFormat;
 };

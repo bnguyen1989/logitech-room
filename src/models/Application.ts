@@ -25,6 +25,7 @@ export class Application {
   public eventEmitter: EventEmitter = new EventEmitter();
   public dataTableLevel1: DataTable = new DataTable([]);
   public dataTableLevel2: DataTable = new DataTable([]);
+  public dimensionDataTable: DataTable = new DataTable([]);
 
   public resetApplication(): void {
     const language = this.currentConfigurator.language;
@@ -32,6 +33,7 @@ export class Application {
     this.currentConfigurator.language = language;
     this.dataTableLevel1 = new DataTable([]);
     this.dataTableLevel2 = new DataTable([]);
+    this.dimensionDataTable = new DataTable([]);
   }
 
   public get currentConfigurator(): Configurator {

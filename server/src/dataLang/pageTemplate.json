@@ -396,7 +396,14 @@
     "de-DE": "Benötigen Sie Hilfe bei der Auswahl?",
     "es-ES": "¿Necesita ayuda para elegir?",
     "es-MX": "¿Necesitas ayuda para elegir?",
-    "key": "Software & Services#helpButton"
+    "key": "Software & Services#buttons#needHelp"
+  },
+  {
+    "en-US": "I already know what I need",
+    "de-DE": "I already know what I need",
+    "es-ES": "I already know what I need",
+    "es-MX": "I already know what I need",
+    "key": "Software & Services#buttons#alreadyKnow"
   },
   {
     "en-US": "ESSENTIAL SERVICE PLAN",
@@ -432,13 +439,6 @@
     "es-ES": "Datos de reserva y uso de salas",
     "es-MX": "Información sobre reservaciones y uso de las salas",
     "key": "Software & Services#Cards#Essential Service Plan#list#values#2"
-  },
-  {
-    "en-US": "Coming soon!",
-    "de-DE": "Demnächst erhältlich",
-    "es-ES": "¡Próximamente!",
-    "es-MX": "¡Próximamente!",
-    "key": "Software & Services#Cards#Essential Service Plan#list#values#3"
   },
   {
     "en-US": "BASIC SERVICES",
@@ -504,6 +504,20 @@
     "key": "Software & Services#Cards#Logitech Extended Warranty#description"
   },
   {
+    "en-US": "Add additional warranty",
+    "de-DE": "Add additional warranty",
+    "es-ES": "Add additional warranty",
+    "es-MX": "Add additional warranty",
+    "key": "Software & Services#Cards#Logitech Extended Warranty#select#defaultLabel"
+  },
+  {
+    "en-US": "1 yr extended warranty, 3 yr extended warranty",
+    "de-DE": "1 yr extended warranty, 3 yr extended warranty",
+    "es-ES": "1 yr extended warranty, 3 yr extended warranty",
+    "es-MX": "1 yr extended warranty, 3 yr extended warranty",
+    "key": "Software & Services#Cards#Logitech Extended Warranty#select#valuesTemplate"
+  },
+  {
     "en-US": "SELECT SERVICE PLAN",
     "de-DE": "SERVICE-PLAN WÄHLEN",
     "es-ES": "PLAN DE SERVICIO SELECT",
@@ -553,249 +567,242 @@
     "key": "Software & Services#Cards#Support Service#description"
   },
   {
-    "en-US": "What are your hours of support?",
-    "de-DE": "Wie sind Ihre Geschäftszeiten für den Support?",
-    "es-ES": "¿Cuál es el horario de asistencia?",
-    "es-MX": "¿Cuál es tu horario de asistencia?",
+    "en-US": "What’s your support team’s level of AV/IT expertise?",
+    "de-DE": "What’s your support team’s level of AV/IT expertise?",
+    "es-ES": "What’s your support team’s level of AV/IT expertise?",
+    "es-MX": "What’s your support team’s level of AV/IT expertise?",
     "key": "Software & Services#QuestionForm#v1#0#question"
   },
   {
-    "en-US": "Business Hours",
-    "de-DE": "Geschäftszeiten",
-    "es-ES": "Horario laboral",
-    "es-MX": "Horario comercial",
+    "en-US": "No expertise on staff",
+    "de-DE": "No expertise on staff",
+    "es-ES": "No expertise on staff",
+    "es-MX": "No expertise on staff",
     "key": "Software & Services#QuestionForm#v1#0#option_1"
   },
   {
-    "en-US": "Basic, Extended Warranty",
-    "de-DE": "Standard, Garantieverlängerung",
-    "es-ES": "Básicos, garantía ampliada",
-    "es-MX": "Garantía básica, ampliada",
-    "key": "unknown#o4"
-  },
-  {
-    "en-US": "24/7",
-    "de-DE": "24/7",
-    "es-ES": "24/7",
-    "es-MX": "24/7",
+    "en-US": "Qualified internal or partner team",
+    "de-DE": "Qualified internal or partner team",
+    "es-ES": "Qualified internal or partner team",
+    "es-MX": "Qualified internal or partner team",
     "key": "Software & Services#QuestionForm#v1#0#option_2"
   },
   {
-    "en-US": "Select",
-    "de-DE": "Auswahl",
-    "es-ES": "Select",
-    "es-MX": "Seleccionar",
-    "key": "unknown#o5"
-  },
-  {
-    "en-US": "What’s your repair time for meeting rooms?",
-    "de-DE": "Wie lange brauchen Sie für die Reparatur von Konferenzräumen?",
-    "es-ES": "¿Cuál es el tiempo de reparación de las salas de reuniones?",
-    "es-MX": "¿Cuál es tu tiempo de reparación de las salas de reuniones?",
+    "en-US": "What additional resources are needed for ongoing operations?",
+    "de-DE": "What additional resources are needed for ongoing operations?",
+    "es-ES": "What additional resources are needed for ongoing operations?",
+    "es-MX": "What additional resources are needed for ongoing operations?",
     "key": "Software & Services#QuestionForm#v1#1#question"
   },
   {
-    "en-US": "Within 1 week",
-    "de-DE": "Innerhalb 1 Woche",
-    "es-ES": "En 1 semana",
-    "es-MX": "En el transcurso de 1 semana",
+    "en-US": "Ongoing service management",
+    "de-DE": "Ongoing service management",
+    "es-ES": "Ongoing service management",
+    "es-MX": "Ongoing service management",
     "key": "Software & Services#QuestionForm#v1#1#option_1"
   },
   {
-    "en-US": "Basic, Extended Warranty",
-    "de-DE": "Standard, Garantieverlängerung",
-    "es-ES": "Básicos, garantía ampliada",
-    "es-MX": "Garantía básica, ampliada",
-    "key": "unknown#o6"
-  },
-  {
-    "en-US": "Within 1 hour",
-    "de-DE": "Innerhalb 1 Stunde",
-    "es-ES": "En 1 hora",
-    "es-MX": "En el transcurso de 1 hora",
+    "en-US": "Advanced, proactive software tools",
+    "de-DE": "Advanced, proactive software tools",
+    "es-ES": "Advanced, proactive software tools",
+    "es-MX": "Advanced, proactive software tools",
     "key": "Software & Services#QuestionForm#v1#1#option_2"
   },
   {
-    "en-US": "Select",
-    "de-DE": "Auswahl",
-    "es-ES": "Select",
-    "es-MX": "Seleccionar",
-    "key": "unknown#o7"
+    "en-US": "Tech support when I need it",
+    "de-DE": "Tech support when I need it",
+    "es-ES": "Tech support when I need it",
+    "es-MX": "Tech support when I need it",
+    "key": "Software & Services#QuestionForm#v1#1#option_3"
   },
   {
-    "en-US": "What’s the typical lifecycle for meeting room hardware?",
-    "de-DE": "Wie sieht der typische Lebenszyklus von Hardware für Konferenzräume aus?",
-    "es-ES": "¿Cuál es el ciclo de vida habitual del hardware de las salas de reuniones?",
-    "es-MX": "¿Cuál es el ciclo de vida habitual del hardware en las salas de reuniones?",
+    "en-US": "How do you manage troubleshooting?",
+    "de-DE": "How do you manage troubleshooting?",
+    "es-ES": "How do you manage troubleshooting?",
+    "es-MX": "How do you manage troubleshooting?",
     "key": "Software & Services#QuestionForm#v1#2#question"
   },
   {
-    "en-US": "Less than 2 years",
-    "de-DE": "Weniger als 2 Jahre",
-    "es-ES": "Menos de 2 años",
-    "es-MX": "Menos de 2 años",
+    "en-US": "Trust a separate team to quickly resolve",
+    "de-DE": "Trust a separate team to quickly resolve",
+    "es-ES": "Trust a separate team to quickly resolve",
+    "es-MX": "Trust a separate team to quickly resolve",
     "key": "Software & Services#QuestionForm#v1#2#option_1"
   },
   {
-    "en-US": "Basic",
-    "de-DE": "Standard",
-    "es-ES": "Básicos",
-    "es-MX": "Básica",
-    "key": "unknown#o7"
-  },
-  {
-    "en-US": "2-5 years",
-    "de-DE": "2-5 Jahre",
-    "es-ES": "De 2 a 5 años",
-    "es-MX": "2-5 años",
+    "en-US": "Do it ourselves with powerful tools",
+    "de-DE": "Do it ourselves with powerful tools",
+    "es-ES": "Do it ourselves with powerful tools",
+    "es-MX": "Do it ourselves with powerful tools",
     "key": "Software & Services#QuestionForm#v1#2#option_2"
   },
   {
-    "en-US": "Extended Warranty",
-    "de-DE": "Garantieverlängerung",
-    "es-ES": "Garantía ampliada",
-    "es-MX": "Garantía ampliada",
-    "key": "unknown#o8"
-  },
-  {
-    "en-US": "5 years or more",
-    "de-DE": "5 Jahre oder mehr",
-    "es-ES": "5 años o más",
-    "es-MX": "5 años o más",
+    "en-US": "Contact tech support when needed",
+    "de-DE": "Contact tech support when needed",
+    "es-ES": "Contact tech support when needed",
+    "es-MX": "Contact tech support when needed",
     "key": "Software & Services#QuestionForm#v1#2#option_3"
   },
   {
-    "en-US": "Select",
-    "de-DE": "Auswahl",
-    "es-ES": "Select",
-    "es-MX": "Seleccionar",
-    "key": "unknown#o9"
-  },
-  {
-    "en-US": "What support service is needed for you to ensure your meeting rooms are always up and running?",
-    "de-DE": "Welchen Support-Service benötigen Sie, um sicherzustellen, dass Ihre Konferenzräume immer betriebsbereit sind?",
-    "es-ES": "¿Qué servicio de asistencia necesita para asegurarse de que sus salas de reunión estén siempre en funcionamiento?",
-    "es-MX": "¿Qué servicio de asistencia necesitas para garantizar que tus salas de reunión estén siempre en funcionamiento?",
+    "en-US": "What are the hours of support you’re expected to deliver?",
+    "de-DE": "What are the hours of support you’re expected to deliver?",
+    "es-ES": "What are the hours of support you’re expected to deliver?",
+    "es-MX": "What are the hours of support you’re expected to deliver?",
     "key": "Software & Services#QuestionForm#v1#3#question"
   },
   {
-    "en-US": "Tech support when I need it",
-    "de-DE": "Technischer Support, wenn ich ihn brauche",
-    "es-ES": "Asistencia técnica cuando la necesito",
-    "es-MX": "Asistencia técnica cuando la necesito",
+    "en-US": "24x7",
+    "de-DE": "24x7",
+    "es-ES": "24x7",
+    "es-MX": "24x7",
     "key": "Software & Services#QuestionForm#v1#3#option_1"
   },
   {
-    "en-US": "Basic, Extended Warranty",
-    "de-DE": "Standard, Garantieverlängerung",
-    "es-ES": "Básicos, garantía ampliada",
-    "es-MX": "Garantía básica, ampliada",
-    "key": "unknown#o10"
-  },
-  {
-    "en-US": "Dedicated, additional service and support",
-    "de-DE": "Spezielle, zusätzliche Service- und Supportleistungen",
-    "es-ES": "Servicio y asistencia adicionales y específicos",
-    "es-MX": "Servicio y asistencia adicionales y dedicados",
+    "en-US": "Business hours",
+    "de-DE": "Business hours",
+    "es-ES": "Business hours",
+    "es-MX": "Business hours",
     "key": "Software & Services#QuestionForm#v1#3#option_2"
   },
   {
-    "en-US": "Select",
-    "de-DE": "Auswahl",
-    "es-ES": "Select",
-    "es-MX": "Seleccionar",
-    "key": "unknown#o11"
+    "en-US": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "de-DE": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "es-ES": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "es-MX": "When you need to replace faulty products, how quickly does it need to arrive?",
+    "key": "Software & Services#QuestionForm#v1#4#question"
   },
   {
-    "en-US": "1. What are the expected hours of support?",
-    "de-DE": "Wie sind Ihre Geschäftszeiten für den Support?",
-    "es-ES": "¿Cuál es el horario de asistencia?",
-    "es-MX": "¿Cuál es tu horario de asistencia?",
+    "en-US": "Preferably a day or less",
+    "de-DE": "Preferably a day or less",
+    "es-ES": "Preferably a day or less",
+    "es-MX": "Preferably a day or less",
+    "key": "Software & Services#QuestionForm#v1#4#option_1"
+  },
+  {
+    "en-US": "About a week is fine",
+    "de-DE": "About a week is fine",
+    "es-ES": "About a week is fine",
+    "es-MX": "About a week is fine",
+    "key": "Software & Services#QuestionForm#v1#4#option_2"
+  },
+  {
+    "en-US": "What’s the customer support team’s level of AV/IT expertise?",
+    "de-DE": "What’s the customer support team’s level of AV/IT expertise?",
+    "es-ES": "What’s the customer support team’s level of AV/IT expertise?",
+    "es-MX": "What’s the customer support team’s level of AV/IT expertise?",
     "key": "Software & Services#QuestionForm#v2#0#question"
   },
   {
-    "en-US": "Business Hours",
-    "de-DE": "Geschäftszeiten",
-    "es-ES": "Horario laboral",
-    "es-MX": "Horario comercial",
+    "en-US": "No expertise on staff",
+    "de-DE": "No expertise on staff",
+    "es-ES": "No expertise on staff",
+    "es-MX": "No expertise on staff",
     "key": "Software & Services#QuestionForm#v2#0#option_1"
   },
   {
-    "en-US": "24/7",
-    "de-DE": "24/7",
-    "es-ES": "24/7",
-    "es-MX": "24/7",
+    "en-US": "Qualified internal or partner team",
+    "de-DE": "Qualified internal or partner team",
+    "es-ES": "Qualified internal or partner team",
+    "es-MX": "Qualified internal or partner team",
     "key": "Software & Services#QuestionForm#v2#0#option_2"
   },
   {
-    "en-US": "2. What’s the expected repair time for meeting rooms?",
-    "de-DE": "Wie lange brauchen Sie für die Reparatur von Konferenzräumen?",
-    "es-ES": "¿Cuál es el tiempo de reparación de las salas de reuniones?",
-    "es-MX": "¿Cuál es tu tiempo de reparación de las salas de reuniones?",
+    "en-US": "What additional resources are needed for ongoing operations?",
+    "de-DE": "What additional resources are needed for ongoing operations?",
+    "es-ES": "What additional resources are needed for ongoing operations?",
+    "es-MX": "What additional resources are needed for ongoing operations?",
     "key": "Software & Services#QuestionForm#v2#1#question"
   },
   {
-    "en-US": "Within 1 week",
-    "de-DE": "Innerhalb 1 Woche",
-    "es-ES": "En 1 semana",
-    "es-MX": "En el transcurso de 1 semana",
+    "en-US": "Ongoing service management",
+    "de-DE": "Ongoing service management",
+    "es-ES": "Ongoing service management",
+    "es-MX": "Ongoing service management",
     "key": "Software & Services#QuestionForm#v2#1#option_1"
   },
   {
-    "en-US": "Within 1 hour",
-    "de-DE": "Innerhalb 1 Stunde",
-    "es-ES": "En 1 hora",
-    "es-MX": "En el transcurso de 1 hora",
+    "en-US": "Advanced, proactive software tools",
+    "de-DE": "Advanced, proactive software tools",
+    "es-ES": "Advanced, proactive software tools",
+    "es-MX": "Advanced, proactive software tools",
     "key": "Software & Services#QuestionForm#v2#1#option_2"
   },
   {
-    "en-US": "3. What’s the typical life cycle for meeting room hardware?",
-    "de-DE": "Wie sieht der typische Lebenszyklus von Hardware für Konferenzräume aus?",
-    "es-ES": "¿Cuál es el ciclo de vida habitual del hardware de las salas de reuniones?",
-    "es-MX": "¿Cuál es el ciclo de vida habitual del hardware en las salas de reuniones?",
+    "en-US": "Tech support when needed",
+    "de-DE": "Tech support when needed",
+    "es-ES": "Tech support when needed",
+    "es-MX": "Tech support when needed",
+    "key": "Software & Services#QuestionForm#v2#1#option_3"
+  },
+  {
+    "en-US": "How does the customer manage troubleshooting?",
+    "de-DE": "How would the customer like to troubleshoot issues?",
+    "es-ES": "How would the customer like to troubleshoot issues?",
+    "es-MX": "How would the customer like to troubleshoot issues?",
     "key": "Software & Services#QuestionForm#v2#2#question"
   },
   {
-    "en-US": "Less than 2 years",
-    "de-DE": "Weniger als 2 Jahre",
-    "es-ES": "Menos de 2 años",
-    "es-MX": "Menos de 2 años",
+    "en-US": "Trust a separate team to quickly resolve",
+    "de-DE": "Trust a separate team to quickly resolve",
+    "es-ES": "Trust a separate team to quickly resolve",
+    "es-MX": "Trust a separate team to quickly resolve",
     "key": "Software & Services#QuestionForm#v2#2#option_1"
   },
   {
-    "en-US": "2-5 years",
-    "de-DE": "2-5 Jahre",
-    "es-ES": "De 2 a 5 años",
-    "es-MX": "2-5 años",
+    "en-US": "Do it themselves with powerful tools",
+    "de-DE": "Do it themselves with powerful tools",
+    "es-ES": "Do it themselves with powerful tools",
+    "es-MX": "Do it themselves with powerful tools",
     "key": "Software & Services#QuestionForm#v2#2#option_2"
   },
   {
-    "en-US": "5 years or more",
-    "de-DE": "5 Jahre oder mehr",
-    "es-ES": "5 años o más",
-    "es-MX": "5 años o más",
+    "en-US": "Contact tech support when needed",
+    "de-DE": "Contact tech support when needed",
+    "es-ES": "Contact tech support when needed",
+    "es-MX": "Contact tech support when needed",
     "key": "Software & Services#QuestionForm#v2#2#option_3"
   },
   {
-    "en-US": "4. What support service is needed to ensure meeting rooms are always up and running?",
-    "de-DE": "Welchen Support-Service benötigen Sie, um sicherzustellen, dass Ihre Konferenzräume immer betriebsbereit sind?",
-    "es-ES": "¿Qué servicio de asistencia necesita para asegurarse de que sus salas de reunión estén siempre en funcionamiento?",
-    "es-MX": "¿Qué servicio de asistencia necesitas para garantizar que tus salas de reunión estén siempre en funcionamiento?",
+    "en-US": "What are the support hours the customer is expected to deliver?",
+    "de-DE": "What are the support hours the customer is expected to deliver?",
+    "es-ES": "What are the support hours the customer is expected to deliver?",
+    "es-MX": "What are the support hours the customer is expected to deliver?",
     "key": "Software & Services#QuestionForm#v2#3#question"
   },
   {
-    "en-US": "Tech support when needed",
-    "de-DE": "Technischer Support, wenn ich ihn brauche",
-    "es-ES": "Asistencia técnica cuando la necesito",
-    "es-MX": "Asistencia técnica cuando la necesito",
+    "en-US": "24x7",
+    "de-DE": "24x7",
+    "es-ES": "24x7",
+    "es-MX": "24x7",
     "key": "Software & Services#QuestionForm#v2#3#option_1"
   },
   {
-    "en-US": "Dedicated, additional service and support",
-    "de-DE": "Spezielle, zusätzliche Service- und Supportleistungen",
-    "es-ES": "Servicio y asistencia adicionales y específicos",
-    "es-MX": "Servicio y asistencia adicionales y dedicados",
+    "en-US": "Business hours",
+    "de-DE": "Business hours",
+    "es-ES": "Business hours",
+    "es-MX": "Business hours",
     "key": "Software & Services#QuestionForm#v2#3#option_2"
+  },
+  {
+    "en-US": "When faulty products need replacing, how quickly does it need to arrive?",
+    "de-DE": "When faulty products need replacing, how quickly does it need to arrive?",
+    "es-ES": "When faulty products need replacing, how quickly does it need to arrive?",
+    "es-MX": "When faulty products need replacing, how quickly does it need to arrive?",
+    "key": "Software & Services#QuestionForm#v2#4#question"
+  },
+  {
+    "en-US": "Preferably a day or less",
+    "de-DE": "Preferably a day or less",
+    "es-ES": "Preferably a day or less",
+    "es-MX": "Preferably a day or less",
+    "key": "Software & Services#QuestionForm#v2#4#option_1"
+  },
+  {
+    "en-US": "About a week is fine",
+    "de-DE": "About a week is fine",
+    "es-ES": "About a week is fine",
+    "es-MX": "About a week is fine",
+    "key": "Software & Services#QuestionForm#v2#4#option_2"
   },
   {
     "en-US": "SHOW ME THE COMPLETE SETUP",
@@ -1157,10 +1164,10 @@
     "key": "Order#Card#ContactLocalReseller"
   },
   {
-    "en-US": "For all warranties",
-    "de-DE": "Für alle Garantien",
-    "es-ES": "Para todas las garantías",
-    "es-MX": "Para todas las garantías",
+    "en-US": "For All Product Warranties",
+    "de-DE": "For All Product Warranties",
+    "es-ES": "For All Product Warranties",
+    "es-MX": "For All Product Warranties",
     "key": "Order#Card#ForAllWarranties"
   },
   {
@@ -1596,5 +1603,19 @@
     "es-ES": "Para todas las pantallas",
     "es-MX": "Para todas las pantallas",
     "key": "Card#Display#ForAll"
+  },
+  {
+    "en-US": "Sample configuration shown on a X ft or Y m long table",
+    "de-DE": "Beispielkonfiguration auf einem X Fuss oder Y Meter langen Tisch",
+    "es-ES": "Configuración de muestra mostrada en una mesa de X pies o Y m de largo",
+    "es-MX": "Configuración de muestra mostrada en una mesa de X pies o Y m de largo",
+    "key": "Player#Dimension#Text#SizeTable#v1"
+  },
+  {
+    "en-US": "Sample configuration shown on a X ft by Y ft or A m by B m long table",
+    "de-DE": "Beispielkonfiguration auf einem X Fuss mal Y Fuss oder A Meter mal B Meter langen Tisch",
+    "es-ES": "Configuración de muestra mostrada en una mesa de X pies por Y pies o A m por B m de largo",
+    "es-MX": "Configuración de muestra mostrada en una mesa de X pies por Y pies o A m por B m de largo",
+    "key": "Player#Dimension#Text#SizeTable#v2"
   }
 ]

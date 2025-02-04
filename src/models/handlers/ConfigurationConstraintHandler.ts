@@ -90,9 +90,12 @@ export class ConfigurationConstraintHandler extends Handler {
     this.localeTagStr = localeTagStr;
     const skipColumns = ["level2datatableId", "attrRules", "recoRules"];
     const level1AttrSequenceArr = this.configurator.attributesSequenceLevel1;
-    const currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
+    let currentIndexInLevel1Sequence = level1AttrSequenceArr.indexOf(
       triggeredByAttr[0]
     );
+    if (currentIndexInLevel1Sequence > 0) {
+      currentIndexInLevel1Sequence -= 1;
+    }
     const firstLevel1AttrSelectedValue = this.getSelectedValue(
       level1AttrSequenceArr[0]
     );
@@ -242,10 +245,6 @@ export class ConfigurationConstraintHandler extends Handler {
       this.rule_micPod_CATCoupler();
     }
 
-    this.rule_rallyBar_TapIp_bundle();
-    this.rule_rallyBarMini_TapIp_bundle();
-    this.rule_rallyBarHuddle_TapIp_bundle();
-
     // if (attrRulesArr.includes(RuleName.rallyBar_TapIp_bundle)) {
     //   this.rule_rallyBar_TapIp_bundle();
     // }
@@ -264,6 +263,10 @@ export class ConfigurationConstraintHandler extends Handler {
 
     //Rules that are not in the lists in DataTable
     this.rule_tap_tapIp();
+
+    this.rule_rallyBar_TapIp_bundle();
+    this.rule_rallyBarMini_TapIp_bundle();
+    this.rule_rallyBarHuddle_TapIp_bundle();
   }
 
   private handleRecoRules(recoRulesStr: string) {
@@ -770,10 +773,7 @@ export class ConfigurationConstraintHandler extends Handler {
     });
 
     const cache = CACHE.get(RuleName.micPod_CATCoupler);
-    const isChangeSight = this.triggeredByAttr.includes(
-      AttributeName.RoomSight
-    );
-    if (!cache && isSelectSight && isChangeSight) {
+    if (!cache && isSelectSight) {
       this.configurator.setConfiguration({
         [AttributeName.RoomMicCATCoupler]: {
           assetId: "",
@@ -782,7 +782,7 @@ export class ConfigurationConstraintHandler extends Handler {
       CACHE.set(RuleName.micPod_CATCoupler, true);
     }
 
-    if (cache && !isSelectSight && isChangeSight) {
+    if (cache && !isSelectSight) {
       CACHE.set(RuleName.micPod_CATCoupler, false);
     }
 
@@ -955,10 +955,10 @@ export class ConfigurationConstraintHandler extends Handler {
     const selectedMicMount = this.getSelectedValue(AttributeName.RoomMicMount);
     const attribute = this.getAttribute(AttributeName.RoomMicHub);
     if (!attribute) return;
-    const attrState = this.configurator.getAttributeState();
-    const attributeValuesArr = deepCopy(
-      attrState[attribute.id].values
-    ) as ValueAssetStateI[];
+    const valueAssets = this.getValuesAssetStateByAttrName(
+      AttributeName.RoomMicHub
+    );
+    const attributeValuesArr = deepCopy<ValueAssetStateI[]>(valueAssets);
     if (!attributeValuesArr) return;
     const isSelectMic = typeof selectedMic === "object";
     const isSelectMicMount = typeof selectedMicMount === "object";
@@ -975,6 +975,24 @@ export class ConfigurationConstraintHandler extends Handler {
         this.setRecommendedInMetadata(option, false);
       });
     }
+
+    if (!isSelectMic) {
+      this.configurator.setConfiguration({
+        [AttributeName.RoomMicHub]: {
+          assetId: "",
+        },
+        [AttributeName.QtyMicHub]: "0",
+      });
+
+      attributeValuesArr.forEach((option) => {
+        option.visible = false;
+      });
+    } else {
+      attributeValuesArr.forEach((option) => {
+        option.visible = true;
+      });
+    }
+
     this.configurator.setAttributeState(attribute.id, {
       values: attributeValuesArr,
     });
@@ -984,7 +1002,7 @@ export class ConfigurationConstraintHandler extends Handler {
 
     const isChangeHub = this.triggeredByAttr.includes(AttributeName.RoomMicHub);
 
-    if (!isSelectHub && isChangeHub) {
+    if (isChangeHub) {
       CACHE.set(RuleName.reco_micPod_micPodHub, true);
     }
 
@@ -1004,7 +1022,7 @@ export class ConfigurationConstraintHandler extends Handler {
     const visibleValue = attributeValuesArr.find(
       (option) => option.visible
     ) as ValueAssetStateI;
-    if (!visibleValue) return;
+    if (!visibleValue || isSelectHub) return;
     this.configurator.setConfiguration({
       [AttributeName.RoomMicHub]: {
         assetId: visibleValue.id,
