@@ -231,32 +231,38 @@ export function getSoftwareServicesCardData(): Record<string, TypeDataCardI> {
 
 export const getExpressionArrayForQuestionForm = () => {
   const expressionArraySelect = [
-    [
-      { questionIndex: 1, optionIndex: 2 },
-      { questionIndex: 2, optionIndex: 2 },
-      { questionIndex: 3, optionIndex: 3 },
-      { questionIndex: 4, optionIndex: 2 },
-    ],
+    [{ questionIndex: 1, optionIndex: 1 }],
+    [{ questionIndex: 2, optionIndex: 1 }],
+    [{ questionIndex: 3, optionIndex: 1 }],
+    [{ questionIndex: 4, optionIndex: 1 }],
   ];
 
   const baseExpressionArray = [
-    [{ questionIndex: 1, optionIndex: 1 }],
-    [{ questionIndex: 2, optionIndex: 1 }],
-    [{ questionIndex: 4, optionIndex: 1 }],
+    [{ questionIndex: 1, optionIndex: 2 }],
+    [{ questionIndex: 4, optionIndex: 2 }],
+    [{ questionIndex: 5, optionIndex: 2 }],
   ];
   const expressionArrayBasic = [
     ...baseExpressionArray,
-    [{ questionIndex: 3, optionIndex: 1 }],
+    [{ questionIndex: 2, optionIndex: 3 }],
+    [{ questionIndex: 3, optionIndex: 3 }],
   ];
   const expressionArrayExtendedWarranty = [
     ...baseExpressionArray,
+    [{ questionIndex: 2, optionIndex: 3 }],
+    [{ questionIndex: 3, optionIndex: 3 }],
+  ];
+  const expressionArrayEssential = [
+    ...baseExpressionArray,
+    [{ questionIndex: 2, optionIndex: 2 }],
     [{ questionIndex: 3, optionIndex: 2 }],
   ];
 
   return {
-    select: expressionArraySelect,
-    basic: expressionArrayBasic,
-    extendedWarranty: expressionArrayExtendedWarranty,
+    [SoftwareServicesName.SupportService]: expressionArraySelect,
+    [SoftwareServicesName.LogitechSync]: expressionArrayBasic,
+    [SoftwareServicesName.ExtendedWarranty]: expressionArrayExtendedWarranty,
+    [SoftwareServicesName.EssentialServicePlan]: expressionArrayEssential,
   };
 };
 

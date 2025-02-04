@@ -69,7 +69,6 @@ export const ConfigurationFormForStep = ({
       </CardItem>
     );
   };
-  console.log("activeStepData", activeStepData);
 
   const listIgnoreSection = [
     StepName.RoomSize,

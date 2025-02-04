@@ -17,43 +17,30 @@ import {
   getCardLangPage,
   getListSoftwareCardLangByKeyPermission,
   getPrepareDescriptionLangByKeyPermission,
+  getSelectDataSoftwareCardLangByKeyPermission,
 } from "../../../store/slices/ui/selectors/selectoteLangPage";
 import { CardContainerSoftware } from "../CardContainerSoftware/CardContainerSoftware";
 import { useDispatch } from "react-redux";
 import { setAnnotationItemModal } from "../../../store/slices/modals/Modals.slice";
 import { SoftwareServicesName } from "../../../utils/permissionUtils";
-import { CardPageI } from "../../../types/textTypePage";
+import { getFormatName } from "../../../utils/productUtils";
 
 interface PropsI {
   keyItemPermission: string;
   autoActive?: boolean;
   onSelectedAnalytics: () => void;
   onClick?: () => void;
+  children?: React.ReactNode;
 }
 
 const dataLinkMetadataIfMissing: Record<string, string> = {
-  [SoftwareServicesName.EssentialServicePlan]:
-    "https://www.logitech.com/business/services-and-software.html#compare-plans",
   [SoftwareServicesName.LogitechSync]:
     "https://www.logitech.com/business/services-and-software.html#compare-plans",
 };
 
-export const getFormatName = (langCard: CardPageI) => (name: string) => {
-  const arr = name.split(" ");
-  const number = parseInt(arr[0]);
-  if (isNaN(number)) {
-    return name;
-  }
-
-  const arrLang = langCard.Text.Years.split(",");
-  const nameFormat = arrLang[number - 1]?.trim();
-  if (!nameFormat) return name;
-  return nameFormat;
-};
-
 export const CardSoftware: React.FC<PropsI> = (props) => {
   const dispatch = useDispatch();
-  const { keyItemPermission, autoActive, onClick } = props;
+  const { keyItemPermission, autoActive, onClick, children } = props;
   const activeStep = useAppSelector(getActiveStep);
   const card = useAppSelector(
     getCardByKeyPermission(activeStep, keyItemPermission)
@@ -68,6 +55,9 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
   );
   const list = useAppSelector(
     getListSoftwareCardLangByKeyPermission(keyItemPermission)
+  );
+  const selectData = useAppSelector(
+    getSelectDataSoftwareCardLangByKeyPermission(keyItemPermission)
   );
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
@@ -184,12 +174,13 @@ export const CardSoftware: React.FC<PropsI> = (props) => {
             <div className={s.actions}>
               <SelectItem
                 keyItemPermission={keyItemPermission}
-                defaultLabel={langCard.Text.ChooseNumberOfYears}
+                defaultLabel={selectData.defaultLabel}
                 dataAnalytics="card-choose-lorem-plan"
-                getFormatName={getFormatName(langCard)}
+                getFormatName={getFormatName(selectData.valuesTemplate)}
               />
             </div>
           )}
+          {children}
           <div className={s.info_mobile}>
             <div
               className={s.info_button_mobile}

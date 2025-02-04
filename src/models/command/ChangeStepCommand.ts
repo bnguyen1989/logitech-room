@@ -2,6 +2,7 @@ import { Command } from "./Command";
 import { Configurator } from "../configurator/Configurator";
 import { ChangeStepBehavior } from "./behavior/ChangeStepBehavior";
 import { DirectionStep, StepName } from "../../utils/baseUtils";
+import { DimensionRoomBehavior } from "./behavior/DimensionRoomBehavior";
 export class ChangeStepCommand extends Command {
   public name: string = "ChangeStepCommand";
   public stepName: StepName;
@@ -16,6 +17,7 @@ export class ChangeStepCommand extends Command {
     this.stepName = stepName;
     this.direction = direction;
     this.behaviors.push(new ChangeStepBehavior());
+    this.behaviors.push(new DimensionRoomBehavior());
   }
 
   public executeCommand() {

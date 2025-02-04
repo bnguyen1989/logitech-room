@@ -9,7 +9,7 @@ import type React from "react";
 import { Helmet as Head } from "react-helmet";
 import LogitechStage from "../stages/LogitechStage.tsx";
 import { Room } from "../Assets/Room.tsx";
-import { ConfigData } from "../../utils/threekitUtils.ts";
+import { ConfigData, getPreloadAssets } from "../../utils/threekitUtils.ts";
 import { useAppSelector } from "../../hooks/redux.ts";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.ts";
 import { Camera } from "three";
@@ -32,6 +32,7 @@ import {
 } from "postprocessing";
 import { usePlayer } from "../../hooks/player.ts";
 import { base64ToBlob } from "../../utils/browserUtils.ts";
+import { AssetsPreload } from "../Assets/AssetPreload.tsx";
 
 export const bhoustonAuth = {
   host: ConfigData.host,
@@ -41,7 +42,7 @@ export const bhoustonAuth = {
 
 export const Player: React.FC = () => {
   const { cache, keyCache } = useCache();
-  const { target, distance } = usePlayer();
+  const { target, distance, polarAngle, azimuthalAngle } = usePlayer();
 
   const assetId = useAppSelector(getAssetId);
 
@@ -138,14 +139,17 @@ export const Player: React.FC = () => {
                 setSnapshotCameras={setSnapshotCameras}
               />
             </LogitechStage>
+            <AssetsPreload assets={getPreloadAssets()} />
             <OrbitControls
               enableDamping={true}
               enableZoom={true}
               minDistance={distance.minDistance}
               maxDistance={distance.maxDistance}
               target={target}
-              minPolarAngle={Math.PI / 6}
-              maxPolarAngle={Math.PI / 2}
+              minPolarAngle={polarAngle.minPolarAngle}
+              maxPolarAngle={polarAngle.maxPolarAngle}
+              minAzimuthAngle={azimuthalAngle.maxAzimuthalAngle}
+              maxAzimuthAngle={azimuthalAngle.maxAzimuthalAngle}
             />
           </Selection>
         </>
@@ -155,15 +159,8 @@ export const Player: React.FC = () => {
 };
 
 const Effects = forwardRef((_props, ref: ForwardedRef<EffectComposerImpl>) => {
-
-
   return (
-    <EffectComposer
-      stencilBuffer
-      autoClear={false}
-      multisampling={4}
-      ref={ref}
-    >
+    <EffectComposer stencilBuffer autoClear={false} multisampling={4} ref={ref}>
       <Outline
         visibleEdgeColor={0x32156d}
         hiddenEdgeColor={0x32156d}

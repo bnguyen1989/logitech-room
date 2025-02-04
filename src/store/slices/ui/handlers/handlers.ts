@@ -47,11 +47,15 @@ import {
   getServicesCardData,
   getSoftwareServicesCardData,
 } from "../utils";
-import { changeAssetId } from "../../configurator/Configurator.slice";
+import {
+  changeAssetId,
+  setEnabledDimension,
+} from "../../configurator/Configurator.slice";
 import { ChangeStepCommand } from "../../../../models/command/ChangeStepCommand";
 import { ChangeSelectItemCommand } from "../../../../models/command/ChangeSelectItemCommand";
 import {
   getActiveStep,
+  getActiveStepData,
   getAssetFromCard,
   getCardByKeyPermission,
   getDataStepByName,
@@ -61,10 +65,12 @@ import {
   getPositionStepNameBasedOnActiveStep,
   getProductNameFromMetadata,
   getPropertyCardByKeyPermission,
+  getPropertyDisplayCardByKeyPermission,
   getPropertySelectValueCardByKeyPermission,
   getSelectData,
   getSelectedCardsByStep,
   getStepNameByKeyPermission,
+  getSubCardsKeyPermissionStep,
 } from "../selectors/selectors";
 import { getPropertyColorCardByKeyPermission } from "../selectors/selectorsColorsCard";
 import {
@@ -123,29 +129,8 @@ export const getUiHandlers = (store: Store) => {
 
     if (data instanceof ChangeSelectItemCommand) {
       const state = store.getState();
-      const activeStep = getActiveStep(state);
-      const selectValue = getPropertySelectValueCardByKeyPermission(
-        activeStep,
-        data.keyItemPermission
-      )(state);
-
-      store.dispatch(
-        setPropertyItem({
-          step: activeStep,
-          keyItemPermission: data.keyItemPermission,
-          property: {
-            select: data.assetId,
-          },
-        })
-      );
-
-      if (!selectValue) {
-        app.addItemConfiguration(
-          data.nameProperty,
-          data.assetId,
-          data.keyItemPermission
-        );
-      }
+      const stepName = getActiveStep(state);
+      changeSelectItem(data.keyItemPermission, data.assetId, stepName)(store);
     }
 
     if (data instanceof ChangeStepCommand) {
@@ -182,8 +167,85 @@ export const getUiHandlers = (store: Store) => {
       setPlatformData(configurator)(store);
       setServiceData(configurator)(store);
       store.dispatch(changeAssetId(configurator.assetId));
+      store.dispatch(setEnabledDimension(false));
     }
   );
+};
+
+export const changeSelectItem = (
+  keyItemPermission: string,
+  assetId: string,
+  stepName: StepName
+) => {
+  return (store: Store) => {
+    const state = store.getState();
+    const card = getCardByKeyPermission(stepName, keyItemPermission)(state);
+    const selectValue = getPropertySelectValueCardByKeyPermission(
+      stepName,
+      keyItemPermission
+    )(state);
+    const activeStepData = getActiveStepData(state);
+    const subCardKeyPermissions =
+      getSubCardsKeyPermissionStep(activeStepData)(state);
+
+    store.dispatch(
+      setPropertyItem({
+        step: stepName,
+        keyItemPermission: keyItemPermission,
+        property: {
+          select: assetId,
+        },
+      })
+    );
+
+    if (!selectValue) {
+      app.addItemConfiguration(
+        card.dataThreekit.attributeName,
+        assetId,
+        keyItemPermission
+      );
+    }
+
+    const parentKeyPermission = Object.entries(subCardKeyPermissions).find(
+      (values) => values[1].includes(keyItemPermission)
+    )?.[0];
+
+    if (parentKeyPermission) {
+      const card = getCardByKeyPermission(stepName, parentKeyPermission)(state);
+      const asset = getAssetFromCard(card)(state);
+      app.addItemConfiguration(
+        card.dataThreekit.attributeName,
+        asset.id,
+        parentKeyPermission
+      );
+    }
+  };
+};
+
+export const updateDisplayTypeByKeyPermission = (
+  keyPermission: string,
+  stepName: StepName
+) => {
+  return (store: Store) => {
+    if (stepName !== StepName.ConferenceCamera) return;
+    if (!isCameraElement(keyPermission)) return;
+    const state = store.getState();
+    const permission = getPermission(stepName)(state);
+    const step = permission.getCurrentStep();
+    const element = step.getElementByName(keyPermission);
+    if (element?.getHiddenDisplay()) {
+      setDefaultsDisplay(stepName)(store);
+      return;
+    }
+
+    const displayType = getPropertyDisplayCardByKeyPermission(
+      stepName,
+      keyPermission
+    )(state);
+
+    if (!displayType) return;
+    store.dispatch(changeDisplayType(displayType));
+  };
 };
 
 export const setDefaultsDisplay = (stepName: StepName) => {

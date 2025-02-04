@@ -14,6 +14,7 @@ import {
   PagesI,
   PagesIKeys,
   Platform,
+  PlayerPageI,
   RemoveModal,
   RequestConsultation,
   RoomSize,
@@ -147,6 +148,15 @@ export const getLoaderLangPage = (state: RootState) => {
 
 export const getCSVLangPage = (state: RootState) => {
   return getLangPage("CSV")(state) as Csv;
+};
+
+export const getPlayerLangPage = (state: RootState) => {
+  return getLangPage("Player")(state) as PlayerPageI;
+};
+
+export const getDimensionLangPage = (state: RootState) => {
+  const playerLang = getPlayerLangPage(state);
+  return playerLang.Dimension;
 };
 
 export const getLangStepDataByStepName =
@@ -292,6 +302,36 @@ export const getListSoftwareCardLangByKeyPermission =
         return softwareServices.Cards[keyPermission].list;
       }
     }
+  };
+
+export const getSelectSoftwareCardLangByKeyPermission =
+  (keyPermission: string) => (state: RootState) => {
+    switch (keyPermission) {
+      case SoftwareServicesName.SupportService:
+      case SoftwareServicesName.EssentialServicePlan:
+      case SoftwareServicesName.ExtendedWarranty:
+      case SoftwareServicesName.LogitechSync: {
+        const softwareServices = getSoftwareServicesLangPage(state);
+        return softwareServices.Cards[keyPermission]?.select;
+      }
+    }
+  };
+
+export const getSelectDataSoftwareCardLangByKeyPermission =
+  (keyPermission: string) => (state: RootState) => {
+    const selectData =
+      getSelectSoftwareCardLangByKeyPermission(keyPermission)(state);
+
+    if (selectData) {
+      return selectData;
+    }
+
+    const softwareCard = getCardLangPage(state);
+
+    return {
+      defaultLabel: softwareCard.Text.ChooseNumberOfYears,
+      valuesTemplate: softwareCard.Text.Years,
+    };
   };
 
 export const getPrepareDescriptionLangByKeyPermission =

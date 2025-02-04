@@ -1,8 +1,6 @@
 function findDigits(str: string) {
-  // Используем регулярное выражение для поиска цифр
   const digits = str.match(/\d+/g);
 
-  // Возвращаем найденные цифры
   return Number(digits) ? Number(digits) : 0;
 }
 export const replaceArrValues = (str: string, replacements: string[]) => {

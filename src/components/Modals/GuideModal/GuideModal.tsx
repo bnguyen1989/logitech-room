@@ -4,7 +4,7 @@ import { IconButton } from "../../Buttons/IconButton/IconButton";
 import {
   CameraControlsSVG,
   CloseSVG,
-  // DimensionSVG,
+  DimensionSVG,
   InfoSVG,
   ProductInfoSVG,
 } from "../../../assets";
@@ -32,15 +32,15 @@ export const GuideModal: React.FC = () => {
       icon: <CameraControlsSVG />,
       contents: [<CameraControlTab />],
     },
-    // {
-    //   icon: <DimensionSVG />,
-    //   contents: [
-    //     <TextTab
-    //       title={langPage.Dimension.title}
-    //       subtitle={langPage.Dimension.subtitle}
-    //     />,
-    //   ],
-    // },
+    {
+      icon: <DimensionSVG />,
+      contents: [
+        <TextTab
+          title={langPage.Dimension.title}
+          subtitle={langPage.Dimension.subtitle}
+        />,
+      ],
+    },
     {
       icon: <ProductInfoSVG />,
       contents: [
