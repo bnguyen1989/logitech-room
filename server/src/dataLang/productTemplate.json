@@ -235,7 +235,7 @@
       "LongDescription": "Transform your space into a Google Meet meeting place or a Microsoft Teams Rooms on Windows with Logitech Tap. Deliver one-touch join, calendar integration, easy content-sharing, and a consistent experience across all rooms.",
       "Colors": {
         "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/tap-gallery-config.png?v=1",
-        "JP Logicool": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/tap-gallery-logicool-config.png?v=1"
+        "ja-JP": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/tap-gallery-logicool-config.png?v=1"
       }
     },
     "Blade_2": {
@@ -253,7 +253,8 @@
           "sorting": "1",
           "KeyFeature": "With a spacious 10.1” display, low profile, and motion sensor for always-on readiness, Tap has a sleek and unobtrusive presence in the room.",
           "LinkImgFeature": {
-            "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-right-presence-room-config.png?v=1"
+            "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-right-presence-room-config.png?v=1",
+            "ja-JP": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/video-collaboration/room-configurator/logitech-tap-right-presence-room-config-jp.png?v=1"
           }
         },
         {
