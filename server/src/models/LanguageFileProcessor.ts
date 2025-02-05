@@ -191,7 +191,7 @@ export class LanguageFileProcessor {
     for (const langCode in languageJSON) {
       let dataLang = languageJSON[langCode];
       if (template) {
-        dataLang = this.updateJson(template, dataLang);
+        dataLang = this.updateJson(template, dataLang, langCode);
       }
 
       const content = JSON.stringify(dataLang, null, 4);
@@ -199,9 +199,10 @@ export class LanguageFileProcessor {
     }
   }
 
-  private updateJson(template: any, update: any) {
+  private updateJson(template: any, update: any, langCode: string) {
     const updatedJson = JSON.parse(JSON.stringify(template));
     this.recursiveUpdate(updatedJson, update);
+    this.updateJSONImageByLang(updatedJson, langCode);
 
     return updatedJson;
   }
@@ -232,6 +233,30 @@ export class LanguageFileProcessor {
           }
         } else {
           target[key] = source[key];
+        }
+      }
+    }
+  }
+
+  private updateJSONImageByLang(data: any, lang: string) {
+    if (typeof data !== "object" || data === null) return;
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const value = data[key];
+
+        const partKeyImages = ["Img", "Image", "Colors"];
+
+        if (
+          typeof value === "object" &&
+          !Array.isArray(value) &&
+          partKeyImages.some((partKey) => key.includes(partKey))
+        ) {
+          if (Object.prototype.hasOwnProperty.call(value, lang)) {
+            data[key] = { [lang]: value[lang] };
+          }
+        } else if (typeof value === "object") {
+          this.updateJSONImageByLang(value, lang);
         }
       }
     }
