@@ -19,6 +19,7 @@ import { DirectionStep, StepName } from "../../../../utils/baseUtils";
 import { getNavigationLangPage } from "../../../../store/slices/ui/selectors/selectoteLangPage";
 import { getDataCamera } from "../../../../store/slices/configurator/selectors/selectors";
 import { useQuestionForm } from "../../../../hooks/questionForm";
+import { setEnabledDimension } from "../../../../store/slices/configurator/Configurator.slice";
 
 declare const app: Application;
 
@@ -50,6 +51,10 @@ export const ActionsContent = () => {
       nextStep.key === StepName.ConferenceCamera
     ) {
       app.resetCameraEvent(dataCamera);
+    }
+
+    if (nextStep.key === StepName.SoftwareServices) {
+      dispatch(setEnabledDimension(false));
     }
 
     app.changeStep(nextStep.key, DirectionStep.Next);
