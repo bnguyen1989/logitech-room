@@ -42,8 +42,8 @@ export const CardPrice: React.FC<{
 
         <div className={s.amount_text}>
           {isSoftwareCard
-            ? `${langPage.Card.MSRP} ${langPage.Card.PerUnit}`
-            : langPage.Card.ForAllWarranties}
+            ? langPage.Card.ForAllWarranties
+            : `${langPage.Card.MSRP} ${langPage.Card.PerUnit}`}
         </div>
       </div>
     </div>

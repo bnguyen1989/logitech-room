@@ -35,7 +35,7 @@ export const Card: React.FC<PropsI> = (props) => {
   const isBundle = mode === "bundle";
   const isSoftwareCard = isExtendWarranty(keyPermission);
   const isHidePartNumber =
-    hideProperties.includes("partNumber") || isSoftwareCard;
+    hideProperties.includes("partNumber") || isSoftwareCard || !partNumber;
   const isHidePrice = hideProperties.includes("price");
 
   const linkProduct = getUrlProductByKeyPermission(keyPermission);
@@ -63,7 +63,11 @@ export const Card: React.FC<PropsI> = (props) => {
 
         {!!labelValue && <div className={s.value}>{labelValue}</div>}
 
-        <CardPrice priceData={priceData} isHide={isHidePrice} />
+        <CardPrice
+          priceData={priceData}
+          isHide={isHidePrice}
+          isSoftwareCard={isSoftwareCard}
+        />
       </div>
     </div>
   );
