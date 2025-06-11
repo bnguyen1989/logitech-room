@@ -19,10 +19,13 @@ import {
   getTitleCardByKeyPermission,
 } from "./selectors";
 import {
+  DEFAULT_COUNT_MIC_IN_RALLY_PLUS,
   PlatformName,
   isBundleElement,
   isCameraElement,
   isExtendWarranty,
+  isMic,
+  isRallyPlus,
   isSupportService,
   isTapElement,
 } from "../../../../utils/permissionUtils";
@@ -315,6 +318,7 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
   const existCardBundle = cards.some((card) =>
     isBundleElement(card.keyPermission)
   );
+  const existRallyPLus = cards.some((card) => isRallyPlus(card.keyPermission));
   return cards.reduce<
     {
       card: CardI;
@@ -355,6 +359,16 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
       ];
     }
 
+    const isMicWithRallyPlus = isMic(card.keyPermission) && existRallyPLus;
+    if (isMicWithRallyPlus) {
+      const micData = processCardRallyPlusWithMic(card, selectData);
+      if (micData) {
+        return [...acc, micData];
+      }
+
+      return acc;
+    }
+
     return [
       ...acc,
       {
@@ -363,6 +377,30 @@ const processCards = (cards: CardI[]) => (state: RootState) => {
       },
     ];
   }, []);
+};
+
+const processCardRallyPlusWithMic = (
+  card: CardI,
+  selectData: any
+): null | any => {
+  const count = selectData?.property?.count;
+
+  if (count > DEFAULT_COUNT_MIC_IN_RALLY_PLUS) {
+    const copySelectData = deepCopy(selectData);
+
+    return {
+      card,
+      selectData: {
+        ...copySelectData,
+        property: {
+          ...copySelectData.property,
+          count:
+            copySelectData.property.count - DEFAULT_COUNT_MIC_IN_RALLY_PLUS,
+        },
+      },
+    };
+  }
+  return null;
 };
 
 export const getCurrencyCodeByLocale = (state: RootState) => {
