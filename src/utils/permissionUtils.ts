@@ -1702,6 +1702,10 @@ export const isEssentialService = (name: string) => {
   return isCompareName(name)([SoftwareServicesName.EssentialServicePlan]);
 };
 
+export const isRallyPlus = (name: string) => {
+  return isCompareName(name)([CameraName.RallyPlus]);
+};
+
 export const isBundleElement = (name: string) => {
   return isCompareName(name)([
     MeetingControllerName.RallyBarTapIP,
@@ -1788,3 +1792,5 @@ export const getSortedKeyPermissions = (
       return [];
   }
 };
+
+export const DEFAULT_COUNT_MIC_IN_RALLY_PLUS = 2;
