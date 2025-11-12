@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import * as THREE from "three";
 import { NodeMatcher } from "./GLTFNode";
 import { ProductNode } from "./ProductNode";
 import { PlacementManager } from "../../models/configurator/PlacementManager";
@@ -30,33 +31,135 @@ export const ProductsNodes = (opts?: ProductsNodesOpts) => {
       const name = threeNode.name || "";
       const nameLower = name.toLowerCase();
 
-      // TV-related name patterns to check
-      const tvPatterns = [
-        "tv",
-        "display",
-        "phonebooth_tv",
-        "phonebooth_tv_mdl",
-        "tv_phonebooth",
-        "tv_display_phonebooth",
-        "tv_body_phonebooth",
-        "tv_mount_phonebooth",
-      ];
+      console.log("name lower", nameLower);
 
-      // Check if this node matches any TV pattern
-      const isTVNode = tvPatterns.some((pattern) => {
-        const patternLower = pattern.toLowerCase();
-        return (
-          nameLower === patternLower ||
-          nameLower.includes(patternLower) ||
-          nameLower.includes("tv") ||
-          (nameLower.includes("display") && nameLower.includes("phonebooth"))
+      // Detailed logging for wall_in_panels___
+      if (nameLower === "wall_in_panels___") {
+        console.log("🔍 [ProductsNodes] Found wall_in_panels___ node:", {
+          name: threeNode.name,
+          position: {
+            x: threeNode.position.x,
+            y: threeNode.position.y,
+            z: threeNode.position.z,
+          },
+          rotation: {
+            x: threeNode.rotation.x,
+            y: threeNode.rotation.y,
+            z: threeNode.rotation.z,
+          },
+          scale: {
+            x: threeNode.scale.x,
+            y: threeNode.scale.y,
+            z: threeNode.scale.z,
+          },
+          visible: threeNode.visible,
+          childrenCount: threeNode.children.length,
+        });
+
+        // Log all children
+        console.log(
+          "📦 [ProductsNodes] wall_in_panels___ children:",
+          threeNode.children.map((child) => ({
+            name: child.name,
+            type: child.constructor.name,
+            visible: child.visible,
+          }))
         );
-      });
 
-      if (isTVNode) {
+        // Traverse and find all meshes and materials
+        const meshes: any[] = [];
+        const materials: any[] = [];
+        const blackMaterials: any[] = [];
+
+        threeNode.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            const meshInfo: any = {
+              name: child.name,
+              visible: child.visible,
+              position: {
+                x: child.position.x,
+                y: child.position.y,
+                z: child.position.z,
+              },
+            };
+
+            const meshMaterials = Array.isArray(child.material)
+              ? child.material
+              : [child.material];
+
+            meshMaterials.forEach((material, idx) => {
+              const materialInfo: any = {
+                meshName: child.name,
+                materialIndex: idx,
+                type: material.constructor.name,
+              };
+
+              // Check if material has color property
+              if (material.color) {
+                const color = material.color;
+                materialInfo.color = {
+                  r: color.r,
+                  g: color.g,
+                  b: color.b,
+                  hex: `#${color.getHexString()}`,
+                };
+
+                // Check if it's black (very dark color)
+                const isBlack = color.r < 0.1 && color.g < 0.1 && color.b < 0.1;
+                materialInfo.isBlack = isBlack;
+
+                if (isBlack) {
+                  blackMaterials.push({
+                    ...materialInfo,
+                    mesh: meshInfo,
+                  });
+                }
+              }
+
+              // Check other material properties
+              if (material.emissive) {
+                materialInfo.emissive = {
+                  r: material.emissive.r,
+                  g: material.emissive.g,
+                  b: material.emissive.b,
+                  hex: `#${material.emissive.getHexString()}`,
+                };
+              }
+
+              if (material.map) {
+                materialInfo.hasTexture = true;
+                materialInfo.textureName = material.map.name || "unnamed";
+              }
+
+              materials.push(materialInfo);
+            });
+
+            meshInfo.materialCount = meshMaterials.length;
+            meshes.push(meshInfo);
+          }
+        });
+
+        console.log("🎨 [ProductsNodes] wall_in_panels___ meshes:", meshes);
+        console.log(
+          "🖌️ [ProductsNodes] wall_in_panels___ materials:",
+          materials
+        );
+
+        if (blackMaterials.length > 0) {
+          console.log(
+            "⚫ [ProductsNodes] wall_in_panels___ BLACK MATERIALS FOUND:",
+            blackMaterials
+          );
+        } else {
+          console.log(
+            "✅ [ProductsNodes] wall_in_panels___ No black materials found"
+          );
+        }
+      }
+
+      if (nameLower.includes("tv")) {
         const previousVisible = threeNode.visible;
         threeNode.visible = !isRallyBoardSelected;
-        // Hide all children recursively (including nested meshes and groups)
         threeNode.traverse((child) => {
           child.visible = !isRallyBoardSelected;
         });

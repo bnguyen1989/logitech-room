@@ -4,21 +4,19 @@
  * Features:
  * 1. Detect front face of device using geometry analysis
  * 2. Rotate device so front face points towards room front (not wall)
- * 3. Add local and world axes helpers for visualization
  *
  * Usage:
  * ```typescript
- * import { orientDeviceToRoomFront, addAxesHelpers } from './deviceOrientationUtils';
+ * import { orientDeviceToRoomFront } from './deviceOrientationUtils';
  *
  * // Orient device
  * const orientedScene = orientDeviceToRoomFront(scene, {
  *   deviceType: 'RallyBoard',
  *   roomFrontDirection: new THREE.Vector3(0, 0, -1),
  * });
- *
- * // Add axes helpers (optional, for debugging)
- * addAxesHelpers(scene, { showLocal: true, showWorld: true });
  * ```
+ *
+ * Note: For axes helpers visualization, use DeviceAxesHelpers component from './components/Assets/DeviceAxesHelpers'
  */
 
 import * as THREE from "three";
@@ -52,41 +50,6 @@ export interface OrientDeviceOptions {
    * Debug mode - logs detailed information
    */
   debug?: boolean;
-}
-
-export interface AxesHelpersOptions {
-  /**
-   * Show local axes (device's own coordinate system)
-   */
-  showLocal?: boolean;
-
-  /**
-   * Show world axes (room's coordinate system)
-   */
-  showWorld?: boolean;
-
-  /**
-   * Size of axes helpers
-   */
-  size?: number;
-
-  /**
-   * Color for local axes (default: red=X, green=Y, blue=Z)
-   */
-  localColors?: {
-    x?: string;
-    y?: string;
-    z?: string;
-  };
-
-  /**
-   * Color for world axes (default: cyan=X, yellow=Y, magenta=Z)
-   */
-  worldColors?: {
-    x?: string;
-    y?: string;
-    z?: string;
-  };
 }
 
 /**
@@ -387,137 +350,6 @@ export function orientDeviceToRoomFront(
   }
 
   return scene;
-}
-
-/**
- * Add axes helpers to visualize local and world coordinate systems
- *
- * @param scene - The scene to add axes to
- * @param options - Configuration options
- */
-export function addAxesHelpers(
-  scene: THREE.Object3D,
-  options: AxesHelpersOptions = {}
-): void {
-  const {
-    showLocal = true,
-    showWorld = false,
-    size = 0.5,
-    localColors = { x: "#ff0000", y: "#00ff00", z: "#0000ff" },
-    worldColors = { x: "#00ffff", y: "#ffff00", z: "#ff00ff" },
-  } = options;
-
-  // Remove existing axes helpers if any
-  const existingHelpers: THREE.Object3D[] = [];
-  scene.traverse((child) => {
-    if (child.name === "localAxesHelper" || child.name === "worldAxesHelper") {
-      existingHelpers.push(child);
-    }
-  });
-  existingHelpers.forEach((helper) => {
-    scene.remove(helper);
-    if (helper instanceof THREE.Object3D) {
-      helper.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.geometry.dispose();
-          if (Array.isArray(child.material)) {
-            child.material.forEach((mat) => mat.dispose());
-          } else {
-            child.material.dispose();
-          }
-        }
-      });
-    }
-  });
-
-  // Add local axes (device's coordinate system)
-  if (showLocal) {
-    const localAxesGroup = new THREE.Group();
-    localAxesGroup.name = "localAxesHelper";
-
-    // X axis (red)
-    const xAxis = new THREE.ArrowHelper(
-      new THREE.Vector3(1, 0, 0),
-      new THREE.Vector3(0, 0, 0),
-      size,
-      localColors.x || "#ff0000",
-      size * 0.2,
-      size * 0.1
-    );
-    xAxis.name = "localXAxis";
-    localAxesGroup.add(xAxis);
-
-    // Y axis (green)
-    const yAxis = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 1, 0),
-      new THREE.Vector3(0, 0, 0),
-      size,
-      localColors.y || "#00ff00",
-      size * 0.2,
-      size * 0.1
-    );
-    yAxis.name = "localYAxis";
-    localAxesGroup.add(yAxis);
-
-    // Z axis (blue)
-    const zAxis = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(0, 0, 0),
-      size,
-      localColors.z || "#0000ff",
-      size * 0.2,
-      size * 0.1
-    );
-    zAxis.name = "localZAxis";
-    localAxesGroup.add(zAxis);
-
-    scene.add(localAxesGroup);
-  }
-
-  // Add world axes (room's coordinate system)
-  if (showWorld) {
-    const worldAxesGroup = new THREE.Group();
-    worldAxesGroup.name = "worldAxesHelper";
-
-    // World axes are always at origin, not affected by scene transforms
-    // X axis (cyan)
-    const worldXAxis = new THREE.ArrowHelper(
-      new THREE.Vector3(1, 0, 0),
-      new THREE.Vector3(0, 0, 0),
-      size * 1.5,
-      worldColors.x || "#00ffff",
-      size * 0.3,
-      size * 0.15
-    );
-    worldXAxis.name = "worldXAxis";
-    worldAxesGroup.add(worldXAxis);
-
-    // Y axis (yellow)
-    const worldYAxis = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 1, 0),
-      new THREE.Vector3(0, 0, 0),
-      size * 1.5,
-      worldColors.y || "#ffff00",
-      size * 0.3,
-      size * 0.15
-    );
-    worldYAxis.name = "worldYAxis";
-    worldAxesGroup.add(worldYAxis);
-
-    // Z axis (magenta)
-    const worldZAxis = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(0, 0, 0),
-      size * 1.5,
-      worldColors.z || "#ff00ff",
-      size * 0.3,
-      size * 0.15
-    );
-    worldZAxis.name = "worldZAxis";
-    worldAxesGroup.add(worldZAxis);
-
-    scene.add(worldAxesGroup);
-  }
 }
 
 /**

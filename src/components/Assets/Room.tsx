@@ -27,86 +27,6 @@ export const logNode = (node: THREE.Object3D, depth = 0) => {
   node.children.forEach((child) => logNode(child, depth + 1));
 };
 
-/**
- * Creates a RallyBoard_Mount placement node at the TV center position
- * @param scene - The THREE.Object3D (scene or group) to add the placement node to
- * @returns The created placement node, or null if it already exists or TV mesh not found
- */
-const addRallyBoard = (scene: THREE.Object3D): THREE.Object3D | null => {
-  const placementNodeName = PlacementManager.getNameNodeForRallyBoardMount();
-
-  // Check if RallyBoard_Mount node already exists
-  let existingNode: THREE.Object3D | null = null;
-  scene.traverse((node) => {
-    if (node.name === placementNodeName) {
-      existingNode = node;
-    }
-  });
-
-  if (existingNode) {
-    console.log(
-      `ℹ️ [addRallyBoard] Placement node ${placementNodeName} already exists`
-    );
-    return existingNode;
-  }
-
-  // Find TV display mesh to calculate center
-  let tvDisplayMesh: THREE.Mesh | null = null;
-  scene.traverse((node) => {
-    if (node instanceof THREE.Mesh && node.name.toLowerCase().includes("tv")) {
-      // Prefer tv_display_phonebooth if available, otherwise use first TV mesh
-      if (!tvDisplayMesh || node.name.toLowerCase().includes("display")) {
-        tvDisplayMesh = node;
-      }
-    }
-  });
-
-  if (!tvDisplayMesh) {
-    console.warn(
-      `⚠️ [addRallyBoard] TV display mesh not found. Cannot create ${placementNodeName} placement node.`
-    );
-    return null;
-  }
-
-  // Calculate bounding box of TV display to get center
-  const box = new THREE.Box3();
-  box.setFromObject(tvDisplayMesh);
-  const center = box.getCenter(new THREE.Vector3());
-
-  // Get world rotation from TV display mesh
-  const worldQuaternion = new THREE.Quaternion();
-  (tvDisplayMesh as THREE.Mesh).getWorldQuaternion(worldQuaternion);
-
-  // Create new placement node at TV center
-  const placementNode = new THREE.Object3D();
-  placementNode.name = placementNodeName;
-  placementNode.position.copy(center);
-  placementNode.quaternion.copy(worldQuaternion);
-  placementNode.scale.set(1, 1, 1);
-
-  // Add to scene
-  scene.add(placementNode);
-
-  console.log(
-    `✅ [addRallyBoard] Created placement node ${placementNodeName} at TV center:`,
-    {
-      position: { x: center.x, y: center.y, z: center.z },
-      rotation: {
-        x: placementNode.rotation.x,
-        y: placementNode.rotation.y,
-        z: placementNode.rotation.z,
-      },
-      boundingBox: {
-        min: { x: box.min.x, y: box.min.y, z: box.min.z },
-        max: { x: box.max.x, y: box.max.y, z: box.max.z },
-      },
-      tvMeshName: (tvDisplayMesh as THREE.Mesh).name,
-    }
-  );
-
-  return placementNode;
-};
-
 export const Room: React.FC<RoomProps> = (props) => {
   const { roomAssetId, setSnapshotCameras } = props;
 
@@ -172,7 +92,181 @@ export const Room: React.FC<RoomProps> = (props) => {
       // ============================================
       // CREATE PLACEMENT NODE RallyBoard_Mount AT TV CENTER POSITION
       // ============================================
-      addRallyBoard(gltf.scene);
+      // Check if RallyBoard_Mount node already exists
+      let rallyBarMountNode: THREE.Object3D | null = null;
+      gltf.scene.traverse((node) => {
+        if (node.name === "RallyBoard_Mount") {
+          rallyBarMountNode = node;
+        }
+      });
+
+      if (!rallyBarMountNode) {
+        // Find TV display mesh to calculate center
+        let tvDisplayMesh: THREE.Mesh | null = null;
+        gltf.scene.traverse((node) => {
+          if (node instanceof THREE.Mesh && node.name.includes("tv")) {
+            tvDisplayMesh = node;
+          }
+        });
+
+        if (tvDisplayMesh) {
+          // Calculate bounding box of TV display
+          const box = new THREE.Box3();
+          box.setFromObject(tvDisplayMesh);
+          const center = box.getCenter(new THREE.Vector3());
+          const size = box.getSize(new THREE.Vector3()); // {x: width, y: height, z: depth}
+          const min = box.min.clone(); // Minimum corner (back face if TV on wall)
+          const max = box.max.clone(); // Maximum corner (front face if TV on wall)
+
+          // Get world rotation from TV display mesh
+          const worldQuaternion = new THREE.Quaternion();
+          const tvMesh = tvDisplayMesh as THREE.Mesh;
+          tvMesh.getWorldQuaternion(worldQuaternion);
+
+          // ⭐ QUAN TRỌNG: Tính toán front face position thay vì center
+          // TV nằm trên tường, front face hướng về room
+          // User confirmed: Front face của TV hướng về +Z trong world space
+          // Để placement node nằm trên tường thay vì trong tường,
+          // chúng ta sử dụng max.z từ bounding box (front face position)
+
+          // Bounding box được tính trong world space (đã account cho rotation)
+          // Nếu front face hướng về +Z trong world space:
+          // - max.z là front face (hướng về +Z, ra ngoài tường)
+          // - min.z là back face (hướng về -Z, vào trong tường)
+          // - center.z là giữa (nằm trong tường)
+
+          // Placement node position = front face position (max.z)
+          // Giữ nguyên X và Y từ center, chỉ thay đổi Z = max.z
+          const frontFacePosition = new THREE.Vector3(
+            center.x, // Giữ nguyên X
+            center.y, // Giữ nguyên Y
+            max.z // Front face Z position (hướng về +Z, ra ngoài tường)
+          );
+
+          // ⭐ THÊM OFFSET: Di chuyển placement node ra ngoài tường thêm một khoảng
+          // Offset này giúp RallyBoard không chỉ nằm trên tường mà còn lùi ra ngoài tường
+          // Offset: 5 cm = 0.05 meters (có thể điều chỉnh)
+          const wallOffset = 0.15; // 5 cm trong meters
+
+          // Front face direction trong world space là +Z
+          const frontFaceDirection = new THREE.Vector3(0, 0, 1); // +Z trong world space
+
+          // Tính offset vector (di chuyển theo hướng +Z)
+          const offsetVector = frontFaceDirection
+            .clone()
+            .multiplyScalar(wallOffset);
+
+          // Cộng offset vào front face position
+          const finalPosition = frontFacePosition.clone().add(offsetVector);
+
+          console.log("📺 [Room] Creating RallyBoard_Mount placement node:", {
+            tvCenter: {
+              x: center.x.toFixed(4),
+              y: center.y.toFixed(4),
+              z: center.z.toFixed(4),
+              note: "TV center (nằm trong tường)",
+            },
+            tvMin: {
+              x: min.x.toFixed(4),
+              y: min.y.toFixed(4),
+              z: min.z.toFixed(4),
+              note: "TV back face (vào trong tường, hướng -Z)",
+            },
+            tvMax: {
+              x: max.x.toFixed(4),
+              y: max.y.toFixed(4),
+              z: max.z.toFixed(4),
+              note: "TV front face (ra ngoài tường, hướng +Z)",
+            },
+            tvSize: {
+              x: size.x.toFixed(4),
+              y: size.y.toFixed(4),
+              z: size.z.toFixed(4),
+              note: "TV size (width, height, depth)",
+            },
+            frontFacePosition: {
+              x: frontFacePosition.x.toFixed(4),
+              y: frontFacePosition.y.toFixed(4),
+              z: frontFacePosition.z.toFixed(4),
+              note: "TV front face position (max.z, trên tường)",
+            },
+            wallOffset: {
+              distance: wallOffset.toFixed(4),
+              unit: "meters (5 cm)",
+              direction: "+Z (ra ngoài tường)",
+              offsetVector: {
+                x: offsetVector.x.toFixed(4),
+                y: offsetVector.y.toFixed(4),
+                z: offsetVector.z.toFixed(4),
+              },
+              note: "Offset để đưa RallyBoard ra ngoài tường thêm",
+            },
+            finalPosition: {
+              x: finalPosition.x.toFixed(4),
+              y: finalPosition.y.toFixed(4),
+              z: finalPosition.z.toFixed(4),
+              note: "Placement node tại front face + offset (ra ngoài tường)",
+            },
+            offsetFromCenter: {
+              x: (finalPosition.x - center.x).toFixed(4),
+              y: (finalPosition.y - center.y).toFixed(4),
+              z: (finalPosition.z - center.z).toFixed(4),
+              note: "Offset từ center (trong tường) đến final position (ra ngoài tường)",
+            },
+            offsetFromFrontFace: {
+              x: (finalPosition.x - frontFacePosition.x).toFixed(4),
+              y: (finalPosition.y - frontFacePosition.y).toFixed(4),
+              z: (finalPosition.z - frontFacePosition.z).toFixed(4),
+              note: "Offset từ front face đến final position",
+            },
+            depth: {
+              value: size.z.toFixed(4),
+              note: "Độ sâu của TV (depth)",
+            },
+            note: "Placement node tại front face + offset (ra ngoài tường) thay vì center (trong tường)",
+          });
+
+          // Create new placement node at TV front face position + offset
+          const placementNode = new THREE.Object3D();
+          placementNode.name = "RallyBoard_Mount";
+          placementNode.position.copy(finalPosition); // ⭐ Position tại front face + offset (ra ngoài tường)
+
+          // ⭐ QUAN TRỌNG: Set rotation về identity (0,0,0) thay vì copy từ TV
+          // Lý do: RallyBoard đã được orient trong Product.tsx (orientRallyBoard)
+          // Nếu copy quaternion từ TV, có thể gây conflict rotation → RallyBoard bị úp mặt vào tường
+          // RallyBoard sẽ được orient để front face hướng về +Z (room front) trong Product.tsx
+          // Nên placement node không cần rotation, chỉ cần position
+          placementNode.quaternion.set(0, 0, 0, 1); // Identity quaternion (no rotation)
+          placementNode.rotation.set(0, 0, 0); // Identity rotation (no rotation)
+          placementNode.scale.set(1, 1, 1); // Scale = 1,1,1 for placement node
+
+          console.log("🔄 [Room] Placement node rotation set to identity:", {
+            quaternion: {
+              x: placementNode.quaternion.x,
+              y: placementNode.quaternion.y,
+              z: placementNode.quaternion.z,
+              w: placementNode.quaternion.w,
+            },
+            rotation: {
+              x: placementNode.rotation.x,
+              y: placementNode.rotation.y,
+              z: placementNode.rotation.z,
+            },
+            tvQuaternion: {
+              x: worldQuaternion.x.toFixed(4),
+              y: worldQuaternion.y.toFixed(4),
+              z: worldQuaternion.z.toFixed(4),
+              w: worldQuaternion.w.toFixed(4),
+              note: "TV quaternion (NOT used for placement node)",
+            },
+            note: "Placement node rotation = identity, RallyBoard will be oriented in Product.tsx",
+          });
+
+          // Add to scene
+          gltf.scene.add(placementNode);
+        }
+      }
+
       // ============================================
       // END CREATE PLACEMENT NODE
       // ============================================
