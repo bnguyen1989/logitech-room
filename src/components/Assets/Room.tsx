@@ -146,7 +146,7 @@ export const Room: React.FC<RoomProps> = (props) => {
           // ⭐ THÊM OFFSET: Di chuyển placement node ra ngoài tường thêm một khoảng
           // Offset này giúp RallyBoard không chỉ nằm trên tường mà còn lùi ra ngoài tường
           // Offset: 5 cm = 0.05 meters (có thể điều chỉnh)
-          const wallOffset = 0.15; // 5 cm trong meters
+          const wallOffset = 0.18; // 5 cm trong meters
 
           // Front face direction trong world space là +Z
           const frontFaceDirection = new THREE.Vector3(0, 0, 1); // +Z trong world space
@@ -231,35 +231,75 @@ export const Room: React.FC<RoomProps> = (props) => {
           placementNode.name = "RallyBoard_Mount";
           placementNode.position.copy(finalPosition); // ⭐ Position tại front face + offset (ra ngoài tường)
 
-          // ⭐ QUAN TRỌNG: Set rotation về identity (0,0,0) thay vì copy từ TV
-          // Lý do: RallyBoard đã được orient trong Product.tsx (orientRallyBoard)
-          // Nếu copy quaternion từ TV, có thể gây conflict rotation → RallyBoard bị úp mặt vào tường
-          // RallyBoard sẽ được orient để front face hướng về +Z (room front) trong Product.tsx
-          // Nên placement node không cần rotation, chỉ cần position
-          placementNode.quaternion.set(0, 0, 0, 1); // Identity quaternion (no rotation)
-          placementNode.rotation.set(0, 0, 0); // Identity rotation (no rotation)
+          // ⭐ QUAN TRỌNG: Xoay placement node 180 độ theo trục Y để RallyBoard mặt trước hướng ra ngoài
+          // TV front face hướng về +Z trong world space
+          // RallyBoard được orient trong Product.tsx để front face hướng về -Z (room front)
+          // Nhưng vì TV front face hướng về +Z, nên RallyBoard bị úp mặt vào tường
+          // Giải pháp: Xoay placement node 180 độ theo trục Y để RallyBoard quay mặt ra ngoài
+
+          // Tạo quaternion cho rotation 180 độ theo trục Y
+          // Rotation này sẽ được apply trong local space của placement node
+          const rotation180Y = new THREE.Quaternion();
+          rotation180Y.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI); // 180 độ = π radians
+
+          // Kết hợp TV quaternion với rotation 180 độ Y
+          // Thứ tự: worldQuaternion * rotation180Y
+          // Điều này sẽ apply TV rotation trước, sau đó xoay thêm 180 độ Y
+          const finalQuaternion = new THREE.Quaternion();
+          finalQuaternion.multiplyQuaternions(worldQuaternion, rotation180Y);
+
+          placementNode.quaternion.copy(finalQuaternion);
           placementNode.scale.set(1, 1, 1); // Scale = 1,1,1 for placement node
 
-          console.log("🔄 [Room] Placement node rotation set to identity:", {
-            quaternion: {
-              x: placementNode.quaternion.x,
-              y: placementNode.quaternion.y,
-              z: placementNode.quaternion.z,
-              w: placementNode.quaternion.w,
-            },
-            rotation: {
-              x: placementNode.rotation.x,
-              y: placementNode.rotation.y,
-              z: placementNode.rotation.z,
-            },
+          // Debug log
+          const tvEuler = new THREE.Euler();
+          tvEuler.setFromQuaternion(worldQuaternion);
+          const finalEuler = new THREE.Euler();
+          finalEuler.setFromQuaternion(finalQuaternion);
+
+          console.log("🔄 [Room] Placement node rotation (180° Y rotation):", {
             tvQuaternion: {
               x: worldQuaternion.x.toFixed(4),
               y: worldQuaternion.y.toFixed(4),
               z: worldQuaternion.z.toFixed(4),
               w: worldQuaternion.w.toFixed(4),
-              note: "TV quaternion (NOT used for placement node)",
             },
-            note: "Placement node rotation = identity, RallyBoard will be oriented in Product.tsx",
+            tvEuler: {
+              x: tvEuler.x.toFixed(4),
+              y: tvEuler.y.toFixed(4),
+              z: tvEuler.z.toFixed(4),
+              xDegrees: ((tvEuler.x * 180) / Math.PI).toFixed(2) + "°",
+              yDegrees: ((tvEuler.y * 180) / Math.PI).toFixed(2) + "°",
+              zDegrees: ((tvEuler.z * 180) / Math.PI).toFixed(2) + "°",
+            },
+            rotation180Y: {
+              x: rotation180Y.x.toFixed(4),
+              y: rotation180Y.y.toFixed(4),
+              z: rotation180Y.z.toFixed(4),
+              w: rotation180Y.w.toFixed(4),
+              note: "180° rotation around Y axis",
+            },
+            finalEuler: {
+              x: finalEuler.x.toFixed(4),
+              y: finalEuler.y.toFixed(4),
+              z: finalEuler.z.toFixed(4),
+              xDegrees: ((finalEuler.x * 180) / Math.PI).toFixed(2) + "°",
+              yDegrees: ((finalEuler.y * 180) / Math.PI).toFixed(2) + "°",
+              zDegrees: ((finalEuler.z * 180) / Math.PI).toFixed(2) + "°",
+            },
+            yRotationDelta: {
+              radians: (finalEuler.y - tvEuler.y).toFixed(4),
+              degrees:
+                (((finalEuler.y - tvEuler.y) * 180) / Math.PI).toFixed(2) + "°",
+              note: "Y rotation delta (should be ~180°)",
+            },
+            finalQuaternion: {
+              x: finalQuaternion.x.toFixed(4),
+              y: finalQuaternion.y.toFixed(4),
+              z: finalQuaternion.z.toFixed(4),
+              w: finalQuaternion.w.toFixed(4),
+            },
+            note: "Placement node rotated 180° Y to face RallyBoard front outwards (away from wall)",
           });
 
           // Add to scene

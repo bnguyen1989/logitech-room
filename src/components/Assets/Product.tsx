@@ -19,7 +19,7 @@ import {
   resolveAssetPath,
 } from "../../utils/localAssetLoader.js";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.js";
-// import { orientRallyBoard } from "../../utils/deviceOrientationUtils.js"; // Temporarily disabled - using manual rotation instead
+import { orientRallyBoard } from "../../utils/deviceOrientationUtils.js";
 import { DeviceAxesHelpers } from "./DeviceAxesHelpers.js";
 
 export type ProductProps = {
@@ -152,56 +152,13 @@ export const Product: React.FC<ProductProps> = ({
       // This ensures the model's center aligns with the placement node position
       clonedScene.position.sub(centerAfterScale);
 
-      // Orient RallyBoard: Rotate front face towards room front
-      // User confirmed: TV front face hướng về +Z trong world space
-      // Vấn đề: RallyBoard nằm sau tường, bị lệch khỏi placement node
-      // Giải pháp: Thử rotate 180 độ quanh X axis để flip front face
-
-      // Rotate 180 độ quanh X axis để flip front face
-      // Nếu RallyBoard GLB có front face hướng về -Z, rotate 180° quanh X sẽ flip thành +Z
-      const flipRotation = new THREE.Euler(Math.PI, 0, 0); // 180° rotation around X axis
-      clonedScene.rotation.copy(flipRotation);
-
-      // ⭐ QUAN TRỌNG: Recalculate center sau khi rotate
-      // Rotation có thể làm thay đổi bounding box, cần recalculate center
-      const boxAfterRotate = new THREE.Box3();
-      boxAfterRotate.setFromObject(clonedScene);
-      const centerAfterRotate = boxAfterRotate.getCenter(new THREE.Vector3());
-
-      // Adjust position để giữ center tại origin sau khi rotate
-      clonedScene.position.sub(centerAfterRotate);
-
-      console.log("🔄 [Product] RallyBoard rotated 180° around X axis:", {
-        centerBeforeRotate: {
-          x: centerAfterScale.x.toFixed(4),
-          y: centerAfterScale.y.toFixed(4),
-          z: centerAfterScale.z.toFixed(4),
-          note: "Center sau khi scale, trước khi rotate",
-        },
-        rotation: {
-          x: clonedScene.rotation.x,
-          y: clonedScene.rotation.y,
-          z: clonedScene.rotation.z,
-        },
-        rotationDegrees: {
-          x: (clonedScene.rotation.x * 180) / Math.PI,
-          y: (clonedScene.rotation.y * 180) / Math.PI,
-          z: (clonedScene.rotation.z * 180) / Math.PI,
-        },
-        centerAfterRotate: {
-          x: centerAfterRotate.x.toFixed(4),
-          y: centerAfterRotate.y.toFixed(4),
-          z: centerAfterRotate.z.toFixed(4),
-          note: "Center sau khi rotate (trước khi adjust)",
-        },
-        finalPosition: {
-          x: clonedScene.position.x.toFixed(4),
-          y: clonedScene.position.y.toFixed(4),
-          z: clonedScene.position.z.toFixed(4),
-          note: "Final position sau khi adjust để giữ center tại origin",
-        },
-        note: "Rotated 180° around X to flip front face (thử để fix vấn đề nằm sau tường)",
-      });
+      // Orient RallyBoard: Rotate front face towards room front (-Z direction)
+      // This ensures the screen/display faces forward (not into the wall)
+      orientRallyBoard(
+        clonedScene,
+        new THREE.Vector3(0, 0, -1), // Room front is -Z (negative Z axis)
+        true // Enable debug logs
+      );
 
       // Alternative: Center each mesh individually (more precise but slower)
       // Uncomment if the above doesn't work correctly
