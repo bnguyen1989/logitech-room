@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import { GLTFNode } from "./GLTFNode.js";
 
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/redux.js";
 import { changeStatusBuilding } from "../../store/slices/configurator/Configurator.slice.js";
@@ -40,6 +40,10 @@ export const Room: React.FC<RoomProps> = (props) => {
 
   // Get nodes mapping from Redux to check if RallyBoard is selected
   const nodes = useAppSelector(getNodes);
+
+  // Cache TV nodes/meshes references to avoid re-searching every render
+  const tvNodesRef = useRef<THREE.Object3D[]>([]);
+  const tvMeshesRef = useRef<THREE.Mesh[]>([]);
 
   console.log("✅ useThree() successful:", {
     hasScene: !!three?.scene,
@@ -472,28 +476,21 @@ export const Room: React.FC<RoomProps> = (props) => {
   }, [gltf, dispatch, setSnapshotCameras, three.scene, setMainCamera]);
 
   // ============================================
-  // HIDE/SHOW TV BASED ON RALLYBOARD SELECTION
+  // FIND TV NODES/MESHES (ONCE WHEN SCENE LOADS)
   // ============================================
   useEffect(() => {
-    if (!gltf?.scene) return;
+    if (!gltf?.scene) {
+      tvNodesRef.current = [];
+      tvMeshesRef.current = [];
+      return;
+    }
 
-    // Check if RallyBoard is selected by checking Redux nodes mapping
-    const rallyBoardMountNodeName =
-      PlacementManager.getNameNodeForRallyBoardMount();
-    const isRallyBoardSelected = nodes[rallyBoardMountNodeName] !== undefined;
-
-    console.log("📺 [Room] Checking TV visibility:", {
-      rallyBoardMountNodeName,
-      isRallyBoardSelected,
-      rallyBoardAssetId: nodes[rallyBoardMountNodeName],
-      allNodes: Object.keys(nodes),
-    });
-
-    // Find ALL TV nodes/meshes in scene (comprehensive search)
+    // Find ALL TV nodes/meshes in scene (only once when scene loads)
     const tvNodes: THREE.Object3D[] = [];
     const tvMeshes: THREE.Mesh[] = [];
     const tvRelatedNames = [
       "Phonebooth_tv",
+      "tv_phonebooth", // Also check lowercase variant
       "tv_display_phonebooth",
       "tv_body_phonebooth",
       "tv_mount_phonebooth",
@@ -507,7 +504,10 @@ export const Room: React.FC<RoomProps> = (props) => {
       // Find TV parent nodes
       if (
         tvRelatedNames.some(
-          (name) => node.name.includes(name) || name === node.name
+          (name) =>
+            node.name.includes(name) ||
+            name === node.name ||
+            node.name.toLowerCase() === name.toLowerCase()
         )
       ) {
         if (node instanceof THREE.Object3D) {
@@ -528,6 +528,40 @@ export const Room: React.FC<RoomProps> = (props) => {
         }
       }
     });
+
+    // Cache TV nodes/meshes references
+    tvNodesRef.current = tvNodes;
+    tvMeshesRef.current = tvMeshes;
+
+    console.log("📺 [Room] TV nodes/meshes cached:", {
+      tvNodesFound: tvNodes.length,
+      tvMeshesFound: tvMeshes.length,
+      tvNodeNames: tvNodes.map((n) => n.name),
+      tvMeshNames: tvMeshes.map((m) => m.name),
+    });
+  }, [gltf?.scene]);
+
+  // ============================================
+  // HIDE/SHOW TV BASED ON RALLYBOARD SELECTION
+  // ============================================
+  useEffect(() => {
+    if (!gltf?.scene) return;
+
+    // Check if RallyBoard is selected by checking Redux nodes mapping
+    const rallyBoardMountNodeName =
+      PlacementManager.getNameNodeForRallyBoardMount();
+    const isRallyBoardSelected = nodes[rallyBoardMountNodeName] !== undefined;
+
+    console.log("📺 [Room] Checking TV visibility:", {
+      rallyBoardMountNodeName,
+      isRallyBoardSelected,
+      rallyBoardAssetId: nodes[rallyBoardMountNodeName],
+      allNodes: Object.keys(nodes),
+    });
+
+    // Use cached TV nodes/meshes references
+    const tvNodes = tvNodesRef.current;
+    const tvMeshes = tvMeshesRef.current;
 
     // Hide/show ALL TV nodes and meshes
     // Force set visibility (don't check previousVisible to ensure it's always updated)
@@ -591,15 +625,29 @@ export const Room: React.FC<RoomProps> = (props) => {
         "⚠️ [Room] No TV nodes or meshes found in scene. TV might have different names."
       );
     }
-  }, [gltf, nodes]);
+
+    // Force invalidate frame to trigger re-render when visibility changes
+    // This is necessary when Canvas uses frameloop="demand"
+    if (three.invalidate) {
+      three.invalidate();
+    }
+  }, [gltf, nodes, three]);
 
   if (!gltf) return <></>;
+
+  // Check if RallyBoard is selected for TV visibility control
+  const rallyBoardMountNodeName =
+    PlacementManager.getNameNodeForRallyBoardMount();
+  const isRallyBoardSelected = nodes[rallyBoardMountNodeName] !== undefined;
 
   return (
     <>
       {three.camera && <primitive object={three.camera}></primitive>}
       <ambientLight intensity={1.5} color={"#ffffff"} />
-      <GLTFNode threeNode={gltf.scene} nodeMatchers={ProductsNodes()} />
+      <GLTFNode
+        threeNode={gltf.scene}
+        nodeMatchers={ProductsNodes({ isRallyBoardSelected })}
+      />
       <Dimension threeNode={gltf.scene} />
       <CameraRoom gltf={gltf} camera={three.camera} roomAssetId={roomAssetId} />
 

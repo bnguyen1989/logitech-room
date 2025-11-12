@@ -60,6 +60,11 @@ export const GLTFNode = ({
 
   if ("isMesh" in threeNode) {
     const mesh = threeNode as Mesh;
+    console.log(
+      "🔍 [GLTFNode] Mesh visible:",
+      threeNode.name,
+      threeNode.visible
+    );
     return (
       <mesh
         castShadow
@@ -70,6 +75,7 @@ export const GLTFNode = ({
         position={threeNode.position}
         scale={threeNode.scale}
         rotation={threeNode.rotation}
+        visible={threeNode.visible}
         {...props}
         onPointerMove={(e) => {
           const intersections = e.intersections;
@@ -91,12 +97,18 @@ export const GLTFNode = ({
       </mesh>
     );
   } else {
+    console.log(
+      "🔍 [GLTFNode] Group/Object3D visible:",
+      threeNode.name,
+      threeNode.visible
+    );
     return (
       <group
         key={threeNode.uuid + "-group"}
         position={threeNode.position}
         scale={threeNode.scale}
         rotation={threeNode.rotation}
+        visible={threeNode.visible}
         {...props}
       >
         {children}

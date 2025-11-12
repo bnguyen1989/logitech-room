@@ -19,6 +19,8 @@ import {
   resolveAssetPath,
 } from "../../utils/localAssetLoader.js";
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.js";
+import { orientRallyBoard } from "../../utils/deviceOrientationUtils.js";
+import { DeviceAxesHelpers } from "./DeviceAxesHelpers.js";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
@@ -136,7 +138,7 @@ export const Product: React.FC<ProductProps> = ({
       if (maxDimension > 10) {
         // Scale down to reasonable size (assuming GLB is in cm, convert to meters)
         // Changed from 0.01 to 0.1 to make RallyBoard larger
-        scaleFactor = 0.1; // cm to decimeters (10x larger than before)
+        scaleFactor = 0.08; // cm to decimeters (10x larger than before)
         clonedScene.scale.multiplyScalar(scaleFactor);
       }
 
@@ -149,6 +151,14 @@ export const Product: React.FC<ProductProps> = ({
       // Center the scene at origin (pivot point = center of bounding box)
       // This ensures the model's center aligns with the placement node position
       clonedScene.position.sub(centerAfterScale);
+
+      // Orient RallyBoard: Rotate front face towards room front (-Z direction)
+      // This ensures the screen/display faces forward (not into the wall)
+      orientRallyBoard(
+        clonedScene,
+        new THREE.Vector3(0, 0, 1), // Room front is -Z (negative Z axis)
+        true // Enable debug logs
+      );
 
       // Alternative: Center each mesh individually (more precise but slower)
       // Uncomment if the above doesn't work correctly
@@ -186,6 +196,38 @@ export const Product: React.FC<ProductProps> = ({
 
     return clonedScene;
   }, [productGltf, nameNode]);
+
+  // ============================================
+  // TOGGLE AXES HELPERS FOR RALLYBOARD
+  // ============================================
+  // Set to true to show axes, false to hide
+  // Change this value to toggle axes helpers on/off
+  const ENABLE_AXES_HELPERS = true; // ⭐ CHANGE THIS: true = show, false = hide
+
+  // Check if this is RallyBoard GLB by checking assetId or keyPermission
+  // Must call useMemo before early return to comply with Rules of Hooks
+  const isRallyBoardGLB = useMemo(() => {
+    if (!ENABLE_AXES_HELPERS) return false;
+
+    // Check by assetId (contains "rallyboard")
+    const assetIdLower = (productAssetId || "").toLowerCase();
+    const resolvedIdLower = (resolvedAssetId || "").toLowerCase();
+    const isRallyBoardAsset =
+      assetIdLower.includes("rallyboard") ||
+      resolvedIdLower.includes("rallyboard");
+
+    // Check by keyPermission (if available)
+    const keyPermissions = keyPermissionObj
+      ? Object.values(keyPermissionObj).flat()
+      : [];
+    const isRallyBoardPermission = keyPermissions.some((kp) =>
+      kp?.toLowerCase().includes("rallyboard")
+    );
+
+    return isRallyBoardAsset || isRallyBoardPermission;
+  }, [ENABLE_AXES_HELPERS, productAssetId, resolvedAssetId, keyPermissionObj]);
+
+  const showAxesHelpers = isRallyBoardGLB;
 
   // Guard against null productGltf (after all hooks are called)
   if (!productGltf || !processedScene) {
@@ -269,8 +311,22 @@ export const Product: React.FC<ProductProps> = ({
           />
         </mesh>
       )}
+
+      {/* Axes helpers - Local and World coordinate systems */}
+      {/* Easy to toggle: change showAxesHelpers variable above */}
+      {showAxesHelpers && (
+        <DeviceAxesHelpers
+          showLocal={true} // Show device's local axes (Red=X, Green=Y, Blue=Z)
+          showWorld={true} // Show world axes (Cyan=X, Yellow=Y, Magenta=Z)
+          size={2.0} // Size of axes arrows (increased for better visibility)
+        />
+      )}
+
       {PlacementManager.getNameNodeWithoutInteraction().includes(nameNode) ? (
-        <GLTFNode threeNode={processedScene} nodeMatchers={ProductsNodes()} />
+        <GLTFNode
+          threeNode={processedScene}
+          nodeMatchers={ProductsNodes({ isRallyBoardSelected: false })}
+        />
       ) : (
         <Select
           enabled={highlight}
@@ -289,7 +345,10 @@ export const Product: React.FC<ProductProps> = ({
                 callbackDisablePopuptNodes={callbackDisablePopuptNodes}
               />
             )}
-          <GLTFNode threeNode={processedScene} nodeMatchers={ProductsNodes()} />
+          <GLTFNode
+            threeNode={processedScene}
+            nodeMatchers={ProductsNodes({ isRallyBoardSelected: false })}
+          />
         </Select>
       )}
     </group>
