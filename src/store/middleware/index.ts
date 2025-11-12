@@ -11,6 +11,7 @@ import {
 } from "../slices/ui/handlers/handlers";
 import { Application } from "../../models/Application";
 import {
+  addElement,
   changeColorElement,
   changeCountElement,
   deleteNodesByCards,
@@ -150,7 +151,6 @@ export const middleware: Middleware =
 
         updateDisplayBasedOnRecommendation(key, activeStep)(store);
         updateDisplayTypeByKeyPermission(key, activeStep)(store);
-
         const updateNodes = updateNodesByConfiguration(
           currentConfigurator,
           activeStep
@@ -158,6 +158,49 @@ export const middleware: Middleware =
 
         const attributeNames = Configurator.getNamesAttrByStepName(activeStep);
         updateNodes(store, attributeNames);
+
+        // Handle local GLB cards (cards that don't exist in Threekit configurator)
+        // For RallyBoard and other local GLB products, call addElement directly
+        const card = getCardByKeyPermission(activeStep, key)(state);
+        if (card) {
+          // Check if this card's attributeName exists in Threekit configurator
+          const attributeName = card.dataThreekit.attributeName;
+          const configValue =
+            currentConfigurator.getConfiguration()[attributeName];
+
+          // Check if attributeName is in arrayAttributes (Threekit attributes)
+          const attributeNames =
+            Configurator.getNamesAttrByStepName(activeStep);
+          const isThreekitAttribute = attributeNames.some(
+            (attrArray) => attrArray[0] === attributeName
+          );
+
+          // If attributeName is NOT in Threekit attributes list, it's a local GLB card
+          if (!isThreekitAttribute) {
+            // This is a local GLB card, add element directly
+            console.log("🔵 [Local GLB] Calling addElement for:", key, {
+              attributeName,
+              isThreekitAttribute,
+              hasConfigValue: !!configValue,
+              card: card.keyPermission,
+            });
+            const count = getPropertyCounterCardByKeyPermission(
+              activeStep,
+              key
+            )(state);
+            addElement(card, activeStep, count)(store);
+          } else {
+            console.log(
+              "ℹ️ [Threekit] Card handled by updateNodesByConfiguration:",
+              key,
+              {
+                attributeName,
+                isThreekitAttribute,
+                hasConfigValue: !!configValue,
+              }
+            );
+          }
+        }
 
         updateAssetIdByKeyPermission(key)(store);
         break;

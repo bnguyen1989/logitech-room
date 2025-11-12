@@ -12,6 +12,7 @@ import {
   SelectDataI,
   TypeCardPermissionWithDataThreekit,
 } from "../type";
+import { CameraName } from "../../../../utils/permissionUtils";
 import {
   addActiveCard,
   addActiveCards,
@@ -680,7 +681,93 @@ function setCameraData(configurator: Configurator) {
       StepName.ConferenceCamera,
       Configurator.CameraName
     );
+    
+    // Add RallyBoard card manually for local GLB loading
+    addRallyBoardCard(store);
   };
+}
+
+/**
+ * Add RallyBoard card with local GLB assetId
+ * This card is not loaded from Threekit, but uses local GLB file
+ */
+function addRallyBoardCard(store: Store) {
+  const rallyBoardCard: CardI = {
+    key: StepName.ConferenceCamera,
+    keyPermission: CameraName.RallyBoard,
+    dataThreekit: {
+      attributeName: "RallyBoard",
+      threekitItems: {
+        [CameraName.RallyBoard]: {
+          id: "rallyboard-mount-asset-1", // Key in LOCAL_ASSET_MAPPING (used as assetId)
+          assetId: "rallyboard-mount-asset-1", // Also include assetId for compatibility
+          key: CameraName.RallyBoard,
+          name: CameraName.RallyBoard,
+          type: "asset",
+          orgId: "",
+          metadata: {},
+          tags: [],
+          parentFolderId: "",
+          advancedAr: false,
+          proxyId: "",
+          publishedAt: "",
+          updatedBy: "",
+          proxyType: "",
+          warnings: false,
+          fileSize: 0,
+          tagids: [],
+          head: "",
+          analytics: false,
+          attributes: [],
+          enabled: true,
+          visible: true,
+        },
+      },
+    },
+    counter: {
+      min: 0,
+      max: 1,
+      threekit: {
+        key: "",
+      },
+    },
+  };
+
+  // Get existing cards from step and add RallyBoard card
+  const state = store.getState();
+  const stepData = state.ui.stepData[StepName.ConferenceCamera];
+  if (stepData) {
+    // Merge RallyBoard card with existing cards
+    const existingCards = { ...stepData.cards };
+    existingCards[CameraName.RallyBoard] = rallyBoardCard;
+    
+    // Convert to array and sort cards to ensure RallyBoard appears in correct order
+    const cardsArray = Object.values(existingCards);
+    const sortedKeyPermissions = getSortedKeyPermissionsByStep(StepName.ConferenceCamera)(store);
+    const sortedCards = sortedCardsByArrTemplate(cardsArray, sortedKeyPermissions);
+    
+    // Convert back to Record format
+    const sortedCardsRecord = sortedCards.reduce((acc, card) => {
+      acc[card.keyPermission] = card;
+      return acc;
+    }, {} as Record<string, CardI>);
+    
+    // Update step with all cards including RallyBoard (sorted)
+    store.dispatch(
+      setDataCardsStep({
+        step: StepName.ConferenceCamera,
+        cards: sortedCardsRecord,
+      })
+    );
+    
+    // Create item for RallyBoard
+    store.dispatch(
+      createItem({
+        step: StepName.ConferenceCamera,
+        keyItemPermission: CameraName.RallyBoard,
+      })
+    );
+  }
 }
 
 function setMeetingControllerData(configurator: Configurator) {

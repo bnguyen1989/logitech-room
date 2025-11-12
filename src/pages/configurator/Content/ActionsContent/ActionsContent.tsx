@@ -33,6 +33,11 @@ export const ActionsContent = () => {
 
   const langPage = useAppSelector(getNavigationLangPage);
 
+  // Early return if langPage not ready
+  if (!langPage) {
+    return null;
+  }
+
   const handleNext = () => {
     app.analyticsEvent({
       category: EventCategoryName.threekit_configurator,
@@ -90,14 +95,14 @@ export const ActionsContent = () => {
       <div className={s.button_back}>
         <Button
           onClick={handleBack}
-          text={langPage.Back}
+          text={langPage?.Back || "Back"}
           dataAnalytics={"back"}
         />
       </div>
       <div className={s.button_next}>
         <Button
           onClick={handleNext}
-          text={nextStep ? langPage.Next : langPage.Finish}
+          text={nextStep ? (langPage?.Next || "Next") : (langPage?.Finish || "Finish")}
           variant="contained"
           disabled={!isCanChangeStep}
           dataAnalytics={"next"}

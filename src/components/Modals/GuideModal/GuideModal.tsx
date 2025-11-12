@@ -27,6 +27,11 @@ export const GuideModal: React.FC = () => {
   const { isOpen, dataModal } = useAppSelector(getDataGuideModal);
   const langPage = useAppSelector(getGuideModalLangPage);
 
+  // Early return if langPage is not loaded yet
+  if (!langPage) {
+    return null;
+  }
+
   const tabs: TabDataI[] = [
     {
       icon: <CameraControlsSVG />,
@@ -36,8 +41,8 @@ export const GuideModal: React.FC = () => {
       icon: <DimensionSVG />,
       contents: [
         <TextTab
-          title={langPage.Dimension.title}
-          subtitle={langPage.Dimension.subtitle}
+          title={langPage.Dimension?.title || ""}
+          subtitle={langPage.Dimension?.subtitle || ""}
         />,
       ],
     },
@@ -45,8 +50,8 @@ export const GuideModal: React.FC = () => {
       icon: <ProductInfoSVG />,
       contents: [
         <TextTab
-          title={langPage.ProductInfo.title}
-          subtitle={langPage.ProductInfo.subtitle}
+          title={langPage.ProductInfo?.title || ""}
+          subtitle={langPage.ProductInfo?.subtitle || ""}
         />,
       ],
     },
@@ -54,8 +59,8 @@ export const GuideModal: React.FC = () => {
       icon: <InfoSVG />,
       contents: [
         <TextTab
-          title={langPage.Interact.title}
-          subtitle={langPage.Interact.subtitle}
+          title={langPage.Interact?.title || ""}
+          subtitle={langPage.Interact?.subtitle || ""}
         />,
       ],
     },

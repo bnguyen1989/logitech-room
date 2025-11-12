@@ -224,11 +224,35 @@ export function addElement(
     const state = store.getState();
     const permission = getPermission(stepName)(state);
     const step = permission.getCurrentStep();
-    if (!card || !step) return;
+    if (!card || !step) {
+      console.warn("⚠️ [addElement] Missing card or step:", {
+        card: !!card,
+        step: !!step,
+      });
+      return;
+    }
 
     const cardAsset = getAssetFromCard(card)(state);
+    console.log("🔵 [addElement] Called for:", card.keyPermission, {
+      cardAssetId: cardAsset?.id,
+      stepName,
+    });
 
     const element = step.getElementByName(card.keyPermission);
+    if (!element) {
+      console.warn("⚠️ [addElement] Element not found:", card.keyPermission);
+      return;
+    }
+
+    // Debug: Log element type
+    console.log("🔍 [addElement] Element type check:", {
+      keyPermission: card.keyPermission,
+      elementType: element.constructor.name,
+      isItemElement: element instanceof ItemElement,
+      isMountElement: element instanceof MountElement,
+      element: element,
+      elementName: element.name,
+    });
 
     const bundleMountApply = (element: ItemElement) => {
       const bundleMount = permission.getBundleMountElementsByName(element.name);
@@ -253,9 +277,17 @@ export function addElement(
     };
 
     if (element instanceof ItemElement) {
+      console.log("✅ [addElement] Element is ItemElement, proceeding...");
       bundleMountApply(element);
 
       const defaultMount = element.getDefaultMount();
+      console.log("🔍 [addElement] DefaultMount check:", {
+        hasDefaultMount: !!defaultMount,
+        defaultMountType: defaultMount?.constructor.name,
+        isCountableMountElement: defaultMount instanceof CountableMountElement,
+        isMountElement: defaultMount instanceof MountElement,
+        defaultMount: defaultMount,
+      });
 
       if (defaultMount instanceof CountableMountElement) {
         if (!card.counter) return;
@@ -362,8 +394,14 @@ export function addElement(
 
         const dependentMount = defaultMount.getDependentMount();
         if (!dependentMount) {
+          const nodeName = defaultMount.getNameNode();
+          console.log("✅ [addElement] Setting node mapping:", {
+            nodeName,
+            assetId: cardAsset.id,
+            keyPermission: card.keyPermission,
+          });
           store.dispatch(changeStatusProcessing(true));
-          setElementByNameNode(cardAsset.id, defaultMount.getNameNode())(store);
+          setElementByNameNode(cardAsset.id, nodeName)(store);
           return;
         }
         store.dispatch(changeStatusProcessing(true));
@@ -543,6 +581,12 @@ export function removeElement(card: CardI, stepName: StepName) {
         store.dispatch(removeValuesConfigurationByKeys(listNodes));
       }
     }
+    console.log("🔵 [removeElement] Called for:", card.keyPermission, {
+      cardAssetId: cardAsset?.id,
+      stepName,
+      element,
+      elementInstance: element instanceof MountElement,
+    });
     if (element instanceof MountElement) {
       const itemElement = step.getActiveItemElementByMountName(element.name);
       if (!(itemElement instanceof ItemElement)) return;

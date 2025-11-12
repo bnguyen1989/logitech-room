@@ -139,6 +139,10 @@ export class PlacementManager {
     return "LogitechExtend_Placement";
   }
 
+  public static getNameNodeForRallyBoardMount(): string {
+    return "RallyBoard_Mount";
+  }
+
   public static getNameNodeCameraRallyPlusBackWall(): string[] {
     return [PlacementManager.getNameNodeForCamera("Wall", 4)];
   }
@@ -243,7 +247,8 @@ export class PlacementManager {
       this.getNameNodeForTV(),
       this.getNameNodeCameraRalyPlus(),
       this.getNameNodeForSight2(),
-      this.getNameNodeForLogitechExtend()
+      this.getNameNodeForLogitechExtend(),
+      this.getNameNodeForRallyBoardMount()
     );
 
     return placements;

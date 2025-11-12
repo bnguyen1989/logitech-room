@@ -12,6 +12,10 @@ import { AnnotationProductContainer } from "../Annotation/AnnotationProduct/Anno
 import { StepName } from "../../utils/baseUtils.js";
 import { Configuration } from "@threekit/rest-api";
 import { PlacementManager } from "../../models/configurator/PlacementManager.js";
+import {
+  useLocalOrThreekitAsset,
+  resolveAssetPath,
+} from "../../utils/localAssetLoader.js";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
@@ -43,7 +47,17 @@ export const Product: React.FC<ProductProps> = ({
   nameNode,
 }) => {
   const dispatch = useDispatch();
-  const productGltf = useAsset({ assetId: productAssetId, configuration });
+  
+  // Resolve assetId: check mapping or use directly
+  const resolvedAssetId = resolveAssetPath(productAssetId);
+  
+  // Load from local file or Threekit (auto-detect)
+  const productGltf = useLocalOrThreekitAsset(
+    resolvedAssetId,
+    useAsset,
+    configuration
+  );
+  
   const keyPermissionObj = useAppSelector(
     getKeyPermissionFromNameNode(nameNode)
   );

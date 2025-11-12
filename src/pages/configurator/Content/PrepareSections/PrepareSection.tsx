@@ -23,38 +23,47 @@ interface PrepareSectionIn {
   refHeader?: any;
 }
 export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
-  const activeStepData: StepI = useAppSelector(getActiveStepData);
+  const activeStepData: StepI | undefined = useAppSelector(getActiveStepData);
   const isConfiguratorStep = useAppSelector(getIsConfiguratorStep);
+  
+  // Must call all hooks before any conditional returns
   const secondaryCards = useAppSelector(
-    getSecondaryCardsFromStep(activeStepData)
+    getSecondaryCardsFromStep(activeStepData || ({} as StepI))
   );
 
   const actionAnchor = useAnchor<HTMLDivElement>();
   const langPage = useAppSelector(getPlatformLangPage);
+  
+  // Early return if data not ready (after all hooks)
+  if (!activeStepData || !activeStepData.key || !langPage) {
+    return null;
+  }
   // //@ts-ignore
   // window.actionAnchor = actionAnchor;
 
   // submit event:
   useEffect(() => {
-    if (isConfiguratorStep) return;
+    if (isConfiguratorStep || !activeStepData?.key) return;
 
     getTKAnalytics().stage({ stageName: activeStepData.key });
 
-    getTKAnalytics().optionsShow({
-      optionsSetId: activeStepData.key,
-      optionsType: OptionsType.Value,
-      options: Object.values(activeStepData.cards).map((card) => ({
-        optionId: card.keyPermission,
-        optionName: card.keyPermission,
-        optionValue: card.keyPermission,
-      })),
-    });
+    if (activeStepData.cards) {
+      getTKAnalytics().optionsShow({
+        optionsSetId: activeStepData.key,
+        optionsType: OptionsType.Value,
+        options: Object.values(activeStepData.cards).map((card) => ({
+          optionId: card.keyPermission,
+          optionName: card.keyPermission,
+          optionValue: card.keyPermission,
+        })),
+      });
+    }
     console.log("test handleTopAnchor");
 
     if (refHeader) {
       refHeader.handleTopAnchor();
     }
-  }, [activeStepData.key]);
+  }, [activeStepData?.key, isConfiguratorStep, refHeader]);
 
   if (isConfiguratorStep) return null;
 
@@ -126,7 +135,7 @@ export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
     <ContentContainer refAction={actionAnchor.ref}>
       <div className={s.container_PrepareSection}>
         <div className={isSecondaryCards ? s.wrapper_scroll : s.wrapper}>
-          {activeStepData.key === StepName.RoomSize && (
+          {activeStepData.key === StepName.RoomSize && activeStepData.cards && (
             <div className={s.wrapperCardsRoom}>
               <div className={s.contentRoomCard}>
                 {Object.values(activeStepData.cards).map((card, index) =>
@@ -141,7 +150,7 @@ export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
               </div>
             </div>
           )}
-          {activeStepData.key === StepName.Services && (
+          {activeStepData.key === StepName.Services && activeStepData.cards && (
             <div className={s.wrapperCards}>
               <div className={s.content_cards}>
                 {Object.values(activeStepData.cards).map((card, index) =>
@@ -156,7 +165,7 @@ export const PrepareSection: React.FC<PrepareSectionIn> = ({ refHeader }) => {
               </div>
             </div>
           )}
-          {activeStepData.key === StepName.Platform && (
+          {activeStepData.key === StepName.Platform && activeStepData.cards && (
             <div className={s.wrapperCardsPlatform}>
               <div className={s.contentCardsPlatform}>
                 {Object.values(activeStepData.cards).map((card, index) =>

@@ -25,6 +25,11 @@ export const GetStarted: React.FC = () => {
   const langPage = useAppSelector(getGetStartedLangPage);
   const { handleNavigate } = useUrl();
 
+  // Early return if langPage not ready
+  if (!langPage) {
+    return null;
+  }
+
   const sendAnalytics = () => {
     app.analyticsEvent({
       category: EventCategoryName.get_started,
@@ -82,18 +87,18 @@ export const GetStarted: React.FC = () => {
 
       <div className={s.content}>
         <div className={s.text}>
-          <div className={s.header_title}>{langPage.subtitle}</div>
-          <div className={s.title}>{langPage.title}</div>
+          <div className={s.header_title}>{langPage?.subtitle || ""}</div>
+          <div className={s.title}>{langPage?.title || ""}</div>
         </div>
 
         <div className={s.description}>
           <div className={s.block}>
-            <div className={s.block_title}>{langPage.list.title}</div>
+            <div className={s.block_title}>{langPage?.list?.title || ""}</div>
 
             <ul className={s.block_list}>
-              <li>{langPage.list["0"]}</li>
-              <li>{langPage.list["1"]}</li>
-              <li>{langPage.list["2"]}</li>
+              <li>{langPage?.list?.["0"] || ""}</li>
+              <li>{langPage?.list?.["1"] || ""}</li>
+              <li>{langPage?.list?.["2"] || ""}</li>
             </ul>
           </div>
         </div>
@@ -101,13 +106,13 @@ export const GetStarted: React.FC = () => {
         <div className={s.type_user}>
           <div className={s.type_user_buttons}>
             <Button
-              text={langPage.Btn.customer}
+              text={langPage?.Btn?.customer || "Customer"}
               variant="contained"
               onClick={handleCustomerClick}
               dataAnalytics={"room-configurator-get-started-customer"}
             />
             <Button
-              text={langPage.Btn.partner}
+              text={langPage?.Btn?.partner || "Partner"}
               variant="outlined"
               onClick={handlePartnerClick}
               dataAnalytics={"room-configurator-get-started-partner"}

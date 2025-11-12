@@ -41,6 +41,7 @@ export enum CameraName {
   RallyBar = "Logitech Rally Bar",
   RallyPlus = "Logitech Rally Plus",
   RallyCamera = "Logitech Rally Camera",
+  RallyBoard = "RallyBoard",
 
   AddCameras = "Add'l Cameras",
 
@@ -493,11 +494,21 @@ export function createStepConferenceCamera() {
     )
   );
 
+  const groupRallyBoard = new GroupElement().addElement(
+    new ItemElement(CameraName.RallyBoard).setDefaultMount(
+      new MountElement(
+        CameraName.RallyBoard,
+        PlacementManager.getNameNodeForRallyBoardMount()
+      )
+    )
+  );
+
   stepConferenceCamera.allElements = [
     group,
     groupRallyCamera,
     groupCompute,
     groupSight,
+    groupRallyBoard,
   ];
   return stepConferenceCamera;
 }

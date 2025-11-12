@@ -161,49 +161,73 @@ export const getDimensionLangPage = (state: RootState) => {
 
 export const getLangStepDataByStepName =
   (stepName: StepName) => (state: RootState) => {
-    switch (stepName) {
-      case StepName.RoomSize:
-        return getRoomSizeLangPage(state);
-      case StepName.Platform:
-        return getPlatformLangPage(state);
-      case StepName.Services:
-        return getServicesLangPage(state);
-      case StepName.ConferenceCamera:
-        return getConferenceCameraLangPage(state);
-      case StepName.AudioExtensions:
-        return getAudioExtensionsLangPage(state);
-      case StepName.MeetingController:
-        return getMeetingControllerLangPage(state);
-      case StepName.VideoAccessories:
-        return getVideoAccessoriesLangPage(state);
-      case StepName.SoftwareServices: {
-        const data = { ...getSoftwareServicesLangPage(state) };
-        const { isSubmit } = getDataSoftwareQuestionsForm(state);
-        if (isSubmit) {
-          data.title = data.titleAfterForm;
+    try {
+      switch (stepName) {
+        case StepName.RoomSize: {
+          const data = getRoomSizeLangPage(state);
+          return data || null;
         }
-        return data;
+        case StepName.Platform: {
+          const data = getPlatformLangPage(state);
+          return data || null;
+        }
+        case StepName.Services: {
+          const data = getServicesLangPage(state);
+          return data || null;
+        }
+        case StepName.ConferenceCamera: {
+          const data = getConferenceCameraLangPage(state);
+          return data || null;
+        }
+        case StepName.AudioExtensions: {
+          const data = getAudioExtensionsLangPage(state);
+          return data || null;
+        }
+        case StepName.MeetingController: {
+          const data = getMeetingControllerLangPage(state);
+          return data || null;
+        }
+        case StepName.VideoAccessories: {
+          const data = getVideoAccessoriesLangPage(state);
+          return data || null;
+        }
+        case StepName.SoftwareServices: {
+          const data = getSoftwareServicesLangPage(state);
+          if (!data) return null;
+          const result = { ...data };
+          const { isSubmit } = getDataSoftwareQuestionsForm(state);
+          if (isSubmit && data.titleAfterForm) {
+            result.title = data.titleAfterForm;
+          }
+          return result;
+        }
+        default:
+          console.warn(`Step not found: ${stepName}`);
+          return null;
       }
-      default:
-        throw new Error("Step not found");
+    } catch (error) {
+      console.warn(`Error getting lang step data for ${stepName}:`, error);
+      return null;
     }
   };
 
 export const getTitleStepByStepName =
   (stepName: StepName) => (state: RootState) => {
     const langStepData = getLangStepDataByStepName(stepName)(state);
-    return langStepData.title;
+    return langStepData?.title || "";
   };
 
 export const getNameStepByStepName =
   (stepName: StepName) => (state: RootState) => {
     const langStepData = getLangStepDataByStepName(stepName)(state);
-    return langStepData.name;
+    return langStepData?.name || "";
   };
 
 export const getSubTitleStepByStepName =
   (stepName: StepName) => (state: RootState) => {
     const langStepData = getLangStepDataByStepName(stepName)(state);
+    
+    if (!langStepData) return "";
 
     const selectedPrepareCards = getSelectedPrepareCards(state);
 

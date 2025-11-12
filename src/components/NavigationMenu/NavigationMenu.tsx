@@ -10,6 +10,12 @@ import { getNameStepByStepName } from "../../store/slices/ui/selectors/selectote
 export const NavigationMenu: React.FC = () => {
   const dataStep = useAppSelector(getStepData);
   const activeStepData = useAppSelector(getActiveStepData);
+  
+  // Early return if data not ready
+  if (!dataStep || !activeStepData || !activeStepData.key) {
+    return null;
+  }
+  
   const langNameStep = useAppSelector(
     getNameStepByStepName(activeStepData.key)
   );
@@ -18,11 +24,11 @@ export const NavigationMenu: React.FC = () => {
     return step.name === activeStepData.name;
   };
 
-  const listDataStep = Object.values(dataStep);
+  const listDataStep = Object.values(dataStep || {});
 
   return (
     <div className={s.container}>
-      <div className={s.name}>{langNameStep}</div>
+      <div className={s.name}>{langNameStep || ""}</div>
       <div className={s.menu}>
         {listDataStep.map((item, index) => (
           <div key={index} className={s.wrapper}>
