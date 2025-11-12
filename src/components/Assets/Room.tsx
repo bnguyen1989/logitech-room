@@ -5,7 +5,10 @@ import { GLTFNode } from "./GLTFNode.js";
 
 import { useEffect, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../hooks/redux.js";
 import { changeStatusBuilding } from "../../store/slices/configurator/Configurator.slice.js";
+import { getNodes } from "../../store/slices/configurator/selectors/selectors.js";
+import { PlacementManager } from "../../models/configurator/PlacementManager.js";
 import { ProductsNodes } from "./ProductsNodes.js";
 import { useThree } from "@react-three/fiber";
 import { CameraRoom } from "./CameraRoom.js";
@@ -34,6 +37,9 @@ export const Room: React.FC<RoomProps> = (props) => {
   const gltf = useScene({ assetId: roomAssetId });
   const three = useThree();
   const [placementNodesUpdateKey, setPlacementNodesUpdateKey] = useState(0);
+
+  // Get nodes mapping from Redux to check if RallyBoard is selected
+  const nodes = useAppSelector(getNodes);
 
   console.log("✅ useThree() successful:", {
     hasScene: !!three?.scene,
@@ -438,6 +444,12 @@ export const Room: React.FC<RoomProps> = (props) => {
       // END CREATE PLACEMENT NODE
       // ============================================
 
+      // ============================================
+      // HIDE TV WHEN RALLYBOARD IS SELECTED
+      // ============================================
+      // This will be handled in a separate useEffect that watches Redux store
+      // ============================================
+
       gltf.scene.traverse((node) => {
         if (node instanceof THREE.Mesh && node.isMesh) {
           const materials = Array.isArray(node.material)
@@ -459,6 +471,128 @@ export const Room: React.FC<RoomProps> = (props) => {
     }
   }, [gltf, dispatch, setSnapshotCameras, three.scene, setMainCamera]);
 
+  // ============================================
+  // HIDE/SHOW TV BASED ON RALLYBOARD SELECTION
+  // ============================================
+  useEffect(() => {
+    if (!gltf?.scene) return;
+
+    // Check if RallyBoard is selected by checking Redux nodes mapping
+    const rallyBoardMountNodeName =
+      PlacementManager.getNameNodeForRallyBoardMount();
+    const isRallyBoardSelected = nodes[rallyBoardMountNodeName] !== undefined;
+
+    console.log("📺 [Room] Checking TV visibility:", {
+      rallyBoardMountNodeName,
+      isRallyBoardSelected,
+      rallyBoardAssetId: nodes[rallyBoardMountNodeName],
+      allNodes: Object.keys(nodes),
+    });
+
+    // Find ALL TV nodes/meshes in scene (comprehensive search)
+    const tvNodes: THREE.Object3D[] = [];
+    const tvMeshes: THREE.Mesh[] = [];
+    const tvRelatedNames = [
+      "Phonebooth_tv",
+      "tv_display_phonebooth",
+      "tv_body_phonebooth",
+      "tv_mount_phonebooth",
+      "TV",
+      "Display",
+      "TV_Mesh",
+      "Display_Mesh",
+    ];
+
+    gltf.scene.traverse((node) => {
+      // Find TV parent nodes
+      if (
+        tvRelatedNames.some(
+          (name) => node.name.includes(name) || name === node.name
+        )
+      ) {
+        if (node instanceof THREE.Object3D) {
+          tvNodes.push(node);
+        }
+      }
+      // Find TV meshes
+      if (node instanceof THREE.Mesh) {
+        if (
+          tvRelatedNames.some(
+            (name) =>
+              node.name.toLowerCase().includes(name.toLowerCase()) ||
+              node.name.toLowerCase().includes("tv") ||
+              node.name.toLowerCase().includes("display")
+          )
+        ) {
+          tvMeshes.push(node);
+        }
+      }
+    });
+
+    // Hide/show ALL TV nodes and meshes
+    // Force set visibility (don't check previousVisible to ensure it's always updated)
+    let hiddenCount = 0;
+    tvNodes.forEach((tv) => {
+      const previousVisible = tv.visible;
+      const newVisible = !isRallyBoardSelected;
+      tv.visible = newVisible;
+
+      // Also hide all children recursively
+      tv.traverse((child) => {
+        child.visible = newVisible;
+      });
+
+      // Count if visibility actually changed
+      if (previousVisible !== newVisible) {
+        hiddenCount++;
+      }
+    });
+
+    tvMeshes.forEach((mesh) => {
+      const previousVisible = mesh.visible;
+      const newVisible = !isRallyBoardSelected;
+      mesh.visible = newVisible;
+
+      // Count if visibility actually changed
+      if (previousVisible !== newVisible) {
+        hiddenCount++;
+      }
+    });
+
+    // Force update: If RallyBoard is selected but hiddenCount is 0,
+    // it means TV was already hidden - force hide again to be sure
+    if (isRallyBoardSelected && hiddenCount === 0) {
+      console.warn("⚠️ [Room] TV was already hidden, forcing hide again");
+      tvNodes.forEach((tv) => {
+        tv.visible = false;
+        tv.traverse((child) => {
+          child.visible = false;
+        });
+      });
+      tvMeshes.forEach((mesh) => {
+        mesh.visible = false;
+      });
+      hiddenCount = tvNodes.length + tvMeshes.length;
+    }
+
+    console.log("📺 [Room] TV visibility updated:", {
+      isRallyBoardSelected,
+      rallyBoardMountNodeName,
+      rallyBoardAssetId: nodes[rallyBoardMountNodeName],
+      tvNodesFound: tvNodes.length,
+      tvMeshesFound: tvMeshes.length,
+      hiddenCount,
+      tvNodeNames: tvNodes.map((n) => n.name),
+      tvMeshNames: tvMeshes.map((m) => m.name),
+    });
+
+    if (tvNodes.length === 0 && tvMeshes.length === 0) {
+      console.warn(
+        "⚠️ [Room] No TV nodes or meshes found in scene. TV might have different names."
+      );
+    }
+  }, [gltf, nodes]);
+
   if (!gltf) return <></>;
 
   return (
@@ -470,7 +604,8 @@ export const Room: React.FC<RoomProps> = (props) => {
       <CameraRoom gltf={gltf} camera={three.camera} roomAssetId={roomAssetId} />
 
       {/* Visualize placement nodes - display in development */}
-      {process.env.NODE_ENV === "development" && gltf?.scene && (
+      {/* Temporarily disabled */}
+      {false && process.env.NODE_ENV === "development" && gltf?.scene && (
         <PlacementNodesVisualizer
           key={placementNodesUpdateKey}
           scene={gltf.scene}

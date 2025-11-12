@@ -40,43 +40,45 @@ export function isLocalAsset(assetId: string): boolean {
 }
 
 /**
- * Hook to load GLB from local file or Threekit
+ * Hook to load GLB from local file
  *
- * @param assetId - Threekit assetId or local path (e.g., "/assets/models/rallyboard.glb")
- * @param useThreekitAsset - Function to load from Threekit (from @threekit/react-three-fiber)
- * @param configuration - Threekit configuration (only used for Threekit assets)
+ * @param assetPath - Local path to GLB file (e.g., "/assets/models/rallyboard.glb")
  * @returns GLTF object
  */
-export function useLocalOrThreekitAsset(
+export function useLocalAsset(assetPath: string): GLTFResult {
+  const localGltf = useGLTF(assetPath, true);
+  return localGltf as GLTFResult;
+}
+
+/**
+ * Hook to load GLB from Threekit
+ *
+ * @param assetId - Threekit assetId
+ * @param useThreekitAsset - Function to load from Threekit (from @threekit/react-three-fiber)
+ * @param configuration - Threekit configuration
+ * @returns GLTF object
+ */
+export function useThreekitAsset(
   assetId: string,
-  useThreekitAsset: (params: { assetId: string; configuration?: any }) => any,
+  useThreekitAssetHook: (params: {
+    assetId: string;
+    configuration?: any;
+  }) => any,
   configuration?: any
-): GLTFResult {
-  // Always call both hooks to comply with Rules of Hooks
-  // But only use the result of one of them
-  const isLocal = isLocalAsset(assetId);
-
-  // Call useGLTF with fallback path if not a local asset
-  // Use an existing GLB file as placeholder to avoid 404 errors
-  // (useGLTF will load but we won't use it for Threekit assets)
-  const localGltf = useGLTF(
-    isLocal ? assetId : "/assets/models/RallyBoard65_Standalone-compressed.glb",
-    true
-  );
-
-  // Call useThreekitAsset with fallback assetId if it's a local asset
-  // (useAsset won't load if assetId is invalid, but hook is still called)
-  const threekitGltf = useThreekitAsset({
-    assetId: isLocal ? "placeholder-asset-id" : assetId,
-    configuration: isLocal ? undefined : configuration,
+): GLTFResult | null {
+  // Always call the hook to comply with Rules of Hooks
+  // If assetId is empty or invalid, useAsset will still be called but may fail
+  // We'll return null for local assets (empty assetId case)
+  const threekitGltf = useThreekitAssetHook({
+    assetId: assetId,
+    configuration: configuration,
   });
 
-  // Return the correct result based on asset type
-  if (isLocal) {
-    return localGltf as GLTFResult;
-  } else {
-    return threekitGltf as GLTFResult;
-  }
+  // Return null if assetId was empty (local asset case)
+  // Otherwise return the loaded GLTF
+  // Note: If useAsset fails with invalid assetId, threekitGltf may be null/undefined
+  // which is fine - we'll use localGltf as fallback in Product.tsx
+  return assetId && assetId.trim() !== "" ? (threekitGltf as GLTFResult) : null;
 }
 
 /**

@@ -51,8 +51,35 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
     dispatch(setPopuptNodes({ [nameNodeParam]: true }));
   };
 
-  if (!Object.keys(attachNodeNameToAssetId).includes(nameNode))
+  // Debug log for RallyBoard
+  if (nameNode === "RallyBoard_Mount") {
+    console.log("🎯 [ProductNode] RallyBoard_Mount check:", {
+      nameNode,
+      hasMapping: Object.keys(attachNodeNameToAssetId).includes(nameNode),
+      assetId: attachNodeNameToAssetId[nameNode],
+      allNodes: Object.keys(attachNodeNameToAssetId),
+      parentNodePosition: {
+        x: parentNode.position.x,
+        y: parentNode.position.y,
+        z: parentNode.position.z,
+      },
+    });
+  }
+
+  if (!Object.keys(attachNodeNameToAssetId).includes(nameNode)) {
+    if (nameNode === "RallyBoard_Mount") {
+      console.warn("❌ [ProductNode] RallyBoard_Mount has no mapping, returning undefined");
+    }
     return undefined;
+  }
+
+  // Debug log before rendering Product
+  if (nameNode === "RallyBoard_Mount") {
+    console.log("✅ [ProductNode] Rendering Product for RallyBoard_Mount:", {
+      assetId: attachNodeNameToAssetId[nameNode],
+      configuration: configuration[nameNode],
+    });
+  }
 
   return (
     <Product
