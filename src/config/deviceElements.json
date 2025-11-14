@@ -1,0 +1,30 @@
+{
+  "elements": [
+    {
+      "keyPermission": "RallyBoardMount",
+      "placementManagerMethod": {
+        "method": "getNameNodeForDeviceMount",
+        "args": []
+      }
+    },
+    {
+      "keyPermission": "RallyBoardCredenza",
+      "nodeName": "Camera_Commode_mini_display_1"
+    },
+    {
+      "keyPermission": "RallyBoardFloorCameraAbove",
+      "nodeName": "RallyBoard_Floor_Placement_1"
+    },
+    {
+      "keyPermission": "RallyBoardFloorCameraBelow",
+      "nodeName": "RallyBoard_Floor_Placement_2"
+    },
+    {
+      "keyPermission": "RallyBoardWall",
+      "placementManagerMethod": {
+        "method": "getNameNodeForTap",
+        "args": ["Wall", 1]
+      }
+    }
+  ]
+}

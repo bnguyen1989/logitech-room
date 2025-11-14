@@ -71,6 +71,7 @@ export const Room: React.FC<RoomProps> = (props) => {
         });
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gltf]);
 
   if (!gltf) return <></>;

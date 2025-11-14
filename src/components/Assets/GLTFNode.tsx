@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from "react";
 import * as THREE from "three";
 import type { Mesh, Object3D } from "three";
 import { PlacementManager } from "../../models/configurator/PlacementManager";
+import { createDeviceMountPlacementNode } from "../../utils/placementNodeUtils";
 
 export type ThreeNodeProps = {
   nodeMatchers?: NodeMatcher[];
@@ -35,11 +36,36 @@ const getParentNames = (object: THREE.Object3D): string[] => {
   return parentNames;
 };
 
+// Track if Device_Mount placement node has been created (module-level to persist across renders)
+let deviceMountCreated = false;
+
+const ensureDeviceMountPlacementNode = (threeNode: THREE.Object3D): void => {
+  // Only create once, when traversing the root scene
+  if (!deviceMountCreated && threeNode.parent === null) {
+    deviceMountCreated = true;
+
+    const deviceMountNodeName = PlacementManager.getNameNodeForDeviceMount();
+
+    // Check if placement node already exists
+    const existingNode = threeNode.getObjectByName(deviceMountNodeName);
+    if (!existingNode) {
+      // Create placement node at TV center
+      createDeviceMountPlacementNode(
+        threeNode as THREE.Scene | THREE.Group,
+        deviceMountNodeName
+      );
+    }
+  }
+};
+
 export const GLTFNode = ({
   nodeMatchers,
   threeNode,
   props,
 }: ThreeNodeRendererProps): ReactNode => {
+  // Create Device_Mount placement node if needed (only once at root)
+  ensureDeviceMountPlacementNode(threeNode);
+
   if (nodeMatchers) {
     for (let i = 0; i < nodeMatchers.length; i++) {
       const jsx = nodeMatchers[i](threeNode, nodeMatchers);

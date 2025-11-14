@@ -12,6 +12,8 @@ import { RuleBuilder } from "../models/configurator/RuleBuilder";
 import { Condition } from "../models/conditions/Condition";
 import { ConditionPropertyName } from "../models/conditions/type";
 import { ConditionChangeBuilder } from "../models/conditions/ConditionChangeBuilder";
+import deviceElementsConfig from "../config/deviceElements.json";
+import { registerDeviceElementsToStep } from "./deviceElementConfig";
 
 export enum RoomSizeName {
   Phonebooth = "Phonebooth",
@@ -493,12 +495,21 @@ export function createStepConferenceCamera() {
     )
   );
 
+  // Set base elements first
   stepConferenceCamera.allElements = [
     group,
     groupRallyCamera,
     groupCompute,
     groupSight,
   ];
+
+  // Register local GLB device elements from JSON config
+  // This creates elements for devices like RallyBoard, RallyBoardWall, etc.
+  // registerDeviceElementsToStep will add elements to step.allElements
+  registerDeviceElementsToStep(
+    stepConferenceCamera,
+    deviceElementsConfig.elements
+  );
   return stepConferenceCamera;
 }
 

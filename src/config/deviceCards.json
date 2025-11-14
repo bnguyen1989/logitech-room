@@ -1,0 +1,60 @@
+{
+  "devices": [
+    {
+      "deviceId": "rallyboard-mount",
+      "keyPermission": "RallyBoardMount",
+      "step": "Conference Camera",
+      "assetId": "rallyboard-mount-asset-1",
+      "attributeName": "RallyBoardMount",
+      "counter": {
+        "min": 0,
+        "max": 1
+      },
+      "image": "/images/products/RallyBoardMount.png",
+      "subtitle": "RallyBoard Mount",
+      "description": "RallyBoard display for wall mounting"
+    },
+    {
+      "deviceId": "rallyboard-credenza",
+      "keyPermission": "RallyBoardCredenza",
+      "step": "Conference Camera",
+      "assetId": "rallyboard-credenza-asset-1",
+      "attributeName": "RallyBoardCredenza",
+      "counter": {
+        "min": 0,
+        "max": 1
+      },
+      "image": "/images/products/rallyboard-wall.jpg",
+      "subtitle": "RallyBoard Credenza",
+      "description": "RallyBoard display on credenza"
+    },
+    {
+      "deviceId": "rallyboard-floor-camera-above",
+      "keyPermission": "RallyBoardFloorCameraAbove",
+      "step": "Conference Camera",
+      "assetId": "rallyboard-floor-asset-1",
+      "attributeName": "RallyBoardFloorCameraAbove",
+      "counter": {
+        "min": 0,
+        "max": 1
+      },
+      "image": "/images/products/RallyBoard65_Graphite.jpg",
+      "subtitle": "RallyBoard Floor Camera Above",
+      "description": "RallyBoard display on floor with camera above"
+    },
+    {
+      "deviceId": "rallyboard-floor-camera-below",
+      "keyPermission": "RallyBoardFloorCameraBelow",
+      "step": "Conference Camera",
+      "assetId": "rallyboard-floor-asset-2",
+      "attributeName": "RallyBoardFloorCameraBelow",
+      "counter": {
+        "min": 0,
+        "max": 1
+      },
+      "image": "/images/products/RallyBoard65_Graphite.jpg",
+      "subtitle": "RallyBoard Floor Camera Below",
+      "description": "RallyBoard display on floor with camera below"
+    }
+  ]
+}

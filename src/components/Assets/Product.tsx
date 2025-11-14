@@ -5,13 +5,21 @@ import { changeStatusProcessing } from "../../store/slices/configurator/Configur
 import { ProductsNodes } from "./ProductsNodes.js";
 import { GLTFNode } from "./GLTFNode.js";
 import { Select } from "@react-three/postprocessing";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppSelector } from "../../hooks/redux.js";
 import { getKeyPermissionFromNameNode } from "../../store/slices/configurator/selectors/selectors.js";
 import { AnnotationProductContainer } from "../Annotation/AnnotationProduct/AnnotationContainer.js";
 import { StepName } from "../../utils/baseUtils.js";
 import { Configuration } from "@threekit/rest-api";
 import { PlacementManager } from "../../models/configurator/PlacementManager.js";
+import {
+  LOCAL_ASSET_MAPPING,
+  isLocalAsset,
+} from "../../utils/localAssetLoader.js";
+import {
+  NormalizeGLBOptions,
+  normalizeGLBScene,
+} from "../../utils/glbTransformUtils.js";
 
 export type ProductProps = {
   parentNode: THREE.Object3D;
@@ -28,6 +36,19 @@ export type ProductProps = {
 
 const generateName = (nameNode: string, parentNode: THREE.Object3D): string => {
   return `${nameNode}-${parentNode.uuid}-group`;
+};
+
+const DEFAULT_LOCAL_GLB_OPTIONS: NormalizeGLBOptions = {
+  center: true,
+};
+
+const LOCAL_GLB_TRANSFORMS: Record<string, NormalizeGLBOptions> = {
+  "rallyboard-mount-asset-1": {
+    center: true,
+    rotation: {
+      y: Math.PI,
+    },
+  },
 };
 
 export const Product: React.FC<ProductProps> = ({
@@ -47,21 +68,44 @@ export const Product: React.FC<ProductProps> = ({
   const keyPermissionObj = useAppSelector(
     getKeyPermissionFromNameNode(nameNode)
   );
+  const isLocalGlbAsset =
+    Boolean(LOCAL_ASSET_MAPPING[productAssetId]) ||
+    isLocalAsset(productAssetId);
+
+  const normalizedScene = useMemo(() => {
+    if (!productGltf?.scene || !isLocalGlbAsset) {
+      return productGltf?.scene ?? null;
+    }
+
+    const transformOptions =
+      LOCAL_GLB_TRANSFORMS[productAssetId] ?? DEFAULT_LOCAL_GLB_OPTIONS;
+
+    return normalizeGLBScene(productGltf.scene, {
+      ...DEFAULT_LOCAL_GLB_OPTIONS,
+      ...transformOptions,
+    });
+  }, [isLocalGlbAsset, productAssetId, productGltf]);
+
+  const sceneToRender = normalizedScene ?? productGltf?.scene;
+
+  if (!sceneToRender) {
+    return null;
+  }
 
   const sizeProduct = new THREE.Box3()
-    .setFromObject(productGltf.scene.clone())
+    .setFromObject(sceneToRender.clone())
     .getSize(new THREE.Vector3());
 
   dispatch(changeStatusProcessing(false));
 
   useEffect(() => {
-    if (!productGltf) return;
+    if (!sceneToRender) return;
     const id = setTimeout(() => {
       callbackDisableHighlight();
     }, 3000);
 
     return () => clearTimeout(id);
-  }, [productGltf]);
+  }, [sceneToRender]);
 
   return (
     <group
@@ -73,7 +117,7 @@ export const Product: React.FC<ProductProps> = ({
     >
       {PlacementManager.getNameNodeWithoutInteraction().includes(nameNode) ? (
         <GLTFNode
-          threeNode={productGltf.scene.clone()}
+          threeNode={sceneToRender.clone()}
           nodeMatchers={ProductsNodes()}
         />
       ) : (
@@ -95,7 +139,7 @@ export const Product: React.FC<ProductProps> = ({
               />
             )}
           <GLTFNode
-            threeNode={productGltf.scene.clone()}
+            threeNode={sceneToRender.clone()}
             nodeMatchers={ProductsNodes()}
           />
         </Select>

@@ -139,6 +139,15 @@ export class PlacementManager {
     return "LogitechExtend_Placement";
   }
 
+  /**
+   * Get placement node name for device mount to replace TV
+   * Generic placement node at TV center - can be used by any device that needs to mount to replace TV
+   * @returns Placement node name: "Device_Mount"
+   */
+  public static getNameNodeForDeviceMount(): string {
+    return "Device_Mount";
+  }
+
   public static getNameNodeCameraRallyPlusBackWall(): string[] {
     return [PlacementManager.getNameNodeForCamera("Wall", 4)];
   }
@@ -243,7 +252,8 @@ export class PlacementManager {
       this.getNameNodeForTV(),
       this.getNameNodeCameraRalyPlus(),
       this.getNameNodeForSight2(),
-      this.getNameNodeForLogitechExtend()
+      this.getNameNodeForLogitechExtend(),
+      this.getNameNodeForDeviceMount()
     );
 
     return placements;

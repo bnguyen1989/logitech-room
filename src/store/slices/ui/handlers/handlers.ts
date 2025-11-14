@@ -90,6 +90,8 @@ import {
 } from "../../configurator/handlers/handlers";
 import { getExclusionServiceByLocale } from "../../../../utils/productUtils";
 import { ChangeDisplayItemCommand } from "../../../../models/command/ChangeDisplayItemCommand";
+import deviceCardsConfig from "../../../../config/deviceCards.json";
+import { registerDevicesFromConfig } from "../../../../utils/deviceCardConfig";
 
 declare const app: Application;
 
@@ -166,6 +168,9 @@ export const getUiHandlers = (store: Store) => {
       setSoftwareServicesData(configurator)(store);
       setPlatformData(configurator)(store);
       setServiceData(configurator)(store);
+
+      registerDevicesFromConfig(store, deviceCardsConfig.devices);
+
       store.dispatch(changeAssetId(configurator.assetId));
       store.dispatch(setEnabledDimension(false));
     }
