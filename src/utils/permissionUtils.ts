@@ -229,28 +229,28 @@ export function createStepConferenceCamera() {
         [CameraName.RallyBar]: ["display"],
       })
     )
-    .addElement(
-      new ItemElement(CameraName.MeetUp2)
-        .setDefaultMount(
-          new MountElement(
-            CameraName.MeetUp2,
-            PlacementManager.getNameNodeCommodeForCamera("Mini", 1)
-          )
-        )
-        .addDependenceMount(
-          new MountElement(
-            CameraName.TVMountForMeetUP,
-            PlacementManager.getNameNodeForCamera("TV", 1, 1)
-          )
-        )
-        .setAccessoryItems([CameraName.TVMountForMeetUP])
-        .addBundleMount(
-          new MountElement(
-            TVName.LogitechTVOne,
-            PlacementManager.getNameNodeForTV()
-          )
-        )
-    )
+    // .addElement(
+    //   new ItemElement(CameraName.MeetUp2)
+    //     .setDefaultMount(
+    //       new MountElement(
+    //         CameraName.MeetUp2,
+    //         PlacementManager.getNameNodeCommodeForCamera("Mini", 1)
+    //       )
+    //     )
+    //     .addDependenceMount(
+    //       new MountElement(
+    //         CameraName.TVMountForMeetUP,
+    //         PlacementManager.getNameNodeForCamera("TV", 1, 1)
+    //       )
+    //     )
+    //     .setAccessoryItems([CameraName.TVMountForMeetUP])
+    //     .addBundleMount(
+    //       new MountElement(
+    //         TVName.LogitechTVOne,
+    //         PlacementManager.getNameNodeForTV()
+    //       )
+    //     )
+    // )
     .addElement(
       new ItemElement(CameraName.RallyBarHuddle)
         .setDefaultMount(
@@ -497,12 +497,12 @@ export function createStepConferenceCamera() {
 
   const groupRallyBoard = new GroupElement()
     .addElement(
-    new ItemElement(CameraName.RallyBoard).setDefaultMount(
-      new MountElement(
-        CameraName.RallyBoard,
-        PlacementManager.getNameNodeForRallyBoardMount()
+      new ItemElement(CameraName.RallyBoard).setDefaultMount(
+        new MountElement(
+          CameraName.RallyBoard,
+          PlacementManager.getNameNodeForRallyBoardMount()
+        )
       )
-    )
     )
     .addElement(
       new ItemElement(CameraName.RallyBoardCredenza).setDefaultMount(
@@ -511,7 +511,7 @@ export function createStepConferenceCamera() {
           PlacementManager.getNameNodeCommodeForCamera("Huddle")
         )
       )
-  );
+    );
 
   stepConferenceCamera.allElements = [
     group,
