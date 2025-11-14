@@ -16,9 +16,32 @@ import {
   setPopuptNodes,
 } from "../../store/slices/configurator/Configurator.slice";
 
+const isRallyBoardNodeName = (nameNode: string): boolean => {
+  if (!nameNode) return false;
+  return (
+    nameNode === "RallyBoard_Mount" ||
+    nameNode.startsWith("RallyBoard_Mount_") ||
+    nameNode.startsWith("Camera_Commode_")
+  );
+};
+
 type ProductProps = {
   nameNode: string;
   parentNode: THREE.Object3D;
+};
+
+const getRallyBoardScale = (nameNode: string): number | undefined => {
+  if (!isRallyBoardNodeName(nameNode)) return undefined;
+  if (
+    nameNode === "RallyBoard_Mount" ||
+    nameNode.startsWith("RallyBoard_Mount_")
+  ) {
+    return 0.08;
+  }
+  if (nameNode.startsWith("Camera_Commode_")) {
+    return 0.008;
+  }
+  return undefined;
 };
 
 export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
@@ -51,8 +74,10 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
     dispatch(setPopuptNodes({ [nameNodeParam]: true }));
   };
 
+  const isRallyBoardNode = isRallyBoardNodeName(nameNode);
+
   // Debug log for RallyBoard
-  if (nameNode === "RallyBoard_Mount") {
+  if (isRallyBoardNode) {
     console.log("🎯 [ProductNode] RallyBoard_Mount check:", {
       nameNode,
       hasMapping: Object.keys(attachNodeNameToAssetId).includes(nameNode),
@@ -67,14 +92,16 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
   }
 
   if (!Object.keys(attachNodeNameToAssetId).includes(nameNode)) {
-    if (nameNode === "RallyBoard_Mount") {
-      console.warn("❌ [ProductNode] RallyBoard_Mount has no mapping, returning undefined");
+    if (isRallyBoardNode) {
+      console.warn(
+        "❌ [ProductNode] RallyBoard_Mount has no mapping, returning undefined"
+      );
     }
     return undefined;
   }
 
   // Debug log before rendering Product
-  if (nameNode === "RallyBoard_Mount") {
+  if (isRallyBoardNode) {
     console.log("✅ [ProductNode] Rendering Product for RallyBoard_Mount:", {
       assetId: attachNodeNameToAssetId[nameNode],
       configuration: configuration[nameNode],
@@ -86,6 +113,7 @@ export const ProductNode: FC<ProductProps> = ({ nameNode, parentNode }) => {
       parentNode={parentNode}
       configuration={configuration[nameNode]}
       productAssetId={attachNodeNameToAssetId[nameNode]}
+      rallyBoardScale={getRallyBoardScale(nameNode)}
       highlight={isHighlightNode}
       popuptNode={isPopuptNode}
       callbackDisableHighlight={callbackDisableHighlight}

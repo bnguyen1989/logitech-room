@@ -308,7 +308,79 @@ export const Room: React.FC<RoomProps> = (props) => {
       }
 
       // ============================================
-      // END CREATE PLACEMENT NODE
+      // ROTATE EXISTING CREDENZA PLACEMENT NODES (Camera_Commode_*)
+      // ============================================
+      const credenzaNodeNames = [
+        PlacementManager.getNameNodeCommodeForCamera("Huddle"),
+      ];
+      const credenzaRotationQuat = new THREE.Quaternion().setFromAxisAngle(
+        new THREE.Vector3(0, 1, 0),
+        Math.PI
+      );
+      const credenzaHeightOffset = 0.42; // 20 cm lift above current surface
+      const CREDENZA_ROTATED_FLAG = "_rallyboardCredenzaRotated";
+
+      gltf.scene.traverse((node) => {
+        if (!node?.name) return;
+        if (!credenzaNodeNames.includes(node.name)) return;
+        if (node.userData?.[CREDENZA_ROTATED_FLAG]) {
+          return;
+        }
+
+        const originalQuaternion = node.quaternion.clone();
+        const originalPosition = node.position.clone();
+
+        node.quaternion.multiply(credenzaRotationQuat);
+        node.position.add(new THREE.Vector3(0, 0, credenzaHeightOffset));
+        node.userData[CREDENZA_ROTATED_FLAG] = true;
+
+        const originalEuler = new THREE.Euler().setFromQuaternion(
+          originalQuaternion
+        );
+        const updatedEuler = new THREE.Euler().setFromQuaternion(
+          node.quaternion
+        );
+
+        console.log("🔁 [Room] Adjusted credenza placement node:", {
+          nodeName: node.name,
+          heightOffsetMeters: credenzaHeightOffset.toFixed(3),
+          originalPosition: {
+            x: originalPosition.x.toFixed(4),
+            y: originalPosition.y.toFixed(4),
+            z: originalPosition.z.toFixed(4),
+          },
+          updatedPosition: {
+            x: node.position.x.toFixed(4),
+            y: node.position.y.toFixed(4),
+            z: node.position.z.toFixed(4),
+          },
+          originalQuaternion: {
+            x: originalQuaternion.x.toFixed(4),
+            y: originalQuaternion.y.toFixed(4),
+            z: originalQuaternion.z.toFixed(4),
+            w: originalQuaternion.w.toFixed(4),
+          },
+          updatedQuaternion: {
+            x: node.quaternion.x.toFixed(4),
+            y: node.quaternion.y.toFixed(4),
+            z: node.quaternion.z.toFixed(4),
+            w: node.quaternion.w.toFixed(4),
+          },
+          originalEuler: {
+            xDegrees: ((originalEuler.x * 180) / Math.PI).toFixed(2),
+            yDegrees: ((originalEuler.y * 180) / Math.PI).toFixed(2),
+            zDegrees: ((originalEuler.z * 180) / Math.PI).toFixed(2),
+          },
+          updatedEuler: {
+            xDegrees: ((updatedEuler.x * 180) / Math.PI).toFixed(2),
+            yDegrees: ((updatedEuler.y * 180) / Math.PI).toFixed(2),
+            zDegrees: ((updatedEuler.z * 180) / Math.PI).toFixed(2),
+          },
+        });
+      });
+
+      // ============================================
+      // END CREATE/ADJUST PLACEMENT NODES
       // ============================================
 
       // ============================================
@@ -342,10 +414,14 @@ export const Room: React.FC<RoomProps> = (props) => {
   // FIND TV NODES/MESHES (ONCE WHEN SCENE LOADS)
   // ============================================
 
-  // Check if RallyBoard is selected for TV visibility control
-  const rallyBoardMountNodeName =
-    PlacementManager.getNameNodeForRallyBoardMount();
-  const isRallyBoardSelected = nodes[rallyBoardMountNodeName] !== undefined;
+  // Check if any RallyBoard placement (wall or credenza) is selected
+  const rallyBoardPlacementNames = [
+    PlacementManager.getNameNodeForRallyBoardMount(),
+    PlacementManager.getNameNodeCommodeForCamera("Huddle"),
+  ];
+  const isRallyBoardSelected = rallyBoardPlacementNames.some(
+    (name) => nodes[name] !== undefined
+  );
 
   return (
     <>

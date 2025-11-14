@@ -97,7 +97,8 @@ export const LOCAL_ASSET_MAPPING: Record<string, string> = {
     "/assets/models/RallyBoard65_Standalone-compressed.glb",
 
   // RallyBoard case 2: on credenza
-  "rallyboard-credenza-asset-1": "/assets/models/rallyboard-credenza.glb",
+  "rallyboard-credenza-asset-1":
+    "/assets/models/RallyBoard65_CredenzaFeet_CameraBelow-compressed.glb",
 
   // RallyBoard case 3: on floor with stand
   "rallyboard-floor-asset-1": "/assets/models/rallyboard-floor.glb",

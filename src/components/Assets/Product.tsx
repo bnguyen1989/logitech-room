@@ -22,6 +22,15 @@ import { getAssetId } from "../../store/slices/configurator/selectors/selectors.
 import { orientRallyBoard } from "../../utils/deviceOrientationUtils.js";
 import { DeviceAxesHelpers } from "./DeviceAxesHelpers.js";
 
+const isRallyBoardNodeName = (nameNode: string): boolean => {
+  if (!nameNode) return false;
+  return (
+    nameNode === "RallyBoard_Mount" ||
+    nameNode.startsWith("RallyBoard_Mount_") ||
+    nameNode.startsWith("Camera_Commode_")
+  );
+};
+
 export type ProductProps = {
   parentNode: THREE.Object3D;
   productAssetId: string;
@@ -33,6 +42,7 @@ export type ProductProps = {
   callbackDisablePopuptNodes: () => void;
   callbackOnPopuptNodes: (nameNode: string) => void;
   nameNode: string;
+  rallyBoardScale?: number;
 };
 
 const generateName = (nameNode: string, parentNode: THREE.Object3D): string => {
@@ -50,6 +60,7 @@ export const Product: React.FC<ProductProps> = ({
   callbackDisablePopuptNodes = () => {},
   callbackOnPopuptNodes = () => {},
   nameNode,
+  rallyBoardScale,
 }) => {
   const dispatch = useDispatch();
 
@@ -112,6 +123,8 @@ export const Product: React.FC<ProductProps> = ({
 
   dispatch(changeStatusProcessing(false));
 
+  const isRallyBoardPlacement = isRallyBoardNodeName(nameNode);
+
   // For RallyBoard: Center the GLB model at origin and scale it down if too large
   // Must call useMemo before early return to comply with Rules of Hooks
   const processedScene = useMemo(() => {
@@ -119,8 +132,8 @@ export const Product: React.FC<ProductProps> = ({
 
     const clonedScene = productGltf.scene.clone();
 
-    // Only process for RallyBoard_Mount
-    if (nameNode === "RallyBoard_Mount") {
+    // Only process for RallyBoard placements
+    if (isRallyBoardNodeName(nameNode)) {
       // Calculate bounding box BEFORE any transformations
       const box = new THREE.Box3();
       box.setFromObject(clonedScene);
@@ -135,10 +148,11 @@ export const Product: React.FC<ProductProps> = ({
         originalSize.z
       );
       let scaleFactor = 1;
-      if (maxDimension > 10) {
+      if (maxDimension > 10 || typeof rallyBoardScale === "number") {
         // Scale down to reasonable size (assuming GLB is in cm, convert to meters)
-        // Changed from 0.01 to 0.1 to make RallyBoard larger
-        scaleFactor = 0.08; // cm to decimeters (10x larger than before)
+        // Default wall-mount scale = 0.08 unless overridden via props
+        scaleFactor =
+          typeof rallyBoardScale === "number" ? rallyBoardScale : 0.08;
         clonedScene.scale.multiplyScalar(scaleFactor);
       }
 
@@ -195,14 +209,14 @@ export const Product: React.FC<ProductProps> = ({
     }
 
     return clonedScene;
-  }, [productGltf, nameNode]);
+  }, [productGltf, nameNode, rallyBoardScale]);
 
   // ============================================
   // TOGGLE AXES HELPERS FOR RALLYBOARD
   // ============================================
   // Set to true to show axes, false to hide
   // Change this value to toggle axes helpers on/off
-  const ENABLE_AXES_HELPERS = true; // ⭐ CHANGE THIS: true = show, false = hide
+  const ENABLE_AXES_HELPERS = false; // true = show, false = hide
 
   // Check if this is RallyBoard GLB by checking assetId or keyPermission
   // Must call useMemo before early return to comply with Rules of Hooks
@@ -243,7 +257,7 @@ export const Product: React.FC<ProductProps> = ({
     .getSize(new THREE.Vector3());
 
   // Debug log for RallyBoard rendering
-  if (nameNode === "RallyBoard_Mount") {
+  if (isRallyBoardPlacement) {
     // Count meshes in GLB scene
     let meshCount = 0;
     processedScene.traverse((child) => {
@@ -298,19 +312,7 @@ export const Product: React.FC<ProductProps> = ({
       scale={parentNode.scale}
       rotation={parentNode.rotation}
     >
-      {/* Debug marker for RallyBoard - shows placement node position */}
-      {nameNode === "RallyBoard_Mount" && (
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.2, 16, 16]} />
-          <meshStandardMaterial
-            color="#00ff00"
-            emissive="#00ff00"
-            emissiveIntensity={0.5}
-            transparent
-            opacity={0.8}
-          />
-        </mesh>
-      )}
+      {/* Debug marker for RallyBoard - disabled */}
 
       {/* Axes helpers - Local and World coordinate systems */}
       {/* Easy to toggle: change showAxesHelpers variable above */}
