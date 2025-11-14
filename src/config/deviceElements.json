@@ -18,13 +18,6 @@
     {
       "keyPermission": "RallyBoardFloorCameraBelow",
       "nodeName": "RallyBoard_Floor_Placement_2"
-    },
-    {
-      "keyPermission": "RallyBoardWall",
-      "placementManagerMethod": {
-        "method": "getNameNodeForTap",
-        "args": ["Wall", 1]
-      }
     }
   ]
 }

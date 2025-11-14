@@ -510,7 +510,48 @@ export function createStepConferenceCamera() {
     stepConferenceCamera,
     deviceElementsConfig.elements
   );
+  promoteRallyBoardDevices(stepConferenceCamera);
   return stepConferenceCamera;
+}
+
+function promoteRallyBoardDevices(step: Step) {
+  const primaryGroup = step.allElements.find(
+    (element) => element instanceof GroupElement && element.isRequiredOne()
+  ) as GroupElement | undefined;
+  if (!primaryGroup) {
+    return;
+  }
+
+  const additionalElements: Array<ItemElement | GroupElement> = [];
+
+  step.allElements.forEach((element) => {
+    if (element === primaryGroup) {
+      return;
+    }
+
+    if (!(element instanceof GroupElement)) {
+      additionalElements.push(element);
+      return;
+    }
+
+    const simpleElements = element.getSimpleElements();
+    const rallyBoardElements = simpleElements.filter((item) =>
+      item.name.includes("RallyBoard")
+    );
+
+    rallyBoardElements.forEach((item) => {
+      primaryGroup.addElement(item);
+    });
+
+    const hasNonRallyBoardElements =
+      rallyBoardElements.length !== simpleElements.length;
+
+    if (hasNonRallyBoardElements) {
+      additionalElements.push(element);
+    }
+  });
+
+  step.allElements = [primaryGroup, ...additionalElements];
 }
 
 export function createStepAudioExtensions() {

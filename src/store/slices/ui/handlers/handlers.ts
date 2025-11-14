@@ -91,7 +91,10 @@ import {
 import { getExclusionServiceByLocale } from "../../../../utils/productUtils";
 import { ChangeDisplayItemCommand } from "../../../../models/command/ChangeDisplayItemCommand";
 import deviceCardsConfig from "../../../../config/deviceCards.json";
-import { registerDevicesFromConfig } from "../../../../utils/deviceCardConfig";
+import {
+  createDeviceCard,
+  DeviceCardConfig,
+} from "../../../../utils/deviceCardConfig";
 
 declare const app: Application;
 
@@ -168,8 +171,6 @@ export const getUiHandlers = (store: Store) => {
       setSoftwareServicesData(configurator)(store);
       setPlatformData(configurator)(store);
       setServiceData(configurator)(store);
-
-      registerDevicesFromConfig(store, deviceCardsConfig.devices);
 
       store.dispatch(changeAssetId(configurator.assetId));
       store.dispatch(setEnabledDimension(false));
@@ -618,6 +619,27 @@ function setStepData(
 
     stepCardData.push(...temp);
   });
+
+  if (stepName === StepName.ConferenceCamera) {
+    const deviceConfigs = deviceCardsConfig.devices as DeviceCardConfig[];
+    const extraCards = deviceConfigs
+      .filter((device) => {
+        const step =
+          typeof device.step === "string"
+            ? (device.step as StepName)
+            : device.step;
+        return step === StepName.ConferenceCamera;
+      })
+      .map((device) => createDeviceCard(device))
+      .filter(
+        (card) =>
+          !stepCardData.some(
+            (existingCard) =>
+              existingCard.keyPermission === card.keyPermission
+          )
+      );
+    stepCardData.push(...extraCards);
+  }
 
   const state = store.getState();
 
