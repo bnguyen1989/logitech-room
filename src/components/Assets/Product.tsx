@@ -21,6 +21,10 @@ import {
 import { getAssetId } from "../../store/slices/configurator/selectors/selectors.js";
 import { orientRallyBoard } from "../../utils/deviceOrientationUtils.js";
 import { DeviceAxesHelpers } from "./DeviceAxesHelpers.js";
+import {
+  RALLYBOARD_FLOOR_ASSET_ID,
+  RALLYBOARD_FLOOR_OFFSET_METERS,
+} from "../../constants/rallyBoard.js";
 
 const isRallyBoardNodeName = (nameNode: string): boolean => {
   if (!nameNode) return false;
@@ -75,11 +79,14 @@ export const Product: React.FC<ProductProps> = ({
   // But only use the result of one based on isLocal
   const isLocal = isLocalAsset(resolvedAssetId);
 
+  const isRallyBoardFloorAsset = productAssetId === RALLYBOARD_FLOOR_ASSET_ID;
+
   console.log("🔍 [Product] Loading product:", {
     nameNode,
     productAssetId,
     resolvedAssetId,
     isLocal,
+    isRallyBoardFloorAsset,
   });
 
   const localGltf = useLocalAsset(
@@ -304,11 +311,27 @@ export const Product: React.FC<ProductProps> = ({
     });
   }
 
+  const annotationPosition = useMemo<[number, number, number]>(() => {
+    const basePosition: [number, number, number] = [0, sizeProduct.y / 2, 0];
+    if (!isRallyBoardPlacement) {
+      return basePosition;
+    }
+
+    const offset = 0.05; // 5 cm below top surface
+    return [0, basePosition[1] - offset, 0];
+  }, [isRallyBoardPlacement, sizeProduct.y]);
+
+  const groupPosition = parentNode.position.clone();
+  if (isRallyBoardFloorAsset) {
+    groupPosition.y = RALLYBOARD_FLOOR_OFFSET_METERS;
+    groupPosition.z = RALLYBOARD_FLOOR_OFFSET_METERS - 0.25;
+  }
+
   return (
     <group
       key={parentNode.uuid + `-group`}
       name={generateName(nameNode, parentNode)}
-      position={parentNode.position}
+      position={groupPosition}
       scale={parentNode.scale}
       rotation={parentNode.rotation}
     >
@@ -343,7 +366,7 @@ export const Product: React.FC<ProductProps> = ({
               <AnnotationProductContainer
                 stepPermission={Object.keys(keyPermissionObj)[0] as StepName}
                 keyPermissions={Object.values(keyPermissionObj)[0]}
-                position={[0, sizeProduct.y / 2, 0]}
+                position={annotationPosition}
                 callbackDisablePopuptNodes={callbackDisablePopuptNodes}
               />
             )}

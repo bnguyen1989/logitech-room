@@ -9,6 +9,7 @@
 
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import { RALLYBOARD_FLOOR_ASSET_ID } from "../constants/rallyBoard";
 
 /**
  * Type for GLTF object (compatible with both drei and three-stdlib)
@@ -99,9 +100,12 @@ export const LOCAL_ASSET_MAPPING: Record<string, string> = {
   // RallyBoard case 2: on credenza
   "rallyboard-credenza-asset-1":
     "/assets/models/RallyBoard65_CredenzaFeet_CameraBelow-compressed.glb",
+  "rallyboard-credenza-above-asset-1":
+    "/assets/models/RallyBoard65_CredenzaFeet_CameraAbove-compressed.glb",
 
   // RallyBoard case 3: on floor with stand
-  "rallyboard-floor-asset-1": "/assets/models/rallyboard-floor.glb",
+  [RALLYBOARD_FLOOR_ASSET_ID]:
+    "/assets/models/RallyBoard65_Cart_CameraBelow-compressed.glb",
   "rallyboard-stand-asset-1":
     "/assets/models/RallyBoard65_Standalone-compressed.glb",
 

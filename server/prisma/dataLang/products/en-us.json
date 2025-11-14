@@ -1525,5 +1525,37 @@
     "END_CTA": {
       "end": "Add to Room"
     }
+  },
+  "RallyBoardFloor": {
+    "Blade_1": {
+      "ProductName": "RallyBoard Floor",
+      "ShortDescription": "Floor stand placement for RallyBoard",
+      "LongDescription": "Position RallyBoard on a freestanding cart aligned with the credenza area while keeping cables organized.",
+      "Colors": {
+        "Graphite": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar/buy/gallery/rally-bar-graphite-01.png?v=1"
+      }
+    },
+    "Blade_2": {
+      "Headline": "FLOOR STAND FLEXIBILITY",
+      "Description": "Use RallyBoard without wall mounting by placing it on a mobile stand tuned for credenza placements.",
+      "Image|Video": {
+        "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar/buy/gallery/rally-bar-graphite-01.png?v=1"
+      }
+    },
+    "Blade_3A": {
+      "Features": [
+        {
+          "HeaderFeature": "ALIGNED WITH CREDENZA ZONES",
+          "sorting": "1",
+          "KeyFeature": "Keeps RallyBoard centered on the credenza node with consistent scale and orientation.",
+          "LinkImgFeature": {
+            "Image link": "https://resource.logitech.com/w_900,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/video-conferencing/rally-bar/buy/gallery/rally-bar-graphite-01.png?v=1"
+          }
+        }
+      ]
+    },
+    "END_CTA": {
+      "end": "Add to Room"
+    }
   }
 }

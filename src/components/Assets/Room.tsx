@@ -14,6 +14,7 @@ import { useThree } from "@react-three/fiber";
 import { CameraRoom } from "./CameraRoom.js";
 import { Dimension } from "../Dimension/Dimension.js";
 import { PlacementNodesVisualizer } from "./PlacementNodesVisualizer.js";
+import { RALLYBOARD_FLOOR_ASSET_ID } from "../../constants/rallyBoard.js";
 
 export type RoomProps = {
   roomAssetId: string;
@@ -415,13 +416,17 @@ export const Room: React.FC<RoomProps> = (props) => {
   // ============================================
 
   // Check if any RallyBoard placement (wall or credenza) is selected
+  const rallyBoardCredenzaNode =
+    PlacementManager.getNameNodeCommodeForCamera("Huddle");
   const rallyBoardPlacementNames = [
     PlacementManager.getNameNodeForRallyBoardMount(),
-    PlacementManager.getNameNodeCommodeForCamera("Huddle"),
+    rallyBoardCredenzaNode,
   ];
   const isRallyBoardSelected = rallyBoardPlacementNames.some(
     (name) => nodes[name] !== undefined
   );
+  const isRallyBoardFloorSelected =
+    nodes[rallyBoardCredenzaNode] === RALLYBOARD_FLOOR_ASSET_ID;
 
   return (
     <>
@@ -429,7 +434,10 @@ export const Room: React.FC<RoomProps> = (props) => {
       <ambientLight intensity={1.5} color={"#ffffff"} />
       <GLTFNode
         threeNode={gltf.scene}
-        nodeMatchers={ProductsNodes({ isRallyBoardSelected })}
+        nodeMatchers={ProductsNodes({
+          isRallyBoardSelected,
+          isRallyBoardFloorSelected,
+        })}
       />
       <Dimension threeNode={gltf.scene} />
       <CameraRoom gltf={gltf} camera={three.camera} roomAssetId={roomAssetId} />

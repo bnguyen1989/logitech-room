@@ -74,12 +74,20 @@ export const AnnotationProductContainer: React.FC<AnnotationProductPropsI> = (
 
   const getPosition = (): [number, number, number] => {
     const variant = getVariantAnnotation();
+    const isRallyBoardItem = keyPermissions.some((key) =>
+      key.toLowerCase().includes("rallyboard")
+    );
+    const rallyBoardOffset = 0.35; // 5 cm
+
     if (variant === "top") {
-      return [position[0], position[1] + 0.2, position[2]];
+      const topOffset = isRallyBoardItem ? rallyBoardOffset : 0.2;
+      return [position[0], position[1] + topOffset, position[2]];
     }
 
     const offset = keyPermissions.includes(VideoAccessoryName.LogitechScribe)
       ? 0
+      : isRallyBoardItem
+      ? rallyBoardOffset
       : 0.6;
 
     return [position[0], position[1] + offset, position[2]];

@@ -14,6 +14,7 @@ import {
 } from "../type";
 import { CameraName } from "../../../../utils/permissionUtils";
 import { getImageUrl } from "../../../../utils/browserUtils";
+import { RALLYBOARD_FLOOR_ASSET_ID } from "../../../../constants/rallyBoard";
 import {
   addActiveCard,
   addActiveCards,
@@ -682,7 +683,7 @@ function setCameraData(configurator: Configurator) {
       StepName.ConferenceCamera,
       Configurator.CameraName
     );
-    
+
     // Add local RallyBoard cards manually for local GLB loading
     addLocalRallyBoardCards(store);
   };
@@ -698,9 +699,7 @@ type LocalRallyBoardCardConfig = {
   cardImage: string;
 };
 
-function buildLocalRallyBoardCard(
-  config: LocalRallyBoardCardConfig
-): CardI {
+function buildLocalRallyBoardCard(config: LocalRallyBoardCardConfig): CardI {
   return {
     key: StepName.ConferenceCamera,
     keyPermission: config.keyPermission,
@@ -715,7 +714,9 @@ function buildLocalRallyBoardCard(
           name: config.displayName,
           type: "asset",
           orgId: "",
-          metadata: {},
+          metadata: {
+            "Product Name": config.displayName,
+          },
           tags: [],
           parentFolderId: "",
           advancedAr: false,
@@ -731,8 +732,8 @@ function buildLocalRallyBoardCard(
           attributes: [],
           enabled: true,
           visible: true,
-        },
-      },
+        } as ValueAssetStateI,
+      } as any,
     },
     counter: {
       min: 0,
@@ -741,7 +742,7 @@ function buildLocalRallyBoardCard(
         key: "",
       },
     },
-  };
+  } as CardI;
 }
 
 /**
@@ -764,6 +765,20 @@ function addLocalRallyBoardCards(store: Store) {
       displayName: CameraName.RallyBoardCredenza,
       cardImage: RALLYBOARD_CARD_IMAGE,
     },
+    {
+      keyPermission: CameraName.RallyBoardCredenzaCameraAbove,
+      attributeName: "RallyBoardCredenzaCameraAbove",
+      assetId: "rallyboard-credenza-above-asset-1",
+      displayName: CameraName.RallyBoardCredenzaCameraAbove,
+      cardImage: RALLYBOARD_CARD_IMAGE,
+    },
+    {
+      keyPermission: CameraName.RallyBoardFloor,
+      attributeName: "RallyBoardFloor",
+      assetId: RALLYBOARD_FLOOR_ASSET_ID,
+      displayName: CameraName.RallyBoardFloor,
+      cardImage: RALLYBOARD_CARD_IMAGE,
+    },
   ];
 
   const state = store.getState();
@@ -772,30 +787,31 @@ function addLocalRallyBoardCards(store: Store) {
     return;
   }
 
-    const existingCards = { ...stepData.cards };
+  const existingCards = { ...stepData.cards };
   localCardConfigs.forEach((config) => {
     existingCards[config.keyPermission] = buildLocalRallyBoardCard(config);
   });
-    
-    const cardsArray = Object.values(existingCards);
-  const sortedKeyPermissions =
-    getSortedKeyPermissionsByStep(StepName.ConferenceCamera)(store);
+
+  const cardsArray = Object.values(existingCards) as Array<CardI>;
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(
+    StepName.ConferenceCamera
+  )(store);
   const sortedCards = sortedCardsByArrTemplate(
     cardsArray,
     sortedKeyPermissions
   );
-    const sortedCardsRecord = sortedCards.reduce((acc, card) => {
-      acc[card.keyPermission] = card;
-      return acc;
-    }, {} as Record<string, CardI>);
-    
-    store.dispatch(
-      setDataCardsStep({
-        step: StepName.ConferenceCamera,
-        cards: sortedCardsRecord,
-      })
-    );
-    
+  const sortedCardsRecord = sortedCards.reduce((acc, card) => {
+    acc[card.keyPermission] = card;
+    return acc;
+  }, {} as Record<string, CardI>);
+
+  store.dispatch(
+    setDataCardsStep({
+      step: StepName.ConferenceCamera,
+      cards: sortedCardsRecord,
+    })
+  );
+
   localCardConfigs.forEach((config) => {
     store.dispatch(
       createItem({

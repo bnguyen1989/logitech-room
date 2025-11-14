@@ -6,10 +6,12 @@ import { PlacementManager } from "../../models/configurator/PlacementManager";
 
 type ProductsNodesOpts = {
   isRallyBoardSelected?: boolean;
+  isRallyBoardFloorSelected?: boolean;
 };
 
 export const ProductsNodes = (opts?: ProductsNodesOpts) => {
-  const { isRallyBoardSelected = false } = opts || {};
+  const { isRallyBoardSelected = false, isRallyBoardFloorSelected = false } =
+    opts || {};
   const allNodePlacement = PlacementManager.getAllPlacement();
 
   // Debug log for RallyBoard_Mount
@@ -139,12 +141,6 @@ export const ProductsNodes = (opts?: ProductsNodesOpts) => {
           }
         });
 
-        console.log("🎨 [ProductsNodes] wall_in_panels___ meshes:", meshes);
-        console.log(
-          "🖌️ [ProductsNodes] wall_in_panels___ materials:",
-          materials
-        );
-
         if (blackMaterials.length > 0) {
           console.log(
             "⚫ [ProductsNodes] wall_in_panels___ BLACK MATERIALS FOUND:",
@@ -170,6 +166,25 @@ export const ProductsNodes = (opts?: ProductsNodesOpts) => {
           isRallyBoardSelected,
         });
         // Return undefined to continue traversal (this matcher only does side-effects)
+        return undefined;
+      }
+
+      const isCredenzaMesh = ["credenza", "cabinet", "sideboard"].some((key) =>
+        nameLower.includes(key)
+      );
+      if (isCredenzaMesh) {
+        const newVisible = !isRallyBoardFloorSelected;
+        const previousVisible = threeNode.visible;
+        threeNode.visible = newVisible;
+        threeNode.traverse((child) => {
+          child.visible = newVisible;
+        });
+        console.log("🪑 [ProductsNodes] credenza visibility updated:", {
+          name,
+          previousVisible,
+          newVisible,
+          isRallyBoardFloorSelected,
+        });
         return undefined;
       }
 
