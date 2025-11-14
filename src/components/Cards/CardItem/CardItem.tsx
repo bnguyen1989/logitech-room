@@ -77,14 +77,6 @@ export const CardItem: React.FC<PropsI> = (props) => {
   // Use langProductImage if available, otherwise fall back to card.image
   const displayImage = langProductImage || card.image;
 
-  console.log("[CardItem] Image resolution:", {
-    keyItemPermission,
-    productName,
-    langProductImage,
-    cardImage: card.image,
-    displayImage,
-  });
-
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
