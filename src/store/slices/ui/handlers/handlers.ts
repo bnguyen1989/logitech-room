@@ -689,7 +689,7 @@ function setCameraData(configurator: Configurator) {
   };
 }
 
-const RALLYBOARD_CARD_IMAGE = getImageUrl("images/product/RallyBoard.jpg");
+const RALLYBOARD_CARD_IMAGE = getImageUrl("images/product/rallyboard-wall.jpg");
 
 type LocalRallyBoardCardConfig = {
   keyPermission: CameraName;
@@ -709,8 +709,6 @@ function buildLocalRallyBoardCard(config: LocalRallyBoardCardConfig): CardI {
       threekitItems: {
         [config.keyPermission]: {
           id: config.assetId,
-          assetId: config.assetId,
-          key: config.keyPermission,
           name: config.displayName,
           type: "asset",
           orgId: "",

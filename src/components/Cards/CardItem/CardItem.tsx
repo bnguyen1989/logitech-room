@@ -74,6 +74,9 @@ export const CardItem: React.FC<PropsI> = (props) => {
 
   const threekitAsset = useAppSelector(getAssetFromCard(card));
 
+  // Use langProductImage if available, otherwise fall back to card.image
+  const displayImage = langProductImage || card.image;
+
   const isActiveCard = useAppSelector(
     getIsSelectedCardByKeyPermission(activeStep, keyItemPermission)
   );
@@ -105,6 +108,11 @@ export const CardItem: React.FC<PropsI> = (props) => {
   if (!card) return null;
 
   const handleInfo = () => {
+    console.log("[CardItem] Opening annotation modal:", {
+      productName,
+      keyItemPermission,
+      cardKeyPermission: card.keyPermission,
+    });
     dispatch(
       setAnnotationItemModal({
         isOpen: true,
@@ -162,7 +170,7 @@ export const CardItem: React.FC<PropsI> = (props) => {
         <div className={s.wrapper}>
           <div className={s.left_content} onClick={handleClick}>
             <div className={s.image}>
-              <img src={langProductImage} alt="item" />
+              {displayImage && <img src={displayImage} alt="item" />}
             </div>
           </div>
           <div className={s.right_content}>
