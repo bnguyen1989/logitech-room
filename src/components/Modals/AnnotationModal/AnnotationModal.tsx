@@ -35,7 +35,10 @@ const getStaticRallyBoardData = (
   );
 
   // Check by keyPermission first
-  if (keyPermission === CameraName.RallyBoard || keyPermission === "RallyBoard") {
+  if (
+    keyPermission === CameraName.RallyBoard ||
+    keyPermission === "RallyBoard"
+  ) {
     return {
       ProductName: "RallyBoard Mount",
       ShortDescription: "Interactive display for wall mounting",
@@ -73,7 +76,10 @@ const getStaticRallyBoardData = (
     };
   }
 
-  if (keyPermission === CameraName.RallyBoardCredenza) {
+  if (
+    keyPermission === CameraName.RallyBoardCredenza ||
+    keyPermission === "RallyBoardCredenza"
+  ) {
     return {
       ProductName: "RallyBoard Credenza",
       ShortDescription: "Interactive display for credenza mounting",
@@ -111,6 +117,87 @@ const getStaticRallyBoardData = (
     };
   }
 
+  // Also check by product name as fallback
+  if (
+    product &&
+    (product.includes("RallyBoard") || product.includes("rallyboard"))
+  ) {
+    // Default to RallyBoard Mount if product name contains RallyBoard
+    if (product.includes("Credenza") || product.includes("credenza")) {
+      return {
+        ProductName: "RallyBoard Credenza",
+        ShortDescription: "Interactive display for credenza mounting",
+        LongDescription:
+          "RallyBoard Credenza is an interactive display designed for credenza mounting in video conferencing rooms, offering flexible placement options and enhanced collaboration capabilities.",
+        Colors: {
+          Graphite: rallyBoardCredenzaImage,
+        },
+        Headline: "CREDENZA-MOUNTED INTERACTIVE DISPLAY",
+        Description:
+          "RallyBoard Credenza provides a versatile mounting solution for video conferencing rooms, allowing placement on credenzas or tables for flexible room configurations and easy access.",
+        "Image|Video": {
+          "Image link": rallyBoardCredenzaImage,
+        },
+        fetures3A: {
+          0: {
+            HeaderFeature: "FLEXIBLE PLACEMENT",
+            sorting: "1",
+            KeyFeature:
+              "Credenza mounting allows for flexible room configurations and easy repositioning to accommodate different meeting setups.",
+            LinkImgFeature: {
+              "Image link": rallyBoardCredenzaImage,
+            },
+          },
+          1: {
+            HeaderFeature: "ENHANCED COLLABORATION",
+            sorting: "2",
+            KeyFeature:
+              "Interactive display surface enables seamless collaboration with touch capabilities and optimal viewing angles for all participants.",
+            LinkImgFeature: {
+              "Image link": rallyBoardCredenzaImage,
+            },
+          },
+        },
+      };
+    } else {
+      return {
+        ProductName: "RallyBoard Mount",
+        ShortDescription: "Interactive display for wall mounting",
+        LongDescription:
+          "RallyBoard Mount is an interactive display designed for wall mounting in video conferencing rooms, providing a seamless collaboration experience with space-saving design and optimal viewing angles.",
+        Colors: {
+          Graphite: rallyBoardMountImage,
+        },
+        Headline: "WALL-MOUNTED INTERACTIVE DISPLAY",
+        Description:
+          "RallyBoard Mount offers a space-efficient solution for video conferencing rooms, mounting directly to the wall for optimal use of floor space while maintaining excellent visibility and touch accessibility.",
+        "Image|Video": {
+          "Image link": rallyBoardMountImage,
+        },
+        fetures3A: {
+          0: {
+            HeaderFeature: "SPACE-EFFICIENT DESIGN",
+            sorting: "1",
+            KeyFeature:
+              "Wall-mounted design maximizes floor space while providing a large, interactive display surface for collaboration.",
+            LinkImgFeature: {
+              "Image link": rallyBoardMountImage,
+            },
+          },
+          1: {
+            HeaderFeature: "OPTIMAL VIEWING ANGLES",
+            sorting: "2",
+            KeyFeature:
+              "Designed for comfortable viewing from multiple positions in the room, ensuring everyone can see and interact with the display.",
+            LinkImgFeature: {
+              "Image link": rallyBoardMountImage,
+            },
+          },
+        },
+      };
+    }
+  }
+
   return null;
 };
 
@@ -125,23 +212,26 @@ export const AnnotationModal: React.FC = () => {
   );
 
   // Use static fallback data if no data from store and it's a RallyBoard product
-  const staticData = getStaticRallyBoardData(keyPermission);
-  
+  const staticData = getStaticRallyBoardData(keyPermission, product);
+
   // Merge static data with store data, prioritizing store data but filling gaps with static data
   let dataProduct: any = dataProductFromStore;
   if (staticData) {
-    if (!dataProductFromStore || Object.keys(dataProductFromStore).length === 0) {
+    if (
+      !dataProductFromStore ||
+      Object.keys(dataProductFromStore).length === 0
+    ) {
       // If no store data, use static data
       dataProduct = staticData;
     } else {
       // If store data exists but is incomplete, merge with static data
       // Check if store data is missing critical fields
-      const hasCompleteData = 
+      const hasCompleteData =
         dataProductFromStore["ShortDescription"] &&
         dataProductFromStore["LongDescription"] &&
         dataProductFromStore["Headline"] &&
         dataProductFromStore["Description"];
-      
+
       if (!hasCompleteData) {
         // Merge static data as base, then override with store data
         dataProduct = {
@@ -162,7 +252,9 @@ export const AnnotationModal: React.FC = () => {
     keyPermission,
     cameraNameRallyBoard: CameraName.RallyBoard,
     cameraNameRallyBoardCredenza: CameraName.RallyBoardCredenza,
-    keyPermissionMatch: keyPermission === CameraName.RallyBoard || keyPermission === CameraName.RallyBoardCredenza,
+    keyPermissionMatch:
+      keyPermission === CameraName.RallyBoard ||
+      keyPermission === CameraName.RallyBoardCredenza,
     hasDataProductFromStore: !!dataProductFromStore,
     hasStaticData: !!staticData,
     dataProductFromStore,
