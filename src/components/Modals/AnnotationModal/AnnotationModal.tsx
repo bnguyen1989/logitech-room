@@ -26,10 +26,34 @@ export const AnnotationModal: React.FC = () => {
     getAnnotationModalData
   ) as any;
 
-  const dataProduct: any = useAppSelector(getLangForModalProduct(product));
+  // Fallback: Nếu product là undefined, thử lấy từ card metadata
+  let finalProduct = product;
+  if (!finalProduct && card && keyPermission) {
+    // Thử lấy từ card metadata
+    const cardMetadata = card?.dataThreekit?.threekitItems?.[keyPermission]?.metadata;
+    finalProduct = cardMetadata?.["Product Name"]?.trim();
+    
+    // Nếu vẫn không có, dùng mapping cho RallyBoard
+    if (!finalProduct) {
+      const productNameMap: Record<string, string> = {
+        RallyBoard: "RallyBoard Mount",
+        RallyBoardCredenza: "RallyBoard Credenza",
+      };
+      finalProduct = productNameMap[keyPermission] || keyPermission;
+    }
+    
+    console.log("[AnnotationModal] Fallback product resolution:", {
+      originalProduct: product,
+      finalProduct,
+      keyPermission,
+      cardMetadata,
+    });
+  }
+
+  const dataProduct: any = useAppSelector(getLangForModalProduct(finalProduct));
 
   const langProductImage = useAppSelector(
-    getLangProductImage(product, keyPermission)
+    getLangProductImage(finalProduct, keyPermission)
   );
 
   const { isActiveCard, disabledActions, hiddenActions, threekitAsset } =

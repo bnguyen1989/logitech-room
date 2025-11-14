@@ -682,13 +682,13 @@ function setCameraData(configurator: Configurator) {
       StepName.ConferenceCamera,
       Configurator.CameraName
     );
-    
+
     // Add local RallyBoard cards manually for local GLB loading
     addLocalRallyBoardCards(store);
   };
 }
 
-const RALLYBOARD_CARD_IMAGE = getImageUrl("images/product/RallyBoard.jpg");
+const RALLYBOARD_CARD_IMAGE = getImageUrl("images/product/rallyboard-wall.jpg");
 
 type LocalRallyBoardCardConfig = {
   keyPermission: CameraName;
@@ -698,9 +698,23 @@ type LocalRallyBoardCardConfig = {
   cardImage: string;
 };
 
-function buildLocalRallyBoardCard(
-  config: LocalRallyBoardCardConfig
-): CardI {
+function buildLocalRallyBoardCard(config: LocalRallyBoardCardConfig): CardI {
+  // Map keyPermission to Product Name for language data lookup
+  // Note: These must match exactly the keys in the language data JSON file
+  const productNameMap: Record<string, string> = {
+    [CameraName.RallyBoard]: "RallyBoard Mount",
+    [CameraName.RallyBoardCredenza]: "RallyBoard Credenza",
+  };
+
+  const productName =
+    productNameMap[config.keyPermission] || config.displayName;
+
+  console.log("[buildLocalRallyBoardCard] Mapping:", {
+    keyPermission: config.keyPermission,
+    displayName: config.displayName,
+    productName,
+  });
+
   return {
     key: StepName.ConferenceCamera,
     keyPermission: config.keyPermission,
@@ -710,12 +724,12 @@ function buildLocalRallyBoardCard(
       threekitItems: {
         [config.keyPermission]: {
           id: config.assetId,
-          assetId: config.assetId,
-          key: config.keyPermission,
           name: config.displayName,
           type: "asset",
           orgId: "",
-          metadata: {},
+          metadata: {
+            "Product Name": productName,
+          },
           tags: [],
           parentFolderId: "",
           advancedAr: false,
@@ -731,7 +745,7 @@ function buildLocalRallyBoardCard(
           attributes: [],
           enabled: true,
           visible: true,
-        },
+        } as ValueAssetStateI,
       },
     },
     counter: {
@@ -772,30 +786,31 @@ function addLocalRallyBoardCards(store: Store) {
     return;
   }
 
-    const existingCards = { ...stepData.cards };
+  const existingCards = { ...stepData.cards };
   localCardConfigs.forEach((config) => {
     existingCards[config.keyPermission] = buildLocalRallyBoardCard(config);
   });
-    
-    const cardsArray = Object.values(existingCards);
-  const sortedKeyPermissions =
-    getSortedKeyPermissionsByStep(StepName.ConferenceCamera)(store);
+
+  const cardsArray = Object.values(existingCards) as CardI[];
+  const sortedKeyPermissions = getSortedKeyPermissionsByStep(
+    StepName.ConferenceCamera
+  )(store);
   const sortedCards = sortedCardsByArrTemplate(
     cardsArray,
     sortedKeyPermissions
   );
-    const sortedCardsRecord = sortedCards.reduce((acc, card) => {
-      acc[card.keyPermission] = card;
-      return acc;
-    }, {} as Record<string, CardI>);
-    
-    store.dispatch(
-      setDataCardsStep({
-        step: StepName.ConferenceCamera,
-        cards: sortedCardsRecord,
-      })
-    );
-    
+  const sortedCardsRecord = sortedCards.reduce((acc, card) => {
+    acc[card.keyPermission] = card;
+    return acc;
+  }, {} as Record<string, CardI>);
+
+  store.dispatch(
+    setDataCardsStep({
+      step: StepName.ConferenceCamera,
+      cards: sortedCardsRecord,
+    })
+  );
+
   localCardConfigs.forEach((config) => {
     store.dispatch(
       createItem({
