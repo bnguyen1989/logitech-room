@@ -41,10 +41,10 @@ export enum CameraName {
   RallyBar = "Logitech Rally Bar",
   RallyPlus = "Logitech Rally Plus",
   RallyCamera = "Logitech Rally Camera",
-  RallyBoard = "RallyBoard",
-  RallyBoardCredenza = "RallyBoardCredenza",
-  RallyBoardCredenzaCameraAbove = "RallyBoardCredenzaCameraAbove",
-  RallyBoardFloor = "RallyBoardFloor",
+  RallyBoard = "RallyBoard Wall",
+  RallyBoardCredenza = "RallyBoard Credenza Below",
+  RallyBoardCredenzaCameraAbove = "RallyBoard Credenza Above",
+  RallyBoardFloor = "RallyBoard Floor",
 
   AddCameras = "Add'l Cameras",
 
