@@ -10,7 +10,7 @@ export type TargetSize =
 
 export type RotationOptions = {
   /**
-   * Rotation in radians (Three.js uses radians, e.g. Math.PI / 2)
+   * Rotation in radians
    */
   x?: number;
   y?: number;

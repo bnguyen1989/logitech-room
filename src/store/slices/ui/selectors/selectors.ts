@@ -401,6 +401,10 @@ export const getCorrectStepDataByPermission =
       Record<string, CardI>
     >((acc, card) => {
       const isExist = items.some((item) => item.name === card.keyPermission);
+      console.log(
+        "active",
+        permission.getElements().map((item) => item.name)
+      );
       if (isExist) {
         acc[card.keyPermission] = card;
       }
